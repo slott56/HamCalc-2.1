@@ -1,0 +1,65 @@
+Results of doctest builder run on 2013-05-01 17:09:59
+=====================================================
+
+Document: python/math/baromtr
+-----------------------------
+1 items passed all tests:
+   6 tests in default
+6 tests in 1 items.
+6 passed and 0 failed.
+Test passed.
+
+Document: python/electronics/awgexact
+-------------------------------------
+1 items passed all tests:
+   8 tests in default
+8 tests in 1 items.
+8 passed and 0 failed.
+Test passed.
+
+Document: python/math/accelr
+----------------------------
+1 items passed all tests:
+   4 tests in default
+4 tests in 1 items.
+4 passed and 0 failed.
+Test passed.
+
+Document: python/math/fibon
+---------------------------
+1 items passed all tests:
+  19 tests in default
+19 tests in 1 items.
+19 passed and 0 failed.
+Test passed.
+
+Document: python/math/propcirc
+------------------------------
+1 items passed all tests:
+  13 tests in default
+13 tests in 1 items.
+13 passed and 0 failed.
+Test passed.
+
+Document: python/math/deciconv
+------------------------------
+1 items passed all tests:
+   7 tests in default
+7 tests in 1 items.
+7 passed and 0 failed.
+Test passed.
+
+Document: python/electronics/decibel
+------------------------------------
+1 items passed all tests:
+   7 tests in default
+7 tests in 1 items.
+7 passed and 0 failed.
+Test passed.
+
+Doctest summary
+===============
+   64 tests
+    0 failures in tests
+    0 failures in setup code
+    0 failures in cleanup code

@@ -4,19 +4,19 @@ These are three **Solvers** for decibel problems in power, voltage or current.
 
 Here are some test cases:
 
->>> from hamcalc.electronics.decibel import power, voltage, current
->>> voltage( f_1=13.2, f_2=12 )
+>>> import hamcalc.electronics.decibel as decibel
+>>> decibel.voltage( f_1=13.2, f_2=12 )
 {'db': -0.8278537031645, 'f_1': 13.2, 'f_2': 12}
->>> current( f_1=2.3, db=2 )
+>>> decibel.current( f_1=2.3, db=2 )
 {'db': 2, 'f_1': 2.3, 'f_2': 2.8955284471265843}
->>> power( f_2=800, db=5 )
+>>> decibel.power( f_2=800, db=5 )
 {'db': 5, 'f_1': 252.98221281347034, 'f_2': 800}
->>> WATT.dBm( MILLIWATT.to_std(900) )
+>>> decibel.WATT.dBm( decibel.MILLIWATT.to_std(900) )
 29.542689153465723
->>> VOLT.dBm(VOLT.to_std(12.36))
+>>> decibel.VOLT.dBm(decibel.VOLT.to_std(12.36))
 34.85093343076822
->>> AMP.dBm(MICROAMP.to_std(230))
->>>
+>>> decibel.AMP.dBm(decibel.AMP.to_std(2.3))
+54.22452082278453
 
 """
 __version__ = "2.1"

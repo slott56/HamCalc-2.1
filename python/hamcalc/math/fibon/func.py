@@ -1,4 +1,4 @@
-"""hamcalc.math.fibon -- Fibonacci Numbers, functional implementation.
+"""hamcalc.math.fibon.func -- Fibonacci Numbers, functional implementation.
 
 This module defines a generator function which can efficiently
 generate Fibonacci numbers.
@@ -8,9 +8,10 @@ of Fibonacci numbers.
 
 Test Cases
 
->>> list( fibon_count_iter( count=13 ) )
+>>> import hamcalc.math.fibon.func as fibon
+>>> list( fibon.fibon_count_iter( count=13 ) )
 [1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233]
->>> f= list( fibon_count_iter( count=13 ) )
+>>> f= list( fibon.fibon_count_iter( count=13 ) )
 >>> a, b = f[11], f[12]
 >>> a
 144
@@ -18,7 +19,7 @@ Test Cases
 233
 >>> b/a
 1.6180555555555556
->>> list( fibon_last_iter( last=100 ) )
+>>> list( fibon.fibon_last_iter( last=100 ) )
 [1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89]
 
 For HamCalc compatibility, use f_0=0 in the various generator functions.

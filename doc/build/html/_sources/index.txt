@@ -26,6 +26,7 @@ Contents:
     legacy
     python_architecture
     python/index
+    todo
 
 Indices and tables
 ==================

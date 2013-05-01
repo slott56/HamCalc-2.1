@@ -23,14 +23,15 @@ Ths includes is a **Table** of values, and all unit **Equivalents** for a given 
 
 Here are some test cases.
 
->>> t= list(table())
+>>> import hamcalc.math.baromtr as baromtr
+>>> t= list(baromtr.table())
 >>> t[0]
 (95.5, 28.200893165556376, 13.85115223291389, 973.6146064643474, 0.9425117197137922)
 >>> t[-1]
 (106.0, 31.301514927214406, 15.374053787318035, 1080.6612385886997, 1.0461386627189735)
 >>> len(t)
 22
->>> equivalent( 1033, MB )
+>>> baromtr.equivalent( 1033, baromtr.MB )
 (1033.0, 1.0, 76.0, 29.921, 10.3322, 406.782, 33.899, 14.696, 2116.2, 1.033, 101.325)
 
 

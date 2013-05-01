@@ -4,13 +4,14 @@ These are two **Solvers** for acceleration and force problems.
 
 Here are some test cases
 
->>> from hamcalc.math.accelr import force, accel
+>>> import hamcalc.math.accelr as accelr
 >>> accelr.force( m=12000, a=-2.5 )
 {'a': -2.5, 'm': 12000, 'f': -30000.0}
 >>> accelr.force( m=12000, f=30000 )
 {'a': 2.5, 'm': 12000, 'f': 30000}
->>> accel( d=50, t=6, v_o=2, a=-.25 )
+>>> accelr.accel( d=50, t=6, v_o=2, a=-.25 )
 {'a': -0.25, 'v_f': 0.5, 'v_o': 2, 'd': 50, 't': 6}
+
 """
 __version__ = "2.1"
 

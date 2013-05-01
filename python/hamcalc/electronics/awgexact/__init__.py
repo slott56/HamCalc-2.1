@@ -15,19 +15,20 @@ Ths includes is a **Table** of values, as well.
 
 Here are some test cases.
 
->>> AWG.to_std( "#0" )
+>>> import hamcalc.electronics.awgexact as awgexact
+>>> awgexact.AWG.to_std( "#0" )
 0.32486074024297096
->>> AWG.to_std( "#0000" )
+>>> awgexact.AWG.to_std( "#0000" )
 0.46
->>> AWG.to_std( "#36" )
+>>> awgexact.AWG.to_std( "#36" )
 0.005000000000000004
->>> MM.from_std( 0.005 )
+>>> awgexact.MM.from_std( 0.005 )
 0.127
->>> AWG.from_std( 0.005 )
+>>> awgexact.AWG.from_std( 0.005 )
 '#36'
->>> AWG.from_std( 0.006 )
+>>> awgexact.AWG.from_std( 0.006 )
 '#34'
->>> AWG.to_std( "#34" )
+>>> awgexact.AWG.to_std( "#34" )
 0.006304883590044074
 
 """

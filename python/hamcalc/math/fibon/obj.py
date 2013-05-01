@@ -1,4 +1,4 @@
-"""hamcalc.math.fibon -- Fibonacci Numbers, object-oriented implementation.
+"""hamcalc.math.fibon.obj -- Fibonacci Numbers, object-oriented implementation.
 
 This module defines a callable class which can efficiently
 generate Fibonacci numbers.
@@ -8,17 +8,18 @@ of Fibonacci numbers.
 
 Test Cases
 
->>> fibon= Fibonacci()
->>> a, b = fibon(11), fibon(12)
+>>> import hamcalc.math.fibon.obj as fibon
+>>> fibon_func= fibon.Fibonacci()
+>>> a, b = fibon_func(11), fibon_func(12)
 >>> a
 144
 >>> b
 233
 >>> b/a
 1.6180555555555556
->>> list( fibon_count_iter( count=5 ) )
+>>> list( fibon.fibon_count_iter( count=5 ) )
 [1, 1, 2, 3, 5]
->>> list( fibon_last_iter( last=100 ) )
+>>> list( fibon.fibon_last_iter( last=100 ) )
 [1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89]
 
 For HamCalc compatibility, use f_0=0 in the constructor.

@@ -11,17 +11,18 @@ We provide both implementations, since strings are an extension to tuples.
 
 Test Cases
 
->>> HRS_MIN_SEC.to_std( "12:34:56" )
+>>> import hamcalc.math.deciconv as deciconv
+>>> deciconv.HRS_MIN_SEC.to_std( "12:34:56" )
 12.582222222222223
->>> HRS_MIN_SEC.from_std( 12.582 )
+>>> deciconv.HRS_MIN_SEC.from_std( 12.582 )
 '12:34:55.2'
->>> HRS_MIN_SEC.from_std( 12.5822 )
+>>> deciconv.HRS_MIN_SEC.from_std( 12.5822 )
 '12:34:55.9'
->>> HRS_MIN_SEC.from_std( 12.58222 )
+>>> deciconv.HRS_MIN_SEC.from_std( 12.58222 )
 '12:34:56.0'
->>> HMS_TUPLE.to_std( (12,34,56) )
+>>> deciconv.HMS_TUPLE.to_std( (12,34,56) )
 12.582222222222223
->>> HMS_TUPLE.from_std( 12.58222 )
+>>> deciconv.HMS_TUPLE.from_std( 12.58222 )
 (12.0, 34.0, 55.99199999999837)
 
 """
