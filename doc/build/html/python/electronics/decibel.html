@@ -1,0 +1,399 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>decibel – Decibel Calculator &mdash; HamCalc 2.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '2.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="HamCalc 2.1 documentation" href="../../index.html" />
+    <link rel="up" title="electronics – General Electronics" href="index.html" />
+    <link rel="next" title="ohmslaw" href="ohmslaw.html" />
+    <link rel="prev" title="awgexact – AWG wire size calculator" href="awgexact.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="ohmslaw.html" title="ohmslaw"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="awgexact.html" title="awgexact – AWG wire size calculator"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../../index.html">HamCalc 2.1 documentation</a> &raquo;</li>
+          <li><a href="../index.html" >Python Modules</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">electronics &#8211; General Electronics</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="decibel-decibel-calculator">
+<h1>decibel &#8211; Decibel Calculator<a class="headerlink" href="#decibel-decibel-calculator" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="analysis">
+<h2>Analysis<a class="headerlink" href="#analysis" title="Permalink to this headline">¶</a></h2>
+<p>The essential rule of decibels (dB) appears to be this.</p>
+<div class="math">
+<p><img src="../../_images/math/3b752a2ce37124bbf7d9d0b9dc4314587f7c5a30.png" alt="dB = M \log_{10} \frac{f_s}{f_l}"/></p>
+</div><p>Where M is either 10 or 20, depending on whether we&#8217;re talking about
+Power, Voltage or Current. Power uses 10. Voltage and Current use 20.</p>
+<p>The value of <img class="math" src="../../_images/math/16670cf12516b015de3ef53a592f3a6d19e96c3c.png" alt="f_s"/> is the &#8220;source&#8221; and <img class="math" src="../../_images/math/a9c5cec680127e37d7f152c45f80da3446d60861.png" alt="f_l"/> is the &#8220;load&#8221;.</p>
+<p>We can solve this two other ways.</p>
+<div class="math">
+<p><img src="../../_images/math/b4857e3815935bd8ad1561d32dfa5a9b3b2b461b.png" alt="f_s = f_l \times 10^{dB/M}"/></p>
+</div><div class="math">
+<p><img src="../../_images/math/eb6ff20de8e714dbe06124ed84b31e08e74aee5c.png" alt="f_l = f_s \times 10^{-dB/M}"/></p>
+</div><p>The other half of the program is a kind of units conversion from
+Volts, Watts or Amps to dBm.</p>
+<blockquote>
+<div>dBm with 1 mW/50Ω as reference (= 0 dBm)</div></blockquote>
+<p>In this case, the program does a simple units conversion among
+nine source units and the dBm value.</p>
+<p>This involves a magical constants.  0.2236 V, for example, is part of the
+1 mW/50Ω calculation.</p>
+<div class="math">
+<p><img src="../../_images/math/947a2fd889fd644915b5bc93c34f2363ee7cb344.png" alt="V = \sqrt{P \times R} = \sqrt{ 0.001 W \times 50 \Omega } = 0.2236 V"/></p>
+</div><p>The legacy form depends on natural logarithms. <img class="math" src="../../_images/math/eeb486f974e3e3e7b42dcbe99b6b7244ce197205.png" alt="20\log_{10}{e} = 8.685889638065037"/>, a constant that shows up the legacy program.</p>
+<div class="math">
+<p><img src="../../_images/math/1a0f6d0262dc4d5b5673865c4cc62dbff150e092.png" alt="dBm = 20 \log_{10}{e} \times \ln{ \frac{A}{0.2236} }"/></p>
+</div><p>Using base 10 logarithms:</p>
+<div class="math">
+<p><img src="../../_images/math/91cddf80433437c53b89eeb2ec413cd0d33a61fe.png" alt="dBm = 20 \log_{10} \frac{A}{0.2236}"/></p>
+</div></div>
+<div class="section" id="implementation">
+<h2>Implementation<a class="headerlink" href="#implementation" title="Permalink to this headline">¶</a></h2>
+<p>This is two closely-related three-variable <strong>Solver</strong> class definitions.</p>
+<ul class="simple">
+<li>Power (uses M=10)</li>
+<li>Voltage and Current (use M=20)</li>
+</ul>
+<p>We can create a common superclass and three instances that are tailored
+for the various detailed calculations.</p>
+<p>There is also a set of nine units which can convert back and forth between
+various scales of Volts, Amps and Watts to dBm.</p>
+<span class="target" id="module-hamcalc.electronics.decibel"></span><p>hamcalc.electronics.decibel &#8211; Decibel Calculator</p>
+<p>These are three <strong>Solvers</strong> for decibel problems in power, voltage or current.</p>
+<p>Here are some test cases:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">hamcalc.electronics.decibel</span> <span class="kn">import</span> <span class="n">power</span><span class="p">,</span> <span class="n">voltage</span><span class="p">,</span> <span class="n">current</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">voltage</span><span class="p">(</span> <span class="n">f_1</span><span class="o">=</span><span class="mf">13.2</span><span class="p">,</span> <span class="n">f_2</span><span class="o">=</span><span class="mi">12</span> <span class="p">)</span>
+<span class="go">{&#39;db&#39;: -0.8278537031645, &#39;f_1&#39;: 13.2, &#39;f_2&#39;: 12}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">current</span><span class="p">(</span> <span class="n">f_1</span><span class="o">=</span><span class="mf">2.3</span><span class="p">,</span> <span class="n">db</span><span class="o">=</span><span class="mi">2</span> <span class="p">)</span>
+<span class="go">{&#39;db&#39;: 2, &#39;f_1&#39;: 2.3, &#39;f_2&#39;: 2.8955284471265843}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">power</span><span class="p">(</span> <span class="n">f_2</span><span class="o">=</span><span class="mi">800</span><span class="p">,</span> <span class="n">db</span><span class="o">=</span><span class="mi">5</span> <span class="p">)</span>
+<span class="go">{&#39;db&#39;: 5, &#39;f_1&#39;: 252.98221281347034, &#39;f_2&#39;: 800}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">WATT</span><span class="o">.</span><span class="n">dBm</span><span class="p">(</span> <span class="n">MILLIWATT</span><span class="o">.</span><span class="n">to_std</span><span class="p">(</span><span class="mi">900</span><span class="p">)</span> <span class="p">)</span>
+<span class="go">29.542689153465723</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">VOLT</span><span class="o">.</span><span class="n">dBm</span><span class="p">(</span><span class="n">VOLT</span><span class="o">.</span><span class="n">to_std</span><span class="p">(</span><span class="mf">12.36</span><span class="p">))</span>
+<span class="go">34.85093343076822</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">AMP</span><span class="o">.</span><span class="n">dBm</span><span class="p">(</span><span class="n">MICROAMP</span><span class="o">.</span><span class="n">to_std</span><span class="p">(</span><span class="mi">230</span><span class="p">))</span>
+<span class="go">&gt;&gt;&gt;</span>
+</pre></div>
+</div>
+<dl class="class">
+<dt id="hamcalc.electronics.decibel.AMP">
+<em class="property">class </em><tt class="descclassname">hamcalc.electronics.decibel.</tt><tt class="descname">AMP</tt><a class="headerlink" href="#hamcalc.electronics.decibel.AMP" title="Permalink to this definition">¶</a></dt>
+<dd><p>Ampere</p>
+<dl class="attribute">
+<dt id="hamcalc.electronics.decibel.AMP.standard">
+<tt class="descname">standard</tt><a class="headerlink" href="#hamcalc.electronics.decibel.AMP.standard" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#hamcalc.electronics.decibel.AMP" title="hamcalc.electronics.decibel.AMP"><tt class="xref py py-class docutils literal"><span class="pre">AMP</span></tt></a></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="hamcalc.electronics.decibel.DB_Solver">
+<em class="property">class </em><tt class="descclassname">hamcalc.electronics.decibel.</tt><tt class="descname">DB_Solver</tt><big>(</big><em>M=10</em><big>)</big><a class="reference internal" href="../../_modules/hamcalc/electronics/decibel.html#DB_Solver"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.electronics.decibel.DB_Solver" title="Permalink to this definition">¶</a></dt>
+<dd><p>Superclass for all dB solvers. This handles the generic
+case.</p>
+<p>This is a callable object, an instance is created and used
+as follows:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">voltage</span><span class="o">=</span> <span class="n">DB_Solver</span><span class="p">(</span> <span class="n">M</span><span class="o">=</span><span class="mi">20</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">voltage</span><span class="p">(</span> <span class="n">f_1</span><span class="o">=</span> <span class="mf">13.2</span><span class="p">,</span> <span class="n">f_2</span><span class="o">=</span> <span class="mi">12</span> <span class="p">)</span>
+<span class="go">{&#39;db&#39;: -0.8278537031645, &#39;f_1&#39;: 13.2, &#39;f_2&#39;: 12}</span>
+</pre></div>
+</div>
+<p>Similar solvers can be built for Power or Current.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="hamcalc.electronics.decibel.MICROAMP">
+<em class="property">class </em><tt class="descclassname">hamcalc.electronics.decibel.</tt><tt class="descname">MICROAMP</tt><a class="headerlink" href="#hamcalc.electronics.decibel.MICROAMP" title="Permalink to this definition">¶</a></dt>
+<dd><p>Microampere</p>
+<dl class="attribute">
+<dt id="hamcalc.electronics.decibel.MICROAMP.standard">
+<tt class="descname">standard</tt><a class="headerlink" href="#hamcalc.electronics.decibel.MICROAMP.standard" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#hamcalc.electronics.decibel.AMP" title="hamcalc.electronics.decibel.AMP"><tt class="xref py py-class docutils literal"><span class="pre">AMP</span></tt></a></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="hamcalc.electronics.decibel.MICROVOLT">
+<em class="property">class </em><tt class="descclassname">hamcalc.electronics.decibel.</tt><tt class="descname">MICROVOLT</tt><a class="headerlink" href="#hamcalc.electronics.decibel.MICROVOLT" title="Permalink to this definition">¶</a></dt>
+<dd><p>Microvolt</p>
+<dl class="attribute">
+<dt id="hamcalc.electronics.decibel.MICROVOLT.standard">
+<tt class="descname">standard</tt><a class="headerlink" href="#hamcalc.electronics.decibel.MICROVOLT.standard" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#hamcalc.electronics.decibel.VOLT" title="hamcalc.electronics.decibel.VOLT"><tt class="xref py py-class docutils literal"><span class="pre">VOLT</span></tt></a></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="hamcalc.electronics.decibel.MICROWATT">
+<em class="property">class </em><tt class="descclassname">hamcalc.electronics.decibel.</tt><tt class="descname">MICROWATT</tt><a class="headerlink" href="#hamcalc.electronics.decibel.MICROWATT" title="Permalink to this definition">¶</a></dt>
+<dd><p>Microwatt</p>
+<dl class="attribute">
+<dt id="hamcalc.electronics.decibel.MICROWATT.standard">
+<tt class="descname">standard</tt><a class="headerlink" href="#hamcalc.electronics.decibel.MICROWATT.standard" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#hamcalc.electronics.decibel.WATT" title="hamcalc.electronics.decibel.WATT"><tt class="xref py py-class docutils literal"><span class="pre">WATT</span></tt></a></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="hamcalc.electronics.decibel.MILLIAMP">
+<em class="property">class </em><tt class="descclassname">hamcalc.electronics.decibel.</tt><tt class="descname">MILLIAMP</tt><a class="headerlink" href="#hamcalc.electronics.decibel.MILLIAMP" title="Permalink to this definition">¶</a></dt>
+<dd><p>Milliampere</p>
+<dl class="attribute">
+<dt id="hamcalc.electronics.decibel.MILLIAMP.standard">
+<tt class="descname">standard</tt><a class="headerlink" href="#hamcalc.electronics.decibel.MILLIAMP.standard" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#hamcalc.electronics.decibel.AMP" title="hamcalc.electronics.decibel.AMP"><tt class="xref py py-class docutils literal"><span class="pre">AMP</span></tt></a></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="hamcalc.electronics.decibel.MILLIVOLT">
+<em class="property">class </em><tt class="descclassname">hamcalc.electronics.decibel.</tt><tt class="descname">MILLIVOLT</tt><a class="headerlink" href="#hamcalc.electronics.decibel.MILLIVOLT" title="Permalink to this definition">¶</a></dt>
+<dd><p>Millivolt</p>
+<dl class="attribute">
+<dt id="hamcalc.electronics.decibel.MILLIVOLT.standard">
+<tt class="descname">standard</tt><a class="headerlink" href="#hamcalc.electronics.decibel.MILLIVOLT.standard" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#hamcalc.electronics.decibel.VOLT" title="hamcalc.electronics.decibel.VOLT"><tt class="xref py py-class docutils literal"><span class="pre">VOLT</span></tt></a></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="hamcalc.electronics.decibel.MILLIWATT">
+<em class="property">class </em><tt class="descclassname">hamcalc.electronics.decibel.</tt><tt class="descname">MILLIWATT</tt><a class="headerlink" href="#hamcalc.electronics.decibel.MILLIWATT" title="Permalink to this definition">¶</a></dt>
+<dd><p>Milliwatt</p>
+<dl class="attribute">
+<dt id="hamcalc.electronics.decibel.MILLIWATT.standard">
+<tt class="descname">standard</tt><a class="headerlink" href="#hamcalc.electronics.decibel.MILLIWATT.standard" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#hamcalc.electronics.decibel.WATT" title="hamcalc.electronics.decibel.WATT"><tt class="xref py py-class docutils literal"><span class="pre">WATT</span></tt></a></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="hamcalc.electronics.decibel.VOLT">
+<em class="property">class </em><tt class="descclassname">hamcalc.electronics.decibel.</tt><tt class="descname">VOLT</tt><a class="headerlink" href="#hamcalc.electronics.decibel.VOLT" title="Permalink to this definition">¶</a></dt>
+<dd><p>Volt</p>
+<dl class="attribute">
+<dt id="hamcalc.electronics.decibel.VOLT.standard">
+<tt class="descname">standard</tt><a class="headerlink" href="#hamcalc.electronics.decibel.VOLT.standard" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#hamcalc.electronics.decibel.VOLT" title="hamcalc.electronics.decibel.VOLT"><tt class="xref py py-class docutils literal"><span class="pre">VOLT</span></tt></a></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="hamcalc.electronics.decibel.WATT">
+<em class="property">class </em><tt class="descclassname">hamcalc.electronics.decibel.</tt><tt class="descname">WATT</tt><a class="headerlink" href="#hamcalc.electronics.decibel.WATT" title="Permalink to this definition">¶</a></dt>
+<dd><p>Watt</p>
+<dl class="attribute">
+<dt id="hamcalc.electronics.decibel.WATT.standard">
+<tt class="descname">standard</tt><a class="headerlink" href="#hamcalc.electronics.decibel.WATT.standard" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#hamcalc.electronics.decibel.WATT" title="hamcalc.electronics.decibel.WATT"><tt class="xref py py-class docutils literal"><span class="pre">WATT</span></tt></a></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="hamcalc.electronics.decibel.intro">
+<tt class="descclassname">hamcalc.electronics.decibel.</tt><tt class="descname">intro</tt><big>(</big><big>)</big><a class="reference internal" href="../../_modules/hamcalc/electronics/decibel.html#intro"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.electronics.decibel.intro" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the text from the introductory page.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
+<p>Almost none, really.</p>
+</div>
+<div class="section" id="quirks">
+<h2>Quirks<a class="headerlink" href="#quirks" title="Permalink to this headline">¶</a></h2>
+<p>In option 2, the dBm calculation,
+the flag for working with Power, in watts, is never reset. It&#8217;s the <tt class="docutils literal"><span class="pre">P</span></tt> variable, set on lines 1360-1380. It is used on line 1590, but never reset for other units. Once you use Watts, any further attempt to use Volts or Amps produces wrong answers.</p>
+</div>
+<div class="section" id="sample-output-1">
+<h2>Sample Output 1<a class="headerlink" href="#sample-output-1" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><pre>DECIBEL CALCULATOR                                      by George Murphy VE3ERP
+Press number in &lt; &gt; to:
+
+  &lt;1&gt;  Calculate unknown factor from two known factors.
+       (factors: input value, output value, dB).
+
+  &lt;2&gt;  Calculate dBm for any given value and dB change between a consecutive
+       series of values.
+
+  &lt;0&gt;  EXIT
+  Press number in &lt; &gt; to select factor you want to FIND :
+
+  POWER                      VOLTAGE                    CURRENT
+  ─────                      ───────                    ───────
+  &lt;1&gt; WATTS in (source)      &lt;4&gt; VOLTS in (source)      &lt;7&gt; CURRENT in (source)
+
+  &lt;2&gt; WATTS out (load)       &lt;5&gt; VOLTS out (load)       &lt;8&gt; CURRENT out (load)
+  &lt;3&gt; dB gain/loss           &lt;6&gt; dB gain/loss           &lt;9&gt; dB gain/loss
+
+  &lt;0&gt; EXIT
+   Input and Output values are expressed in the same unit of measurement.
+
+ENTER Voltage in (source):? 13.2
+ENTER Voltage out (load):? 12
+
+       Voltage in (source):    13.200
+       Voltage out (load):     12.000
+       Voltage gain/loss:     -0.828 dB</pre>
+</div>
+</div>
+<div class="section" id="sample-output-2">
+<h2>Sample Output 2<a class="headerlink" href="#sample-output-2" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><pre>DECIBEL CALCULATOR                                         by Erik Madsen OZ8EM
+Edited for HAMCALC by George Murphy VE3ERP
+
+This program gives the level in dBm with 1 mW/50Ω as reference (= 0 dBm). It
+also gives the ratio in dB of consecutive voltage, current or power levels.
+
+Press number in &lt; &gt; to select:
+
+VOLTAGE:   &lt;1&gt; V
+  (RMS)    &lt;2&gt; mV
+           &lt;3&gt; µV
+
+CURRENT:   &lt;4&gt; A
+  (RMS)    &lt;5&gt; mA
+           &lt;6&gt; µA
+
+POWER:     &lt;7&gt; W
+           &lt;8&gt; mW
+           &lt;9&gt; µW
+
+EXIT       &lt;0&gt;
+ENTER: First value (V)? 12.36
+
+        12.36 V =34.85 dBm
+ENTER: Next value (V)...(or 0 to Quit)? 13.4
+
+        13.40 V =35.55 dBm:    12.36 V to  13.40 V = 0.70 dB
+ENTER: Next value (V)...(or 0 to Quit)? 14.2
+
+         14.20 V =36.06 dBm:    13.40 V to  14.20 V = 0.50 dB
+ENTER: Next value (V)...(or 0 to Quit)?</pre>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">decibel &#8211; Decibel Calculator</a><ul>
+<li><a class="reference internal" href="#analysis">Analysis</a></li>
+<li><a class="reference internal" href="#implementation">Implementation</a></li>
+<li><a class="reference internal" href="#introduction">Introduction</a></li>
+<li><a class="reference internal" href="#quirks">Quirks</a></li>
+<li><a class="reference internal" href="#sample-output-1">Sample Output 1</a></li>
+<li><a class="reference internal" href="#sample-output-2">Sample Output 2</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="awgexact.html"
+                        title="previous chapter">awgexact &#8211; AWG wire size calculator</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="ohmslaw.html"
+                        title="next chapter">ohmslaw</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../../_sources/python/electronics/decibel.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="ohmslaw.html" title="ohmslaw"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="awgexact.html" title="awgexact – AWG wire size calculator"
+             >previous</a> |</li>
+        <li><a href="../../index.html">HamCalc 2.1 documentation</a> &raquo;</li>
+          <li><a href="../index.html" >Python Modules</a> &raquo;</li>
+          <li><a href="index.html" >electronics &#8211; General Electronics</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2013, S.Lott.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2b1.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,220 @@
+10 :REM'AIRCORE - 05 SEP 92 rev. 31 JAN 1999
+20 IF EX$=""THEN EX$="EXIT"
+30 IF PROG$=""THEN GO$=EX$ :ELSE GO$=PROG$
+40 COMMON EX$,PROG$,U,LX
+50 CLS:KEY OFF
+60 COLOR 7,0,0
+70 T$=" BARKER & WILLIAMSON AIR-CORE INDUCTORS "
+80 U1$="#######"
+90 U2$="######.##"
+100 U3$="#######.#"
+110 UL$=STRING$(80,205)
+120 DIM A(36,5)
+130 FOR Z=1 TO 36      :REM'load data
+140  A(Z,1)=3000+Z
+150   FOR C=2 TO 5
+160   READ A(Z,C)
+170   NEXT C
+180 NEXT Z
+190 :REM'
+200 :REM'.....start
+210 COLOR 15,2:PRINT T$;TAB(56);" by George Murphy VE3ERP ";
+220 COLOR 1,0:PRINT STRING$(80,223);
+230 COLOR 7,0
+240 IF U THEN 700
+250 PRINT " Press number in < > to:"
+260 PRINT UL$;
+270 PRINT "  < 1 >  VIEW B & W catalog of air-core inductors"
+280 PRINT "  < 2 >  SELECT an inductor from the catalog"
+290 PRINT "  < 3 >  FIND inductors suitable for Maximum-Q coils"
+300 PRINT UL$;
+310 PRINT "  < 0 >  EXIT"
+320 Z$=INKEY$:IF Z$=""THEN 320
+330 IF Z$="0"THEN CLS:CHAIN GO$
+340 IF Z$="1"THEN 390
+350 IF Z$="2"THEN 660
+360 IF Z$="3"THEN 1290
+370 GOTO 320
+380 :REM'
+390 :REM'.....catalog
+400 VIEW PRINT 3 TO 24:CLS:VIEW PRINT:LOCATE 3
+410 COLOR 7,0
+420 LOCATE CSRLIN-1,41:PRINT "║"
+430 T1$="   Cat.     Dia.   Turns   Lgth.     "
+440 T2$="   No.     (in.)   per in. (in.)  AWG"
+450 PRINT T1$;TAB(41);"║";T1$
+460 PRINT T2$;TAB(41);"║";T2$
+470 PRINT UL$;:LOCATE CSRLIN-1,41:PRINT "╬"
+480 FOR Z=1 TO 18
+490 PRINT USING U1$;A(Z,1);
+500 PRINT USING U2$;A(Z,2);
+510 FOR Y=3 TO 5:PRINT USING U1$;A(Z,Y);:NEXT Y
+520 :REM'
+530 PRINT TAB(41);"║";
+540 :REM'
+550 IF A(Z+18,2)=0 THEN 590
+560 PRINT USING U1$;A(Z+18,1);
+570 PRINT USING U2$;A(Z+18,2);
+580 FOR Y=3 TO 5:PRINT USING U1$;A(Z+18,Y);:NEXT Y
+590 PRINT ""
+600 NEXT Z
+610 PRINT UL$;
+620 LOCATE 24,41:PRINT "╩";
+630 GOSUB 2120
+640 CLS:GOTO 200
+650 :REM'
+660 :REM'.....select inductor
+670 VIEW PRINT 3 TO 24:CLS:VIEW PRINT:LOCATE 3
+680 COLOR 0,7
+690 INPUT " ENTER: Desired inductance (µH)";U
+700 COLOR 7,0
+710 IF MK THEN 800
+720 PRINT
+730 PRINT " Press <ENTER> if you don't want any particular wire size ";
+740 PRINT "hi-lited, otherwise"
+750 IF MK=0 THEN 770
+760 PRINT "coils are wound with #";MK;"AWG wire."
+770 COLOR 0,7:PRINT
+780 INPUT " ENTER: Desired wire size (AWG)";MK
+790 COLOR 7,0
+800 CLS
+810 U=INT(U*1000+0.5!)/1000     :REM'round-off to 3 decimal places
+820 PRINT TAB(6);" All the following B&W Coils have an inductance of";
+830 COLOR 15,4:PRINT U;"µH."
+840 COLOR 14,0
+850 PRINT TAB(6);" Yellow Hi-Lited";
+860 COLOR 7,0
+870 PRINT " coils have a length-to-diameter ratio of 2:1 or less."
+880 IF MK=0 THEN COLOR 7,0:PRINT:GOTO 920
+890 COLOR 0,7
+900 LOCATE CSRLIN,6:PRINT " Reverse Printed ";
+910 COLOR 7,0:PRINT " coils are wound with AWG#";MK;"wire."
+920 T1$="       Dia. Turns  No.of  Lgth.     "
+930 T2$="Cat.# (in.)  /in.  turns  (in.)  AWG"
+940 PRINT T1$;"   ║   ";T1$
+950 PRINT T2$;"   ║   ";T2$
+960 PRINT UL$;
+970 LOCATE CSRLIN-1,40:PRINT "╬"
+980 FOR Z=1 TO 36
+990  CAT=A(Z,1)                       :REM'cat.no.
+1000  R=A(Z,2)/2                       :REM'radius
+1010   IF R=0 THEN 1230
+1020  T=A(Z,3)                         :REM'turns per inch
+1030  Q=R^2*T^2/U                      :REM'temporary factor
+1040  L=ABS(-10-SQR(100+36*R*Q))/2/Q   :REM'length
+1050  N=L*T                            :REM'no.of turns
+1060  G=A(Z,5)                         :REM'AWG size
+1070 IF Z<=18 THEN I=Z+6 :ELSE I=Z-12
+1080 IF Z<=18 THEN J=1 :ELSE J=44
+1090 LOCATE I,J
+1100 X=7:Y=0
+1110 IF G=MK THEN X=0:Y=7
+1120 IF U AND (L<=(4*R)) THEN X=14
+1130 COLOR X,Y
+1140 PRINT CAT;                        :REM'catalog no.
+1150 PRINT USING "##.##";R*2;          :REM'diameter
+1160 PRINT USING "#####";T;            :REM'turns per inch
+1170 PRINT USING "######.#";N;         :REM'number of turns
+1180 PRINT USING "####.##";L;          :REM'length of coil
+1190 PRINT USING "#####";G;            :REM'AWG size
+1200 IF Z<18 THEN PRINT ""
+1210 COLOR 7,0
+1220 IF Z<=18 THEN LOCATE CSRLIN-1,40:PRINT "║"
+1230 NEXT Z
+1240 LOCATE 24,40:PRINT "║";
+1250 GOSUB 2120:IF PROG$="coilq"THEN U=0:CLS:GOTO 200
+1260 IF EX$<>GO$ THEN CLS:CHAIN GO$
+1270 CLS:U=0:MK=0:GOTO 200
+1280 :REM'
+1290 :REM'.....Max. Q
+1300 VIEW PRINT 3 TO 24:CLS:VIEW PRINT:LOCATE 3
+1310 COLOR 7,0
+1320 PRINT " In order for a coil to attain maximum Q the wire diameter must be";
+1330 PRINT " within the  "
+1340 PRINT " range of 0.45 to 0.70 times the c.c spacing of adjacent turns.   "
+1350 PRINT
+1360 PRINT " In the following table the wire diameter/spacing ratio for each c";
+1370 PRINT "oil is shown "
+1380 PRINT " as a Q Code. Ratios required for maximum Q are highlighted."
+1390 PRINT
+1400 PRINT " Press any key to continue . . . ."
+1410 IF INKEY$=""THEN 1410
+1420 VIEW PRINT 3 TO 24:CLS:VIEW PRINT:LOCATE 3
+1430 LOCATE CSRLIN-1,41:PRINT "║"
+1440 T1$="  Cat.   Dia. Turns   Lgth.        Q  "
+1450 T2$="  No.   (in.) per in. (in.)  AWG  code"
+1460 PRINT T1$;TAB(41);"║";T1$
+1470 PRINT T2$;TAB(41);"║";T2$
+1480 PRINT UL$;:LOCATE CSRLIN-1,41:PRINT "╬"
+1490 FOR Z=1 TO 18
+1500 PRINT USING "######  ##.## ";A(Z,1),A(Z,2);
+1510 FOR Y=3 TO 5:PRINT USING "######";A(Z,Y);
+1520 NEXT Y
+1530 N=A(Z,5):DS=(0.46000000834465027!/1.1229000091552734!^(N+3))/(1/A(Z,3))
+1540 IF DS<0.44999998807907104! OR DS>0.699999988079071! THEN COLOR 4 :ELSE COLOR 15
+1550 PRINT USING "###.##";DS;
+1560 COLOR 7,0
+1570 :REM'
+1580 PRINT TAB(41);"║";
+1590 :REM'
+1600 IF A(Z+18,2)=0 THEN PRINT "":GOTO 1680
+1610 PRINT USING "######  ##.## ";A(Z+18,1),A(Z+18,2);
+1620 FOR Y=3 TO 5:PRINT USING "######";A(Z+18,Y);
+1630 NEXT Y
+1640 N=A(Z+18,5):DS=(0.46000000834465027!/1.1229000091552734!^(N+3))/(1/A(Z+18,3))
+1650 IF DS<0.44999998807907104! OR DS>0.699999988079071! THEN COLOR 4 :ELSE COLOR 15
+1660 PRINT USING "###.##";DS
+1670 COLOR 7,0
+1680 NEXT Z
+1690 PRINT UL$;
+1700 LOCATE 24,41:PRINT "╩";
+1710 GOSUB 2120
+1720 CLS:GOTO 200
+1730 :REM'
+1740 DATA .5,4,2,18
+1750 DATA .5,8,2,18
+1760 DATA .5,16,2,20
+1770 DATA .5,32,2,24
+1780 DATA .625,4,2,16
+1790 DATA .625,8,2,18
+1800 DATA .625,16,2,20
+1810 DATA .625,32,2,24
+1820 DATA .75,4,3,16
+1830 DATA .75,8,3,18
+1840 DATA .75,16,3,20
+1850 DATA .75,32,3,24
+1860 DATA 1,4,3,16
+1870 DATA 1,8,3,18
+1880 DATA 1,16,3,20
+1890 DATA 1,32,3,24
+1900 DATA 1.25,4,4,14
+1910 DATA 1.25,8,4,16
+1920 DATA 1.25,16,4,18
+1930 DATA 1.25,32,4,24
+1940 DATA 1.75,4,4,14
+1950 DATA 1.75,8,4,14
+1960 DATA 1.75,16,4,18
+1970 DATA 1.75,32,4,24
+1980 DATA 2,6,10,12
+1990 DATA 2,8,10,14
+2000 DATA 2,10,10,16
+2010 DATA 0,0,0,0
+2020 DATA 2.5,6,10,12
+2030 DATA 2.5,8,10,14
+2040 DATA 2.5,10,10,16
+2050 DATA 0,0,0,0
+2060 DATA 3,6,10,12
+2070 DATA 3,8,10,14
+2080 DATA 3,10,10,16
+2090 DATA 0,0,0,0
+2100 END
+2110 :REM'
+2120 :REM'PRT
+2130 KEY OFF:GOSUB 2200:LOCATE 25,5:COLOR 0,2
+2140 PRINT " Send this page to:(1)Printer Queue? (2)Printout? ";
+2150 PRINT "(3)Next page? (1/2/3)";:COLOR 7,0
+2160 Z$=INKEY$:IF Z$<"1"OR Z$>"3"THEN 2160 :ELSE GOSUB 2200
+2170 IF Z$="3"THEN RETURN
+2180 FOR I%=1 TO 24:FOR J%=1 TO 80:LPRINT CHR$(SCREEN(I%,J%));:NEXT J%:NEXT I%
+2190 IF Z$="2"THEN LPRINT CHR$(12) :ELSE 2130
+2200 LOCATE 25,1:PRINT STRING$(80,32);:RETURN

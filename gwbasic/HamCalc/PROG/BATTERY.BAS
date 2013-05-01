@@ -1,0 +1,293 @@
+10 :REM'\hamcalc\prog\BATTERY - 23 MAR 94 rev. 30 JUL 2005
+20 CLS:KEY OFF
+30 IF EX$=""THEN EX$="EXIT"
+40 ON ERROR  GOTO 240
+50 COLOR 7,0,1
+60 NA$="\hamcalc\BATT.fil"
+61 :REM'OPEN "O",1,NA$:CLOSE
+70 UL$=STRING$(80,205)
+80 DIM A$(128,5),F$(50,2)
+90 DIM B$(9)
+100 :REM'
+110 DATA #44/76/G13/357A
+120 DATA 6v lantern - screw term.
+130 DATA 6v lantern - spring term.
+140 DATA 9v,AAA,AA,C,D,OTHER
+150 FOR I=1 TO 9:READ B$(I):NEXT I
+160 :REM'
+170 :REM'.....start
+180 COLOR 15,2
+190 PRINT " BATTERY SCHEDULE";TAB(57);"by George Murphy VE3ERP ";
+200 COLOR 1,0:PRINT STRING$(80,223);
+210 COLOR 7,0
+220 GOTO 600
+230 :REM'
+240 :REM'.....error trap
+250 IF ERR=75 OR ERR=76 AND ERL=1320 THEN 290
+260 IF ERR=53 AND ERL=610 THEN 340
+270 CLS:PRINT "Error";ERR;"in line";ERL:END
+280 :REM'
+290 CLS:BEEP:PRINT " Error";ERR;" Path or File Access Error"
+300 PRINT " You may be trying to write to a Read Only disc."
+310 PRINT " Press F2 to start over......"
+320 END
+330 :REM'
+340 VIEW PRINT 3 TO 24:CLS:VIEW PRINT:LOCATE 4
+350 PRINT " Your battery data will be contained in a file named ";NA$;"."
+360 PRINT
+370 PRINT" No battery data has yet been entered so the file does not yet exist."
+380 PRINT
+390 PRINT " The file will be created automatically ";
+400 PRINT "as soon as you enter your first data."
+410 PRINT
+420 PRINT " The file can be edited or deleted at any time."
+430 PRINT
+440 PRINT " If you do not want to start the file now the program will return ";
+450 PRINT "to the last"
+460 PRINT " previous menu."
+470 PRINT:COLOR 15,0
+480 PRINT " Do you want to create the file and start entering battery ";
+490 PRINT "data now?";
+500 COLOR 0,7
+510 PRINT " (y/n) "
+520 Z$=INKEY$
+530 COLOR 7,0
+540 IF Z$="N"OR Z$="n"THEN CLS:RUN EX$
+550 IF Z$="Y"OR Z$="y"THEN CLS:GOTO 1760
+560 GOTO 520
+570 OPEN"O",1,"\prog2"+NA$
+580 CLOSE
+590 :REM'
+600 :REM'.....load file
+610 OPEN "I",1,NA$
+620 N=0
+630 IF EOF(1)THEN 670
+640 N=N+1:FOR Y=1 TO 5
+650 INPUT# 1,A$(N,Y):NEXT Y
+660 GOTO 630
+670 CLOSE
+680 :REM'
+690 :REM'.....main menu
+700 VIEW PRINT 3 TO 24:CLS:VIEW PRINT:LOCATE 3
+710 PRINT TAB(8);
+720 PRINT "This program compiles an inventory of all your battery operated"
+730 PRINT TAB(8);
+740 PRINT "devices, lists the quantity and type of batteries in each device"
+750 PRINT TAB(8);
+760 PRINT "and records the date when the batteries were last changed."
+770 PRINT
+780 PRINT TAB(8);
+790 PRINT "When you change batteries don't always throw the old ones away."
+800 PRINT TAB(8);
+810 PRINT "Most clocks will run for months on batteries that are too weak"
+820 PRINT TAB(8);
+830 PRINT "for anything else."
+840 LOCATE 11,1
+850 PRINT UL$;
+860 PRINT " Press number in < > to:";
+870 PRINT UL$;
+880 PRINT "   < 1 >  ADD a listing"
+890 PRINT "   < 2 >  EDIT or DELETE a listing"
+900 PRINT "   < 3 >  DISPLAY/PRINT listings"
+910 PRINT "   < 4 >  DELETE entire file ";:COLOR 12,0:PRINT "( CAUTION ! )"
+920 COLOR 7,0
+930 PRINT UL$;
+940 PRINT "   < 0 >  EXIT"
+950 Z$=INKEY$:IF Z$=""THEN 950
+960 IF Z$="0"THEN CLS:RUN EX$
+970 IF ASC(Z$)<49 OR ASC(Z$)>52 THEN 950
+980 IF Z$="1"THEN CLS:GOTO 1760
+990 IF Z$="2"THEN CLS:GOTO 2410
+1000 IF Z$="3"THEN 1050
+1010 IF Z$="4"THEN CLS:GOTO 1180
+1020 GOTO 950
+1030 :REM'
+1040 :REM'.....sort options
+1050 LOCATE 12,24:PRINT " sort listings by:"
+1060 VIEW PRINT 14 TO 24:CLS:VIEW PRINT:LOCATE 14
+1070 PRINT "       < 5 >  DEVICE"
+1080 PRINT "       < 6 >  BATTERY type"
+1090 PRINT "       < 7 >  DATE of last replacement"
+1100 PRINT UL$;
+1110 Z$=INKEY$:IF Z$=""THEN 1110
+1120 IF ASC(Z$)<53 OR ASC(Z$)>55 THEN 1110
+1130 IF Z$="5"THEN ST=0:GOSUB 1830:GOTO 2060
+1140 IF Z$="6"THEN ST=1:GOSUB 1830:GOTO 2060
+1150 IF Z$="7"THEN ST=2:GOSUB 1830:GOTO 2060
+1160 GOTO 1110
+1170 :REM'
+1180 :REM'.....delete file
+1190 BEEP
+1200 LOCATE 13,10:COLOR 15,0
+1210 PRINT "      ARE YOU SURE YOU WANT TO DELETE ENTIRE FILE ? ";
+1220 COLOR 14,6:PRINT " y/n ":COLOR 7,0
+1230 Z$=INKEY$
+1240 IF Z$="n"THEN CLS:GOTO 170
+1250 IF Z$="y"THEN CLS:GOTO 1270
+1260 GOTO 1230
+1270 KILL NA$
+1280 CLS:RUN EX$
+1290 :REM'
+1300 :REM'.....sort & save data
+1310 ST=0:GOSUB 1830      :REM'sort by device
+1320 OPEN "O",1,NA$
+1330 FOR Z=1 TO N
+1340 WRITE# 1,A$(Z,1),A$(Z,2),A$(Z,3),A$(Z,4),A$(Z,5)
+1350 NEXT Z
+1360 CLOSE
+1370 GOTO 170
+1380 :REM'
+1390 :REM'.....convert to upper case
+1400 FOR U=1 TO LEN(I$):V=ASC(MID$(I$,U,1)):IF V=44 THEN RETURN
+1410 IF V>96 AND V<123 THEN MID$(I$,U,1)=CHR$(V-32)
+1420 NEXT U:RETURN
+1430 :REM'
+1440 :REM'.....inputs
+1450 LINE INPUT " ENTER: Device category (e.g. clock, radio etc.).....? ";I$
+1460 GOSUB 1390:RETURN
+1470 :REM'
+1480 LINE INPUT " ENTER: Device further description/location..........? ";I$
+1490 RETURN
+1500 :REM'
+1510 LINE INPUT " ENTER: Number of batteries in device............... ? ";I$
+1520 RETURN
+1530 :REM'
+1540 :REM'.....battery description
+1550 PRINT UL$;
+1560 PRINT " Press number in < > to select battery:"
+1570 PRINT UL$;
+1580 FOR J=1 TO 9
+1590 PRINT " <";J;">  ";B$(J)
+1600 NEXT J
+1610 PRINT UL$;
+1620 Z$=INKEY$:IF VAL(Z$)=0 THEN 1620
+1630 I$=B$(VAL(Z$)):GOTO 1650
+1640 GOTO 1620
+1650 LN=CSRLIN-13
+1660 VIEW PRINT LN TO 24:CLS:VIEW PRINT
+1670 IF Z$="9" THEN 1690
+1680 LOCATE LN,9:PRINT I$:GOTO 1710
+1690 LOCATE LN
+1700 LINE INPUT " ENTER: Battery size or description................. ? ";I$
+1710 RETURN
+1720 :REM'
+1730 LINE INPUT " ENTER: Date current batteries installed (yyyy/mm).... ? ";I$
+1740 RETURN
+1750 :REM'
+1760 :REM'.....new listing
+1770 N=N+1
+1780 PRINT " NEW LISTING"
+1790 PRINT UL$;
+1800 FOR Z=1 TO 5:ONZ GOSUB 1450,1480,1510,1540,1730:A$(N,Z)=I$
+1810 NEXT Z:Z=N:CLS:GOTO 2450
+1820 :REM'
+1830 :REM'.....sort
+1840 CLS
+1850 SN=N:SM=SN
+1860 SM=INT(SM/2):IF SM=0 THEN 2040
+1870 SK=SN-SM:SJ=1
+1880 SI=SJ
+1890 SL=SI+SM
+1900 IF ST=0 THEN 1930
+1910 IF ST=1 THEN 1950
+1920 IF ST=2 THEN 1970
+1930 SORT1$=A$(SI,1)+A$(SI,2)
+1940  SORT2$=A$(SL,1)+A$(SL,2):GOTO 1990   :REM'sort by device
+1950 SORT1$=A$(SI,4)+A$(SI,1)
+1960  SORT2$=A$(SL,4)+A$(SL,1):GOTO 1990   :REM'sort by battery
+1970 SORT1$=A$(SL,5)+A$(SL,1)
+1980  SORT2$=A$(SI,5)+A$(SI,1):GOTO 1990   :REM'sort by date
+1990 IF SORT1$<=SORT2$ THEN 2020
+2000 FOR X=1 TO 5:SWAP A$(SI,X),A$(SL,X):NEXT X
+2010 SI=SI-SM:IF SI>0 THEN 1890
+2020 SJ=SJ+1:IF SJ>SK THEN 1860
+2030 GOTO 1880
+2040 RETURN
+2050 :REM'
+2060 :REM'.....screen print
+2070 PRINT UL$;
+2080 PRINT TAB(24);" B A T T E R Y   S C H E D U L E "
+2090 PRINT UL$;
+2100 LOCATE CSRLIN-1,8:PRINT "╦"
+2110 PRINT " sort# ║ DEVICE ";
+2120 PRINT SPC(6);"(Year and month shown are date of last replacement)"
+2130 PRINT UL$;
+2140 LOCATE CSRLIN-1,8:PRINT "╩"
+2150 FOR Z=1 TO N
+2160 N$=STR$(Z)
+2170 IF LEN(N$)<4 THEN N$=" "+N$:GOTO 2170
+2180 PRINT N$;":    ";                       :REM'sort number
+2190  IF ST=0 THEN COLOR 15,1 :ELSE COLOR 7,0
+2200 PRINT A$(Z,1);                          :REM'device
+2210  COLOR 7,0
+2220 PRINT ", ";A$(Z,2)                      :REM'description
+2230  IF ST=2 THEN COLOR 15,1 :ELSE COLOR 7,0
+2240 LOCATE CSRLIN,11:PRINT A$(Z,5);         :REM'date
+2250  COLOR 7,0
+2260 PRINT ": ";A$(Z,3);" x ";               :REM'quantity
+2270  IF ST=1 THEN COLOR 15,1 :ELSE COLOR 7,0
+2280 PRINT A$(Z,4)                           :REM'type
+2290 COLOR 7,0
+2300 PRINT "";
+2310 IF CSRLIN<24 THEN 2340
+2320 GOSUB 2820:CLS
+2330 PRINT
+2340 NEXT Z
+2350 PRINT UL$;
+2360 PRINT "  Date:  ";DATE$
+2370 GOSUB 2820:COLOR 7,0
+2380 VIEW PRINT 3 TO 24:CLS:VIEW PRINT
+2390 CLS:GOTO 840      :REM'return to menu
+2400 :REM'
+2410 :REM'.....edit/delete
+2415 GOSUB 1830
+2420 INPUT "ENTER: Sort number.....";Z
+2430 CLS
+2440 PRINT " #";Z;
+2450 LOCATE CSRLIN,9
+2460 PRINT ": ";A$(Z,1);", ";A$(Z,2);" - ";A$(Z,3);" x ";A$(Z,4)
+2470 PRINT TAB(9);": installed ";A$(Z,5)
+2480 PRINT UL$;
+2490 FOR Y=1 TO 5
+2500 PRINT " Line";Y;": ";A$(Z,Y)
+2510 NEXT Y
+2520 PRINT UL$;
+2530 PRINT " Press number in ( ) to:"
+2540 PRINT UL$;
+2550 FOR Y=1 TO 5:PRINT " (";Y;")  Change Line";Y:NEXT Y
+2560 PRINT " ( 6 )  ACCEPT as is"
+2570 PRINT " ( 7 )  DELETE listing"
+2580 PRINT UL$;
+2590 Z$=INKEY$:Q=VAL(Z$):IF Q<1 OR Q>7 THEN 2590
+2600 IF Z$="1"THEN GOSUB 1450:A$(Z,1)=I$:CLS:GOTO 2440
+2610 IF Z$="2"THEN GOSUB 1480:A$(Z,2)=I$:CLS:GOTO 2440
+2620 IF Z$="3"THEN GOSUB 1510:A$(Z,3)=I$:CLS:GOTO 2440
+2630 IF Z$="4"THEN 2690
+2640 IF Z$="5"THEN GOSUB 1730:A$(Z,5)=I$:CLS:GOTO 2440
+2650 IF Z$="6"THEN CLS:GOTO 1300
+2660 IF Z$="7"THEN CLS:GOTO 2720
+2670 GOTO 2590
+2680 :REM'
+2690 VIEW PRINT 9 TO 24:CLS:VIEW PRINT:LOCATE 9
+2700 GOSUB 1540:A$(Z,4)=I$:CLS:GOTO 2440
+2710 :REM'
+2720 :REM'.....delete listing
+2730 LOCATE 13,15:COLOR 15,4
+2740 PRINT " Are you sure you want this listing deleted ?  (y/n) "
+2750 COLOR 7,0
+2760 Z$=INKEY$:IF Z$="n"THEN CLS:GOTO 170
+2770 IF Z$="y"THEN 2780 :ELSE 2760
+2780 FOR X=Z TO N:FOR Y=1 TO 5
+2790 A$(X,Y)=A$(X+1,Y):NEXT Y:NEXT X:N=N-1
+2800 CLS:GOTO 1300    :REM'save
+2810 :REM'
+2820 :REM'PRT
+2830 KEY OFF:GOSUB 2900:LOCATE 25,5:COLOR 0,2
+2840 PRINT " Send this page to: (0)Menu? (1)Printer Queue? (2)Printout? ";
+2850 PRINT "(3)Next page?";:COLOR 7,0
+2860 Z$=INKEY$:IF Z$<"0"OR Z$>"3"THEN 2860
+2865 IF Z$="0"THEN CLS:GOTO 170 :ELSE GOSUB 2900
+2870 IF Z$="3"THEN RETURN
+2880 FOR I%=1 TO 24:FOR J%=1 TO 80:LPRINT CHR$(SCREEN(I%,J%));:NEXT J%:NEXT I%
+2890 IF Z$="2"THEN LPRINT CHR$(12) :ELSE 2830
+2900 LOCATE 25,1:PRINT STRING$(80,32);:RETURN

@@ -1,0 +1,302 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>hamcalc.math.propcirc &mdash; HamCalc 2.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '2.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="top" title="HamCalc 2.1 documentation" href="../../../index.html" />
+    <link rel="up" title="Module code" href="../../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../index.html">HamCalc 2.1 documentation</a> &raquo;</li>
+          <li><a href="../../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for hamcalc.math.propcirc</h1><div class="highlight"><pre>
+<span class="sd">&quot;&quot;&quot;hamcalc.math.propcirc -- Circle, Properies of</span>
+
+<span class="sd">Here are some test cases.</span>
+
+<span class="sd">&gt;&gt;&gt; import hamcalc.math.propcirc as propcirc</span>
+<span class="sd">&gt;&gt;&gt; propcirc.circle( R=12, propcirc.radians(60) )</span>
+<span class="sd">{&#39;A&#39;: 452.3893421169302, &#39;C&#39;: 75.39822368615503, &#39;angle&#39;: 1.0471975511965976, &#39;D&#39;: 24, &#39;G&#39;: 1.6076951545867355, &#39;L_A&#39;: 12.566370614359172, &#39;A_G&#39;: 13.044394613675443, &#39;L_C&#39;: 11.999999999999998, &#39;R&#39;: 12, &#39;A_C&#39;: 75.39822368615502}</span>
+<span class="sd">&gt;&gt;&gt; circle( D=24, angle=propcirc.radians(60) )</span>
+<span class="sd">{&#39;A&#39;: 452.3893421169302, &#39;C&#39;: 75.39822368615503, &#39;angle&#39;: 1.0471975511965976, &#39;D&#39;: 24.0, &#39;G&#39;: 1.6076951545867355, &#39;L_A&#39;: 12.566370614359172, &#39;A_G&#39;: 13.044394613675443, &#39;L_C&#39;: 11.999999999999998, &#39;R&#39;: 12.0, &#39;A_C&#39;: 75.39822368615502}</span>
+<span class="sd">&gt;&gt;&gt; circle( C=75.4, angle=propcirc.radians(60) )</span>
+<span class="sd">{&#39;A&#39;: 452.41065813415986, &#39;C&#39;: 75.4, &#39;angle&#39;: 1.0471975511965976, &#39;D&#39;: 24.000565418257818, &#39;G&#39;: 1.6077330304281274, &#39;L_A&#39;: 12.566666666666666, &#39;A_G&#39;: 13.045009249155228, &#39;L_C&#39;: 12.000282709128907, &#39;R&#39;: 12.000282709128909, &#39;A_C&#39;: 75.40177635569331}</span>
+<span class="sd">&gt;&gt;&gt; circle( A=452.4, angle=propcirc.radians(60) )</span>
+<span class="sd">{&#39;A&#39;: 452.4, &#39;C&#39;: 75.39911183784653, &#39;angle&#39;: 1.0471975511965976, &#39;D&#39;: 24.000282707463835, &#39;G&#39;: 1.6077140923958928, &#39;L_A&#39;: 12.566518639641089, &#39;A_G&#39;: 13.044701927795316, &#39;L_C&#39;: 12.000141353731916, &#39;R&#39;: 12.000141353731918, &#39;A_C&#39;: 75.39999999999999}</span>
+<span class="sd">&gt;&gt;&gt; circle( L_C=12, angle=propcirc.radians(60) )</span>
+<span class="sd">{&#39;A&#39;: 452.3893421169304, &#39;C&#39;: 75.39822368615505, &#39;angle&#39;: 1.0471975511965976, &#39;D&#39;: 24.000000000000004, &#39;G&#39;: 1.6076951545867357, &#39;L_A&#39;: 12.566370614359174, &#39;A_G&#39;: 13.04439461367545, &#39;L_C&#39;: 12.0, &#39;R&#39;: 12.000000000000002, &#39;A_C&#39;: 75.39822368615505}</span>
+<span class="sd">&gt;&gt;&gt; circle( L_A=12.56, angle=propcirc.radians(60) )</span>
+<span class="sd">{&#39;A&#39;: 451.93077414974937, &#39;C&#39;: 75.36000000000001, &#39;angle&#39;: 1.0471975511965976, &#39;D&#39;: 23.98783302281047, &#39;G&#39;: 1.60688012165867, &#39;L_A&#39;: 12.56, &#39;A_G&#39;: 13.031172061850732, &#39;L_C&#39;: 11.993916511405233, &#39;R&#39;: 11.993916511405235, &#39;A_C&#39;: 75.3217956916249}</span>
+<span class="sd">&gt;&gt;&gt; circle( G=1.6, angle=propcirc.radians(60) )</span>
+<span class="sd">{&#39;A&#39;: 448.0690272864175, &#39;C&#39;: 75.03733375924637, &#39;angle&#39;: 1.0471975511965976, &#39;D&#39;: 23.885125168440826, &#39;G&#39;: 1.6, &#39;L_A&#39;: 12.506222293207728, &#39;A_G&#39;: 12.919820742768572, &#39;L_C&#39;: 11.942562584220411, &#39;R&#39;: 11.942562584220413, &#39;A_C&#39;: 74.67817121440291}</span>
+<span class="sd">&gt;&gt;&gt; circle( R=12, L_C=12 )</span>
+<span class="sd">{&#39;A&#39;: 452.3893421169302, &#39;C&#39;: 75.39822368615503, &#39;angle&#39;: 1.0471975511965979, &#39;D&#39;: 24, &#39;G&#39;: 1.6076951545867368, &#39;L_A&#39;: 12.566370614359174, &#39;A_G&#39;: 13.044394613675465, &#39;L_C&#39;: 12.0, &#39;R&#39;: 12, &#39;A_C&#39;: 75.39822368615505}</span>
+<span class="sd">&gt;&gt;&gt; circle( R=12, G=1.6 )</span>
+<span class="sd">{&#39;A&#39;: 452.3893421169302, &#39;C&#39;: 75.39822368615503, &#39;angle&#39;: 1.0446296436120974, &#39;D&#39;: 24, &#39;G&#39;: 1.600000000000001, &#39;L_A&#39;: 12.535555723345169, &#39;A_G&#39;: 12.952155424152622, &#39;L_C&#39;: 11.973303637676615, &#39;R&#39;: 12, &#39;A_C&#39;: 75.21333434007101}</span>
+<span class="sd">&gt;&gt;&gt; propcirc.circle( L_A=12.56, G=1.61 )</span>
+<span class="sd">{&#39;A&#39;: 450.09677997191295, &#39;C&#39;: 75.20693418466634, &#39;angle&#39;: 1.049328872579753, &#39;D&#39;: 23.939110660552977, &#39;G&#39;: 1.6099999693011857, &#39;L_A&#39;: 12.56, &#39;A_G&#39;: 13.054769563165337, &#39;L_C&#39;: 11.991641677007895, &#39;R&#39;: 11.969555330276489, &#39;A_C&#39;: 75.16880747413634}</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="n">__version__</span> <span class="o">=</span> <span class="s">&quot;2.1&quot;</span>
+
+<span class="kn">import</span> <span class="nn">math</span>
+<span class="kn">from</span> <span class="nn">hamcalc.lib</span> <span class="kn">import</span> <span class="n">AttrDict</span>
+
+<span class="n">introduction</span> <span class="o">=</span> <span class="s">&quot;&quot;&quot;</span><span class="se">\</span>
+
+<span class="s">PROPERTIES OF THE CIRCLE                                    by George C. Murphy</span>
+<span class="s">    Draw a circular clock face. Mark 3 points on the circle: A at 10</span>
+<span class="s">    o&#39;clock, B at 2 o&#39;clock, C at the centre of the circle. Draw lines</span>
+<span class="s">    from A to B, B to C, and C to A.</span>
+
+<span class="s">    The following definitions apply to this diagram:</span>
+
+<span class="s">    RADIAL - any line drawn between the centre of a circle and any</span>
+<span class="s">      point on the circumference. Lines AC and BC are radials.</span>
+<span class="s">    CHORD - a straight line drawn between any two points on the</span>
+<span class="s">      circumference. Line AB is a chord.</span>
+<span class="s">    ARC - that part of the circumference which lies between any two</span>
+<span class="s">      points. The curved line between A and B is an arc.</span>
+<span class="s">    ANGLE - the angle in degrees between 2 radials that terminate at</span>
+<span class="s">      the ends of a chord or arc. (angle ACB on your sketch).</span>
+<span class="s">    SECTOR - the pie shaped figure formed by two radials and the arc</span>
+<span class="s">      joining their ends.</span>
+<span class="s">    SEGMENT - the figure formed by a chord and an arc joining the two</span>
+<span class="s">      ends of the chord.</span>
+<span class="s">    HEIGHT (of segment) - the distance between the midpoints of the</span>
+<span class="s">      arc and the chord that form a segment.</span>
+<span class="s">    DIMENSIONS can be entered in any unit of measure, as long as the</span>
+<span class="s">      same unit is used for all dimensions.</span>
+<span class="s">&quot;&quot;&quot;</span>
+
+<span class="k">class</span> <span class="nc">Error</span><span class="p">(</span> <span class="ne">Exception</span> <span class="p">):</span>
+    <span class="k">pass</span>
+
+<div class="viewcode-block" id="intro"><a class="viewcode-back" href="../../../python/math/propcirc.html#hamcalc.math.propcirc.intro">[docs]</a><span class="k">def</span> <span class="nf">intro</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Returns the text from the introductory page.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">introduction</span>
+</div>
+<div class="viewcode-block" id="radians"><a class="viewcode-back" href="../../../python/math/propcirc.html#hamcalc.math.propcirc.radians">[docs]</a><span class="k">def</span> <span class="nf">radians</span><span class="p">(</span> <span class="n">degrees</span> <span class="p">):</span>
+    <span class="k">return</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span><span class="o">*</span><span class="n">degrees</span><span class="o">/</span><span class="mi">180</span>
+</div>
+<div class="viewcode-block" id="degrees"><a class="viewcode-back" href="../../../python/math/propcirc.html#hamcalc.math.propcirc.degrees">[docs]</a><span class="k">def</span> <span class="nf">degrees</span><span class="p">(</span> <span class="n">radians</span> <span class="p">):</span>
+    <span class="k">return</span> <span class="mi">180</span><span class="o">*</span><span class="n">radians</span><span class="o">/</span><span class="n">math</span><span class="o">.</span><span class="n">pi</span>
+</div>
+<div class="viewcode-block" id="bisection"><a class="viewcode-back" href="../../../python/math/propcirc.html#hamcalc.math.propcirc.bisection">[docs]</a><span class="k">def</span> <span class="nf">bisection</span><span class="p">(</span> <span class="n">L_A</span><span class="p">,</span> <span class="n">G</span><span class="p">,</span> <span class="n">eps</span><span class="o">=</span><span class="mf">1.0E-7</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Approximate a value for *R* from *L_A* and *G* via bisection.</span>
+
+<span class="sd">    We&#39;re solving :math:`G = R (1 - \\cos \\frac{L_A}{2R})` for a value of *R*.</span>
+
+<span class="sd">    We know only that :math:`R &gt; 0`.</span>
+
+<span class="sd">    This requires a 2-phase search.</span>
+
+<span class="sd">    1. Double R until it&#39;s demonstrably too large.</span>
+<span class="sd">    2. Bisect between the last two values of R.</span>
+
+<span class="sd">    :param L_A: Length of Arc</span>
+<span class="sd">    :param G: Height of Arc</span>
+<span class="sd">    :return: R radius</span>
+
+<span class="sd">    &gt;&gt;&gt; approx(  L_A=12.56, G=1.61 )</span>
+<span class="sd">    11.969555330276489</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">f</span><span class="p">(</span> <span class="n">L_A</span><span class="p">,</span> <span class="n">R</span> <span class="p">):</span>
+        <span class="k">return</span> <span class="n">R</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span> <span class="n">L_A</span><span class="o">/</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">R</span><span class="p">)</span> <span class="p">))</span>
+    <span class="c"># Find upper bound on R.</span>
+    <span class="n">R</span><span class="o">=</span> <span class="n">G</span> <span class="k">if</span> <span class="n">G</span><span class="o">&gt;</span><span class="mf">1.0</span> <span class="k">else</span> <span class="mf">1.0</span>
+    <span class="n">G_calc</span><span class="o">=</span> <span class="n">f</span><span class="p">(</span> <span class="n">L_A</span><span class="p">,</span> <span class="n">R</span> <span class="p">)</span>
+    <span class="k">while</span> <span class="n">G_calc</span> <span class="o">&gt;</span> <span class="n">G</span><span class="p">:</span>
+        <span class="n">R</span><span class="o">=</span> <span class="mi">2</span><span class="o">*</span><span class="n">R</span>
+        <span class="n">G_calc</span><span class="o">=</span> <span class="n">f</span><span class="p">(</span> <span class="n">L_A</span><span class="p">,</span> <span class="n">R</span> <span class="p">)</span>
+    <span class="c"># Root lies between R and R/2.</span>
+    <span class="n">high</span><span class="o">=</span> <span class="n">R</span>
+    <span class="n">low</span><span class="o">=</span> <span class="n">R</span><span class="o">/</span><span class="mi">2</span>
+    <span class="k">for</span> <span class="n">count</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">64</span><span class="p">):</span> <span class="c"># 64 bit of precision, in effect.</span>
+        <span class="n">mid</span><span class="o">=</span> <span class="p">(</span><span class="n">high</span><span class="o">+</span><span class="n">low</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span>
+        <span class="n">G_calc</span><span class="o">=</span> <span class="n">f</span><span class="p">(</span> <span class="n">L_A</span><span class="p">,</span> <span class="n">mid</span> <span class="p">)</span>
+        <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span> <span class="n">G</span><span class="o">-</span><span class="n">G_calc</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="n">eps</span><span class="p">:</span> <span class="k">break</span>
+        <span class="k">if</span> <span class="n">G</span> <span class="o">&lt;</span> <span class="n">G_calc</span><span class="p">:</span>
+            <span class="n">low</span><span class="o">=</span> <span class="n">mid</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">high</span><span class="o">=</span> <span class="n">mid</span>
+    <span class="k">return</span> <span class="n">mid</span>
+</div>
+<div class="viewcode-block" id="circle"><a class="viewcode-back" href="../../../python/math/propcirc.html#hamcalc.math.propcirc.circle">[docs]</a><span class="k">def</span> <span class="nf">circle</span><span class="p">(</span> <span class="o">**</span><span class="n">kw</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Solve properties of a circle.</span>
+
+<span class="sd">    Note that only *R* and *angle* are really **required** to compute</span>
+<span class="sd">    all of the values. If *angle* cannot be computed, it&#39;s assumed to</span>
+<span class="sd">    be irrelevant and angle-related values are not computed, either.</span>
+
+<span class="sd">    This solver derives values for *R* or *angle* (or both, if possible)</span>
+<span class="sd">    and then recomputes the remaining values. It&#39;s entirely possible that</span>
+<span class="sd">    an output value will fail to agree with an input value because</span>
+<span class="sd">    the circle was over-specified.</span>
+
+<span class="sd">    It&#39;s also possible that the circle is under-specified and *R* cannot</span>
+<span class="sd">    be computed.</span>
+
+<span class="sd">    There are two subsets of parameters: Radius and Angle.</span>
+<span class="sd">    Without the Angle, only the Radius-related values can be computed.</span>
+<span class="sd">    With the angle, the remaining values can be computed.</span>
+
+<span class="sd">    Radius-only</span>
+
+<span class="sd">    :param R: Radius</span>
+
+<span class="sd">    :param D: Diameter</span>
+
+<span class="sd">    :param C: Circumference</span>
+
+<span class="sd">    :param A: Area of entire circle.</span>
+
+<span class="sd">    Radius and Angle.</span>
+
+<span class="sd">    :param angle: Angle (:math:`\\theta` might be better.) This must be in radians.</span>
+
+<span class="sd">    :param L_C:</span>
+<span class="sd">        Length of Chord (A-B line on diagram).</span>
+
+<span class="sd">    :param L_A:</span>
+<span class="sd">        Length of Arc (A-B arc on diagram).</span>
+
+<span class="sd">    :param G:</span>
+<span class="sd">        Height of segment between chord and arc.</span>
+
+<span class="sd">    :returns: A dictionary with 10 values, the 8 input values plus two more.</span>
+<span class="sd">        ``A_G`` area of segment and ``A_S`` area of the whole sector.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">args</span><span class="o">=</span> <span class="n">AttrDict</span><span class="p">(</span> <span class="n">kw</span> <span class="p">)</span>
+    <span class="c"># Step 1A: compute R from available data.</span>
+    <span class="k">if</span> <span class="s">&quot;R&quot;</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
+        <span class="n">r</span><span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">R</span>
+    <span class="k">elif</span> <span class="s">&quot;D&quot;</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
+        <span class="n">r</span><span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">D</span><span class="o">/</span><span class="mi">2</span>
+    <span class="k">elif</span> <span class="s">&quot;C&quot;</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
+        <span class="n">r</span><span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">C</span><span class="o">/</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">math</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="s">&quot;A&quot;</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
+        <span class="n">r</span><span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span> <span class="n">args</span><span class="o">.</span><span class="n">A</span><span class="o">/</span><span class="n">math</span><span class="o">.</span><span class="n">pi</span> <span class="p">)</span>
+    <span class="k">elif</span> <span class="s">&quot;angle&quot;</span> <span class="ow">in</span> <span class="n">args</span> <span class="ow">and</span> <span class="s">&quot;L_C&quot;</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
+        <span class="n">r</span><span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">L_C</span><span class="o">/</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">angle</span><span class="o">/</span><span class="mi">2</span><span class="p">))</span>
+    <span class="k">elif</span> <span class="s">&quot;angle&quot;</span> <span class="ow">in</span> <span class="n">args</span> <span class="ow">and</span> <span class="s">&quot;L_A&quot;</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
+        <span class="n">r</span><span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">L_A</span><span class="o">/</span><span class="n">args</span><span class="o">.</span><span class="n">angle</span>
+    <span class="k">elif</span> <span class="s">&quot;angle&quot;</span> <span class="ow">in</span> <span class="n">args</span> <span class="ow">and</span> <span class="s">&quot;G&quot;</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
+        <span class="n">r</span><span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">G</span><span class="o">/</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">angle</span><span class="o">/</span><span class="mi">2</span><span class="p">))</span>
+    <span class="k">elif</span> <span class="s">&quot;L_C&quot;</span> <span class="ow">in</span> <span class="n">args</span> <span class="ow">and</span> <span class="s">&quot;G&quot;</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
+        <span class="n">r</span><span class="o">=</span> <span class="p">(</span><span class="mi">4</span><span class="o">*</span><span class="n">args</span><span class="o">.</span><span class="n">G</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">args</span><span class="o">.</span><span class="n">L_C</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">args</span><span class="o">.</span><span class="n">G</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="s">&quot;L_A&quot;</span> <span class="ow">in</span> <span class="n">args</span> <span class="ow">and</span> <span class="s">&quot;G&quot;</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
+        <span class="c"># approximate a value for *R* from *L_A* and *G*.</span>
+        <span class="n">r</span><span class="o">=</span> <span class="n">bisection</span><span class="p">(</span> <span class="n">args</span><span class="o">.</span><span class="n">L_A</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">G</span> <span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">Error</span><span class="p">(</span> <span class="s">&quot;Insufficient Data&quot;</span><span class="p">)</span>
+    <span class="c"># Step 1B: compute angle, if possible; it&#39;s not *required*.</span>
+    <span class="c"># Note that *r* is known at this point.</span>
+    <span class="k">if</span> <span class="s">&quot;angle&quot;</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
+        <span class="n">angle</span><span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">angle</span>
+    <span class="k">elif</span> <span class="s">&quot;L_C&quot;</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
+        <span class="n">z</span><span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">L_C</span><span class="o">/</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">r</span><span class="p">)</span>
+        <span class="n">angle</span><span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">atan2</span><span class="p">(</span> <span class="n">z</span><span class="p">,</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">z</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="p">)</span>
+    <span class="k">elif</span> <span class="s">&quot;L_A&quot;</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
+        <span class="n">angle</span><span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">L_A</span> <span class="o">/</span> <span class="n">r</span>
+    <span class="k">elif</span> <span class="s">&quot;G&quot;</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
+        <span class="n">args</span><span class="o">.</span><span class="n">L_C</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span> <span class="mi">2</span><span class="o">*</span><span class="n">args</span><span class="o">.</span><span class="n">G</span><span class="o">*</span><span class="n">r</span> <span class="o">-</span> <span class="n">args</span><span class="o">.</span><span class="n">G</span><span class="o">**</span><span class="mi">2</span> <span class="p">)</span>
+        <span class="n">z</span><span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">L_C</span><span class="o">/</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">r</span><span class="p">)</span>
+        <span class="n">angle</span><span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">atan2</span><span class="p">(</span> <span class="n">z</span><span class="p">,</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">z</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">angle</span><span class="o">=</span> <span class="bp">None</span>
+    <span class="c"># Step 3: compute the outputs from *r* and *angle*.</span>
+    <span class="n">args</span><span class="o">.</span><span class="n">R</span><span class="o">=</span> <span class="n">r</span>
+    <span class="n">args</span><span class="o">.</span><span class="n">D</span><span class="o">=</span> <span class="n">r</span><span class="o">*</span><span class="mi">2</span>
+    <span class="n">args</span><span class="o">.</span><span class="n">A</span><span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span><span class="o">*</span><span class="n">r</span><span class="o">**</span><span class="mi">2</span>
+    <span class="n">args</span><span class="o">.</span><span class="n">C</span><span class="o">=</span> <span class="mi">2</span><span class="o">*</span><span class="n">math</span><span class="o">.</span><span class="n">pi</span><span class="o">*</span><span class="n">r</span>
+    <span class="k">if</span> <span class="n">angle</span><span class="p">:</span>
+        <span class="n">args</span><span class="o">.</span><span class="n">angle</span><span class="o">=</span> <span class="n">angle</span>
+        <span class="n">args</span><span class="o">.</span><span class="n">L_C</span><span class="o">=</span> <span class="mi">2</span><span class="o">*</span><span class="n">r</span><span class="o">*</span><span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">angle</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span>
+        <span class="n">args</span><span class="o">.</span><span class="n">L_A</span><span class="o">=</span> <span class="n">r</span><span class="o">*</span><span class="n">angle</span>
+        <span class="n">args</span><span class="o">.</span><span class="n">G</span><span class="o">=</span> <span class="n">r</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">angle</span><span class="o">/</span><span class="mi">2</span><span class="p">))</span>
+        <span class="n">args</span><span class="o">.</span><span class="n">A_C</span><span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">r</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span> <span class="n">angle</span><span class="o">/</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">math</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span>
+        <span class="n">args</span><span class="o">.</span><span class="n">A_G</span><span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">A_C</span><span class="o">-</span><span class="p">(</span><span class="n">r</span> <span class="o">-</span> <span class="n">args</span><span class="o">.</span><span class="n">G</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">L_C</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">args</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../index.html">HamCalc 2.1 documentation</a> &raquo;</li>
+          <li><a href="../../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2013, S.Lott.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2b1.
+    </div>
+  </body>
+</html>

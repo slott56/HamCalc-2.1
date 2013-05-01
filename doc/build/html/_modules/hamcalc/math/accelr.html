@@ -1,0 +1,180 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>hamcalc.math.accelr &mdash; HamCalc 2.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '2.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="top" title="HamCalc 2.1 documentation" href="../../../index.html" />
+    <link rel="up" title="Module code" href="../../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../index.html">HamCalc 2.1 documentation</a> &raquo;</li>
+          <li><a href="../../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for hamcalc.math.accelr</h1><div class="highlight"><pre>
+<span class="sd">&quot;&quot;&quot;hamcalc.math.accelr -- Acceleration Calculator</span>
+
+<span class="sd">These are two **Solvers** for acceleration and force problems.</span>
+
+<span class="sd">Here are some test cases</span>
+
+<span class="sd">&gt;&gt;&gt; from hamcalc.math.accelr import force, accel</span>
+<span class="sd">&gt;&gt;&gt; accelr.force( m=12000, a=-2.5 )</span>
+<span class="sd">{&#39;a&#39;: -2.5, &#39;m&#39;: 12000, &#39;f&#39;: -30000.0}</span>
+<span class="sd">&gt;&gt;&gt; accelr.force( m=12000, f=30000 )</span>
+<span class="sd">{&#39;a&#39;: 2.5, &#39;m&#39;: 12000, &#39;f&#39;: 30000}</span>
+<span class="sd">&gt;&gt;&gt; accel( d=50, t=6, v_o=2, a=-.25 )</span>
+<span class="sd">{&#39;a&#39;: -0.25, &#39;v_f&#39;: 0.5, &#39;v_o&#39;: 2, &#39;d&#39;: 50, &#39;t&#39;: 6}</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="n">__version__</span> <span class="o">=</span> <span class="s">&quot;2.1&quot;</span>
+
+<span class="kn">from</span> <span class="nn">hamcalc.lib</span> <span class="kn">import</span> <span class="n">AttrDict</span>
+
+<span class="n">introduction</span> <span class="o">=</span> <span class="s">&quot;&quot;&quot;</span><span class="se">\</span>
+<span class="s"> ACCELERATION                                            by George Murphy VE3ERP</span>
+
+<span class="s"> This program calculates force of acceleration using these equations:</span>
+
+<span class="s"> F=MA, where Force = Mass x Acceleration.</span>
+<span class="s"> d=vot+½at²</span>
+<span class="s"> vf=vo+at</span>
+<span class="s"> vf²-vo²=2ad</span>
+<span class="s"> where d=displacement, vo=original velocity, vf=final velocity, t=time in</span>
+<span class="s"> seconds and &#39;a&#39; is a constant calculated by the program.</span>
+
+<span class="s"> Force of acceleration is calculated in kilogams and Standard Gravitys (g&#39;s).</span>
+<span class="s">&quot;&quot;&quot;</span>
+
+<span class="k">class</span> <span class="nc">Error</span><span class="p">(</span> <span class="ne">Exception</span> <span class="p">):</span>
+    <span class="k">pass</span>
+
+<div class="viewcode-block" id="intro"><a class="viewcode-back" href="../../../python/math/accelr.html#hamcalc.math.accelr.intro">[docs]</a><span class="k">def</span> <span class="nf">intro</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Returns the text from the introductory page.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">introduction</span>
+</div>
+<span class="n">g</span> <span class="o">=</span> <span class="mf">9.806650161743164</span> <span class="c"># Newtons/kg, or m/s^2</span>
+
+<div class="viewcode-block" id="force"><a class="viewcode-back" href="../../../python/math/accelr.html#hamcalc.math.accelr.force">[docs]</a><span class="k">def</span> <span class="nf">force</span><span class="p">(</span> <span class="o">**</span><span class="n">kw</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Solve f = m * a problems.</span>
+
+<span class="sd">    :param m: mass (kg)</span>
+<span class="sd">    :param a: acceleration (m/s^2)</span>
+<span class="sd">    :param f: force in Newtons (kg m/s^s)</span>
+<span class="sd">    :returns: Dictionary with all three values.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">args</span><span class="o">=</span> <span class="n">AttrDict</span><span class="p">(</span> <span class="n">kw</span> <span class="p">)</span>
+    <span class="k">if</span> <span class="s">&#39;m&#39;</span> <span class="ow">in</span> <span class="n">args</span> <span class="ow">and</span> <span class="s">&#39;a&#39;</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
+        <span class="n">args</span><span class="o">.</span><span class="n">f</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">m</span> <span class="o">*</span> <span class="n">args</span><span class="o">.</span><span class="n">a</span>
+    <span class="k">elif</span> <span class="s">&#39;f&#39;</span> <span class="ow">in</span> <span class="n">args</span> <span class="ow">and</span> <span class="s">&#39;m&#39;</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
+        <span class="n">args</span><span class="o">.</span><span class="n">a</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">f</span> <span class="o">/</span> <span class="n">args</span><span class="o">.</span><span class="n">m</span>
+    <span class="k">elif</span> <span class="s">&#39;f&#39;</span> <span class="ow">in</span> <span class="n">args</span> <span class="ow">and</span> <span class="s">&#39;a&#39;</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
+        <span class="n">args</span><span class="o">.</span><span class="n">m</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">f</span> <span class="o">/</span> <span class="n">args</span><span class="o">.</span><span class="n">a</span>
+    <span class="k">return</span> <span class="n">args</span>
+</div>
+<div class="viewcode-block" id="accel"><a class="viewcode-back" href="../../../python/math/accelr.html#hamcalc.math.accelr.accel">[docs]</a><span class="k">def</span> <span class="nf">accel</span><span class="p">(</span> <span class="o">**</span><span class="n">kw</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Solve Acceleration problems.</span>
+
+<span class="sd">    Some combination of a, d, t, v_o and v_f must be provided.</span>
+<span class="sd">    The others will be deduced.</span>
+
+<span class="sd">    :param d: Displacement (in m)</span>
+<span class="sd">    :param t: Time (in seconds)</span>
+<span class="sd">    :param v_o: Velocity at START</span>
+<span class="sd">    :param v_f: Velocity at END</span>
+<span class="sd">    :param a: Acceleration (m/s^2)</span>
+<span class="sd">    :returns: Dictionary with all values.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">args</span><span class="o">=</span> <span class="n">AttrDict</span><span class="p">(</span> <span class="n">kw</span> <span class="p">)</span>
+    <span class="c"># 370 IF VO*VF*T THEN A=(VF-VO)/T</span>
+    <span class="k">if</span> <span class="s">&#39;a&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">args</span> <span class="ow">and</span> <span class="s">&#39;v_o&#39;</span> <span class="ow">in</span> <span class="n">args</span> <span class="ow">and</span> <span class="s">&#39;v_f&#39;</span> <span class="ow">in</span> <span class="n">args</span> <span class="ow">and</span> <span class="s">&#39;t&#39;</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
+        <span class="n">args</span><span class="o">.</span><span class="n">a</span> <span class="o">=</span> <span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">v_f</span><span class="o">-</span><span class="n">args</span><span class="o">.</span><span class="n">v_o</span><span class="p">)</span><span class="o">/</span><span class="n">args</span><span class="o">.</span><span class="n">t</span>
+    <span class="c"># 420 IF D=0 AND VO*T*A THEN D=VO*T+0.5!*A*T^2</span>
+    <span class="k">elif</span> <span class="s">&#39;d&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">args</span> <span class="ow">and</span> <span class="s">&#39;v_o&#39;</span> <span class="ow">in</span> <span class="n">args</span> <span class="ow">and</span> <span class="s">&#39;t&#39;</span> <span class="ow">in</span> <span class="n">args</span> <span class="ow">and</span> <span class="s">&#39;a&#39;</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
+        <span class="n">args</span><span class="o">.</span><span class="n">d</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">v_o</span><span class="o">*</span><span class="n">args</span><span class="o">.</span><span class="n">t</span> <span class="o">+</span> <span class="mf">0.5</span><span class="o">*</span><span class="n">args</span><span class="o">.</span><span class="n">a</span><span class="o">*</span><span class="n">args</span><span class="o">.</span><span class="n">t</span><span class="o">**</span><span class="mi">2</span>
+    <span class="c"># 430 IF VF=0 AND VO*A*T THEN VF=VO+A*T</span>
+    <span class="k">elif</span> <span class="s">&#39;v_f&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">kw</span> <span class="ow">and</span> <span class="s">&#39;v_o&#39;</span> <span class="ow">in</span> <span class="n">kw</span> <span class="ow">and</span> <span class="s">&#39;t&#39;</span> <span class="ow">in</span> <span class="n">kw</span> <span class="ow">and</span> <span class="s">&#39;a&#39;</span> <span class="ow">in</span> <span class="n">kw</span><span class="p">:</span>
+        <span class="n">args</span><span class="o">.</span><span class="n">v_f</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">v_o</span><span class="o">+</span><span class="n">args</span><span class="o">.</span><span class="n">a</span><span class="o">*</span><span class="n">args</span><span class="o">.</span><span class="n">t</span>
+    <span class="c"># 440 IF VO=0 AND VF*A*T THEN V0=VF-A*T</span>
+    <span class="k">elif</span> <span class="s">&#39;v_o&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">kw</span> <span class="ow">and</span> <span class="s">&#39;v_f&#39;</span> <span class="ow">in</span> <span class="n">kw</span> <span class="ow">and</span> <span class="s">&#39;t&#39;</span> <span class="ow">in</span> <span class="n">kw</span> <span class="ow">and</span> <span class="s">&#39;a&#39;</span> <span class="ow">in</span> <span class="n">kw</span><span class="p">:</span>
+        <span class="n">args</span><span class="o">.</span><span class="n">v_o</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">v_f</span><span class="o">-</span><span class="n">args</span><span class="o">.</span><span class="n">a</span><span class="o">*</span><span class="n">args</span><span class="o">.</span><span class="n">t</span>
+    <span class="k">elif</span> <span class="s">&#39;t&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">kw</span> <span class="ow">and</span> <span class="s">&#39;d&#39;</span> <span class="ow">in</span> <span class="n">kw</span> <span class="ow">and</span> <span class="s">&#39;a&#39;</span> <span class="ow">in</span> <span class="n">kw</span><span class="p">:</span>
+        <span class="n">args</span><span class="o">.</span><span class="n">t</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">d</span> <span class="o">/</span> <span class="n">args</span><span class="o">.</span><span class="n">a</span>
+    <span class="k">return</span> <span class="n">args</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../index.html">HamCalc 2.1 documentation</a> &raquo;</li>
+          <li><a href="../../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2013, S.Lott.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2b1.
+    </div>
+  </body>
+</html>

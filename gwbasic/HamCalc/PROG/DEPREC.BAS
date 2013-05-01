@@ -1,0 +1,97 @@
+10 :REM'DEPREC - Depreciation Schedule - 04 JAN 92 rev. 29 DEC 2000
+20 VIEW PRINT
+30 CLS:KEY OFF:COLOR 7,0,0
+40 IF EX$=""THEN EX$="EXIT"
+50 IF PROG$=""THEN GO$=EX$ :ELSE GO$=PROG$
+60 COMMON EX$,PROG$
+70 U2$="#####.##%  "
+80 U3$="###.##"
+90 UL$=STRING$(80,205)
+100 UL2$=STRING$(80,196)
+110 PRINT "DEPRECIATION SCHEDULE"
+120 PRINT UL$;
+130 PRINT "Press number in < > to:"
+140 PRINT UL2$;
+150 PRINT "  <1>  RUN program"
+160 PRINT "  <0>  EXIT"
+170 PRINT UL$;
+180 Z$=INKEY$
+190 IF Z$="1"THEN 230
+200 IF Z$="0"THEN CLS:CHAIN GO$
+210 GOTO 180
+220 END
+230 :REM'.....rounding off
+240 PRINT "Press number in < > to:"
+250 PRINT UL2$;
+260 PRINT "  <1>  Round off amounts to nearest dollar"
+270 PRINT "  <2>  Round off amounts to nearest cent"
+280 PRINT UL$;
+290 Z$=INKEY$
+300 IF Z$="1"THEN U1$="######,###.  ":GOTO 340
+310 IF Z$="2"THEN U1$="#####,###.## ":GOTO 340
+320 GOTO 290
+330 :REM'
+340 :REM'.....inputs
+350 CLS
+360 INPUT "ENTER: Original Value..................$";P#
+370 INPUT "ENTER: Rate of depreciation (%).........";D
+380 INPUT "ENTER: Start year.......................";A
+390 INPUT "ENTER: End year OR number of Years......";Y
+400 IF Y>=A THEN Y=Y+1-A
+410 R=D/100     :REM'% depreciation
+420 M=1-R       :REM'multiplier
+430 V#=P#       :REM'depreciated value
+440 :REM'
+450 CLS
+460 V$=CHR$(186)
+470 PRINT "  Year  │Undepreciated│Depreciation│ Depreciated│ Residual";V$
+480 PRINT "No. Date│    Value    │@";USING U3$;D;
+490 PRINT " %/yr│    Value   │ Percent ";V$;"0 ------ % ------ 99"
+500 PRINT STRING$(58,205);CHR$(202);STRING$(20,205)
+510 FOR Z=1 TO 50
+520 IF Z=9 OR Z=23 OR Z=36 OR Z=49 THEN 530 :ELSE 540
+530 LOCATE CSRLIN-1,Z:PRINT "╧"
+540 NEXT Z
+550 VIEW PRINT 4 TO 24
+560 PG=1    :REM'page no.
+570 LN=3    :REM'line no.
+580 NP=INT(Y/20):IF NP<Y/20 THEN NP=NP+1   :REM'no.of pages
+590 :REM'
+600 FOR X=1 TO Y
+610 LN=LN+1 :REM'line number
+620 IF LN<>4 THEN 660
+630   VIEW PRINT:LOCATE 1,66
+640   COLOR 0,7:PRINT " Page";PG"of";NP
+650   COLOR 7,0:VIEW PRINT 4 TO 24
+660 X$=STR$(X)
+670 IF LEN(X$)<3 THEN X$=" "+X$:GOTO 670
+680 X$=RIGHT$(X$,2)+" "
+690 PRINT X$;A+X-1;
+700 PRINT USING U1$;V#,V#*R,
+710 V#=V#*M
+720 PRINT USING U1$;V#;
+730 PC=V#/P#     :REM'% of original
+740 G=PC*19      :REM'graph factor
+750 PRINT USING U2$;PC*100;:PRINT STRING$(20,176)
+760 LOCATE CSRLIN-1,60+G:COLOR 14:PRINT CHR$(219):COLOR 7
+770 IF X>1 THEN 790
+780 LOCATE CSRLIN-1,60:COLOR 14,4:PRINT "Start Year":COLOR 7,0
+790 IF X=Y THEN LOCATE CSRLIN-1,72:COLOR 14,4:PRINT "End Year":COLOR 7,0
+800 IF LN<>23 THEN 840
+810 VIEW PRINT:GOSUB 890
+820 IF X=Y THEN 10
+830 VIEW PRINT 4 TO 24:CLS:LN=3:PG=PG+1
+840 NEXT X
+850 VIEW PRINT:GOSUB 890
+860 GOTO 10
+870 END
+880 :REM'
+890 :REM'PRT
+900 KEY OFF:GOSUB 970:LOCATE 25,5:COLOR 0,2
+910 PRINT " Send this page to:(1)Printer Queue? (2)Printout? ";
+920 PRINT "(3)Next page? (1/2/3)";:COLOR 7,0
+930 Z$=INKEY$:IF Z$<"1"OR Z$>"3"THEN 930 :ELSE GOSUB 970
+940 IF Z$="3"THEN RETURN
+950 FOR I%=1 TO 24:FOR J%=1 TO 80:LPRINT CHR$(SCREEN(I%,J%));:NEXT J%:NEXT I%
+960 IF Z$="2"THEN LPRINT CHR$(12) :ELSE 900
+970 LOCATE 25,1:PRINT STRING$(80,32);:RETURN

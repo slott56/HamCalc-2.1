@@ -1,0 +1,934 @@
+10 :REM'TRANSMAT - Transmatch Design - 28 SEP 95 rev.06 SEP 97
+20 :REM'adapted from TUNER.BAS version 1.5 by Brian Egan, ZL1LE
+30 NONOTE=0
+40 IF EX$=""THEN EX$="EXIT"
+50 IF PROG$=""THEN GO$=EX$ :ELSE GO$=PROG$
+60 COMMON EX$,PROG$
+70 CLS:KEY OFF
+80 COLOR 7,0,1
+90 V=0
+100 PI=3.1415929794311523!
+110 U1$="#####.###"
+120 U2$="#####.##"
+130 UL$=STRING$(80,205)
+140 E$=STRING$(79,32)
+150 :REM'
+160 :REM'.....start
+170 CLS
+180 COLOR 15,2
+190 PRINT " TRANSMATCH DESIGN";TAB(61);"by Brian Egan ZL1LE ";
+200 PRINT STRING$(80,32);
+210 LOCATE CSRLIN-1,20:PRINT "edited for HAMCALC by George Murphy VE3ERP"
+220 COLOR 1,0:PRINT STRING$(80,223);:COLOR 7,0
+230 :REM'
+240 :REM'.....main menu
+250 T=(9)
+260 PRINT TAB(T);
+270 PRINT "This program may be used to:"
+280 PRINT TAB(T);
+290 PRINT STRING$(28,196)
+300 PRINT
+310 PRINT " 1.";TAB(T);
+320 PRINT "Design Transmatch circuits of several different types...."
+330 PRINT TAB(T);
+340 PRINT
+350 PRINT " 2.";TAB(T);
+360 PRINT "Compute SWR when transmatch components are varied in value...."
+370 PRINT TAB(T);
+380 PRINT "(e.g. to show effect of variable capacitor/inductor adjustments)."
+390 PRINT
+400 PRINT " 3.";TAB(T);
+410 PRINT "Measure an unknown load by using a matched transmatch as an"
+420 PRINT TAB(T);
+430 PRINT "impedance bridge...."
+440 PRINT
+450 PRINT UL$;
+460 COLOR 0,7:LOCATE 17,22
+470 PRINT " Press 1 to continue or 0 to EXIT....."
+480 COLOR 7,0
+490 Z$=INKEY$:IF Z$=""THEN 490
+500 IF Z$="0"THEN CLS:CHAIN GO$
+510 IF Z$="1"THEN 530
+520 GOTO 490
+530 LOCATE CSRLIN-1:PRINT E$
+540 IF NONOTE=1 THEN 630
+550 LOCATE 17,9:PRINT "Do you wish to read the program notes (y/n)?"
+560 Y$=INKEY$:IF Y$=""THEN 560
+570 IF Y$="N"OR Y$="n"THEN NONOTE=1:GOTO 610
+580 IF Y$="Y"OR Y$="y"THEN 6820
+590 GOTO 560
+600 :REM'
+610 VIEW PRINT 4 TO 24:CLS:VIEW PRINT:LOCATE 4
+620 NONOTE=0
+630 PRINT " PRESS a number in ( ) below to select program option:"
+640 PRINT UL$;
+650 T=3
+660 PRINT TAB(T);"(a)   PI-COUPLER TRANSMATCH DESIGN"
+670 PRINT TAB(T);"(b)   PI-COUPLER IMPEDANCE BRIDGE"
+680 PRINT TAB(T);"(c)   SPC (includes High Pass Tee) TRANSMATCH DESIGN"
+690 PRINT TAB(T);"(d)   SPC (includes High Pass Tee) IMPEDANCE BRIDGE"
+700 PRINT TAB(T);"(e)   HIGH PASS TEE TRANSMATCH (finite Q conductor)"
+710 PRINT TAB(T);"(f)   LOW PASS TEE TRANSMATCH DESIGN"
+720 PRINT TAB(T);"(g)   LOW PASS TEE IMPEDANCE BRIDGE"
+730 PRINT TAB(T);"(h)   `ULTIMATE' TRANSMATCH DESIGN"
+740 PRINT TAB(T);"(i)   `ULTIMATE' IMPEDANCE BRIDGE"
+750 PRINT TAB(T);"(j)   2-ELEMENT LADDER MATCHING NETWORK"
+760 PRINT
+770 COLOR 14
+780 PRINT TAB(T);"(z)   QUIT"
+790 COLOR 7
+800 Z$=INKEY$:IF Z$=""THEN 800
+810 IF Z$="z"THEN S=11 :ELSE S=ASC(Z$)-96
+820 CLS:COLOR 7,0,1
+830 ONS GOSUB 1040,1680,2080,3550,3990,4020,5020,5380,6450,850,860
+840 END
+850 CLS:CHAIN"ladder2"
+860 CLS:CHAIN EX$
+870 :REM'
+880 :REM'.....format input line
+890 LOCATE CSRLIN-1:PRINT SPC(7);
+900 LOCATE CSRLIN,47:PRINT STRING$(7,".");USING U$;ZZ;
+910 RETURN
+920 :REM'
+930 :REM'.....enter 4 of 5 transmatch parameters for PI-COUPLER and SPC
+940 INPUT " ENTER: Transmatch Input Impedance R1..........(ohms)";R1
+950 ZZ=R1:U$=U2$:GOSUB 880:PRINT " Ω"
+960 INPUT " ENTER: Load Resistance RL.....................(ohms)";RL
+970 ZZ=RL:U$=U2$:GOSUB 880:PRINT " Ω"
+980 INPUT " ENTER: Load Reactance.........................(ohms)";XS
+990 ZZ=XS:U$=U2$:GOSUB 880:PRINT " Ω"
+1000 INPUT " ENTER: Frequency...............................(MHz)";F
+1010 ZZ=F :U$=U1$:GOSUB 880:PRINT " MHz"
+1020 RETURN
+1030 :REM'
+1040 :REM'.....PI COUPLER transmatch
+1050 T$="PI-COUPLER TRANSMATCH DESIGN"
+1060 T=(80-LEN(T$))/2
+1070 PRINT TAB(T);T$
+1080 PRINT UL$;
+1090 GOSUB 1560   :REM'diagram
+1100 PRINT UL$;
+1110 GOSUB 930    :REM'data input
+1120 :REM'
+1130 :REM'.....calculation of transmatch components
+1140 W=2*PI*F*10^6
+1150 Z=RL^2+XS^2:R2=Z/RL:CP=-XS/Z/W:LMAX=SQR(R1*R2)/W
+1160 IF CP<=1/(W^2*LMAX)THEN 1200
+1170 A1=1+W^2*CP^2*R2^2:A2=-2*W*CP*R2^2:A3=R1*R2-R2*R2
+1180 LM1=-A2/2/A1+SQR(A2^2/4/A1/A1+A3/A1):LM1=LM1/W
+1190 IF LM1<LMAX THEN LMAX=LM1
+1200 PRINT " Inductor must be less than";:PRINT USING "###.###";LMAX*10^6;
+1210 PRINT " uH. ";
+1220 INPUT " ENTER: Value of INDUCTOR in uH: ";L
+1230 IF L>LMAX*10^6 THEN LOCATE CSRLIN-1:PRINT E$:LOCATE CSRLIN-1:GOTO 1200
+1240 LOCATE CSRLIN-1:PRINT E$:LOCATE CSRLIN-1
+1250 PRINT "        Inductor L...................................";USING U1$;L;
+1260 PRINT " µH"
+1270 PRINT "        SWR..........................................    1:1"
+1280 XL=W*L*10^-6
+1290 K=SQR(R1*R2-XL^2)/R1:C1=(1-K)/W/XL:C2=(1-R1/R2*K)/W/XL
+1300 C1A=(1+K)/W/XL:C2A=(1+R1/R2*K)/W/XL
+1310 PRINT " SOLUTION 1:"
+1320 IF C2-CP<0 THEN 1410
+1330 IF K>1 THEN PRINT TAB(9);"(no solution)":GOTO 1400
+1340 ZZ=C1*10^12
+1350 PRINT TAB(9);"Capacitor C1.................................";USING U2$;ZZ;
+1360 PRINT " pF"
+1370 ZZ=(C2-CP)*10^12
+1380 PRINT TAB(9);"Capacitor C2.................................";USING U2$;ZZ;
+1390 PRINT " pF"
+1400 LOCATE 19:PRINT " SOLUTION 2:"
+1410 ZZ=C1A*10^12
+1420 PRINT TAB(9);"Capacitor C1.................................";USING U2$;ZZ;
+1430 PRINT " pF"
+1440 ZZ=(C2A-CP)*10^12
+1450 PRINT TAB(9);"Capacitor C2.................................";USING U2$;ZZ;
+1460 PRINT " pF"
+1470 GOSUB 8820     :REM'calculate δ
+1480 LOCATE 23,9:PRINT "Do you wish to vary the inductor size  (y/n)?"
+1490 Y$=INKEY$:IF Y$="" THEN 1490
+1500 IF Y$="Y"OR Y$="y"THEN 1540
+1510 GOSUB 7650    :REM'calculate SWR
+1520 LOCATE CSRLIN-1:PRINT E$
+1530 GOTO 9210
+1540 VIEW PRINT 14 TO 24:CLS:VIEW PRINT:LOCATE 14:GOTO 1200
+1550 :REM'
+1560 :REM'.....PI COUPLER circuit diagram
+1570 COLOR 0,7
+1580 T=26
+1590 LOCATE CSRLIN,T:PRINT "              L              "
+1600 LOCATE CSRLIN,T:PRINT " R1 »───┬───∩∩∩∩∩───┬───» RL "
+1610 LOCATE CSRLIN,T:PRINT " input  │           │   load "
+1620 LOCATE CSRLIN,T:PRINT "       ═╪═ C1      ═╪═ C2    "
+1630 LOCATE CSRLIN,T:PRINT "        │           │        "
+1640 LOCATE CSRLIN,T:PRINT "  grnd ///         ///       "
+1650 COLOR 7,0
+1660 RETURN
+1670 :REM'
+1680 :REM'.....PI COUPLER impedance bridge
+1690 CLS
+1700 T$="PI-COUPLER IMPEDANCE BRIDGE"
+1710 T=(80-LEN(T$))/2
+1720 PRINT TAB(T);T$
+1730 PRINT UL$;
+1740 GOSUB 1560
+1750 PRINT UL$;
+1760 :REM'
+1770 INPUT " ENTER: Transmatch Input Impedance R1..........(ohms)";R1
+1780 ZZ=R1:U$=U2$:GOSUB 880:PRINT " Ω"
+1790 INPUT " ENTER: Value of inductor L....................  (µH)";L
+1800 ZZ=L:U$=U2$:GOSUB 880:PRINT " µH"
+1810 INPUT " ENTER: Value of capacitor C1..................  (pF)";C1
+1820 ZZ=C1:U$=U2$:GOSUB 880:PRINT " pF"
+1830 INPUT " ENTER: Value of capacitor C2..................  (pF)";C2
+1840 ZZ=C2:U$=U2$:GOSUB 880:PRINT " pF"
+1850 INPUT " ENTER: Frequency...............................(MHz)";F
+1860 ZZ=F :U$=U1$:GOSUB 880:PRINT " MHz"
+1870 W=2*PI*F*10^6
+1880 C1=C1*10^-12:C2=C2*10^-12:L=L*10^-6
+1890 K=(1-W^2*L*C1):R2=R1*(K^2+W^2*L^2/R1/R1)
+1900 C0=C2+(C1*R1^2*K-L)/R1/R2
+1910 B=1+W^2*C0^2*R2^2
+1920 RL=R2/B:XL=W*C0*R2^2/B
+1930 IF XL<0 THEN SUM$="-" :ELSE SUM$="+"
+1940 XL=ABS(XL)
+1950 PRINT TAB(9);"Load impedance...............................";
+1960 PRINT USING "#####.#";INT(RL*10)/10;:PRINT " ";SUM$;" j";INT(XL*10)/10;"Ω"
+1970 U=RL-R1:V=RL+R1:P=U^2+XL^2:Q=V^2+XL^2
+1980 GAMMA=SQR(P/Q):SWR=(1+GAMMA)/(1-GAMMA)
+1990 PRINT TAB(9);"Load SWR.....................................";USING U2$;SWR;
+2000 PRINT ":1"
+2010 LOCATE 23,9:PRINT "Do you wish to make another calculation  (y/n)"
+2020 Y$=INKEY$:IF Y$="" THEN 2020
+2030 IF Y$="Y"OR Y$="y" THEN 2060
+2040 LOCATE 23:PRINT E$
+2050 GOTO 9210  :REM'end
+2060 VIEW PRINT 10 TO 24:CLS:VIEW PRINT:LOCATE 10:GOTO 1680
+2070 :REM'
+2080 :REM'.....SPC/HIGHPASS TEE transmatch design
+2090 CLS
+2100 T$="SPC TRANSMATCH DESIGN"
+2110 T=(80-LEN(T$))/2
+2120 PRINT TAB(T);T$
+2130 PRINT UL$;
+2140 GOSUB 3430  :REM'diagram
+2150 PRINT UL$;
+2160 GOSUB 3040  :REM'option menu
+2170 GOSUB 930   :REM'input R1,R,X,& F
+2180 :REM'
+2190 :REM'.....compute transmatch components
+2200 W=2*PI*F*10^6
+2210 IF RL>R1 THEN GOSUB 2660 :ELSE GOSUB 2800
+2220 :REM'
+2230 INPUT " ENTER: Value of C1 in pF .....";C1
+2240 IF C1>=C1MAX THEN LOCATE CSRLIN-1:PRINT E$:LOCATE CSRLIN-1:GOTO 2230
+2250 LN=CSRLIN-2:VIEW PRINT LN TO 24:CLS:VIEW PRINT:LOCATE LN
+2260 PRINT TAB(9);"Capacitor C1.................................";USING U2$;C1;
+2270 PRINT " pF"
+2280 PRINT TAB(9);"SWR..........................................    1:1"
+2290 :REM'
+2300 :REM'.....inductor calculation
+2310 A=1/(W^2*RL*(R1-RL)+RL/(C1^2*10^-24*R1))
+2320 CL=SQR(A):GOSUB 2950
+2330 :REM'
+2340 PRINT " SOLUTION 1:"
+2350 ZZ=C*10^12
+2360 PRINT TAB(9);"Capacitor C..................................";USING U2$;ZZ;
+2370 PRINT " pF"
+2380 ZZ=L*10^6
+2390 PRINT TAB(9);"Inductor L...................................";USING U2$;ZZ;
+2400 PRINT " µH"
+2410 GOSUB 9010     :REM'δ calculation
+2420 :REM'
+2430 LOCATE 19:PRINT " SOLUTION 2:"
+2440 CL=-SQR(A):GOSUB 2950
+2450 IF XS<=0 OR V=0 THEN PRINT TAB(9);"No second solution":PRINT:GOTO 2580
+2460 IF C<0 THEN LOCATE 20,9:PRINT "No second solution"
+2470 IF C<0 THEN LOCATE 21,9:PRINT "for this value of C1":GOTO 2580
+2480 IF C<=1500*10^-12 AND L>=<10^-9 THEN 2510
+2490 LOCATE 20,9:PRINT "Impractical values"
+2500 LOCATE 21,9:PRINT "for this value of C1":GOTO 2580
+2510 ZZ=C*10^12
+2520 PRINT TAB(9);"Capacitor C..................................";USING U2$;ZZ;
+2530 PRINT " pF"
+2540 ZZ=L*10^6
+2550 PRINT TAB(9);"Inductor L...................................";USING U2$;ZZ;
+2560 PRINT " µH"
+2570 GOSUB 9060  :REM'calculate δ
+2580 LOCATE 23,9:PRINT "Do you wish to vary C1 (y/n)?:"
+2590 Y$=INKEY$:IF Y$=""THEN 2590
+2600 IF Y$="Y"OR Y$="y"THEN 2640
+2610 GOSUB 7950  :REM'calculate SWR
+2620 LOCATE CSRLIN-1:PRINT E$
+2630 GOTO 9210
+2640 VIEW PRINT 14 TO 24:CLS:VIEW PRINT:LOCATE 14:GOTO 2210
+2650 :REM'
+2660 :REM'.....subroutine for RL>R1
+2670 C1A=1/W/SQR(R1*(RL-R1))*10^12
+2680 C1B=1/W*SQR(RL/R1)/SQR(XS^2+RL*(RL-R1))*10^12
+2690 LOCATE CSRLIN,9
+2700 IF XS<=0 THEN PRINT "C1 max.=";USING "####.#";C1B;:PRINT "   pF"
+2710 IF XS> 0 THEN PRINT "C1 max.=";USING "####.#";C1A;:PRINT "   pF"
+2720 IF XS> 0 THEN LOCATE 23 :ELSE GOTO 2760
+2730 ZZ=INT(10*C1B)/10+0.10000000149011612!
+2740 PRINT TAB(9);"NOTE: There are TWO solutions in the range";ZZ"< C1 <";
+2750 PRINT USING "####.#";C1A;:PRINT " pF.":V=1
+2760 IF XS<=0 THEN C1MAX=C1B :ELSE C1MAX=C1A
+2770 LOCATE 15
+2780 RETURN
+2790 :REM'
+2800 :REM'.....subroutine for RL<=R1
+2810 IF(RL^2+XS^2)<=R1^2 THEN C1MAX=750:PRINT " C1 max.= 749.9 pF":RETURN
+2820 C1B=1/W*SQR(RL/R1)/SQR(XS^2+RL*(RL-R1))*10^12
+2830 IF XS<=0 THEN C1MAX=C1B :ELSE C1MAX=750
+2840 IF C1MAX>750 THEN C1MAX=750
+2850 IF XS<=0 THEN PRINT " C1 max.=";INT(C1MAX*10)/10-0.10000000149011612!;" pF"
+2860 IF XS>0 THEN PRINT " C1 max.= 749.9 pF"
+2870 IF XS>0 THEN LOCATE 23 :ELSE RETURN
+2880 IF C1B>=750 THEN RETURN
+2890 ZZ=INT(10*C1B+1)/10
+2900 PRINT TAB(9);"NOTE: There are TWO solutions in the range";ZZ;
+2910 PRINT "< C1 < 749.9 pF.":V=1
+2920 LOCATE 15
+2930 RETURN
+2940 :REM'
+2950 :REM'.....subroutine L and C continued
+2960 CP=CL/(1+W^2*CL^2*RL^2):C=1/(W*XS+1/CL)
+2970 IF VER$="1"THEN C2=C+CP:GOTO 3010
+2980 IF VER$="2"THEN C2=C1*10^-12+CP:GOTO 3010
+2990 IF VER$="3"THEN C2=CP
+3000 REM:IF VER$="3"AND C2<0 THEN RETURN
+3010 R2=R1+1/(W^2*C1^2*10^-24*R1):L=1/(W^2*C2+1/(C1*10^-12*R1*R2))
+3020 RETURN
+3030 :REM'
+3040 :REM'.....SPC menu
+3050 PRINT " PRESS number in ( ) below to select version:"
+3060 PRINT UL$;
+3070 PRINT "   (1) SPC TRANSMATCH MODE I  (Cn =  C)"
+3080 PRINT "   (2) SPC TRANSMATCH MODE II (Cn = C1)"
+3090 PRINT "   (3) HIGH PASS TEE          (Cn =  0)"
+3100 VER$=INKEY$:IF VER$="" THEN 3100
+3110 IF VAL(VER$)>3 OR VAL(VER$)<1 THEN 3100
+3120 COLOR 0,7
+3130  IF VER$<>"1"THEN 3160
+3140 C$="C":GOSUB 3360
+3150 LOCATE 6,47:PRINT "=C":LOCATE 1,53:PRINT "(Mode I: Cn=C)":GOTO 3240
+3160  IF VER$<>"2"THEN 3190
+3170 C$="C1":GOSUB 3360
+3180 LOCATE 6,47:PRINT "=C1":LOCATE 1,53:PRINT "(Mode II: Cn=C1)":GOTO 3240
+3190  IF VER$<>"3"THEN 3220
+3200 GOSUB 3270:GOTO 3210
+3210 LOCATE 6,47:PRINT "=0":LOCATE 1,53:PRINT "(High Pass Tee: Cn=0)":GOTO 3240
+3220 GOTO 3100
+3230 :REM'
+3240 COLOR 7,0:VIEW PRINT 10 TO 24:CLS:VIEW PRINT:LOCATE 10
+3250 RETURN
+3260 :REM'
+3270 :REM'.....erase Cn from diagram
+3280 COLOR 0,7
+3290 LOCATE 4,T+16:PRINT "─"
+3300 LOCATE 5,T+16:PRINT " "
+3310 LOCATE 6,T+15:PRINT "   (Cn=0)"
+3320 LOCATE 7,T+16:PRINT " "
+3330 LOCATE 8,T+15:PRINT "   "
+3340 RETURN
+3350 :REM'
+3360 :REM'.....add split-stator note to diagram
+3370 COLOR 7,0
+3380 LOCATE 5,56:PRINT C$;" & Cn may be a split-"
+3390 LOCATE 6,56:PRINT "stator capacitor"
+3400 COLOR 0,7
+3410 RETURN
+3420 :REM'
+3430 :REM'.....SPC diagram
+3440 COLOR 0,7
+3450 T=26
+3460 LOCATE CSRLIN,T:PRINT "        C1          C        "
+3470 LOCATE CSRLIN,T:PRINT " R1 »───╫───┬───┬───╫───» RL "
+3480 LOCATE CSRLIN,T:PRINT " input      │   │       load "
+3490 LOCATE CSRLIN,T:PRINT "      ┌∩∩∩∩∩┘  ═╪═ Cn        "
+3500 LOCATE CSRLIN,T:PRINT "      │  L      │            "
+3510 LOCATE CSRLIN,T:PRINT "     /// grnd  ///           "
+3520 COLOR 7,0
+3530 RETURN
+3540 :REM'
+3550 :REM'.....SPC/HIGHPASS TEE impedance bridge
+3560 CLS
+3570 T$="SPC IMPEDANCE BRIDGE"
+3580 T=(80-LEN(T$))/2
+3590 PRINT TAB(T);T$
+3600 PRINT UL$;
+3610 GOSUB 3430  :REM'diagram
+3620 PRINT UL$;
+3630 GOSUB 3040  :REM'menu
+3640 :REM'
+3650 INPUT " ENTER: Transmatch Input Impedance R1..........(ohms)";R1
+3660 ZZ=R1:U$=U2$:GOSUB 880:PRINT " Ω"
+3670 INPUT " ENTER: Value of inductor L....................  (µH)";L
+3680 ZZ=L: U$=U2$:GOSUB 880:PRINT " µH"
+3690 INPUT " ENTER: Value of capacitor C1..................  (pF)";C1
+3700 ZZ=C1:U$=U2$:GOSUB 880:PRINT " pF"
+3710 INPUT " ENTER: Value of capacitor C...................  (pF)";C
+3720 ZZ=C: U$=U2$:GOSUB 880:PRINT " pF"
+3730 INPUT " ENTER: Frequency...............................(MHz)";F
+3740 ZZ=F :U$=U1$:GOSUB 880:PRINT " MHz"
+3750 W=2*PI*F*10^6:C=C*10^-12:C1=C1*10^-12:L=L*10^-6
+3760 IF VER$="1"THEN CN=C:GOTO 3800
+3770 IF VER$="2"THEN CN=C1:GOTO 3790
+3780 IF VER$="3"THEN CN=0
+3790 L=1/(1/L-W^2*(CN-C))
+3800 R2=R1+1/(W^2*C1^2*R1)
+3810 CP=C1/(1+W^2*C1^2*R1^2):C2=C+CP
+3820 B=1-W^2*L*C2:A=B^2+W^2*L^2/R2/R2
+3830 RL=W^2*L^2/A/R2:XS=1/W/C-W*L*B/A
+3840 IF XS<0 THEN SUM$="-":ELSE SUM$="+"
+3850 XS=ABS(XS)
+3860 PRINT TAB(9);"Load impedance...............................";
+3870 PRINT USING "#####.#";INT(RL*10)/10;:PRINT " ";SUM$;" j";INT(XS*10)/10;"Ω"
+3880 U=RL-R1:V=RL+R1:P=U^2+XS^2:Q=V^2+XS^2
+3890 GAMMA=SQR(P/Q):SWR=(1+GAMMA)/(1-GAMMA)
+3900 PRINT TAB(9);"Load SWR.....................................";USING U2$;SWR;
+3910 PRINT ":1"
+3920 LOCATE 23,9: PRINT "Do you wish to make another calculation  (y/n)"
+3930 Y$=INKEY$:IF Y$="" THEN 3930
+3940 IF Y$="Y"OR Y$="y"THEN 3970
+3950 LOCATE 23:PRINT E$
+3960 GOTO 9210  :REM'end
+3970 VIEW PRINT 10 TO 24:CLS:VIEW PRINT:LOCATE 10:GOTO 3550
+3980 :REM'
+3990 :REM'.....HIGHPASS TEE with finite Q conductor
+4000 CLS:PROG$="transmat":CHAIN"teematch"
+4010 :REM'
+4020 :REM'.....LOWPASS TEE transmatch design
+4030 CLS
+4040 T$="LOWPASS TEE TRANSMATCH DESIGN"
+4050 T=(80-LEN(T$))/2
+4060 PRINT TAB(T);T$
+4070 PRINT UL$;
+4080 GOSUB 4900     :REM'schematic
+4090 PRINT UL$;
+4100 GOSUB 930      :REM'input R1,RL,X,F
+4110 :REM'
+4120 :REM'.....compute transmatch components
+4130 W=2*PI*F*10^6
+4140 IF RL>R1 THEN GOSUB 4600 :ELSE GOSUB 4730
+4150 INPUT " ENTER: Value of L1 in µH .....";L1
+4160 IF L1<L1MIN THEN LOCATE CSRLIN-1:PRINT E$:LOCATE CSRLIN-1:GOTO 4150
+4170 LN=CSRLIN-2:VIEW PRINT LN TO 24:CLS:VIEW PRINT:LOCATE LN
+4180 ZZ=L1
+4190 PRINT TAB(9);"Inductor L1..................................";USING U2$;ZZ;
+4200 PRINT " µH"
+4210 PRINT TAB(9);"SWR..........................................    1:1"
+4220 :REM'
+4230 :REM'.....Inductor L2 calculation
+4240 A=RL*(R1-RL)+(W^2*L1^2*10^-12*RL/R1)
+4250 X=SQR(A):GOSUB 4850
+4260 :REM'
+4270 LOCATE 16:PRINT " SOLUTION 1:"
+4280 ZZ=C*10^12
+4290 PRINT TAB(9);"Capacitor C..................................";USING U2$;ZZ;
+4300 PRINT " pF"
+4310 ZZ=L2*10^6
+4320 PRINT TAB(9);"Inductor L2..................................";USING U2$;ZZ;
+4330 PRINT " µH"
+4340 GOSUB 8890   :REM'calculate δ
+4350 :REM'
+4360 LOCATE 19:PRINT " SOLUTION 2:"
+4370 X=-SQR(A):GOSUB 4850   :REM'subroutine L and C continued
+4380 IF XS>=0 OR V=0 THEN PRINT TAB(9);"No second solution":PRINT:GOTO 4490
+4390 IF L2<0 THEN LOCATE 20,9:PRINT "No second solution"
+4400 IF L2<0 THEN LOCATE 21,9:PRINT "for this value of L1":GOTO 4490
+4410 IF C>1500*10^-12 OR L2<10^-9 OR C<O THEN GOSUB 4560:GOTO 4490
+4420 GOSUB 8950   :REM'calculate δ
+4430 ZZ=C*10^12
+4440 PRINT TAB(9);"Capacitor C..................................";USING U2$;ZZ;
+4450 PRINT " pF"
+4460 ZZ=L2*10^6
+4470 PRINT TAB(9);"Inductor L2..................................";USING U2$;ZZ;
+4480 PRINT " µH"
+4490 LOCATE 23,9:PRINT "Do you wish to vary L1 (y/n)?:"
+4500 Y$=INKEY$:IF Y$=""THEN 4500
+4510 IF Y$="Y"OR Y$="y"THEN 4550
+4520 GOSUB 8280   :REM'calculate SWR
+4530 LOCATE CSRLIN-1:PRINT E$
+4540 GOTO 9210    :REM'end
+4550 VIEW PRINT 14 TO 24:CLS:VIEW PRINT:LOCATE 14:GOTO 4140
+4560 PRINT TAB(9);"Impractical values"
+4570 PRINT TAB(9);"for this value of L1"
+4580 RETURN
+4590 :REM'
+4600 :REM'.....subroutine for RL>R1
+4610 L1A=1/W*SQR(R1*(RL-R1))*10^6
+4620 L1B=1/W*SQR(R1/RL)*SQR(XS^2+RL*(RL-R1))*10^6
+4630 IF XS>=0 THEN PRINT " L1 min.=";:PRINT USING "###.###";L1B;:PRINT " µH"
+4640 IF XS<=0 THEN PRINT " L1 min.=";:PRINT USING "###.###";L1A;:PRINT " µH"
+4650 IF XS<0 THEN LOCATE 23 :ELSE 4690
+4660 PRINT " NOTE:  There are TWO solutions in the range";
+4670 PRINT USING "##.###";L1A;:PRINT " < L1 <";:PRINT USING "##.###";L1B;
+4680 PRINT " µH.":V=1
+4690 IF XS>0 THEN L1MIN=L1B :ELSE L1MIN=L1A
+4700 LOCATE 15
+4710 RETURN
+4720 :REM'
+4730 :REM'.....subroutine for RL<=R1
+4740 IF(RL^2+XS^2)<=R1*RL THEN L1MIN=0.019999999552965164!:PRINT " L1 min.= .019 µH. ":RETURN
+4750 L1B=1/W*SQR(R1/RL)*SQR(XS^2+RL*(RL-R1))*10^6
+4760 IF XS>0 THEN L1MIN=L1B :ELSE L1MIN=0.019999999552965164!
+4770 IF XS>0 THEN PRINT " L1 min.=";:PRINT USING "###.###";L1B;
+4780 IF XS>0 THEN PRINT " µH. " :ELSE PRINT " L1 min.= .019 µH. "
+4790 IF XS<=0 THEN LOCATE 23 :ELSE RETURN
+4800 PRINT " NOTE:  There are TWO solutions in the range 0.019 < L1 < ";
+4810 PRINT INT(100*L1B)/100;" µH.":V=1
+4820 LOCATE 15
+4830 RETURN
+4840 :REM'
+4850 :REM'.....subroutine L and C continued
+4860 L2=1/W*(X-XS)
+4870 R2=RL+X*X/RL:C=L1*10^-6/R1/R2+X/W/RL/R2
+4880 RETURN
+4890 :REM'
+4900 :REM'.....schematic view
+4910 COLOR 0,7
+4920 T=26
+4930 LOCATE CSRLIN,T:PRINT "         L1       L2         "
+4940 LOCATE CSRLIN,T:PRINT " R1 »───∩∩∩∩──┬──∩∩∩∩───» RL "
+4950 LOCATE CSRLIN,T:PRINT " input        │         load "
+4960 LOCATE CSRLIN,T:PRINT "             ═╪═ C           "
+4970 LOCATE CSRLIN,T:PRINT "              │              "
+4980 LOCATE CSRLIN,T:PRINT "             /// grnd        "
+4990 COLOR 7,0
+5000 RETURN
+5010 :REM'
+5020 :REM'.....LOWPASS TEE impedance bridge
+5030 CLS
+5040 T$="LOWPASS TEE IMPEDANCE BRIDGE"
+5050 T=(80-LEN(T$))/2
+5060 PRINT TAB(T);T$
+5070 PRINT UL$;
+5080 GOSUB 4900    :REM'diagram
+5090 PRINT UL$;
+5100 INPUT " ENTER: Transmatch Input Impedance R1..........(ohms)";R1
+5110 ZZ=R1:U$=U2$:GOSUB 880:PRINT " Ω"
+5120 INPUT " ENTER: Value of inductor L1...................(ohms)";L1
+5130 ZZ=L1:U$=U2$:GOSUB 880:PRINT " µH"
+5140 INPUT " ENTER: Value of inductor L2...................(ohms)";L2
+5150 ZZ=L2:U$=U2$:GOSUB 880:PRINT " µH"
+5160 INPUT " ENTER: Value of capacitor C.....................(pF)";C
+5170 ZZ=C :U$=U2$:GOSUB 880:PRINT " pF"
+5180 INPUT " ENTER: Frequency...............................(MHz)";F
+5190 ZZ=F :U$=U1$:GOSUB 880:PRINT " MHz"
+5200 W=2*PI*F*10^6:C=C*10^-12:L1=L1*10^-6:L2=L2*10^-6
+5210 R2=R1+W^2*L1^2/R1:CP=C-L1/R1/R2:K=1/R2/R2+W^2*CP^2
+5220 RL=1/R2/K:XL=W*CP/K-W*L2   :REM'conjugate
+5230 IF XL<0 THEN SUM$="-":ELSE SUM$="+"
+5240 XL=ABS(XL)
+5250 PRINT TAB(9);"Load impedance...............................";
+5260 PRINT USING "#####.#";INT(RL*10)/10;:PRINT " ";SUM$;" j";INT(XL*10)/10;"Ω"
+5270 U=RL-R1:V=RL+R1:P=U^2+XL^2:Q=V^2+XL^2
+5280 GAMMA=SQR(P/Q):SWR=(1+GAMMA)/(1-GAMMA)
+5290 PRINT TAB(9);"Load SWR.....................................";USING U2$;SWR;
+5300 PRINT ":1"
+5310 LOCATE 23,9:PRINT "Do you wish to make another calculation?  (y/n)"
+5320 Y$=INKEY$:IF Y$=""THEN 5320
+5330 IF Y$="Y"OR Y$="y"THEN 5360
+5340 LOCATE 23:PRINT E$
+5350 GOTO 9210
+5360 VIEW PRINT 10 TO 24:CLS:VIEW PRINT:LOCATE 10:GOTO 5100
+5370 :REM'
+5380 :REM'.....ULTIMATE transmatch design
+5390 CLS:V=0
+5400 T$="`ULTIMATE' TRANSMATCH DESIGN"
+5410 T=(80-LEN(T$))/2
+5420 PRINT TAB(T);T$
+5430 PRINT UL$;
+5440 GOSUB 6000   :REM'diagram
+5450 PRINT UL$;
+5460 GOSUB 930    :REM'input R1, R, X, F
+5470 :REM'
+5480 :REM'.....compute transmatch components
+5490 W=2*PI*F*10^6
+5500 IF RL>4*R1 THEN GOSUB 6150 :ELSE GOSUB 6300
+5510 INPUT " ENTER: Value of C1a, C1b (each) in pF .....";C1
+5520 IF C1>=C1MAX THEN GOTO 6150
+5530 LN=CSRLIN-2:VIEW PRINT LN TO 24:CLS:VIEW PRINT:LOCATE LN
+5540 PRINT TAB(9);"C1a, C1b (each)..............................";USING U2$;C1;
+5550 PRINT " pF"
+5560 PRINT TAB(9);"SWR..........................................    1:1"
+5570 :REM'
+5580 :REM'.....inductor calculation
+5590 A=1/(W^2*RL*(4*R1-RL)+RL/(C1^2*10^-24*R1))
+5600 CL=SQR(A):GOSUB 5930
+5610 :REM'
+5620 PRINT " SOLUTION 1:"
+5630 ZZ=C*10^12
+5640 PRINT "        Capacitor C..................................";USING U2$;ZZ;
+5650 PRINT " pF"
+5660 ZZ=L*10^6
+5670 PRINT "        Inductor L...................................";USING U2$;ZZ;
+5680 PRINT " µH"
+5690 GOSUB 9110    :REM'calculate δ
+5700 CL=-SQR(A):GOSUB 5930
+5710 :REM'
+5720 LOCATE 19:PRINT " SOLUTION 2:"
+5730 IF XS<=0 OR V=0 THEN PRINT TAB(9);"No second solution":PRINT:GOTO 5850
+5740 IF C<0 THEN PRINT TAB(9);"No second solution"
+5750 IF C<0 THEN PRINT TAB(9);"for this value of C1":GOTO 5850
+5760 IF C>1500*10^-12 OR L<10^-9 THEN LOCATE 20,9:PRINT "Impractical values for"
+5770 IF C>1500*10^-12 OR L<10^-9 THEN PRINT TAB(9);"this value of C1":GOTO 5850
+5780 ZZ=C*10^12
+5790 PRINT TAB(9);"Capacitor C..................................";USING U2$;ZZ;
+5800 PRINT " pF"
+5810 ZZ=L*10^6
+5820 PRINT TAB(9);"Inductor L...................................";USING U2$;ZZ;
+5830 PRINT " µH"
+5840 GOSUB 9160   :REM'calculate δ
+5850 LOCATE 23,9:PRINT "Do you wish to vary C1 (y/n)?:"
+5860 Y$=INKEY$:IF Y$=""THEN 5860
+5870 IF Y$="Y"OR Y$="y"THEN 5910
+5880 GOSUB 8540   :REM'calculate SWR
+5890 LOCATE CSRLIN-1:PRINT E$
+5900 GOTO 9210   :REM'end
+5910 VIEW PRINT 14 TO 24:CLS:VIEW PRINT:LOCATE 14:GOTO 5500
+5920 :REM'
+5930 :REM'.....calculate L and C values
+5940 K=W*CL*RL
+5950 C2=CL/(1+K^2):C=1/(W*XS+1/CL)
+5960 R2=RL*(1+1/(K^2))
+5970 L1=R2/(W^2*C1*10^-12*(R2-2*R1)):L=L1/(1+W^2*L1*C2)
+5980 RETURN
+5990 :REM'
+6000 :REM'.....schematic view
+6010 COLOR 0,7
+6020 T=26
+6030 LOCATE CSRLIN,T:PRINT "            C1a     C        "
+6040 LOCATE CSRLIN,T:PRINT " R1 »───┬───╫───┬───╫───» RL "
+6050 LOCATE CSRLIN,T:PRINT " input  │       │       load "
+6060 LOCATE CSRLIN,T:PRINT "       ═╪═ C1b  └∩∩∩∩∩┐      "
+6070 LOCATE CSRLIN,T:PRINT "        │          L  │      "
+6080 LOCATE CSRLIN,T:PRINT "       /// grnd      ///     "
+6090 COLOR 7,0
+6100 LN=CSRLIN:LOCATE LN-4,56:PRINT "C1a, C1b can be a split-"
+6110 LOCATE CSRLIN,56:PRINT "stator variable capacitor"
+6120 LOCATE LN
+6130 RETURN
+6140 :REM'
+6150 :REM'.....subroutine for RL>4*R1
+6160 C1A=1/W/SQR(R1*(RL-4*R1))*10^12
+6170 C1B=1/W*SQR(RL/R1)/SQR(XS^2+RL*(RL-4*R1))*10^12
+6180 IF XS<=0 THEN PRINT " C1a, C1b max.(each)=";:PRINT USING "####.#";C1B;
+6190 IF XS<=0 THEN PRINT " pF"
+6200 IF XS> 0 THEN PRINT " C1a, C1b max.(each)=";:PRINT USING "####.#";C1A;
+6210 IF XS> 0 THEN PRINT " pF"
+6220 IF XS> 0 THEN LOCATE 23 :ELSE 6260
+6230 PRINT " NOTE:  There are TWO solutions in the range";
+6240 PRINT INT(10*C1B+1)/10;"< C1a/C1b <";:PRINT USING "####.#";C1A;
+6250 PRINT " pF.":V=1
+6260 IF XS<=0 THEN C1MAX=C1B :ELSE C1MAX=C1A
+6270 LOCATE 15
+6280 RETURN
+6290 :REM'
+6300 :REM'.....subroutine for RL<4*R1
+6310 IF (RL^2+XS^2)<=(4*R1*RL)THEN C1MAX=750
+6320 IF (RL^2+XS^2)<=(4*R1*RL)THEN PRINT" C1a, C1b max.(each)= 749.99 pF":RETURN
+6330 C1B=1/W*SQR(RL/R1)/SQR(XS^2+RL*(RL-4*R1))*10^12
+6340 IF XS<=0 THEN C1MAX=C1B :ELSE C1MAX=750
+6350 IF C1MAX>750 THEN C1MAX=750
+6360 IF XS<=0 THEN PRINT " C1a, C1b max.(each)= ";INT(C1MAX*10)/10;" pF"
+6370 IF XS>0  THEN PRINT " C1a, C1b max.(each)=  749.9 pF"
+6380 IF XS>0  THEN LOCATE 23 :ELSE RETURN
+6390 IF C1B>=750 THEN RETURN
+6400 PRINT " NOTE:  There are TWO solutions in the range";
+6410 PRINT INT(10*C1B+1)/10;"< C1a/C1b < 749.99 pF.":V=1
+6420 LOCATE 15
+6430 RETURN
+6440 :REM'
+6450 :REM'.....ULTIMATE impedance bridge
+6460 CLS
+6470 T$="`ULTIMATE' IMPEDANCE BRIDGE "
+6480 T=(80-LEN(T$))/2
+6490 PRINT TAB(T);T$
+6500 PRINT UL$;
+6510 GOSUB 6000  :REM'schematic view
+6520 PRINT UL$;
+6530 INPUT " ENTER: Transmatch Input Impedance R1..........(ohms)";R1
+6540 ZZ=R1:U$=U2$:GOSUB 880:PRINT " Ω"
+6550 INPUT " ENTER: Value of inductor L....................(ohms)";L
+6560 ZZ=L:U$=U2$:GOSUB 880:PRINT " Ω"
+6570 INPUT " ENTER: Value of capacitor C1....................(pF)";C1
+6580 ZZ=C1:U$=U2$:GOSUB 880:PRINT " pF"
+6590 INPUT " ENTER: Value of capacitor C.....................(pF)";C
+6600 ZZ=C:U$=U2$:GOSUB 880:PRINT " pF"
+6610 INPUT " ENTER: Frequency...............................(MHz)";F
+6620 ZZ=F:U$=U1$:GOSUB 880:PRINT " MHz"
+6630 W=2*PI*F*10^6:C=C*10^-12:C1=C1*10^-12:L=L*10^-6
+6640 K=2*W*C1*R1:R2=(1+K^2)/(W^2*C1^2*R1)
+6650 CP=C1*(1+K^2/2)/(1+K^2):T=1-W^2*L*CP:RL=W^2*L^2*R2/(R2^2*T^2+W^2*L^2)
+6660 XS=1/W/C-W*L*R2^2*T/((R2^2*T^2)+W^2*L^2)
+6670 IF XS<0 THEN SUM$="-":ELSE SUM$="+"
+6680 XS=ABS(XS)
+6690 PRINT TAB(9);"Load impedance...............................";
+6700 PRINT USING "#####.#";INT(RL*10)/10;:PRINT " ";SUM$;" j";INT(XS*10)/10;"Ω"
+6710 U=RL-R1:V=RL+R1:P=U^2+XS^2:Q=V^2+XS^2
+6720 GAMMA=SQR(P/Q):SWR=(1+GAMMA)/(1-GAMMA)
+6730 PRINT TAB(9);"Load SWR.....................................";USING U2$;SWR;
+6740 PRINT ":1"
+6750 LOCATE 23,9: PRINT "Do you wish to make another calculation  (y/n)"
+6760 Y$=INKEY$:IF Y$=""THEN 6760
+6770 IF Y$="Y"OR Y$="y"THEN 6800
+6780 LOCATE 23:PRINT E$
+6790 GOTO 9210   :REM'end
+6800 VIEW PRINT 10 TO 24:CLS:VIEW PRINT:LOCATE 10:GOTO 6530
+6810 :REM'
+6820 :REM'.....data entry notes
+6830 VIEW PRINT 4 TO 24:CLS:VIEW PRINT:LOCATE 4
+6840 NONOTE=1
+6850 T=7
+6860 PRINT" 1.";TAB(T);
+6870 PRINT"Each transmatch design option has a paired impedance bridge option"
+6880 PRINT TAB(T);
+6890 PRINT"which may be used either to (a) confirm the accuracy of the design"
+6900 PRINT TAB(T);
+6910 PRINT"procedures or (b) determine values (R and X) of an unknown load."
+6920 PRINT TAB(T);
+6930 PRINT"Case (b) assumes bridge components have been calibrated since"
+6940 PRINT TAB(T);
+6950 PRINT"component values under matched conditions are used as program input."
+6960 PRINT
+6970 PRINT" 2.";TAB(T);
+6980 PRINT"Each design option includes the provision to determine the value of"
+6990 PRINT TAB(T);
+7000 PRINT"transmatch input SWR as component values are varied."
+7010 PRINT
+7020 PRINT" 3.";TAB(T);
+7030 PRINT"CAUTION: CARE MUST BE EXERCISED WHEN ENTERING NUMERICAL DATA."
+7040 PRINT
+7050 PRINT TAB(T);
+7060 PRINT"If a non-numerical character is entered where a numerical character"
+7070 PRINT TAB(T);
+7080 PRINT"is expected (numbers may contain a decimal point and reactance"
+7090 PRINT TAB(T);
+7100 PRINT"values may be negative) a GWBASIC error checking routine halts the"
+7110 PRINT TAB(T);
+7120 PRINT"execution of the program. The screen display will be overwritten"
+7130 PRINT TAB(T);
+7140 PRINT"with the error message `REDO FROM START' plus a prompt to re-enter"
+7150 PRINT TAB(T);
+7160 PRINT"the correct data. The program can be continued by responding to the"
+7170 PRINT TAB(T);
+7180 PRINT"prompt but legibility of the display will be impaired. It is"
+7190 PRINT TAB(T);
+7200 PRINT"suggested that the program be halted and re-run. To halt the program"
+7210 PRINT TAB(T);
+7220 PRINT"hold down the CONTROL key and press the PAUSE key. Then press the F2"
+7230 PRINT TAB(T);
+7240 PRINT"key to re-start the program.";
+7250 :REM'
+7260 GOSUB 9260
+7270 LOCATE 25,1:PRINT E$;
+7280 VIEW PRINT 4 TO 24:CLS:VIEW PRINT:LOCATE 4
+7290 :REM'
+7300 PRINT " 4.";TAB(T);
+7310 PRINT"For SWR calculations the data input format is N1,N2,N3 (i.e. inputs"
+7320 PRINT TAB(T);
+7330 PRINT"are separated by commas, e.g. 1.3,50,75 )."
+7340 PRINT
+7350 PRINT " 5.";TAB(T);
+7360 PRINT"Values of the normalized tuner loss factor, (δ), are evaluated and"
+7370 PRINT TAB(T);
+7380 PRINT"listed for all tuner designs. These values provide a relative"
+7390 PRINT TAB(T);
+7400 PRINT"measure of tuner power dissipation (the lower the δ, the lower the"
+7410 PRINT TAB(T);
+7420 PRINT"loss). In evaluating δ it is assumed that losses in tuner capacitors"
+7430 PRINT TAB(T);
+7440 PRINT"are negligible. Tuner efficiency is equal to [ 1 - δ/Q ] where Q is"
+7450 PRINT TAB(T);
+7460 PRINT"the quality factor of the inductor(s), i.e. the ratio of inductive"
+7470 PRINT TAB(T);
+7480 PRINT"reactance to loss resistance."
+7490 PRINT
+7500 PRINT TAB(T);
+7510 PRINT"For further reading on δ refer to the RADIO ENGINEERS HANDBOOK"
+7520 PRINT TAB(T);
+7530 PRINT"by F.E.TERMAN, McGraw-Hill, NEW YORK, 1943, pages 210-215."
+7540 PRINT
+7550 PRINT " 6.";TAB(T);
+7560 PRINT"Inductors (either air-core or toroid) of the exact values computed"
+7570 PRINT TAB(T);
+7580 PRINT"by this program may be designed using HAMCALC programs COIL DESIGNER"
+7590 PRINT TAB(T);
+7600 PRINT"and/or TOROID INDUCTORS."
+7610 :REM'
+7620 GOSUB 9260
+7630 GOTO 610
+7640 :REM'
+7650 :REM'.....Pi-Coupler SWR
+7660 LOCATE 23:PRINT E$
+7670 LOCATE 23,9
+7680 PRINT "Do you wish to calculate SWR for variations in tuner values?  (y/n)"
+7690 Y$=INKEY$:IF Y$=""THEN 7690
+7700 IF Y$="N"OR Y$="n"THEN RETURN
+7710 LOCATE 23:PRINT E$
+7720 :REM'
+7730 LOCATE 23,2
+7740 INPUT "ENTER: Tuner component values L(uH), C1(pF), C2(pF)";N1,N2,N3
+7750 GOSUB 7860
+7760 VIEW PRINT 22 TO 24:CLS:VIEW PRINT
+7770 LOCATE 22,9
+7780 PRINT "For L=";N1;"uH, C1=";N2;"pF, C2=";N3;"pF: SWR=";
+7790 PRINT USING "##.##";SWR;:PRINT ":1"
+7800 LOCATE 23,9:PRINT "Another SWR calculation?  (y/n)"
+7810 Y$=INKEY$:IF Y$=""THEN 7810
+7820 IF Y$="N"OR Y$="n"THEN LOCATE 23:PRINT E$:RETURN
+7830 VIEW PRINT 22 TO 24:CLS:VIEW PRINT
+7840 GOTO 7730
+7850 :REM'
+7860 :REM'.....calculation of SWR
+7870 N4=N1*10^-6:N5=N2*10^-12:N6=N3*10^-12
+7880 GL=RL/Z:BL=W*N6-XS/Z:NUM=GL^2+(BL-1/W/N4)^2
+7890 M=1/(W*N4)^2*GL/NUM:N=W*N5-1/W/N4+1/(W*N4)^2/NUM*(1/W/N4-BL)
+7900 RI=M/(M^2+N^2):XI=-N/(M^2+N^2)
+7910 U=RI-R1:V=RI+R1:P=U^2+XI^2:Q=V^2+XI^2
+7920 GAMMA=SQR(P/Q):SWR=(1+GAMMA)/(1-GAMMA)
+7930 RETURN
+7940 :REM'
+7950 :REM'.....SPC SWR
+7960 LOCATE 23:PRINT E$
+7970 LOCATE 23,9
+7980 PRINT "Do you wish to calculate SWR for variations in tuner values?  (y/n)"
+7990 Y$=INKEY$:IF Y$="" THEN 7990
+8000 IF Y$="N" OR Y$="n" THEN RETURN
+8010 LOCATE 23:PRINT E$
+8020 :REM'
+8030 LOCATE 23,2
+8040 INPUT "ENTER: Tuner component values L(uH), C1(pF), C(pF)";N1,N2,N3
+8050 GOSUB 8160
+8060 VIEW PRINT 22 TO 24:CLS:VIEW PRINT
+8070 LOCATE 22,9
+8080 PRINT "For L=";N1;"uH, C1=";N2;"pF, C=";N3;"pF: SWR=";
+8090 PRINT USING "##.##";SWR;:PRINT ":1"
+8100 LOCATE 23,9:PRINT "Another SWR calculation?  (y/n)"
+8110 Y$=INKEY$:IF Y$=""THEN 8110
+8120 IF Y$="N"OR Y$="n"THEN LOCATE 23:PRINT E$:RETURN
+8130 VIEW PRINT 22 TO 24:CLS:VIEW PRINT
+8140 GOTO 8030
+8150 :REM'
+8160 :REM'.....calculation of SWR
+8170 N4=N1*10^-6:N5=N2*10^-12:N6=N3*10^-12
+8180 IF VER$="1"THEN DELTA=W*N6
+8190 IF VER$="2"THEN DELTA=W*N5
+8200 IF VER$="3"THEN DELTA=0
+8210 XT=XS-1/W/N6:Z=RL^2+XT^2
+8220 GL=RL/Z:BL=-(1/W/N4+XT/Z)+DELTA
+8230 NUM=GL^2+BL^2:RI=GL/NUM:XI=-BL/NUM-1/W/N5
+8240 U=RI-R1:V=RI+R1:P=U^2+XI^2:Q=V^2+XI^2
+8250 GAMMA=SQR(P/Q):SWR=(1+GAMMA)/(1-GAMMA)
+8260 RETURN
+8270 :REM'
+8280 :REM'.....Lowpass Tee SWR
+8290 LOCATE 23,9
+8300 PRINT "Do you wish to calculate SWR for variations in tuner values?  (y/n)"
+8310 Y$=INKEY$:IF Y$=""THEN 8310
+8320 IF Y$="N"OR Y$="n"THEN RETURN
+8330 LOCATE 23:PRINT E$:LOCATE 23
+8340 INPUT " ENTER: Tuner component values L1(µH), L2(µH), C(pF)";N1,N2,N3
+8350 LOCATE 23:PRINT E$
+8360 GOSUB 8450
+8370 LOCATE 22,9:PRINT "For L1=";N1;"µH, L2=";N2;"µH, C=";N3;"pF: SWR=";
+8380 PRINT USING "###.##";SWR;:PRINT ":1"
+8390 LOCATE 23,9:PRINT "Another SWR calculation?  (y/n)"
+8400 Y$=INKEY$:IF Y$=""THEN 8400
+8410 IF Y$="N"OR Y$="n"THEN RETURN
+8420 LOCATE 22:PRINT E$
+8430 GOTO 8330
+8440 :REM'
+8450 :REM'.....SWR calculation
+8460 N4=N1*10^-6:N5=N2*10^-6:N6=N3*10^-12
+8470 XT=XS+W*N5:Z=RL^2+XT^2
+8480 GL=RL/Z:BL=W*N6-XT/Z
+8490 NUM=GL^2+BL^2:RI=GL/NUM:XI=-BL/NUM+W*N4
+8500 U=RI-R1:V=RI+R1:P=U^2+XI^2:Q=V^2+XI^2
+8510 GAMMA=SQR(P/Q):SWR=(1+GAMMA)/(1-GAMMA)
+8520 RETURN
+8530 :REM'
+8540 :REM'.....ULTIMATE/SWR
+8550 LOCATE 23,9
+8560 PRINT "Do you wish to calculate SWR for variations in tuner values?  (y/n)"
+8570 Y$=INKEY$:IF Y$=""THEN 8570
+8580 IF Y$="N"OR Y$="n" THEN RETURN
+8590 LOCATE 22:PRINT E$:PRINT E$:LOCATE 23
+8600 INPUT " ENTER: Tuner component values L(µH), C1(pF), C(pF)";N1,N2,N3
+8610 GOSUB 8710
+8620 LOCATE 22,9
+8630 PRINT "For L=";N1;"µH, C1=";N2;"pF, C=";N3;"pF:  SWR=";
+8640 PRINT USING "#.##";SWR;:PRINT ":1"
+8650 PRINT E$
+8660 LOCATE 23,9:PRINT "Another SWR calculation?  (y/n)"
+8670 Y$=INKEY$:IF Y$=""THEN 8670
+8680 IF Y$="N"OR Y$="n"THEN RETURN
+8690 GOTO 8590
+8700 :REM'
+8710 :REM'.....calculation of SWR
+8720 N4=N1*10^-6:N5=N2*10^-12:N6=N3*10^-12
+8730 XT=XS-1/W/N6:Z=RL^2+XT^2
+8740 GL=RL/Z:BL=-(1/W/N4+XT/Z)
+8750 NUM1=GL^2+BL^2:RA=GL/NUM1:XA=-BL/NUM1-1/W/N5
+8760 NUM2=RA^2+XA^2:GI=RA/NUM2:BI=W*N5-XA/NUM2
+8770 NUM3=GI^2+BI^2:RI=GI/NUM3:XI=-BI/NUM3
+8780 U=RI-R1:V=RI+R1:P=U^2+XI^2:Q=V^2+XI^2
+8790 GAMMA=SQR(P/Q):SWR=(1+GAMMA)/(1-GAMMA)
+8800 RETURN
+8810 :REM'
+8820 :REM'.....PI-COUPLER DELTA
+8830 J=1+W^2*R1^2*C1^2:D1=J*XL/R1:JJ=1+W^2*R1^2*C1A^2:D2=JJ*XL/R1
+8840 LOCATE 16,15
+8850 IF C1>=0 AND C2-CP>=0 THEN PRINT "( δ =";:PRINT USING "##.#";D1;:PRINT " )"
+8860 LOCATE 19,15:PRINT "( δ =";:PRINT USING "##.#";D2;:PRINT " )"
+8870 RETURN
+8880 :REM'
+8890 :REM'.....LOWPASS TEE DELTA - solution 1
+8900 L1A=L1*10^-6:J1=1-W^2*L1A*C:J2=W*C*R1
+8910 D1=W/R1*(L1A+L2*(J1^2+J2^2))
+8920 LOCATE 16,15:PRINT "δ= ";:PRINT USING "##.#";D1
+8930 RETURN
+8940 :REM'
+8950 :REM'.....LOWPASS TEE DELTA - solution 2
+8960 L1A=L1*10^-6:J1=1-W^2*L1A*C:J2=W*C*R1
+8970 D2=W/R1*(L1A+L2*(J1^2+J2^2))
+8980 LOCATE 19,15:PRINT "δ= ";:PRINT USING "##.#";D2
+8990 RETURN
+9000 :REM'
+9010 :REM'......SPC Delta - Solution 1
+9020 C1=C1*10^-12:D1=(1+1/(W^2*C1^2*R1^2))/W/L*R1:C1=C1*10^12
+9030 LOCATE 16,15:PRINT "δ= ";:PRINT USING "##.#";D1
+9040 RETURN
+9050 :REM'
+9060 :REM'......SPC Delta - Solution 2
+9070 C1=C1*10^-12:D2=(1+1/(W^2*C1^2*R1^2))/W/L*R1:C1=C1*10^12
+9080 LOCATE 19,15:PRINT "δ= ";:PRINT USING "##.#";D2
+9090 RETURN
+9100 :REM'
+9110 :REM'.....ULTIMATE Delta - Solution 1
+9120 C1=C1*10^-12:T=W*C1*R1:D1=(1+4*T^2)/(W^2*L*C1)/T:C1=C1*10^12
+9130 LOCATE 16,15:PRINT "δ= ";:PRINT USING "##.#";D1
+9140 RETURN
+9150 :REM'
+9160 :REM'.....ULTIMATE Delta - Solution 2
+9170 C1=C1*10^-12:T=W*C1*R1:D2=(1+4*T^2)/(W^2*L*C1)/T:C1=C1*10^12
+9180 LOCATE 19,15:PRINT "δ= ";:PRINT USING "##.#";D2
+9190 RETURN
+9200 :REM'
+9210 :REM'end
+9220 GOSUB 9260
+9230 GOTO 160   :REM'start
+9240 END
+9250 :REM'
+9260 :REM'.....PRT
+9270 KEY OFF:GOSUB 9340:LOCATE 25,5:COLOR 0,2
+9280 PRINT " Send this page to:(1)Printer Queue? (2)Printout? ";
+9290 PRINT "(3)Next page? (1/2/3)";:COLOR 7,0
+9300 Z$=INKEY$:IF Z$<"1"OR Z$>"3"THEN 9300 :ELSE GOSUB 9340
+9310 IF Z$="3"THEN RETURN
+9320 FOR I%=1 TO 24:FOR J%=1 TO 80:LPRINT CHR$(SCREEN(I%,J%));:NEXT J%:NEXT I%
+9330 IF Z$="2"THEN LPRINT CHR$(12) :ELSE 9270
+9340 LOCATE 25,1:PRINT STRING$(80,32);:RETURN

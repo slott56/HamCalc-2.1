@@ -1,0 +1,217 @@
+10 :REM'DAYS - 30 SEP 89 - last rev.07 FBB 2010
+20 :REM'REM - chained from "CALTODAY"
+30 IF EX$=""THEN EX$="EXIT"
+40 COMMON EX$
+50 :REM'
+60 CLS
+70 DIM A$(12),M$(12)
+80 LOCATE ,,0      :REM'cursor off
+90 KEY OFF
+100 COLOR 7,0,0
+110 U1$=STRING$(80,205)
+120 U2$=STRING$(80,196)
+130 E$=STRING$(80,32)
+140 Z$=DATE$
+150 Y=VAL(RIGHT$(Z$,4))
+160 M=VAL(LEFT$(Z$,2))
+170 D=VAL(MID$(Z$,4,2))
+180 GOSUB 1010
+190 MM=M
+200 GOSUB 1200
+210 :REM'
+220 :REM'.....start
+230 CLS
+240 PRINT TAB(31);"DAYS BETWEEN DATES"
+250 PRINT U1$;
+260 GOSUB 1980
+270 INPUT " Start Year ............";R
+280 IF R<1753 THEN GOSUB 960:GOTO 80
+290 GOSUB 2040
+300 PRINT "        Start Year ..............";USING "####";R
+310 GOSUB 1980
+320 INPUT " Start Month No. .......";S
+330 GOSUB 2040
+340 PRINT "        Start Month No. .........";USING "####";S
+350 MM=S:GOSUB 1200
+360 GOSUB 1980
+370 INPUT " Start Day No. .........";T
+380 Y=R:M=S:D=T:GOSUB 1010:A$(7)=J$(Z)
+390 LOCATE CSRLIN-3
+400 PRINT "Start date ................ ";A$(7);" "W$;STR$(T);",";R
+410 PRINT U2$;:PRINT E$;:LOCATE CSRLIN-1
+420 :REM'
+430 GOSUB 1980
+440 INPUT " End Year ..............";U
+450 IF U<1753 THEN GOSUB 960:GOTO 80
+460 GOSUB 2040
+470 PRINT "        End Year ................";USING "####";U
+480 GOSUB 1980
+490 INPUT " End Month No. .........";V
+500 GOSUB 2040
+510 PRINT "        End Month No. ...........";USING "####";V
+520 MM=V:GOSUB 1200
+530 GOSUB 1980
+540 INPUT " End Day No. ...........";W
+550 Y=U:M=V:D=W:GOSUB 1010:A$(12)=J$(Z)
+560 LOCATE CSRLIN-3
+570 PRINT "End date .................. ";A$(12);" "W$;STR$(W);",";U
+580 PRINT U1$;:PRINT E$;:LOCATE CSRLIN-1
+590 IF Y=1 THEN H=R+1925:GOTO 610
+600 H=R
+610 G=S:I=T
+620 GOSUB 860
+630 J=I
+640 IF Y=1 THEN H=U+1925:GOTO 660
+650 H=U
+660 G=V:I=W
+670 GOSUB 860
+680 X=I-J
+690 COLOR 0,14
+700 FOR CLR=7 TO 10:LOCATE CLR,22:PRINT SPC(38):NEXT CLR:LOCATE 7,1
+710 COLOR 14,6
+720 LOCATE CSRLIN,22
+730 PRINT " Days between dates .....";USING "#####,###.##";ABS(X)
+740 LOCATE CSRLIN,22
+750 PRINT " Weeks between dates ....";USING "#####,###.##";ABS(X)/7
+760 LOCATE CSRLIN,22
+770 PRINT " Months between dates ...";USING "#####,###.##";ABS(X)/365.25!*12
+780 LOCATE CSRLIN,22
+790 PRINT " Years between dates ....";USING "#####,###.##";ABS(X)/365.25!
+800 COLOR 7,0
+810 PRINT
+820 PRINT TAB(14);"(Weeks, months & years calculated to nearest full day)"
+830 PRINT
+840 GOTO 1270
+850 :REM'
+860 IF G-3>=0 THEN Z=-(G-3)*30.600000381469727!-0.5!:GOSUB 940:I=I-Z:GOTO 890
+870 H=H-1
+880 Z=(-(G-3)-12)*30.600000381469727!-0.5!:GOSUB 940:I=I-Z
+890 Z=H*365.25!:GOSUB 940:I=I+Z
+900 Z=H/100:GOSUB 940:I=I-Z
+910 Z=H/400:GOSUB 940:I=I+Z
+920 I=I-307:RETURN
+930 :REM'
+940 X=INT(ABS(Z)):Z=SGN(Z)*X:RETURN
+950 :REM'
+960 BEEP:PRINT:PRINT "Year must not be prior to 1753, the year of change from"
+970 PRINT "the Julian to Gregorian calendar. Press any key to continue."
+980 IF INKEY$=""THEN 980
+990 ERASE A$,M$:GOTO 10
+1000 :REM'
+1010 J$(1)="Sunday"
+1020 J$(2)="Monday"
+1030 J$(3)="Tuesday"
+1040 J$(4)="Wednesday"
+1050 J$(5)="Thursday"
+1060 J$(6)="Friday"
+1070 J$(7)="Saturday"
+1080 K=INT(0.6000000238418579!+(1/M))
+1090 L=Y-K
+1100 O=M+12*K
+1110 P=L/100
+1120 Z1=INT(P/4)
+1130 Z2=INT(P)
+1140 Z3=INT((5*L)/4)
+1150 Z4=INT(13*(O+1)/5)
+1160 Z=Z4+Z3-Z2+Z1+D-1
+1170 Z=Z-(7*INT(Z/7))+1
+1180 RETURN
+1190 :REM'
+1200 FOR W=1 TO 12
+1210 READ W$:IF W=MM THEN RESTORE:GOTO 1230
+1220 NEXT W
+1230 RETURN
+1240 DATA January,February,March,April,May,June
+1250 DATA July,August,September,October,November,December
+1260 :REM'
+1270 :REM'.....display calendars
+1280 :REM'
+1290 COLOR 7,0,0
+1300 DIM LKUP$(12,2)
+1310 RESTORE 1320
+1320 DATA JANUARY,31,FEBRUARY,28,MARCH,31,APRIL,30,MAY,31,JUNE,30
+1330 DATA JULY,31,AUGUST,31,SEPTEMBER,30,OCTOBER,31,NOVEMBER,30,DECEMBER,31
+1340 FOR J=1 TO 12:FOR K=1 TO 2
+1350 READ LKUP$(J,K)
+1360 NEXT K:NEXT J
+1370 :REM'
+1380 FOR C=1 TO 2
+1390 IF C=1 THEN MGN=1 :ELSE MGN=46      :REM'left margin of calendar
+1400 IF C=1 THEN MNUM%=S :ELSE MNUM%=V   :REM'month number
+1410 IF C=1 THEN DAY%=T :ELSE DAY%=W     :REM'day number
+1420 IF C=1 THEN Y%=R :ELSE Y%=U         :REM'year number
+1430 M$=LKUP$(MNUM%,1)                  :REM'month name
+1440 MY$=M$+STR$(Y%)                    :REM'month, year
+1450 ND%=VAL(LKUP$(MNUM%,2))            :REM'number of days in month
+1460 :REM'
+1470 :REM'....calculate calendar
+1480 FLEAP%=0:                             :REM'flag
+1490 IF Y% MOD 400=0 THEN 1520             :REM'leap year
+1500 IF Y% MOD 100=0 THEN 1540             :REM'not leap year
+1510 IF Y% MOD 4<>0  THEN 1540             :REM'not leap year
+1520 FLEAP%=1: IF ND%=28 THEN ND%=29       :REM'add day to Feb.if leap year
+1530 :REM'....get days in prior years
+1540 YDAYS=365*Y%+INT((Y%-1)/4)-INT(0.75!*(INT((Y%-1)/100)+1))
+1550 :REM'....add days in prior months this year
+1560 MDAYS=0
+1570 FOR I=1 TO MNUM%-1:MDAYS=MDAYS+VAL(LKUP$(I,2)):NEXT I
+1580 :REM'....add 1st day, this month
+1590 DAYS=YDAYS+MDAYS+1
+1600 :REM'....if leap year add leap day
+1610 IF FLEAP%=1 AND MNUM%>2 THEN DAYS=DAYS+1
+1620 DW%=DAYS+INT(-DAYS/7)*7+6:            :REM'calculate dayweek factor
+1630 :REM'
+1640 :REM'....display calendar
+1650 LOCATE 14,MGN:COLOR 15,3
+1660 PRINT SPC(35)
+1670 T=INT((35-LEN(MY$))/2)
+1680 LOCATE 14,MGN+T
+1690 PRINT MY$
+1700 COLOR 10,4
+1710 LOCATE 15,MGN:PRINT " SUN  MON  TUE  WED  THU  FRI  SAT "
+1720 CS%=1                              :REM'counts spaces
+1730 :REM'
+1740 COLOR 0,6:FOR Z=16 TO 22:LOCATE Z,MGN:PRINT SPC(35):NEXT Z
+1750 FOR R%=16 TO 22                    :REM'row
+1760 FOR C%=2 TO 32 STEP 5              :REM'column
+1770 CD%=CS%-DW%
+1780 IF CD%=DAY% THEN COLOR 15,1  :ELSE COLOR 15,6  :REM'hi-lite specified day
+1790 :REM'....CD%=dates, ND%=days in month
+1800 IF CD%<1 OR CD%>ND% THEN 1850      :REM'bad dates
+1810 CD$=STR$(CD%)
+1820 CD$=RIGHT$(CD$,LEN(CD$)-1)         :REM'remove blank space
+1830 IF LEN(CD$)<2 THEN CD$=" "+CD$
+1840 LOCATE R%,C%+MGN:PRINT CD$
+1850 CS%=CS%+1
+1860 NEXT C%:NEXT R%
+1870 :REM'
+1880 COLOR 15,3
+1890 IF C=1 THEN Q$="START  DATE":Q=12
+1900 IF C=2 THEN Q$="END  DATE":Q=13
+1910 LOCATE 22,MGN:PRINT SPC(35)
+1920 LOCATE 22,MGN+Q:PRINT Q$
+1930 NEXT C
+1940 :REM'
+1950 :REM'.....end
+1960 COLOR 7,0:GOSUB 2100:CLS:CHAIN "caltoday,200"
+1970 :REM'
+1980 :REM'.....input routine
+1990 COLOR 0,7
+2000 PRINT " ENTER:";
+2010 COLOR 7,0
+2020 RETURN
+2030 :REM'
+2040 :REM'.....erase current line
+2050 LOCATE CSRLIN-1
+2060 PRINT E$;
+2070 LOCATE CSRLIN-1
+2080 RETURN
+2090 :REM'
+2100 :REM'PRT
+2110 GOSUB 2170:LOCATE 25,18:COLOR 0,2
+2120 PRINT " Press #»▌1=Print▌2=Print/Form Feed▌3=Continue";:COLOR 7,0
+2130 Z$=INKEY$:IF Z$<"1"OR Z$>"3"THEN 2130 :ELSE GOSUB 2170
+2140 IF Z$="3"THEN RETURN
+2150 FOR I%=1 TO 24:FOR J%=1 TO 80:LPRINT CHR$(SCREEN(I%,J%));:NEXT J%:NEXT I%
+2160 IF Z$="2"THEN LPRINT CHR$(12) :ELSE 2110
+2170 LOCATE 25,1:PRINT STRING$(80,32);:RETURN

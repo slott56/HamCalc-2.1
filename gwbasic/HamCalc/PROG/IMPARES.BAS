@@ -1,0 +1,67 @@
+10 :REM'IMPARES -Impedance of Parallel-Resonant Circuits- 04 JUL 95 rev. 09 JAN 01
+20 CLS:KEY OFF
+30 IF EX$=""THEN EX$="EXIT"
+40 COLOR 7,0,1
+50 U$="###,###.###"
+60 UL$=STRING$(80,205)
+70 E$=STRING$(79,32)
+80 PI=4*ATN(1)
+90 :REM'.....start
+100 CLS
+110 COLOR 15,2
+120 PRINT " IMPEDANCE - PARALLEL-RESONANT CIRCUITS";
+130 PRINT TAB(57);"by George Murphy VE3ERP ";
+140 COLOR 1,0:PRINT STRING$(80,223);
+150 COLOR 7,0
+160 GOSUB 480  :REM'get diagram
+170 PRINT
+180 PRINT UL$;
+190 COLOR 0,7:LOCATE CSRLIN,22
+200 LN=CSRLIN:PRINT " Press 1 to continue or 0 to EXIT....."
+210 COLOR 7,0
+220 Z$=INKEY$:IF Z$="" THEN 220
+230 IF Z$="0"THEN CLS:RUN EX$
+240 IF Z$="1"THEN VIEW PRINT LN TO 24:CLS:VIEW PRINT:LOCATE LN:GOTO 260
+250 GOTO 220
+260 :REM'.....data input
+270 INPUT " ENTER: Capacitance C (pF)";C
+280 LOCATE CSRLIN-1:PRINT E$
+290 LOCATE CSRLIN-1 :PRINT USING " Capacitance C........... #####.### pf";C
+300 INPUT " ENTER: Inductance L (µH)";L
+310 LOCATE CSRLIN-1:PRINT E$
+320 LOCATE CSRLIN-1 :PRINT USING " Inductance L........... #####.### µH";L
+330 INPUT " ENTER: Resistance R (ohms)";R
+340 LOCATE CSRLIN-1:PRINT E$
+350 LOCATE CSRLIN-1 :PRINT USING " Resistance R............ #####.### Ω";R
+360 :REM'.....equations
+370 F=10^3/(2*PI*SQR(L*C))
+380 XL=2*PI*F*L
+390 Q=XL/R
+400 Z=XL^2/R
+410 PRINT USING " Reactance XL............ #####.### Ω";XL
+420 PRINT USING " Frequency............... #####.### MHz";F
+430 PRINT USING " Circuit Q............... #####.### ";Q
+440 PRINT USING " Impedance Z............. #####.### Ω";Z
+450 PRINT UL$;
+460 GOSUB 590
+470 GOTO 90   :REM'start
+480 :REM'.....diagram
+490 T=29
+500 COLOR 0,7
+510 LOCATE CSRLIN,T:PRINT TAB(T);"                L       "
+520 LOCATE CSRLIN,T:PRINT TAB(T);"     ┌────┬───∩∩∩∩∩───┐ "
+530 LOCATE CSRLIN,T:PRINT TAB(T);" E(in)    │           │ "
+540 LOCATE CSRLIN,T:PRINT TAB(T);"   @     ═╪═ C        │ "
+550 LOCATE CSRLIN,T:PRINT TAB(T);" F MHz    │     R     │ "
+560 LOCATE CSRLIN,T:PRINT TAB(T);"     └────┴───/\/\/───┘ "
+570 COLOR 7,0
+580 RETURN
+590 :REM'.....PRT
+600 KEY OFF:GOSUB 670:LOCATE 25,5:COLOR 0,2
+610 PRINT " Send this page to:(1)Printer Queue? (2)Printout? ";
+620 PRINT "(3)Next page? (1/2/3)";:COLOR 7,0
+630 Z$=INKEY$:IF Z$<"1"OR Z$>"3"THEN 630 :ELSE GOSUB 670
+640 IF Z$="3"THEN RETURN
+650 FOR I%=1 TO 24:FOR J%=1 TO 80:LPRINT CHR$(SCREEN(I%,J%));:NEXT J%:NEXT I%
+660 IF Z$="2"THEN LPRINT CHR$(12) :ELSE 600
+670 LOCATE 25,1:PRINT STRING$(80,32);:RETURN

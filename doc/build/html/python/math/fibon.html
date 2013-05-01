@@ -1,0 +1,377 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>fibon – Fibonacci Series &mdash; HamCalc 2.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '2.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="HamCalc 2.1 documentation" href="../../index.html" />
+    <link rel="up" title="math – Math, Physics, Units Conversion" href="index.html" />
+    <link rel="next" title="formulae" href="formulae.html" />
+    <link rel="prev" title="equiv" href="equiv.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="formulae.html" title="formulae"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="equiv.html" title="equiv"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../../index.html">HamCalc 2.1 documentation</a> &raquo;</li>
+          <li><a href="../index.html" >Python Modules</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">math &#8211; Math, Physics, Units Conversion</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="fibon-fibonacci-series">
+<h1>fibon &#8211; Fibonacci Series<a class="headerlink" href="#fibon-fibonacci-series" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="analysis">
+<h2>Analysis<a class="headerlink" href="#analysis" title="Permalink to this headline">¶</a></h2>
+<p>The Fibonacci Series, <img class="math" src="../../_images/math/b842b4552478b69732a9aea702309d8c51e43056.png" alt="F_n"/>, is defined by a simple recurrence rule.</p>
+<div class="math">
+<p><img src="../../_images/math/bb5875e6e2a9eecd515142a722e4739c8d92b4b4.png" alt="F_{n+2} = F_{n+1} + F_{n}"/></p>
+</div><p>Typically, <img class="math" src="../../_images/math/2e7e36ff489ba9ee0426f07ef004169502755efa.png" alt="F_0 = 1"/> and <img class="math" src="../../_images/math/4c0df42671f463da7039819f5bb3f229ce806eb6.png" alt="F_1 = 1"/>.</p>
+<p>This leads to the sequence</p>
+<div class="math">
+<p><img src="../../_images/math/be4c7b46417feaa883a319ca0f4a795204eccf5b.png" alt="\{ 1, 1, 2, 3, 5, 8, ... \}"/></p>
+</div><p>There are number of interesting properties for the values in this series.</p>
+<p>Most notable, the Golden Ratio, <img class="math" src="../../_images/math/2c175f60eecef1de7560c3bdea495d69f26f719d.png" alt="\phi"/>, is related to this sequence.</p>
+<div class="math">
+<p><img src="../../_images/math/e7f1c3c81ad1548b472120479f5b32049fe4df4d.png" alt="\phi \approx \frac{F_{n+1}}{F_{n}} = \frac{1+\sqrt{5}}{2}"/></p>
+</div><p>Note that <img class="math" src="../../_images/math/2c175f60eecef1de7560c3bdea495d69f26f719d.png" alt="\phi"/> has this property:</p>
+<div class="math">
+<p><img src="../../_images/math/1d43db9a7db63f3735d296ca82b6641de991e6b7.png" alt="\phi = (1/\phi+1)"/></p>
+</div></div>
+<div class="section" id="implementations">
+<h2>Implementations<a class="headerlink" href="#implementations" title="Permalink to this headline">¶</a></h2>
+<p>The essential module has this API.</p>
+<span class="target" id="module-hamcalc.math.fibon"></span><p>hamcalc.math.fibon &#8211; Fibonacci Numbers</p>
+<p>Here are some test cases.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">hamcalc.math.fibon</span> <span class="kn">as</span> <span class="nn">fibon</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span> <span class="n">fibon</span><span class="o">.</span><span class="n">fibon_last_iter</span><span class="p">(</span> <span class="n">last</span><span class="o">=</span><span class="mi">100</span> <span class="p">)</span> <span class="p">)</span>
+<span class="go">[1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span> <span class="n">fibon</span><span class="o">.</span><span class="n">fibon_count_iter</span><span class="p">(</span> <span class="n">count</span><span class="o">=</span><span class="mi">5</span> <span class="p">)</span> <span class="p">)</span>
+<span class="go">[1, 1, 2, 3, 5]</span>
+</pre></div>
+</div>
+<p>There are two implementations.</p>
+<ul class="simple">
+<li>Functional. This uses a generator function.</li>
+<li>Object-Oriented. This uses recursive method and memoization.</li>
+</ul>
+<dl class="function">
+<dt id="hamcalc.math.fibon.intro">
+<tt class="descclassname">hamcalc.math.fibon.</tt><tt class="descname">intro</tt><big>(</big><big>)</big><a class="reference internal" href="../../_modules/hamcalc/math/fibon.html#intro"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.math.fibon.intro" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the text from the introductory page.</p>
+</dd></dl>
+
+<p>There are two implementations: object-oriented and functional.</p>
+<p><strong>Object-Oriented Fibonacci Series</strong></p>
+<span class="target" id="module-hamcalc.math.fibon.obj"></span><p>hamcalc.math.fibon &#8211; Fibonacci Numbers, object-oriented implementation.</p>
+<p>This module defines a callable class which can efficiently
+generate Fibonacci numbers.</p>
+<p>It also defines two useful generator functions to provide sequences
+of Fibonacci numbers.</p>
+<p>Test Cases</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">fibon</span><span class="o">=</span> <span class="n">Fibonacci</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="n">fibon</span><span class="p">(</span><span class="mi">11</span><span class="p">),</span> <span class="n">fibon</span><span class="p">(</span><span class="mi">12</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span>
+<span class="go">144</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span>
+<span class="go">233</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span><span class="o">/</span><span class="n">a</span>
+<span class="go">1.6180555555555556</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span> <span class="n">fibon_count_iter</span><span class="p">(</span> <span class="n">count</span><span class="o">=</span><span class="mi">5</span> <span class="p">)</span> <span class="p">)</span>
+<span class="go">[1, 1, 2, 3, 5]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span> <span class="n">fibon_last_iter</span><span class="p">(</span> <span class="n">last</span><span class="o">=</span><span class="mi">100</span> <span class="p">)</span> <span class="p">)</span>
+<span class="go">[1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89]</span>
+</pre></div>
+</div>
+<p>For HamCalc compatibility, use f_0=0 in the constructor.
+This will yield a Fibonacci Series that starts with zero.</p>
+<dl class="class">
+<dt id="hamcalc.math.fibon.obj.Fibonacci">
+<em class="property">class </em><tt class="descclassname">hamcalc.math.fibon.obj.</tt><tt class="descname">Fibonacci</tt><big>(</big><em>f_0=1</em>, <em>f_1=1</em><big>)</big><a class="reference internal" href="../../_modules/hamcalc/math/fibon/obj.html#Fibonacci"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.math.fibon.obj.Fibonacci" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the <em>n</em>th Fibonacci number.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="hamcalc.math.fibon.obj.fibon_count_iter">
+<tt class="descclassname">hamcalc.math.fibon.obj.</tt><tt class="descname">fibon_count_iter</tt><big>(</big><em>f_0=1</em>, <em>f_1=1</em>, <em>count=22</em><big>)</big><a class="reference internal" href="../../_modules/hamcalc/math/fibon/obj.html#fibon_count_iter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.math.fibon.obj.fibon_count_iter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Yields a sequence of Fibonacci numbers bounded by count.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>f_0</strong> &#8211; The first number, default is 1.</li>
+<li><strong>f_1</strong> &#8211; The second number, default is 1.</li>
+<li><strong>count</strong> &#8211; The number of numbers to return.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="hamcalc.math.fibon.obj.fibon_last_iter">
+<tt class="descclassname">hamcalc.math.fibon.obj.</tt><tt class="descname">fibon_last_iter</tt><big>(</big><em>f_0=1</em>, <em>f_1=1</em>, <em>last=10000000</em><big>)</big><a class="reference internal" href="../../_modules/hamcalc/math/fibon/obj.html#fibon_last_iter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.math.fibon.obj.fibon_last_iter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Yields a sequence of Fibonacci numbers bounded by the last value.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>f_0</strong> &#8211; The first number, default is 1.</li>
+<li><strong>f_1</strong> &#8211; The second number, default is 1.</li>
+<li><strong>last</strong> &#8211; Upper limit; this number is greater than all numbers returned.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<p><strong>Functional Fibonacci Series</strong></p>
+<span class="target" id="module-hamcalc.math.fibon.func"></span><p>hamcalc.math.fibon &#8211; Fibonacci Numbers, functional implementation.</p>
+<p>This module defines a generator function which can efficiently
+generate Fibonacci numbers.</p>
+<p>It also defines two useful iterator tools functions to provide finite sequences
+of Fibonacci numbers.</p>
+<p>Test Cases</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span> <span class="n">fibon_count_iter</span><span class="p">(</span> <span class="n">count</span><span class="o">=</span><span class="mi">13</span> <span class="p">)</span> <span class="p">)</span>
+<span class="go">[1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">f</span><span class="o">=</span> <span class="nb">list</span><span class="p">(</span> <span class="n">fibon_count_iter</span><span class="p">(</span> <span class="n">count</span><span class="o">=</span><span class="mi">13</span> <span class="p">)</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="n">f</span><span class="p">[</span><span class="mi">11</span><span class="p">],</span> <span class="n">f</span><span class="p">[</span><span class="mi">12</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span>
+<span class="go">144</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span>
+<span class="go">233</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span><span class="o">/</span><span class="n">a</span>
+<span class="go">1.6180555555555556</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span> <span class="n">fibon_last_iter</span><span class="p">(</span> <span class="n">last</span><span class="o">=</span><span class="mi">100</span> <span class="p">)</span> <span class="p">)</span>
+<span class="go">[1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89]</span>
+</pre></div>
+</div>
+<p>For HamCalc compatibility, use f_0=0 in the various generator functions.
+This will yield a Fibonacci Series that starts with zero.</p>
+<dl class="function">
+<dt id="hamcalc.math.fibon.func.fibon_count_iter">
+<tt class="descclassname">hamcalc.math.fibon.func.</tt><tt class="descname">fibon_count_iter</tt><big>(</big><em>f_0=1</em>, <em>f_1=1</em>, <em>count=22</em><big>)</big><a class="reference internal" href="../../_modules/hamcalc/math/fibon/func.html#fibon_count_iter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.math.fibon.func.fibon_count_iter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Yields a sequence of Fibonacci numbers bounded by count.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>f_0</strong> &#8211; The first number, default is 1.</li>
+<li><strong>f_1</strong> &#8211; The second number, default is 1.</li>
+<li><strong>count</strong> &#8211; The number of numbers to return.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="hamcalc.math.fibon.func.fibon_last_iter">
+<tt class="descclassname">hamcalc.math.fibon.func.</tt><tt class="descname">fibon_last_iter</tt><big>(</big><em>f_0=1</em>, <em>f_1=1</em>, <em>last=10000000</em><big>)</big><a class="reference internal" href="../../_modules/hamcalc/math/fibon/func.html#fibon_last_iter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.math.fibon.func.fibon_last_iter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Yields a sequence of Fibonacci numbers bounded by the last value.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>f_0</strong> &#8211; The first number, default is 1.</li>
+<li><strong>f_1</strong> &#8211; The second number, default is 1.</li>
+<li><strong>last</strong> &#8211; Upper limit; this number is greater than all numbers returned.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="hamcalc.math.fibon.func.fibonacci_iter">
+<tt class="descclassname">hamcalc.math.fibon.func.</tt><tt class="descname">fibonacci_iter</tt><big>(</big><em>f_0=1</em>, <em>f_1=1</em><big>)</big><a class="reference internal" href="../../_modules/hamcalc/math/fibon/func.html#fibonacci_iter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.math.fibon.func.fibonacci_iter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Yields an infinite sequence of Fibonacci numbers given two starting values.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>f_0</strong> &#8211; The first number, default is 1.</li>
+<li><strong>f_1</strong> &#8211; The second number, default is 1.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="legacy-introduction">
+<h2>Legacy Introduction<a class="headerlink" href="#legacy-introduction" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><pre>FIBONACCI SERIES of Numbers                             by George Murphy VE3ERP
+
+A Fibonacci series is a series of numbers, positive or negative, integer or
+decimal, where each number is the sum of the two preceding numbers.
+
+The Fibonacci Ratio R is the value of any number in the series divided by the
+previous number. R approaches, but can never reach the Golden Ratio Phi.
+
+In cryptograhy (e.g., the DaVinci Code) the Golden Ratio Phi is, like the value
+of Pi, an irrational number.
+
+ EQUATIONS:
+ Pi= 4 x arctangent of 1 radian.
+ Phi= (1/r+1), where r is the Fibonacci Ratio.
+ n = nr² + nr where n is a Finonacci number.
+
+ Commonly accepted practical values are:
+ Pi= 3.141593 (approx.)
+ Phi=1.618033989 (approx.)</pre>
+</div>
+</div>
+<div class="section" id="legacy-output">
+<h2>Legacy Output<a class="headerlink" href="#legacy-output" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><pre>N (number)      R (ratio N/previous N)       P (ratio 1/R+1)    Diff. (P-Phi)
+
+0               0                            0                  0.000000
+1               1                            2                  0.381967
+2               2                            1.5                -0.118033
+3               1.5                          1.666667           0.048634
+5               1.666667                     1.6                -0.018033
+8               1.6                          1.625              0.006967
+13              1.625                        1.615385           -0.002648
+21              1.615385                     1.619048           0.001015
+34              1.619048                     1.617647           -0.000386
+55              1.617647                     1.618182           0.000149
+89              1.618182                     1.617978           -0.000055
+144             1.617978                     1.618056           0.000023
+233             1.618056                     1.618026           -0.000007
+377             1.618026                     1.618037           0.000004
+610             1.618037                     1.618033           -0.000000
+987             1.618033                     1.618034           0.000001
+1597            1.618034                     1.618034           0.000001
+2584            1.618034                     1.618034           0.000001
+4181            1.618034                     1.618034           0.000001
+6765            1.618034                     1.618034           0.000001
+10946           1.618034                     1.618034           0.000001
+17711           1.618034                     1.618034           0.000001</pre>
+</div>
+</div>
+<div class="section" id="legacy-quirks">
+<h2>Legacy Quirks<a class="headerlink" href="#legacy-quirks" title="Permalink to this headline">¶</a></h2>
+<p>The Legacy did several division-by-zero operations, which were masked by adjusting the output.</p>
+<p>The Legacy did a &#8220;regressive&#8221; series, also.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">fibon &#8211; Fibonacci Series</a><ul>
+<li><a class="reference internal" href="#analysis">Analysis</a></li>
+<li><a class="reference internal" href="#implementations">Implementations</a></li>
+<li><a class="reference internal" href="#legacy-introduction">Legacy Introduction</a></li>
+<li><a class="reference internal" href="#legacy-output">Legacy Output</a></li>
+<li><a class="reference internal" href="#legacy-quirks">Legacy Quirks</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="equiv.html"
+                        title="previous chapter">equiv</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="formulae.html"
+                        title="next chapter">formulae</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../../_sources/python/math/fibon.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="formulae.html" title="formulae"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="equiv.html" title="equiv"
+             >previous</a> |</li>
+        <li><a href="../../index.html">HamCalc 2.1 documentation</a> &raquo;</li>
+          <li><a href="../index.html" >Python Modules</a> &raquo;</li>
+          <li><a href="index.html" >math &#8211; Math, Physics, Units Conversion</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2013, S.Lott.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2b1.
+    </div>
+  </body>
+</html>

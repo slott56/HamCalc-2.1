@@ -1,0 +1,228 @@
+10 :REM'IMPEDNET - Impedance Matching Networks - 21 APR 95 rev.11 APR 97
+20 IF EX$=""THEN EX$="EXIT"
+30 CLS:KEY OFF
+40 ON ERROR  GOTO 210
+50 COLOR 7,0,1
+60 UL$=STRING$(80,205)
+70 U1$="##,###.###"
+80 U2$="##,###"
+90 U3$="####.#"
+100 PI=3.1415929794311523!
+110 :REM'
+120 :REM'.....start
+130 CLS
+140 COLOR 15,2
+150 PRINT " IMPEDANCE MATCHING NETWORKS";
+160 PRINT TAB(57);"by George Murphy VE3ERP ";
+170 COLOR 1,0:PRINT STRING$(80,223);
+180 COLOR 7,0
+190 GOTO 970
+200 :REM'
+210 :REM'.....error trap
+220 IF ERR=200 THEN 290
+230 CLS:BEEP
+240 IF ERR=5 OR ERR=11 THEN 260
+250 PRINT " Error";ERR;"in line";ERL:END
+260 COLOR 15,1:LOCATE 12,13
+270 PRINT " You may have entered a parameter that is not possible."
+280 LOCATE 13,13
+290 PRINT "              Press any key to start over.             "
+300 IF INKEY$=""THEN 300
+310 COLOR 7,0:CLS:RESUME 30
+320 :REM'
+330 :REM'.....diagrams
+340 :REM'
+350 COLOR 0,7
+360 LOCATE RO+ 1,CO+ 9:PRINT "                           "
+370 LOCATE RO+ 2,CO+ 9:PRINT "               L1          "
+380 LOCATE RO+ 3,CO+ 9:PRINT "  ─────┬─────∩∩∩∩∩───────  "
+390 LOCATE RO+ 4,CO+ 9:PRINT "       │                   "
+400 LOCATE RO+ 5,CO+ 9:PRINT " «R1  ═╪═ C1           R2» "
+410 LOCATE RO+ 6,CO+ 9:PRINT "       │                   "
+420 LOCATE RO+ 7,CO+ 9:PRINT "  ─────┴─────────────────  "
+430 LOCATE RO+ 8,CO+ 9:PRINT "                           "
+440 COLOR 15,2
+450 LOCATE RO+ 9,CO+ 9:PRINT " NETWORK #1, where R1 > R2 "
+460 COLOR 7,0
+470 RETURN
+480 :REM'
+490 COLOR 0,7
+500 LOCATE RO+ 1,CO+45:PRINT "                           "
+510 LOCATE RO+ 2,CO+45:PRINT "        C1                 "
+520 LOCATE RO+ 3,CO+45:PRINT "  ──────╫───────┬────────  "
+530 LOCATE RO+ 4,CO+45:PRINT "                │          "
+540 LOCATE RO+ 5,CO+45:PRINT " «R1        L1 ∩∩∩     R2» "
+550 LOCATE RO+ 6,CO+45:PRINT "                │          "
+560 LOCATE RO+ 7,CO+45:PRINT "  ──────────────┴────────  "
+570 LOCATE RO+ 8,CO+45:PRINT "                           "
+580 COLOR 15,2
+590 LOCATE RO+ 9,CO+45:PRINT " NETWORK #2, where R1 < R2 "
+600 COLOR 7,0
+610 RETURN
+620 :REM'
+630 COLOR 0,7
+640 LOCATE RO+11,CO+ 9:PRINT "                           "
+650 LOCATE RO+12,CO+ 9:PRINT "             L1            "
+660 LOCATE RO+13,CO+ 9:PRINT "  ─────┬───∩∩∩∩∩───┬─────  "
+670 LOCATE RO+14,CO+ 9:PRINT "       │           │       "
+680 LOCATE RO+15,CO+ 9:PRINT " «R1  ═╪═ C1   C2 ═╪═  R2» "
+690 LOCATE RO+16,CO+ 9:PRINT "       │           │       "
+700 LOCATE RO+17,CO+ 9:PRINT "  ─────┴───────────┴─────  "
+710 LOCATE RO+18,CO+ 9:PRINT "                           "
+720 COLOR 15,2
+730 LOCATE RO+19,CO+ 9:PRINT " NETWORK #3, where R1 > R2 "
+740 COLOR 7,0
+750 RETURN
+760 :REM'
+770 COLOR 0,7
+780 LOCATE RO+11,CO+45:PRINT "                           "
+790 LOCATE RO+12,CO+45:PRINT "             C1            "
+800 LOCATE RO+13,CO+45:PRINT "  ─────┬─────╫─────┬─────  "
+810 LOCATE RO+14,CO+45:PRINT "       │           │       "
+820 LOCATE RO+15,CO+45:PRINT " «R1  ═╪═ C2   L1 ∩∩∩  R2» "
+830 LOCATE RO+16,CO+45:PRINT "       │           │       "
+840 LOCATE RO+17,CO+45:PRINT "  ─────┴───────────┴─────  "
+850 LOCATE RO+18,CO+45:PRINT "                           "
+860 COLOR 15,2
+870 LOCATE RO+19,CO+45:PRINT " NETWORK #4, where R1 < R2 "
+880 COLOR 7,0
+890 RETURN
+900 :REM'
+910 :REM'.....display input
+920 LOCATE CSRLIN-1:PRINT "        ";:LOCATE CSRLIN,43
+930 IF Z=QL THEN PRINT USING U2$;Z:GOTO 950
+940 PRINT USING U1$;Z
+950 RETURN
+960 :REM'
+970 :REM'.....input menu
+980 RO=2:CO=0
+990 FOR Z=1 TO 4:ONZ GOSUB 350,490,630,770:NEXT Z    :REM'draw 4 diagrams
+1000 PRINT UL$;
+1010 COLOR 0,7:LOCATE CSRLIN,22
+1020 PRINT " Press 1 to continue or 0 to EXIT....."
+1030 COLOR 7,0
+1040 Z$=INKEY$:IF Z$=""THEN 1040
+1050 IF Z$="0"THEN CLS:RUN EX$
+1060 IF Z$="1"THEN 1080
+1070 GOTO 1040
+1080 LOCATE CSRLIN-1:PRINT STRING$(80,32);:LOCATE CSRLIN-1
+1090 COLOR 15,2
+1100 PRINT " Press one of the four network numbers to start program......"
+1110 COLOR 7,0
+1120 N$=INKEY$
+1130 IF N$="1" THEN GOSUB 1180:RO=2:CO=19:GOSUB 350:GOTO 1290
+1140 IF N$="2" THEN GOSUB 1180:RO=2:CO=-17:GOSUB 490:GOTO 1290
+1150 IF N$="3" THEN GOSUB 1180:RO=-8:CO=19:GOSUB 630:GOTO 1290
+1160 IF N$="4" THEN GOSUB 1180:RO=-8:CO=-17:GOSUB 770:GOTO 1290
+1170 GOTO 1120
+1180 VIEW PRINT 3 TO 24:CLS:VIEW PRINT:LOCATE 3
+1190 PRINT " The source resistance"
+1200 PRINT " can be either R1 or R2"
+1210 IF N$<>"3"THEN 1270
+1220 PRINT
+1230 PRINT " This is the familiar"
+1240 PRINT " Pi-Network tank circuit"
+1250 PRINT " where C1 and C2 are the"
+1260 PRINT " Tune and Load controls."
+1270 RETURN
+1280 :REM'
+1290 :REM'.....input & print
+1300 PRINT UL$;
+1310 INPUT " ENTER: Impedance R1 (ohms)............R1=   ";R1
+1320 Z=R1:GOSUB 910
+1330 INPUT " ENTER: Impedance R2 (ohms)............R2=   ";R2
+1340 Z=R2:GOSUB 910
+1350 INPUT " ENTER: Frequency (MHz).................F=   ";F
+1360 Z=F:GOSUB 910
+1370 GOSUB 1540:GOTO 1390
+1380 :REM'
+1390 IF N=0 THEN 1410
+1400 PRINT "        N Factor........................N=";USING U1$;N
+1410 PRINT "        Reactance of L1 (ohms)........XL1=";USING U1$;XL1;
+1420 L1=XL1/(2*PI*F):PRINT TAB(57)"L1=";USING U3$;L1;:PRINT " µH"
+1430 PRINT "        Reactance of C1 (ohms)........XC1=";USING U1$;XC1;
+1440 C1=10^6/(2*PI*F*XC1):PRINT TAB(57)"C1=";USING U2$;C1;:PRINT " pF"
+1450 IF XC2=0 THEN 1480
+1460 PRINT "        Reactance of C2 (ohms)........XC2=";USING U1$;XC2;
+1470 C2=10^6/(2*PI*F*XC2):PRINT TAB(57)"C2=";USING U2$;C2;:PRINT " pF";
+1480 PRINT UL$;
+1490 PRINT TAB(5);"SEE THE 1994 ARRL HANDBOOK page 2-55 FOR A DETAILED ";
+1500 PRINT "CIRCUIT DESCRIPTION"
+1510 PRINT UL$;
+1520 GOTO 2150
+1530 :REM'
+1540 :REM'.....calculate
+1550 IF N$<>"1"THEN 1670
+1560 :REM'
+1570 :REM'.....network #1
+1580 IF R1>R2 THEN 1610
+1590 BEEP:COLOR 15,4:LOCATE CSRLIN,14
+1600 PRINT " R1 MUST BE GREATER THAN R2 !":COLOR 7,0:ERROR 200
+1610 XL1=SQR(R1*R2-R2^2)
+1620 L1=XL1/(2*PI*F)
+1630 XC1=R1*R2/XL1
+1640 C1=1/(2*PI*F*XC1)
+1650 RETURN
+1660 :REM'
+1670 IF N$<>"2"THEN 1790
+1680 :REM'
+1690 :REM'.....network #2
+1700 IF R1<R2 THEN 1730
+1710 BEEP:COLOR 15,4:LOCATE CSRLIN,14
+1720 PRINT " R1 MUST BE LESS THAN R2 !":COLOR 7,0:ERROR 200
+1730 XL1=R2*SQR(R1/(R2-R1))
+1740 L1=XL1/(2*PI*F)
+1750 XC1=R1*R2/XL1
+1760 C1=1/(2*PI*F*XC1)
+1770 RETURN
+1780 :REM'
+1790 IF N$<>"3"THEN 1910
+1800 :REM'
+1810 :REM'.....network #3
+1820 IF R1>R2 THEN 1850
+1830 BEEP:COLOR 15,4:LOCATE CSRLIN,14
+1840 PRINT " R1 MUST BE GREATER THAN R2 !":COLOR 7,0:ERROR 200
+1850 MN=SQR(R1/R2-1):GOSUB 2010
+1860 XC1=R1/N
+1870 XC2=R2/SQR(R2/R1*(1+N^2)-1)
+1880 XL1=R1*(N+(R2/XC2))/(N^2+1)
+1890 RETURN
+1900 :REM'
+1910 :REM'.....network #4
+1920 IF R1<R2 THEN 1950
+1930 BEEP:COLOR 15,4:LOCATE CSRLIN,14
+1940 PRINT " R1 MUST BE LESS THAN R2 !":COLOR 7,0:ERROR 200
+1950 MN=SQR(R2/R1-1):GOSUB 2010
+1960 XL1=R2/N
+1970 XC2=R1/SQR(R1*(N^2+1)/R2-1)
+1980 XC1=R2*N/(N^2+1)*(1-R1/(N*XC2))
+1990 RETURN
+2000 :REM'
+2010 :REM'.....N factor
+2020 PRINT "        Minimum N factor..................";USING U1$;MN
+2030 T=6
+2040 PRINT TAB(T);
+2050 PRINT "An N factor in the range of from a few percent above the minimum"
+2060 PRINT TAB(T);
+2070 PRINT "shown to about 15 is suggested. Values in the low end of the range"
+2080 PRINT TAB(T);
+2090 PRINT "are preferred. Higher values of N may result in unnecessarily large"
+2100 PRINT TAB(T);"capacitors."
+2110 INPUT " ENTER: N Factor..........................";N
+2120 VIEW PRINT 16 TO 24:CLS:VIEW PRINT:LOCATE 16
+2130 RETURN
+2140 :REM'
+2150 :REM'.....end
+2160 GOSUB 2200
+2170 GOTO 120   "start"
+2180 END
+2190 :REM'
+2200 :REM'PRT
+2210 KEY OFF:GOSUB 2280:LOCATE 25,5:COLOR 0,2
+2220 PRINT " Send this page to:(1)Printer Queue? (2)Printout? ";
+2230 PRINT "(3)Next page? (1/2/3)";:COLOR 7,0
+2240 Z$=INKEY$:IF Z$<"1"OR Z$>"3"THEN 2240 :ELSE GOSUB 2280
+2250 IF Z$="3"THEN RETURN
+2260 FOR I%=1 TO 24:FOR J%=1 TO 80:LPRINT CHR$(SCREEN(I%,J%));:NEXT J%:NEXT I%
+2270 IF Z$="2"THEN LPRINT CHR$(12) :ELSE 2210
+2280 LOCATE 25,1:PRINT STRING$(80,32);:RETURN

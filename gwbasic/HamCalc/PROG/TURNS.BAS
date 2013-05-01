@@ -1,0 +1,92 @@
+10 :REM'TURNS - Turn Calculator - 18 APR 08
+20 CLS:KEY OFF
+30 IF EX$=""THEN EX$="EXIT"
+40 IF PROG$=""THEN GO$=EX$ :ELSE GO$=PROG$
+50 COMMON EX$,PROG$
+60 E$=STRING$(79,32)
+70 :REM'.....start
+80 U=0:PD=0:L=0:R=0:P=0:I=0:N=0
+90 CLS
+100 COLOR 15,2
+110 PRINT " COIL TURNS CALCULATOR"TAB(57)"by George Murphy VE3ERP ";
+120 COLOR 1,0:PRINT STRING$(80,223);
+130 COLOR 15,2:LOCATE 2,25:PRINT " Algorithm by R.J.Dehoney IEEE "
+140 COLOR 7,0
+150 :REM'.....diagram
+160 COLOR 0,7:T=25
+170 LOCATE ,T:PRINT "              "
+180 LOCATE ,T:PRINT "   │«─ L─»│   "
+190 LOCATE ,T:PRINT "  ┌┬┬┬┬┬┬┬─┐  "
+200 LOCATE ,T:PRINT " ─┼┘││││││┌┼─ "
+210 LOCATE ,T:PRINT "  └─┴┴┴┴┴┴┴┘  "
+220 LOCATE ,T:PRINT "   P─»││«─    "
+230 LOCATE ,T:PRINT "              "
+240 COLOR 7,0
+250 PRINT
+260 LN=CSRLIN
+270 PRINT " This program calculates number of turns in single-layer air-core";
+280 PRINT " coils."
+290 PRINT
+300 PRINT TAB(19)" .....Press 1 to contimue or 0 to EXIT...."
+310 Z$=INKEY$:IF Z$=""THEN 310
+320 VIEW PRINT LN TO 24:CLS:VIEW PRINT:LOCATE LN
+330 IF Z$="0"THEN CLS:RUN GO$
+340 IF Z$="1"THEN 360
+350 GOTO 330
+360 PRINT
+370 :REM'.....data input
+380 INPUT " ENTER: Inductance (µH).....................U=";U
+390 IF U=0 THEN BEEP:LOCATE CSRLIN-1:GOTO 380
+400 LOCATE CSRLIN-1:PRINT E$:LOCATE CSRLIN-1
+410 COLOR 0,7
+420 PRINT " Enter a value if known or press ENTER to continue ":COLOR 7,0
+430 PRINT
+440 :REM'.....enter variables
+450 IF PD THEN 470
+460 INPUT " ENTER: Coil pitch diameter (inches).......PD=";PD:GOSUB 560
+470 IF L THEN 490
+480 INPUT " ENTER: Length (c.c. first to last turns)...L=";L:GOSUB 560
+490 IF R THEN 510
+500 INPUT " ENTER: Length/Diameter ratio...............R=";R:GOSUB 560
+510 IF P THEN 530
+520 INPUT " ENTER: Pitch (c.c.turns)...................P=";P:GOSUB 560
+530 IF P THEN 450
+540 INPUT " ENTER: Turns per inch......................I=";I:P=1/I:GOSUB 560
+550 GOTO 450
+560 :REM'.....equations
+570 LOCATE CSRLIN-1:PRINT E$:LOCATE CSRLIN-1
+580 IF U*L*P THEN N=L/P: PD=(18*U+SQR((18*U)^2+4*N^2+4*N^2*40*L*U))/2/N^2
+590 IF U*PD*L THEN N=(U*(18*PD+40*L)/PD^2)^(1/2):GOTO 650
+600 IF U*PD*R THEN N=(U*(18+40*R)/PD)^(1/2):GOTO 650
+610 IF U*L*R  THEN N=(U*(18+40*R)*R/L)^(1/2):GOTO 650
+620 IF U*R*P  THEN N=(U*(18+40*R)*R/P)^(1/3):GOTO 650
+630 IF U*PD*P THEN N=(40*U*P+SQR(40^2*U^2*P^2+4*U*18*PD^3))/2/PD^2:GOTO 650
+640 RETURN
+650 :REM'.....Display
+660 VIEW PRINT LN TO 24:CLS:VIEW PRINT:LOCATE LN
+670 IF PD*L THEN R=L/PD:P=L/N
+680 IF PD*R THEN L=PD*R:P=L/N
+690 IF PD*P THEN L=N*P:R=L/PD
+700 IF L*R THEN PD=L/R:P=L/N
+710 IF R*P THEN L=N*P:PD=L/R
+720 VIEW PRINT LN TO 24:CLS:VIEW PRINT:LOCATE LN
+730 LOCATE ,T:PRINT USING "Inductance.............. ###.### µH";U
+740 LOCATE ,T:PRINT USING "Coil pitch diameter..... ###.### in.";PD
+750 LOCATE ,T:PRINT USING "Length................L= ###.### in.";L
+760 LOCATE ,T:PRINT USING "Length/diameter ratio... ###.###:1";R
+770 LOCATE ,T:PRINT USING "Pitch.................P= ###.### in.";P
+780 LOCATE ,T:PRINT USING "Turns per inch.......... ###.###";1/P
+790 PRINT
+800 COLOR 0,7:LOCATE,T-1:PRINT USING " NUMBER OF TURNS......... ###.###";N
+810 COLOR 7,0
+820 :REM'.....end
+830 GOSUB 840:GOTO 70
+840 :REM'.....PRT
+850 KEY OFF:GOSUB 920:LOCATE 25,5:COLOR 0,2
+860 PRINT " Send this page to:(1)Printer Queue? (2)Printout? ";
+870 PRINT "(3)Next page? (1/2/3)";:COLOR 7,0
+880 Z$=INKEY$:IF Z$<"1"OR Z$>"3"THEN 880 :ELSE GOSUB 920
+890 IF Z$="3"THEN RETURN
+900 FOR I%=1 TO 24:FOR J%=1 TO 80:LPRINT CHR$(SCREEN(I%,J%));:NEXT J%:NEXT I%
+910 IF Z$="2"THEN LPRINT CHR$(12) :ELSE 850
+920 LOCATE 25,1:PRINT STRING$(80,32);:RETURN

@@ -1,0 +1,49 @@
+##################
+Attenuator
+##################
+
+Preface
+=======
+
+This calculator helps design a simple T-section or Pi-network attenuator
+
+T-Section
+=========
+
+The following diagram illustrates the key measurements.
+
+..  image:: tatten.gif
+    :alt: T-section Diagram
+
+To compute resistors
+
+1.  Enter network impedance in Ohms.
+
+2.  Enter the attenuation in dB.
+
+..  applet::
+    :code: RadioCalc.class
+    :width: 200
+    :height: 200
+    :models: tatten
+
+
+PI-Network
+==========
+
+The following diagram illustrates the key measurements.
+
+..  image:: piatten.gif
+    :alt: Pi-network Diagram
+
+To compute resistors
+
+1.  Enter network impedance in Ohms.
+
+2.  Enter the attenuation in dB.
+
+..  applet::
+    :code: RadioCalc.class
+    :width: 200
+    :height: 200
+    :models: piatten

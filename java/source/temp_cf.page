@@ -1,0 +1,11 @@
+############
+Temperature
+############
+
+This calculator solves degrees F and degrees C problems.
+
+..  applet::
+    :code: RadioCalc.class
+    :width: 200
+    :height: 150
+    :models: fc_temp

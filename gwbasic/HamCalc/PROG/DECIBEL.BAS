@@ -1,0 +1,176 @@
+10 :REM'DECIBEL - 01 DEC 93 rev. 07 JUN 2002
+20 IF EX$=""THEN EX$="EXIT"
+30 IF PROG$=""THEN GO$=EX$ :ELSE GO$=PROG$
+40 COMMON EX$,PROG$
+50 CLS:KEY OFF
+60 COLOR 7,0,0
+70 PI=4*ATN(1)
+80 LF=1/LOG(10)   :REM'factor to convert natural log to log\base 10
+90 UL$=STRING$(80,205)
+100 C1=3:C2=30:C3=57     :REM'column margins
+110 :REM'
+120 :REM'.....start
+130 CLS:F1=0:F2=0:F3=0:DB=0
+140 COLOR 15,2
+150 PRINT " DECIBEL CALCULATOR";TAB(57);"by George Murphy VE3ERP ";
+160 COLOR 1,0:PRINT STRING$(80,223);
+170 COLOR 7,0
+180 PRINT " Press number in < > to:"
+190 PRINT UL$;
+200 PRINT "   <1>  Calculate unknown factor from two known factors."
+210 PRINT "        (factors: input value, output value, dB)."
+220 PRINT
+230 PRINT "   <2>  Calculate dBm for any given value and dB change between a ";
+240 PRINT "consecutive"
+250 PRINT "        series of values."
+260 PRINT
+270 PRINT "   <0>  EXIT"
+280 Z$=INKEY$:IF Z$=""THEN 280
+290 IF Z$<"0"OR Z$>"2"THEN 280
+300 IF Z$="0"THEN CLS:CHAIN GO$
+310 IF Z$="1"THEN 340
+320 IF Z$="2"THEN 1000
+330 GOTO 280
+340 :REM'.....find unknown
+350 VIEW PRINT 3 TO 24:CLS:VIEW PRINT:LOCATE 3
+360 PRINT TAB(C1);"Press number in < > to select factor you want to";
+370 COLOR 0,7:PRINT " FIND ";:COLOR 7,0:PRINT ":"
+380 PRINT UL$;
+390 PRINT TAB(C1);"POWER";TAB(C2);"VOLTAGE";TAB(C3);"CURRENT"
+400 PRINT TAB(C1);"─────";TAB(C2);"───────";TAB(C3);"───────"
+410 PRINT TAB(C1);"<1> WATTS in (source)";
+420 PRINT TAB(C2);"<4> VOLTS in (source)";
+430 PRINT TAB(C3);"<7> CURRENT in (source)"
+440 PRINT TAB(C1);"<2> WATTS out (load)";
+450 PRINT TAB(C2);"<5> VOLTS out (load)";
+460 PRINT TAB(C3);"<8> CURRENT out (load)"
+470 PRINT TAB(C1);"<3> dB gain/loss";
+480 PRINT TAB(C2);"<6> dB gain/loss";
+490 PRINT TAB(C3);"<9> dB gain/loss"
+500 PRINT UL$;
+510 PRINT TAB(C1);"<0> EXIT"
+520 I$=INKEY$:IF I$=""THEN 520
+530 IF VAL(I$)=0 THEN 120
+540 IF ASC(I$)<49 OR ASC(I$)>57 THEN 520
+550 IF VAL(I$)>=1 AND VAL(I$)<=3 THEN GOSUB 600:GOTO 780
+560 IF VAL(I$)>=4 AND VAL(I$)<=6 THEN GOSUB 660:GOTO 780
+570 IF VAL(I$)>=7 AND VAL(I$)<=9 THEN GOSUB 720:GOTO 780
+580 GOTO 520
+590 :REM'
+600 :REM'.....power variables
+610 N$="Power"
+620 DIN=VAL(I$)    :REM'data input number
+630 M=10           :REM'multiplier
+640 RETURN
+650 :REM'
+660 :REM'.....voltage variables
+670 N$="Voltage"
+680 DIN=VAL(I$)-3  :REM'data input number
+690 M=20           :REM'multiplier
+700 RETURN
+710 :REM'
+720 :REM'.....current variables
+730 N$="Current"
+740 DIN=VAL(I$)-6  :REM'data input number
+750 M=20           :REM'multiplier
+760 RETURN
+770 :REM'
+780 :REM'.....data input
+790 VIEW PRINT 3 TO 24:CLS:VIEW PRINT:LOCATE 3
+800 PRINT TAB(C1);" Input and Output values are expressed in the same ";
+810 PRINT "unit of measurement."
+820 PRINT UL$;
+830 IF DIN<>1 THEN PRINT" ENTER ";N$;" in (source):";:LOCATE CSRLIN,30:INPUT F1
+840 IF DIN<>2 THEN PRINT" ENTER ";N$;" out (load):";:LOCATE CSRLIN,30:INPUT F2
+850 IF DIN<>3 THEN PRINT" ENTER ";N$;" dB gain/loss:";:LOCATE CSRLIN,30:INPUT DB
+860 :REM'
+870 :REM'.....calculation
+880 IF F1 * F2 THEN DB=LF*M*LOG(F2/F1):GOTO 920
+890 IF F1 * DB THEN F3=10^(DB/M):F2=F3*F1:GOTO 920
+900 IF F2 * DB THEN F3=10^(DB/M):F1=F2/F3:GOTO 920
+910 :REM'
+920 :REM'.....print results
+930 LOCATE 5
+940 PRINT TAB(8);N$;" in (source):";TAB(28);USING "###,###.###";F1
+950 PRINT TAB(8);N$;" out (load):";TAB(28);USING "###,###.###";F2
+960 PRINT TAB(8);N$;" gain/loss:";TAB(28);USING "+######.###";DB;:PRINT " dB"
+970 PRINT UL$;
+980 GOTO 1630
+990 END
+1000 :REM'.....Dbm
+1010 CLS
+1020 COLOR 15,2
+1030 PRINT " DECIBEL CALCULATOR "TAB(60)"by Erik Madsen OZ8EM ";
+1040 COLOR 1,0:PRINT STRING$(80,223);
+1050 COLOR 15,2:LOCATE CSRLIN-1,18
+1060 PRINT " Edited for HAMCALC by George Murphy VE3ERP "
+1070 COLOR 7,0:PRINT
+1080 PRINT " This program gives the level in dBm with 1 mW/50Ω as reference ";
+1090 PRINT "(= 0 dBm). It"
+1100 PRINT " also gives the ratio in dB of consecutive voltage, ";
+1110 PRINT "current or power levels."
+1120 PRINT UL$;
+1130 PRINT " Press number in < > to select:"
+1140 PRINT UL$;
+1150 PRINT " VOLTAGE:   <1> V"
+1160 PRINT "   (RMS)    <2> mV"
+1170 PRINT "            <3> µV"
+1180 PRINT
+1190 PRINT " CURRENT:   <4> A"
+1200 PRINT "   (RMS)    <5> mA"
+1210 PRINT "            <6> µA"
+1220 PRINT
+1230 PRINT " POWER:     <7> W"
+1240 PRINT "            <8> mW"
+1250 PRINT "            <9> µW"
+1260 PRINT
+1270 PRINT " EXIT       <0>"
+1280 E$=INKEY$:IF E$=""OR E$<"0"OR E$>"9"THEN 1280
+1290 IF E$="0"THEN 120
+1300 IF E$="1"THEN F=1:U$="V"
+1310 IF E$="2"THEN F=0.0010000000474974513!:U$="mV"
+1320 IF E$="3"THEN F=9.999999974752427e-07!:U$="µV"
+1330 IF E$="4"THEN F=50:U$="A"
+1340 IF E$="5"THEN F=0.05000000074505806!:U$="mA"
+1350 IF E$="6"THEN F=4.999999873689376e-05!:U$="µA"
+1360 IF E$="7"THEN F=1:P=1:U$="W"
+1370 IF E$="8"THEN F=0.0010000000474974513!:P=1:U$="mW"
+1380 IF E$="9"THEN F=9.999999974752427e-07!:P=1:U$="µW"
+1390 VIEW PRINT 3 TO 24:CLS:VIEW PRINT:LOCATE 4
+1400 N$=" "+U$
+1410 PRINT " ENTER: First value (";U$;")";:INPUT A
+1420 LOCATE CSRLIN-1:PRINT STRING$(80,32);:LOCATE CSRLIN-1
+1430 GOSUB 1590
+1440 PRINT USING "#####.##";A;
+1450 PRINT N$;" =";USING "###.##";DBU;
+1460 PRINT " dBm"
+1470 B=A:DBV=DBU
+1480 PRINT " ENTER: Next value (";U$;")...(or 0 to Quit)";:INPUT A
+1490 LOCATE CSRLIN-1:PRINT STRING$(80,32);:LOCATE CSRLIN-1
+1500 IF A=0 THEN 1630
+1510 GOSUB 1590
+1520 PRINT USING "#####.##";A;
+1530 PRINT N$;" =";USING "###.##";DBU;
+1540 PRINT " dBm:   ";USING "####.##";B;
+1550 PRINT N$;" to ";USING "####.##";A;
+1560 PRINT N$;" =";:PRINT USING "###.##";DBU-DBV;
+1570 PRINT " dB"
+1580 GOTO 1470
+1590 U=A*F:IF P=1 THEN U=SQR(50*A*F)
+1600 DBU=8.685879707336426!*LOG(U/0.22360000014305115!)
+1610 RETURN 
+1620 :REM'
+1630 :REM'.....end
+1640 GOSUB 1680
+1650 GOTO 120
+1660 END
+1670 :REM'
+1680 :REM'PRT
+1690 KEY OFF:GOSUB 1760:LOCATE 25,5:COLOR 0,2
+1700 PRINT " Send this page to:(1)Printer Queue? (2)Printout? ";
+1710 PRINT "(3)Next page? (1/2/3)";:COLOR 7,0
+1720 Z$=INKEY$:IF Z$<"1"OR Z$>"3"THEN 1720 :ELSE GOSUB 1760
+1730 IF Z$="3"THEN RETURN
+1740 FOR I%=1 TO 24:FOR J%=1 TO 80:LPRINT CHR$(SCREEN(I%,J%));:NEXT J%:NEXT I%
+1750 IF Z$="2"THEN LPRINT CHR$(12) :ELSE 1690
+1760 LOCATE 25,1:PRINT STRING$(80,32);:RETURN

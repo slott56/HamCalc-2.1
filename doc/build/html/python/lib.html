@@ -1,0 +1,225 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>lib – Supporting Library &mdash; HamCalc 2.1 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '2.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="HamCalc 2.1 documentation" href="../index.html" />
+    <link rel="up" title="Python Modules" href="index.html" />
+    <link rel="next" title="radio – Radio Design and Engineering" href="radio.html" />
+    <link rel="prev" title="Python Modules" href="index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="radio.html" title="radio – Radio Design and Engineering"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Python Modules"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">HamCalc 2.1 documentation</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">Python Modules</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="module-hamcalc.lib">
+<span id="lib-supporting-library"></span><h1>lib &#8211; Supporting Library<a class="headerlink" href="#module-hamcalc.lib" title="Permalink to this headline">¶</a></h1>
+<p>Library of common HamCalc features.</p>
+<ul class="simple">
+<li>Attribute Dictionary to support Solvers. This is an extended
+implementation of <tt class="xref py py-class docutils literal"><span class="pre">dict</span></tt> that supports attribute references,
+and requires all keys be proper Python variable names.</li>
+<li>Units and Unit Conversions.</li>
+</ul>
+<dl class="class">
+<dt id="hamcalc.lib.AttrDict">
+<em class="property">class </em><tt class="descclassname">hamcalc.lib.</tt><tt class="descname">AttrDict</tt><a class="reference internal" href="../_modules/hamcalc/lib.html#AttrDict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.lib.AttrDict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Mixin attribute access to a dictionary.</p>
+<p>We can use this to &#8220;wrap&#8221; an argument dictionay and make access slightly more pleasant.</p>
+<p>The requirement that the keys be valid Python variable names is
+trivially met when this is used for <tt class="docutils literal"><span class="pre">**args</span></tt> in a function.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">function</span><span class="p">(</span> <span class="o">**</span><span class="n">args</span> <span class="p">):</span>
+    <span class="n">args</span><span class="o">=</span> <span class="n">AttrDict</span><span class="p">(</span> <span class="n">args</span> <span class="p">)</span>
+    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">d</span> <span class="ow">is</span> <span class="bp">None</span> <span class="ow">and</span> <span class="n">args</span><span class="o">.</span><span class="n">r</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span> <span class="ow">and</span> <span class="n">args</span><span class="o">.</span><span class="n">t</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">args</span><span class="o">.</span><span class="n">d</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">r</span> <span class="o">*</span> <span class="n">args</span><span class="o">.</span><span class="n">t</span>
+    <span class="k">return</span> <span class="n">args</span>
+</pre></div>
+</div>
+<p>Or</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">function</span><span class="p">(</span> <span class="o">**</span><span class="n">args</span> <span class="p">):</span>
+    <span class="n">args</span><span class="o">=</span> <span class="n">AttrDict</span><span class="p">(</span> <span class="n">args</span> <span class="p">)</span>
+    <span class="k">if</span> <span class="s">&#39;d&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">args</span> <span class="ow">and</span> <span class="s">&#39;r&#39;</span> <span class="ow">in</span> <span class="n">args</span> <span class="ow">and</span> <span class="s">&#39;t&#39;</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
+        <span class="n">args</span><span class="o">.</span><span class="n">d</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">r</span> <span class="o">*</span> <span class="n">args</span><span class="o">.</span><span class="n">t</span>
+    <span class="k">return</span> <span class="n">args</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="class">
+<dt id="hamcalc.lib.Standard_Unit">
+<em class="property">class </em><tt class="descclassname">hamcalc.lib.</tt><tt class="descname">Standard_Unit</tt><a class="reference internal" href="../_modules/hamcalc/lib.html#Standard_Unit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.lib.Standard_Unit" title="Permalink to this definition">¶</a></dt>
+<dd><p>The standard unit used for conversions.
+Other units will convert to this.
+This will convert to other units.</p>
+<p>This is still a unit, but a conversion factor is not used.</p>
+<p>For all subclasses, the long version of the unit&#8217;s name should
+be the docstring.</p>
+<dl class="attribute">
+<dt id="hamcalc.lib.Standard_Unit.standard">
+<tt class="descname">standard</tt><a class="headerlink" href="#hamcalc.lib.Standard_Unit.standard" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#hamcalc.lib.Standard_Unit" title="hamcalc.lib.Standard_Unit"><tt class="xref py py-class docutils literal"><span class="pre">Standard_Unit</span></tt></a></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="hamcalc.lib.Unit">
+<em class="property">class </em><tt class="descclassname">hamcalc.lib.</tt><tt class="descname">Unit</tt><a class="reference internal" href="../_modules/hamcalc/lib.html#Unit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.lib.Unit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generic definition of a unit.
+This unit is not the &#8220;standard&#8221; used for conversions.
+This is converted to a standard or a standard is converted to this.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">X</span><span class="p">(</span> <span class="n">Unit</span> <span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;X full name&#39;&#39;&#39;</span>
+    <span class="n">name</span><span class="o">=</span> <span class="s">&quot;x&quot;</span> <span class="c"># Abbreviation</span>
+    <span class="n">factor</span><span class="o">=</span> <span class="mf">123.45</span>
+</pre></div>
+</div>
+<p>Create a standard value from input in units of X.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">m_std</span><span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">to_std</span><span class="p">(</span> <span class="n">value</span> <span class="p">)</span>
+</pre></div>
+</div>
+<p>Convert a standard value into units of X.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">m_x</span><span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">from_std</span><span class="p">(</span> <span class="n">m_std</span> <span class="p">)</span>
+</pre></div>
+</div>
+<p>Note that for Temperature, a simple &#8220;factor&#8221; isn&#8217;t appropriate and the
+<tt class="xref py py-meth docutils literal"><span class="pre">to_std()</span></tt> and <tt class="xref py py-meth docutils literal"><span class="pre">from_std()</span></tt> need to be overridden.</p>
+<p>For all subclasses, the long version of the unit&#8217;s name should
+be the docstring.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="hamcalc.lib.UnitMeta">
+<em class="property">class </em><tt class="descclassname">hamcalc.lib.</tt><tt class="descname">UnitMeta</tt><a class="headerlink" href="#hamcalc.lib.UnitMeta" title="Permalink to this definition">¶</a></dt>
+<dd><p>Metaclass for Standard_Unit&#8217;s to insert a circular reference.
+That way <tt class="docutils literal"><span class="pre">SomeStandardUnit.standard</span> <span class="pre">is</span> <span class="pre">SomeStandardUnit</span></tt>.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="hamcalc.lib.convert">
+<tt class="descclassname">hamcalc.lib.</tt><tt class="descname">convert</tt><big>(</big><em>value</em>, <em>unit</em>, <em>*to</em><big>)</big><a class="reference internal" href="../_modules/hamcalc/lib.html#convert"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.lib.convert" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert a value from one set of units to another.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>value</strong> &#8211; A value, measured in the source unit.</li>
+<li><strong>unit</strong> &#8211; A subclass of <a class="reference internal" href="#hamcalc.lib.Unit" title="hamcalc.lib.Unit"><tt class="xref py py-class docutils literal"><span class="pre">Unit</span></tt></a> describing value.</li>
+<li><strong>to</strong> &#8211; Subclasses of <a class="reference internal" href="#hamcalc.lib.Unit" title="hamcalc.lib.Unit"><tt class="xref py py-class docutils literal"><span class="pre">Unit</span></tt></a>. If only a single
+unit is supplied, then a single value is returned;
+If multiple units are supplied, a tuple of values
+is returned.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">value converted to the defined units.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="index.html"
+                        title="previous chapter">Python Modules</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="radio.html"
+                        title="next chapter">radio &#8211; Radio Design and Engineering</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/python/lib.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="radio.html" title="radio – Radio Design and Engineering"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Python Modules"
+             >previous</a> |</li>
+        <li><a href="../index.html">HamCalc 2.1 documentation</a> &raquo;</li>
+          <li><a href="index.html" >Python Modules</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2013, S.Lott.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2b1.
+    </div>
+  </body>
+</html>

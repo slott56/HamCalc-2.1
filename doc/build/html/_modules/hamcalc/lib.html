@@ -1,0 +1,202 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>hamcalc.lib &mdash; HamCalc 2.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '2.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="HamCalc 2.1 documentation" href="../../index.html" />
+    <link rel="up" title="Module code" href="../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../index.html">HamCalc 2.1 documentation</a> &raquo;</li>
+          <li><a href="../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for hamcalc.lib</h1><div class="highlight"><pre>
+<span class="sd">&quot;&quot;&quot;Library of common HamCalc features.</span>
+
+<span class="sd">-   Attribute Dictionary to support Solvers. This is an extended</span>
+<span class="sd">    implementation of :class:`dict` that supports attribute references,</span>
+<span class="sd">    and requires all keys be proper Python variable names.</span>
+
+<span class="sd">-   Units and Unit Conversions.</span>
+
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">namedtuple</span>
+
+<div class="viewcode-block" id="Unit"><a class="viewcode-back" href="../../python/lib.html#hamcalc.lib.Unit">[docs]</a><span class="k">class</span> <span class="nc">Unit</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Generic definition of a unit.</span>
+<span class="sd">    This unit is not the &quot;standard&quot; used for conversions.</span>
+<span class="sd">    This is converted to a standard or a standard is converted to this.</span>
+
+<span class="sd">    ::</span>
+
+<span class="sd">        class X( Unit ):</span>
+<span class="sd">            full_name= &quot;X name&quot;</span>
+<span class="sd">            name= &quot;x&quot;</span>
+<span class="sd">            factor= 123.45</span>
+
+<span class="sd">    Create a standard value from input in units of X.</span>
+
+<span class="sd">    ::</span>
+
+<span class="sd">        m_std= X.to_std( value )</span>
+
+<span class="sd">    Convert a standard value into units of X.</span>
+
+<span class="sd">    ::</span>
+
+<span class="sd">        m_x= X.from_std( m_std )</span>
+
+<span class="sd">    Note that for Temperature, a simple &quot;factor&quot; isn&#39;t appropriate and the</span>
+<span class="sd">    :meth:`to_std` and :meth:`from_std` need to be overridden.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">factor</span><span class="o">=</span> <span class="mf">1.0</span>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">to_std</span><span class="p">(</span> <span class="n">class_</span><span class="p">,</span> <span class="n">value</span> <span class="p">):</span>
+        <span class="k">return</span> <span class="n">value</span><span class="o">/</span><span class="n">class_</span><span class="o">.</span><span class="n">factor</span>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_std</span><span class="p">(</span> <span class="n">class_</span><span class="p">,</span> <span class="n">value</span> <span class="p">):</span>
+        <span class="k">return</span> <span class="n">value</span><span class="o">*</span><span class="n">class_</span><span class="o">.</span><span class="n">factor</span>
+</div>
+<div class="viewcode-block" id="Standard_Unit"><a class="viewcode-back" href="../../python/lib.html#hamcalc.lib.Standard_Unit">[docs]</a><span class="k">class</span> <span class="nc">Standard_Unit</span><span class="p">(</span> <span class="n">Unit</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;The standard unit used for conversions.</span>
+<span class="sd">    Other units will convert to this.</span>
+<span class="sd">    This will convert to other units.</span>
+
+<span class="sd">    This is still a unit, but a conversion factor is not used.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">to_std</span><span class="p">(</span> <span class="n">_class</span><span class="p">,</span> <span class="n">value</span> <span class="p">):</span>
+        <span class="k">return</span> <span class="n">value</span>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_std</span><span class="p">(</span> <span class="n">_class</span><span class="p">,</span> <span class="n">value</span> <span class="p">):</span>
+        <span class="k">return</span> <span class="n">value</span>
+</div>
+<div class="viewcode-block" id="convert"><a class="viewcode-back" href="../../python/lib.html#hamcalc.lib.convert">[docs]</a><span class="k">def</span> <span class="nf">convert</span><span class="p">(</span> <span class="n">value</span><span class="p">,</span> <span class="n">unit</span><span class="p">,</span> <span class="o">*</span><span class="n">to</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Convert a value from one set of units to another.</span>
+
+<span class="sd">    :param value: A value, measured in the source unit.</span>
+<span class="sd">    :param unit: A subclass of :class:`Unit` describing value.</span>
+<span class="sd">    :param to: Subclasses of :class:`Unit`. If only a single</span>
+<span class="sd">        unit is supplied, then a single value is returned;</span>
+<span class="sd">        If multiple units are supplied, a tuple of values</span>
+<span class="sd">        is returned.</span>
+<span class="sd">    :return: value converted to the defined units.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">std_value</span><span class="o">=</span> <span class="n">unit</span><span class="o">.</span><span class="n">to_std</span><span class="p">(</span> <span class="n">value</span> <span class="p">)</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">to</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">converted</span><span class="o">=</span> <span class="n">to</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">from_std</span><span class="p">(</span> <span class="n">std_value</span> <span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">converted</span><span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span> <span class="n">u</span><span class="o">.</span><span class="n">from_std</span><span class="p">(</span><span class="n">std_value</span><span class="p">)</span> <span class="k">for</span> <span class="n">u</span> <span class="ow">in</span> <span class="n">to</span> <span class="p">)</span>
+    <span class="k">return</span> <span class="n">converted</span>
+</div>
+<div class="viewcode-block" id="AttrDict"><a class="viewcode-back" href="../../python/lib.html#hamcalc.lib.AttrDict">[docs]</a><span class="k">class</span> <span class="nc">AttrDict</span><span class="p">(</span> <span class="nb">dict</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Mixin attribute access to a dictionary.</span>
+
+<span class="sd">    We can use this to &quot;wrap&quot; an argument dictionay and make access slightly more pleasant.</span>
+
+<span class="sd">    The requirement that the keys be valid Python variable names is</span>
+<span class="sd">    trivially met when this is used for ``**args`` in a function.</span>
+
+<span class="sd">    ::</span>
+
+<span class="sd">        def function( **args ):</span>
+<span class="sd">            args= AttrDict( args )</span>
+<span class="sd">            if args.d is None and args.r is not None and args.t is not None:</span>
+<span class="sd">                args.d = args.r * args.t</span>
+<span class="sd">            return args</span>
+
+<span class="sd">    Or</span>
+
+<span class="sd">    ::</span>
+
+<span class="sd">        def function( **args ):</span>
+<span class="sd">            args= AttrDict( args )</span>
+<span class="sd">            if &#39;d&#39; not in args and &#39;r&#39; in args and &#39;t&#39; in args:</span>
+<span class="sd">                args.d = args.r * args.t</span>
+<span class="sd">            return args</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__getattr__</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">name</span> <span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">name</span><span class="p">,</span><span class="bp">None</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">__setattr__</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span> <span class="p">):</span>
+        <span class="bp">self</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">=</span> <span class="n">value</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../index.html">HamCalc 2.1 documentation</a> &raquo;</li>
+          <li><a href="../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2013, S.Lott.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2b1.
+    </div>
+  </body>
+</html>

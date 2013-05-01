@@ -1,0 +1,189 @@
+math -- Math, Physics, Units Conversion
+=============================================================
+
+Math, Physics, Units Conversion.
+
+accelr
+----------
+
+Acceleration Calculator
+
+Sample Output
+
+::
+
+     ENTER: Mass of moving object in kg? 12000
+     ENTER: Displacement in metres ? 50
+     ENTER: Duration of notion in seconds ? 6
+     ENTER: Velocity at START of acceleration (metres/second)? 2
+     ENTER: Velocity at END of acceleration (metres/second)? .5
+
+     ACCELERATION CALCULATION
+
+     Mass of moving object (kilograms)..M= 12000.000
+     Displacement (metres)..............D=  50.000
+     Duration of motion (seconds).......T=   6.000
+     Start velocity (metres/second)....Vo=   2.000
+     End velocity (metres/second)......Vf=   0.500
+     Acceleration constant (m./sec.)....A=  -0.250
+     Acceleration force (kilograms).....F= -3000.000
+     Force (standard gravitys)............ -305.915
+
+     (Standard gravity <g-force> is 9.80665 metres/second²).
+
+
+baromtr
+----------
+
+Barometer Reading Equivalents
+
+binary
+----------
+
+Decimal to Binary Converter
+
+conecalc
+----------
+
+Cone Calculator
+
+decibel
+----------
+
+Decibel Calculator
+
+deciconv
+----------
+
+Decimal Hour/Degree Converter
+
+decifrac
+----------
+
+Decimal/Fraction Converter
+
+diamfind
+----------
+
+Diameter Finder
+
+equiv
+----------
+
+Degrees to radians
+Equivalent values
+Radians to degrees
+Temperature
+
+fibon
+----------
+
+Fibonacci Series
+
+The Fibonacci Series, :math:`F_n` is defined by a simple recurrence rule.
+
+..  math::
+
+    F_{n+2} = F_{n+1} + F_{n}
+
+Typically, :math:`F_0 = 1` and :math:`F_1 = 1`.
+
+This leads to the sequence
+
+..  math::
+
+    \{ 1, 1, 2, 3, 5, 8, ... \}
+
+There are number of interesting properties for the values in this series.
+
+Most notable, the Golden Ratio, :math:`\phi`, is related to this sequence.
+
+..  math::
+
+    \phi \approx \frac{F_{n+1}}{F_{n}} = \frac{1+\sqrt{5}}{2}
+
+Note that :math:`\phi` has this property:
+
+..  math::
+
+    \phi = (1/\phi+1)
+
+..  automodule:: hamcalc.math.fibon
+    :members:
+
+There are two implementations: object-oriented and functional.
+
+**Object-Oriented Fibonacci Series**
+
+..  automodule:: hamcalc.math.fibon.obj
+    :members:
+
+**Functional Fibonacci Series**
+
+..  automodule:: hamcalc.math.fibon.func
+    :members:
+
+formulae
+----------
+
+Formula Library
+
+graphs
+----------
+
+Graphs
+
+involute
+----------
+
+Involute of a Circle
+
+numderiv
+----------
+
+Logarithms to any base
+Numbers and Functions
+Powers of numbers
+Reciprocals of numbers
+Roots of numbers
+
+polygon
+----------
+
+Polygon Dimensions
+
+primenos
+----------
+
+Prime Number Calculator
+
+propcirc
+----------
+
+Circle - Properies of
+
+randnum
+----------
+
+Random Number Generator
+
+simuleq
+----------
+
+Simultaneous Equation Calculator
+
+solutri
+----------
+
+Triangles - solution of
+
+speedtd
+----------
+
+Speed/Time/Distance Calculator
+
+trig
+----------
+
+Trigonometric Functions
+

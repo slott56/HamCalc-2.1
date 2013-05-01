@@ -1,0 +1,998 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Python Architecture &mdash; HamCalc 2.1 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '2.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="HamCalc 2.1 documentation" href="index.html" />
+    <link rel="next" title="Python Modules" href="python/index.html" />
+    <link rel="prev" title="The HamCalc Legacy" href="legacy.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="python/index.html" title="Python Modules"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="legacy.html" title="The HamCalc Legacy"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">HamCalc 2.1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="python-architecture">
+<h1>Python Architecture<a class="headerlink" href="#python-architecture" title="Permalink to this headline">¶</a></h1>
+<p>The HamCalc Python rewrite extracts the useful bits from HamCalc, leaving out the GW-Basic quirks.</p>
+<p>The target platform should Python 3.x (3.2.4 or later.) There&#8217;s no compelling
+reason to support Python 2.7.</p>
+<p>This section will review the architecture for the Python port of HamCalc.</p>
+<p>To make the architecture more concrete, one of the HamCalc programs will be
+analyzed in detail to show how it is converted to the new architecture.</p>
+<div class="section" id="architecture">
+<h2>Architecture<a class="headerlink" href="#architecture" title="Permalink to this headline">¶</a></h2>
+<p>The goal is to have a cleanly layered architecture that separates HamCalc
+into</p>
+<ul class="simple">
+<li>Core Calculations.</li>
+<li>Applications.</li>
+</ul>
+<p>The core calculations are highly reusable.  The applications offer a variety of user interface presentations.</p>
+<p>There are a dozen or so packages that contain the core calculation package.</p>
+<p>Each calculation package may have multiple implementations and a default implementation.</p>
+<p>An implementation can be any combination of Python components. It can be pure function or class definitions.</p>
+<p>It&#8217;s important that the core calculation module have with no further
+application or user interface implied.
+There should be any number of alternative user interface presentations.</p>
+<p>For comparison purposes, a stdio console application can be developed.
+This would use <tt class="xref py py-func docutils literal"><span class="pre">input()</span></tt> and <tt class="xref py py-func docutils literal"><span class="pre">print()</span></tt> to emulate the original
+HamCalc look and feel. This would import
+the core calculation modules.</p>
+<p>A RESTful web services server could be built that would accept
+REST requests and respond with a JSON document. This would import
+the core calculation modules.</p>
+<p>A desktop GUI could be written which uses
+the same core calculation modules, also.</p>
+<p>A test package is also essential for demonstrating that the calculations
+actually work.</p>
+<p>Finally, this documentation package can include references and links.</p>
+</div>
+<div class="section" id="key-design-patterns">
+<h2>Key Design Patterns<a class="headerlink" href="#key-design-patterns" title="Permalink to this headline">¶</a></h2>
+<p>There are several overall design patterns.</p>
+<div class="section" id="the-table-pattern">
+<h3>The <strong>Table</strong> Pattern<a class="headerlink" href="#the-table-pattern" title="Permalink to this headline">¶</a></h3>
+<p>Many HamCalc modules have a design pattern called a <strong>Table</strong>.</p>
+<p>Given zero or a few parameters, a table of values is produced.
+This might be a table of Fibonacci Numbers, or a table of AWG wire sizes.</p>
+<p>This means that the core calculation is an iterator, usually a generator
+function. The top-level application will request a iterable collection
+of values from this generator function.</p>
+<p>The Fibonacci values (examined in detail below) is a kind of <strong>Table</strong> application.</p>
+</div>
+<div class="section" id="the-solver-pattern">
+<h3>The <strong>Solver</strong> Pattern<a class="headerlink" href="#the-solver-pattern" title="Permalink to this headline">¶</a></h3>
+<p>Many HamCalc modules have a design pattern called a <strong>Solver</strong>.</p>
+<p>These are programs which can accept a variety of input values and solve for
+the missing values.</p>
+<p>The canonical example is a Rate-Time-Distance (RTD) solver.
+Given any two (Rate-Time, Rate-Distance, Time-Distance), the third can be
+derived from the other two.</p>
+<p>In GW-Basic, failure to enter a value lead to the input being zero.</p>
+<p>This means that the solver would attempt to compute the values which had an input value of zero. This can be a little awkward in the rare case when zero
+is a valid value.</p>
+<p>Python, however, introduces <tt class="docutils literal"><span class="pre">None</span></tt>, which is outside the number domain,
+removing the quirky constraint of &#8220;zero means solve for this.&#8221;</p>
+<p>Better still, Python&#8217;s use of a dictionary as the source for keyword arguments
+means that a solver can look like this.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">force</span><span class="p">(</span> <span class="o">**</span><span class="n">kw</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Solve f = m * a problems.</span>
+
+<span class="sd">    :param m: mass (kg)</span>
+<span class="sd">    :param a: acceleration (m/s^2)</span>
+<span class="sd">    :param f: force in Newtons (kg m/s^s)</span>
+<span class="sd">    :returns: Dictionary with all three values.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="s">&#39;m&#39;</span> <span class="ow">in</span> <span class="n">kw</span> <span class="ow">and</span> <span class="s">&#39;a&#39;</span> <span class="ow">in</span> <span class="n">kw</span><span class="p">:</span>
+        <span class="n">kw</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">f</span> <span class="o">=</span> <span class="n">kw</span><span class="p">[</span><span class="s">&#39;m&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="n">kw</span><span class="p">[</span><span class="s">&#39;a&#39;</span><span class="p">])</span>
+    <span class="k">elif</span> <span class="s">&#39;f&#39;</span> <span class="ow">in</span> <span class="n">kw</span> <span class="ow">and</span> <span class="s">&#39;m&#39;</span> <span class="ow">in</span> <span class="n">kw</span><span class="p">:</span>
+        <span class="n">kw</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">a</span> <span class="o">=</span> <span class="n">kw</span><span class="p">[</span><span class="s">&#39;f&#39;</span><span class="p">]</span> <span class="o">/</span> <span class="n">kw</span><span class="p">[</span><span class="s">&#39;m&#39;</span><span class="p">])</span>
+    <span class="k">elif</span> <span class="s">&#39;f&#39;</span> <span class="ow">in</span> <span class="n">kw</span> <span class="ow">and</span> <span class="s">&#39;a&#39;</span> <span class="ow">in</span> <span class="n">kw</span><span class="p">:</span>
+        <span class="n">kw</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">m</span> <span class="o">=</span> <span class="n">kw</span><span class="p">[</span><span class="s">&#39;f&#39;</span><span class="p">]</span> <span class="o">/</span> <span class="n">kw</span><span class="p">[</span><span class="s">&#39;a&#39;</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">kw</span>
+</pre></div>
+</div>
+<p>This function can be used like this.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">force</span><span class="p">(</span> <span class="n">a</span><span class="o">=</span><span class="mf">2.5</span><span class="p">,</span> <span class="n">m</span><span class="o">=</span><span class="mi">12000</span> <span class="p">)</span>
+<span class="go">{&#39;a&#39;: 2.5, &#39;m&#39;: 12000, &#39;f&#39;: 30000.0}</span>
+</pre></div>
+</div>
+<p>This means a script can do something like this:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">args</span><span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+<span class="n">raw</span><span class="o">=</span> <span class="nb">input</span><span class="p">(</span> <span class="s">&quot;Mass [kg]? &quot;</span> <span class="p">)</span>
+<span class="k">if</span> <span class="n">raw</span><span class="p">:</span> <span class="n">args</span><span class="p">[</span><span class="s">&#39;f&#39;</span><span class="p">]</span><span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">raw</span><span class="p">)</span>
+<span class="n">raw</span><span class="o">=</span> <span class="nb">input</span><span class="p">(</span> <span class="s">&quot;Acceleration [m/s^2]? &quot;</span> <span class="p">)</span>
+<span class="k">if</span> <span class="n">raw</span><span class="p">:</span> <span class="n">args</span><span class="p">[</span><span class="s">&#39;a&#39;</span><span class="p">]</span><span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">raw</span><span class="p">)</span>
+<span class="n">raw</span><span class="o">=</span> <span class="nb">input</span><span class="p">(</span> <span class="s">&quot;Force [kg m/s^2]? &quot;</span> <span class="p">)</span>
+<span class="k">if</span> <span class="n">raw</span><span class="p">:</span> <span class="n">args</span><span class="p">[</span><span class="s">&#39;f&#39;</span><span class="p">]</span><span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">raw</span><span class="p">)</span>
+
+<span class="n">args</span><span class="o">=</span> <span class="n">force</span><span class="p">(</span> <span class="o">**</span><span class="n">args</span> <span class="p">)</span>
+<span class="k">print</span><span class="p">(</span> <span class="s">&quot;Mass of moving object (kilograms)..M= {m:10.3f}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">**</span><span class="n">args</span><span class="p">)</span> <span class="p">)</span>
+<span class="k">print</span><span class="p">(</span> <span class="s">&quot;Acceleration constant (m./sec.)....A= {a:10.3f}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">**</span><span class="n">args</span><span class="p">)</span> <span class="p">)</span>
+<span class="k">print</span><span class="p">(</span> <span class="s">&quot;Acceleration force (newtone).......F= {f:10.3f}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">**</span><span class="n">args</span><span class="p">)</span> <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="the-equivalents-pattern">
+<h3>The <strong>Equivalents</strong> Pattern<a class="headerlink" href="#the-equivalents-pattern" title="Permalink to this headline">¶</a></h3>
+<p>Some HamCalc modules have a design pattern called <strong>Equivalents</strong>.</p>
+<p>This is a display of values, each of which is converted into different units
+via a simple conversion function (or factor).</p>
+<p>This is like a <strong>Solver</strong> in some ways. Only one of the values need be provided as an input. All of the other values are derived from this one.</p>
+<p>The subtlety is the way the units and unit conversions are defined.
+For the most part, HamCalc treats unit conversions as simple multipliers,
+and uses GW-Basic DATA statements to define the name, an abbreviation and the
+conversion factor.</p>
+<p>This doesn&#8217;t cover temperatures well, but that&#8217;s so specialized that it doesn&#8217;t matter.
+Fahrenheit and Celsius conversions aren&#8217;t simple multiplies.
+All other conversions are.</p>
+<p>A completely general &#8220;dimensioned number&#8221; class is potentially overkill for
+this application. As a subclass of <tt class="xref py py-class docutils literal"><span class="pre">float</span></tt>, it would add features to track dimensions. For <tt class="xref py py-meth docutils literal"><span class="pre">__add__()</span></tt> and <tt class="xref py py-meth docutils literal"><span class="pre">__sub__()</span></tt> it would assure that
+the units where the same or it would convert. For <tt class="xref py py-meth docutils literal"><span class="pre">__mul__()</span></tt> and <tt class="xref py py-meth docutils literal"><span class="pre">__div__()</span></tt> it would infer the resulting units.</p>
+<p>So, we could have <tt class="samp docutils literal"><span class="pre">Dim(2.5,</span> <span class="pre">M_SEC)</span> <span class="pre">*</span> <span class="pre">Dim(2,</span> <span class="pre">SEC)</span></tt> resulting in
+<tt class="samp docutils literal"><span class="pre">Dim(</span> <span class="pre">5,</span> <span class="pre">M</span> <span class="pre">)</span></tt>. The resulting object would have the proper units.</p>
+<p>Note that this doesn&#8217;t work trivially with JSON seralization. We need to provide ways
+to serialize these values that would work outside Python as well as inside Python.f</p>
+<p>Rather than do all that work to correctly reason out the dimensions, we&#8217;ll
+stick to the intent of HamCalc and simply provide conversion factors.</p>
+<p>However.</p>
+<p>We don&#8217;t want to have the conversions be simple, semantically empty, multiply
+or divide operations. We&#8217;d like a unit or dimension to be an object or perhaps
+a class that has independent existence.</p>
+<p>Note that a conversion is a two step process.  First, we convert the value from source unit to standard unit. Second, we convert from the standard unit to target unit. Yes. Two steps. It&#8217;s simpler than building a matrix of all conversion combinations.</p>
+<p>We have two chocies for definition of a Unit.</p>
+<p><strong>Object</strong>. If each unit is an object (of class Unit) a dimensioned number becomes a tuple of value and unit. The unit objects have to be loaded and identified with
+some kind of name. This makes JSON serialization annoying and complex.</p>
+<p><strong>Class</strong>. If each unit is a distinct class, a dimensioned number is still a tuple of value and unit. The unit class definitions are imported (and global).
+The name is unique by Python class naming rules. The unit can be transformed
+from string to class with <tt class="xref py py-func docutils literal"><span class="pre">eval()</span></tt>.</p>
+<p>The abstract base classes look like this.</p>
+<p>Each non-standard unit can only convert to and from the standard unit.
+The standard unit does no conversion.</p>
+<p>For temperature, the methods must be overridden.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">Unit</span><span class="p">:</span>
+    <span class="n">factor</span><span class="o">=</span> <span class="mf">1.0</span>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">to_std</span><span class="p">(</span> <span class="n">class_</span><span class="p">,</span> <span class="n">value</span> <span class="p">):</span>
+        <span class="k">return</span> <span class="n">value</span><span class="o">*</span><span class="n">class_</span><span class="o">.</span><span class="n">factor</span>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_std</span><span class="p">(</span> <span class="n">class_</span><span class="p">,</span> <span class="n">value</span> <span class="p">):</span>
+        <span class="k">return</span> <span class="n">value</span><span class="o">/</span><span class="n">class_</span><span class="o">.</span><span class="n">factor</span>
+
+<span class="k">class</span> <span class="nc">Standard_Unit</span><span class="p">(</span> <span class="n">Unit</span> <span class="p">):</span>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">to_std</span><span class="p">(</span> <span class="n">value</span> <span class="p">):</span>
+        <span class="k">return</span> <span class="n">value</span>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">from_std</span><span class="p">(</span> <span class="n">value</span> <span class="p">):</span>
+        <span class="k">return</span> <span class="n">value</span>
+</pre></div>
+</div>
+<p>Here are two implementation classes to show how millimeters and inches would
+be represented.</p>
+<div class="highlight-python"><pre>class MM( Standard_Unit )
+    &quot;&quot;&quot;millimeter&quot;&quot;&quot;
+    name= &quot;mm&quot;
+
+class IN( Unit )
+    &quot;&quot;&quot;inch&quot;&quot;&quot;
+    name= &quot;in&quot;
+    standard= MM
+    factor= 2.54</pre>
+</div>
+<p>We can use these implementation classes to convert among units like this.
+Once we have some input, we have to convert it to &#8220;standard&#8221; units
+and from the standard unit back to the output unit.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">length_in</span><span class="o">=</span> <span class="nb">float</span><span class="p">(</span> <span class="nb">input</span><span class="p">(</span> <span class="s">&quot;Distance [in]? &quot;</span> <span class="p">)</span> <span class="p">)</span>
+<span class="n">length</span><span class="o">=</span> <span class="n">IN</span><span class="o">.</span><span class="n">to_std</span><span class="p">(</span> <span class="n">length_in</span> <span class="p">)</span>
+<span class="n">length_mm</span><span class="o">=</span> <span class="n">MM</span><span class="o">.</span><span class="n">from_std</span><span class="p">(</span> <span class="n">length</span> <span class="p">)</span>
+</pre></div>
+</div>
+<p>The syntax is a bit clunky, but numbers are not bound to the units, and
+JSON serialization for a RESTful interface is much simpler.</p>
+<p>Here&#8217;s how temperature would be implemented.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">Celsius</span><span class="p">(</span> <span class="n">Standard_Unit</span> <span class="p">):</span>
+    <span class="k">pass</span>
+
+<span class="k">class</span> <span class="nc">Fahrenheit</span><span class="p">(</span> <span class="n">Unit</span> <span class="p">):</span>
+    <span class="n">standard</span><span class="o">=</span> <span class="n">Celsius</span>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">to_std</span><span class="p">(</span> <span class="n">class_</span><span class="p">,</span> <span class="n">value</span> <span class="p">):</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">value</span><span class="o">-</span><span class="mi">32</span><span class="p">)</span><span class="o">*</span><span class="mi">5</span><span class="o">/</span><span class="mi">9</span>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_std</span><span class="p">(</span> <span class="n">class_</span><span class="p">,</span> <span class="n">value</span> <span class="p">):</span>
+        <span class="k">return</span> <span class="mi">32</span><span class="o">+</span><span class="n">value</span><span class="o">*</span><span class="mi">9</span><span class="o">/</span><span class="mi">5</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="legacy-example">
+<h2>Legacy Example<a class="headerlink" href="#legacy-example" title="Permalink to this headline">¶</a></h2>
+<p>Let&#8217;s pick one HamCalc program, <tt class="file docutils literal"><span class="pre">FIBON.BAS</span></tt>, to examine in detail.</p>
+<p>This program has three essential features buried in it.</p>
+<ol class="arabic simple">
+<li>A display of background or introductory information.</li>
+<li>A calculation of 22 values from a Fibonacci series and the ratio of adjacent values. This produces a <strong>Table</strong>.
+The standard series starts with 1, 1, 2, 3. This program, however,
+seems to be able to compute series that don&#8217;t start with 1.</li>
+<li>A calculation of a &#8220;reverse&#8221; Fibonacci series using the ratio of adjacent values to approximate something.
+The math is murky and there&#8217;s a long apology.</li>
+</ol>
+<p>It&#8217;s a little difficult to segregate these three features from the GW-Basic UI
+cruft and the sometimes quirky legacy programming style.</p>
+<div class="section" id="code-overview">
+<h3>Code Overview<a class="headerlink" href="#code-overview" title="Permalink to this headline">¶</a></h3>
+<p>We&#8217;ll look at five blocks of code from this program.</p>
+<p>It&#8217;s important to note that lines 590-680 demonstrate two essential quirks.
+There is both a GW Basic quirk and an original legacy author quirk.</p>
+<p>Here&#8217;s the introductory material that&#8217;s displayed.</p>
+<div class="highlight-python"><pre>100 PRINT &quot; FIBONACCI SERIES of Numbers&quot;TAB(57)&quot;by George Murphy VE3ERP &quot;;
+110 PRINT
+120 COLOR 7,0
+130 :REM&#x27;
+140 PRINT &quot;A Fibonacci series is a series of numbers, positive or negative, in&quot;;
+150 PRINT &quot;teger or&quot;
+160 PRINT &quot;decimal, where each number is the sum of the two preceding numbers.&quot;
+170 PRINT
+180 PRINT &quot;The Fibonacci Ratio R is the value of any number in the series divi&quot;;
+190 PRINT &quot;ded by the&quot;
+200 PRINT &quot;previous number. R approaches, but can never reach the Golden Ratio&quot;;
+210 PRINT &quot; Phi.&quot;
+220 PRINT
+230 PRINT &quot;In cryptograhy (e.g., the DaVinci Code) the Golden Ratio Phi is, li&quot;;
+240 PRINT &quot;ke the value&quot;
+250 PRINT &quot;of Pi, an irrational number.&quot;
+260 PRINT
+270 COLOR 0,7:PRINT &quot; EQUATIONS: &quot;:COLOR 7,0
+280 PRINT &quot; Pi= 4 x arctangent of 1 radian.&quot;
+290 PRINT &quot; Phi= (1/r+1), where r is the Fibonacci Ratio.&quot;
+300 PRINT &quot; n = nr² + nr where n is a Finonacci number.&quot;
+310 PRINT
+320 COLOR 0,7:PRINT &quot; Commonly accepted practical values are: &quot;:COLOR 7,0
+330 :REM&#x27;PRINT
+340 PI#=ATN(1)*4
+350 PRINT &quot; Pi=&quot;;PI#;&quot;(approx.)&quot;
+360 PRINT &quot; Phi=1.618033989 (approx.)&quot;
+370 PHI#=1.618033989#
+380 PRINT</pre>
+</div>
+<p>Here&#8217;s the &#8220;progressive series&#8221; that this program can produce</p>
+<div class="highlight-python"><pre>550 :REM&#x27;.....start progressive series
+560 COLOR 7,0,0:CLS
+570 INPUT &quot;ENTER: first number in progressive series&quot;;B
+580 IF B=0 THEN B=1
+590 A=0:C=0:R=0:P=0:N=3
+600 CLS:GOSUB 1010
+610 :REM&#x27;.....start loop
+620 LOCATE N
+630 IF R=0 OR R&gt;10000000.0! THEN N=N-1
+640 IF C&gt;=10000000.0! THEN COLOR 0,7:PRINT &quot; N&gt;10 million&quot;:COLOR 7,0:GOTO 700
+650 PRINT C,TAB(16)R,TAB(45)P,TAB(65)USING &quot;#.######&quot;;D
+660 IF N=23 THEN 700
+670 N=N+1
+680 A=B:B=C:C=A+B:R=C/B:P=1/R+1:D=P-(INT(PHI#*1000000.0!)/1000000.0!)
+690 GOTO 610  :REM&#x27;continue loop</pre>
+</div>
+<p>Here&#8217;s the &#8220;regressive series&#8221;. We&#8217;ll try to ignore this.</p>
+<div class="highlight-python"><pre>770 :REM&#x27;.....start regressive series
+780 COLOR 7,0,0:CLS
+790 INPUT &quot;ENTER: first number in regressive series&quot;;B
+800 IF B&lt;0 THEN B=B*SGN(B)
+810 P=0:N=3:R=PHI#
+820 CLS:GOSUB 1010
+830 :REM&#x27;.....start loop
+840 LOCATE N
+850 IF C&lt;1 OR P=0 THEN N=N-1
+860 IF P&lt;0 THEN 920
+870 PRINT C,TAB(16)R,TAB(45)P,TAB(65)USING &quot;#.######&quot;;D
+880 IF N=23 THEN 940
+890 N=N+1
+900 C=B:B=C/R:A=C-B:R=B/A:P=1/R+1:D=P-(INT(PHI#*1000000.0!)/1000000.0!)
+910 GOTO 830 :REM&#x27;continue loop
+920 VIEW PRINT N TO 24:CLS:VIEW PRINT:LOCATE N:COLOR 0,7
+930 PRINT &quot; Further regression not feasible&quot;</pre>
+</div>
+<p>Here&#8217;s two other bits.</p>
+<div class="highlight-python"><pre>1000 :REM&#x27;
+1010 :REM&#x27;.....column heading
+1020 PRINT &quot; N (number)&quot;TAB(16)&quot; R (ratio N/previous N)&quot;;
+1030 PRINT TAB(45)&quot; P (ratio 1/R+1)&quot;TAB(65)&quot;Diff. (P-Phi)&quot;
+1040 PRINT STRING$(79,205)
+1050 RETURN</pre>
+</div>
+<div class="highlight-python"><pre>1060 :REM&#x27;
+1070 :REM&#x27;.....regressive disclaimer
+1080 CLS:COLOR 0,7:PRINT &quot; WARNING!&quot;:COLOR 7,0
+1090 PRINT
+1100 PRINT &quot;In calculating the second number in a regressive series, it is&quot;
+1110 PRINT &quot;assumed that its ratio to the first number you specify is equal to&quot;
+1120 PRINT &quot;Phi, which is only an approximation of an irrational value.&quot;
+1130 PRINT
+1140 PRINT &quot;This can result in somewhat inaccurate regressive values being&quot;
+1150 PRINT &quot;calculated and stoppage of further calculation when a negative&quot;
+1160 PRINT &quot;value is reached.&quot;</pre>
+</div>
+<p>The rest of the program is menus, user interaction, and a boilerplate
+implementation of printscreen.</p>
+</div>
+<div class="section" id="gw-basic-quirk">
+<h3>GW Basic Quirk<a class="headerlink" href="#gw-basic-quirk" title="Permalink to this headline">¶</a></h3>
+<p>Let&#8217;s look at this in painful detail. We&#8217;ll show statements and their net effects.</p>
+<div class="highlight-python"><pre>570 INPUT &quot;ENTER: first number in progressive series&quot;;B
+580 IF B=0 THEN B=1</pre>
+</div>
+<p>At this point, let&#8217;s assume that the user entered either 0 or 1 we can assert that <tt class="docutils literal"><span class="pre">B</span></tt> is 1.</p>
+<div class="highlight-python"><pre>590 A=0:C=0:R=0:P=0:N=3</pre>
+</div>
+<p>No mysteries here, we can assert that <tt class="docutils literal"><span class="pre">A</span></tt>, <tt class="docutils literal"><span class="pre">C</span></tt>, <tt class="docutils literal"><span class="pre">R</span></tt> and <tt class="docutils literal"><span class="pre">P</span></tt> are 0 and <tt class="docutils literal"><span class="pre">N</span></tt> is 3.</p>
+<div class="highlight-python"><pre>600 CLS:GOSUB 1010
+610 :REM&#x27;.....start loop
+620 LOCATE N</pre>
+</div>
+<p>Place headings on the page and move to line 3 to start displaying results</p>
+<div class="highlight-python"><pre>630 IF R=0 OR R&gt;10000000.0! THEN N=N-1</pre>
+</div>
+<p>The above statement is bizzarre; a seeming non-sequitur. We&#8217;ll return to it below.
+We do know that <tt class="docutils literal"><span class="pre">R</span></tt> is initially 0, so <tt class="docutils literal"><span class="pre">N</span></tt> is now 2.</p>
+<div class="highlight-python"><pre>640 IF C&gt;=10000000.0! THEN COLOR 0,7:PRINT &quot; N&gt;10 million&quot;:COLOR 7,0:GOTO 700</pre>
+</div>
+<p>Since <tt class="docutils literal"><span class="pre">C</span></tt> is 0, this has no effect.</p>
+<div class="highlight-python"><pre>650 PRINT C,TAB(16)R,TAB(45)P,TAB(65)USING &quot;#.######&quot;;D</pre>
+</div>
+<p>We see some output.</p>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">C</span></tt> is intended to be a Fibonacci number. In this case it&#8217;s 0.</li>
+<li><tt class="docutils literal"><span class="pre">R</span></tt> will be the ratio of <tt class="docutils literal"><span class="pre">C</span></tt> and <tt class="docutils literal"><span class="pre">B</span></tt>, the previous two Fibonacci numbers. <img class="math" src="_images/math/4e329013a619df3753f6f5614c3266755777e395.png" alt="r = F_{n+1}/F{n}"/>.
+Initially, R is set to 0.</li>
+<li><tt class="docutils literal"><span class="pre">P</span></tt> is <img class="math" src="_images/math/413efdf0e39464e14bf6507be32cda20cf1feacb.png" alt="p = 1/r+1"/>, initially 0.</li>
+<li><tt class="docutils literal"><span class="pre">D</span></tt> will be a delta between <tt class="docutils literal"><span class="pre">P</span></tt> and <img class="math" src="_images/math/675fbf8048772f0df562fe66fd23bc1a18b90b56.png" alt="phi"/>. This is not initialized
+and GW-Basic supplies zero as a default.</li>
+</ul>
+<div class="highlight-python"><pre>660 IF N=23 THEN 700</pre>
+</div>
+<p>Since <tt class="docutils literal"><span class="pre">N</span></tt> was 2, so this has no effect.</p>
+<div class="highlight-python"><pre>670 N=N+1</pre>
+</div>
+<p>Now <tt class="docutils literal"><span class="pre">N</span></tt> is set to 3.</p>
+<div class="highlight-python"><pre>680 A=B:B=C:C=A+B:R=C/B:P=1/R+1:D=P-(INT(PHI#*1000000.0!)/1000000.0!)</pre>
+</div>
+<p>Line 680, step by step:</p>
+<ol class="arabic simple">
+<li><tt class="docutils literal"><span class="pre">A</span></tt> is set to 1, the value of <tt class="docutils literal"><span class="pre">B</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">B</span></tt> is set to 0, the value of <tt class="docutils literal"><span class="pre">C</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">C</span></tt> is set to 1, the sum of <tt class="docutils literal"><span class="pre">A</span></tt> and <tt class="docutils literal"><span class="pre">B</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">R</span></tt> is set to 1/0, the quotient of <tt class="docutils literal"><span class="pre">C</span></tt> and <tt class="docutils literal"><span class="pre">B</span></tt>.  Wait, what?  Division by zero? Yes. The value will be a number with no meaning. The program does not &#8220;crash&#8221;. Weird.</li>
+<li><tt class="docutils literal"><span class="pre">P</span></tt> is set to 1/0+1, the quotient of 1 over <tt class="docutils literal"><span class="pre">R</span></tt> plus 1.  Wait, what?  Division by zero? Again. This value will be a number with no meaning.</li>
+<li><tt class="docutils literal"><span class="pre">D</span></tt> is set to the difference between <tt class="docutils literal"><span class="pre">P</span></tt> and a truncated version of <img class="math" src="_images/math/2c175f60eecef1de7560c3bdea495d69f26f719d.png" alt="\phi"/>.</li>
+</ol>
+<p>Yes. Without an ON ERROR statement, it appears that division by zero produces a quirky non-error response.</p>
+<p>This is <strong>not</strong> knowledge we want to capture.</p>
+</div>
+<div class="section" id="really">
+<h3>Really?<a class="headerlink" href="#really" title="Permalink to this headline">¶</a></h3>
+<p>Really.</p>
+<div class="highlight-python"><pre>GW-BASIC 3.23
+(C) Copyright Microsoft 1983,1984,1985,1986,1987,1988
+60300 Bytes free
+Ok
+100 A=10:B=0
+110 R=A/B
+120 PRINT &quot;A/B=&quot;;R
+130 PRINT &quot;A Quirk&quot;
+140 END
+run
+Division by zero
+A/B= 1.701412E+38
+A Quirk
+Ok</pre>
+</div>
+<p>The result of division by zero is two things.</p>
+<ul class="simple">
+<li>An error message.</li>
+<li>The magical return value is <tt class="docutils literal"><span class="pre">1.701412E+38</span></tt>, <tt class="docutils literal"><span class="pre">2.0**127</span></tt>.</li>
+</ul>
+</div>
+<div class="section" id="legacy-author-s-quirk">
+<h3>Legacy Author&#8217;s Quirk<a class="headerlink" href="#legacy-author-s-quirk" title="Permalink to this headline">¶</a></h3>
+<p>This example also reveals the original author&#8217;s quirky style of programming.</p>
+<p>The first line of output will be an error message. Line 630 is used to
+overwrite the error message with a line of output.</p>
+<p>Since the value for R may be 0 initially and over 10,000,000 when division by zero occurs, line 630 covers multitude of sins.</p>
+<p>Rather than test for zero, or simply fix the initialization, the error is masked. This is <strong>not</strong> knowledge we want to capture.</p>
+</div>
+</div>
+<div class="section" id="essential-features">
+<h2>Essential Features<a class="headerlink" href="#essential-features" title="Permalink to this headline">¶</a></h2>
+<p>Let&#8217;s review the essential features of this program.</p>
+<ul>
+<li><p class="first">Generating Fibonacci Series numbers.</p>
+<p>This generator function is then used in a User Interface that computes an interesting
+property of Fibonacci numbers, namely the convergence on <img class="math" src="_images/math/2c175f60eecef1de7560c3bdea495d69f26f719d.png" alt="\phi"/>.</p>
+</li>
+<li><p class="first">A reverse generator that develops a reverse Fibonacci series.
+It&#8217;s not clear that this is useful or that the approach is mathematically sound.</p>
+</li>
+<li><p class="first">A block of introductory (or background or explanatory) text. This is sometimes as valuable as the numerical output.</p>
+</li>
+</ul>
+<p>The golden ratio is <img class="math" src="_images/math/93c2b2e9d216af3f6a5b1536d99a69aa9844a02a.png" alt="\frac{1+\sqrt{5}}{2}"/>. Why this isn&#8217;t in the original program isn&#8217;t clear. But it&#8217;s conspicuous by its absence.</p>
+<p>More importantly, there are several ways of tackling this in Python.</p>
+</div>
+<div class="section" id="revised-designs">
+<h2>Revised Designs<a class="headerlink" href="#revised-designs" title="Permalink to this headline">¶</a></h2>
+<p>We don&#8217;t want to be dogmatic about declaring one way &#8220;best&#8221;. We want
+considerable latitude in supporting a number of alternate implementations which
+have the same API and the same results, but may have different memory
+or performance characteristics.</p>
+<p>Therefore, we want to have multiple, alternative implementations.</p>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">hamcalc.math.fibon</span></tt>. The package imports one of the other
+implementations; this provides a handy default implementation.
+This also contains the introductory text.</li>
+<li><tt class="docutils literal"><span class="pre">hamcalc.math.fibon.func</span></tt> is a functional implementation.</li>
+<li><tt class="docutils literal"><span class="pre">hamcalc.math.fibon.obj</span></tt> is an object-oriented implementation.</li>
+<li><tt class="docutils literal"><span class="pre">hamcalc.math.fibon.ya</span></tt> is yet another implementation. Extensibility
+is the point.</li>
+</ul>
+<p>We&#8217;ll look at some senseless and sensible choices for this.</p>
+<div class="section" id="trivial-rewrite">
+<h3>Trivial Rewrite<a class="headerlink" href="#trivial-rewrite" title="Permalink to this headline">¶</a></h3>
+<p>The trivial rewrite morphs the GW Basic into a somewhat equivalent
+Python. Quirks and all.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">fibon</span><span class="p">(</span> <span class="n">b</span> <span class="p">):</span>
+    <span class="n">phi</span><span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">5</span><span class="p">))</span><span class="o">/</span><span class="mi">2</span>
+    <span class="n">d</span><span class="o">=</span> <span class="mi">0</span>
+    <span class="k">if</span> <span class="n">b</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span> <span class="n">b</span><span class="o">=</span> <span class="mi">1</span>
+    <span class="n">a</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">n</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span>
+    <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+        <span class="k">yield</span> <span class="n">c</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">d</span>
+        <span class="k">if</span> <span class="n">n</span> <span class="o">==</span> <span class="mi">23</span><span class="p">:</span> <span class="k">break</span>
+        <span class="n">n</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span>
+        <span class="n">c</span> <span class="o">=</span> <span class="n">a</span><span class="o">+</span><span class="n">b</span>
+        <span class="n">r</span> <span class="o">=</span> <span class="n">c</span><span class="o">/</span><span class="n">b</span> <span class="k">if</span> <span class="n">b</span> <span class="o">!=</span> <span class="mi">0</span> <span class="k">else</span> <span class="mi">1</span>
+        <span class="n">p</span> <span class="o">=</span> <span class="mi">1</span><span class="o">/</span><span class="n">r</span><span class="o">+</span><span class="mi">1</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="n">p</span><span class="o">-</span><span class="n">phi</span>
+</pre></div>
+</div>
+<p>This has an awful workaround for the pair of quirks shown above (<tt class="docutils literal"><span class="pre">c/b</span> <span class="pre">if</span> <span class="pre">b</span> <span class="pre">!=</span> <span class="pre">0</span> <span class="pre">else</span> <span class="pre">1</span></tt>).</p>
+<p>This is, of course, dreadful and uninformative. This is not the kind of knowledge that we want to capture.</p>
+<p>The point is to capture the knowledge without getting bogged down in GW-Basic
+quirks or the original programmer&#8217;s personal quirks. Perhaps we can do better.</p>
+<p>Also, this seems to have a less-than-desirable API. The fixed upper limit
+of 23 values seems contrived and arbitrary.</p>
+</div>
+<div class="section" id="functional-python">
+<h3>Functional Python<a class="headerlink" href="#functional-python" title="Permalink to this headline">¶</a></h3>
+<p>Here&#8217;s a Python generator function which produces Fibonacci numbers.</p>
+<p>Why a generator? Beacuse we almost always want a collection of numbers; this
+iterator will produce that collection very efficiently.</p>
+<p>This requires wrapping in another iterator which will stop appropriately.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">fibonacci_iter</span><span class="p">(</span> <span class="n">f_0</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">f_1</span><span class="o">=</span><span class="mi">1</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Yields a sequence of Fibonacci numbers.&quot;&quot;&quot;</span>
+    <span class="k">yield</span> <span class="n">f_0</span>
+    <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+        <span class="k">yield</span> <span class="n">f_1</span>
+        <span class="n">f_1</span><span class="p">,</span> <span class="n">f_0</span> <span class="o">=</span> <span class="n">f_0</span><span class="o">+</span><span class="n">f_1</span><span class="p">,</span> <span class="n">f_1</span>
+</pre></div>
+</div>
+<p>Here are two useful wrappers which will add termination conditions to this
+iterator.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">until_last</span><span class="p">(</span> <span class="n">fib_iter</span><span class="p">,</span> <span class="n">last</span><span class="o">=</span><span class="mi">10000000</span> <span class="p">):</span>
+    <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">fib_iter</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">f</span> <span class="o">&gt;</span> <span class="n">last</span><span class="p">:</span> <span class="k">break</span>
+        <span class="k">yield</span> <span class="n">f</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">until_count</span><span class="p">(</span> <span class="n">fib_iter</span><span class="p">,</span> <span class="n">count</span><span class="o">=</span><span class="mi">22</span> <span class="p">):</span>
+    <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">fib_iter</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">count</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span> <span class="k">break</span>
+        <span class="k">yield</span> <span class="n">f</span>
+        <span class="n">count</span> <span class="o">-=</span> <span class="mi">1</span>
+</pre></div>
+</div>
+<p>The <tt class="xref py py-func docutils literal"><span class="pre">fibonacci_iter()</span></tt> function will emit a sequence which matches the incorrect HamCalc sequence with
+<tt class="docutils literal"><span class="pre">B==1</span></tt>.  Note that we&#8217;ve renamed <tt class="docutils literal"><span class="pre">B</span></tt> to <tt class="docutils literal"><span class="pre">f_1</span></tt>.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="nb">list</span><span class="p">(</span><span class="n">until_count</span><span class="p">(</span><span class="n">fibonacci_iter</span><span class="p">(</span><span class="n">f_0</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">f_1</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span> <span class="n">count</span><span class="o">=</span><span class="mi">22</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>This function can be used to emit a more typical Fibonacci sequence without the
+extra zero at the front.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="nb">list</span><span class="p">(</span><span class="n">until_count</span><span class="p">(</span><span class="n">fibonacci_iter</span><span class="p">(),</span><span class="n">count</span><span class="o">=</span><span class="mi">22</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>Or, also, this, which can be useful for some Project Euler problems.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="nb">list</span><span class="p">(</span><span class="n">until_last</span><span class="p">(</span><span class="n">fibonacci_iter</span><span class="p">(</span><span class="n">f_0</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">f_1</span><span class="o">=</span><span class="mi">2</span><span class="p">),</span> <span class="n">last</span><span class="o">=</span><span class="mi">10000000</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>This API doesn&#8217;t fit well with other styles of programming.
+To make this look like it&#8217;s build with objects or a single function, we&#8217;ll need to do a little functional composition.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">fibon_count_iter</span><span class="p">(</span> <span class="n">f_0</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">f_1</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">count</span><span class="o">=</span><span class="mi">22</span> <span class="p">):</span>
+    <span class="k">return</span> <span class="n">until_count</span><span class="p">(</span><span class="n">fibonacci_iter</span><span class="p">(</span><span class="n">f_0</span><span class="p">,</span><span class="n">f_1</span><span class="p">),</span><span class="n">count</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Or maybe this.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">fibon_count_iter</span><span class="o">=</span> <span class="k">lambda</span> <span class="n">f_0</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">f_1</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">count</span><span class="o">=</span><span class="mi">22</span><span class="p">:</span> <span class="n">until_count</span><span class="p">(</span><span class="n">fibonacci_iter</span><span class="p">(</span><span class="n">f_0</span><span class="p">,</span><span class="n">f_1</span><span class="p">),</span><span class="n">count</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="slightly-more-complex-generator">
+<h3>Slightly More Complex Generator<a class="headerlink" href="#slightly-more-complex-generator" title="Permalink to this headline">¶</a></h3>
+<p>This is a single function that includes both the &#8220;last&#8221; and &#8220;count&#8221; tests.
+The single function is more complex.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">fibonacci_iter_2</span><span class="p">(</span> <span class="n">f_0</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">f_1</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">last</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">count</span><span class="o">=</span><span class="bp">None</span> <span class="p">):</span>
+    <span class="k">if</span> <span class="n">last</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">not_last</span><span class="o">=</span> <span class="k">lambda</span> <span class="n">f</span><span class="p">,</span> <span class="n">last</span><span class="o">=</span><span class="n">last</span><span class="p">:</span> <span class="n">f</span> <span class="o">&lt;</span> <span class="n">last</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">not_last</span><span class="o">=</span> <span class="k">lambda</span> <span class="n">f</span><span class="p">,</span> <span class="n">last</span><span class="o">=</span><span class="n">last</span><span class="p">:</span> <span class="bp">True</span>
+    <span class="k">if</span> <span class="n">count</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">not_count</span><span class="o">=</span> <span class="k">lambda</span> <span class="n">n</span><span class="p">,</span> <span class="n">count</span><span class="o">=</span><span class="n">count</span><span class="p">:</span> <span class="n">n</span> <span class="o">&lt;</span> <span class="n">count</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">not_count</span><span class="o">=</span> <span class="k">lambda</span> <span class="n">n</span><span class="p">,</span> <span class="n">count</span><span class="o">=</span><span class="n">count</span><span class="p">:</span> <span class="bp">True</span>
+    <span class="n">n</span><span class="o">=</span> <span class="mi">1</span>
+    <span class="k">yield</span> <span class="n">f_0</span>
+    <span class="k">while</span> <span class="n">not_last</span><span class="p">(</span> <span class="n">f_1</span> <span class="p">)</span> <span class="ow">and</span> <span class="n">not_count</span><span class="p">(</span> <span class="n">n</span> <span class="p">):</span>
+        <span class="n">n</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">yield</span> <span class="n">f_1</span>
+        <span class="n">f_1</span><span class="p">,</span> <span class="n">f_0</span> <span class="o">=</span> <span class="n">f_0</span><span class="o">+</span><span class="n">f_1</span><span class="p">,</span> <span class="n">f_1</span>
+</pre></div>
+</div>
+<p>Better?  Perhaps not.</p>
+</div>
+<div class="section" id="object-oriented-python">
+<h3>Object-Oriented Python<a class="headerlink" href="#object-oriented-python" title="Permalink to this headline">¶</a></h3>
+<p>Here&#8217;s another variation on the theme. This sticks a little more with OO and
+procedural programming.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">Fibonacci</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Generates the *n*\ th Fibonacci number.&quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">f_0</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">f_1</span><span class="o">=</span><span class="mi">1</span> <span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_memo</span><span class="o">=</span> <span class="p">{</span> <span class="mi">0</span><span class="p">:</span> <span class="n">f_0</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span> <span class="n">f_1</span><span class="p">,</span> <span class="mi">2</span><span class="p">:</span> <span class="n">f_1</span><span class="o">+</span><span class="n">f_0</span> <span class="p">}</span>
+    <span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">n</span> <span class="p">):</span>
+        <span class="k">if</span> <span class="n">n</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_memo</span><span class="p">:</span>
+            <span class="n">f_n</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__call__</span><span class="p">(</span> <span class="n">n</span><span class="o">-</span><span class="mi">1</span> <span class="p">)</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">__call__</span><span class="p">(</span> <span class="n">n</span><span class="o">-</span><span class="mi">2</span> <span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_memo</span><span class="p">[</span><span class="n">n</span><span class="p">]</span><span class="o">=</span> <span class="n">f_n</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_memo</span><span class="p">[</span><span class="n">n</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>This callable object uses <em>memoization</em> to optimize performance.</p>
+<p>It can be used like this:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">fibon</span><span class="o">=</span> <span class="n">Fibonacci</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">22</span><span class="p">):</span>
+    <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="n">fibon</span><span class="p">(</span><span class="n">i</span><span class="p">),</span> <span class="n">fibon</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span> <span class="n">b</span><span class="p">,</span> <span class="n">b</span><span class="o">/</span><span class="n">a</span> <span class="p">)</span>
+</pre></div>
+</div>
+<p>This can be wrapped in a generator function to provide functionality similar to
+the iterator shown above.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">fibon_count_iter</span><span class="p">(</span> <span class="n">f_0</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">f_1</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">count</span><span class="o">=</span><span class="mi">22</span> <span class="p">):</span>
+    <span class="n">fibon</span><span class="o">=</span><span class="n">Fibonacci</span><span class="p">(</span><span class="n">f_0</span><span class="p">,</span> <span class="n">f_1</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">count</span><span class="p">):</span>
+        <span class="k">yield</span> <span class="n">fibon</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>A similar function can be used to generate until some last value is reached.</p>
+</div>
+</div>
+<div class="section" id="the-explanations">
+<h2>The Explanations<a class="headerlink" href="#the-explanations" title="Permalink to this headline">¶</a></h2>
+<p>The explanatory text is a function something like this.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">phi</span><span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">5</span><span class="p">))</span><span class="o">/</span><span class="mi">2</span>
+
+<span class="k">def</span> <span class="nf">intro</span><span class="p">():</span>
+    <span class="k">print</span><span class="p">(</span> <span class="s">&quot; FIBONACCI SERIES of Numbers&quot;</span><span class="p">,</span> <span class="mi">27</span><span class="o">*</span><span class="s">&#39; &#39;</span><span class="p">,</span> <span class="s">&quot;by George Murphy VE3ERP &quot;</span> <span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span> <span class="s">&quot;A Fibonacci series is a series of numbers, positive or negative, integer or&quot;</span> <span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span> <span class="s">&quot;decimal, where each number is the sum of the two preceding numbers.&quot;</span> <span class="p">)</span>
+    <span class="k">print</span><span class="p">()</span>
+    <span class="k">print</span><span class="p">(</span> <span class="s">&quot;The Fibonacci Ratio R is the value of any number in the series divided by the&quot;</span> <span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span> <span class="s">&quot;previous number. R approaches, but can never reach the Golden Ratio Phi.&quot;</span> <span class="p">)</span>
+    <span class="k">print</span><span class="p">()</span>
+    <span class="k">print</span><span class="p">(</span> <span class="s">&quot;In cryptograhy (e.g., the DaVinci Code) the Golden Ratio Phi is, like the value&quot;</span> <span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span> <span class="s">&quot;of Pi, an irrational number.&quot;</span> <span class="p">)</span>
+    <span class="k">print</span><span class="p">()</span>
+    <span class="k">print</span><span class="p">(</span> <span class="s">&quot; EQUATIONS: &quot;</span> <span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span> <span class="s">&quot; Pi= 4 x arctangent of 1 radian.&quot;</span> <span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span> <span class="s">&quot; Phi= (1/r+1), where r is the Fibonacci Ratio.&quot;</span> <span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span> <span class="s">&quot; n = nr² + nr where n is a Finonacci number.&quot;</span> <span class="p">)</span>
+    <span class="k">print</span><span class="p">()</span>
+    <span class="k">print</span><span class="p">(</span> <span class="s">&quot; Commonly accepted practical values are: &quot;</span> <span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span> <span class="s">&quot; Pi=&quot;</span><span class="p">,</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="s">&quot;(approx.)&quot;</span> <span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span> <span class="s">&quot; Phi=&quot;</span><span class="p">,</span> <span class="n">phi</span><span class="p">,</span> <span class="s">&quot;(approx.)&quot;</span> <span class="p">)</span>
+    <span class="k">print</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>There may be better ways to handle this. Here&#8217;s another possibility.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">intro</span><span class="p">():</span>
+    <span class="k">return</span> <span class="s">&quot;&quot;&quot;</span><span class="se">\</span>
+<span class="s"> FIBONACCI SERIES of Numbers                             by George Murphy VE3ERP</span>
+<span class="s">A Fibonacci series is a series of numbers, positive or negative, integer or</span>
+<span class="s">decimal, where each number is the sum of the two preceding numbers.</span>
+
+<span class="s">The Fibonacci Ratio R is the value of any number in the series divided by the</span>
+<span class="s">previous number. R approaches, but can never reach the Golden Ratio Phi.</span>
+
+<span class="s">In cryptograhy (e.g., the DaVinci Code) the Golden Ratio Phi is, like the value</span>
+<span class="s">of Pi, an irrational number.</span>
+
+<span class="s"> EQUATIONS:</span>
+<span class="s"> Pi= 4 x arctangent of 1 radian.</span>
+<span class="s"> Phi= (1/r+1), where r is the Fibonacci Ratio.</span>
+<span class="s"> n = nr² + nr where n is a Finonacci number.</span>
+
+<span class="s"> Commonly accepted practical values are:</span>
+<span class="s"> Pi= 3.141592653589793 (approx.)</span>
+<span class="s"> Phi= 1.618033988749895 (approx.)</span>
+<span class="s">&quot;&quot;&quot;</span>
+</pre></div>
+</div>
+<p>Note that we don&#8217;t want to use the official <tt class="docutils literal"><span class="pre">__doc__</span></tt> string for this.
+The <tt class="docutils literal"><span class="pre">__doc__</span></tt> should focus on API and implementation notes, not general
+background. Also, the <tt class="docutils literal"><span class="pre">__doc__</span></tt> string may have unit test cases in it.</p>
+<p>Perhaps we can use RST markup for the <tt class="docutils literal"><span class="pre">intro()</span></tt> text.</p>
+<p>The Equations section could then be rewritten as follows.</p>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">:math:`\pi</span> <span class="pre">=</span> <span class="pre">4</span> <span class="pre">\times</span> <span class="pre">\arctan</span> <span class="pre">1`</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">:math:`\phi</span> <span class="pre">\approx</span> <span class="pre">(1/r+1)`,</span> <span class="pre">where</span> <span class="pre">*r*</span> <span class="pre">is</span> <span class="pre">the</span> <span class="pre">Fibonacci</span> <span class="pre">Ratio</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">:math:`n</span> <span class="pre">=</span> <span class="pre">nr^2</span> <span class="pre">+</span> <span class="pre">nr`,</span> <span class="pre">where</span> <span class="pre">*n*</span> <span class="pre">is</span> <span class="pre">a</span> <span class="pre">Finonacci</span> <span class="pre">number</span></tt></li>
+</ul>
+<p>However, this doesn&#8217;t always render well without a sophisticated math typesetting engine available.</p>
+<p>Correcting the minor errors, perhaps this is more sensible.</p>
+<ul class="simple">
+<li><img class="math" src="_images/math/92f6c4f1713a74510baf588a68efe56cb2918987.png" alt="\pi = 4 \times \arctan 1"/>.</li>
+<li><img class="math" src="_images/math/234d30175de30913e268953141c138ce3f892ed1.png" alt="\phi \approx F_{n+1} / F_{n}"/>, a number divided by the previous number.</li>
+<li><img class="math" src="_images/math/930854894c78762f0fac4ef09539503773a10fe5.png" alt="\phi = (1/\phi+1)"/>.</li>
+<li><img class="math" src="_images/math/01f551485521efbb1b629068a2be525bcc5ec941.png" alt="n = \frac{n}{\phi^2} + \frac{n}{\phi}"/> or maybe <img class="math" src="_images/math/148599af5f1c4450b477756d4032eb19209a82a2.png" alt="0 = n\phi^2+n\phi-n"/>.</li>
+</ul>
+</div>
+<div class="section" id="the-stdio-application">
+<h2>The STDIO Application<a class="headerlink" href="#the-stdio-application" title="Permalink to this headline">¶</a></h2>
+<p>The point behind our two-tier architecture is to separate the essential
+calculation from the final application programs.</p>
+<p>The STDIO implementation can easily mimic the original GW-Basic with simple
+programs that use simple <tt class="xref py py-func docutils literal"><span class="pre">print()</span></tt> and <tt class="xref py py-func docutils literal"><span class="pre">input()</span></tt> features.</p>
+<p>We can easily add a menu that mimics the original HamCalc Menu.</p>
+<p>That leaves us only having to solve &#8220;The Hamdex Problem.&#8221;</p>
+<div class="section" id="a-sample-program">
+<h3>A Sample Program<a class="headerlink" href="#a-sample-program" title="Permalink to this headline">¶</a></h3>
+<p>Here is a STDIO-based program that mimics the original GW-Basic with
+something like the following.</p>
+<p>The Docstring contains the full name of the program that will
+be displayed in the menu. This eliminates having a separate list of
+programs used to build the menus.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="sd">&quot;&quot;&quot;Fibonacci Series.&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">math</span>
+<span class="kn">import</span> <span class="nn">hamcalc.math.fibon</span> <span class="kn">as</span> <span class="nn">fibon</span>
+
+<span class="k">print</span><span class="p">(</span> <span class="n">fibon</span><span class="o">.</span><span class="n">intro</span><span class="p">()</span> <span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">z</span><span class="o">=</span> <span class="bp">None</span>
+<span class="k">while</span> <span class="n">z</span> <span class="o">!=</span> <span class="s">&#39;0&#39;</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span> <span class="s">&quot; To display progressive series (in ascending) order.....press 1 &quot;</span> <span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span> <span class="s">&quot; To display regressive series (in descending) order.....press 2 &quot;</span> <span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span> <span class="s">&quot; To EXIT program........................................press 0 &quot;</span> <span class="p">)</span>
+    <span class="n">z</span><span class="o">=</span> <span class="nb">input</span><span class="p">(</span> <span class="s">&quot;? &quot;</span> <span class="p">)</span>
+    <span class="k">if</span> <span class="n">z</span> <span class="o">==</span> <span class="s">&#39;1&#39;</span><span class="p">:</span>
+        <span class="n">progressive</span><span class="p">()</span>
+    <span class="k">elif</span> <span class="n">z</span> <span class="o">==</span> <span class="s">&#39;2&#39;</span><span class="p">:</span>
+        <span class="n">regressive</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>We&#8217;ll only implement the <tt class="xref py py-func docutils literal"><span class="pre">progressive()</span></tt> function for now.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">progressive</span><span class="p">():</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">b</span><span class="o">=</span> <span class="nb">int</span><span class="p">(</span> <span class="nb">input</span><span class="p">(</span> <span class="s">&quot;ENTER: first number in progressive series&quot;</span> <span class="p">)</span> <span class="p">)</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="n">b</span><span class="o">=</span> <span class="mi">1</span>
+    <span class="k">print</span><span class="p">(</span> <span class="s">&quot;{0:&lt;16s}{1:&lt;30s}{2:&lt;20s}{3:s}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+        <span class="s">&quot; N (number)&quot;</span><span class="p">,</span> <span class="s">&quot; R (ratio N/previous N)&quot;</span><span class="p">,</span>
+        <span class="s">&quot; P (ratio 1/R+1)&quot;</span><span class="p">,</span> <span class="s">&quot;Diff. (P-Phi)&quot;</span> <span class="p">)</span> <span class="p">)</span>
+    <span class="k">for</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">pairs</span><span class="p">(</span> <span class="n">fibon</span><span class="o">.</span><span class="n">fibon_count_iter</span><span class="p">(</span> <span class="n">f_1</span><span class="o">=</span> <span class="n">b</span><span class="p">,</span> <span class="n">count</span><span class="o">=</span><span class="mi">22</span> <span class="p">)</span> <span class="p">):</span>
+        <span class="n">r</span><span class="o">=</span> <span class="n">c</span><span class="o">/</span><span class="n">b</span>
+        <span class="n">p</span><span class="o">=</span> <span class="mi">1</span><span class="o">/</span><span class="n">r</span><span class="o">+</span><span class="mi">1</span>
+        <span class="n">d</span><span class="o">=</span> <span class="n">p</span><span class="o">-</span><span class="n">phi</span>
+        <span class="k">print</span><span class="p">(</span> <span class="s">&quot;{0:10d}      {1:10g}                    {2:10g}          {3:10g}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">d</span><span class="p">)</span> <span class="p">)</span>
+</pre></div>
+</div>
+<p>This depends on a simple iterator tool that yield the pairs from the values in
+the sequence.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">pairs</span><span class="p">(</span> <span class="n">iterable</span> <span class="p">):</span>
+    <span class="n">a</span><span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">iterable</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">iterable</span><span class="p">:</span>
+        <span class="k">yield</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span>
+        <span class="n">a</span><span class="o">=</span> <span class="n">b</span>
+</pre></div>
+</div>
+<p>The original program was only 133 lines of code. Including several quirks.</p>
+<p>This version would be only about 80 or 90 lines of code. The separate
+core calculations are only 20 to 30 lines of code. The result is similar
+to the original in size and intent.</p>
+</div>
+<div class="section" id="the-hamdex-problem">
+<h3>The Hamdex Problem<a class="headerlink" href="#the-hamdex-problem" title="Permalink to this headline">¶</a></h3>
+<p>HamCalc had three indexes of programs.</p>
+<ol class="arabic simple">
+<li>The 449 files themselves with names and embedded <tt class="docutils literal"><span class="pre">REM</span></tt> remarks.</li>
+<li>The index buried in the menu system as <tt class="docutils literal"><span class="pre">DATA</span></tt> statements in  <tt class="file docutils literal"><span class="pre">MENU/HCAL-X.BAS</span></tt>.</li>
+<li>The Hamdex file, <tt class="file docutils literal"><span class="pre">INDEX/HAMDEX.FIL</span></tt>.</li>
+</ol>
+<p>Clearly, these are not going to agree. For evidence, see <a class="reference internal" href="legacy.html#legacy"><em>The HamCalc Legacy</em></a>.</p>
+<p>The Pythonic solution is to develop the
+indices from one source, the programs themselves.
+Docstrings and global variables are typically used for this.</p>
+<p>For example, we might do something like this.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="sd">&quot;&quot;&quot;The name.</span>
+
+<span class="sd">Other notes.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="n">__hamdex__</span> <span class="o">=</span> <span class="s">&quot;Heading, Subheading, Note&quot;</span>
+<span class="n">__version__</span> <span class="o">=</span> <span class="s">&quot;2.1&quot;</span>
+</pre></div>
+</div>
+<p>This <em>could</em> work to support the indexing operations.</p>
+<p>Some programs have multiple Hamdex categories, making this simplistic approach
+less than optimal. We could complicate the global <tt class="docutils literal"><span class="pre">__hamdex__</span></tt> variable.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="sd">&quot;&quot;&quot;The name.</span>
+
+<span class="sd">Etc.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="n">__hamdex__</span> <span class="o">=</span> <span class="p">[</span><span class="s">&quot;Heading, Subheading, Note&quot;</span><span class="p">,</span> <span class="s">&quot;Heading, Subheading, Note&quot;</span><span class="p">]</span>
+<span class="n">__version__</span> <span class="o">=</span> <span class="s">&quot;2.1&quot;</span>
+</pre></div>
+</div>
+<p>Or, we can parse the docstring comments to get two things:</p>
+<ol class="arabic simple">
+<li>The formal name of the program; different from the filename.</li>
+<li>The various Hamdex Heading, Subheading and Note to create a big index.</li>
+</ol>
+<p>While full-up RST parsing seems like overkill, there may be an intermediate level of docstring parsing that can separate a name from Hamdex information.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="sd">&quot;&quot;&quot;The Name.</span>
+
+<span class="sd">:index:`heading, subheading, note`</span>
+<span class="sd">:index:`another heading, subheading, note`</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="n">__version__</span> <span class="o">=</span> <span class="s">&quot;2.1&quot;</span>
+</pre></div>
+</div>
+<p>Or, we could use &#8220;trove classifiers&#8221;, where &#8220;Topic&#8221; is a required keyword.
+This is somewhat simpler to parse, and fits with the PyPi trove index already
+used for other Python programs.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="sd">&quot;&quot;&quot;The Name.</span>
+
+<span class="sd">Topic :: Heading :: Subheading :: Note</span>
+<span class="sd">Topic :: Another Heading :: Subheading :: Note</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="n">__version__</span> <span class="o">=</span> <span class="s">&quot;2.1&quot;</span>
+</pre></div>
+</div>
+<p>Or, we could simply clone lines from the Hamdex File in the existing CSV notation.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="sd">&quot;&quot;&quot;The Name.</span>
+
+<span class="sd">&quot;Heading&quot;,&quot;, Subheading&quot;,&quot;, Note&quot;</span>
+<span class="sd">&quot;Another Heading&quot;,&quot;, Subheading&quot;,&quot;, Note&quot;</span>
+<span class="sd">&quot;&quot;&quot;</span>
+</pre></div>
+</div>
+<p>[Yes, the <tt class="docutils literal"><span class="pre">&quot;,</span> <span class="pre">Subheading&quot;</span></tt> is typical; it&#8217;s a quirk; the
+comma is an obvious assumption.]</p>
+<p>We could even decorate the CSV lines with <tt class="docutils literal"><span class="pre">..</span>&nbsp; <span class="pre">csv-table::</span></tt>, but
+that doesn&#8217;t seem essential.</p>
+<p>We&#8217;ll opt for the third style because of the copy-and-paste simplicity of
+moving lines from <tt class="file docutils literal"><span class="pre">INDEX/HAMDEX.FIL</span></tt> into the docstring comments.</p>
+</div>
+</div>
+<div class="section" id="restful-web-service">
+<h2>RESTful Web Service<a class="headerlink" href="#restful-web-service" title="Permalink to this headline">¶</a></h2>
+<p>The point behind our two-tier architecture is to separate the essential
+calculation from the final application programs.
+We can  wrap our <tt class="xref py py-func docutils literal"><span class="pre">fibon_count_iter()</span></tt> function in a RESTful web services wrapper.</p>
+<div class="section" id="simple-wsgi-application">
+<h3>Simple WSGI Application<a class="headerlink" href="#simple-wsgi-application" title="Permalink to this headline">¶</a></h3>
+<p>We&#8217;ll show this example using the WSGI libraries, since they&#8217;re the most
+&#8220;composable&#8221;. We can easily add URL path hierarchy that orgranizes disparate
+WSGI-compliant applications.</p>
+<p>This will use a URL to describe the sequence required, and the result is a
+JSON document containing the requested Fibonacci numbers.</p>
+<div class="highlight-python"><pre>http://localhost:8080/fibonacci/?f_0=0&amp;f_1=1&amp;count=22</pre>
+</div>
+<p>Given this service, an HTML page or a JavaScript program could present a user
+interface similar to the original HamCalc output.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">hamcalc</span> <span class="kn">import</span> <span class="n">fibon_count_iter</span><span class="p">,</span> <span class="n">fibon_last_iter</span>
+<span class="kn">from</span> <span class="nn">wsgiref.simple_server</span> <span class="kn">import</span> <span class="n">make_server</span>
+<span class="kn">import</span> <span class="nn">urllib.parse</span>
+<span class="kn">import</span> <span class="nn">json</span>
+
+<span class="k">def</span> <span class="nf">fibonacci_app</span><span class="p">(</span><span class="n">environ</span><span class="p">,</span> <span class="n">start_response</span><span class="p">):</span>
+    <span class="n">args</span><span class="o">=</span> <span class="n">urllib</span><span class="o">.</span><span class="n">parse</span><span class="o">.</span><span class="n">parse_qs</span><span class="p">(</span> <span class="n">environ</span><span class="p">[</span><span class="s">&#39;QUERY_STRING&#39;</span><span class="p">]</span>  <span class="p">)</span>
+    <span class="k">assert</span> <span class="nb">set</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span> <span class="o">&lt;</span> <span class="p">{</span><span class="s">&quot;f_0&quot;</span><span class="p">,</span><span class="s">&quot;f_1&quot;</span><span class="p">,</span><span class="s">&quot;last&quot;</span><span class="p">,</span><span class="s">&quot;count&quot;</span><span class="p">}</span>
+    <span class="n">req</span><span class="o">=</span> <span class="p">{}</span>
+    <span class="k">if</span> <span class="s">&#39;f_0&#39;</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
+        <span class="n">req</span><span class="p">[</span><span class="s">&#39;f_0&#39;</span><span class="p">]</span><span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="s">&#39;f_0&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
+    <span class="k">if</span> <span class="s">&#39;f_1&#39;</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
+        <span class="n">req</span><span class="p">[</span><span class="s">&#39;f_1&#39;</span><span class="p">]</span><span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="s">&#39;f_1&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
+
+    <span class="k">if</span> <span class="s">&#39;count&#39;</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
+        <span class="n">req</span><span class="p">[</span><span class="s">&#39;count&#39;</span><span class="p">]</span><span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="s">&#39;count&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">result</span><span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">fibon_count_iter</span><span class="p">(</span><span class="o">**</span><span class="n">req</span><span class="p">))</span>
+    <span class="c"># elif &#39;last&#39; in args: etc.</span>
+
+    <span class="n">document</span><span class="o">=</span> <span class="p">{</span>
+        <span class="s">&#39;request&#39;</span><span class="p">:</span> <span class="n">args</span><span class="p">,</span>
+        <span class="s">&#39;response&#39;</span><span class="p">:</span> <span class="n">result</span><span class="p">,</span>
+        <span class="p">}</span>
+
+    <span class="n">status</span> <span class="o">=</span> <span class="s">&#39;200 OK&#39;</span>
+    <span class="n">headers</span> <span class="o">=</span> <span class="p">[(</span><span class="s">&#39;Content-type&#39;</span><span class="p">,</span> <span class="s">&#39;application/json&#39;</span><span class="p">)]</span>
+    <span class="n">start_response</span><span class="p">(</span><span class="n">status</span><span class="p">,</span> <span class="n">headers</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span> <span class="n">document</span> <span class="p">)</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s">&#39;UTF-8&#39;</span><span class="p">)]</span>
+
+<span class="n">httpd</span> <span class="o">=</span> <span class="n">make_server</span><span class="p">(</span><span class="s">&#39;&#39;</span><span class="p">,</span> <span class="mi">8080</span><span class="p">,</span> <span class="n">fibonacci_app</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span> <span class="s">&quot;Serving on port 8080...&quot;</span> <span class="p">)</span>
+<span class="c"># Serve until process is killed</span>
+<span class="n">httpd</span><span class="o">.</span><span class="n">serve_forever</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>The point is not to be a complete web spplication. The point is to be a usable
+RESTful web service.</p>
+<p>Much of Hamlcalc can be easily wrapped in similar <tt class="docutils literal"><span class="pre">GET</span></tt>-based HTTP requests.</p>
+<p>Note that some of the requests will return a diagram or image, others will return values. Some requests will will include both.</p>
+</div>
+<div class="section" id="intro-text-and-other-features">
+<h3>Intro Text and Other Features<a class="headerlink" href="#intro-text-and-other-features" title="Permalink to this headline">¶</a></h3>
+<p>We could handle the intro text by checking the <tt class="docutils literal"><span class="pre">QUERY_STRING</span></tt> or <tt class="docutils literal"><span class="pre">REQUEST_METHOD</span></tt>.
+If there is no <tt class="docutils literal"><span class="pre">QUERY_STRING</span></tt> (or <tt class="docutils literal"><span class="pre">REQUEST_METHOD</span></tt> is HEAD) the application respond with the intro text instead of performing the calculation.</p>
+<p>While appealingly simple, this tends to limit future implementation choices.</p>
+<p>We should use a more properly RESTful URL to determine what kind of response was expected: some introductory HTML or the results of a calculation. In the case where there are multiple modes or choices, this calculation request can specify
+appropriate details.</p>
+<p>This gets the intro page.</p>
+<div class="highlight-python"><pre>http://localhost:8080/fibonacci/anything.html</pre>
+</div>
+<p>The <tt class="docutils literal"><span class="pre">anything</span></tt> could be <tt class="docutils literal"><span class="pre">index</span></tt> or <tt class="docutils literal"><span class="pre">introduction</span></tt> or <tt class="docutils literal"><span class="pre">help</span></tt> or <tt class="docutils literal"><span class="pre">background</span></tt> or <tt class="docutils literal"><span class="pre">explanation</span></tt> or &#8211; well &#8211; anything.</p>
+<p>This does the &#8220;progressive&#8221; calculation of the series.</p>
+<div class="highlight-python"><pre>http://localhost:8080/fibonacci/series.json?f_0=0&amp;f_1=1&amp;count=22</pre>
+</div>
+<p>We could use a different request for a &#8220;regressive&#8221; calculation.</p>
+<p>We can also implement an HTML form to provide a simple, default API, FWIW.</p>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Python Architecture</a><ul>
+<li><a class="reference internal" href="#architecture">Architecture</a></li>
+<li><a class="reference internal" href="#key-design-patterns">Key Design Patterns</a><ul>
+<li><a class="reference internal" href="#the-table-pattern">The <strong>Table</strong> Pattern</a></li>
+<li><a class="reference internal" href="#the-solver-pattern">The <strong>Solver</strong> Pattern</a></li>
+<li><a class="reference internal" href="#the-equivalents-pattern">The <strong>Equivalents</strong> Pattern</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#legacy-example">Legacy Example</a><ul>
+<li><a class="reference internal" href="#code-overview">Code Overview</a></li>
+<li><a class="reference internal" href="#gw-basic-quirk">GW Basic Quirk</a></li>
+<li><a class="reference internal" href="#really">Really?</a></li>
+<li><a class="reference internal" href="#legacy-author-s-quirk">Legacy Author&#8217;s Quirk</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#essential-features">Essential Features</a></li>
+<li><a class="reference internal" href="#revised-designs">Revised Designs</a><ul>
+<li><a class="reference internal" href="#trivial-rewrite">Trivial Rewrite</a></li>
+<li><a class="reference internal" href="#functional-python">Functional Python</a></li>
+<li><a class="reference internal" href="#slightly-more-complex-generator">Slightly More Complex Generator</a></li>
+<li><a class="reference internal" href="#object-oriented-python">Object-Oriented Python</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#the-explanations">The Explanations</a></li>
+<li><a class="reference internal" href="#the-stdio-application">The STDIO Application</a><ul>
+<li><a class="reference internal" href="#a-sample-program">A Sample Program</a></li>
+<li><a class="reference internal" href="#the-hamdex-problem">The Hamdex Problem</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#restful-web-service">RESTful Web Service</a><ul>
+<li><a class="reference internal" href="#simple-wsgi-application">Simple WSGI Application</a></li>
+<li><a class="reference internal" href="#intro-text-and-other-features">Intro Text and Other Features</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="legacy.html"
+                        title="previous chapter">The HamCalc Legacy</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="python/index.html"
+                        title="next chapter">Python Modules</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/python_architecture.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="python/index.html" title="Python Modules"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="legacy.html" title="The HamCalc Legacy"
+             >previous</a> |</li>
+        <li><a href="index.html">HamCalc 2.1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2013, S.Lott.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2b1.
+    </div>
+  </body>
+</html>

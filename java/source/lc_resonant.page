@@ -1,0 +1,33 @@
+#########################
+LC Resonant Circuit
+#########################
+
+Preface
+=======
+
+This calculator helps design a resonant LC circuit for a given frequecy or wavelength.
+
+You will need to then design a coil, using the air core coil design.
+The coil design will lead to design compromise and change of inductance.
+
+Circuit Design
+==============
+
+To compute inductance (and reactance)
+
+1.  Enter the frequency (or wavelength)
+
+2.Enter the maximum capacitance (in picofarads)
+
+To determine the expected frequency response
+
+1.  Enter an inductance
+
+2.  Enter a capacitance
+
+..  applet::
+    :code: RadioCalc.class
+    :width: 200
+    :height: 250
+    :models: freqwavel lc_resonant
+

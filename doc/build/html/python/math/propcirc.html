@@ -1,0 +1,546 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>propcirc – Circle, Properies of &mdash; HamCalc 2.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '2.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="HamCalc 2.1 documentation" href="../../index.html" />
+    <link rel="up" title="math – Math, Physics, Units Conversion" href="index.html" />
+    <link rel="next" title="randnum" href="randnum.html" />
+    <link rel="prev" title="primenos" href="primenos.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="randnum.html" title="randnum"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="primenos.html" title="primenos"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../../index.html">HamCalc 2.1 documentation</a> &raquo;</li>
+          <li><a href="../index.html" >Python Modules</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">math &#8211; Math, Physics, Units Conversion</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="propcirc-circle-properies-of">
+<h1>propcirc &#8211; Circle, Properies of<a class="headerlink" href="#propcirc-circle-properies-of" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="analysis">
+<h2>Analysis<a class="headerlink" href="#analysis" title="Permalink to this headline">¶</a></h2>
+<p>This is a kind of <strong>Solver</strong> with a number of circle elements.</p>
+<p>Here&#8217;s the canonical diagram based on the introductory text in HamCalc.</p>
+<a class="reference internal image-reference" href="../../_images/circle.png"><img alt="../../_images/circle.png" src="../../_images/circle.png" style="height: 2.5in;" /></a>
+<p>The description covers the CAB sector of the circle, triangle, and the segment.
+This is the &#8220;inside triangle&#8221;.</p>
+<p>The program&#8217;s description doesn&#8217;t cover the second triangle very clearly.</p>
+<p>The second triangle is the small outside triangle labeled ABD. The point D is on the circumference
+midway between A and B. Line CD bisects CA and CB. The &#8220;height of segment&#8221; is this <em>g</em>.</p>
+<p>Here&#8217;s an different variation on this picture that shows the
+trigonometric functions and how they apply to the triangle.</p>
+<a class="reference internal image-reference" href="../../_images/Circle-trig6.png"><img alt="../../_images/Circle-trig6.png" src="../../_images/Circle-trig6.png" style="height: 2.5in;" /></a>
+<p>[From the Wikimedia Commons, <a class="reference external" href="http://en.wikipedia.org/wiki/File:Circle-trig6.svg">http://en.wikipedia.org/wiki/File:Circle-trig6.svg</a>]</p>
+<p>In this, the triangle is OAB instead of CAB. The Angle, <em>a</em>, is <img class="math" src="../../_images/math/08221292fc5357dd032d4c088bd58915c3707f08.png" alt="2\theta"/>.
+The line CD is the &#8220;height of segment&#8221;.</p>
+<p>The segment labeled &#8220;chord&#8221; on this diagram is not the chord used by HamCalc; the HamCalc chord is the line AB, with a length <img class="math" src="../../_images/math/a7254ee8b4a11842112a656af2226bcf8958eee3.png" alt="2 R \sin \theta"/>.</p>
+<p>HamCalc has a number of equations used to solve different portions of the circle.</p>
+<p>We&#8217;ll analyze that algorithm below.</p>
+<p>In order to keep the analysis sensible, we&#8217;ll stick with the
+legacy variable names are as follows:</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">R:</th><td class="field-body">Radius, <img class="math" src="../../_images/math/eff43e84f8a3bcf7b6965f0a3248bc4d3a9d0cd4.png" alt="R"/>.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">D:</th><td class="field-body">Diameter, <img class="math" src="../../_images/math/9ffb448918db29f2a72f8f87f421b3b3cad18f95.png" alt="D"/>.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">CF:</th><td class="field-body">Circumference, <img class="math" src="../../_images/math/42e0c610a8ec09727325a1f33504c9d1a5eca7a5.png" alt="C_f"/> to make it distinct from <img class="math" src="../../_images/math/c3355896da590fc491a10150a50416687626d7cc.png" alt="C"/>.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">AR:</th><td class="field-body">Area, <img class="math" src="../../_images/math/d4b68dd397b1f8c333edfa7d15bea8d488ae140f.png" alt="A_r"/> to make it distinct from <img class="math" src="../../_images/math/84437146ec5c2f7e335f8a9fd17b8cb48c28522a.png" alt="A \times R"/>.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">A:</th><td class="field-body">Angle, <img class="math" src="../../_images/math/019e9892786e493964e145e7c5cf7b700314e53b.png" alt="A"/> (<img class="math" src="../../_images/math/52e8ed7a3ba22130ad3984eb2cd413406475a689.png" alt="\theta"/> might be better.)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">C:</th><td class="field-body">Length of Chord (A-B line on diagram), <img class="math" src="../../_images/math/c3355896da590fc491a10150a50416687626d7cc.png" alt="C"/> (should be <img class="math" src="../../_images/math/f53690bc945c8dcf7afc893ee13257a5184b5c7b.png" alt="L_c"/>.)</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">AC:</th><td class="field-body">Length of Arc (A-B on diagram), <img class="math" src="../../_images/math/28953282e40002d6ac8b071a1ced0db3836493be.png" alt="A_c"/> to make it distinct from <img class="math" src="../../_images/math/f96eef29197c03ff4d950268ec02f2dfd6741351.png" alt="A \times C"/> (should be <img class="math" src="../../_images/math/f0461f2c0db375ad5835b4e010e6199d41f8231c.png" alt="L_a"/>.)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">B:</th><td class="field-body">Height of segment (g on diagram), <img class="math" src="../../_images/math/ff5fb3d775862e2123b007eb4373ff6cc1a34d4e.png" alt="B"/>.</td>
+</tr>
+</tbody>
+</table>
+<p>The bottom line is this:</p>
+<div class="admonition important">
+<p class="first admonition-title">Important</p>
+<p class="last">Given <em>R</em> and <em>A</em>, all other values can be determined.</p>
+</div>
+<dl class="docutils">
+<dt>While HamCalc does quite a bit of work, it</dt>
+<dd>seems simpler, if <em>R</em> or <em>A</em> is omitted, to do the following:</dd>
+</dl>
+<p><strong>Step 1</strong>. Compute the missing value(s) for <em>R</em>, <em>A</em> (or both) from the available values. Step 1A is to compute <em>R</em>. Step 1B is to compute <em>A</em> if possible.</p>
+<p><strong>Step 2</strong>. Compute the remaining values from <em>R</em> and <em>A</em> if it&#8217;s known. This may lead to contradictory results if the input is over-specified.</p>
+<p>There are over 40,000 combinations of the eight variables. Of these, many are over-specified; they include too many values. A user could enter contradictory values. For example,
+<img class="math" src="../../_images/math/7f21ca65a3227d3adca062a040101318e671770c.png" alt="R=5, D=5"/> is a potential combination that includes a contradiction.</p>
+<p>The combination <img class="math" src="../../_images/math/fe3345d95f0a5c1da4c5d2d4a8a3c45015c15d2b.png" alt="R=5, D=10"/>, however, has no contradiction, but omits providing a way to derive <em>A</em>.</p>
+<p>We&#8217;ll look at this &#8220;simplified&#8221; version of what HamCalc does. Below, we&#8217;ll look
+the legacy HamCalc code in detail.</p>
+<div class="section" id="step-1a-compute-r">
+<h3>Step 1A &#8211; Compute <em>R</em><a class="headerlink" href="#step-1a-compute-r" title="Permalink to this headline">¶</a></h3>
+<p>Deriving <em>R</em> from any one of <em>D</em>, <em>CF</em> or <em>AR</em> is easy.</p>
+<div class="math">
+<p><img src="../../_images/math/42381ba590ef758efecd6acce703bf3dbe610b50.png" alt="R = \frac{D}{2}"/></p>
+</div><div class="math">
+<p><img src="../../_images/math/c42cf1c21a5464065f7fc6b1fd28e5229902d176.png" alt="R = \frac{C_f}{2\pi}"/></p>
+</div><div class="math">
+<p><img src="../../_images/math/309f53000d663df66bcca18152bca55a35cdfa5d.png" alt="R = \sqrt{\frac{A_r}{\pi}}"/></p>
+</div><p>What&#8217;s left is deriving <em>R</em> from the remaining four variables, <em>A</em>, <em>C</em>, <em>AC</em> and <em>B</em>. There are six combinations.</p>
+<ul>
+<li><p class="first"><em>A</em> and <em>C</em>:</p>
+<div class="math">
+<p><img src="../../_images/math/98a841c33b9a2b3b60114cc0e83101e2a4c78dc7.png" alt="R = \frac{C}{2\sin \frac{A}{2}}"/></p>
+</div></li>
+<li><p class="first"><em>A</em> and <em>AC</em> (line 750):</p>
+<div class="math">
+<p><img src="../../_images/math/b651a9cd6236d17c814547b8a8fa5ddd80cae9e3.png" alt="R = \frac{A_c}{A}"/></p>
+</div></li>
+<li><p class="first"><em>A</em> and <em>B</em> (line 660):</p>
+<div class="math">
+<p><img src="../../_images/math/3c42d8717e1a9e8d0451c5c7c96c60454a75bd10.png" alt="R= \frac{B}{1-\cos \frac{A}{2} }"/></p>
+</div></li>
+<li><p class="first"><em>C</em> and <em>AC</em>.</p>
+<p>Two points on the circumference are not sufficient to define a circle.
+There&#8217;s no way to compute the radius.</p>
+</li>
+<li><p class="first"><em>C</em> and <em>B</em> (line 670):</p>
+<div class="math">
+<p><img src="../../_images/math/1dc8a01fcb407b5f9b9d1bc9fb762ff7072dd26c.png" alt="R=\frac{4B^2+C^2}{8B}"/></p>
+</div><div class="math">
+<p><img src="../../_images/math/46286a4cfa6bd472e007d753bbcaf97c7f3e9aa3.png" alt="A=2\left[\pi-\left(2\arctan \frac{C}{2B}\right) \right]"/></p>
+</div></li>
+<li><p class="first"><em>AC</em> and <em>B</em>:</p>
+<p>We need to solve the following for <em>R</em>.</p>
+<div class="math">
+<p><img src="../../_images/math/0e55e87d8ae4136bba042f669bd688f6205bee8a.png" alt="B = R (1 - \cos \frac{A_c}{2R})"/></p>
+</div><p>An approximation looks sensible. There are two in the legacy program for
+determining <em>A</em>. A similar approximation may be able to determine <em>R</em>.</p>
+<p>There are a few constraints on the ranges of values:
+<img class="math" src="../../_images/math/ce19aab23e4f29d2485158f96189756ff16a8348.png" alt="0 \leq B \leq R"/> and <img class="math" src="../../_images/math/2c04bfaf5ea47f846b992f2811cb19f9265d496f.png" alt="0 \leq A_c \leq 2 \pi R"/>
+and <img class="math" src="../../_images/math/4394d35fcc4652d673c39fa06ff753f9a18a552f.png" alt="-1 \leq 1 - \cos \frac{A_c}{2R} \leq 1"/>.</p>
+<p>However, <img class="math" src="../../_images/math/051ce092631c8a8718a3c63ef991d44b26ff4552.png" alt="0 &lt; R"/> is the open issue. With <em>R</em> allowed to range to
+essentially infinity, this isn&#8217;t a simple bisection to locate the root.</p>
+</li>
+</ul>
+</div>
+<div class="section" id="step-1b-compute-a">
+<h3>Step 1B &#8211; Compute <em>A</em><a class="headerlink" href="#step-1b-compute-a" title="Permalink to this headline">¶</a></h3>
+<p>If we can, <em>A</em> can be computed. It&#8217;s not essential, however. If omitted, then
+it can be treated as zero for the purposes of computing the output values.</p>
+<p>Deriving <em>A</em> from <em>R</em> and one of <em>C</em>, <em>AC</em> or <em>B</em> is a little more work.</p>
+<p>There are three cases.</p>
+<ul>
+<li><p class="first"><em>R</em> and <em>C</em> (line 650):</p>
+<div class="math">
+<p><img src="../../_images/math/f476ea65689f3071069ee856929131484fe9ca8a.png" alt="Z = \frac{C}{2R}"/></p>
+</div><div class="math">
+<p><img src="../../_images/math/6ab57bf4fe927c90b0ebfff88920325af9199aa5.png" alt="A = f_1(C, R) = 2 \arctan \frac{Z}{\sqrt{1-Z^2}}"/></p>
+</div></li>
+<li><p class="first"><em>R</em> and <em>AC</em> (line 640):</p>
+<div class="math">
+<p><img src="../../_images/math/73d55fdc02e021d07a05e43e4332ad2aeb46ca7b.png" alt="A = f_2(A_c, R) = \frac{A_c}{R}"/></p>
+</div></li>
+<li><p class="first"><em>R</em> and <em>B</em> (lines 680 and 650):</p>
+<div class="math">
+<p><img src="../../_images/math/c75a856f70f76dfd7d9bbe23755be5424124b9d1.png" alt="A = f_3(B, R) = f_1( 2 \sqrt{2BR-B^2}, R )"/></p>
+</div></li>
+</ul>
+</div>
+<div class="section" id="step-2-final-results">
+<h3>Step 2 &#8211; Final Results<a class="headerlink" href="#step-2-final-results" title="Permalink to this headline">¶</a></h3>
+<p>Then, step 2, is to develop all the values from <em>R</em> and <em>A</em>.</p>
+<div class="math">
+<p><img src="../../_images/math/dafb8534bd9eb02bed1c996df79ce1a3d5ab458f.png" alt="D = 2R"/></p>
+</div><div class="math">
+<p><img src="../../_images/math/1eefaa0c7115eb4a37aab1407eea134783152efa.png" alt="C_f = 2\pi R"/></p>
+</div><div class="math">
+<p><img src="../../_images/math/511d3a3ddf1c3407be81d6ba405be6eb27fa7b6f.png" alt="A_r = \pi R^2"/></p>
+</div><div class="math">
+<p><img src="../../_images/math/2dd7d88a3e6ca1fde844340f0c1e96f682006384.png" alt="C = 2R \sin \frac{A}{2}"/></p>
+</div><div class="math">
+<p><img src="../../_images/math/5b23889705e9e18de70963e597e62782056d4e00.png" alt="A_c = R A"/></p>
+</div><p>When <em>A</em> measured in degrees it&#8217;s <img class="math" src="../../_images/math/2f1e6de6882668978cbcba9d34a00dea337d5fcf.png" alt="A_c = 2\pi R \frac{A}{360}"/>.</p>
+<div class="math">
+<p><img src="../../_images/math/8db686a4055e4faf554a1e61573a32618047511d.png" alt="B = R (1 - \cos \frac{A}{2})"/></p>
+</div><p>Bonus value: area of sector.</p>
+<div class="math">
+<p><img src="../../_images/math/7249b47d8ba44a6a508579919d6100c458851fca.png" alt="S_c = \pi R^2 \frac{A}{2\pi}"/></p>
+</div><p>Bonus value: area of segment.</p>
+<div class="math">
+<p><img src="../../_images/math/3cc57f079577f02ae2cb1f54cb7212ae45787a7f.png" alt="S_g = S_c - (R-B)\frac{C}{2}"/></p>
+</div></div>
+</div>
+<div class="section" id="implementation">
+<h2>Implementation<a class="headerlink" href="#implementation" title="Permalink to this headline">¶</a></h2>
+<p>This is a variant on a <strong>Solver</strong>. It&#8217;s not purely a <strong>Solver</strong> since we have
+so many relationships among to many variables.</p>
+<p>Instead, we derive <em>R</em> and <em>A</em> and then compute all the derived values from those two.</p>
+<p>Note that the sample output includes 10 output values from 8 potential input variables.</p>
+<span class="target" id="module-hamcalc.math.propcirc"></span><p>hamcalc.math.propcirc &#8211; Circle, Properies of</p>
+<p>Here are some test cases.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">hamcalc.math.propcirc</span> <span class="kn">as</span> <span class="nn">propcirc</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">propcirc</span><span class="o">.</span><span class="n">circle</span><span class="p">(</span> <span class="n">R</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">propcirc</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="mi">60</span><span class="p">)</span> <span class="p">)</span>
+<span class="go">{&#39;A&#39;: 452.3893421169302, &#39;C&#39;: 75.39822368615503, &#39;angle&#39;: 1.0471975511965976, &#39;D&#39;: 24, &#39;G&#39;: 1.6076951545867355, &#39;L_A&#39;: 12.566370614359172, &#39;A_G&#39;: 13.044394613675443, &#39;L_C&#39;: 11.999999999999998, &#39;R&#39;: 12, &#39;A_C&#39;: 75.39822368615502}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">circle</span><span class="p">(</span> <span class="n">D</span><span class="o">=</span><span class="mi">24</span><span class="p">,</span> <span class="n">angle</span><span class="o">=</span><span class="n">propcirc</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="mi">60</span><span class="p">)</span> <span class="p">)</span>
+<span class="go">{&#39;A&#39;: 452.3893421169302, &#39;C&#39;: 75.39822368615503, &#39;angle&#39;: 1.0471975511965976, &#39;D&#39;: 24.0, &#39;G&#39;: 1.6076951545867355, &#39;L_A&#39;: 12.566370614359172, &#39;A_G&#39;: 13.044394613675443, &#39;L_C&#39;: 11.999999999999998, &#39;R&#39;: 12.0, &#39;A_C&#39;: 75.39822368615502}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">circle</span><span class="p">(</span> <span class="n">C</span><span class="o">=</span><span class="mf">75.4</span><span class="p">,</span> <span class="n">angle</span><span class="o">=</span><span class="n">propcirc</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="mi">60</span><span class="p">)</span> <span class="p">)</span>
+<span class="go">{&#39;A&#39;: 452.41065813415986, &#39;C&#39;: 75.4, &#39;angle&#39;: 1.0471975511965976, &#39;D&#39;: 24.000565418257818, &#39;G&#39;: 1.6077330304281274, &#39;L_A&#39;: 12.566666666666666, &#39;A_G&#39;: 13.045009249155228, &#39;L_C&#39;: 12.000282709128907, &#39;R&#39;: 12.000282709128909, &#39;A_C&#39;: 75.40177635569331}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">circle</span><span class="p">(</span> <span class="n">A</span><span class="o">=</span><span class="mf">452.4</span><span class="p">,</span> <span class="n">angle</span><span class="o">=</span><span class="n">propcirc</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="mi">60</span><span class="p">)</span> <span class="p">)</span>
+<span class="go">{&#39;A&#39;: 452.4, &#39;C&#39;: 75.39911183784653, &#39;angle&#39;: 1.0471975511965976, &#39;D&#39;: 24.000282707463835, &#39;G&#39;: 1.6077140923958928, &#39;L_A&#39;: 12.566518639641089, &#39;A_G&#39;: 13.044701927795316, &#39;L_C&#39;: 12.000141353731916, &#39;R&#39;: 12.000141353731918, &#39;A_C&#39;: 75.39999999999999}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">circle</span><span class="p">(</span> <span class="n">L_C</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">angle</span><span class="o">=</span><span class="n">propcirc</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="mi">60</span><span class="p">)</span> <span class="p">)</span>
+<span class="go">{&#39;A&#39;: 452.3893421169304, &#39;C&#39;: 75.39822368615505, &#39;angle&#39;: 1.0471975511965976, &#39;D&#39;: 24.000000000000004, &#39;G&#39;: 1.6076951545867357, &#39;L_A&#39;: 12.566370614359174, &#39;A_G&#39;: 13.04439461367545, &#39;L_C&#39;: 12.0, &#39;R&#39;: 12.000000000000002, &#39;A_C&#39;: 75.39822368615505}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">circle</span><span class="p">(</span> <span class="n">L_A</span><span class="o">=</span><span class="mf">12.56</span><span class="p">,</span> <span class="n">angle</span><span class="o">=</span><span class="n">propcirc</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="mi">60</span><span class="p">)</span> <span class="p">)</span>
+<span class="go">{&#39;A&#39;: 451.93077414974937, &#39;C&#39;: 75.36000000000001, &#39;angle&#39;: 1.0471975511965976, &#39;D&#39;: 23.98783302281047, &#39;G&#39;: 1.60688012165867, &#39;L_A&#39;: 12.56, &#39;A_G&#39;: 13.031172061850732, &#39;L_C&#39;: 11.993916511405233, &#39;R&#39;: 11.993916511405235, &#39;A_C&#39;: 75.3217956916249}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">circle</span><span class="p">(</span> <span class="n">G</span><span class="o">=</span><span class="mf">1.6</span><span class="p">,</span> <span class="n">angle</span><span class="o">=</span><span class="n">propcirc</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="mi">60</span><span class="p">)</span> <span class="p">)</span>
+<span class="go">{&#39;A&#39;: 448.0690272864175, &#39;C&#39;: 75.03733375924637, &#39;angle&#39;: 1.0471975511965976, &#39;D&#39;: 23.885125168440826, &#39;G&#39;: 1.6, &#39;L_A&#39;: 12.506222293207728, &#39;A_G&#39;: 12.919820742768572, &#39;L_C&#39;: 11.942562584220411, &#39;R&#39;: 11.942562584220413, &#39;A_C&#39;: 74.67817121440291}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">circle</span><span class="p">(</span> <span class="n">R</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">L_C</span><span class="o">=</span><span class="mi">12</span> <span class="p">)</span>
+<span class="go">{&#39;A&#39;: 452.3893421169302, &#39;C&#39;: 75.39822368615503, &#39;angle&#39;: 1.0471975511965979, &#39;D&#39;: 24, &#39;G&#39;: 1.6076951545867368, &#39;L_A&#39;: 12.566370614359174, &#39;A_G&#39;: 13.044394613675465, &#39;L_C&#39;: 12.0, &#39;R&#39;: 12, &#39;A_C&#39;: 75.39822368615505}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">circle</span><span class="p">(</span> <span class="n">R</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">G</span><span class="o">=</span><span class="mf">1.6</span> <span class="p">)</span>
+<span class="go">{&#39;A&#39;: 452.3893421169302, &#39;C&#39;: 75.39822368615503, &#39;angle&#39;: 1.0446296436120974, &#39;D&#39;: 24, &#39;G&#39;: 1.600000000000001, &#39;L_A&#39;: 12.535555723345169, &#39;A_G&#39;: 12.952155424152622, &#39;L_C&#39;: 11.973303637676615, &#39;R&#39;: 12, &#39;A_C&#39;: 75.21333434007101}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">propcirc</span><span class="o">.</span><span class="n">circle</span><span class="p">(</span> <span class="n">L_A</span><span class="o">=</span><span class="mf">12.56</span><span class="p">,</span> <span class="n">G</span><span class="o">=</span><span class="mf">1.61</span> <span class="p">)</span>
+<span class="go">{&#39;A&#39;: 450.09677997191295, &#39;C&#39;: 75.20693418466634, &#39;angle&#39;: 1.049328872579753, &#39;D&#39;: 23.939110660552977, &#39;G&#39;: 1.6099999693011857, &#39;L_A&#39;: 12.56, &#39;A_G&#39;: 13.054769563165337, &#39;L_C&#39;: 11.991641677007895, &#39;R&#39;: 11.969555330276489, &#39;A_C&#39;: 75.16880747413634}</span>
+</pre></div>
+</div>
+<dl class="function">
+<dt id="hamcalc.math.propcirc.bisection">
+<tt class="descclassname">hamcalc.math.propcirc.</tt><tt class="descname">bisection</tt><big>(</big><em>L_A</em>, <em>G</em>, <em>eps=1e-07</em><big>)</big><a class="reference internal" href="../../_modules/hamcalc/math/propcirc.html#bisection"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.math.propcirc.bisection" title="Permalink to this definition">¶</a></dt>
+<dd><p>Approximate a value for <em>R</em> from <em>L_A</em> and <em>G</em> via bisection.</p>
+<p>We&#8217;re solving <img class="math" src="../../_images/math/d63acb262eb96c867284483b5b45ba23b6d62e51.png" alt="G = R (1 - \cos \frac{L_A}{2R})"/> for a value of <em>R</em>.</p>
+<p>We know only that <img class="math" src="../../_images/math/296b1846c4f21e2c1237486740c79e9bebd064ba.png" alt="R &gt; 0"/>.</p>
+<p>This requires a 2-phase search.</p>
+<ol class="arabic simple">
+<li>Double R until it&#8217;s demonstrably too large.</li>
+<li>Bisect between the last two values of R.</li>
+</ol>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>L_A</strong> &#8211; Length of Arc</li>
+<li><strong>G</strong> &#8211; Height of Arc</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">R radius</p>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">approx</span><span class="p">(</span>  <span class="n">L_A</span><span class="o">=</span><span class="mf">12.56</span><span class="p">,</span> <span class="n">G</span><span class="o">=</span><span class="mf">1.61</span> <span class="p">)</span>
+<span class="go">11.969555330276489</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="hamcalc.math.propcirc.circle">
+<tt class="descclassname">hamcalc.math.propcirc.</tt><tt class="descname">circle</tt><big>(</big><em>**kw</em><big>)</big><a class="reference internal" href="../../_modules/hamcalc/math/propcirc.html#circle"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.math.propcirc.circle" title="Permalink to this definition">¶</a></dt>
+<dd><p>Solve properties of a circle.</p>
+<p>Note that only <em>R</em> and <em>angle</em> are really <strong>required</strong> to compute
+all of the values. If <em>angle</em> cannot be computed, it&#8217;s assumed to
+be irrelevant and angle-related values are not computed, either.</p>
+<p>This solver derives values for <em>R</em> or <em>angle</em> (or both, if possible)
+and then recomputes the remaining values. It&#8217;s entirely possible that
+an output value will fail to agree with an input value because
+the circle was over-specified.</p>
+<p>It&#8217;s also possible that the circle is under-specified and <em>R</em> cannot
+be computed.</p>
+<p>There are two subsets of parameters: Radius and Angle.
+Without the Angle, only the Radius-related values can be computed.
+With the angle, the remaining values can be computed.</p>
+<p>Radius-only</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>R</strong> &#8211; Radius</li>
+<li><strong>D</strong> &#8211; Diameter</li>
+<li><strong>C</strong> &#8211; Circumference</li>
+<li><strong>A</strong> &#8211; Area of entire circle.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p>Radius and Angle.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>angle</strong> &#8211; Angle (<img class="math" src="../../_images/math/52e8ed7a3ba22130ad3984eb2cd413406475a689.png" alt="\theta"/> might be better.) This must be in radians.</li>
+<li><strong>L_C</strong> &#8211; Length of Chord (A-B line on diagram).</li>
+<li><strong>L_A</strong> &#8211; Length of Arc (A-B arc on diagram).</li>
+<li><strong>G</strong> &#8211; Height of segment between chord and arc.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">A dictionary with 10 values, the 8 input values plus two more.
+<tt class="docutils literal"><span class="pre">A_G</span></tt> area of segment and <tt class="docutils literal"><span class="pre">A_S</span></tt> area of the whole sector.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="hamcalc.math.propcirc.degrees">
+<tt class="descclassname">hamcalc.math.propcirc.</tt><tt class="descname">degrees</tt><big>(</big><em>radians</em><big>)</big><a class="reference internal" href="../../_modules/hamcalc/math/propcirc.html#degrees"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.math.propcirc.degrees" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert radians to degrees.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="hamcalc.math.propcirc.intro">
+<tt class="descclassname">hamcalc.math.propcirc.</tt><tt class="descname">intro</tt><big>(</big><big>)</big><a class="reference internal" href="../../_modules/hamcalc/math/propcirc.html#intro"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.math.propcirc.intro" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the text from the introductory page.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="hamcalc.math.propcirc.radians">
+<tt class="descclassname">hamcalc.math.propcirc.</tt><tt class="descname">radians</tt><big>(</big><em>degrees</em><big>)</big><a class="reference internal" href="../../_modules/hamcalc/math/propcirc.html#radians"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.math.propcirc.radians" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert degrees to radians.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="legacy-design">
+<h2>Legacy Design<a class="headerlink" href="#legacy-design" title="Permalink to this headline">¶</a></h2>
+<p>Here are the rules.  The program iterates over these rules, making it kind
+of like an AI rules engine. Each decision is revisited as computations change
+the available pieces of data.</p>
+<p>In the legacy code, P is <img class="math" src="../../_images/math/f2ca003a7da0de4994b4733e203b74ff52d42553.png" alt="\pi"/>.</p>
+<div class="highlight-python"><pre>590 IF B=0  AND A=P     THEN B=0:GOSUB 800
+600 IF AR=0 AND R&lt;&gt;0    THEN AR=P*R^2:D=2*R:CF=P*D
+610 IF D=0  AND R&lt;&gt;0    THEN D=2*R
+620 IF CF=0 AND R&lt;&gt;0    THEN CF=P*2*R
+630 IF AC=0 AND A*R&lt;&gt;0  THEN AC=A*R
+640 IF A=0  AND AC*R&lt;&gt;0 THEN A=AC/R
+650 IF A=0  AND R*C&lt;&gt;0  THEN Z=C/2/R:A=2*ATN(Z/SQR(-Z*Z+1))
+660 IF R=0  AND A*B&lt;&gt;0  THEN R=B/(1-COS(A/2))
+670 IF R=0  AND B*C&lt;&gt;0  THEN R=(4*B^2+C^2)/(8*B):A=2*(P-(2*(ATN((C/2)/B))))
+680 IF C=0  AND B*R&lt;&gt;0  THEN C=2*(SQR(2*B*R-B^2))
+690 IF C=0  AND A*R&lt;&gt;0  THEN C=2*R*SIN(A/2)
+700 IF B=0  AND R*C&lt;&gt;0  THEN B=R-0.5!*(SQR(4*R^2-C^2))
+710 IF B=0  AND A*C&lt;&gt;0  THEN B=C/2*TAN(A/4)
+720 IF B=0  AND A*R&lt;&gt;0  THEN B=2*R*(SIN(A/4)^2)
+730 IF R=0  AND AR&lt;&gt;0   THEN R=SQR(AR/P)
+740 IF R=0  AND CF&lt;&gt;0   THEN R=CF/(2*P)
+750 IF R=0  AND A*AC&lt;&gt;0 THEN R=AC/A
+760 IF A=0  AND AC*B&lt;&gt;0 THEN GOSUB 850
+770 IF A=0  AND AC*C&lt;&gt;0 THEN GOSUB 920</pre>
+</div>
+<p><strong>590</strong>. This is a special case to handle a angle of 180°&nbsp;(<img class="math" src="../../_images/math/f2ca003a7da0de4994b4733e203b74ff52d42553.png" alt="\pi"/> radians).
+In this case, Diameter, <em>D</em>, Radius, <em>R</em>, and Chord Length, <em>C</em> are related simply.</p>
+<blockquote>
+<div><p><strong>800</strong>. If <em>C</em> is known:  <img class="math" src="../../_images/math/cc937808e48346cc1f8f735e2b5439609e4bf619.png" alt="D = C"/>; <img class="math" src="../../_images/math/5d8da14bde4b2f8e130501c7619cdd0633a65ab4.png" alt="R = \frac{D}{2}"/>.</p>
+<p><strong>810</strong>. If <em>D</em> is known:  <img class="math" src="../../_images/math/0982c1fce4ad144de75eff6af6bd9d4738c7ee73.png" alt="C = D"/>; <img class="math" src="../../_images/math/5d8da14bde4b2f8e130501c7619cdd0633a65ab4.png" alt="R = \frac{D}{2}"/>.</p>
+<p><strong>820</strong>. If <em>R</em> is known:  <img class="math" src="../../_images/math/543a27c87814a0ccccb2866908f5b0a897291382.png" alt="D = 2 \times R"/>; <img class="math" src="../../_images/math/0982c1fce4ad144de75eff6af6bd9d4738c7ee73.png" alt="C = D"/>.</p>
+</div></blockquote>
+<p><strong>600-620</strong>. If the radius, <em>R</em>, is known, then Area, <em>AR</em>, Diameter, <em>D</em>, and Circumference, <em>CF</em> can all be computed.  <img class="math" src="../../_images/math/90e333dd9d93ae61fef1fe4e615a74b637e10d5e.png" alt="A_r = \pi R^2"/>. Also <img class="math" src="../../_images/math/543a27c87814a0ccccb2866908f5b0a897291382.png" alt="D = 2 \times R"/> and <img class="math" src="../../_images/math/0012d87f0eacf34627b838d681b4850d1a51d037.png" alt="C_f = \pi \times D"/>.</p>
+<p>Ways to compute Length of Arc, <em>AC</em>:</p>
+<blockquote>
+<div><strong>630</strong>. If Angle, <em>A</em>, and Radius, <em>R</em>, are known, then Length of Arc, <em>AC</em>, can be computed. <img class="math" src="../../_images/math/b951be4f6fa9e2ef7652b30d9b18009d9a0a0531.png" alt="A_c = A \times R"/>.</div></blockquote>
+<p>Ways to compute Angle, <em>A</em>.</p>
+<blockquote>
+<div><p><strong>640</strong>. If Length of Arc, <em>AC</em>, and Radius, <em>R</em>, are known: <img class="math" src="../../_images/math/617006280fbe07359366baf1273c1186865b311d.png" alt="A = \frac{A_c}{R}"/>.</p>
+<p><strong>650</strong>. If  Radius, <em>R</em>,  and Length of Chord, <em>C</em>,  are known, this is two
+sides of a triangle, and the angle, <em>A</em> can be computed. <img class="math" src="../../_images/math/20ee33e64e19e10d30572a5210946c562b0d51c6.png" alt="Z=\frac{C}{2R}"/>
+<img class="math" src="../../_images/math/c6cbecda3bea14108b44efd3d48d53055e1eac04.png" alt="A= 2 \arctan \frac{Z}{\sqrt{1-Z^2}}"/>.</p>
+</div></blockquote>
+<p>Ways to compute Radius, <em>R</em>.</p>
+<blockquote>
+<div><p><strong>660</strong>. If Angle, <em>A</em>, and Height of Segment, <em>B</em> are known:
+<img class="math" src="../../_images/math/d5cf07eda572c605397807b8a2f0ffb9790667b1.png" alt="R= \frac{B}{1-\cos \frac{A}{2} }"/></p>
+<p><strong>670</strong>. If Length of Chord, <em>C</em>, and Height of Segment, <em>B</em> are known:
+<img class="math" src="../../_images/math/7837b0559c42fe8e753d5392991912ad2aac7e34.png" alt="R=\frac{4B^2+C^2}{8B}"/>. Angle, <em>A</em>, can also be computed. <img class="math" src="../../_images/math/c8d9a09719647c0154a00e59c459669be9b077e6.png" alt="A=2\left[\pi-\left(2\arctan \frac{C}{2B}\right) \right]"/></p>
+</div></blockquote>
+<p>Ways to compute Length of Chord, <em>C</em>.</p>
+<blockquote>
+<div><p><strong>680</strong>. If Height of Segment, <em>B</em>, and Radius, <em>R</em> are known: <img class="math" src="../../_images/math/079ce73166306a5db25adb5da61c46c7bc13de91.png" alt="C=2\sqrt{2BR-B^2}"/></p>
+<p><strong>690</strong>. If Angle, <em>A</em>, and Radius, <em>R</em> are known:
+<img class="math" src="../../_images/math/e6295c973d8370a7dfac929da49fa4aefa4641cc.png" alt="C=2R\sin{\frac{A}{2}}"/></p>
+</div></blockquote>
+<p>Ways to compute height of segment, <em>B</em>.</p>
+<blockquote>
+<div><p><strong>700</strong>. If Radius, <em>R</em>, and Length of Chord, <em>C</em>, are known:
+<img class="math" src="../../_images/math/b01dfb8fcd1068746a23accf39936d86a4c418b0.png" alt="B = R - \frac{1}{2}\sqrt{(4 R^2-C^2)}"/></p>
+<p><strong>710</strong>. If Angle, <em>A</em>, and Length of Chord, <em>C</em>, are known:
+<img class="math" src="../../_images/math/be33f52389119047f7f18ef8d7a70f390f317d77.png" alt="B = \frac{C}{2} \tan \frac{A}{4}"/></p>
+<p><strong>720</strong>.  If  Angle, <em>A</em>, and Radius, <em>R</em>, are known:
+<img class="math" src="../../_images/math/00ccbf3783d335c48760d698e8194079067a3b4e.png" alt="B = 2 R \left(\sin \frac{A}{4}\right)^2"/></p>
+</div></blockquote>
+<p>Yet more ways to compute Radius, <em>R</em>.</p>
+<blockquote>
+<div><p><strong>730</strong>. If Area, <em>AR</em>, is known: <img class="math" src="../../_images/math/ab521a0ffb1af71973cb7078b2af5406732d6b5c.png" alt="R = \sqrt \frac{A_r}{\pi}"/></p>
+<p><strong>740</strong>. If Circumference, <em>CF</em>, is known: <img class="math" src="../../_images/math/5c4852d2a17ef27ce1bb832f10cacdca0c86a89c.png" alt="R = \frac{C_f}{2\pi}"/></p>
+<p><strong>750</strong>. If Angle, <em>A</em>, and Length of Arc, <em>AC</em>, are known: <img class="math" src="../../_images/math/2626037df1cc650c0605be9448af7cd0eb6a039a.png" alt="R=\frac{A_c}{A}"/>. See line 630.</p>
+</div></blockquote>
+<p>More ways to compute the Angle, <em>A</em> using iterative approximations.</p>
+<blockquote>
+<div><p><strong>760</strong>. If Length of Arc, <em>AC</em>, and Height of Segment, <em>B</em>, are known.
+Lines 850 to 900.</p>
+<p><strong>770</strong>. If Length of Arc, <em>AC</em>, and Length of Chord, <em>C</em>, are known:
+Lines 920 to 970.</p>
+</div></blockquote>
+</div>
+<div class="section" id="legacy-introduction">
+<h2>Legacy Introduction<a class="headerlink" href="#legacy-introduction" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><pre>PROPERTIES OF THE CIRCLE                                    by George C. Murphy
+    Draw a circular clock face. Mark 3 points on the circle: A at 10
+    o&#x27;clock, B at 2 o&#x27;clock, C at the centre of the circle. Draw lines
+    from A to B, B to C, and C to A.
+
+    The following definitions apply to this diagram:
+
+    RADIAL - any line drawn between the centre of a circle and any
+      point on the circumference. Lines AC and BC are radials.
+    CHORD - a straight line drawn between any two points on the
+      circumference. Line AB is a chord.
+    ARC - that part of the circumference which lies between any two
+      points. The curved line between A and B is an arc.
+    ANGLE - the angle in degrees between 2 radials that terminate at
+      the ends of a chord or arc. (angle ACB on your sketch).
+    SECTOR - the pie shaped figure formed by two radials and the arc
+      joining their ends.
+    SEGMENT - the figure formed by a chord and an arc joining the two
+      ends of the chord.
+    HEIGHT (of segment) - the distance between the midpoints of the
+      arc and the chord that form a segment.
+    DIMENSIONS can be entered in any unit of measure, as long as the
+      same unit is used for all dimensions.</pre>
+</div>
+</div>
+<div class="section" id="sample-output">
+<h2>Sample Output<a class="headerlink" href="#sample-output" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><pre>Radius / Length of radials...    12.000 units
+Diameter.....................    24.000 units
+Circumference................    75.398 units
+Area of full circle..........   452.389 units²
+Angle between radials........    60.000°
+Length of chord AB...........    12.000 units
+Length of arc AB.............    12.566 units
+Height of segment............     1.608 units
+Area of segment..............    13.044 units²
+Area of sector...............    75.398 units²</pre>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">propcirc &#8211; Circle, Properies of</a><ul>
+<li><a class="reference internal" href="#analysis">Analysis</a><ul>
+<li><a class="reference internal" href="#step-1a-compute-r">Step 1A &#8211; Compute <em>R</em></a></li>
+<li><a class="reference internal" href="#step-1b-compute-a">Step 1B &#8211; Compute <em>A</em></a></li>
+<li><a class="reference internal" href="#step-2-final-results">Step 2 &#8211; Final Results</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#implementation">Implementation</a></li>
+<li><a class="reference internal" href="#legacy-design">Legacy Design</a></li>
+<li><a class="reference internal" href="#legacy-introduction">Legacy Introduction</a></li>
+<li><a class="reference internal" href="#sample-output">Sample Output</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="primenos.html"
+                        title="previous chapter">primenos</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="randnum.html"
+                        title="next chapter">randnum</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../../_sources/python/math/propcirc.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="randnum.html" title="randnum"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="primenos.html" title="primenos"
+             >previous</a> |</li>
+        <li><a href="../../index.html">HamCalc 2.1 documentation</a> &raquo;</li>
+          <li><a href="../index.html" >Python Modules</a> &raquo;</li>
+          <li><a href="index.html" >math &#8211; Math, Physics, Units Conversion</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2013, S.Lott.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2b1.
+    </div>
+  </body>
+</html>

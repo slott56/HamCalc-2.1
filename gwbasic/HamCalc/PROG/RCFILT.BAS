@@ -1,0 +1,342 @@
+10 :REM'RCFILT - RC Active Audio Filters - 01 APR 96 rev.12 APR 97
+20 IF EX$=""THEN EX$="EXIT"
+30 CLS:KEY OFF
+40 COLOR 7,0,0
+50 UL$=STRING$(80,205)
+60 U$="####.######"
+70 U1$="####,###"
+80 U3$="###,###.##"
+90 U4$="####.####"
+100 U5$="####,###.#"
+110 X$=STRING$(79,32)     :REM'erase
+120 PI=3.1415929794311523!
+130 DIM A(4,4)    :REM'"a" factors
+140 DIM C(62)     :REM'standard capacitors
+150 DIM R(24)     :REM'standard resistors
+160 :REM'
+170 :REM'.....see fig.16.11, page 16.6
+180 DATA 1.4142, 0     , 0     , 0
+190 DATA  .7654, 1.8478, 0     , 0
+200 DATA  .5176, 1.9319, 1.4142, 0
+210 DATA  .3902, 1.6629, 1.9616, 1.1111
+220 FOR X=1 TO 4:FOR Y=1 TO 4
+230 READ A(X,Y)                 :REM'"a" factor
+240 NEXT Y:NEXT X
+250 :REM'
+260 :REM'.....resistors
+270 DATA 9.1,10,11,12,13,15,16,18,20,22,24,27,30
+280 DATA 33,36,39,43,47,51,56,62,68,75,82,91
+290 FOR Z=0 TO 24:READ R(Z):NEXT Z
+300 :REM'
+310 :REM'.....polystyrene capacitors - values in pF
+320 CLS:COLOR ,,0
+330 DATA 20,33,39,47,56,68,82,100,120,150,180,220,270,300,330,360,390,430,470
+340 DATA 500,510,560,600,620,680,750,820,910,1000,1100,1200,1300,1500,1600
+350 DATA 1800,2000,2200,2400,2700,3000,3300,3600,3900,4300,4700,5000,5100
+360 DATA 5600,6200,6800,7500,8200,9100,10000,12000,15000,16000,18000,20000
+370 DATA 22000,24000,25000
+380 FOR Z=1 TO 62
+390 READ C:C(Z)=C/10^6
+400 NEXT Z:C=0
+410 :REM'
+420 :REM'.....start
+430 CLS
+440 COLOR 15,2,1
+450 PRINT " RC Active Audio Filters";TAB(57)"by George Murphy VE3ERP ";
+460 COLOR 1,0:PRINT STRING$(80,223);
+470 COLOR 7,0
+480 :REM'
+490 T= 8:LOCATE  3:GOSUB 1740
+500 T=42:LOCATE  3:GOSUB 1880
+510 PRINT UL$;
+520 GOSUB 2190      :REM'preface
+530 COLOR 15,4:LOCATE 25,12
+540 PRINT " Press a Fig. number to choose a filter or press 0 to EXIT ";
+550 COLOR 7,0
+560 FIG$=INKEY$:IF FIG$=""THEN 560
+570 IF VAL(FIG$)>4 THEN 560
+580 IF FIG$="0"THEN CLS:RUN EX$
+590 IF FIG$="1"THEN 630
+600 IF FIG$="2"THEN 1280
+610 GOTO 560
+620 :REM'
+630 :REM'.....low-pass
+640 PASS$=" LOW-PASS "
+650 VIEW PRINT 3 TO 24:CLS:VIEW PRINT
+660 T=25:LOCATE 3:GOSUB 1740
+670 LN=CSRLIN:GOSUB 2120    :REM'to next stage
+680 LOCATE LN
+690 PRINT UL$;
+700 GOSUB 2420    :REM'text
+710 GOSUB 2620    :REM'continue
+720 GOSUB 2690    :REM'inputs
+730 WC=2*PI*F*10^-6
+740 GOSUB 2910
+750 :REM'
+760    FOR J=1 TO N
+770 A=A(N,J):B=1
+780 :REM'
+790 C=10/F       :REM'value of c2
+800 IF V$="p"THEN C2=C:GOTO 890
+810 IF C<=C(1)THEN C2=C(1):GOTO 890
+820 IF C>=C(62)THEN C2=C(62):GOTO 890
+830 FOR Z=2 TO 62
+840 MID=(C(Z-1)+C(Z))/2
+850 IF C<MID AND C>=C(Z-1)THEN C2=C(Z-1):GOTO 890
+860 IF C>=MID AND C<=C(Z)THEN C2=C(Z):GOTO 890
+870 NEXT Z
+880 :REM'
+890 C=(A^2+4*B*(K-1))*C2/(4*B)
+900 IF V$="p"THEN C1=C:GOTO 970
+910 IF C<=C(1)THEN C1=C(1):GOTO 970
+920 IF C>=C(62)THEN C1=C(62):GOTO 970
+930 FOR Z=2 TO 62
+940 IF C<=(C(Z)) AND C>C(Z-1)THEN C1=C(Z):GOTO 970
+950 NEXT Z
+960 :REM'
+970 RA=A^2+(4*B*(K-1))
+980 RB=(RA*C2^2)-(4*B*C1*C2)
+990 IF SGN(RB)=-1 AND V$="s" THEN C1=C(Z-1):GOTO 980
+1000 IF SGN(RB)=-1 AND V$="p" THEN C1=C1*0.9990000128746033!:GOTO 980
+1010 RC=SQR(RB)
+1020 RD=(A*C2+RC)*WC
+1030 R1=2/RD
+1040 REM R1=2/((A*C2+SQR((A^2+4*B*(K-1))*C2^2-4*B*C1*C2))*WC)
+1050 Q=R1:GOSUB 1170:R1=Q
+1060 R2=1/(B*C1*C2*R1*WC^2)
+1070 Q=R2:GOSUB 1170:R2=Q
+1080 IF K=1 THEN R3=0:R4=0:T=25:GOSUB 2020:GOTO 1130
+1090 R3=K*(R1+R2)/(K-1)
+1100 Q=R3:GOSUB 1170:R3=Q
+1110 R4=K*(R1+R2)
+1120 Q=R4:GOSUB 1170:R4=Q
+1130 GOSUB 2990
+1140 NEXT J
+1150 GOTO 3290
+1160 :REM'
+1170 :REM'.....standard resistor
+1180 IF V$="p"THEN 1260
+1190 I=1
+1200 FOR Z=1 TO 24
+1210 MID=(R(Z-1)*I+R(Z)*I)/2
+1220 IF Q<MID AND Q>(I*R(Z-1))THEN Q=I*R(Z-1):GOTO 1260
+1230 IF Q>=MID AND Q<=(I*R(Z))THEN Q=I*R(Z):GOTO 1260
+1240 NEXT Z
+1250 I=I*10:GOTO 1200
+1260 RETURN
+1270 :REM'
+1280 :REM'.....high-pass
+1290 PASS$=" HIGH-PASS "
+1300 VIEW PRINT 3 TO 24:CLS:VIEW PRINT
+1310 T=25:LOCATE 3:GOSUB 1880
+1320 LN=CSRLIN:GOSUB 2120    :REM'to next stage
+1330 LOCATE LN
+1340 PRINT UL$;
+1350 GOSUB 2420    :REM'text
+1360 GOSUB 2620    :REM'continue
+1370 GOSUB 2690    :REM'inputs
+1380 WC=2*PI*F*10^-6
+1390 GOSUB 2910
+1400 :REM'
+1410   FOR J=1 TO N
+1420 A=A(N,J):B=1
+1430 :REM'
+1440 Y=10/F       :REM'value of capacitor in µF
+1450 IF V$="p"THEN C=Y:GOTO 1560
+1460 Y=Y/10^3
+1470 IF Y<=C(1)THEN C=C(1):GOTO 1540
+1480 IF Y>=C(62)THEN C=C(62):GOTO 1540
+1490 FOR Z=1 TO 62
+1500 MID=(C(Z-1)+C(Z))/2
+1510 IF Y<MID AND Y>=C(Z-1)THEN C=C(Z-1):GOTO 1540
+1520 IF Y>=MID AND Y<=C(Z)THEN C=C(Z):GOTO 1540
+1530 NEXT Z
+1540 C=C*10^3
+1550 :REM'
+1560 C1=C:C2=C
+1570 RA=8*B*(K-1)
+1580 RB=SQR(A^2+RA)
+1590 RC=(A+RB)*WC*C
+1600 R1=4*B/RC
+1610 REM R1=4*B/((A+SQR(A^2+8*B*(K-1)))*WC*C)
+1620 Q=R1:GOSUB 1170:R1=Q
+1630 R2=B/(WC^2*C^2*R1)
+1640 Q=R2:GOSUB 1170:R2=Q
+1650 IF K=1 THEN R3=0:R4=0:T=25:GOSUB 2020:GOTO 1700
+1660 R3=K*R1/(K-1)
+1670 Q=R3:GOSUB 1170:R3=Q
+1680 R4=K*R1
+1690 Q=R4:GOSUB 1170:R4=Q
+1700 GOSUB 2990
+1710   NEXT J
+1720 GOTO 3290
+1730 :REM'
+1740 :REM'.....low-pass
+1750 COLOR 0,7
+1760 LOCATE ,T:PRINT " LOW-PASS        C2             "
+1770 LOCATE ,T:PRINT "         ┌───────╫───────┐      "
+1780 LOCATE ,T:PRINT "     R1  │  R2     ┌───┐ │ out» "
+1790 LOCATE ,T:PRINT " ──\/\/\─┴─\/\/\─┬─┤+ U├─┴──┬───"
+1800 LOCATE ,T:PRINT " in»             │ └╤──┘R4  │   "
+1810 LOCATE ,T:PRINT "              C1═╪═ ├─\/\/\─┘   "
+1820 LOCATE ,T:PRINT "                 │  └─\/\/\─┐   "
+1830 LOCATE ,T:PRINT "                 │      R3  │   "
+1840 LOCATE ,T:PRINT " Fig.1          \\\        \\\  "
+1850 COLOR 7,0
+1860 RETURN
+1870 :REM'
+1880 :REM'.....high-pass
+1890 COLOR 0,7
+1900 LOCATE ,T:PRINT " HIGH-PASS      R2              "
+1910 LOCATE ,T:PRINT "         ┌─────\/\/\─────┐      "
+1920 LOCATE ,T:PRINT "     C1  │  C2     ┌───┐ │ out» "
+1930 LOCATE ,T:PRINT " ────╫───┴───╫───┬─┤+ U├─┴──┬───"
+1940 LOCATE ,T:PRINT " in»             │ └╤──┘R4  │   "
+1950 LOCATE ,T:PRINT "             R1  │  ├─\/\/\─┘   "
+1960 LOCATE ,T:PRINT "         ┌─\/\/\─┘  └─\/\/\─┐   "
+1970 LOCATE ,T:PRINT "         │              R3  │   "
+1980 LOCATE ,T:PRINT " Fig.2  \\\                \\\  "
+1990 COLOR 7,0
+2000  RETURN
+2010 :REM'
+2020 :REM'.....unity gain diagram
+2030 COLOR 0,7:LOCATE 7
+2040 LOCATE ,T+24:PRINT "  "
+2050 LOCATE ,T+20:PRINT "└──────"
+2060 LOCATE ,T+20:PRINT "          "
+2070 LOCATE ,T+20:PRINT "          "
+2080 LOCATE ,T+20:PRINT "          "
+2090 COLOR 7,0
+2100 RETURN
+2110 :REM'
+2120 :REM'.....next stage
+2130 NX=57:LOCATE 5
+2140 LOCATE ,3:PRINT "IC Device U =";:LOCATE ,NX:PRINT "  680k   to"
+2150 LOCATE ,3:PRINT "#741, #747 or LM302";:LOCATE ,NX:PRINT "─\/\/\─» next"
+2160 LOCATE ,3 :PRINT "OP-AMP";:LOCATE ,NX:PRINT "         stage"
+2170 RETURN
+2180 :REM'
+2190 :REM'.....preface
+2200 T=7
+2210 PRINT TAB(T);
+2220 PRINT "  Most RC active filters are designed for a gain of 1 to 5. A gain"
+2230 PRINT TAB(T);
+2240 PRINT "of 2 is recommended for most amateur applications. The more filter"
+2250 PRINT TAB(T);
+2260 PRINT "sections placed in cascade, the better the skirt selectivity. The"
+2270 PRINT TAB(T);
+2280 PRINT "maximum number of usable RC filter sections is typically four. The"
+2290 PRINT TAB(T);
+2300 PRINT "minimum acceptable number is two for CW work, but a single-section"
+2310 PRINT TAB(T);
+2320 PRINT "RC active filter is often suitable for SSB reception in simple"
+2330 PRINT TAB(T);
+2340 PRINT "receivers. As the Q and number of filter sections increases there"
+2350 PRINT TAB(T);
+2360 PRINT "is a strong tendency toward ";CHR$(34);"ringing";CHR$(34);". ";
+2370 PRINT "This appears in the speaker"
+2380 PRINT TAB(T);
+2390 PRINT "or earphones as a howling sound, which can be most unpleasant."
+2400 RETURN
+2410 :REM'
+2420 :REM'......text
+2430 T=7
+2440 PRINT TAB(T);
+2450 PRINT "This filter will exhibit a Butterworth-type response."
+2460 PRINT
+2470 PRINT TAB(T);
+2480 PRINT "High-Q, stable capacitors are imperative for proper performance of"
+2490 PRINT TAB(T);
+2500 PRINT "of the filter. Polystyrene capacitors are recommended. Resistors"
+2510 PRINT TAB(T);
+2520 PRINT "should have a tolerance of 5% or less."
+2530 PRINT
+2540 PRINT TAB(T);
+2550 PRINT "This program is based on data published in the 1996 ARRL HANDBOOK"
+2560 PRINT TAB(T);
+2570 PRINT "FOR RADIO AMATEURS, pp.16.28-16.29, which contains a comprehensive"
+2580 PRINT TAB(T);
+2590 PRINT "discussion of this type of filter."
+2600 RETURN
+2610 :REM'
+2620 :REM'.....continue
+2630 COLOR 0,7:LOCATE 24,28:PRINT " Press any key to continue ";
+2640 COLOR 7,0
+2650 IF INKEY$=""THEN 2650
+2660 VIEW PRINT 13 TO 24:CLS:VIEW PRINT:LOCATE 13
+2670 RETURN
+2680 :REM'
+2690 :REM'.....inputs
+2700 PRINT " Do you want (p)recise or nearest (s)tandard value components?";
+2710 PRINT "   (p/s)"
+2720 V$=INKEY$:IF V$=""THEN 2720
+2730 IF V$="p"THEN Z$="precise":GOTO 2760
+2740 IF V$="s"THEN Z$="nearest standard":GOTO 2760
+2750 GOTO 2720
+2760 LOCATE CSRLIN-1:PRINT X$
+2770 COLOR 0,7
+2780 LOCATE CSRLIN-1,25:PRINT " Components are calculated to ";Z$;" values."
+2790 COLOR 7,0
+2800 INPUT " ENTER: Number of stages (1-4)......";N
+2810 IF N>4 THEN LOCATE CSRLIN-1:PRINT X$:BEEP:LOCATE CSRLIN-1:GOTO 2800
+2820 IF N>1 THEN 2840
+2830 LN=CSRLIN:FOR Z=5 TO 7:LOCATE Z,NX:PRINT STRING$(15,32):NEXT Z:LOCATE LN
+2840 LN=CSRLIN:LOCATE LN-2:COLOR 0,7
+2850 PRINT N;"STAGE";PASS$:COLOR 7,0:LOCATE LN
+2860 INPUT " ENTER: Gain (1-5)..................";K
+2870 IF K>5 THEN LOCATE CSRLIN-1:PRINT X$:BEEP:LOCATE CSRLIN-1:GOTO 2860
+2880 INPUT " ENTER: -3 dB cutoff point (Hz).....";F
+2890 RETURN
+2900 :REM'
+2910 :REM'.....print
+2920 VIEW PRINT 14 TO 24:CLS:VIEW PRINT:LOCATE 14
+2930 PRINT " Gain...................";USING U5$;K
+2940 PRINT " -3 dB cutoff point ƒ...";USING U1$;F;:PRINT " Hz"
+2950 PRINT " ";CHR$(34);"wc";CHR$(34);" factor 2πƒ∙10Σ-6..";USING U$;WC
+2960 PRINT UL$;
+2970 RETURN
+2980 :REM'
+2990 IF J=1 THEN VIEW PRINT 18 TO 24:CLS:VIEW PRINT
+3000 LOCATE 18
+3010 Q=11:IF J>1 THEN 3150
+3020 COLOR 0,7:LOCATE 17,26:PRINT " Stage";J:COLOR 7,0
+3030 PRINT " ";CHR$(34);"α";CHR$(34);" Factor.............";USING U4$;A
+3040 ZZ=C1*10^6
+3050 PRINT " C1 (polystyrene).......";USING U1$;ZZ;:PRINT " pF"
+3060 ZZ=C2*10^6
+3070 PRINT " C2 (polystyrene).......";USING U1$;ZZ;:PRINT " pF"
+3080 PRINT " R1 (5% tolerance)......";USING U1$;R1;:PRINT " Ω"
+3090 PRINT " R2 (5% tolerance)......";USING U1$;R2;:PRINT " Ω"
+3100 IF K=1 THEN 3130
+3110 PRINT " R3 (5% tolerance)......";USING U1$;R3;:PRINT " Ω"
+3120 PRINT " R4 (5% tolerance)......";USING U1$;R4;:PRINT " Ω";
+3130 GOTO 3270
+3140 :REM'
+3150 LOCATE 17,Q+1+J*14:COLOR 0,7:PRINT " Stage";J:COLOR 7,0
+3160 COL=Q+J*14
+3170 LOCATE ,COL:PRINT USING U4$;A
+3180 ZZ=C1*10^6
+3190 LOCATE ,COL:PRINT USING U1$;ZZ;:PRINT " pF"
+3200 ZZ=C2*10^6
+3210 LOCATE ,COL:PRINT USING U1$;ZZ;:PRINT " pF"
+3220 LOCATE ,COL:PRINT USING U1$;R1;:PRINT " Ω"
+3230 LOCATE ,COL:PRINT USING U1$;R2;:PRINT " Ω"
+3240 IF K=1 THEN 3270
+3250 LOCATE ,COL:PRINT USING U1$;R3;:PRINT " Ω"
+3260 LOCATE ,COL:PRINT USING U1$;R4;:PRINT " Ω";
+3270 RETURN
+3280 :REM'
+3290 :REM'.....end
+3300 GOSUB 3340
+3310 GOTO 420
+3320 END
+3330 :REM'
+3340 :REM'PRT
+3350 KEY OFF:GOSUB 3420:LOCATE 25,5:COLOR 0,2
+3360 PRINT " Send this page to:(1)Printer Queue? (2)Printout? ";
+3370 PRINT "(3)Next page? (1/2/3)";:COLOR 7,0
+3380 Z$=INKEY$:IF Z$<"1"OR Z$>"3"THEN 3380 :ELSE GOSUB 3420
+3390 IF Z$="3"THEN RETURN
+3400 FOR I%=1 TO 24:FOR J%=1 TO 80:LPRINT CHR$(SCREEN(I%,J%));:NEXT J%:NEXT I%
+3410 IF Z$="2"THEN LPRINT CHR$(12) :ELSE 3350
+3420 LOCATE 25,1:PRINT STRING$(80,32);:RETURN

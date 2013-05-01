@@ -1,0 +1,210 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>binary – Decimal to Binary Converter &mdash; HamCalc 2.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '2.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="HamCalc 2.1 documentation" href="../../index.html" />
+    <link rel="up" title="math – Math, Physics, Units Conversion" href="index.html" />
+    <link rel="next" title="centrif – Centrifugal/Centripetel Force" href="centrif.html" />
+    <link rel="prev" title="baromtr – Barometer Reading Equivalents" href="baromtr.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="centrif.html" title="centrif – Centrifugal/Centripetel Force"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="baromtr.html" title="baromtr – Barometer Reading Equivalents"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../../index.html">HamCalc 2.1 documentation</a> &raquo;</li>
+          <li><a href="../index.html" >Python Modules</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">math &#8211; Math, Physics, Units Conversion</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="binary-decimal-to-binary-converter">
+<h1>binary &#8211; Decimal to Binary Converter<a class="headerlink" href="#binary-decimal-to-binary-converter" title="Permalink to this headline">¶</a></h1>
+<p>This is fairly silly, since <tt class="xref py py-func docutils literal"><span class="pre">int()</span></tt> and <tt class="xref py py-func docutils literal"><span class="pre">bin()</span></tt> do this nicely.</p>
+<p>However.</p>
+<p>It can be instructive to show the algorithm for this kind of base conversion.</p>
+<div class="section" id="analysis">
+<h2>Analysis<a class="headerlink" href="#analysis" title="Permalink to this headline">¶</a></h2>
+<p>For a given base, <img class="math" src="../../_images/math/8136a7ef6a03334a7246df9097e5bcc31ba33fd2.png" alt="b"/>, a number, <img class="math" src="../../_images/math/174fadd07fd54c9afe288e96558c92e0c1da733a.png" alt="n"/> is simply a polynomial in that base.</p>
+<div class="math">
+<p><img src="../../_images/math/5a4ad39c5e72ef40c19142819516cd51d4864150.png" alt="n = a_kb^k + a_{k-1}b^{k-1} + a_{k-2}b^{k-2} + \dots + a_{0}b^{0}"/></p>
+</div><p>Essentially, we&#8217;re calculating the various values <img class="math" src="../../_images/math/8d8d587116cd9eb8d85afffdda62d7b327161f5a.png" alt="\{ a_{k}, a_{k-1}, a_{k-2}, \dots, a_{0} \}"/></p>
+<p>The easy way to do this is to start from the Least Significant Bit (LSB).</p>
+<div class="math">
+<p><img src="../../_images/math/3cef8f673083b161b286d86f8ba0ff0a106d3f1c.png" alt="l \gets n \mod b"/></p>
+</div><p>Once this bit has been determined, then  dividing the input value, <img class="math" src="../../_images/math/174fadd07fd54c9afe288e96558c92e0c1da733a.png" alt="n"/>, by the base, <img class="math" src="../../_images/math/8136a7ef6a03334a7246df9097e5bcc31ba33fd2.png" alt="b"/>, makes another bit the LSB.</p>
+<div class="math">
+<p><img src="../../_images/math/be4c2d0f566ca090f85e5f6ff294752ab0d38d2c.png" alt="n \gets n \div b"/></p>
+</div><p>Here&#8217;s a Python version.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">while</span> <span class="n">n</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+    <span class="n">lsb</span> <span class="o">=</span> <span class="n">n</span> <span class="o">%</span> <span class="mi">2</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="n">n</span> <span class="o">//</span> <span class="mi">2</span>
+</pre></div>
+</div>
+<p>We can use the <tt class="xref py py-func docutils literal"><span class="pre">divmod()</span></tt> function for this.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">while</span> <span class="n">n</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+    <span class="n">n</span><span class="p">,</span> <span class="n">lsb</span> <span class="o">=</span> <span class="nb">divmod</span><span class="p">(</span> <span class="n">n</span><span class="p">,</span> <span class="mi">2</span> <span class="p">)</span>
+</pre></div>
+</div>
+<p>This trivially generalizes to any other base, simply replace the <tt class="docutils literal"><span class="pre">2</span></tt>.</p>
+<p>The sequence of LSB&#8217;s is the binary representation. We need to reverse the sequence for display purposes.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">bits</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">while</span> <span class="n">n</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+    <span class="n">lsb</span> <span class="o">=</span> <span class="n">n</span> <span class="o">%</span> <span class="mi">2</span>
+    <span class="n">bits</span><span class="o">.</span><span class="n">append</span><span class="p">(</span> <span class="n">lsb</span> <span class="p">)</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="n">n</span> <span class="o">//</span> <span class="mi">2</span>
+
+<span class="n">bits</span><span class="o">.</span><span class="n">reverse</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Or, perhaps we can build the sequence in the proper order.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">bits</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">while</span> <span class="n">n</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+    <span class="n">n</span><span class="p">,</span> <span class="n">lsb</span> <span class="o">=</span> <span class="nb">divmod</span><span class="p">(</span> <span class="n">n</span><span class="p">,</span> <span class="mi">2</span> <span class="p">)</span>
+    <span class="n">bits</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span> <span class="mi">0</span><span class="p">,</span> <span class="n">lsb</span> <span class="p">)</span>
+</pre></div>
+</div>
+<p>Since the HamCalc program is focused on 24 bit resolution, we can mimic that, also.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">bits</span> <span class="o">=</span> <span class="p">[</span> <span class="mi">0</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">24</span><span class="p">)</span> <span class="p">]</span>
+<span class="n">i</span><span class="o">=</span> <span class="mi">0</span>
+<span class="k">while</span> <span class="n">n</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+    <span class="n">lsb</span> <span class="o">=</span> <span class="n">n</span> <span class="o">%</span> <span class="mi">2</span>
+    <span class="n">bits</span><span class="p">[</span><span class="mi">23</span><span class="o">-</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">lsb</span>
+    <span class="n">i</span> <span class="o">=</span> <span class="n">i</span><span class="o">+</span><span class="mi">1</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="n">n</span> <span class="o">//</span> <span class="mi">2</span>
+</pre></div>
+</div>
+<p>We could use a generator function to develop the bits separate from collecting them.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">binary</span><span class="p">(</span> <span class="n">n</span> <span class="p">):</span>
+    <span class="k">while</span> <span class="n">n</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">n</span><span class="p">,</span> <span class="n">lsb</span> <span class="o">=</span> <span class="nb">divmod</span><span class="p">(</span> <span class="n">n</span><span class="p">,</span> <span class="mi">2</span> <span class="p">)</span>
+        <span class="k">yield</span> <span class="n">lsb</span>
+</pre></div>
+</div>
+<p>Here&#8217;s a naive use.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">bits</span><span class="o">=</span> <span class="nb">list</span><span class="p">(</span> <span class="n">binary</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="p">)</span>
+<span class="n">bits</span><span class="o">.</span><span class="n">reverse</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Here&#8217;s a slightly more HamCalc-focused use.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">bits</span> <span class="o">=</span> <span class="p">[</span> <span class="mi">0</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">24</span><span class="p">)</span> <span class="p">]</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">lsb</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span> <span class="n">binary</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="p">):</span>
+    <span class="n">bits</span><span class="p">[</span><span class="mi">23</span><span class="o">-</span><span class="n">i</span><span class="p">]</span><span class="o">=</span> <span class="n">lsb</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="quirks">
+<h2>Quirks<a class="headerlink" href="#quirks" title="Permalink to this headline">¶</a></h2>
+<p>The HamCalc algorithm does not start with LSB. It starts with MSB. This version
+isn&#8217;t wrong, but it seems to involve more <tt class="docutils literal"><span class="pre">IF</span></tt> statements than should be used
+for this problem.</p>
+<p>It also includes an unused dimensioned variable, <tt class="docutils literal"><span class="pre">X</span></tt>.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">binary &#8211; Decimal to Binary Converter</a><ul>
+<li><a class="reference internal" href="#analysis">Analysis</a></li>
+<li><a class="reference internal" href="#quirks">Quirks</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="baromtr.html"
+                        title="previous chapter">baromtr &#8211; Barometer Reading Equivalents</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="centrif.html"
+                        title="next chapter">centrif &#8211; Centrifugal/Centripetel Force</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../../_sources/python/math/binary.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="centrif.html" title="centrif – Centrifugal/Centripetel Force"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="baromtr.html" title="baromtr – Barometer Reading Equivalents"
+             >previous</a> |</li>
+        <li><a href="../../index.html">HamCalc 2.1 documentation</a> &raquo;</li>
+          <li><a href="../index.html" >Python Modules</a> &raquo;</li>
+          <li><a href="index.html" >math &#8211; Math, Physics, Units Conversion</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2013, S.Lott.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2b1.
+    </div>
+  </body>
+</html>

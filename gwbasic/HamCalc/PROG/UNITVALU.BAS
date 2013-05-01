@@ -1,0 +1,112 @@
+10 :REM'UNITVALU - Unit Value Comparator - 28 APR 2001 rev.28 JUL 01
+20 CLS:KEY OFF
+30 IF EX$=""THEN EX$="EXIT"
+40 COMMON EX$,PROG$
+50 UL$=STRING$(80,205)
+60 DIM A(64,4)
+70 :REM'
+80 :REM'.....title page
+90 CLS
+100 COLOR 15,2,1
+110 PRINT " UNIT VALUE COMPARATOR"TAB(57)"by George Murphy VE3ERP ";
+120 COLOR 1,0:PRINT STRING$(80,223);
+130 COLOR 7,0
+140 GOSUB 830  :REM'preface
+150 COLOR 0,7:LOCATE ,23:PRINT " Press 1 to continue or 0 to EXIT ":COLOR 7,0
+160 Z$=INKEY$:IF Z$=""THEN 160
+170 IF Z$="0"THEN CLS:CHAIN EX$
+180 IF Z$="1"THEN 210
+190 GOTO 160
+200 :REM'
+210 COLOR 7,0,0:CLS
+220 PRINT TAB(30)"UNIT VALUE COMPARATOR"
+230 PRINT UL$;
+240 INPUT " ENTER: The term (plural) you wish used to express value (V)";V$
+250 PRINT
+260 INPUT " ENTER: The term (singular) you wish used to express units (U)";U$
+270 :REM'
+280 :REM'.....input data
+290 VIEW PRINT 3 TO 24:CLS:VIEW PRINT:LOCATE 3
+300 PRINT "Item"TAB(7)V$TAB(20)"Units (";U$;")"TAB(36)V$+" per "+U$;
+310 PRINT UL$;
+320 U=64:LN=CSRLIN:N=0
+330 VIEW PRINT LN TO 24:CLS:VIEW PRINT:LOCATE LN
+340 N=N+1
+350 PRINT "Item ";CHR$(N+U)
+360 COLOR 0,7
+370 PRINT " ENTER: Number of (";U$+") units";:INPUT A(N,2)
+380 PRINT " ENTER: Value ("+V$+")";:INPUT A(N,1)
+390 COLOR 7,0
+400 A(N,3)=A(N,1)/A(N,2)
+410 A(N,4)=N+U
+420 VIEW PRINT N+4 TO 24:CLS:VIEW PRINT:LOCATE N+4
+430 PRINT "  "+CHR$(A(N,4))+":";
+440 PRINT TAB(6)A(N,1)TAB(19)A(N,2);
+450 PRINT TAB(36)USING "= ####.#### ";A(N,3)
+460 LN=CSRLIN
+470 COLOR 0,7:PRINT " Want (a)nother or (n)o more?   (a/n) ":COLOR 7,0
+480 Z$=INKEY$:IF Z$=""THEN 480
+490 IF Z$="n"THEN 530
+500 IF Z$="a"THEN 330
+510 GOTO 480
+520 :REM'
+530 VIEW PRINT 3 TO 24:CLS:VIEW PRINT:LOCATE 3
+540 GOSUB 660   :REM'sort
+550 PRINT "Item"TAB(7)V$TAB(20)"Units ("U$")"TAB(36)V$+" per "+U$;
+560 PRINT TAB(58)"% of ";CHR$(A(1,4))TAB(68)"% of ";CHR$(A(N,4))
+570 PRINT UL$;
+580 FOR Z=1 TO N
+590 PRINT "  "+CHR$(A(Z,4))+":";
+600 PRINT TAB(6)A(Z,1)TAB(19)A(Z,2);
+610 PRINT TAB(36)USING "= ####.#### ";A(Z,3);
+620 PRINT SPC(9)USING " ###.#%   ###.##%";A(Z,3)/A(1,3)*100,A(Z,3)/A(N,3)*100
+630 NEXT Z
+640 GOTO 1010     :REM'end
+650 :REM'
+660 :REM'.....sort  (Shell-Metzner algorithm) QST Dec 1985, page 53
+670 SN=N
+680 SM=SN
+690 SM=INT(SM/2):IF SM=0 THEN 810
+700 SK=SN-SM:SJ=1
+710 SI=SJ
+720 SL=SI+SM
+730 IF A(SI,3)<=A(SL,3)THEN 790
+740 SWAP A(SI,1),A(SL,1)
+750 SWAP A(SI,2),A(SL,2)
+760 SWAP A(SI,3),A(SL,3)
+770 SWAP A(SI,4),A(SL,4)
+780 SI=SI-SM:IF SI>0 THEN 720
+790 SJ=SJ+1:IF SJ>SK THEN 690
+800 GOTO 710
+810 RETURN
+820 :REM'
+830 :REM'.....preface
+840 PRINT " This program calculates Value per Unit (V/U) of one or more sampl";
+850 PRINT "es of any    "
+860 PRINT " given V/U combination, and sorts them for comparison. Typical V/U";
+870 PRINT " combinations"
+880 PRINT " are:"
+890 PRINT
+900 T=21
+910 PRINT TAB(T);
+920 PRINT "kw/hr          ohms/ft.       dB/watt"
+930 PRINT TAB(T);
+940 PRINT "lb./sq.ft.     mi./hr.        cents/kg."
+950 PRINT
+960 PRINT TAB(T-5);
+970 PRINT "or any other V/U combination you wish to specify."
+980 PRINT UL$;
+990 RETURN
+1000 :REM'
+1010 :REM'.....end
+1020 GOSUB 1040:GOTO 80
+1030 :REM'
+1040 :REM'.....PRT
+1050 KEY OFF:GOSUB 1120:LOCATE 25,5:COLOR 0,2
+1060 PRINT " Send this page to:(1)Printer Queue? (2)Printout? ";
+1070 PRINT "(3)Next page? (1/2/3)";:COLOR 7,0
+1080 Z$=INKEY$:IF Z$<"1"OR Z$>"3"THEN 1080 :ELSE GOSUB 1120
+1090 IF Z$="3"THEN RETURN
+1100 FOR I%=1 TO 24:FOR J%=1 TO 80:LPRINT CHR$(SCREEN(I%,J%));:NEXT J%:NEXT I%
+1110 IF Z$="2"THEN LPRINT CHR$(12) :ELSE 1050
+1120 LOCATE 25,1:PRINT STRING$(80,32);:RETURN

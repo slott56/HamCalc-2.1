@@ -1,0 +1,470 @@
+10 :REM'RISESET - Sunrise/Sunset - 17 JUN 94  rev. 21 DEC 2003
+20 :REM'based on DAYLIGHT program, HAM-SOFT disk# 1247
+30 IF EX$=""THEN EX$="EXIT"
+40 PROG$="riseset"
+50 COMMON EX$,BASEONLY,PROG$
+60 BASEONLY=1             :REM'lat/long database
+70 :REM'
+80 CLS:KEY OFF
+90 COLOR 7,0,1
+100 UL$=STRING$(80,205)
+110 DIM M$(12)
+120 AM$=" a.m.":PM$=" p.m."
+130 PI=3.1415929794311523!
+140 :REM'
+150 DATA Jan,Feb,Mar,Apr,May,Jun,Jul,Aug,Sep,Oct,Nov,Dec
+160 FOR Z=1 TO 12:READ M$(Z):NEXT Z
+170 :REM'
+180 :REM'.....start
+190 CLS
+200 COLOR 15,2
+210 PRINT " SUNRISE / SUNSET";TAB(57);"by George Murphy VE3ERP ";
+220 COLOR 1,0:PRINT STRING$(80,223);
+230 COLOR 7,0
+240 :REM'
+250 VIEW PRINT 3 TO 24:CLS:VIEW PRINT:LOCATE 3
+260 IF H*I*J=0 THEN 320
+270 PRINT " Do you want to run again with a different date?  (y/n)"
+280 Z$=INKEY$:IF Z$=""THEN 280
+290 IF Z$="n"THEN H=0:I=0:J=0:GOTO 180
+300 IF Z$="y"THEN SKIP=1:GOTO 1020
+310 GOTO 280
+320 T=6:Q$=CHR$(34)
+330 PRINT TAB(T);
+340 PRINT "This program calculates sunrise and sunset times anywhere on earth"
+350 PRINT TAB(T);
+360 PRINT "by entering the latitude and longitude of the desired location."
+370 PRINT
+380 PRINT TAB(T);
+390 PRINT "Related data can also be calculated using Hamcalc's `Daylight, Dusk"
+400 PRINT TAB(T);
+410 PRINT "and Dawn Calculator' program."
+420 PRINT UL$;
+430 PRINT TAB(T)"Press number in < > to:"
+440 PRINT UL$;
+450 PRINT TAB(T)" < 1 > run this program"
+460 PRINT TAB(T)" < 2 > run Daylight, Dusk and Dawn Calculator"
+470 PRINT TAB(T)" < 3 > run Sunup/Sundown calendar"
+480 PRINT TAB(T)" < 4 > run Equinoxes/Solstices program"
+490 PRINT
+500 PRINT TAB(T)" < 0 > EXIT"
+510 COLOR 7,0
+520 Z$=INKEY$:IF Z$=""THEN 520
+530 IF Z$="0"THEN CLS:RUN EX$
+540 IF Z$="1"THEN 600
+550 IF Z$="2"THEN CLS:CHAIN"\hamcalc\prog\daydusk"
+560 IF Z$="3"THEN CLS:CHAIN"\hamcalc\prog\sunup"
+570 IF Z$="4"THEN CLS:CHAIN"\hamcalc\prog\seasons"
+580 GOTO 520
+590 :REM'
+600 LOCATE CSRLIN-1
+610 PRINT TAB(T);
+620 PRINT "You can find the latitude and longitude of many places in the"
+630 PRINT TAB(T);
+640 PRINT "world by running HAMCALC's ";Q$;"LATITUDE/LONGITUDE DATA BASE";Q$;
+650 PRINT " program."
+660 PRINT
+670 PRINT TAB(T);
+680 PRINT "The SUNRISE/SUNSET program requires entry of latitude and longitude"
+690 PRINT TAB(T);
+700 PRINT "in decimal degrees. If you wish to convert degrees/minutes/seconds"
+710 PRINT TAB(T);
+720 PRINT "values to decimal degrees, you can also do this by running the"
+730 PRINT TAB(T);
+740 PRINT "LATITUDE/LONGITUDE DATA BASE program.";
+750 PRINT
+760 COLOR 15,2:LOCATE CSRLIN,T
+770 PRINT " Do you want to run the LATITUDE/LONGITUDE DATA BASE  now?    (y/n) "
+780 COLOR 7,0
+790 Z$=INKEY$
+800 IF Z$="y"OR Z$="Y"THEN CLS:CHAIN"latlong"
+810 IF Z$="n"OR Z$="N"THEN 840
+820 GOTO 790
+830 :REM'
+840 :REM'.....inputs
+850 VIEW PRINT 3 TO 23:CLS:VIEW PRINT:LOCATE 3
+860 INPUT " ENTER: LATITUDE in decimal degrees ( minus if south )....";Z1
+870 IF Z1<0 THEN Z1$="S":ELSE Z1$="N"
+880 LAT=Z1*0.017453299835324287!
+890 :REM'
+900 ZONE=ZON*PI/180
+910 INPUT " ENTER: LONGITUDE in decimal degrees ( minus if west )....";X:Z2=-X
+920  FOR Z=0 TO 12
+930   IF ABS(Z2)>=Z*15-7.5! THEN ZON=Z*SGN(Z2)
+940  NEXT Z
+950 ZONE=ZON*15*PI/180
+960 IF Z2<0 THEN Z2$="E":ELSE Z2$="W"
+970 LONG=Z2*0.017453299835324287!
+980 :REM'
+990 CLS
+1000 PRINT " LOCATION: (decimal degrees)";USING "####.##";ABS(Z1);:PRINT "°";Z1$;
+1010 PRINT USING"####.##";ABS(Z2);:PRINT "°";Z2$
+1020 PRINT UL$;
+1030 :REM'
+1040 INPUT " ENTER: YEAR (yyyy)..................................";H
+1050 INPUT " ENTER: MONTH (1-12).................................";I
+1060 I$=M$(I)
+1070 INPUT " ENTER: DAY of month (1-31)..........................";J
+1080 LOCATE 1,56:PRINT "DATE: ";I$;J;H
+1090 IF SKIP=1 THEN SKIP=0:GOTO 1660
+1100 :REM'
+1110 :REM'.....local standard time
+1120 VIEW PRINT 3 TO 24:CLS:VIEW PRINT:LOCATE 3
+1130 STC=-ZON      :REM'solar time zone
+1140 PRINT " This location is in SOLAR TIME ZONE";USING "+##";STC;
+1150 PRINT " (UTC";USING "+##";STC;:PRINT " hours)"
+1160 PRINT
+1170 PRINT " PRESS letter in < > to describe the LOCAL STANDARD TIME ";
+1180 PRINT "in this zone:"
+1190 PRINT UL$;
+1200 L$="( local solar time "
+1210 PRINT "  < a >  UTC"; USING "+##";STC+2;:PRINT TAB(20);L$;"+2 hr.)"
+1220 PRINT "  < b >  UTC"; USING "+##.#";STC+1.5!;:PRINT TAB(20);L$;"+1 1/2 hr.)"
+1230 PRINT "  < c >  UTC"; USING "+##";STC+1;:PRINT TAB(20);L$;"+1 hr.)"
+1240 PRINT "  < d >  UTC"; USING "+##.#";STC+0.5!;:PRINT TAB(20);L$;"+1/2 hr.)"
+1250 :REM'
+1260 COLOR 0,7:LOCATE CSRLIN,2
+1270 PRINT " < e >  UTC"; USING "+##";STC+0;
+1280 PRINT TAB(20)"( SAME AS LOCAL SOLAR TIME ) "
+1290 COLOR 7,0
+1300 :REM'
+1310 PRINT "  < f >  UTC"; USING "+##.#";STC-0.5!;:PRINT TAB(20);L$;"-1/2 hr.)"
+1320 PRINT "  < g >  UTC"; USING "+##";STC-1;:PRINT TAB(20);L$;"-1 hr.)"
+1330 PRINT "  < h >  UTC"; USING "+##.#";STC-1.5!;:PRINT TAB(20);L$;"-1 1/2 hr.)"
+1340 PRINT "  < i >  UTC"; USING "+##";STC-2;:PRINT TAB(20);L$;"-2 hr.)"
+1350 PRINT UL$;
+1360 IF(STC>=-10)AND(STC<=10)THEN 1400
+1370 PRINT TAB(15)"│"
+1380 PRINT TAB(15)"└─ hours over 12 in this column refer to the time on"
+1390 PRINT TAB(15)"   the opposite side of the International Date Line."
+1400 Z$=INKEY$:IF Z$=""THEN 1400
+1410 IF Z$="a"THEN LST=2
+1420 IF Z$="b"THEN LST=1.5!
+1430 IF Z$="c"THEN LST=1
+1440 IF Z$="d"THEN LST=0.5!
+1450 IF Z$="e"THEN LST=0
+1460 IF Z$="f"THEN LST=-0.5!
+1470 IF Z$="g"THEN LST=-1
+1480 IF Z$="h"THEN LST=-1.5!
+1490 IF Z$="i"THEN LST=-2
+1500 :REM'
+1510 :REM'.....daylight saving
+1520 VIEW PRINT 4 TO 24:CLS:VIEW PRINT:LOCATE 4
+1530 PRINT UL$;
+1540 PRINT " PRESS number in < > to describe DAYLIGHT SAVING TIME in this zone:"
+1550 PRINT UL$;
+1560 PRINT "   < 1 > 1 hour  ahead of Local Standard Time"
+1570 PRINT "   < 2 > 2 hours ahead of Local Standard Time"
+1580 PRINT
+1590 PRINT "   < 0 > Not Applicable"
+1600 Z$=INKEY$:IF Z$=""THEN 1600
+1610 IF Z$="0"THEN DST=0:GOTO 1660
+1620 IF Z$="1"THEN DST=1:GOTO 1660
+1630 IF Z$="2"THEN DST=2:GOTO 1660
+1640 GOTO 1600
+1650 :REM'
+1660 :REM'format screen
+1670 CA=41:CB=55       :REM'columns A & B
+1680 VIEW PRINT 2 TO 24:CLS:VIEW PRINT:LOCATE 2
+1690 PRINT UL$;
+1700 COLOR 14,1
+1710 LOCATE 2,CA:PRINT " SUNRISE "
+1720 LOCATE 2,CB:PRINT " SUNSET "
+1730 LOCATE 2,CB+13:PRINT " Daylight "
+1740 COLOR 7,0
+1750 PRINT " Local SOLAR Time......................."
+1760 PRINT " Local STANDARD Time...................."
+1770 PRINT " Local DAYLIGHT SAVING Time............."
+1780 PRINT " UNIVERSAL COORDINATED Time (UTC/GMT)..."
+1790 PRINT " Declination of Earth's axis............"
+1800 PRINT UL$;
+1810 :REM'
+1820 :REM'.....day of year
+1830 K=INT((I+9)/12)
+1840 X=H/4
+1850 Y=INT(X)
+1860 Z=X-Y
+1870 IF Z=0 THEN 1890
+1880 K=K*2
+1890 H=INT(275*I/9)
+1900 H=H+J-K-30
+1910 :REM'
+1920 :REM'SUNRISE ***********************************************************
+1930 :REM'.....rising phenomena
+1940 I=0
+1950 J=PI/2
+1960 GOSUB 2790
+1970 :REM'
+1980 :REM'.....local solar time
+1990 R=-0.014543900266289711!
+2000 GOSUB 3250
+2010 IF V<>0 THEN 2080
+2020  IF SGN(LAT)=SGN(Q) THEN SUN$=" above ":ELSE SUN$=" below "
+2030  COLOR 14,1:LOCATE CSRLIN,13
+2040  PRINT " The sun is";SUN$;"the horizon for 24 hours on this day. "
+2050  COLOR 7,0
+2060  GOTO 2730
+2070 :REM'
+2080 SUNR=V+W/60   :REM'sunrise - decimal hours
+2090 LOCATE 3,CA+2:PRINT V$
+2100 :REM'
+2110 :REM'.....local standard time
+2120 W$=V$:ADD=LST:GOSUB 4430
+2130 LOCATE 4,CA+2:PRINT W$;AM$
+2140 :REM'
+2150 :REM'.....daylight saving time
+2160 ADD=DST
+2170 IF DST=0 THEN W$="N/A":GOTO 2190
+2180 GOSUB 4430
+2190 LOCATE 5,CA+2:PRINT W$;
+2200 IF W$<>"N/A"THEN PRINT AM$ :ELSE PRINT ""
+2210 :REM'
+2220 :REM'.....UTC
+2230 V=U:FLAG=1:GOSUB 3510
+2240 LOCATE 6,CA+2:PRINT V$;"z"
+2250 :REM'
+2260 :REM'.....declination
+2270 DCL=Q*180/PI
+2280 NOON=DCL
+2290 LOCATE 7,CA+1:PRINT USING "+##.###";DCL;:PRINT "°"
+2300 :REM'
+2310 :REM'.....azimuth
+2320 AZ=180-AZ
+2330 AZ(1)=AZ
+2340 :REM'
+2350 :REM'.....SUNSET
+2360 :REM'.....setting phenomena
+2370 I=1
+2380 J=PI*1.5!
+2390 GOSUB 2790
+2400 :REM'
+2410 :REM'.....local solar time
+2420 R=-0.014543900266289711!
+2430 GOSUB 3250
+2440 SUNS=V+W/60   :REM'sunset - decimal hours
+2450 LOCATE 3,CB+2:PRINT V$;SPC(7);USING "##.#";SUNS-SUNR;:PRINT " hrs."
+2460 :REM'
+2470 :REM'.....local standard time
+2480 W$=V$:ADD=LST
+2490 GOSUB 4430
+2500 LOCATE 4,CB+2:PRINT W$;PM$
+2510 :REM'
+2520 :REM'.....daylight savings time
+2530 ADD=DST
+2540 IF ADD=0 THEN W$="N/A":GOTO 2560
+2550 GOSUB 4430
+2560 LOCATE 5,CB+2:PRINT W$;
+2570 IF W$<>"N/A"THEN PRINT PM$ :ELSE PRINT ""
+2580 :REM'
+2590 :REM'.....UTC
+2600 V=U:FLAG=1:GOSUB 3510
+2610 LOCATE 6,CB+2:PRINT V$;"z"
+2620 :REM'
+2630 :REM'.....declination
+2640 DCL=Q*180/PI
+2650 NOON=(NOON+DCL)/2      :REM'approx declination at noon
+2660 LOCATE 7,CB+1:PRINT USING "+##.###";DCL;:PRINT "°"
+2670 :REM'
+2680 :REM'.....azimuth
+2690 AZ=180+AZ
+2700 AZ(2)=AZ
+2710 :REM'
+2720 GOSUB 3930     :REM'draw radar screen
+2730 GOTO 4570      :REM'end
+2740 END
+2750 :REM'
+2760 :REM'
+2770 :REM'.....SUB ROUTINES
+2780 :REM'
+2790 :REM'.....approximate time
+2800 K=H+((J+LONG)/(PI*2))
+2810 :REM'
+2820 :REM'.....solar mean anomaly
+2830 L=K*0.017201999202370644!
+2840 L=L-0.05740389972925186!
+2850 :REM'
+2860 :REM'.....solar true longitude
+2870 Z=SIN(L)
+2880 M=L+0.03344050049781799!*Z
+2890 Z=SIN(2*L)
+2900 M=M+0.00034906598739326!*Z
+2910 M=M+4.932889938354492!
+2920 :REM'
+2930 :REM'.....quadrant determination
+2940 Z=M
+2950 GOSUB 3840
+2960 M=Z
+2970 X=M/(PI/2)
+2980 Y=INT(X)
+2990 Z=X-Y
+3000 IF Z<>0 THEN 3020
+3010 M=M+4.848140179092297e-06!
+3020 N=2
+3030 IF M>(PI*1.5!) THEN 3090
+3040 N=1
+3050 IF M>(PI/2) THEN 3090
+3060 N=0
+3070 :REM'
+3080 :REM'.....solar right ascension
+3090 P=0.917460024356842!*TAN(M)
+3100 P=ATN(P)
+3110 :REM'
+3120 :REM'.....quadrant adjustment
+3130 IF N=0 THEN 3200
+3140 IF N=2 THEN 3170
+3150 P=P+PI
+3160 GOTO 3200
+3170 P=P+PI*2
+3180 :REM'
+3190 :REM'.....solar declination
+3200 Q=0.39781999588012695!*SIN(M)
+3210 Q=Q/SQR(-Q*Q+1)
+3220 Q=ATN(Q)
+3230 RETURN
+3240 :REM'
+3250 :REM'.....coordinate conversion
+3260 S=R-(SIN(Q)*SIN(LAT))
+3270 S=S/(COS(Q)*COS(LAT))
+3280 :REM'
+3290 :REM'.....null phenomenon
+3300 Z=ABS(S)
+3310 IF Z<=1 THEN 3350
+3320 V=0
+3330 RETURN
+3340 :REM'
+3350 :REM'.....adjustment
+3360 S=S/SQR(-S*S+1)
+3370 S=-ATN(S)+PI/2
+3380 IF I=1 THEN 3410
+3390 S=PI*2-S
+3400 :REM'
+3410 :REM'.....local apparent time
+3420 Z=0.017202800139784813!*K
+3430 T=S+P-Z-1.7336399555206299!
+3440 :REM'
+3450 :REM'.....universal time
+3460 U=T+LONG
+3470 :REM'
+3480 :REM'.....wall clock time
+3490 V=U-ZONE
+3500 :REM'
+3510 :REM'.....decimal to sexagesimal
+3520 Z=V
+3530 GOSUB 3840
+3540 Z=Z*3.8197200298309326!
+3550 IF FLAG=1 THEN FLAG=0:GOTO 3650
+3560 :REM'
+3570 :REM'.....azimuth
+3580 HR=(12-Z)*15       :REM'hour angle in degrees
+3590 HRA=HR*PI/180               :REM'hour angle in radians
+3600 X=SIN(Q)*COS(LAT)-COS(Q)*SIN(LAT)*COS(HRA)
+3610 ZA=ATN(X/SQR(-X*X+1))+PI/2  :REM'azimuth in radians
+3620 AZ=ZA*180/PI                :REM'azimuth in degrees
+3630 IF AZ<0 THEN AZ=AZ+360
+3640 :REM'
+3650 V=INT(Z)
+3660 W=(Z-V)*60
+3670 X=INT(W)
+3680 Y=W-X
+3690 IF Y<0.5! THEN 3710
+3700 X=X+1
+3710 IF X<60 THEN 3750
+3720 V=V+1
+3730 X=0
+3740 :REM'
+3750 :REM'.....conventional format
+3760 Z$="00"
+3770 HR$=MID$(STR$(V),2)
+3780 HR$=RIGHT$(Z$+HR$,2)
+3790 MI$=MID$(STR$(X),2)
+3800 MI$=RIGHT$(Z$+MI$,2)
+3810 V$=HR$+":"+MI$
+3820 RETURN
+3830 :REM'
+3840 :REM'.....normalization
+3850 IF Z>=0 THEN 3880
+3860 Z=Z+PI*2
+3870 GOTO 3840
+3880 IF Z<PI*2 THEN 3910
+3890 Z=Z-PI*2
+3900 GOTO 3880
+3910 RETURN
+3920 :REM'
+3930 :REM'.....radar screen
+3940 R=7      :REM'radial
+3950 H=R^2/2  :REM'1/2 square of hypotenuse
+3960 X=41     :REM'x-axis
+3970 Y=16     :REM'y-axis
+3980 XY=2.34375!  :REM'xy ratio
+3990 FOR Z=Y-R TO Y+R
+4000  LOCATE Z,X-18
+4010  PRINT STRING$(37,"█");
+4020 IF Z<Y+R THEN PRINT ""
+4030 NEXT Z
+4040 COLOR 11,7
+4050 FOR Z=Y-R TO Y+R:LOCATE Z,X:PRINT "│":NEXT Z
+4060 FOR Z=X-18 TO X+18:LOCATE Y,Z:PRINT "─":NEXT Z
+4070 COLOR 15,3
+4080 LOCATE Y-R,X-2:PRINT "  N  "
+4090 LOCATE Y-SQR(H),X-(SQR(H)*XY)-1.5!:PRINT " NW "
+4100 LOCATE Y-SQR(H),X+(SQR(H)*XY)-1.5!:PRINT " NE "
+4110 LOCATE Y,X-(R*XY)-2:PRINT "  W  "
+4120 COLOR 15,1
+4130 LOCATE Y,X-4:PRINT " AZIMUTH "
+4140 COLOR 15,3
+4150 LOCATE Y,X+(R*XY)-2:PRINT "  E  "
+4160 LOCATE Y+SQR(H),X-(SQR(H)*XY)-1.5!:PRINT " SW "
+4170 LOCATE Y+SQR(H),X+(SQR(H)*XY)-1.5!:PRINT " SE "
+4180 LOCATE Y+R,X-2:PRINT "  S  ";
+4190 IF SGN(LAT)=-1 THEN A=10:B=22 :ELSE A=22:B=10
+4200 COLOR 14,7:LA=ABS(LAT*180/PI):EL=90-LA+NOON
+4210 IF EL>90 THEN EL=180-EL:SWAP A,B
+4220 LOCATE A,29
+4230 PRINT "Elevation of Noon sun:";USING "###";EL;
+4240 PRINT "°";
+4250 COLOR 7,0
+4260 :REM'
+4270 :REM'....BRG = bearing
+4280 FOR Z=1 TO 2
+4290 BRG=AZ(Z)-90            :REM'bearing in degrees
+4300 HDG=BRG*PI/180          :REM'bearing in radians
+4310 YY=SIN(HDG)*R
+4320 XX=CINT(COS(HDG)*R*XY)
+4330 COLOR 14,1
+4340 LOCATE Y+YY,X+XX-1
+4350 PRINT " * ";
+4360 COLOR 14,0
+4370 IF Z=1 THEN LOCATE Y+YY,X+20:PRINT"SUNRISE @";USING "####";AZ(1);:PRINT "°"
+4380 IF Z=2 THEN LOCATE Y+YY,X-32:PRINT"SUNSET @";USING "####";AZ(2);:PRINT "°"
+4390 NEXT Z
+4400 COLOR 7,0
+4410 RETURN
+4420 :REM'
+4430 :REM'.....political time
+4440 LT=VAL(LEFT$(W$,2)):        RT=VAL(RIGHT$(W$,2))
+4450 LT=LT+INT(ADD):             RT=(RT+(ADD-INT(ADD))*60)
+4460 IF RT>=60 THEN RT=60-RT:LT=LT+1
+4470 IF LT=24 THEN LT=12:GOTO 4500
+4480 IF LT>24 THEN LT=LT-12:PM$=AM$
+4490 IF LT>12 THEN LT=LT-12
+4500 LT$=STR$(LT):               RT$=STR$(RT)
+4510 LT$=RIGHT$(LT$,LEN(LT$)-1): RT$=RIGHT$(RT$,LEN(RT$)-1)
+4520 IF LEN(LT$)<2 THEN LT$=" "+LT$:GOTO 4520
+4530 IF LEN(RT$)<2 THEN RT$="0"+RT$:GOTO 4530
+4540 W$=LT$+":"+RT$
+4550 RETURN
+4560 :REM'
+4570 :REM'.....end
+4580 GOSUB 4620
+4590 GOTO 250   :REM'start
+4600 END
+4610 :REM'
+4620 :REM'PRT
+4630 KEY OFF:GOSUB 4700:LOCATE 25,5:COLOR 0,2
+4640 PRINT " Send this page to:(1)Printer Queue? (2)Printout? ";
+4650 PRINT "(3)Next page? (1/2/3)";:COLOR 7,0
+4660 Z$=INKEY$:IF Z$<"1"OR Z$>"3"THEN 4660 :ELSE GOSUB 4700
+4670 IF Z$="3"THEN RETURN
+4680 FOR I%=1 TO 24:FOR J%=1 TO 80:LPRINT CHR$(SCREEN(I%,J%));:NEXT J%:NEXT I%
+4690 IF Z$="2"THEN LPRINT CHR$(12) :ELSE 4630
+4700 LOCATE 25,1:PRINT STRING$(80,32);:RETURN

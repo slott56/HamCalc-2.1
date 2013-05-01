@@ -1,0 +1,243 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>deciconv – Decimal Hour/Degree Converter &mdash; HamCalc 2.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '2.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="HamCalc 2.1 documentation" href="../../index.html" />
+    <link rel="up" title="math – Math, Physics, Units Conversion" href="index.html" />
+    <link rel="next" title="decifrac – Decimal/Fraction Converter" href="decifrac.html" />
+    <link rel="prev" title="curvefit" href="curvefit.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="decifrac.html" title="decifrac – Decimal/Fraction Converter"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="curvefit.html" title="curvefit"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../../index.html">HamCalc 2.1 documentation</a> &raquo;</li>
+          <li><a href="../index.html" >Python Modules</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">math &#8211; Math, Physics, Units Conversion</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="deciconv-decimal-hour-degree-converter">
+<h1>deciconv &#8211; Decimal Hour/Degree Converter<a class="headerlink" href="#deciconv-decimal-hour-degree-converter" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="analysis">
+<h2>Analysis<a class="headerlink" href="#analysis" title="Permalink to this headline">¶</a></h2>
+<p>Time, in decimal hours, is a function of Hours, <img class="math" src="../../_images/math/d8f63761679b55b29ab6432db1b6602687cc2304.png" alt="T_h"/>, Minutes, <img class="math" src="../../_images/math/38c9b08aba051c18344b0de5889b24a25c0f8b71.png" alt="T_m"/>, and Seconds, <img class="math" src="../../_images/math/43b3aabcb88e217357a0b38741411a9357bf238f.png" alt="T_s"/>.</p>
+<div class="math">
+<p><img src="../../_images/math/eedad4c6948f37ca2ef26077d9de3fc5cd803b35.png" alt="T = T_h + \frac{T_m + \frac{T_s}{60}}{60}"/></p>
+</div><p>The reverse is also true: we can extract Hours, Minutes and Seconds
+from the time, if we handle time in seconds or minutes, not hours.</p>
+<div class="math">
+<p><img src="../../_images/math/c0eab42fdeaafa164e0c777c4080d93becfc521a.png" alt="T_s = 3600T \mod 60"/></p>
+</div><div class="math">
+<p><img src="../../_images/math/a82875b460163f336386c3d43c2e79534b8c95d9.png" alt="T_m = 60T \mod 60"/></p>
+</div><div class="math">
+<p><img src="../../_images/math/93a317951c14829624673df2b2de43ea19b1fc02.png" alt="T_h = \lfloor T \rfloor"/></p>
+</div></div>
+<div class="section" id="implementation">
+<h2>Implementation<a class="headerlink" href="#implementation" title="Permalink to this headline">¶</a></h2>
+<p>We can use simple unit conversion class definitions for this.</p>
+<span class="target" id="module-hamcalc.math.deciconv"></span><p>hamcalc.math.deciconv &#8211; Decimal numbers to degrees/minutes/seconds.</p>
+<p>There are two ways to handle &#8220;sexigesimal&#8221; Hour:Minute:Second and
+Degree:Minute:Second values.</p>
+<ol class="arabic simple">
+<li>As tuples. <tt class="docutils literal"><span class="pre">(HH,MM,SS)</span></tt> or <tt class="docutils literal"><span class="pre">(DEG,MM,SS)</span></tt>.</li>
+<li>As strings. <tt class="docutils literal"><span class="pre">&quot;HH:MM:SS&quot;</span></tt> or <tt class="docutils literal"><span class="pre">&quot;DEG:MM:SS&quot;</span></tt>.</li>
+</ol>
+<p>We provide both implementations, since strings are an extension to tuples.</p>
+<p>Test Cases</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">HRS_MIN_SEC</span><span class="o">.</span><span class="n">to_std</span><span class="p">(</span> <span class="s">&quot;12:34:56&quot;</span> <span class="p">)</span>
+<span class="go">12.582222222222223</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">HRS_MIN_SEC</span><span class="o">.</span><span class="n">from_std</span><span class="p">(</span> <span class="mf">12.582</span> <span class="p">)</span>
+<span class="go">&#39;12:34:55.2&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">HRS_MIN_SEC</span><span class="o">.</span><span class="n">from_std</span><span class="p">(</span> <span class="mf">12.5822</span> <span class="p">)</span>
+<span class="go">&#39;12:34:55.9&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">HRS_MIN_SEC</span><span class="o">.</span><span class="n">from_std</span><span class="p">(</span> <span class="mf">12.58222</span> <span class="p">)</span>
+<span class="go">&#39;12:34:56.0&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">HMS_TUPLE</span><span class="o">.</span><span class="n">to_std</span><span class="p">(</span> <span class="p">(</span><span class="mi">12</span><span class="p">,</span><span class="mi">34</span><span class="p">,</span><span class="mi">56</span><span class="p">)</span> <span class="p">)</span>
+<span class="go">12.582222222222223</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">HMS_TUPLE</span><span class="o">.</span><span class="n">from_std</span><span class="p">(</span> <span class="mf">12.58222</span> <span class="p">)</span>
+<span class="go">(12.0, 34.0, 55.99199999999837)</span>
+</pre></div>
+</div>
+<dl class="class">
+<dt id="hamcalc.math.deciconv.DEGREES">
+<em class="property">class </em><tt class="descclassname">hamcalc.math.deciconv.</tt><tt class="descname">DEGREES</tt><a class="reference internal" href="../../_modules/hamcalc/math/deciconv.html#DEGREES"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.math.deciconv.DEGREES" title="Permalink to this definition">¶</a></dt>
+<dd><p>Decimal Degrees</p>
+<dl class="attribute">
+<dt id="hamcalc.math.deciconv.DEGREES.standard">
+<tt class="descname">standard</tt><a class="headerlink" href="#hamcalc.math.deciconv.DEGREES.standard" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#hamcalc.math.deciconv.DEGREES" title="hamcalc.math.deciconv.DEGREES"><tt class="xref py py-class docutils literal"><span class="pre">DEGREES</span></tt></a></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="hamcalc.math.deciconv.DEG_MIN_SEC">
+<em class="property">class </em><tt class="descclassname">hamcalc.math.deciconv.</tt><tt class="descname">DEG_MIN_SEC</tt><a class="reference internal" href="../../_modules/hamcalc/math/deciconv.html#DEG_MIN_SEC"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.math.deciconv.DEG_MIN_SEC" title="Permalink to this definition">¶</a></dt>
+<dd><p>Degrees Minutes Seconds &#8211; as String</p>
+<dl class="attribute">
+<dt id="hamcalc.math.deciconv.DEG_MIN_SEC.standard">
+<tt class="descname">standard</tt><a class="headerlink" href="#hamcalc.math.deciconv.DEG_MIN_SEC.standard" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#hamcalc.math.deciconv.DEGREES" title="hamcalc.math.deciconv.DEGREES"><tt class="xref py py-class docutils literal"><span class="pre">DEGREES</span></tt></a></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="hamcalc.math.deciconv.DMS_TUPLE">
+<em class="property">class </em><tt class="descclassname">hamcalc.math.deciconv.</tt><tt class="descname">DMS_TUPLE</tt><a class="reference internal" href="../../_modules/hamcalc/math/deciconv.html#DMS_TUPLE"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.math.deciconv.DMS_TUPLE" title="Permalink to this definition">¶</a></dt>
+<dd><p>Degrees Minutes Seconds &#8211; as Tuple</p>
+<dl class="attribute">
+<dt id="hamcalc.math.deciconv.DMS_TUPLE.standard">
+<tt class="descname">standard</tt><a class="headerlink" href="#hamcalc.math.deciconv.DMS_TUPLE.standard" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#hamcalc.math.deciconv.DEGREES" title="hamcalc.math.deciconv.DEGREES"><tt class="xref py py-class docutils literal"><span class="pre">DEGREES</span></tt></a></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="hamcalc.math.deciconv.HMS_TUPLE">
+<em class="property">class </em><tt class="descclassname">hamcalc.math.deciconv.</tt><tt class="descname">HMS_TUPLE</tt><a class="reference internal" href="../../_modules/hamcalc/math/deciconv.html#HMS_TUPLE"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.math.deciconv.HMS_TUPLE" title="Permalink to this definition">¶</a></dt>
+<dd><p>Hours Minutes Seconds &#8211; as Tuple</p>
+<dl class="attribute">
+<dt id="hamcalc.math.deciconv.HMS_TUPLE.standard">
+<tt class="descname">standard</tt><a class="headerlink" href="#hamcalc.math.deciconv.HMS_TUPLE.standard" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#hamcalc.math.deciconv.HOURS" title="hamcalc.math.deciconv.HOURS"><tt class="xref py py-class docutils literal"><span class="pre">HOURS</span></tt></a></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="hamcalc.math.deciconv.HOURS">
+<em class="property">class </em><tt class="descclassname">hamcalc.math.deciconv.</tt><tt class="descname">HOURS</tt><a class="reference internal" href="../../_modules/hamcalc/math/deciconv.html#HOURS"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.math.deciconv.HOURS" title="Permalink to this definition">¶</a></dt>
+<dd><p>Decimal Hours</p>
+<dl class="attribute">
+<dt id="hamcalc.math.deciconv.HOURS.standard">
+<tt class="descname">standard</tt><a class="headerlink" href="#hamcalc.math.deciconv.HOURS.standard" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#hamcalc.math.deciconv.HOURS" title="hamcalc.math.deciconv.HOURS"><tt class="xref py py-class docutils literal"><span class="pre">HOURS</span></tt></a></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="hamcalc.math.deciconv.HRS_MIN_SEC">
+<em class="property">class </em><tt class="descclassname">hamcalc.math.deciconv.</tt><tt class="descname">HRS_MIN_SEC</tt><a class="reference internal" href="../../_modules/hamcalc/math/deciconv.html#HRS_MIN_SEC"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.math.deciconv.HRS_MIN_SEC" title="Permalink to this definition">¶</a></dt>
+<dd><p>Hours Minutes Seconds &#8211; as String</p>
+<dl class="attribute">
+<dt id="hamcalc.math.deciconv.HRS_MIN_SEC.standard">
+<tt class="descname">standard</tt><a class="headerlink" href="#hamcalc.math.deciconv.HRS_MIN_SEC.standard" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#hamcalc.math.deciconv.HOURS" title="hamcalc.math.deciconv.HOURS"><tt class="xref py py-class docutils literal"><span class="pre">HOURS</span></tt></a></p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">deciconv &#8211; Decimal Hour/Degree Converter</a><ul>
+<li><a class="reference internal" href="#analysis">Analysis</a></li>
+<li><a class="reference internal" href="#implementation">Implementation</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="curvefit.html"
+                        title="previous chapter">curvefit</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="decifrac.html"
+                        title="next chapter">decifrac &#8211; Decimal/Fraction Converter</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../../_sources/python/math/deciconv.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="decifrac.html" title="decifrac – Decimal/Fraction Converter"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="curvefit.html" title="curvefit"
+             >previous</a> |</li>
+        <li><a href="../../index.html">HamCalc 2.1 documentation</a> &raquo;</li>
+          <li><a href="../index.html" >Python Modules</a> &raquo;</li>
+          <li><a href="index.html" >math &#8211; Math, Physics, Units Conversion</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2013, S.Lott.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2b1.
+    </div>
+  </body>
+</html>

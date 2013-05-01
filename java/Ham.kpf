@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Komodo Project File - DO NOT EDIT -->
+<project id="f9f8c992-791b-9445-b040-cad1fde67333" kpf_version="4" name="Ham.kpf">
+<command cwd="%p" doNotOpenOutputWindow="0" env="" id="a847c418-b11a-ba43-8ebf-75a446b493c5" idref="f9f8c992-791b-9445-b040-cad1fde67333" insertOutput="0" keyboard_shortcut="" name="%(python) %f" operateOnSelection="0" parseOutput="0" parseRegex="" runIn="command-output-window" showParsedOutputList="0">
+%(python) %f</command>
+<preference-set idref="f9f8c992-791b-9445-b040-cad1fde67333">
+  <boolean id="import_live">1</boolean>
+</preference-set>
+</project>

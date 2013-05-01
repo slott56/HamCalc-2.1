@@ -1,0 +1,4862 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>The HamCalc Legacy &mdash; HamCalc 2.1 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '2.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="HamCalc 2.1 documentation" href="index.html" />
+    <link rel="next" title="Python Architecture" href="python_architecture.html" />
+    <link rel="prev" title="Background" href="background.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="python_architecture.html" title="Python Architecture"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="background.html" title="Background"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">HamCalc 2.1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="the-hamcalc-legacy">
+<span id="legacy"></span><h1>The HamCalc Legacy<a class="headerlink" href="#the-hamcalc-legacy" title="Permalink to this headline">¶</a></h1>
+<p>The Hamcalc legacy is 449 individual program files and 85,431 lines of GW-Basic
+programming.</p>
+<p>This section contains a detailed review of the available menus and indexes.
+It includes a summary of the various subject areas into which the programs
+should be classified.</p>
+<div class="section" id="user-menu">
+<h2>User Menu<a class="headerlink" href="#user-menu" title="Permalink to this headline">¶</a></h2>
+<p>There&#8217;s a simplex index in <tt class="file docutils literal"><span class="pre">MENU/HAMCAL-X.BAS</span></tt>. This is the main menu of calculations available. Note that several of the &#8216;MENU&#8217; programs repeat
+this list or a similar list.</p>
+<div class="highlight-python"><pre>640 DATA accalc,   A.C. Circuit Calculator
+650 DATA accelr,   Acceleration Calculator
+660 DATA antfield, Antenna Field Strength
+670 DATA antscale, Antenna Frequency Scaling
+680 DATA impant,   Antenna Impedance Calculator
+690 DATA antenna,  Antenna Length/Pruning calculator
+700 DATA antsyn2,  Antenna Matching Networks
+710 DATA arch,     Arch Calculator
+720 DATA page437,  ASCII Character Code Page 437
+730 DATA attenpad,&quot;Attenuators: T-Pad and Pi-Pad&quot;
+740 DATA audfilt,  Audio Bandpass Filter - Active
+750 DATA lopass,   Audio Lowpass Filter(Sallen &amp; Key)
+760 DATA audpass,  Audio Filters - Passive
+770 DATA rcfilt,   Audio Filters - RC Active
+780 DATA audosc,   Audio Oscillator (LM 324)
+790 DATA audosc2,  Audio Oscillator (LF 353)dual wave
+800 DATA twintee,  Audio Oscillator (Twin-T)
+810 DATA zounds,   Audio Programs
+820 DATA awgexact, A.W.G. Wire Size Calculator
+830 DATA bend,     Bend Allowance - Metals
+840 DATA aircore,  B.&amp; W. Air-Core Inductors
+850 DATA broadfer, Baluns - Ferrite Toroid
+860 DATA bandstop, Band-Reject Filter
+870 DATA bandq,    Bandwidth vs. Q
+880 DATA bandwdth,&quot;Bandwidths - 2:1 SWR&quot;
+890 DATA baromtr,  Barometer Reading Equivalents
+900 DATA batchg,   Battery Charger
+910 DATA dialgth,  Beam Element Diameter vs Length
+920 DATA pathfind, Beam Heading Calculator
+930 DATA bevant,   Beverage Antenna Equations
+940 DATA bobtail,  Bobtail Curtain Antenna
+950 DATA boom,     Boom Droop - Beam Antennas
+960 DATA spark,    Breakdown Voltage
+970 DATA caltoday, Calendar - Perpetual/Universal
+980 DATA calory,   Calorie Counter
+990 DATA capstray, Capacitance - Distributed (stray)
+1000 DATA captance, Capacitor Design Calculator
+1010 DATA capval,   Capacitor Measurer
+1020 DATA gaplot,   Capacitor Plate Designer
+1030 DATA capcoax,  Capacitors - Coaxial Cable
+1040 DATA custcap,  Capacitors - Custom Value
+1050 DATA precicap, Capacitors - Precision
+1060 DATA capacval, Capacitors - Standard Values
+1070 DATA capytel,  Capacitors - Telescoping Variable
+1080 DATA trimr,    Capacitors - Trimmer
+1090 DATA hatshape, Capacity Hat Geometric Shapes
+1100 DATA capyhat,  Capacity Hats - Vertical Antennas
+1110 DATA rotaplot, Cartesian/Polar Plot Rotator
+1120 DATA ccdanten, CCD Antennas
+1130 DATA centfreq, Centre Frequency &amp; Wavelength
+1140 DATA centrif,  Centrifugal/Centripetel Force
+1150 DATA propcirc, Circle - Properies of
+1160 DATA circfeed, Circular Waveguide Dish Feeds
+1170 DATA clamp,    Clamping Voltage Calculator
+1180 DATA clarky,   Clark Y Airfoil
+1190 DATA cmosc3,   CMOS Oscillator
+1200 DATA coaxchar, Coax Cable Characteristics
+1210 DATA coaxlc3,  Coax Cable L/C Tank
+1220 DATA chokbal,  Coax Cable RF Chokes &amp; Baluns
+1230 DATA coaxtrap, Coax Cable Traps
+1240 DATA buxtrap , Coax Cable Hi-Reactance SuperTrap
+1250 DATA cw,       Code Trainer (Morse Code)
+1260 DATA coilnew,  Coil Calculator- Dehoney equations
+1270 DATA coilequa, Coil Calculator- Wheeler equations
+1280 DATA coilq,    Coil Q Calculator
+1290 DATA coildsgn, Coil Designer
+1300 DATA coilquik, Coil Q Quick Estimator
+1310 DATA coiltrue, Coil Q - True vs. Apparent
+1320 DATA coilnew,  Coil Tap Calculators
+1330 DATA coiltap,  Coil Tap Properties
+1340 DATA turns,    Coil Turns Calculator
+1350 DATA coilcpl,  Coils - Coaxially coupled
+1360 DATA coilnew,  Coils in Tandem
+1370 DATA coilin,   Coils - Insulated Wire
+1380 DATA colposc,  Colpitts FET Oscillator
+1390 DATA conecalc, Cone Calculator
+1400 DATA conjumat, Conjugate Match Calculator
+1410 DATA phazdiff, Constant Phase Difference Networks
+1420 DATA copwire,  Copper Wire Data
+1430 DATA elecost,  Cost of Electricity
+1440 DATA xover,    Crossover Networks - Loudspeakers
+1450 DATA crysfilt, Crystal Ladder Filter
+1460 DATA curvefit, Curve Fit program
+1470 DATA cylload,  CYLOAD antenna
+1480 DATA daydusk,  Daylight Dusk and Dawn Calculator
+1490 DATA decibel,  Decibel Calculator
+1500 DATA decifrac, Decimal/Fraction Converter
+1510 DATA deciconv, Decimal Hour/Degree Converter
+1520 DATA binary,   Decimal to Binary Converter
+1530 DATA rjd,      Dehoney Algorithm Index
+1540 DATA deltamat, Delta Match
+1550 DATA diamfind, Diameter Finder
+1560 DATA dielect,  Dielectric Constants
+1570 DATA discone,  Discone Multiband Antenna
+1580 DATA duopole,  Dual Band Short Dipole Antenna
+1590 DATA trisqu,   Dual Op Amp Wave Generator
+1600 DATA seasons,  Equinoxes &amp; Solstices
+1610 DATA elspec,   Electromagnetic Spectrum
+1620 DATA fatdipol, Fat Dipole (broadband)
+1630 DATA fibon,    Fibonacci Series
+1640 DATA filtut,   Filter Tutor
+1650 DATA buttfilt, Filters - Butterworth HF
+1660 DATA comfilt,  Filters - Complementary
+1670 DATA cplres,   Filters - Coupled Resonator
+1680 DATA matfilt,  Filters - Impedance Matching
+1690 DATA filtrlc,  Filters - Passive R/L/C
+1700 DATA filstrip, Filters - Stripline Bandpass
+1710 DATA finance,  Financial Calculators
+1720 DATA fishbone, Fishbone Antenna
+1730 DATA foldipol, Folded Dipole - 300- Twin-Lead
+1740 DATA zostepup, Folded Dipole - Zo Step-Up Ratios
+1750 DATA formulae, Formula Library
+1760 DATA fusewire, Fuses - Emergency
+1770 DATA g5rv,     G5RV Multiband Antenna
+1780 DATA gammatch, Gamma Match
+1790 DATA graphs,   Graphs
+1800 DATA pathfind, Great Circle Paths &amp; Distances
+1810 DATA gridsq,   Grid Square Locator (Maidenhead)
+1820 DATA guywires, Guy Wires for Antenna Towers/Masts
+1830 DATA hairpin,  Hairpin Beta-Match for Yagis
+1840 DATA halfloop, Half-Loop Low Profile Antenna
+1850 DATA hambands, Ham Band Edge &amp; Centre Frequencies
+1860 DATA harmonic, Harmonic Frequencies
+1870 DATA hartosc,  Hartley FET Oscillator
+1880 DATA hotbox,   Heat Dissipation
+1890 DATA sink,     Heat Sink Fins
+1900 DATA helant,   Helical Antenna - VHF/UHF
+1910 DATA helreson, Helical Resonators (VHF/UHF)
+1920 DATA helix,    Helical Winding
+1930 DATA qtrap,    High Q Antenna Traps
+1940 DATA humid,    Humidex Calculator
+1950 DATA 3mbridge, Impedance Bridge (3-meter)
+1960 DATA impednet, Impedance Matching Networks
+1970 DATA impedmetr,Impedance Meter
+1980 DATA antimp,   Impedance - Antennas
+1990 DATA impares,  Impedance - Parallel Resonant Cct.
+2000 DATA impedcct, Impedance - Reactance/Resist. Cct.
+2010 DATA inducalc, Inductance Calculator
+2020 DATA induloop, Inductance - Single Loops
+2030 DATA induhose, Inductors - Dryer Vent Hose
+2040 DATA inloss,   Insertion Loss
+2050 DATA invee,    Inverted Vee Antenna
+2060 DATA involute, Involute of a Circle
+2070 DATA jcalc,    J Calculator (Complex Impedances)
+2080 DATA jaypole,  J-Pole End-Fed Zepp Antenna
+2090 DATA kfactor,  K-Factor &amp; Antenna Length (NEC-2)
+2100 DATA ladant,   Ladder Line Antenna
+2110 DATA ladder2,  Ladder Network - 2 element
+2120 DATA ladrsolv, Ladder Network Analyzer
+2130 DATA lamplife, Lamp Life Expectancy
+2140 DATA latlong,  Latitude/Longitude Data Base
+2150 DATA led,      LED Series Resistor
+2160 DATA radiolos, Line-of-Sight Radio Wave
+2170 DATA linkupl,  Link Coupled Tuners
+2180 DATA lm317,    LM317 Voltage Regulator
+2190 DATA deltload, Load Resistance Calculator
+2200 DATA localrpt, Local Repeaters
+2210 DATA zounds,   Music Math &amp; Sounds
+2220 DATA numderiv, Logarithms to any base
+2230 DATA logyag,   LOG-YAG Log-Periodic Yagi Antenna
+2240 DATA pairlt,   Long-Tailed Pair
+2250 DATA loopant,  Loop Antenna Coil Inductance
+2260 DATA loopxmit, Loop Antennas - Transmitting
+2270 DATA loopsky,  Loop Skywire Dimensions
+2280 DATA l-pad,    L-Pad Calculator
+2290 DATA brick,    Masonry Estimator
+2300 DATA matchbox, Matchbox Impedance Transformer
+2310 DATA matchnet, Matching Networks for Transistors
+2320 DATA maxuf,    Max. Usable Frequencies (MAXIMUF)
+2330 DATA mechmenu, MECHANICS Math
+2340 DATA metshowr, Meteor Shower Predictor
+2350 DATA meters,   Meters (Direct Current)
+2360 DATA metrics,  Metric Conversions
+2370 DATA metnom,   Metronome
+2380 DATA microver, MicroVert very short HF Antenna
+2390 DATA miniloop, MINILOOP Miniature Loop Antenna
+2400 DATA miniquad, MINIQUAD Coil Shortened Antenna
+2410 DATA coilamp,  Mobile Whip Antenna Coils
+2420 DATA mobilmat, Mobile Antenna Matching
+2430 DATA mowhip,   Mobile/Maritime Whip Antennas
+2440 DATA moontrac, Moon Tracker
+2450 DATA moxon,    Moxon Rectangle Antenna
+2460 DATA zounds,   Musical Math &amp; Sounds
+2470 DATA nicad,    NiCad Battery Discharger
+2480 DATA nmbrsize, Numbered Drills/Screws/Taps/Gauges
+2490 DATA numsort,  Number Sorter
+2500 DATA numderiv, Numbers and Functions
+2510 DATA octagon,  Octagonal Loop Framework
+2520 DATA octaloop, OCTALOOP Subminiature Loop Antenna
+2530 DATA octaring, OCTARING Subminiature Loop Antenna
+2540 DATA ocfdipol, &quot;Off-Centre Dipole, 3-band trapless&quot;
+2550 DATA ohmslaw,  Ohm&#x27;s Law Calculator
+2560 DATA concur,   OP AMP Constant Current Circuit
+2570 DATA opamp,    OP AMP Operational Amplifiers
+2580 DATA trisqu,   OP AMP Wave Generator
+2590 DATA cascamp,  OP AMPS - Cascaded
+2600 DATA noisfig,  OP AMPS - Noise Figure
+2610 DATA dishant,  Parabolic Dish Design
+2620 DATA pedom,    Pedometer
+2630 DATA fotomenu, PHOTOGRAPHY Math
+2640 DATA pitnet,   Pi and T Networks
+2650 DATA pipesize, Pipe Sizes - ANSI Standard
+2660 DATA pixel,    Pixel Data for Scanners &amp; Cameras
+2670 DATA polygon,  Polygon Dimensions
+2680 DATA potent,   Potentiometers - Custom Value
+2690 DATA psup,     Power Supply Analyzer
+2700 DATA pwrcct,   Power Supply Design
+2710 DATA dblbrg4,  Power Supply - Double Bridge
+2720 DATA psuperf,  Power Supply Performance
+2730 DATA powrxfmr, Power Transformer Design
+2740 DATA pwrxfmr,  Power Transformer Winding Estimator
+2750 DATA primenos, Prime Number Calculator
+2760 DATA copwire,  Printed Circuit Board Traces
+2770 DATA pba,      Pseudo-Brewster Angle
+2780 DATA pulsegen, Pulse Generator
+2790 DATA qreson,   Q Calculator - Resonant Circuits
+2800 DATA qfind4,   Q Measurement - L/C Tank Circuit
+2810 DATA foxlog,   QRP Fox Hunt Log
+2820 :REM&#x27;DATA qmeas,    Q of L/C Tank Circuit
+2830 DATA quad,     Quad Antenna Dimensions
+2840 DATA quadrat,  Quadratic Equation Calculator
+2850 DATA quartwav, Quarter Wave Transformer
+2860 DATA radangle, Radiation Angle - Antenna
+2870 DATA vertpatt, Radiation Plots - Phased Verticals
+2880 DATA randnum,  Random Number Generator
+2890 DATA react,    Reactance Programs
+2900 DATA dsgnmenu, Resistor/Inductor/Capacitor Ccts.
+2910 DATA colcode,  Resistor Colour Code
+2920 DATA resicop,  Resistors - Copper Wire Wound
+2930 DATA custohm,  Resistors - Custom Value
+2940 DATA precires, Resistors - Precision
+2950 DATA resisval, Resistors - Standard Values
+2960 DATA smeter,   S-Meter Readings vs. Power
+2970 DATA catenary, Sag in Horizontal Wire Antennas
+2980 DATA satorbit, Satellite Orbit Parameters
+2990 DATA scalspd,  Scale Speed Calculator
+3000 DATA schmidt,  Schmidt trigger Op Amp
+3010 DATA serisect, Series-Section Transformer
+3020 DATA centload, Short Centre-Loaded Dipole
+3030 DATA cylload,  Short Cylinder-Loaded Dipole
+3040 DATA dipol160, Short Dipole for 160/80/40 metres
+3050 DATA es2b,     Short ES2B (2 band) Trap Dipole
+3060 DATA shortant, Short Off-Centre-Loaded Dipole
+3070 DATA shortdip, Short Multiband Dipole Array
+3080 DATA shuttle,  Shuttle
+3090 DATA simuleq,  Simultaneous Equation Calculator
+3100 DATA snglwire, Single Wire Antenna Systems
+3110 DATA copwire,  Skin Effect
+3120 DATA skipdist, Skip Distance Calculator
+3130 DATA sloper,   Sloper Antenna Dimensions
+3140 DATA smithcht, Smith Chart Calculations
+3150 DATA sorter,   Sorter
+3160 DATA speedtd,  Speed/Time/Distance Calculator
+3170 DATA stubant,  Stub Match for Antennas
+3180 DATA coaxstub, Stubs - Coaxial Transmission Line
+3190 DATA transtub, Stubs - Open Wire Transmiss&#x27;n Line
+3200 DATA riseset,  Sunrise/Sunset Calculator
+3210 DATA survey,   Surveyor&#x27;s Calculator
+3220 DATA swr,      SWR Calculator
+3230 DATA t2fd,     T2FD Tilted Folded Dipole
+3240 DATA tmatch,   T Match - Dipole to 600 - Line
+3250 DATA tankcct,  Tank Circuit - Power Amplifier
+3260 DATA teletube, Telescoping Aluminum Tubing
+3270 DATA thermres, Thermal Resistance
+3280 DATA psychrom, Thermodynamics
+3290 DATA timeq,    Time Quiz
+3300 DATA timezone, Time Zones (UTC)
+3310 DATA 555timer, Timer (555 IC)
+3320 DATA tinycoil, Tiny Coils
+3330 DATA torotrap, Toroid Antenna Traps
+3340 DATA broadfer, Toroid Baluns &amp; Transformers
+3350 DATA toroid,   Toroid Inductors
+3360 DATA tracker,  Tracker - Receiver Tuned Circuits
+3370 DATA powrxfmr, Transformer Design
+3380 DATA xfmrnaro, Transformer - Narrow Band
+3390 DATA xfmr,     Transformer Ratios
+3400 DATA winding,  Transformer Winding Calculator
+3410 DATA trancct,  Transistor Circuit Design
+3420 DATA transmat, Transmatch Design (ZL1LE)
+3430 DATA chokbal,  Transmission Line Choke
+3440 DATA elecleng, Transmission Line Length
+3450 DATA lineloss, Transmission Line Losses
+3460 DATA mismat,   Transmission Line Mismatch
+3470 DATA node,     Transmission Line Node Locator
+3480 DATA tranline, Transmission Line Performance
+3490 DATA sqcoax,   Transmission Line - Square Coaxial
+3500 DATA openwire, Transmission Line - Open Wire
+3510 DATA qline2,   Transmission Line Q
+3520 DATA trapole,  Trap Antenna Design
+3530 DATA trapcalc, Trap Design Calculator
+3540 DATA trapdsgn, Trap Dipole - 3 Band Single Trap
+3550 DATA traprop,  Trap Properties Estimator
+3560 DATA coaxtrap, Traps - Coaxial Cable
+3570 DATA solutri,  Triangles - solution of
+3580 DATA trig,     Trigonometric Functions
+3590 DATA triplan,  Trip Planner
+3600 DATA trunorth, True North via the Sun
+3610 DATA tunecct,  Tuned Circuit Design - L/C network
+3620 DATA turnrad,  Turning Radius - Beam antennas
+3630 DATA tvchan,   TV Channels ( North America )
+3640 DATA unitvalu, Unit Value Comparator
+3650 DATA helvert,  Vertical Antenna - Helically Wound
+3660 DATA varayfed, Vertical Antenna Array Feed Method
+3670 DATA vfofreq,  VFO Frequency Calculator
+3680 DATA voltdiv,  Voltage Divider
+3690 DATA thevinin, Voltage Divider - Thevinin
+3700 DATA walker,   Walker
+3710 DATA walwart,  Wall Wart Ratings Calculator
+3720 DATA wartest,  Wall Wart Properties
+3730 DATA wavetrap, Wave Trap Filters
+3740 DATA bridge,   Wheatstone Bridge Calculator
+3750 DATA windom,   Windom Antenna
+3760 DATA windchil, Wind Chill Factor
+3770 DATA wireant,  Wire Antenna Index
+3780 DATA wiremesh, Wire Mesh Screens - Wind Loads
+3790 DATA wirecond, Wires in Conduit
+3800 DATA xmtrzmat, Xmtr. Transistor Stage Coupling
+3810 DATA yagi3el,  YAGI 3-Element Beam Design
+3820 DATA dialgth,  YAGI Element Diameter vs. Length
+3830 DATA yagispac, YAGI Element Spacing/NBS Standard
+3840 DATA yagtaper, YAGI Tapered Elements
+3850 DATA thruboom, YAGI Through-Boom Elements
+3860 DATA yagilong, YAGI Extremely Long VHF/UHF Antenna
+3870 DATA zener,    Zener Diode Voltage Regulator
+3880 DATA zeppdbl,  Zepp (extended double) Antenna
+3890 DATA zepp,     Zepp Multi-band antenna</pre>
+</div>
+</div>
+<div class="section" id="quick-table-menu">
+<h2>Quick Table Menu<a class="headerlink" href="#quick-table-menu" title="Permalink to this headline">¶</a></h2>
+<p>Additionally, several programs, like <tt class="file docutils literal"><span class="pre">PROG/QUIKTABL.BAS</span></tt> include
+their own submenu of features.</p>
+<div class="highlight-python"><pre>180 PRINT &quot;  (a) A.W.G. wire sizes&quot;
+190 PRINT &quot;  (b) Circles - properties of&quot;
+200 PRINT &quot;  (c) Decibels&quot;
+210 PRINT &quot;  (d) Decimal numbers to degrees/minutes/seconds&quot;
+220 PRINT &quot;  (e) Decimals to fractions&quot;
+230 PRINT &quot;  (f) Degrees to radians&quot;
+240 PRINT &quot;  (g) Degrees/minutes/seconds to decimal&quot;
+250 PRINT &quot;  (h) Equivalent values&quot;
+260 PRINT &quot;  (i) Fractions to decimals&quot;
+270 PRINT &quot;  (j) Logarithms&quot;
+280 PRINT &quot;  (k) Numbers - functions of&quot;
+290 PRINT &quot;  (l) Powers of numbers&quot;
+300 PRINT &quot;  (m) Prime numbers&quot;
+310 PRINT &quot;  (n) Radians to degrees&quot;
+320 PRINT &quot;  (o) Reciprocals of numbers&quot;
+330 PRINT &quot;  (p) Roots of numbers&quot;
+340 PRINT &quot;  (q) Temperature&quot;
+350 PRINT &quot;  (r) Triangles - solution of&quot;
+360 PRINT &quot;  (s) Trigonometric functions&quot;</pre>
+</div>
+<p>With this mapping from menu item to program.</p>
+<div class="highlight-python"><pre>410 IF Z$=&quot;z&quot;THEN CHAIN&quot;\hamcalc\menu\hcal&quot;
+420 IF Z$=&quot;a&quot;THEN CHAIN&quot;awgexact&quot;
+430 IF Z$=&quot;b&quot;THEN CHAIN&quot;propcirc&quot;
+440 IF Z$=&quot;c&quot;THEN CHAIN&quot;decibel&quot;
+450 IF Z$=&quot;d&quot;OR Z$=&quot;g&quot;THEN CHAIN&quot;deciconv&quot;
+460 IF Z$=&quot;e&quot;OR Z$=&quot;i&quot;THEN CHAIN&quot;decifrac&quot;
+470 IF Z$=&quot;f&quot; OR Z$=&quot;h&quot;OR Z$=&quot;n&quot;OR Z$=&quot;q&quot;THEN CHAIN&quot;equiv&quot;
+480 IF Z$=&quot;j&quot;OR Z$=&quot;k&quot;OR Z$=&quot;l&quot;OR Z$=&quot;l&quot;OR Z$=&quot;o&quot;OR Z$=&quot;p&quot;THEN CHAIN&quot;numderiv&quot;
+490 IF Z$=&quot;m&quot;THEN CHAIN&quot;primenos&quot;
+500 IF Z$=&quot;r&quot;THEN CHAIN&quot;solutri&quot;
+510 IF Z$=&quot;s&quot;THEN CHAIN&quot;trig&quot;</pre>
+</div>
+</div>
+<div class="section" id="complete-cross-reference">
+<h2>Complete Cross Reference<a class="headerlink" href="#complete-cross-reference" title="Permalink to this headline">¶</a></h2>
+<p>There&#8217;s a complete cross-reference buried in <tt class="file docutils literal"><span class="pre">INDEX/HAMDEX.FIL</span></tt>.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="25%" />
+<col width="25%" />
+<col width="25%" />
+<col width="25%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td>Heading</td>
+<td>Subheading</td>
+<td>Note</td>
+<td>Program</td>
+</tr>
+<tr class="row-even"><td><blockquote class="first last">
+<div>VARIABLE CAPACITOR</div></blockquote>
+</td>
+<td>, plate shape designer</td>
+<td>&nbsp;</td>
+<td>VACAP</td>
+</tr>
+<tr class="row-odd"><td>? SURGE PROTECTION</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>CLAMP</td>
+</tr>
+<tr class="row-even"><td>A.C. CIRCUIT BASICS</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>ACCALC</td>
+</tr>
+<tr class="row-odd"><td>A.W.G. WIRE SIZE CALCULATOR</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>AWGEXACT</td>
+</tr>
+<tr class="row-even"><td>ACCELERATION CALCULATOR</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>ACCELR</td>
+</tr>
+<tr class="row-odd"><td>ACCELERATION</td>
+<td>, Graphic Demonstration</td>
+<td>&nbsp;</td>
+<td>WALKER</td>
+</tr>
+<tr class="row-even"><td>AIR CYLINDERS</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>MECHMENU</td>
+</tr>
+<tr class="row-odd"><td>AIRFOIL</td>
+<td>, Clark Y</td>
+<td>&nbsp;</td>
+<td>CLARKY</td>
+</tr>
+<tr class="row-even"><td>ALIGNMENT</td>
+<td>, receiver tuned circuits</td>
+<td>&nbsp;</td>
+<td>TRACKER</td>
+</tr>
+<tr class="row-odd"><td>ALK FACTOR</td>
+<td>, antennas</td>
+<td>&nbsp;</td>
+<td>ANTENNA</td>
+</tr>
+<tr class="row-even"><td>ALUMINUM TUBING</td>
+<td>, specifications</td>
+<td>&nbsp;</td>
+<td>TELETUBE</td>
+</tr>
+<tr class="row-odd"><td>ALUMINUM TUBING</td>
+<td>, tapered Yagi elements</td>
+<td>&nbsp;</td>
+<td>YAGTAPER</td>
+</tr>
+<tr class="row-even"><td>AMMETERS</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>METERS</td>
+</tr>
+<tr class="row-odd"><td>AMPLIFIER</td>
+<td>, double feedback</td>
+<td>&nbsp;</td>
+<td>DBLFB</td>
+</tr>
+<tr class="row-even"><td>AMPLIFIER</td>
+<td>, power</td>
+<td>, tank circuit</td>
+<td>TANKCCT</td>
+</tr>
+<tr class="row-odd"><td>AMPLIFIERS</td>
+<td>, operational</td>
+<td>, solid state</td>
+<td>OPAMP</td>
+</tr>
+<tr class="row-even"><td>ANGLE CONVERSION</td>
+<td>, degrees/minutes/seconds</td>
+<td>&nbsp;</td>
+<td>EQUIV</td>
+</tr>
+<tr class="row-odd"><td>ANGLE CONVERSION</td>
+<td>, degrees/radians</td>
+<td>&nbsp;</td>
+<td>EQUIV</td>
+</tr>
+<tr class="row-even"><td>ANGLE OF RADIATION</td>
+<td>, antennas</td>
+<td>&nbsp;</td>
+<td>RADANGLE</td>
+</tr>
+<tr class="row-odd"><td>ANTENNA ALK FACTOR</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>ANTENNA</td>
+</tr>
+<tr class="row-even"><td>ANTENNA ELEMENT LENGTHS</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>ANTENNA</td>
+</tr>
+<tr class="row-odd"><td>ANTENNA FIELD STRENGTH</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>ANTFIELD</td>
+</tr>
+<tr class="row-even"><td>ANTENNA FREQUENCY SCALING</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>ANTSCALE</td>
+</tr>
+<tr class="row-odd"><td>ANTENNA HEIGHT</td>
+<td>, recommended minimum</td>
+<td>&nbsp;</td>
+<td>ANTENNA</td>
+</tr>
+<tr class="row-even"><td>ANTENNA IMPEDANCE BRIDGE</td>
+<td>, (3-meter)</td>
+<td>&nbsp;</td>
+<td>3MBRIDGE</td>
+</tr>
+<tr class="row-odd"><td>ANTENNA IMPEDANCE</td>
+<td>, measured from transmission line</td>
+<td>&nbsp;</td>
+<td>ANTIMP</td>
+</tr>
+<tr class="row-even"><td>ANTENNA IMPEDANCE</td>
+<td>, measured with a transmatch</td>
+<td>&nbsp;</td>
+<td>TRANSMAT</td>
+</tr>
+<tr class="row-odd"><td>ANTENNA INDEX</td>
+<td>, wire antennas</td>
+<td>&nbsp;</td>
+<td>WIREANT</td>
+</tr>
+<tr class="row-even"><td>ANTENNA K-FACTOR &amp; LENGTH</td>
+<td>, (NEC-2 model)</td>
+<td>&nbsp;</td>
+<td>KFACTOR</td>
+</tr>
+<tr class="row-odd"><td>ANTENNA MATCHING NETWORKS</td>
+<td>, equivalent circuits</td>
+<td>&nbsp;</td>
+<td>ANTMATCH</td>
+</tr>
+<tr class="row-even"><td>ANTENNA TRAP DESIGN</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>TRAPOLE</td>
+</tr>
+<tr class="row-odd"><td>ANTENNA TRAP PROPERTIES</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>TRAPROP</td>
+</tr>
+<tr class="row-even"><td>ANTENNA TRAPS</td>
+<td>, High Q</td>
+<td>&nbsp;</td>
+<td>QTRAP</td>
+</tr>
+<tr class="row-odd"><td>ANTENNA TRAPS</td>
+<td>, wave trap filters</td>
+<td>&nbsp;</td>
+<td>WAVETRAP</td>
+</tr>
+<tr class="row-even"><td>ANTENNA</td>
+<td>, 3 band</td>
+<td>, single trap dipole</td>
+<td>TRAPDSGN</td>
+</tr>
+<tr class="row-odd"><td>ANTENNA</td>
+<td>, Balcony whip</td>
+<td>&nbsp;</td>
+<td>MOWHIP</td>
+</tr>
+<tr class="row-even"><td>ANTENNA</td>
+<td>, Beverage</td>
+<td>&nbsp;</td>
+<td>BEVANT</td>
+</tr>
+<tr class="row-odd"><td>ANTENNA</td>
+<td>, Bobtail curtain</td>
+<td>&nbsp;</td>
+<td>BOBTAIL</td>
+</tr>
+<tr class="row-even"><td>ANTENNA</td>
+<td>, CCD</td>
+<td>, (Controlled Current Distribution)</td>
+<td>CCDANTEN</td>
+</tr>
+<tr class="row-odd"><td>ANTENNA</td>
+<td>, Capacitance loaded</td>
+<td>, horizontal or vertical</td>
+<td>CCDANTEN</td>
+</tr>
+<tr class="row-even"><td>ANTENNA</td>
+<td>, Coaxial cable traps</td>
+<td>&nbsp;</td>
+<td>COAXTRAP</td>
+</tr>
+<tr class="row-odd"><td>ANTENNA</td>
+<td>, Dipole</td>
+<td>, shortened to fit restricted space</td>
+<td>SHORTANT</td>
+</tr>
+<tr class="row-even"><td>ANTENNA</td>
+<td>, Dipole</td>
+<td>, broadband</td>
+<td>FATDIPOL</td>
+</tr>
+<tr class="row-odd"><td>ANTENNA</td>
+<td>, Dipole</td>
+<td>, cylinder-loaded</td>
+<td>CYLLOAD</td>
+</tr>
+<tr class="row-even"><td>ANTENNA</td>
+<td>, Dipole</td>
+<td>, off-centre loaded</td>
+<td>SHORTANT</td>
+</tr>
+<tr class="row-odd"><td>ANTENNA</td>
+<td>, Dipole</td>
+<td>, off-centre fed, 3-band trapless</td>
+<td>OCFDIPOL</td>
+</tr>
+<tr class="row-even"><td>ANTENNA</td>
+<td>, Dipole</td>
+<td>, centre-loaded</td>
+<td>CENTLOAD</td>
+</tr>
+<tr class="row-odd"><td>ANTENNA</td>
+<td>, Dipole</td>
+<td>, multiband for restricted space</td>
+<td>SHORTDIP</td>
+</tr>
+<tr class="row-even"><td>ANTENNA</td>
+<td>, Dipole</td>
+<td>, shortened, for 160/80/40 m.</td>
+<td>DIPOL160</td>
+</tr>
+<tr class="row-odd"><td>ANTENNA</td>
+<td>, Discone</td>
+<td>&nbsp;</td>
+<td>DISCONE</td>
+</tr>
+<tr class="row-even"><td>ANTENNA</td>
+<td>, Dual Band Short Dipole</td>
+<td>&nbsp;</td>
+<td>DUOPOLE</td>
+</tr>
+<tr class="row-odd"><td>ANTENNA</td>
+<td>, Dual band</td>
+<td>, dipole or monopole</td>
+<td>TRAPOLE</td>
+</tr>
+<tr class="row-even"><td>ANTENNA</td>
+<td>, Element size &amp; length</td>
+<td>&nbsp;</td>
+<td>ANTENNA</td>
+</tr>
+<tr class="row-odd"><td>ANTENNA</td>
+<td>, Fishbone</td>
+<td>&nbsp;</td>
+<td>FISHBONE</td>
+</tr>
+<tr class="row-even"><td>ANTENNA</td>
+<td>, Folded dipole</td>
+<td>, 300Í twin-lead</td>
+<td>FOLDIPOL</td>
+</tr>
+<tr class="row-odd"><td>ANTENNA</td>
+<td>, G5RV multiband dipole</td>
+<td>&nbsp;</td>
+<td>G5RV</td>
+</tr>
+<tr class="row-even"><td>ANTENNA</td>
+<td>, Hairpin beta-match</td>
+<td>&nbsp;</td>
+<td>HAIRPIN</td>
+</tr>
+<tr class="row-odd"><td>ANTENNA</td>
+<td>, Half-loop</td>
+<td>&nbsp;</td>
+<td>HALFLOOP</td>
+</tr>
+<tr class="row-even"><td>ANTENNA</td>
+<td>, Helical</td>
+<td>, VHF/UHF</td>
+<td>HELANT</td>
+</tr>
+<tr class="row-odd"><td>ANTENNA</td>
+<td>, Inverted vee</td>
+<td>&nbsp;</td>
+<td>INVEE</td>
+</tr>
+<tr class="row-even"><td>ANTENNA</td>
+<td>, J-pole</td>
+<td>&nbsp;</td>
+<td>JAYPOLE</td>
+</tr>
+<tr class="row-odd"><td>ANTENNA</td>
+<td>, Ladder line</td>
+<td>&nbsp;</td>
+<td>LADANT</td>
+</tr>
+<tr class="row-even"><td>ANTENNA</td>
+<td>, Length &amp; pruning calculator</td>
+<td>&nbsp;</td>
+<td>ANTENNA</td>
+</tr>
+<tr class="row-odd"><td>ANTENNA</td>
+<td>, Log-periodic Yagi</td>
+<td>&nbsp;</td>
+<td>LOGYAG</td>
+</tr>
+<tr class="row-even"><td>ANTENNA</td>
+<td>, Loop</td>
+<td>, inductance calculator</td>
+<td>LOOPANT</td>
+</tr>
+<tr class="row-odd"><td>ANTENNA</td>
+<td>, Loop</td>
+<td>, transmitting</td>
+<td>LOOPXMIT</td>
+</tr>
+<tr class="row-even"><td>ANTENNA</td>
+<td>, Loop skywire</td>
+<td>&nbsp;</td>
+<td>LOOPSKY</td>
+</tr>
+<tr class="row-odd"><td>ANTENNA</td>
+<td>, Miniature loop</td>
+<td>&nbsp;</td>
+<td>MINILOOP</td>
+</tr>
+<tr class="row-even"><td>ANTENNA</td>
+<td>, Mobile/maritime whip</td>
+<td>&nbsp;</td>
+<td>MOWHIP</td>
+</tr>
+<tr class="row-odd"><td>ANTENNA</td>
+<td>, Monopole, very short HF</td>
+<td>&nbsp;</td>
+<td>MICROVER</td>
+</tr>
+<tr class="row-even"><td>ANTENNA</td>
+<td>, Moxon Rectangle</td>
+<td>&nbsp;</td>
+<td>MOXON</td>
+</tr>
+<tr class="row-odd"><td>ANTENNA</td>
+<td>, Multi-band Zepp</td>
+<td>&nbsp;</td>
+<td>ZEPP</td>
+</tr>
+<tr class="row-even"><td>ANTENNA</td>
+<td>, N.V.I.S. Quad</td>
+<td>&nbsp;</td>
+<td>QUAD</td>
+</tr>
+<tr class="row-odd"><td>ANTENNA</td>
+<td>, Parabolic dish reflector</td>
+<td>&nbsp;</td>
+<td>DISHANT</td>
+</tr>
+<tr class="row-even"><td>ANTENNA</td>
+<td>, Phased vertical array</td>
+<td>&nbsp;</td>
+<td>VERTPATT</td>
+</tr>
+<tr class="row-odd"><td>ANTENNA</td>
+<td>, Physical length vs. frequency/wavelength</td>
+<td>&nbsp;</td>
+<td>ANTENNA</td>
+</tr>
+<tr class="row-even"><td>ANTENNA</td>
+<td>, Pruning calculator</td>
+<td>&nbsp;</td>
+<td>ANTENNA</td>
+</tr>
+<tr class="row-odd"><td>ANTENNA</td>
+<td>, Quad</td>
+<td>, coil-shortened for restricted space</td>
+<td>MINIQUAD</td>
+</tr>
+<tr class="row-even"><td>ANTENNA</td>
+<td>, Quad design</td>
+<td>&nbsp;</td>
+<td>QUAD</td>
+</tr>
+<tr class="row-odd"><td>ANTENNA</td>
+<td>, SWR at feed point</td>
+<td>&nbsp;</td>
+<td>LINELOSS</td>
+</tr>
+<tr class="row-even"><td>ANTENNA</td>
+<td>, Single wire</td>
+<td>&nbsp;</td>
+<td>SNGLWIRE</td>
+</tr>
+<tr class="row-odd"><td>ANTENNA</td>
+<td>, Sloper</td>
+<td>&nbsp;</td>
+<td>SLOPER</td>
+</tr>
+<tr class="row-even"><td>ANTENNA</td>
+<td>, Stub match</td>
+<td>&nbsp;</td>
+<td>STUBANT</td>
+</tr>
+<tr class="row-odd"><td>ANTENNA</td>
+<td>, Subminiature loop</td>
+<td>&nbsp;</td>
+<td>OCTALOOP</td>
+</tr>
+<tr class="row-even"><td>ANTENNA</td>
+<td>, T match for 600 Í line</td>
+<td>&nbsp;</td>
+<td>TMATCH</td>
+</tr>
+<tr class="row-odd"><td>ANTENNA</td>
+<td>, Toroid traps</td>
+<td>&nbsp;</td>
+<td>TOROTRAP</td>
+</tr>
+<tr class="row-even"><td>ANTENNA</td>
+<td>, Trap</td>
+<td>, dipole or monopole</td>
+<td>TRAPOLE</td>
+</tr>
+<tr class="row-odd"><td>ANTENNA</td>
+<td>, Tri-band</td>
+<td>, no traps or loading coils</td>
+<td>OCFDIPOL</td>
+</tr>
+<tr class="row-even"><td>ANTENNA</td>
+<td>, Vertical</td>
+<td>, dual band trap</td>
+<td>TRAPOLE</td>
+</tr>
+<tr class="row-odd"><td>ANTENNA</td>
+<td>, Vertical</td>
+<td>, helically wound</td>
+<td>HELVERT</td>
+</tr>
+<tr class="row-even"><td>ANTENNA</td>
+<td>, Vertical</td>
+<td>, with capacity hat</td>
+<td>CAPYHAT</td>
+</tr>
+<tr class="row-odd"><td>ANTENNA</td>
+<td>, Vertical array</td>
+<td>, feed method</td>
+<td>VARAYFED</td>
+</tr>
+<tr class="row-even"><td>ANTENNA</td>
+<td>, Whip</td>
+<td>&nbsp;</td>
+<td>MOWHIP</td>
+</tr>
+<tr class="row-odd"><td>ANTENNA</td>
+<td>, Windom</td>
+<td>&nbsp;</td>
+<td>WINDOM</td>
+</tr>
+<tr class="row-even"><td>ANTENNA</td>
+<td>, Yagi</td>
+<td>, extremely long</td>
+<td>YAGILONG</td>
+</tr>
+<tr class="row-odd"><td>ANTENNA</td>
+<td>, Yagi</td>
+<td>, element spacing</td>
+<td>YAGISPAC</td>
+</tr>
+<tr class="row-even"><td>ANTENNA</td>
+<td>, Yagi 3-element beam</td>
+<td>&nbsp;</td>
+<td>YAGI3EL</td>
+</tr>
+<tr class="row-odd"><td>ANTENNA</td>
+<td>, Zepp</td>
+<td>, double extended</td>
+<td>ZEPPDBL</td>
+</tr>
+<tr class="row-even"><td>ANTENNA</td>
+<td>, dual band trap</td>
+<td>&nbsp;</td>
+<td>TRAPOLE</td>
+</tr>
+<tr class="row-odd"><td>ARCH CALCULATOR</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>ARCH</td>
+</tr>
+<tr class="row-even"><td>ASCII CHARACTERS</td>
+<td>, Code Page 437</td>
+<td>&nbsp;</td>
+<td>PAGE437</td>
+</tr>
+<tr class="row-odd"><td>ATMOSPHERIC PRESSURE</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>BAROMTR</td>
+</tr>
+<tr class="row-even"><td>ATTENUATION</td>
+<td>, due to SWR</td>
+<td>&nbsp;</td>
+<td>SWR</td>
+</tr>
+<tr class="row-odd"><td>ATTENUATORS</td>
+<td>, T-Pad and Pi-Pad</td>
+<td>&nbsp;</td>
+<td>ATTENPAD</td>
+</tr>
+<tr class="row-even"><td>AUDIO FILTER</td>
+<td>, Op Amp</td>
+<td>&nbsp;</td>
+<td>AUDFILT</td>
+</tr>
+<tr class="row-odd"><td>AUDIO FILTER</td>
+<td>, band-pass</td>
+<td>&nbsp;</td>
+<td>AUDFILT</td>
+</tr>
+<tr class="row-even"><td>AUDIO FILTER</td>
+<td>, low-pass</td>
+<td>, Sallen &amp; Key</td>
+<td>LOPASS</td>
+</tr>
+<tr class="row-odd"><td>AUDIO FILTER</td>
+<td>, passive</td>
+<td>&nbsp;</td>
+<td>AUDPASS</td>
+</tr>
+<tr class="row-even"><td>AUDIO OSCILLATOR (TWIN-T)</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>TWINTEE</td>
+</tr>
+<tr class="row-odd"><td>AUDIO OSCILLATOR</td>
+<td>, LM 324</td>
+<td>&nbsp;</td>
+<td>AUDOSC</td>
+</tr>
+<tr class="row-even"><td>AUDIO OSCILLATOR</td>
+<td>, code prectice</td>
+<td>, 555 CMOSC timer</td>
+<td>PRACOSC</td>
+</tr>
+<tr class="row-odd"><td>AUDIO OSCILLATOR</td>
+<td>, dual tone</td>
+<td>&nbsp;</td>
+<td>AUDOSC2</td>
+</tr>
+<tr class="row-even"><td>AUDIO TONES</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>ZOUNDS</td>
+</tr>
+<tr class="row-odd"><td>AUTEK Z METER</td>
+<td>, conversion of readings</td>
+<td>&nbsp;</td>
+<td>AUTEK2</td>
+</tr>
+<tr class="row-even"><td>B.&amp; W. INDUCTORS</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>AIRCORE</td>
+</tr>
+<tr class="row-odd"><td>BALUN</td>
+<td>, coaxial cable</td>
+<td>&nbsp;</td>
+<td>SERISECT</td>
+</tr>
+<tr class="row-even"><td>BALUN</td>
+<td>, ferrite toroidal</td>
+<td>&nbsp;</td>
+<td>BROADFER</td>
+</tr>
+<tr class="row-odd"><td>BAND-REJECT FILTER</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>BANDSTOP</td>
+</tr>
+<tr class="row-even"><td>BANDPASS FILTER</td>
+<td>, audio op amp</td>
+<td>&nbsp;</td>
+<td>AUDFILT</td>
+</tr>
+<tr class="row-odd"><td>BANDWIDTH VS. Q</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>BANDQ</td>
+</tr>
+<tr class="row-even"><td>BANDWIDTHS</td>
+<td>, 2:1 SWR</td>
+<td>&nbsp;</td>
+<td>BANDWDTH</td>
+</tr>
+<tr class="row-odd"><td>BAROMETER</td>
+<td>, equivalent readings</td>
+<td>&nbsp;</td>
+<td>BAROMTR</td>
+</tr>
+<tr class="row-even"><td>BATTERY PACK</td>
+<td>, Ni-Cad</td>
+<td>, discharger</td>
+<td>NICAD</td>
+</tr>
+<tr class="row-odd"><td>BATTERY SCHEDULE</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>BATTERY</td>
+</tr>
+<tr class="row-even"><td>BEAM ANTENNAS</td>
+<td>, turning radius</td>
+<td>&nbsp;</td>
+<td>TURNRAD</td>
+</tr>
+<tr class="row-odd"><td>BEAM ELEMENT DIA. VS LENGTH</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>DIALGTH</td>
+</tr>
+<tr class="row-even"><td>BEAM HEADING CALCULATOR</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>PATHFIND</td>
+</tr>
+<tr class="row-odd"><td>BEAMS</td>
+<td>, properties of</td>
+<td>&nbsp;</td>
+<td>MECHMENU</td>
+</tr>
+<tr class="row-even"><td>BELLOWS</td>
+<td>, photographic</td>
+<td>&nbsp;</td>
+<td>FOTOMENU</td>
+</tr>
+<tr class="row-odd"><td>BELT DRIVES</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>MECHMENU</td>
+</tr>
+<tr class="row-even"><td>BEND ALLOWANCE</td>
+<td>, metals</td>
+<td>&nbsp;</td>
+<td>BEND</td>
+</tr>
+<tr class="row-odd"><td>BETA-MATCH</td>
+<td>, hairpin</td>
+<td>, for Yagi antenna</td>
+<td>HAIRPIN</td>
+</tr>
+<tr class="row-even"><td>BEVERAGE ANTENNA EQUATIONS</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>BEVANT</td>
+</tr>
+<tr class="row-odd"><td>BINARY NUMBERS</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>BINARY</td>
+</tr>
+<tr class="row-even"><td>BINS</td>
+<td>, round or square</td>
+<td>&nbsp;</td>
+<td>BINHOP</td>
+</tr>
+<tr class="row-odd"><td>BINS</td>
+<td>, side or center draw hopper</td>
+<td>&nbsp;</td>
+<td>BINHOP</td>
+</tr>
+<tr class="row-even"><td>BOBTAIL CURTAIN ANTENNA</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>BOBTAIL</td>
+</tr>
+<tr class="row-odd"><td>BOOM DROOP</td>
+<td>, beam antennas</td>
+<td>&nbsp;</td>
+<td>BOOM</td>
+</tr>
+<tr class="row-even"><td>BREAK-IN MODULE</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>QSK</td>
+</tr>
+<tr class="row-odd"><td>BREAKDOWN VOLTAGE</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>SPARK</td>
+</tr>
+<tr class="row-even"><td>BREWSTER ANGLE</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>PBA</td>
+</tr>
+<tr class="row-odd"><td>BRIDGE (WHEATSTONE #1)</td>
+<td>, Calculator</td>
+<td>&nbsp;</td>
+<td>BRIDGE</td>
+</tr>
+<tr class="row-even"><td>BRIDGE</td>
+<td>, impedance,</td>
+<td>, 3-meter</td>
+<td>3MBRIDGE</td>
+</tr>
+<tr class="row-odd"><td>BUTTERWORTH FILTER</td>
+<td>, low-pass audio</td>
+<td>&nbsp;</td>
+<td>LOPASS</td>
+</tr>
+<tr class="row-even"><td>BUTTERWORTH FILTERS</td>
+<td>, HF</td>
+<td>&nbsp;</td>
+<td>BUTTFILT</td>
+</tr>
+<tr class="row-odd"><td>C/R/L/ NETWORK SOLVER</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>LADRSOLV</td>
+</tr>
+<tr class="row-even"><td>C/R/L/CIRCUITS</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>DSGNMENU</td>
+</tr>
+<tr class="row-odd"><td>CALENDAR</td>
+<td>, perpetual</td>
+<td>&nbsp;</td>
+<td>CALTODAY</td>
+</tr>
+<tr class="row-even"><td>CALORIE COUNTER</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>CALORY</td>
+</tr>
+<tr class="row-odd"><td>CAPACITANCE</td>
+<td>, distributed (stray)</td>
+<td>&nbsp;</td>
+<td>CAPSTRAY</td>
+</tr>
+<tr class="row-even"><td>CAPACITANCE</td>
+<td>, in A.C. circuits</td>
+<td>&nbsp;</td>
+<td>ACCALC</td>
+</tr>
+<tr class="row-odd"><td>CAPACITANCE</td>
+<td>, self</td>
+<td>, in coils</td>
+<td>COILTRUE</td>
+</tr>
+<tr class="row-even"><td>CAPACITOR MEASURER</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>CAPVAL</td>
+</tr>
+<tr class="row-odd"><td>CAPACITORS</td>
+<td>, custom value</td>
+<td>, parallel ganged</td>
+<td>CUSTCAP</td>
+</tr>
+<tr class="row-even"><td>CAPACITORS</td>
+<td>, design calculator</td>
+<td>&nbsp;</td>
+<td>CAPTANCE</td>
+</tr>
+<tr class="row-odd"><td>CAPACITORS</td>
+<td>, homebrew</td>
+<td>&nbsp;</td>
+<td>CAPTANCE</td>
+</tr>
+<tr class="row-even"><td>CAPACITORS</td>
+<td>, in series and parallel</td>
+<td>&nbsp;</td>
+<td>SERIPARA</td>
+</tr>
+<tr class="row-odd"><td>CAPACITORS</td>
+<td>, precise values</td>
+<td>&nbsp;</td>
+<td>PRECICAP</td>
+</tr>
+<tr class="row-even"><td>CAPACITORS</td>
+<td>, precision</td>
+<td>, made from coaxial cable</td>
+<td>CAPCOAX</td>
+</tr>
+<tr class="row-odd"><td>CAPACITORS</td>
+<td>, standard values</td>
+<td>&nbsp;</td>
+<td>CAPACVAL</td>
+</tr>
+<tr class="row-even"><td>CAPACITORS</td>
+<td>, telescoping variable</td>
+<td>&nbsp;</td>
+<td>CAPYTEL</td>
+</tr>
+<tr class="row-odd"><td>CAPACITORS</td>
+<td>, trimmer</td>
+<td>&nbsp;</td>
+<td>CAPTRIM</td>
+</tr>
+<tr class="row-even"><td>CAPACITORS</td>
+<td>, variable</td>
+<td>, plate shape designer</td>
+<td>VACAP</td>
+</tr>
+<tr class="row-odd"><td>CAPACITY HATS</td>
+<td>, for vertical antennas</td>
+<td>&nbsp;</td>
+<td>CAPYHAT</td>
+</tr>
+<tr class="row-even"><td>CAPACITY HATS</td>
+<td>, geometric shapes</td>
+<td>&nbsp;</td>
+<td>HATSHAPE</td>
+</tr>
+<tr class="row-odd"><td>CARTESIAN/POLAR PLOT ROTATOR</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>ROTAPLOT</td>
+</tr>
+<tr class="row-even"><td>CASCADED OP AMPS</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>CASCAMP</td>
+</tr>
+<tr class="row-odd"><td>CATENARY SAG</td>
+<td>, horizontal wire</td>
+<td>&nbsp;</td>
+<td>CATENARY</td>
+</tr>
+<tr class="row-even"><td>CCD ANTENNAS</td>
+<td>, (controlled current distribution)</td>
+<td>&nbsp;</td>
+<td>CCDANTEN</td>
+</tr>
+<tr class="row-odd"><td>CENTRE FREQUENCIES</td>
+<td>, ham bands</td>
+<td>&nbsp;</td>
+<td>HAMBANDS</td>
+</tr>
+<tr class="row-even"><td>CENTRE FREQUENCY &amp; WAVELENGTH</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>CENTFREQ</td>
+</tr>
+<tr class="row-odd"><td>CENTRIFUGAL/CENTRIPETAL FORCE</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>CENTRIF</td>
+</tr>
+<tr class="row-even"><td>CHAIN DRIVES</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>MECHMENU</td>
+</tr>
+<tr class="row-odd"><td>CHEBYSHEV FILTER</td>
+<td>, low-pass audio</td>
+<td>&nbsp;</td>
+<td>LOPASS</td>
+</tr>
+<tr class="row-even"><td>CHOKES, RF</td>
+<td>, coaxial cable</td>
+<td>&nbsp;</td>
+<td>CHOKBAL</td>
+</tr>
+<tr class="row-odd"><td>CIRCLE</td>
+<td>, involute of</td>
+<td>&nbsp;</td>
+<td>INVOLUTE</td>
+</tr>
+<tr class="row-even"><td>CIRCLE</td>
+<td>, properties of</td>
+<td>&nbsp;</td>
+<td>PROPCIRC</td>
+</tr>
+<tr class="row-odd"><td>CIRCULAR WAVEGUIDE DISH FEEDS</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>CIRCFEED</td>
+</tr>
+<tr class="row-even"><td>CLAMPING VOLTAGE CALCULATOR</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>CLAMP</td>
+</tr>
+<tr class="row-odd"><td>CLARK Y AIRFOIL</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>CLARKY</td>
+</tr>
+<tr class="row-even"><td>CLOCK HOURS</td>
+<td>, display</td>
+<td>, conversion from decimal hours</td>
+<td>HOURS</td>
+</tr>
+<tr class="row-odd"><td>CLOCK TIMES</td>
+<td>, Quiz</td>
+<td>&nbsp;</td>
+<td>TIMEQ</td>
+</tr>
+<tr class="row-even"><td>CLOCK</td>
+<td>, (screen saver)</td>
+<td>&nbsp;</td>
+<td>LOGOCLOK</td>
+</tr>
+<tr class="row-odd"><td>CMOS OSCILLATOR</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>CMOSC3</td>
+</tr>
+<tr class="row-even"><td>COAXIAL CABLE CAPACITORS</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>CAPCOAX</td>
+</tr>
+<tr class="row-odd"><td>COAXIAL CABLE CHARACTERISTICS</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>COAXCHAR</td>
+</tr>
+<tr class="row-even"><td>COAXIAL CABLE FAULT LOCATOR</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>COAXCHAR</td>
+</tr>
+<tr class="row-odd"><td>COAXIAL CABLE MATCHING TRANSFORMER</td>
+<td>, Series-Section</td>
+<td>&nbsp;</td>
+<td>SERISECT</td>
+</tr>
+<tr class="row-even"><td>COAXIAL CABLE RF CHOKES</td>
+<td>, RF chokes</td>
+<td>&nbsp;</td>
+<td>CHOKBAL</td>
+</tr>
+<tr class="row-odd"><td>COAXIAL CABLE STUBS</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>COAXSTUB</td>
+</tr>
+<tr class="row-even"><td>COAXIAL CABLE SUPERTRAP</td>
+<td>, hi-reactance</td>
+<td>&nbsp;</td>
+<td>BUXTRAP</td>
+</tr>
+<tr class="row-odd"><td>COAXIAL CABLE TRAPS</td>
+<td>, for antennas</td>
+<td>&nbsp;</td>
+<td>COAXTRAP</td>
+</tr>
+<tr class="row-even"><td>CODE PAGE 437</td>
+<td>, ASCII characters</td>
+<td>&nbsp;</td>
+<td>PAGE437</td>
+</tr>
+<tr class="row-odd"><td>CODE PRACTICE OSCILLATOR</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>PRACOSC</td>
+</tr>
+<tr class="row-even"><td>CODE TRAINER</td>
+<td>, (CW)</td>
+<td>&nbsp;</td>
+<td>CW</td>
+</tr>
+<tr class="row-odd"><td>COIL FORMS</td>
+<td>, from plastic pipe</td>
+<td>&nbsp;</td>
+<td>COILDSGN</td>
+</tr>
+<tr class="row-even"><td>COIL FORMS</td>
+<td>, miniature</td>
+<td>&nbsp;</td>
+<td>HAMCALCPROGTINYCOIL</td>
+</tr>
+<tr class="row-odd"><td>COIL Q CALCULATOR</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>COILQ</td>
+</tr>
+<tr class="row-even"><td>COIL Q QUICK ESTIMATOR</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>COILQUIK</td>
+</tr>
+<tr class="row-odd"><td>COIL Q</td>
+<td>, True vs. Apparent</td>
+<td>&nbsp;</td>
+<td>COILTRUE</td>
+</tr>
+<tr class="row-even"><td>COIL SELF-CAPACITANCE</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>COILTRUE</td>
+</tr>
+<tr class="row-odd"><td>COIL TAP CALCULATOR</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>COILNEW</td>
+</tr>
+<tr class="row-even"><td>COIL TURNS CALCULATOR</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>TURNS</td>
+</tr>
+<tr class="row-odd"><td>COILS</td>
+<td>, Insulated wire</td>
+<td>&nbsp;</td>
+<td>COILIN</td>
+</tr>
+<tr class="row-even"><td>COILS</td>
+<td>, close-wound</td>
+<td>, equation calculator</td>
+<td>COILEQUA</td>
+</tr>
+<tr class="row-odd"><td>COILS</td>
+<td>, close-wound</td>
+<td>, design of</td>
+<td>COILDSGN</td>
+</tr>
+<tr class="row-even"><td>COILS</td>
+<td>, coaxially coupled</td>
+<td>&nbsp;</td>
+<td>COILCPL</td>
+</tr>
+<tr class="row-odd"><td>COILS</td>
+<td>, commercial</td>
+<td>, (Barker &amp; Williamson)</td>
+<td>AIRCORE</td>
+</tr>
+<tr class="row-even"><td>COILS</td>
+<td>, helical winding calculator</td>
+<td>&nbsp;</td>
+<td>HELIX</td>
+</tr>
+<tr class="row-odd"><td>COILS</td>
+<td>, in L/C tuned circuits</td>
+<td>&nbsp;</td>
+<td>TUNECCT</td>
+</tr>
+<tr class="row-even"><td>COILS</td>
+<td>, in tandem</td>
+<td>&nbsp;</td>
+<td>COILNEW</td>
+</tr>
+<tr class="row-odd"><td>COILS</td>
+<td>, made from dryer vent hose</td>
+<td>&nbsp;</td>
+<td>INDUHOSE</td>
+</tr>
+<tr class="row-even"><td>COILS</td>
+<td>, mobile whip</td>
+<td>&nbsp;</td>
+<td>COILAMP</td>
+</tr>
+<tr class="row-odd"><td>COILS</td>
+<td>, shielded</td>
+<td>&nbsp;</td>
+<td>HELRESON</td>
+</tr>
+<tr class="row-even"><td>COILS</td>
+<td>, tapped</td>
+<td>, properties</td>
+<td>COILTAP</td>
+</tr>
+<tr class="row-odd"><td>COILS</td>
+<td>, tapped</td>
+<td>, feedline matching</td>
+<td>SNGLWIRE</td>
+</tr>
+<tr class="row-even"><td>COILS</td>
+<td>, tapped</td>
+<td>&nbsp;</td>
+<td>COILNEW</td>
+</tr>
+<tr class="row-odd"><td>COILS</td>
+<td>, wound on Nylon screws</td>
+<td>&nbsp;</td>
+<td>TINYCOIL</td>
+</tr>
+<tr class="row-even"><td>COLOUR CODES</td>
+<td>, resistors</td>
+<td>&nbsp;</td>
+<td>COLCODE</td>
+</tr>
+<tr class="row-odd"><td>COLPITTS FET OSCILLATOR</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>COLPOSC</td>
+</tr>
+<tr class="row-even"><td>COMPLEMENTARY FILTERS</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>COMFILT</td>
+</tr>
+<tr class="row-odd"><td>COMPLEX IMPEDANCES</td>
+<td>, J calculator</td>
+<td>&nbsp;</td>
+<td>JCALC</td>
+</tr>
+<tr class="row-even"><td>COMPOUND INTEREST CALCULATOR</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>FINANCE</td>
+</tr>
+<tr class="row-odd"><td>CONDUIT</td>
+<td>, wire capacity</td>
+<td>&nbsp;</td>
+<td>WIRECOND</td>
+</tr>
+<tr class="row-even"><td>CONE CALCULATOR</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>CONECALC</td>
+</tr>
+<tr class="row-odd"><td>CONJUGATE MATCH CALCULATOR</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>CONJUMAT</td>
+</tr>
+<tr class="row-even"><td>CONSTANT CURRENT OP AMP</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>CONCUR</td>
+</tr>
+<tr class="row-odd"><td>CONSTANT PHASE DIFFERENCE NETWORKS</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>PHAZDIFF</td>
+</tr>
+<tr class="row-even"><td>CONVERSION</td>
+<td>, between different units of same value</td>
+<td>&nbsp;</td>
+<td>EQUIV</td>
+</tr>
+<tr class="row-odd"><td>CONVERSION</td>
+<td>, fraction to decimal</td>
+<td>, decimal to fraction</td>
+<td>DECIFRAC</td>
+</tr>
+<tr class="row-even"><td>CONVERSION</td>
+<td>, frequencies/wavelengths</td>
+<td>&nbsp;</td>
+<td>EQUIV</td>
+</tr>
+<tr class="row-odd"><td>CONVERSION</td>
+<td>, metric to Imperial</td>
+<td>, Imperial to metric</td>
+<td>METRICS</td>
+</tr>
+<tr class="row-even"><td>CONVERSION</td>
+<td>, units of distance</td>
+<td>&nbsp;</td>
+<td>EQUIV</td>
+</tr>
+<tr class="row-odd"><td>CONVERSION</td>
+<td>, units of time</td>
+<td>&nbsp;</td>
+<td>EQUIV</td>
+</tr>
+<tr class="row-even"><td>COPPER WIRE TABLES</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>COPWIRE</td>
+</tr>
+<tr class="row-odd"><td>COST OF ELECTRICITY</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>ELECOST</td>
+</tr>
+<tr class="row-even"><td>COUPLED RESONATOR</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>CPLRES</td>
+</tr>
+<tr class="row-odd"><td>COUPLING</td>
+<td>, Pi-network</td>
+<td>&nbsp;</td>
+<td>PIMATCH</td>
+</tr>
+<tr class="row-even"><td>COUPLING</td>
+<td>, transistor stages</td>
+<td>, transmitters</td>
+<td>XMTRZMAT</td>
+</tr>
+<tr class="row-odd"><td>CROSSOVER NETWORKS</td>
+<td>, loudspeakers</td>
+<td>&nbsp;</td>
+<td>XOVER</td>
+</tr>
+<tr class="row-even"><td>CRYSTAL LADDER FILTERS</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>CRYSFILT</td>
+</tr>
+<tr class="row-odd"><td>CURRENT CAPACITY</td>
+<td>, copper wire</td>
+<td>&nbsp;</td>
+<td>COPWIRE</td>
+</tr>
+<tr class="row-even"><td>CURRENT CAPACITY</td>
+<td>, transformers</td>
+<td>&nbsp;</td>
+<td>WINDING</td>
+</tr>
+<tr class="row-odd"><td>CURRENT</td>
+<td>, dB gain/loss</td>
+<td>&nbsp;</td>
+<td>DECIBEL</td>
+</tr>
+<tr class="row-even"><td>CURVE FIT PROGRAM</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>CURVEFIT</td>
+</tr>
+<tr class="row-odd"><td>CW PROGRAMS</td>
+<td>, (Morse code)</td>
+<td>&nbsp;</td>
+<td>CW</td>
+</tr>
+<tr class="row-even"><td>CYLINDER-LOADED DIPOLE</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>CYLLOAD</td>
+</tr>
+<tr class="row-odd"><td>CYLINDERS</td>
+<td>, air &amp; hydraulic</td>
+<td>&nbsp;</td>
+<td>MECHMENU</td>
+</tr>
+<tr class="row-even"><td>CYLOAD ANTENNA</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>CYLLOAD</td>
+</tr>
+<tr class="row-odd"><td>DAYLIGHT DUSK &amp; DAWN</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>DAYDUSK</td>
+</tr>
+<tr class="row-even"><td>DAYS BETWEEN DATES</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>CALTODAY</td>
+</tr>
+<tr class="row-odd"><td>DAYS-BETWEEN-DATES CALCULATOR</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>FINANCE</td>
+</tr>
+<tr class="row-even"><td>DECIBEL</td>
+<td>, power, voltage and current gain/loss calculator</td>
+<td>&nbsp;</td>
+<td>DECIBEL</td>
+</tr>
+<tr class="row-odd"><td>DECIMAL VALUES</td>
+<td>, convert to fractions</td>
+<td>&nbsp;</td>
+<td>DECIFRAC</td>
+</tr>
+<tr class="row-even"><td>DECIMAL/SEXIGESIMAL CONVERSION</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>DECICONV</td>
+</tr>
+<tr class="row-odd"><td>DEGREES/MINUTES/SECONDS</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>EQUIV</td>
+</tr>
+<tr class="row-even"><td>DEHONEY ALGORITHMS</td>
+<td>, Program index</td>
+<td>&nbsp;</td>
+<td>RJD</td>
+</tr>
+<tr class="row-odd"><td>DELTA MATCH</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>DELTAMAT</td>
+</tr>
+<tr class="row-even"><td>DEPRECIATION SCHEDULE CALCULATOR</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>FINANCE</td>
+</tr>
+<tr class="row-odd"><td>DERIVATIVES OF NUMBERS</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>NUMDERIV</td>
+</tr>
+<tr class="row-even"><td>DIAMETER FINDER</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>DIAMFIND</td>
+</tr>
+<tr class="row-odd"><td>DIELECTRIC CONSTANTS</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>DIELECT</td>
+</tr>
+<tr class="row-even"><td>DIELECTRIC MATERIAL</td>
+<td>, capacitors</td>
+<td>&nbsp;</td>
+<td>CAPTANCE</td>
+</tr>
+<tr class="row-odd"><td>DIELECTRIC MATERIAL</td>
+<td>, coaxial cables</td>
+<td>&nbsp;</td>
+<td>COAXCHAR</td>
+</tr>
+<tr class="row-even"><td>DIGITAL CAMERAS &amp; SCANNERS</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>PIXEL</td>
+</tr>
+<tr class="row-odd"><td>DIGITAL CLOCK</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>BIGNUM</td>
+</tr>
+<tr class="row-even"><td>DIMENSIONS</td>
+<td>, decimal/fractional</td>
+<td>&nbsp;</td>
+<td>DECIFRAC</td>
+</tr>
+<tr class="row-odd"><td>DIPOLE</td>
+<td>, short</td>
+<td>, 160/80/40 metres</td>
+<td>DIPOL160</td>
+</tr>
+<tr class="row-even"><td>DISCHARGER</td>
+<td>, Ni-Cad batteries</td>
+<td>&nbsp;</td>
+<td>NICAD</td>
+</tr>
+<tr class="row-odd"><td>DISCONE ANTENNA</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>DISCONE</td>
+</tr>
+<tr class="row-even"><td>DISH</td>
+<td>, parabolic reflector</td>
+<td>&nbsp;</td>
+<td>DISHANT</td>
+</tr>
+<tr class="row-odd"><td>DISTANCE</td>
+<td>, as a function of speed and time</td>
+<td>&nbsp;</td>
+<td>SPEEDTD</td>
+</tr>
+<tr class="row-even"><td>DISTANCE</td>
+<td>, between locations</td>
+<td>&nbsp;</td>
+<td>PATHFIND</td>
+</tr>
+<tr class="row-odd"><td>DISTRIBUTED CAPACITANCE</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>CAPSTRAY</td>
+</tr>
+<tr class="row-even"><td>DOUBLE FEEDBACK AMPLIFIER</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>DBLFB</td>
+</tr>
+<tr class="row-odd"><td>DRILL SIZES</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>NMBRSIZE</td>
+</tr>
+<tr class="row-even"><td>DRIVES</td>
+<td>, belt</td>
+<td>&nbsp;</td>
+<td>HAMCALCMECHCALCMECHMENU</td>
+</tr>
+<tr class="row-odd"><td>DRIVES</td>
+<td>, chain</td>
+<td>&nbsp;</td>
+<td>HAMCALCMECHCALCMECHMENU</td>
+</tr>
+<tr class="row-even"><td>DROOP</td>
+<td>, boom</td>
+<td>, beam antennas</td>
+<td>BOOM</td>
+</tr>
+<tr class="row-odd"><td>DRYER VENT HOSE INDUCTORS</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>INDUHOSE</td>
+</tr>
+<tr class="row-even"><td>DUAL OP AMP WAVE GENERATOR</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>TRISQU</td>
+</tr>
+<tr class="row-odd"><td>ELECTICAL VS. PHYSICAL LENGTH</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>EQUIV</td>
+</tr>
+<tr class="row-even"><td>ELECTRICAL LENGTH</td>
+<td>, transmission line</td>
+<td>&nbsp;</td>
+<td>ELECLENG</td>
+</tr>
+<tr class="row-odd"><td>ELECTRICITY COST</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>ELECOST</td>
+</tr>
+<tr class="row-even"><td>ELECTROMAGNETIC SPECTRUM</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>ELSPEC</td>
+</tr>
+<tr class="row-odd"><td>ELECTRONIC FLASH</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>HAMCALCPROGFOTOMENU</td>
+</tr>
+<tr class="row-even"><td>ELECTRONIC KEYBOARD</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>ZOUNDS</td>
+</tr>
+<tr class="row-odd"><td>ELEMENT SPACING</td>
+<td>, Yagi antennas</td>
+<td>, NBS standard</td>
+<td>YAGISPAC</td>
+</tr>
+<tr class="row-even"><td>EQUATION</td>
+<td>, quadratic</td>
+<td>&nbsp;</td>
+<td>QUADRAT</td>
+</tr>
+<tr class="row-odd"><td>EQUATIONS</td>
+<td>, frequently used formulas</td>
+<td>&nbsp;</td>
+<td>FORMULAE</td>
+</tr>
+<tr class="row-even"><td>EQUINOXES</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>SEASONS</td>
+</tr>
+<tr class="row-odd"><td>EQUIVALENT UNITS</td>
+<td>, of same value</td>
+<td>&nbsp;</td>
+<td>EQUIV</td>
+</tr>
+<tr class="row-even"><td>EQUIVALENTS</td>
+<td>, series/parallel/Q units</td>
+<td>&nbsp;</td>
+<td>SEPAG</td>
+</tr>
+<tr class="row-odd"><td>ES2B 2 BAND TRAP DIPOLE</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>ES2B</td>
+</tr>
+<tr class="row-even"><td>EXPOSURE CALCULATOR</td>
+<td>, photographic</td>
+<td>&nbsp;</td>
+<td>HAMCALCFOTOCALCFOTOMENU</td>
+</tr>
+<tr class="row-odd"><td>EXTENSION RINGS AND BELLOWS</td>
+<td>, photographic</td>
+<td>&nbsp;</td>
+<td>HAMCALCFOTOCALCFOTOMENU</td>
+</tr>
+<tr class="row-even"><td>FAT DIPOLE</td>
+<td>, broadbanded</td>
+<td>&nbsp;</td>
+<td>FATDIPOL</td>
+</tr>
+<tr class="row-odd"><td>FIBONACCI SERIES</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>FIBON</td>
+</tr>
+<tr class="row-even"><td>FIELD STRENGTH</td>
+<td>, antennas</td>
+<td>&nbsp;</td>
+<td>ANTFIELD</td>
+</tr>
+<tr class="row-odd"><td>FILTER COILS</td>
+<td>, shielded</td>
+<td>&nbsp;</td>
+<td>HELRESON</td>
+</tr>
+<tr class="row-even"><td>FILTER TUTOR</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>FILTUT</td>
+</tr>
+<tr class="row-odd"><td>FILTERS</td>
+<td>, Butterworth</td>
+<td>, HF low-pass, high-pass &amp; band-pass</td>
+<td>BUTTFILT</td>
+</tr>
+<tr class="row-even"><td>FILTERS</td>
+<td>, L/C networks</td>
+<td>, with no transformers</td>
+<td>TFORM3</td>
+</tr>
+<tr class="row-odd"><td>FILTERS</td>
+<td>, Pi and T Networks</td>
+<td>&nbsp;</td>
+<td>PITNET</td>
+</tr>
+<tr class="row-even"><td>FILTERS</td>
+<td>, RC active</td>
+<td>&nbsp;</td>
+<td>RCFILT</td>
+</tr>
+<tr class="row-odd"><td>FILTERS</td>
+<td>, active low-pass</td>
+<td>, Sallen &amp; Key</td>
+<td>LOPASS</td>
+</tr>
+<tr class="row-even"><td>FILTERS</td>
+<td>, audio</td>
+<td>, Butterworth/Chebyshev/elliptic</td>
+<td>AUDPASS</td>
+</tr>
+<tr class="row-odd"><td>FILTERS</td>
+<td>, bandpass</td>
+<td>, Op Amp</td>
+<td>AUDFILT</td>
+</tr>
+<tr class="row-even"><td>FILTERS</td>
+<td>, complementary</td>
+<td>&nbsp;</td>
+<td>COMFILT</td>
+</tr>
+<tr class="row-odd"><td>FILTERS</td>
+<td>, coupled resonator</td>
+<td>&nbsp;</td>
+<td>CPLRES</td>
+</tr>
+<tr class="row-even"><td>FILTERS</td>
+<td>, crystal ladder</td>
+<td>&nbsp;</td>
+<td>CRYSFILT</td>
+</tr>
+<tr class="row-odd"><td>FILTERS</td>
+<td>, helical resonator</td>
+<td>&nbsp;</td>
+<td>HELRESON</td>
+</tr>
+<tr class="row-even"><td>FILTERS</td>
+<td>, impedance matching</td>
+<td>&nbsp;</td>
+<td>MATFILT</td>
+</tr>
+<tr class="row-odd"><td>FILTERS</td>
+<td>, insertion loss</td>
+<td>&nbsp;</td>
+<td>INLOSS</td>
+</tr>
+<tr class="row-even"><td>FILTERS</td>
+<td>, passive</td>
+<td>, R/L/C</td>
+<td>FILTRLC</td>
+</tr>
+<tr class="row-odd"><td>FILTERS</td>
+<td>, passive</td>
+<td>, band-reject</td>
+<td>BANDSTOP</td>
+</tr>
+<tr class="row-even"><td>FILTERS</td>
+<td>, photographic</td>
+<td>&nbsp;</td>
+<td>HAMCALCPROGFOTOMENU</td>
+</tr>
+<tr class="row-odd"><td>FILTERS</td>
+<td>, stripline bandpass</td>
+<td>, for VHF/UHF</td>
+<td>FILSTRIP</td>
+</tr>
+<tr class="row-even"><td>FILTERS</td>
+<td>, wave trap</td>
+<td>&nbsp;</td>
+<td>WAVETRAP</td>
+</tr>
+<tr class="row-odd"><td>FINANCIAL CALCULATORS</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>FINANCE</td>
+</tr>
+<tr class="row-even"><td>FISHBONE ANTENNA</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>FISHBONE</td>
+</tr>
+<tr class="row-odd"><td>FIT CURVE PROGRAM</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>CURVEFIT</td>
+</tr>
+<tr class="row-even"><td>FOCUS CALCULATOR</td>
+<td>, photographic</td>
+<td>&nbsp;</td>
+<td>HAMCALCFOTOCALCFOTOMENU</td>
+</tr>
+<tr class="row-odd"><td>FOLDED DIPOLE</td>
+<td>, 300Í twin-lead</td>
+<td>&nbsp;</td>
+<td>FOLDIPOL</td>
+</tr>
+<tr class="row-even"><td>FOLDED DIPOLE</td>
+<td>, impedance step-up ratios</td>
+<td>&nbsp;</td>
+<td>ZOSTEPUP</td>
+</tr>
+<tr class="row-odd"><td>FOLDED DIPOLE</td>
+<td>, terminated</td>
+<td>&nbsp;</td>
+<td>T2FD</td>
+</tr>
+<tr class="row-even"><td>FORMULA LIBRARY</td>
+<td>, frequently used equations</td>
+<td>&nbsp;</td>
+<td>FORMULAE</td>
+</tr>
+<tr class="row-odd"><td>FOX HUNT LOG</td>
+<td>, QRP</td>
+<td>&nbsp;</td>
+<td>FOXLOG</td>
+</tr>
+<tr class="row-even"><td>FRACTIONS</td>
+<td>, convert to decimal values</td>
+<td>&nbsp;</td>
+<td>DECIFRAC</td>
+</tr>
+<tr class="row-odd"><td>FREQUENCIES</td>
+<td>, amateur bands</td>
+<td>&nbsp;</td>
+<td>HAMBANDS</td>
+</tr>
+<tr class="row-even"><td>FREQUENCIES</td>
+<td>, audio</td>
+<td>&nbsp;</td>
+<td>ZOUNDS</td>
+</tr>
+<tr class="row-odd"><td>FREQUENCIES</td>
+<td>, harmonic</td>
+<td>&nbsp;</td>
+<td>HARMONIC</td>
+</tr>
+<tr class="row-even"><td>FREQUENCY</td>
+<td>, centre</td>
+<td>&nbsp;</td>
+<td>CENTFREQ</td>
+</tr>
+<tr class="row-odd"><td>FREQUENCY</td>
+<td>, convert to wavelength</td>
+<td>&nbsp;</td>
+<td>EQUIV</td>
+</tr>
+<tr class="row-even"><td>FREQUENCY</td>
+<td>, in A.C. circuits</td>
+<td>&nbsp;</td>
+<td>ACCALC</td>
+</tr>
+<tr class="row-odd"><td>FRETS</td>
+<td>, stringed instruments</td>
+<td>&nbsp;</td>
+<td>ZOUNDS</td>
+</tr>
+<tr class="row-even"><td>FUNCTIONS OF NUMBERS</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>NUMDERIV</td>
+</tr>
+<tr class="row-odd"><td>FUSES</td>
+<td>, emergency</td>
+<td>&nbsp;</td>
+<td>FUSEWIRE</td>
+</tr>
+<tr class="row-even"><td>G FORCE</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>ACCELR</td>
+</tr>
+<tr class="row-odd"><td>G5RV MULTIBAND DIPOLE ANTENNA</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>G5RV</td>
+</tr>
+<tr class="row-even"><td>GAIN</td>
+<td>, Op Amps</td>
+<td>&nbsp;</td>
+<td>OPAMP</td>
+</tr>
+<tr class="row-odd"><td>GAMMA MATCH</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>GAMMATCH</td>
+</tr>
+<tr class="row-even"><td>GAUGES OF SHEET METAL</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>NMBRSIZE</td>
+</tr>
+<tr class="row-odd"><td>GEARS AND GEARING</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>MECHMENU</td>
+</tr>
+<tr class="row-even"><td>GRAPHS</td>
+<td>, graph generator</td>
+<td>&nbsp;</td>
+<td>GRAPHS</td>
+</tr>
+<tr class="row-odd"><td>GREAT CIRCLE CALCULATOR</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>PATHFIND</td>
+</tr>
+<tr class="row-even"><td>GRID SQUARE LOCATOR</td>
+<td>, Maidenhead squares</td>
+<td>&nbsp;</td>
+<td>GRIDSQ</td>
+</tr>
+<tr class="row-odd"><td>GUITAR FRETS</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>ZOUNDS</td>
+</tr>
+<tr class="row-even"><td>GUITAR TUNER</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>ZOUNDS</td>
+</tr>
+<tr class="row-odd"><td>GUY WIRES</td>
+<td>, for antenna towers and masts</td>
+<td>&nbsp;</td>
+<td>GUYWIRES</td>
+</tr>
+<tr class="row-even"><td>HAIRPIN MATCH</td>
+<td>, beta-match</td>
+<td>, Yagi Antenna</td>
+<td>HAIRPIN</td>
+</tr>
+<tr class="row-odd"><td>HALF-LOOP ANTENNA</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>HALFLOOP</td>
+</tr>
+<tr class="row-even"><td>HAM BAND EDGE &amp; CENTRE FREQUENCIES</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>HAMBANDS</td>
+</tr>
+<tr class="row-odd"><td>HARD DRIVE</td>
+<td>, copy HAMCALC to</td>
+<td>&nbsp;</td>
+<td>HCINSTAL</td>
+</tr>
+<tr class="row-even"><td>HARMONIC FREQUENCIES</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>HARMONIC</td>
+</tr>
+<tr class="row-odd"><td>HARMONICS</td>
+<td>, affecting television channels</td>
+<td>&nbsp;</td>
+<td>TVCHAN</td>
+</tr>
+<tr class="row-even"><td>HARTLY FET OSCILLATOR</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>HARTOSC</td>
+</tr>
+<tr class="row-odd"><td>HEARING TEST</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>ZOUNDS</td>
+</tr>
+<tr class="row-even"><td>HEAT SINK FINS</td>
+<td>, thermal resistance</td>
+<td>&nbsp;</td>
+<td>SINK</td>
+</tr>
+<tr class="row-odd"><td>HEAT SINKS</td>
+<td>, thermal resistance</td>
+<td>&nbsp;</td>
+<td>THERMRES</td>
+</tr>
+<tr class="row-even"><td>HELICAL ANTENNA</td>
+<td>, VHF/UHF</td>
+<td>&nbsp;</td>
+<td>HELANT</td>
+</tr>
+<tr class="row-odd"><td>HELICAL RESONATORS</td>
+<td>, shielded</td>
+<td>, networks &amp; filters</td>
+<td>HELRESON</td>
+</tr>
+<tr class="row-even"><td>HELICAL WINDINGS</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>HELIX</td>
+</tr>
+<tr class="row-odd"><td>HELICALLY WOUND VERTICAL ANTENNA</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>HELVERT</td>
+</tr>
+<tr class="row-even"><td>HESAT DISSIPATION</td>
+<td>, metal boxes</td>
+<td>&nbsp;</td>
+<td>HOTBOX</td>
+</tr>
+<tr class="row-odd"><td>HIGH Q ANTENNA TRAPS</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>QTRAP</td>
+</tr>
+<tr class="row-even"><td>HOPPERED BINS AND RANKS</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>BINHOP</td>
+</tr>
+<tr class="row-odd"><td>HORIZON</td>
+<td>, radio</td>
+<td>&nbsp;</td>
+<td>RADIOLOS</td>
+</tr>
+<tr class="row-even"><td>HORSEPOWER</td>
+<td>, vs. torque</td>
+<td>&nbsp;</td>
+<td>MECHMENU</td>
+</tr>
+<tr class="row-odd"><td>HOURS</td>
+<td>, conversion</td>
+<td>, decimal to clock display</td>
+<td>DECICONV</td>
+</tr>
+<tr class="row-even"><td>HUMIDEX CALCULATOR</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>HUMID</td>
+</tr>
+<tr class="row-odd"><td>HYDRAULIC CYLINDERS</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>MECHMENU</td>
+</tr>
+<tr class="row-even"><td>IMPEDANCE BRIDGE</td>
+<td>, (3-meter)</td>
+<td>&nbsp;</td>
+<td>3MBRIDGE</td>
+</tr>
+<tr class="row-odd"><td>IMPEDANCE BRIDGE</td>
+<td>, using a transmatch</td>
+<td>&nbsp;</td>
+<td>TRANSMAT</td>
+</tr>
+<tr class="row-even"><td>IMPEDANCE CALCULATOR</td>
+<td>, Complex Impedances</td>
+<td>&nbsp;</td>
+<td>JCALC</td>
+</tr>
+<tr class="row-odd"><td>IMPEDANCE MATCHBOX</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>MATCHBOX</td>
+</tr>
+<tr class="row-even"><td>IMPEDANCE MATCHING NETWORKS</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>IMPEDNET</td>
+</tr>
+<tr class="row-odd"><td>IMPEDANCE MATCHING</td>
+<td>, L-pad</td>
+<td>&nbsp;</td>
+<td>L-PAD</td>
+</tr>
+<tr class="row-even"><td>IMPEDANCE MATCHING</td>
+<td>, PI-Network</td>
+<td>&nbsp;</td>
+<td>PIMATCH</td>
+</tr>
+<tr class="row-odd"><td>IMPEDANCE MATCHING</td>
+<td>, conjugate</td>
+<td>&nbsp;</td>
+<td>CONJUMAT</td>
+</tr>
+<tr class="row-even"><td>IMPEDANCE MATCHING</td>
+<td>, transformers</td>
+<td>&nbsp;</td>
+<td>XFMR</td>
+</tr>
+<tr class="row-odd"><td>IMPEDANCE MATCHING</td>
+<td>, transistor stages</td>
+<td>&nbsp;</td>
+<td>MATCHNET</td>
+</tr>
+<tr class="row-even"><td>IMPEDANCE MATCHING</td>
+<td>, transmitter stages</td>
+<td>&nbsp;</td>
+<td>XMTRZMAT</td>
+</tr>
+<tr class="row-odd"><td>IMPEDANCE METER</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>IMPEDMETR</td>
+</tr>
+<tr class="row-even"><td>IMPEDANCE STEP-UP RATIOS</td>
+<td>, folded dipoles</td>
+<td>&nbsp;</td>
+<td>ZOSTEPUP</td>
+</tr>
+<tr class="row-odd"><td>IMPEDANCE</td>
+<td>, R/C, R/L, L/C, R/L/C circuits</td>
+<td>&nbsp;</td>
+<td>DSGNMENU</td>
+</tr>
+<tr class="row-even"><td>IMPEDANCE</td>
+<td>, antennas</td>
+<td>, measured from transmission line</td>
+<td>ANTIMP</td>
+</tr>
+<tr class="row-odd"><td>IMPEDANCE</td>
+<td>, coaxial cable</td>
+<td>&nbsp;</td>
+<td>COAXCHAR</td>
+</tr>
+<tr class="row-even"><td>IMPEDANCE</td>
+<td>, impedance matchbox</td>
+<td>&nbsp;</td>
+<td>MATCHBOX</td>
+</tr>
+<tr class="row-odd"><td>IMPEDANCE</td>
+<td>, in A.C. circuits</td>
+<td>&nbsp;</td>
+<td>ACCALC</td>
+</tr>
+<tr class="row-even"><td>IMPEDANCE</td>
+<td>, open-wire transmission line</td>
+<td>&nbsp;</td>
+<td>OPENWIRE</td>
+</tr>
+<tr class="row-odd"><td>IMPEDANCE</td>
+<td>, parallel-resonant circuit</td>
+<td>&nbsp;</td>
+<td>IMPARES</td>
+</tr>
+<tr class="row-even"><td>IMPEDANCE</td>
+<td>, reactance/resistance circuits</td>
+<td>&nbsp;</td>
+<td>IMPEDCCT</td>
+</tr>
+<tr class="row-odd"><td>IMPEDANCE</td>
+<td>, transmission lines</td>
+<td>&nbsp;</td>
+<td>SWR</td>
+</tr>
+<tr class="row-even"><td>INCHES-PER-VOLT</td>
+<td>, transformer windings</td>
+<td>&nbsp;</td>
+<td>WINDING</td>
+</tr>
+<tr class="row-odd"><td>INDUCTANCE CALCULATOR</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>INDUCALC</td>
+</tr>
+<tr class="row-even"><td>INDUCTANCE</td>
+<td>, coils</td>
+<td>, single layer</td>
+<td>INDUCALC</td>
+</tr>
+<tr class="row-odd"><td>INDUCTANCE</td>
+<td>, coils</td>
+<td>, multi layer</td>
+<td>INDUCALC</td>
+</tr>
+<tr class="row-even"><td>INDUCTANCE</td>
+<td>, coils in tandem</td>
+<td>&nbsp;</td>
+<td>COILCPL</td>
+</tr>
+<tr class="row-odd"><td>INDUCTANCE</td>
+<td>, flat copper strip</td>
+<td>&nbsp;</td>
+<td>INDUCALC</td>
+</tr>
+<tr class="row-even"><td>INDUCTANCE</td>
+<td>, in A.C. circuits</td>
+<td>&nbsp;</td>
+<td>ACCALC</td>
+</tr>
+<tr class="row-odd"><td>INDUCTANCE</td>
+<td>, loop antenna</td>
+<td>&nbsp;</td>
+<td>LOOPANT</td>
+</tr>
+<tr class="row-even"><td>INDUCTANCE</td>
+<td>, of a coil</td>
+<td>&nbsp;</td>
+<td>TUNECCT</td>
+</tr>
+<tr class="row-odd"><td>INDUCTANCE</td>
+<td>, single loops</td>
+<td>&nbsp;</td>
+<td>INDULOOP</td>
+</tr>
+<tr class="row-even"><td>INDUCTANCE</td>
+<td>, straight copper wire</td>
+<td>&nbsp;</td>
+<td>INDUCALC</td>
+</tr>
+<tr class="row-odd"><td>INDUCTANCE</td>
+<td>, tapped coils</td>
+<td>&nbsp;</td>
+<td>COILTAP</td>
+</tr>
+<tr class="row-even"><td>INDUCTANCE</td>
+<td>, transmission line section</td>
+<td>&nbsp;</td>
+<td>INDUCALC</td>
+</tr>
+<tr class="row-odd"><td>INDUCTORS</td>
+<td>, L/C tuned circuits</td>
+<td>&nbsp;</td>
+<td>TUNECCT</td>
+</tr>
+<tr class="row-even"><td>INDUCTORS</td>
+<td>, commercial</td>
+<td>, (Barker &amp; Williamson)</td>
+<td>AIRCORE</td>
+</tr>
+<tr class="row-odd"><td>INDUCTORS</td>
+<td>, helical winding</td>
+<td>&nbsp;</td>
+<td>HELIX</td>
+</tr>
+<tr class="row-even"><td>INDUCTORS</td>
+<td>, in series and parallel</td>
+<td>&nbsp;</td>
+<td>SERIPARA</td>
+</tr>
+<tr class="row-odd"><td>INDUCTORS</td>
+<td>, inductively loaded antennas</td>
+<td>&nbsp;</td>
+<td>SHORTANT</td>
+</tr>
+<tr class="row-even"><td>INDUCTORS</td>
+<td>, large value</td>
+<td>&nbsp;</td>
+<td>INDUHOSE</td>
+</tr>
+<tr class="row-odd"><td>INDUCTORS</td>
+<td>, made from dryer vent hose</td>
+<td>&nbsp;</td>
+<td>INDUHOSE</td>
+</tr>
+<tr class="row-even"><td>INDUCTORS</td>
+<td>, single layer air-core</td>
+<td>, design of</td>
+<td>TUNECCT</td>
+</tr>
+<tr class="row-odd"><td>INDUCTORS</td>
+<td>, toroid core</td>
+<td>&nbsp;</td>
+<td>TOROID</td>
+</tr>
+<tr class="row-even"><td>INSERTION LOSS</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>INLOSS</td>
+</tr>
+<tr class="row-odd"><td>INSERTION LOSS</td>
+<td>, lossless L/C circuits</td>
+<td>&nbsp;</td>
+<td>NOLOSS</td>
+</tr>
+<tr class="row-even"><td>INSTALL HAMCALC ON A HARD DRIVE</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>CPYHCAL</td>
+</tr>
+<tr class="row-odd"><td>INTEREST RATE CALCULATORS</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>FINANCE</td>
+</tr>
+<tr class="row-even"><td>INTERFERENCE</td>
+<td>, television channels</td>
+<td>&nbsp;</td>
+<td>TVCHAN</td>
+</tr>
+<tr class="row-odd"><td>INVERTED VEE ANTENNA</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>INVEE</td>
+</tr>
+<tr class="row-even"><td>INVOLUTE OF A CIRCLE</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>INVOLUTE</td>
+</tr>
+<tr class="row-odd"><td>J CALCULATOR</td>
+<td>, complex impedances</td>
+<td>&nbsp;</td>
+<td>JCALC</td>
+</tr>
+<tr class="row-even"><td>J-POLE</td>
+<td>, end-fed zepp antenna</td>
+<td>&nbsp;</td>
+<td>JAYPOLE</td>
+</tr>
+<tr class="row-odd"><td>K FACTOR</td>
+<td>, antenna</td>
+<td>, ARRL standards</td>
+<td>ANTENNA</td>
+</tr>
+<tr class="row-even"><td>K-FACTOR</td>
+<td>, antenna</td>
+<td>, (NEC-2 model)</td>
+<td>KFACTOR</td>
+</tr>
+<tr class="row-odd"><td>KEYBOARD</td>
+<td>, electronic</td>
+<td>&nbsp;</td>
+<td>ZOUNDS</td>
+</tr>
+<tr class="row-even"><td>L-PAD DESIGN</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>L-PAD</td>
+</tr>
+<tr class="row-odd"><td>L/C LOSSLESS CIRCUITS</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>NOLOSS</td>
+</tr>
+<tr class="row-even"><td>L/C NETWORK</td>
+<td>, tuned circuit</td>
+<td>&nbsp;</td>
+<td>TUNECCT</td>
+</tr>
+<tr class="row-odd"><td>L/C NETWORKS</td>
+<td>, NO TRANSFORMERS</td>
+<td>&nbsp;</td>
+<td>TFORM3</td>
+</tr>
+<tr class="row-even"><td>L/C TANK</td>
+<td>, Coaxial cable</td>
+<td>&nbsp;</td>
+<td>COAXLC3</td>
+</tr>
+<tr class="row-odd"><td>L/C/R/ NETWORK SOLVER</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>LADRSOLV</td>
+</tr>
+<tr class="row-even"><td>L/C/R/CIRCUITS</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>DSGNMENU</td>
+</tr>
+<tr class="row-odd"><td>LADDER LINE ANTENNA</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>LADANT</td>
+</tr>
+<tr class="row-even"><td>LADDER LINE</td>
+<td>, (open-wire transmission line)</td>
+<td>&nbsp;</td>
+<td>OPENWIRE</td>
+</tr>
+<tr class="row-odd"><td>LADDER MATCHING NETWORKS</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>TRANSMAT</td>
+</tr>
+<tr class="row-even"><td>LADDER NETWORK SOLVER</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>LADRSOLV</td>
+</tr>
+<tr class="row-odd"><td>LADDER NETWORK</td>
+<td>, 2 element</td>
+<td>&nbsp;</td>
+<td>LADDER2</td>
+</tr>
+<tr class="row-even"><td>LADDERS</td>
+<td>, step</td>
+<td>&nbsp;</td>
+<td>HAMCALCMECHCALCMECHMENU</td>
+</tr>
+<tr class="row-odd"><td>LAMP LIFE EXPECTANCY</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>LAMPLIFE</td>
+</tr>
+<tr class="row-even"><td>LATITUDE &amp; LONGITUDE DATA BASE</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>LATLONG</td>
+</tr>
+<tr class="row-odd"><td>LED</td>
+<td>, voltage dropping resistor</td>
+<td>&nbsp;</td>
+<td>LED</td>
+</tr>
+<tr class="row-even"><td>LENSES</td>
+<td>, photographic</td>
+<td>&nbsp;</td>
+<td>FOTOMENU</td>
+</tr>
+<tr class="row-odd"><td>LIGHT</td>
+<td>, speed of</td>
+<td>&nbsp;</td>
+<td>ANTENNA</td>
+</tr>
+<tr class="row-even"><td>LINE LOSS</td>
+<td>, transmission lines</td>
+<td>&nbsp;</td>
+<td>LINELOSS</td>
+</tr>
+<tr class="row-odd"><td>LINE-OF-SIGHT RADIO WAVES</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>RADIOLOS</td>
+</tr>
+<tr class="row-even"><td>LINK COUPLED TUNERS</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>LINKUPL</td>
+</tr>
+<tr class="row-odd"><td>LINKWITZ SPEAKER EQUALIZER</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>SPEAKR</td>
+</tr>
+<tr class="row-even"><td>LM317 VOLTAGE REGULATOR</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>LM317</td>
+</tr>
+<tr class="row-odd"><td>LOAD RESISTANCE CALCULATOR</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>DELTLOAD</td>
+</tr>
+<tr class="row-even"><td>LOCAL REPEATERS</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>LOCALRPT</td>
+</tr>
+<tr class="row-odd"><td>LOG-YAG YAGI ANTENNA</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>LOGYAG</td>
+</tr>
+<tr class="row-even"><td>LOGARITHMS</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>NUMDERIV</td>
+</tr>
+<tr class="row-odd"><td>LOGGING PROGRAM</td>
+<td>, QRP Fox Hunt</td>
+<td>&nbsp;</td>
+<td>FOXLOG</td>
+</tr>
+<tr class="row-even"><td>LONG-TAILED PAIR</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>PAIRLT</td>
+</tr>
+<tr class="row-odd"><td>LOOP ANTENNA</td>
+<td>, Ted Hart W5QJR</td>
+<td>&nbsp;</td>
+<td>MINILOOP</td>
+</tr>
+<tr class="row-even"><td>LOOP ANTENNA</td>
+<td>, inductance calculator</td>
+<td>&nbsp;</td>
+<td>LOOPANT</td>
+</tr>
+<tr class="row-odd"><td>LOOP ANTENNA</td>
+<td>, subminiature</td>
+<td>&nbsp;</td>
+<td>OCTALOOP</td>
+</tr>
+<tr class="row-even"><td>LOOP ANTENNAS</td>
+<td>, transmitting</td>
+<td>&nbsp;</td>
+<td>LOOPXMIT</td>
+</tr>
+<tr class="row-odd"><td>LOOP SKYWIRE ANTENNA</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>LOOPSKY</td>
+</tr>
+<tr class="row-even"><td>LOSSES</td>
+<td>, in coaxial cable</td>
+<td>&nbsp;</td>
+<td>COAXCHAR</td>
+</tr>
+<tr class="row-odd"><td>LOSSES</td>
+<td>, insertion</td>
+<td>&nbsp;</td>
+<td>INLOSS</td>
+</tr>
+<tr class="row-even"><td>LOSSES</td>
+<td>, mismatch</td>
+<td>&nbsp;</td>
+<td>MISMAT</td>
+</tr>
+<tr class="row-odd"><td>LOSSES</td>
+<td>, transmission line</td>
+<td>&nbsp;</td>
+<td>LINELOSS</td>
+</tr>
+<tr class="row-even"><td>LOSSLES L/C CIRCUTS</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>NOLOSS</td>
+</tr>
+<tr class="row-odd"><td>LOTTERY NUMBERS</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>RANDNUM</td>
+</tr>
+<tr class="row-even"><td>LOW PASS AUDIO FILTER</td>
+<td>, Sallen &amp; Key</td>
+<td>&nbsp;</td>
+<td>LOPASS</td>
+</tr>
+<tr class="row-odd"><td>LPDA YAGI ANTENNA DESIGN</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>LOGYAG</td>
+</tr>
+<tr class="row-even"><td>LUMPED CONSTANT</td>
+<td>, dipole antennas</td>
+<td>&nbsp;</td>
+<td>SHORTANT</td>
+</tr>
+<tr class="row-odd"><td>LUMPED CONSTANT</td>
+<td>, vertical mobile whip</td>
+<td>&nbsp;</td>
+<td>MOWHIP</td>
+</tr>
+<tr class="row-even"><td>MACHINE SCREWS</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>NMBRSIZE</td>
+</tr>
+<tr class="row-odd"><td>MAIDENHEAD GRID SQUARES</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>GRIDSQ</td>
+</tr>
+<tr class="row-even"><td>MARITIME WHIP ANTENNAS</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>MOWHIP</td>
+</tr>
+<tr class="row-odd"><td>MARKUP/MARKDOWN CALCULATOR</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>FINANCE</td>
+</tr>
+<tr class="row-even"><td>MASONRY ESTIMATOR</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>BRICK</td>
+</tr>
+<tr class="row-odd"><td>MAST HEIGHT</td>
+<td>, inverted vee antenna</td>
+<td>&nbsp;</td>
+<td>INVEE</td>
+</tr>
+<tr class="row-even"><td>MASTS</td>
+<td>, guy wires</td>
+<td>&nbsp;</td>
+<td>GUYWIRES</td>
+</tr>
+<tr class="row-odd"><td>MATCH</td>
+<td>, T match for dipoles</td>
+<td>&nbsp;</td>
+<td>TMATCH</td>
+</tr>
+<tr class="row-even"><td>MATCH</td>
+<td>, conjugate</td>
+<td>&nbsp;</td>
+<td>CONJUMAT</td>
+</tr>
+<tr class="row-odd"><td>MATCH</td>
+<td>, delta</td>
+<td>&nbsp;</td>
+<td>DELTAMAT</td>
+</tr>
+<tr class="row-even"><td>MATCH</td>
+<td>, gamma</td>
+<td>&nbsp;</td>
+<td>GAMMATCH</td>
+</tr>
+<tr class="row-odd"><td>MATCH</td>
+<td>, stub</td>
+<td>, for antennas</td>
+<td>STUBANT</td>
+</tr>
+<tr class="row-even"><td>MATCHBOX IMPEDANCE TRANSFORMER</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>MATCHBOX</td>
+</tr>
+<tr class="row-odd"><td>MATCHING NETWORKS</td>
+<td>, Pi-section</td>
+<td>&nbsp;</td>
+<td>PIMATCH</td>
+</tr>
+<tr class="row-even"><td>MATCHING NETWORKS</td>
+<td>, antenna</td>
+<td>&nbsp;</td>
+<td>ANTSYN2</td>
+</tr>
+<tr class="row-odd"><td>MATCHING NETWORKS</td>
+<td>, impedance</td>
+<td>&nbsp;</td>
+<td>IMPEDNET</td>
+</tr>
+<tr class="row-even"><td>MATCHING NETWORKS</td>
+<td>, transistors</td>
+<td>&nbsp;</td>
+<td>MATCHNET</td>
+</tr>
+<tr class="row-odd"><td>MATCHING NETWORKS</td>
+<td>, transmitter</td>
+<td>&nbsp;</td>
+<td>XMTRZMAT</td>
+</tr>
+<tr class="row-even"><td>MATCHING NETWORKS</td>
+<td>, with no tranformers</td>
+<td>&nbsp;</td>
+<td>TFORM3</td>
+</tr>
+<tr class="row-odd"><td>MATCHING STUBS</td>
+<td>, antenna</td>
+<td>&nbsp;</td>
+<td>STUBANT</td>
+</tr>
+<tr class="row-even"><td>MATCHING STUBS</td>
+<td>, coaxial line</td>
+<td>&nbsp;</td>
+<td>COAXSTUB</td>
+</tr>
+<tr class="row-odd"><td>MATCHING STUBS</td>
+<td>, open-wire line</td>
+<td>&nbsp;</td>
+<td>TRANSTUB</td>
+</tr>
+<tr class="row-even"><td>MATCHING TRANSFORMER</td>
+<td>, broadband toroidal</td>
+<td>&nbsp;</td>
+<td>BROADFER</td>
+</tr>
+<tr class="row-odd"><td>MATCHING TRANSFORMER</td>
+<td>, narrow band</td>
+<td>&nbsp;</td>
+<td>XFMRNARO</td>
+</tr>
+<tr class="row-even"><td>MATCHING TRANSFORMER</td>
+<td>, series-section</td>
+<td>&nbsp;</td>
+<td>SERISECT</td>
+</tr>
+<tr class="row-odd"><td>MATCHING</td>
+<td>, impedance</td>
+<td>, L-pad</td>
+<td>L-PAD</td>
+</tr>
+<tr class="row-even"><td>MATCHING</td>
+<td>, impedance</td>
+<td>, Pi-network</td>
+<td>PIMATCH</td>
+</tr>
+<tr class="row-odd"><td>MATCHING</td>
+<td>, mobile antennas</td>
+<td>&nbsp;</td>
+<td>MOBILMAT</td>
+</tr>
+<tr class="row-even"><td>MATHEMATICS</td>
+<td>, of a circle</td>
+<td>&nbsp;</td>
+<td>PROPCIRC</td>
+</tr>
+<tr class="row-odd"><td>MAXIMUM USABLE FREQUENCIES</td>
+<td>, (MUF)</td>
+<td>&nbsp;</td>
+<td>MAXUF</td>
+</tr>
+<tr class="row-even"><td>MECHANICS MATH</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>HAMCALCPROGMECHMENU</td>
+</tr>
+<tr class="row-odd"><td>METALS</td>
+<td>, resistivity of</td>
+<td>&nbsp;</td>
+<td>RESISTIV</td>
+</tr>
+<tr class="row-even"><td>METEOR SHOWER PREDICTOR</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>METSHOWR</td>
+</tr>
+<tr class="row-odd"><td>METER SHUNTS &amp; MULTIPLIERS</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>METERS</td>
+</tr>
+<tr class="row-even"><td>METRIC CONVERSIONS</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>METRICS</td>
+</tr>
+<tr class="row-odd"><td>METRONME</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>METNOM</td>
+</tr>
+<tr class="row-even"><td>MICROVERT</td>
+<td>, very short HF anntenna</td>
+<td>&nbsp;</td>
+<td>MICROVER</td>
+</tr>
+<tr class="row-odd"><td>MINILOOP</td>
+<td>, miniature loop antenna</td>
+<td>&nbsp;</td>
+<td>MINILOOP</td>
+</tr>
+<tr class="row-even"><td>MINIQUAD</td>
+<td>, coil-shortened Quad antenna</td>
+<td>&nbsp;</td>
+<td>MINIQUAD</td>
+</tr>
+<tr class="row-odd"><td>MISMATCH</td>
+<td>, transmission lines</td>
+<td>&nbsp;</td>
+<td>MISMAT</td>
+</tr>
+<tr class="row-even"><td>MOBILE ANTENNA MATCHING</td>
+<td>, L-network</td>
+<td>&nbsp;</td>
+<td>MOBILMAT</td>
+</tr>
+<tr class="row-odd"><td>MOBILE WHIP ANTENNA COILS</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>COILAMP</td>
+</tr>
+<tr class="row-even"><td>MOBILE WHIP ANTENNA</td>
+<td>, design of</td>
+<td>&nbsp;</td>
+<td>MOWHIP</td>
+</tr>
+<tr class="row-odd"><td>MOON TRACKER</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>MOONTRAC</td>
+</tr>
+<tr class="row-even"><td>MORSE CODE TRAINER</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>CW</td>
+</tr>
+<tr class="row-odd"><td>MORTGAGE CALCULATOR</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>FINANCE</td>
+</tr>
+<tr class="row-even"><td>MOTION CALCULATOR</td>
+<td>, photographic</td>
+<td>&nbsp;</td>
+<td>HAMCALCFOTOCALCFOTOMENU</td>
+</tr>
+<tr class="row-odd"><td>MOXON RECTANGLE ANTENNA</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>MOXON</td>
+</tr>
+<tr class="row-even"><td>MULTI-VIBRATORS</td>
+<td>, astable &amp; free-running</td>
+<td>&nbsp;</td>
+<td>555TIMER</td>
+</tr>
+<tr class="row-odd"><td>MULTIBAND SHORT DIPOLES</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>SHORTDIP</td>
+</tr>
+<tr class="row-even"><td>MUSIC</td>
+<td>, math &amp; sounds</td>
+<td>&nbsp;</td>
+<td>ZOUNDS</td>
+</tr>
+<tr class="row-odd"><td>N.V.I.S. QUAD ANTENNA</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>QUAD</td>
+</tr>
+<tr class="row-even"><td>NARROW-BAND TRANSFORMER</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>XFMRNARO</td>
+</tr>
+<tr class="row-odd"><td>NETWORK SOLVER</td>
+<td>, ladder networks</td>
+<td>&nbsp;</td>
+<td>LADRSOLV</td>
+</tr>
+<tr class="row-even"><td>NETWORKS</td>
+<td>, antenna matching</td>
+<td>&nbsp;</td>
+<td>ANTSYN2</td>
+</tr>
+<tr class="row-odd"><td>NETWORKS</td>
+<td>, impedance matching</td>
+<td>, Pi-network</td>
+<td>PITNET</td>
+</tr>
+<tr class="row-even"><td>NETWORKS</td>
+<td>, impedance matching</td>
+<td>, L-pad</td>
+<td>L-PAD</td>
+</tr>
+<tr class="row-odd"><td>NETWORKS</td>
+<td>, transistor matching</td>
+<td>&nbsp;</td>
+<td>MATCHNET</td>
+</tr>
+<tr class="row-even"><td>NI-CAD BATTERY DISCHARGER</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>NICAD</td>
+</tr>
+<tr class="row-odd"><td>NODE LOCATER</td>
+<td>, Transmission line</td>
+<td>&nbsp;</td>
+<td>NODE</td>
+</tr>
+<tr class="row-even"><td>NOISE FIGURE</td>
+<td>, Op Amps</td>
+<td>&nbsp;</td>
+<td>NOISFIG</td>
+</tr>
+<tr class="row-odd"><td>NORTH</td>
+<td>, determined by noon sun</td>
+<td>&nbsp;</td>
+<td>TRUNORTH</td>
+</tr>
+<tr class="row-even"><td>NUMBER SORTER</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>SORTER</td>
+</tr>
+<tr class="row-odd"><td>NUMBERED DRILLS / SCREWS / GAUGES</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>NMBRSIZE</td>
+</tr>
+<tr class="row-even"><td>NUMBERS &amp; FUNCTIONS</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>NUMDERIV</td>
+</tr>
+<tr class="row-odd"><td>NUMBERS</td>
+<td>, Random generator</td>
+<td>&nbsp;</td>
+<td>RANDNUM</td>
+</tr>
+<tr class="row-even"><td>NYLON SCREWS</td>
+<td>, as coil forms</td>
+<td>&nbsp;</td>
+<td>TINYCOIL</td>
+</tr>
+<tr class="row-odd"><td>OCTAGONAL LOOP FRAMEWORK</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>OCTAGON</td>
+</tr>
+<tr class="row-even"><td>OCTALOOP</td>
+<td>, subminiature loop antenna</td>
+<td>&nbsp;</td>
+<td>OCTALOOP</td>
+</tr>
+<tr class="row-odd"><td>OCTARING</td>
+<td>, subminiature loop antenna</td>
+<td>&nbsp;</td>
+<td>OCTARING</td>
+</tr>
+<tr class="row-even"><td>OFF-CENTRE-FED DIPOLE</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>OCFDIPOL</td>
+</tr>
+<tr class="row-odd"><td>OHM&#8217;S LAW</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>OHMSLAW</td>
+</tr>
+<tr class="row-even"><td>OP AMP AUDIO FILTER</td>
+<td>, (#741 Op Amp)</td>
+<td>&nbsp;</td>
+<td>AUDFILT</td>
+</tr>
+<tr class="row-odd"><td>OP AMP</td>
+<td>,  Sqare &amp; Triangle Wave Generator</td>
+<td>&nbsp;</td>
+<td>TRISQU</td>
+</tr>
+<tr class="row-even"><td>OP AMP</td>
+<td>, Constant current circuit</td>
+<td>&nbsp;</td>
+<td>CONCUR</td>
+</tr>
+<tr class="row-odd"><td>OP AMP</td>
+<td>, Schmidt trigger</td>
+<td>&nbsp;</td>
+<td>SCHMIDT</td>
+</tr>
+<tr class="row-even"><td>OP AMPS</td>
+<td>, Noise Figure</td>
+<td>&nbsp;</td>
+<td>NOISFIG</td>
+</tr>
+<tr class="row-odd"><td>OP AMPS</td>
+<td>, Cascaded</td>
+<td>,</td>
+<td>CASCAMP</td>
+</tr>
+<tr class="row-even"><td>OPEN-WIRE TRANSMISSION LINE</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>OPENWIRE</td>
+</tr>
+<tr class="row-odd"><td>OPERATIONAL ( OP AMP ) AMPLIFIERS</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>OPAMP</td>
+</tr>
+<tr class="row-even"><td>ORBIT CALCULATOR</td>
+<td>, satellite</td>
+<td>&nbsp;</td>
+<td>SATORBIT</td>
+</tr>
+<tr class="row-odd"><td>OSCILLATOR</td>
+<td>, CMOS</td>
+<td>&nbsp;</td>
+<td>CMOSC3</td>
+</tr>
+<tr class="row-even"><td>OSCILLATOR</td>
+<td>, Colpitts FET</td>
+<td>&nbsp;</td>
+<td>COLPOSC</td>
+</tr>
+<tr class="row-odd"><td>OSCILLATOR</td>
+<td>, Hartly FET</td>
+<td>&nbsp;</td>
+<td>HARTOSC</td>
+</tr>
+<tr class="row-even"><td>OSCILLATOR</td>
+<td>, Schmidt</td>
+<td>&nbsp;</td>
+<td>PULSEGEN</td>
+</tr>
+<tr class="row-odd"><td>OSCILLATOR</td>
+<td>, audio</td>
+<td>, Twin-T</td>
+<td>TWINTEE</td>
+</tr>
+<tr class="row-even"><td>OSCILLATOR</td>
+<td>, audio, LM324</td>
+<td>&nbsp;</td>
+<td>AUDOSC</td>
+</tr>
+<tr class="row-odd"><td>OSCILLATOR</td>
+<td>, audio, dual tone</td>
+<td>&nbsp;</td>
+<td>AUDOSC2</td>
+</tr>
+<tr class="row-even"><td>OSCILLATOR</td>
+<td>, code practice</td>
+<td>&nbsp;</td>
+<td>PRACOSC</td>
+</tr>
+<tr class="row-odd"><td>PARABOLIC ANTENNA</td>
+<td>, circular waveguide feeds</td>
+<td>&nbsp;</td>
+<td>CIRCFEED</td>
+</tr>
+<tr class="row-even"><td>PARABOLIC DISH REFLECTOR</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>DISHANT</td>
+</tr>
+<tr class="row-odd"><td>PARALLEL-RESONANT CIRCUIT</td>
+<td>, impedance</td>
+<td>&nbsp;</td>
+<td>IMPARES</td>
+</tr>
+<tr class="row-even"><td>PC BOARD TRACES</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>COPWIRE</td>
+</tr>
+<tr class="row-odd"><td>PEDOMETER</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>PEDOM</td>
+</tr>
+<tr class="row-even"><td>PHASE ANGLE</td>
+<td>, R/C, R/L, L/C, R/L/C circuits</td>
+<td>&nbsp;</td>
+<td>DSGNMENU</td>
+</tr>
+<tr class="row-odd"><td>PHASE ANGLE</td>
+<td>, in A.C. circuits</td>
+<td>&nbsp;</td>
+<td>ACCALC</td>
+</tr>
+<tr class="row-even"><td>PHASE DIFFERENCE NETWORKS</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>PHAZDIFF</td>
+</tr>
+<tr class="row-odd"><td>PHASED VERTICAL ARRAY</td>
+<td>, radiation pattern</td>
+<td>&nbsp;</td>
+<td>VERTPATT</td>
+</tr>
+<tr class="row-even"><td>PHOTOCOPIER</td>
+<td>, image size calculator</td>
+<td>&nbsp;</td>
+<td>FOTOMENU</td>
+</tr>
+<tr class="row-odd"><td>PHOTOGRAPHY MATH</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>HAMCALCPROGFOTOMENU</td>
+</tr>
+<tr class="row-even"><td>PI-NETWORK</td>
+<td>, impedance matching</td>
+<td>&nbsp;</td>
+<td>PITNET</td>
+</tr>
+<tr class="row-odd"><td>PI-PAD ATTENUATORS</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>ATTENPAD</td>
+</tr>
+<tr class="row-even"><td>PIPE SIZES</td>
+<td>, ANSI Standard</td>
+<td>&nbsp;</td>
+<td>PIPESIZE</td>
+</tr>
+<tr class="row-odd"><td>PIXEL CALCULATOR</td>
+<td>, digital cameras &amp; scanners</td>
+<td>&nbsp;</td>
+<td>PIXEL</td>
+</tr>
+<tr class="row-even"><td>PLOT ROTATOR</td>
+<td>, cartesian/polar</td>
+<td>&nbsp;</td>
+<td>ROTAPLOT</td>
+</tr>
+<tr class="row-odd"><td>POLYGON DIMENSIONS</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>POLYGON</td>
+</tr>
+<tr class="row-even"><td>POTENTIOMETER</td>
+<td>, custom value</td>
+<td>&nbsp;</td>
+<td>POTENT</td>
+</tr>
+<tr class="row-odd"><td>POWER AMPLIFIER</td>
+<td>, tank circuit</td>
+<td>&nbsp;</td>
+<td>TANKCCT</td>
+</tr>
+<tr class="row-even"><td>POWER DIVIDER</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>PWRDIV</td>
+</tr>
+<tr class="row-odd"><td>POWER FACTOR</td>
+<td>, in A.C. circuits</td>
+<td>&nbsp;</td>
+<td>ACCALC</td>
+</tr>
+<tr class="row-even"><td>POWER SUPPLY ANALYZER</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>PSUP</td>
+</tr>
+<tr class="row-odd"><td>POWER SUPPLY DESIGN</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>PWRCCT</td>
+</tr>
+<tr class="row-even"><td>POWER SUPPLY PERFORMANCE</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>PSUPERF</td>
+</tr>
+<tr class="row-odd"><td>POWER SUPPLY</td>
+<td>, double bridge</td>
+<td>&nbsp;</td>
+<td>DBLBRG4</td>
+</tr>
+<tr class="row-even"><td>POWER SUPPLY</td>
+<td>, dual output</td>
+<td>&nbsp;</td>
+<td>DBLBRG4</td>
+</tr>
+<tr class="row-odd"><td>POWER TRANSFORMER DESIGN</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>PWRXFMR</td>
+</tr>
+<tr class="row-even"><td>POWER VS. S-METER READINGS</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>SMETER</td>
+</tr>
+<tr class="row-odd"><td>POWER</td>
+<td>, dB gain/loss</td>
+<td>&nbsp;</td>
+<td>DECIBEL</td>
+</tr>
+<tr class="row-even"><td>POWER</td>
+<td>, watts</td>
+<td>, (Ohm&#8217;s Law)</td>
+<td>OHMSLAW</td>
+</tr>
+<tr class="row-odd"><td>PRIME NUMBERS</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>PRIMENOS</td>
+</tr>
+<tr class="row-even"><td>PRINTED CIRCUIT BOARD TRACES</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>HAMCALCPROGCOPWIRE</td>
+</tr>
+<tr class="row-odd"><td>PROPERTIES OF BEAMS</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>MECHMENU</td>
+</tr>
+<tr class="row-even"><td>PRUNING</td>
+<td>, antenna</td>
+<td>&nbsp;</td>
+<td>ANTENNA</td>
+</tr>
+<tr class="row-odd"><td>PSEUDO-BREWSTER ANGLE</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>PBA</td>
+</tr>
+<tr class="row-even"><td>PULSE GENERATOR</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>PULSEGEN</td>
+</tr>
+<tr class="row-odd"><td>PUNCTURE VOLTAGE</td>
+<td>, dielectric materials</td>
+<td>&nbsp;</td>
+<td>CAPTANCE</td>
+</tr>
+<tr class="row-even"><td>Q CALCULATOR</td>
+<td>, coils</td>
+<td>&nbsp;</td>
+<td>COILQ</td>
+</tr>
+<tr class="row-odd"><td>Q FACTOR OF L/C COMPONENTS</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>QFACTOR</td>
+</tr>
+<tr class="row-even"><td>Q VS. BANDWIDTH</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>BANDQ</td>
+</tr>
+<tr class="row-odd"><td>Q</td>
+<td>, L/C networks</td>
+<td>&nbsp;</td>
+<td>TUNECCT</td>
+</tr>
+<tr class="row-even"><td>Q</td>
+<td>, L/C tank circuit</td>
+<td>&nbsp;</td>
+<td>QFIND5</td>
+</tr>
+<tr class="row-odd"><td>Q</td>
+<td>, coils</td>
+<td>, True vs. Apparent</td>
+<td>COILTRUE</td>
+</tr>
+<tr class="row-even"><td>Q</td>
+<td>, insertion loss</td>
+<td>&nbsp;</td>
+<td>INLOSS</td>
+</tr>
+<tr class="row-odd"><td>Q</td>
+<td>, resonant circuits</td>
+<td>&nbsp;</td>
+<td>QRESON</td>
+</tr>
+<tr class="row-even"><td>Q</td>
+<td>, series and parallel circuits</td>
+<td>&nbsp;</td>
+<td>SEPAQ</td>
+</tr>
+<tr class="row-odd"><td>Q</td>
+<td>, transmission lines</td>
+<td>&nbsp;</td>
+<td>QLINE2</td>
+</tr>
+<tr class="row-even"><td>QRP FOX HUNT LOG</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>FOXLOG</td>
+</tr>
+<tr class="row-odd"><td>QSK BREAK-IN MODULE</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>QSK</td>
+</tr>
+<tr class="row-even"><td>QUAD ANTENNA DIMENSIONS</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>QUAD</td>
+</tr>
+<tr class="row-odd"><td>QUAD ANTENNA FOR RESTRICTED SPACE</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>MINIQUAD</td>
+</tr>
+<tr class="row-even"><td>QUADRATIC EQUATIONS</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>QUADRAT</td>
+</tr>
+<tr class="row-odd"><td>QUARTER-WAVE TRANSFORMER</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>QUARTWAV</td>
+</tr>
+<tr class="row-even"><td>QUIKTABLES</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>QUIKTABL</td>
+</tr>
+<tr class="row-odd"><td>R/C TIME CONSTANT</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>RCCONST</td>
+</tr>
+<tr class="row-even"><td>R/L/C CIRCUITS</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>DSGNMENU</td>
+</tr>
+<tr class="row-odd"><td>R/L/C NETWORK SOLVER</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>LADRSOLV</td>
+</tr>
+<tr class="row-even"><td>RADAR SCREEN</td>
+<td>, local repeaters</td>
+<td>&nbsp;</td>
+<td>LOCALRPT</td>
+</tr>
+<tr class="row-odd"><td>RADIATION ANGLE</td>
+<td>, Antennas</td>
+<td>&nbsp;</td>
+<td>RADANGLE</td>
+</tr>
+<tr class="row-even"><td>RADIATION PLOTS</td>
+<td>, phased vertical antennas</td>
+<td>&nbsp;</td>
+<td>VERTPATT</td>
+</tr>
+<tr class="row-odd"><td>RADIO HORIZON</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>RADIOLOS</td>
+</tr>
+<tr class="row-even"><td>RANDOM NUMBER GENERATOR</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>RANDNUM</td>
+</tr>
+<tr class="row-odd"><td>RANDOM WIRE ANTENNA</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>SNGLWIRE</td>
+</tr>
+<tr class="row-even"><td>RATIOS</td>
+<td>, transformer windings</td>
+<td>&nbsp;</td>
+<td>XFMR</td>
+</tr>
+<tr class="row-odd"><td>RC ACTIVE FILTERS</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>RCFILT</td>
+</tr>
+<tr class="row-even"><td>REACTANCE PROGRAMS</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>REACT</td>
+</tr>
+<tr class="row-odd"><td>REACTANCE</td>
+<td>, in A.C. circuits</td>
+<td>&nbsp;</td>
+<td>ACCALC</td>
+</tr>
+<tr class="row-even"><td>REACTANCES</td>
+<td>, unlike</td>
+<td>, in series or parallel</td>
+<td>SERIPARA</td>
+</tr>
+<tr class="row-odd"><td>REACTIVE IMPEDANCE</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>IMPEDCCT</td>
+</tr>
+<tr class="row-even"><td>REFLECTOR</td>
+<td>, parabolic</td>
+<td>&nbsp;</td>
+<td>DISHANT</td>
+</tr>
+<tr class="row-odd"><td>REFLECTORS</td>
+<td>, wire mesh</td>
+<td>&nbsp;</td>
+<td>WIREMESH</td>
+</tr>
+<tr class="row-even"><td>REMOTE SIGNAL LAMP</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>REMSIG</td>
+</tr>
+<tr class="row-odd"><td>REPEATERS</td>
+<td>, directory and locator</td>
+<td>&nbsp;</td>
+<td>LOCALRPT</td>
+</tr>
+<tr class="row-even"><td>RESISTANCE</td>
+<td>, copper wire</td>
+<td>&nbsp;</td>
+<td>COPWIRE</td>
+</tr>
+<tr class="row-odd"><td>RESISTANCE</td>
+<td>, load</td>
+<td>, calculator</td>
+<td>DELTLOAD</td>
+</tr>
+<tr class="row-even"><td>RESISTIVE IMPEDANCE</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>IMPEDCCT</td>
+</tr>
+<tr class="row-odd"><td>RESISTIVITY OF METALS</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>RESISTIV</td>
+</tr>
+<tr class="row-even"><td>RESISTOR/INDUCTOR/CAPACITOR CIRCUITS</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>DSGNMENU</td>
+</tr>
+<tr class="row-odd"><td>RESISTORS</td>
+<td>, colour codes</td>
+<td>&nbsp;</td>
+<td>COLCODE</td>
+</tr>
+<tr class="row-even"><td>RESISTORS</td>
+<td>, copper wire wound</td>
+<td>, low value</td>
+<td>RESICOP</td>
+</tr>
+<tr class="row-odd"><td>RESISTORS</td>
+<td>, custom value</td>
+<td>, parallel ganged</td>
+<td>CUSTOHM</td>
+</tr>
+<tr class="row-even"><td>RESISTORS</td>
+<td>, in series and parallel</td>
+<td>&nbsp;</td>
+<td>SERIPARA</td>
+</tr>
+<tr class="row-odd"><td>RESISTORS</td>
+<td>, precise values</td>
+<td>&nbsp;</td>
+<td>PRECIRES</td>
+</tr>
+<tr class="row-even"><td>RESISTORS</td>
+<td>, standard values</td>
+<td>&nbsp;</td>
+<td>RESISVAL</td>
+</tr>
+<tr class="row-odd"><td>RESONATOR</td>
+<td>, helical</td>
+<td>&nbsp;</td>
+<td>HELRESON</td>
+</tr>
+<tr class="row-even"><td>RF CHOKES</td>
+<td>, coaxial cable</td>
+<td>&nbsp;</td>
+<td>CHOBAL6</td>
+</tr>
+<tr class="row-odd"><td>RF RESISTANCE</td>
+<td>, copper wire</td>
+<td>&nbsp;</td>
+<td>COPWIRE</td>
+</tr>
+<tr class="row-even"><td>S-METER READINGS VS. POWER</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>SMETER</td>
+</tr>
+<tr class="row-odd"><td>SAG</td>
+<td>, in horizontally suspended wire</td>
+<td>&nbsp;</td>
+<td>CATENARY</td>
+</tr>
+<tr class="row-even"><td>SATELLITE ORBIT CALCULATOR</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>SATORBIT</td>
+</tr>
+<tr class="row-odd"><td>SCALE SPEED CALCULATOR</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>SCALSPD</td>
+</tr>
+<tr class="row-even"><td>SCALING</td>
+<td>, antenna dimensions</td>
+<td>&nbsp;</td>
+<td>ANTSCALE</td>
+</tr>
+<tr class="row-odd"><td>SCANNER PIXEL CALCULATOR</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>PIXEL</td>
+</tr>
+<tr class="row-even"><td>SCHMIDT TRIGGER OP AMP</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>SCHMIDT</td>
+</tr>
+<tr class="row-odd"><td>SCREEN SAVER</td>
+<td>, (analog clock)</td>
+<td>&nbsp;</td>
+<td>LOGOCLOK</td>
+</tr>
+<tr class="row-even"><td>SCREEN SAVER</td>
+<td>, (digital clock)</td>
+<td>&nbsp;</td>
+<td>BIGNUM</td>
+</tr>
+<tr class="row-odd"><td>SCREEN SAVER</td>
+<td>, (shuttle)</td>
+<td>&nbsp;</td>
+<td>SHUTTLE</td>
+</tr>
+<tr class="row-even"><td>SCREEN SAVER</td>
+<td>, (walker)</td>
+<td>&nbsp;</td>
+<td>WALKER</td>
+</tr>
+<tr class="row-odd"><td>SCREENING</td>
+<td>, wire mesh</td>
+<td>&nbsp;</td>
+<td>WIREMESH</td>
+</tr>
+<tr class="row-even"><td>SCREW SIZES</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>NMBRSIZE</td>
+</tr>
+<tr class="row-odd"><td>SEASONS</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>SEASONS</td>
+</tr>
+<tr class="row-even"><td>SERIES &amp; PARALLEL COMPONENTS</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>SERIPARA</td>
+</tr>
+<tr class="row-odd"><td>SERIES-SECTION MATCHING TRANSFORMER</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>SERISECT</td>
+</tr>
+<tr class="row-even"><td>SEXIGESIMAL/DECIMAL CONVERSION</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>DECICONV</td>
+</tr>
+<tr class="row-odd"><td>SHAFTS AND SHAFTING</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>MECHMENU</td>
+</tr>
+<tr class="row-even"><td>SHEET METAL GAUGES</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>NMBRSIZE</td>
+</tr>
+<tr class="row-odd"><td>SHORT DIPOLE</td>
+<td>, ES2B 2 band</td>
+<td>&nbsp;</td>
+<td>ES2B</td>
+</tr>
+<tr class="row-even"><td>SHORT DIPOLE</td>
+<td>, centre coil-loaded</td>
+<td>&nbsp;</td>
+<td>CENTLOAD</td>
+</tr>
+<tr class="row-odd"><td>SHORT DIPOLE</td>
+<td>, cylinder end-loaded</td>
+<td>&nbsp;</td>
+<td>CYLLOAD</td>
+</tr>
+<tr class="row-even"><td>SHORT DIPOLE</td>
+<td>, dual band</td>
+<td>&nbsp;</td>
+<td>DUOPOLE</td>
+</tr>
+<tr class="row-odd"><td>SHORT DIPOLE</td>
+<td>, for 160/80/40 metres</td>
+<td>&nbsp;</td>
+<td>DIPOL160</td>
+</tr>
+<tr class="row-even"><td>SHORT DIPOLE</td>
+<td>, off-centre coil loaded</td>
+<td>&nbsp;</td>
+<td>SHORTANT</td>
+</tr>
+<tr class="row-odd"><td>SHORT HF MONOPOLE</td>
+<td>, vertical or horizontal</td>
+<td>&nbsp;</td>
+<td>MICROVER</td>
+</tr>
+<tr class="row-even"><td>SHORT MULTIBAND DIPOLE ARRAY</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>SHORTDIP</td>
+</tr>
+<tr class="row-odd"><td>SHUNTS</td>
+<td>, meter</td>
+<td>&nbsp;</td>
+<td>METERS</td>
+</tr>
+<tr class="row-even"><td>SIDETONE GENERATOR</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>CW</td>
+</tr>
+<tr class="row-odd"><td>SIGNAL LAMP</td>
+<td>, remote</td>
+<td>&nbsp;</td>
+<td>REMSIG</td>
+</tr>
+<tr class="row-even"><td>SIMULTANEOUS EQUATION CALCULATOR</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>SIMULEQ</td>
+</tr>
+<tr class="row-odd"><td>SINGLE WIRE ANTENNA SYSTEM</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>SNGLWIRE</td>
+</tr>
+<tr class="row-even"><td>SKIN EFFECT</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>COPWIRE</td>
+</tr>
+<tr class="row-odd"><td>SKIP DISTANCE CALCULATOR</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>SKIPDIST</td>
+</tr>
+<tr class="row-even"><td>SLOPER ANTENNA</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>SLOPER</td>
+</tr>
+<tr class="row-odd"><td>SMITH CHART CALCULATIONS</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>SMITHCHT</td>
+</tr>
+<tr class="row-even"><td>SOLSTICES</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>SEASONS</td>
+</tr>
+<tr class="row-odd"><td>SORTER</td>
+<td>, alphanumeric characters</td>
+<td>&nbsp;</td>
+<td>SORTER</td>
+</tr>
+<tr class="row-even"><td>SPARK GAP</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>SPARK</td>
+</tr>
+<tr class="row-odd"><td>SPEAKER ANALYZER</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>SPEAKR</td>
+</tr>
+<tr class="row-even"><td>SPEAKER CROSSOVER NETWORKS</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>XOVER</td>
+</tr>
+<tr class="row-odd"><td>SPECTRUM</td>
+<td>, electromagnetic</td>
+<td>&nbsp;</td>
+<td>ELSPEC</td>
+</tr>
+<tr class="row-even"><td>SPEED CHASE</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>SPEEDTD</td>
+</tr>
+<tr class="row-odd"><td>SPEED OF LIGHT</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>ANTENNA</td>
+</tr>
+<tr class="row-even"><td>SPEED</td>
+<td>, as a function of time and distance</td>
+<td>&nbsp;</td>
+<td>SPEEDTD</td>
+</tr>
+<tr class="row-odd"><td>SQUARE AND TRIANGLE WAVE GENERATOR</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>TRISQU</td>
+</tr>
+<tr class="row-even"><td>SQUARE COAXIAL TRANMISSION LINE</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>SQCOAX</td>
+</tr>
+<tr class="row-odd"><td>SQUARE CONDUCTOR OPEN-WIRE LINES</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>OPENWIRE</td>
+</tr>
+<tr class="row-even"><td>STAIRS AND STAIRWAYS</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>MECHMENU</td>
+</tr>
+<tr class="row-odd"><td>STOPWATCH</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>WATCH</td>
+</tr>
+<tr class="row-even"><td>STRANDED COPPER CONDUCTORS</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>COPWIRE</td>
+</tr>
+<tr class="row-odd"><td>STRETCH</td>
+<td>, in horizontally suspended wire</td>
+<td>&nbsp;</td>
+<td>WIRESAG</td>
+</tr>
+<tr class="row-even"><td>STRIPLINE FILTERS</td>
+<td>, for VHF/UHF</td>
+<td>&nbsp;</td>
+<td>FILSTRIP</td>
+</tr>
+<tr class="row-odd"><td>STUB MATCH</td>
+<td>, for antennas</td>
+<td>&nbsp;</td>
+<td>COAXCHAR</td>
+</tr>
+<tr class="row-even"><td>STUBS</td>
+<td>, coaxial cable transmission lines</td>
+<td>&nbsp;</td>
+<td>COAXSTUB</td>
+</tr>
+<tr class="row-odd"><td>STUBS</td>
+<td>, open-wire transmission lines</td>
+<td>&nbsp;</td>
+<td>TRANSTUB</td>
+</tr>
+<tr class="row-even"><td>SUNRISE/SUNSET CALCULATOR</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>RISESET</td>
+</tr>
+<tr class="row-odd"><td>SUPPORT WIRES</td>
+<td>, towers &amp; masts</td>
+<td>&nbsp;</td>
+<td>GUYWIRES</td>
+</tr>
+<tr class="row-even"><td>SURGE PROTECTION</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>CLAMP</td>
+</tr>
+<tr class="row-odd"><td>SURVEYOR&#8217;S CALCULATOR</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>SURVEY</td>
+</tr>
+<tr class="row-even"><td>SWR CALCULATOR</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>SWR</td>
+</tr>
+<tr class="row-odd"><td>SWR VS. ATTENUATION</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>ATTENU</td>
+</tr>
+<tr class="row-even"><td>T MATCH</td>
+<td>, dipole to 600 Í line</td>
+<td>&nbsp;</td>
+<td>TMATCH</td>
+</tr>
+<tr class="row-odd"><td>T NETWORKS</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>PITNET</td>
+</tr>
+<tr class="row-even"><td>T-PAD ATTENUATORS</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>ATTENPAD</td>
+</tr>
+<tr class="row-odd"><td>T2FD TERMINATED FOLDED DIPOLE</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>T2FD</td>
+</tr>
+<tr class="row-even"><td>TANK CIRCUIT</td>
+<td>, power amplifier</td>
+<td>&nbsp;</td>
+<td>TANKCCT</td>
+</tr>
+<tr class="row-odd"><td>TANK</td>
+<td>, L/C coaxial cable</td>
+<td>&nbsp;</td>
+<td>COAXLC3</td>
+</tr>
+<tr class="row-even"><td>TAP DRILL SIZES</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>NMBRSIZE</td>
+</tr>
+<tr class="row-odd"><td>TAPERED YAGI ELEMENTS</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>YAGTAPER</td>
+</tr>
+<tr class="row-even"><td>TAPPED COIL PROPERTIES</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>COILTAP</td>
+</tr>
+<tr class="row-odd"><td>TAPPED COILS</td>
+<td>, design of</td>
+<td>&nbsp;</td>
+<td>COILNEW</td>
+</tr>
+<tr class="row-even"><td>TAPPED COILS</td>
+<td>, feedline matching</td>
+<td>, single wire antenna</td>
+<td>SNGLWIRE</td>
+</tr>
+<tr class="row-odd"><td>TELESCOPING TUBING SIZES</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>TELETUBE</td>
+</tr>
+<tr class="row-even"><td>TELESCOPING VARIABLE CAPACITOR</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>CAPYTEL</td>
+</tr>
+<tr class="row-odd"><td>TEMPERATURE CONVERSION</td>
+<td>, fahrenheit / celsius</td>
+<td>&nbsp;</td>
+<td>EQUIV</td>
+</tr>
+<tr class="row-even"><td>THERMAL RESISTANCE</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>THERMRES</td>
+</tr>
+<tr class="row-odd"><td>THERMODYNAMICS</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>PSYCHROM</td>
+</tr>
+<tr class="row-even"><td>TIME DELAY</td>
+<td>, R/C constant</td>
+<td>&nbsp;</td>
+<td>RCCONST</td>
+</tr>
+<tr class="row-odd"><td>TIME PAYMENT CALCULATOR</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>FINANCE</td>
+</tr>
+<tr class="row-even"><td>TIME QUIZ</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>TIMEQ</td>
+</tr>
+<tr class="row-odd"><td>TIME ZONE CALCULATOR</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>TIMEZONE</td>
+</tr>
+<tr class="row-even"><td>TIME ZONES</td>
+<td>, of various locations</td>
+<td>&nbsp;</td>
+<td>LATLONG</td>
+</tr>
+<tr class="row-odd"><td>TIME</td>
+<td>, as a function of speed and distance</td>
+<td>&nbsp;</td>
+<td>SPEEDTD</td>
+</tr>
+<tr class="row-even"><td>TIMER</td>
+<td>, metronome</td>
+<td>&nbsp;</td>
+<td>METNOM</td>
+</tr>
+<tr class="row-odd"><td>TIMER</td>
+<td>, one-shot or variable delay</td>
+<td>, ( #555 IC )</td>
+<td>555TIMER</td>
+</tr>
+<tr class="row-even"><td>TINY COILS</td>
+<td>, wound on machine screw forms</td>
+<td>&nbsp;</td>
+<td>TINYCOIL</td>
+</tr>
+<tr class="row-odd"><td>TITLER</td>
+<td>, photo slides or videos</td>
+<td>&nbsp;</td>
+<td>HAMCALCFOTOCALCFOTOMENU</td>
+</tr>
+<tr class="row-even"><td>TONE GENERATOR</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>ZOUNDS</td>
+</tr>
+<tr class="row-odd"><td>TOROID ANTENNA TRAPS</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>TOROTRAP</td>
+</tr>
+<tr class="row-even"><td>TOROID FERRITE BALUN</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>BROADFER</td>
+</tr>
+<tr class="row-odd"><td>TOROID INDUCTORS</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>TOROID</td>
+</tr>
+<tr class="row-even"><td>TORQUE</td>
+<td>, vs. horsepower</td>
+<td>&nbsp;</td>
+<td>MECHMENU</td>
+</tr>
+<tr class="row-odd"><td>TOWERS</td>
+<td>, guy wires</td>
+<td>&nbsp;</td>
+<td>GUYWIRES</td>
+</tr>
+<tr class="row-even"><td>TRACKER</td>
+<td>, Receiver Tuned Circuits</td>
+<td>&nbsp;</td>
+<td>TRACKER</td>
+</tr>
+<tr class="row-odd"><td>TRANSFORMER DESIGN</td>
+<td>, power transformers</td>
+<td>&nbsp;</td>
+<td>PWRXFMR</td>
+</tr>
+<tr class="row-even"><td>TRANSFORMER RATIOS</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>XFMR</td>
+</tr>
+<tr class="row-odd"><td>TRANSFORMER WINDINGS CALCULATOR</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>WINDING</td>
+</tr>
+<tr class="row-even"><td>TRANSFORMER</td>
+<td>, broadband</td>
+<td>, ferrite toroidal</td>
+<td>BROADFER</td>
+</tr>
+<tr class="row-odd"><td>TRANSFORMER</td>
+<td>, impedance matching</td>
+<td>&nbsp;</td>
+<td>XFMR</td>
+</tr>
+<tr class="row-even"><td>TRANSFORMER</td>
+<td>, matchbox impedance</td>
+<td>&nbsp;</td>
+<td>MATCHBOX</td>
+</tr>
+<tr class="row-odd"><td>TRANSFORMER</td>
+<td>, narrowband</td>
+<td>&nbsp;</td>
+<td>XFMRNARO</td>
+</tr>
+<tr class="row-even"><td>TRANSFORMER</td>
+<td>, quarter-wave</td>
+<td>&nbsp;</td>
+<td>QUARTWAV</td>
+</tr>
+<tr class="row-odd"><td>TRANSFORMER</td>
+<td>, series-section</td>
+<td>&nbsp;</td>
+<td>SERISECT</td>
+</tr>
+<tr class="row-even"><td>TRANSISTOR CIRCUIT DESIGN</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>TRANCCT</td>
+</tr>
+<tr class="row-odd"><td>TRANSISTOR MATCHING NETWORKS</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>MATCHNET</td>
+</tr>
+<tr class="row-even"><td>TRANSISTOR STAGE COUPLING</td>
+<td>, transmitters</td>
+<td>&nbsp;</td>
+<td>XMTRZMAT</td>
+</tr>
+<tr class="row-odd"><td>TRANSMATCH DESIGN (ZL1LE)</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>TRANSMAT</td>
+</tr>
+<tr class="row-even"><td>TRANSMATCH</td>
+<td>, single wire antennas</td>
+<td>&nbsp;</td>
+<td>SNGLWIRE</td>
+</tr>
+<tr class="row-odd"><td>TRANSMISSION LINE LENGTH</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>ELECLENG</td>
+</tr>
+<tr class="row-even"><td>TRANSMISSION LINE LOSSES</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>LINELOSS</td>
+</tr>
+<tr class="row-odd"><td>TRANSMISSION LINE MISMATCH</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>MISMAT</td>
+</tr>
+<tr class="row-even"><td>TRANSMISSION LINE NODE LOCATER</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>NODE</td>
+</tr>
+<tr class="row-odd"><td>TRANSMISSION LINE PERFORMANCE</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>TRANLINE</td>
+</tr>
+<tr class="row-even"><td>TRANSMISSION LINE Q</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>QLINE2</td>
+</tr>
+<tr class="row-odd"><td>TRANSMISSION LINE STUBS</td>
+<td>, coaxial cable</td>
+<td>&nbsp;</td>
+<td>COAXSTUB</td>
+</tr>
+<tr class="row-even"><td>TRANSMISSION LINE STUBS</td>
+<td>, open-wire line</td>
+<td>&nbsp;</td>
+<td>TRANSTUB</td>
+</tr>
+<tr class="row-odd"><td>TRANSMISSION LINE</td>
+<td>, square coaxial</td>
+<td>&nbsp;</td>
+<td>SQCOAX</td>
+</tr>
+<tr class="row-even"><td>TRANSMISSION LINES</td>
+<td>, coaxial cable</td>
+<td>&nbsp;</td>
+<td>COAXCHAR</td>
+</tr>
+<tr class="row-odd"><td>TRANSMISSION LINES</td>
+<td>, open-wire</td>
+<td>&nbsp;</td>
+<td>OPENWIRE</td>
+</tr>
+<tr class="row-even"><td>TRANSMITTER STAGE COUPLING</td>
+<td>, (transistor stages)</td>
+<td>&nbsp;</td>
+<td>XMTRZMAT</td>
+</tr>
+<tr class="row-odd"><td>TRAP ANTENNA DESIGN</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>TRAPOLE</td>
+</tr>
+<tr class="row-even"><td>TRAP DESIGN CALCLATOR</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>TRAPCALC</td>
+</tr>
+<tr class="row-odd"><td>TRAP PROPERTY ESTIMATOR</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>TRAPROP</td>
+</tr>
+<tr class="row-even"><td>TRAPS</td>
+<td>, High Q Antenna</td>
+<td>&nbsp;</td>
+<td>QTRAP</td>
+</tr>
+<tr class="row-odd"><td>TRAPS</td>
+<td>, antenna</td>
+<td>, air-core coil</td>
+<td>WAVETRAP</td>
+</tr>
+<tr class="row-even"><td>TRAPS</td>
+<td>, antenna</td>
+<td>, toroid inductor</td>
+<td>TOROTRAP</td>
+</tr>
+<tr class="row-odd"><td>TRAPS</td>
+<td>, coaxial cable</td>
+<td>&nbsp;</td>
+<td>COAXTRAP</td>
+</tr>
+<tr class="row-even"><td>TRAPS</td>
+<td>, coaxial cable SuperTrap</td>
+<td>, hi-reactance</td>
+<td>BUXTRAP</td>
+</tr>
+<tr class="row-odd"><td>TRAPS</td>
+<td>, design calculator</td>
+<td>&nbsp;</td>
+<td>TRAPCALC</td>
+</tr>
+<tr class="row-even"><td>TRAPS</td>
+<td>, wave trap filters</td>
+<td>&nbsp;</td>
+<td>WAVETRAP</td>
+</tr>
+<tr class="row-odd"><td>TRIANGLE WAVE GENERATOR</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>TRISQU</td>
+</tr>
+<tr class="row-even"><td>TRIANGLES</td>
+<td>, solution of</td>
+<td>&nbsp;</td>
+<td>SOLUTRI</td>
+</tr>
+<tr class="row-odd"><td>TRIGONOMETRIC FUNCTIONS</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>TRIG</td>
+</tr>
+<tr class="row-even"><td>TRIMMER CAPACITORS</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>CAPTRIM</td>
+</tr>
+<tr class="row-odd"><td>TRIP PLANNER</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>TRIPLAN</td>
+</tr>
+<tr class="row-even"><td>TROMBONE CAPACITOR</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>CAPYTEL</td>
+</tr>
+<tr class="row-odd"><td>TRUE NORTH VIA THE SUN</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>TRUNORTH</td>
+</tr>
+<tr class="row-even"><td>TUBING</td>
+<td>, aluminum</td>
+<td>&nbsp;</td>
+<td>TELETUBE</td>
+</tr>
+<tr class="row-odd"><td>TUBING</td>
+<td>, antenna elements</td>
+<td>&nbsp;</td>
+<td>ANTENNA</td>
+</tr>
+<tr class="row-even"><td>TUNED CIRCUIT DESIGN</td>
+<td>, L/C network</td>
+<td>&nbsp;</td>
+<td>TUNECCT</td>
+</tr>
+<tr class="row-odd"><td>TUNERS</td>
+<td>, link coupled</td>
+<td>&nbsp;</td>
+<td>LINKUPL</td>
+</tr>
+<tr class="row-even"><td>TURNING RADIUS - BEAMS</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>TURNRAD</td>
+</tr>
+<tr class="row-odd"><td>TV CHANNELS</td>
+<td>, (N.America)</td>
+<td>&nbsp;</td>
+<td>TVCHAN</td>
+</tr>
+<tr class="row-even"><td>UNIT VALUE COMPARATOR</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>UNITVALU</td>
+</tr>
+<tr class="row-odd"><td>UTC</td>
+<td>, Coordinated Universal Time</td>
+<td>&nbsp;</td>
+<td>TIMEZONE</td>
+</tr>
+<tr class="row-even"><td>VACUUM TUBE TANK CIRCUIT</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>TANKCCT</td>
+</tr>
+<tr class="row-odd"><td>VARIABLE CAPACITOR</td>
+<td>, plate shape designer</td>
+<td>&nbsp;</td>
+<td>VACAP</td>
+</tr>
+<tr class="row-even"><td>VARIABLE CAPACITOR</td>
+<td>, telescoping</td>
+<td>&nbsp;</td>
+<td>CAPYTEL</td>
+</tr>
+<tr class="row-odd"><td>VELOCITY FACTOR</td>
+<td>, coaxial cable</td>
+<td>&nbsp;</td>
+<td>COAXCHAR</td>
+</tr>
+<tr class="row-even"><td>VELOCITY FACTOR</td>
+<td>, open-wire lines</td>
+<td>&nbsp;</td>
+<td>OPENWIRE</td>
+</tr>
+<tr class="row-odd"><td>VELOCITY FACTOR</td>
+<td>, transmission lines</td>
+<td>&nbsp;</td>
+<td>ELECLENG</td>
+</tr>
+<tr class="row-even"><td>VELOCITY OF LIGHT</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>ANTENNA</td>
+</tr>
+<tr class="row-odd"><td>VERTICAL ANTENNA ARRAY</td>
+<td>, feed method</td>
+<td>&nbsp;</td>
+<td>VARAYFED</td>
+</tr>
+<tr class="row-even"><td>VERTICAL ANTENNA</td>
+<td>, dual band trap</td>
+<td>&nbsp;</td>
+<td>TRAPOLE</td>
+</tr>
+<tr class="row-odd"><td>VERTICAL ANTENNA</td>
+<td>, mobile/maritime whip</td>
+<td>&nbsp;</td>
+<td>MOWHIP</td>
+</tr>
+<tr class="row-even"><td>VERTICAL ANTENNA</td>
+<td>, short helically wound</td>
+<td>&nbsp;</td>
+<td>HELVERT</td>
+</tr>
+<tr class="row-odd"><td>VERTICAL ANTENNA</td>
+<td>, short with capacity hat</td>
+<td>&nbsp;</td>
+<td>CAPYHAT</td>
+</tr>
+<tr class="row-even"><td>VFO FREQUENCY CALCULATOR</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>VFOFREQ</td>
+</tr>
+<tr class="row-odd"><td>VOLT-AMPERE VALUE</td>
+<td>, in A.C. circuits</td>
+<td>&nbsp;</td>
+<td>ACCALC</td>
+</tr>
+<tr class="row-even"><td>VOLTAGE BREAKDOWN</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>SPARK</td>
+</tr>
+<tr class="row-odd"><td>VOLTAGE DIVIDED</td>
+<td>, Thevinin</td>
+<td>&nbsp;</td>
+<td>THEVININ</td>
+</tr>
+<tr class="row-even"><td>VOLTAGE DIVIDER</td>
+<td>, 2 resistors</td>
+<td>&nbsp;</td>
+<td>VOLTDIV</td>
+</tr>
+<tr class="row-odd"><td>VOLTAGE DIVIDER</td>
+<td>, R/C, R/L, L/C circuits</td>
+<td>&nbsp;</td>
+<td>DSGNMENU</td>
+</tr>
+<tr class="row-even"><td>VOLTAGE DROP</td>
+<td>, in long runs of copper wire</td>
+<td>&nbsp;</td>
+<td>COPWIRE</td>
+</tr>
+<tr class="row-odd"><td>VOLTAGE REGULATOR</td>
+<td>, LM317 IC</td>
+<td>&nbsp;</td>
+<td>LM317</td>
+</tr>
+<tr class="row-even"><td>VOLTAGE REGULATOR</td>
+<td>, zener diode</td>
+<td>&nbsp;</td>
+<td>ZENER</td>
+</tr>
+<tr class="row-odd"><td>VOLTAGE</td>
+<td>, A.C.circuits</td>
+<td>&nbsp;</td>
+<td>ACCALC</td>
+</tr>
+<tr class="row-even"><td>VOLTAGE</td>
+<td>, clamping</td>
+<td>&nbsp;</td>
+<td>CLAMP</td>
+</tr>
+<tr class="row-odd"><td>VOLTAGE</td>
+<td>, dB gain/loss</td>
+<td>&nbsp;</td>
+<td>DECIBEL</td>
+</tr>
+<tr class="row-even"><td>VOLTMETERS</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>METERS</td>
+</tr>
+<tr class="row-odd"><td>VSWR</td>
+<td>, lossless L/C circuits</td>
+<td>&nbsp;</td>
+<td>NOLOSS</td>
+</tr>
+<tr class="row-even"><td>VSWR</td>
+<td>, transmission lines</td>
+<td>&nbsp;</td>
+<td>MISMAT</td>
+</tr>
+<tr class="row-odd"><td>WALKER</td>
+<td>, screen saver</td>
+<td>&nbsp;</td>
+<td>WALKER</td>
+</tr>
+<tr class="row-even"><td>WALL WART RATINGS CALCULATOR</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>WALWART</td>
+</tr>
+<tr class="row-odd"><td>WALLWART TEST PROGRAM</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>WARTEST</td>
+</tr>
+<tr class="row-even"><td>WATTS</td>
+<td>, (Ohm&#8217;s Law)</td>
+<td>&nbsp;</td>
+<td>OHMSLAW</td>
+</tr>
+<tr class="row-odd"><td>WAVE GENERATOR</td>
+<td>, Suare &amp; Triangle</td>
+<td>&nbsp;</td>
+<td>TRISQU</td>
+</tr>
+<tr class="row-even"><td>WAVE TRAP FILTERS</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>WAVETRAP</td>
+</tr>
+<tr class="row-odd"><td>WAVEGUIDES</td>
+<td>, parabolic dish circular feeds</td>
+<td>&nbsp;</td>
+<td>CIRCFEED</td>
+</tr>
+<tr class="row-even"><td>WAVELENGTH</td>
+<td>, audio frequencies</td>
+<td>&nbsp;</td>
+<td>ZOUNDS</td>
+</tr>
+<tr class="row-odd"><td>WAVELENGTH</td>
+<td>, centre</td>
+<td>&nbsp;</td>
+<td>CENTFREQ</td>
+</tr>
+<tr class="row-even"><td>WAVELENGTH</td>
+<td>, convert to frequency</td>
+<td>&nbsp;</td>
+<td>EQUIV</td>
+</tr>
+<tr class="row-odd"><td>WEIGHT</td>
+<td>, copper wire</td>
+<td>&nbsp;</td>
+<td>COPWIRE</td>
+</tr>
+<tr class="row-even"><td>WHEATSTONE BRIDGE #1</td>
+<td>, Calculator</td>
+<td>&nbsp;</td>
+<td>BRIDGE</td>
+</tr>
+<tr class="row-odd"><td>WHEATSTONE BRIDGE #2</td>
+<td>, Calculator</td>
+<td>&nbsp;</td>
+<td>BRIDGE-2</td>
+</tr>
+<tr class="row-even"><td>WHIP ANTENNA COILS</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>COILAMP</td>
+</tr>
+<tr class="row-odd"><td>WHIP ANTENNA</td>
+<td>, mobile/maritime</td>
+<td>&nbsp;</td>
+<td>MOWHIP</td>
+</tr>
+<tr class="row-even"><td>WIND CHILL FACTOR</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>WINDCHIL</td>
+</tr>
+<tr class="row-odd"><td>WINDINGS CALCULATOR</td>
+<td>, single layer coils</td>
+<td>&nbsp;</td>
+<td>HELIX</td>
+</tr>
+<tr class="row-even"><td>WINDINGS CALCULATOR</td>
+<td>, transformers</td>
+<td>&nbsp;</td>
+<td>WINDING</td>
+</tr>
+<tr class="row-odd"><td>WINDINGS RATIO</td>
+<td>, transformers</td>
+<td>&nbsp;</td>
+<td>XFMR</td>
+</tr>
+<tr class="row-even"><td>WINDINGS</td>
+<td>, L/C network coils</td>
+<td>&nbsp;</td>
+<td>TUNECCT</td>
+</tr>
+<tr class="row-odd"><td>WINDOM ANTENNA</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>WINDOM</td>
+</tr>
+<tr class="row-even"><td>WIRE ANTENNA INDEX</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>WIREANT</td>
+</tr>
+<tr class="row-odd"><td>WIRE INCHES-PER-VOLT</td>
+<td>, transformers</td>
+<td>&nbsp;</td>
+<td>WINDING</td>
+</tr>
+<tr class="row-even"><td>WIRE MESH SCREENS</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>WIREMESH</td>
+</tr>
+<tr class="row-odd"><td>WIRE SIZE CALCULATOR</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>AWGEXACT</td>
+</tr>
+<tr class="row-even"><td>WIRE SPACING</td>
+<td>, open-wire transmission line</td>
+<td>&nbsp;</td>
+<td>OPENWIRE</td>
+</tr>
+<tr class="row-odd"><td>WIRE TABLES</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>COPWIRE</td>
+</tr>
+<tr class="row-even"><td>WIRE WOUND RESISTORS</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>RESICOP</td>
+</tr>
+<tr class="row-odd"><td>WIRE</td>
+<td>, Copperweld</td>
+<td>&nbsp;</td>
+<td>WIRESAG</td>
+</tr>
+<tr class="row-even"><td>WIRE</td>
+<td>, hard drawn copper</td>
+<td>&nbsp;</td>
+<td>WIRESAG</td>
+</tr>
+<tr class="row-odd"><td>WIRE</td>
+<td>, stretching and sagging</td>
+<td>&nbsp;</td>
+<td>WIRESAG</td>
+</tr>
+<tr class="row-even"><td>WIRES IN CONDUIT</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>WIRECOND</td>
+</tr>
+<tr class="row-odd"><td>YAGI 3-ELEMENT BEAM</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>YAGI3EL</td>
+</tr>
+<tr class="row-even"><td>YAGI ANTENNA</td>
+<td>, log-periodic array</td>
+<td>&nbsp;</td>
+<td>LOGYAG</td>
+</tr>
+<tr class="row-odd"><td>YAGI ELEMENT DIAMETER VS LENGTH</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>DIALGTH</td>
+</tr>
+<tr class="row-even"><td>YAGI ELEMENT SPACING</td>
+<td>, NBS standard</td>
+<td>&nbsp;</td>
+<td>YAGISPAC</td>
+</tr>
+<tr class="row-odd"><td>YAGI TAPERED ELEMENTS</td>
+<td>, (telescoped aluminum tubing)</td>
+<td>&nbsp;</td>
+<td>YAGTAPER</td>
+</tr>
+<tr class="row-even"><td>YAGI THROUGH-BOOM ELEMENTS</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>THRUBOOM</td>
+</tr>
+<tr class="row-odd"><td>YAGI</td>
+<td>, extremely long</td>
+<td>&nbsp;</td>
+<td>YAGILONG</td>
+</tr>
+<tr class="row-even"><td>YAGI</td>
+<td>, hairpin beta-match</td>
+<td>&nbsp;</td>
+<td>HAIRPIN</td>
+</tr>
+<tr class="row-odd"><td>ZENER DIODE VOLTAGE REGULATOR</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>ZENER</td>
+</tr>
+<tr class="row-even"><td>ZEPP MULTI-BAND ANTENNA</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>ZEPP</td>
+</tr>
+<tr class="row-odd"><td>ZEPP</td>
+<td>, double extended</td>
+<td>&nbsp;</td>
+<td>ZEPPDBL</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="subject-areas">
+<h2>Subject Areas<a class="headerlink" href="#subject-areas" title="Permalink to this headline">¶</a></h2>
+<p>There appear to be the following subject areas.</p>
+<ol class="arabic simple">
+<li>Radio Engineering</li>
+<li>Radio Operations</li>
+<li>General Electronics</li>
+<li>Construction including Plumbing and Electrical</li>
+<li>Mathematics and Physics including Unit Conversions</li>
+<li>Navigation and Astronomy</li>
+<li>Calendrical Calculations</li>
+<li>Audio and Photography</li>
+<li>Software Engineering, including ASCII codes and other algorithms</li>
+<li>Other, including finance and nutrition</li>
+</ol>
+<p>The idea is to partition all 449 programs into one of these higher-level subject areas.</p>
+<p>This should be more useful than the purely alphabetical organization originally
+used in HamCalc.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">The HamCalc Legacy</a><ul>
+<li><a class="reference internal" href="#user-menu">User Menu</a></li>
+<li><a class="reference internal" href="#quick-table-menu">Quick Table Menu</a></li>
+<li><a class="reference internal" href="#complete-cross-reference">Complete Cross Reference</a></li>
+<li><a class="reference internal" href="#subject-areas">Subject Areas</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="background.html"
+                        title="previous chapter">Background</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="python_architecture.html"
+                        title="next chapter">Python Architecture</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/legacy.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="python_architecture.html" title="Python Architecture"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="background.html" title="Background"
+             >previous</a> |</li>
+        <li><a href="index.html">HamCalc 2.1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2013, S.Lott.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2b1.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,261 @@
+10 :REM'COAXSTUB - Stubs for Coaxial Lines - 03 JUN 96 rev. 05 SEP 2009
+20 CLS:KEY OFF
+30 IF EX$=""THEN EX$="EXIT"
+40 IF PROG$=""THEN GO$=EX$ :ELSE GO$=PROG$
+50 COMMON EX$
+60 COLOR 7,0,1
+70 ON ERROR  GOTO 100
+80 GOTO 130
+90 :REM'
+100 IF ERR=1 AND ERL=1480 THEN COLOR 7,0:RESUME 1800
+110 BEEP:PRINT "Error";ERR;"in line";ERL:END
+120 :REM'
+130 PI=3.1415929794311523!
+140 UL$=STRING$(80,205)
+150 L$="#####.###"
+160 V$="####.###"
+170 X$=STRING$(80,32)
+180 DIM C$(40,9)    :REM'coax data
+190 :REM'
+200 :REM'.....read data
+210 OPEN"I",1,"\hamcalc\coaxfile\coaxial.fil"
+220 N=40    :REM'no.of data groups
+230  FOR Z=1 TO N
+240   FOR Y=1 TO 9
+250   INPUT#1, C$(Z,Y)
+260   NEXT Y
+270  NEXT Z
+280 CLOSE
+290 :REM'
+300 :REM'.....start
+310 CLS
+320 B=0:C=0:E=0:I=0:O=0:U=0:V=0:ZO=0
+330 COLOR 15,2
+340 PRINT " STUBS - COAXIAL TRANSMISSION LINES";
+350 PRINT TAB(57)"by George Murphy VE3ERP ";
+360 COLOR 1,0:PRINT STRING$(80,223);
+370 COLOR 7,0
+380 GOSUB 2300
+390 PRINT UL$;
+400 PRINT " Press number in < > to choose standard units of measure:"
+410 PRINT UL$;
+420 PRINT "   < 1 >  Metric"
+430 PRINT "   < 2 >  U.S.A./Imperial"
+440 PRINT UL$;
+450 PRINT "     or Press < 0 > to EXIT....."
+460 Z$=INKEY$
+470 IF Z$="0"THEN CLS:CHAIN GO$
+480 IF Z$="1"THEN UM=0.30480000376701355!:UM$="m.":GOTO 520
+490 IF Z$="2"THEN UM=1:UM$="ft.":GOTO 520
+500 GOTO 460
+510 :REM'
+520 :REM'.....transmission line stubs
+530 CLS
+540 LOCATE 1:COLOR 0,7,0:T=1
+550 LOCATE ,T:PRINT "           COAXIAL TRANSMISSION LINE STUBS           "
+560 LOCATE ,T:PRINT "   ║ │«╫───── Lg ─────»│     ║ │«╫───── Lg ─────»│   "
+570 LOCATE ,T:PRINT "   ║ │ ╚═══════════════╕     ║ │ ╚═══════════════╕   "
+580 LOCATE ,T:PRINT " ┌─╫»├──────────────────   ┌─╫»├──────────────────┐  "
+590 LOCATE ,T:PRINT " Z ║ │ ╔════shield═════╛   Z ║ │ ╔════shield════╤╛│  "
+600 LOCATE ,T:PRINT "   ║ │«╫─line                ║ │«╫─line         └─┘  "
+610 LOCATE ,T:PRINT "                                                     "
+620 LOCATE ,T:PRINT " CAPACITIVEE (open) STUB   INDUCTIVE (shorted) STUB  "
+630 LOCATE ,T:PRINT "                                                     "
+640 LOCATE ,T:PRINT "     (ref. 1996 ARRL HANDBOOK, pp.16.21 & 16.22)     "
+650 COLOR 7,0
+660 T=55:LOCATE 3
+670 LOCATE ,T:PRINT "Transmission line stubs  "
+680 LOCATE ,T:PRINT "should extend away from  "
+690 LOCATE ,T:PRINT "the line at an angle as  "
+700 LOCATE ,T:PRINT "close to 90° as possible."
+710 LOCATE 10:PRINT UL$;
+720 GOSUB 750
+730 GOTO 840
+740 :REM'
+750 :REM'.....cable table
+760 FOR Z=1 TO 10
+770 PRINT TAB(1)USING "##:";Z;:PRINT C$(Z,1);
+780 PRINT TAB(21)USING "##:";Z+10;:PRINT C$(Z+10,1);
+790 PRINT TAB(41)USING "##:";Z+20;:PRINT C$(Z+20,1);
+800 PRINT TAB(61)USING "##:";Z+30;:PRINT C$(Z+30,1)
+810 NEXT Z
+820 PRINT TAB(27)"* denotes foam dielectric"
+830 RETURN
+840 PRINT UL$;
+850 :REM'
+860 INPUT " ENTER: An item number from above list to select coaxial cable";N
+870 IF N>=1 AND N<=40 THEN 890
+880 BEEP:LOCATE CSRLIN-1:PRINT X$;:LOCATE CSRLIN-1:GOTO 860
+890 VIEW PRINT 11 TO 24:CLS:VIEW PRINT
+900 FOR Z=1 TO 9:LOCATE Z,55:PRINT STRING$(26,32);:NEXT Z
+910 T$=C$(N,1)
+920 ZIN=VAL(C$(N,5))
+930 E=VAL(C$(N,3))
+940 VF=1/SQR(E)
+950 COLOR 15,4
+960 LOCATE 1,54:PRINT " ";T$;" COAX CABLE "
+970 COLOR 7,0
+980 LOCATE ,55:PRINT "Impedance Z (ohms) =";USING"###.#";ZIN
+990 LOCATE ,55:PRINT "Inner wire dia.,in.=";USING" .###";VAL(C$(N,8))
+1000 LOCATE ,55:PRINT "Dielectric constant=";USING"##.##";E
+1010 LOCATE ,55:PRINT "Velocity factor....=";USING" .###";VF
+1020 LOCATE ,55:PRINT "XL= Inductive Reactance"
+1030 LOCATE ,55:PRINT " L= Inductance"
+1040 LOCATE ,55:PRINT "XC= Capacitive Reactance"
+1050 LOCATE ,55:PRINT " C= Capacitance"
+1060 LOCATE 11
+1070 :REM'
+1080 INPUT " ENTER: Frequency in MHz......";FO
+1090 COLOR 7,0
+1100 VIEW PRINT 23 TO 24:CLS:VIEW PRINT:LOCATE 11
+1110 WL=300/FO          :REM'wavelength in free space
+1120 W=300/(SQR(E)*FO)  :REM'electrical wavelength
+1130 :REM'
+1140 T=9
+1150 PRINT TAB(T)"Frequency.......................";USING V$;FO;
+1160 PRINT " MHz    =";
+1170 PRINT USING V$;300/FO;:PRINT " metres"
+1180 PRINT TAB(T)"Electrical wavelength.........w=";USING V$;W;
+1190 PRINT " metres =";USING V$;W/0.30480000376701355!;:PRINT " feet"
+1200 PRINT TAB(T)"Electrical ¼-wavelength.....w/4=";USING V$;W/4;
+1210 PRINT " metres =";USING V$;W/4/0.30480000376701355!;:PRINT " feet"
+1220 PRINT UL$;
+1230 PRINT " TYPICAL VALUES:";TAB(38)"INDUCTIVE STUB";
+1240 PRINT TAB(58)"CAPACITIVE STUB"
+1250 PRINT TAB(9)"Lg/w";TAB(16)"Lg(m.)";TAB(25)"Lg(ft)";
+1260 PRINT TAB(38);"XL(Ω)";TAB(48)"L(µH)";TAB(58)"XC(Ω)";TAB(68)"C(pF)"
+1270 :REM'
+1280 K=-0.05000000074505806!
+1290 FOR Z=1 TO 7
+1300 IF Z=4 OR Z=5 THEN K=K+0.02500000037252903!:GOTO 1320
+1310 K=K+0.05000000074505806!
+1320 LG=K*W
+1330 :REM'
+1340 IF K=0 THEN XL=0:XC=10^6:GOTO 1390
+1350 IF K=0.25! THEN XC=0:XL=10^6:GOTO 1390
+1360 XC=ZIN/TAN(2*PI*LG/W):      C=10^6/(2*PI*FO*XC)
+1370 XL=ZIN/(1/TAN(2*PI*LG/W)):  L=XL/(2*PI*FO)
+1380 :REM'
+1390 PRINT TAB(9)USING ".###";K;
+1400 PRINT TAB(13);USING L$;LG;
+1410 PRINT TAB(22);USING L$;LG/0.30480000376701355!;
+1420 IF K<=0   THEN PRINT TAB(38)"- 0 -     - 0 -     - ∞ -     - 0 -":GOTO 1480
+1430 IF K>=0.25! THEN PRINT TAB(38)"- ∞ -     - ∞ -     - 0 -     - ∞ -":GOTO 1480
+1440 PRINT TAB(34)USING L$;XL;
+1450 PRINT TAB(44)USING L$;L;
+1460 PRINT TAB(54)USING L$;XC;
+1470 PRINT TAB(64)USING L$;C;
+1480 NEXT Z
+1490 GOSUB 2530   :REM'hardcopy
+1500 :REM'
+1510 :REM'.....sub-menu
+1520 COLOR 7,0
+1530 LOCATE 25,1:PRINT X$;
+1540 LOCATE 24,3:COLOR 15,2
+1550 PRINT " Press a number for a specific: 1-Frequency, 2-Length, ";
+1560 PRINT "3-Inductance,        ";
+1570 LOCATE 25,3
+1580 PRINT " 4-Capacitance, 5-Inductive Reactance, 6-Capacitive Reactance,";
+1590 PRINT " or 7 to QUIT ";
+1600 :REM'
+1610 COLOR 7,0
+1620 Z$=INKEY$:IF Z$=""THEN 1620
+1630 IF VAL(Z$)<1 OR VAL(Z$)>7 THEN 1620
+1640 LOCATE 25,1:PRINT X$;
+1650 IF Z$="1"THEN 1820
+1660 IF Z$="2"THEN 1730
+1670 IF Z$="3"THEN 1860
+1680 IF Z$="4"THEN 2070
+1690 IF Z$="5"THEN 1970
+1700 IF Z$="6"THEN 2190
+1710 IF Z$="7"THEN 2500
+1720 :REM'
+1730 :REM'.....length
+1740 COLOR 7,0:VIEW PRINT 23 TO 24:CLS:VIEW PRINT:LOCATE 23
+1750 COLOR 0,7:PRINT " ENTER: Specified length....(";UM$;")";:INPUT LG
+1760 IF UM=1 THEN LG=LG*0.30480000376701355!
+1770 K=LG/W
+1780 LOCATE CSRLIN-1:PRINT X$;
+1790 LOCATE CSRLIN-1,8:GOTO 1340
+1800 GOSUB 2530:GOTO 1510
+1810 :REM'
+1820 :REM'.....frequency
+1830 COLOR 7,0:VIEW PRINT 23 TO 24:CLS:VIEW PRINT:LOCATE 23
+1840 COLOR 0,7:GOTO 1080
+1850 :REM'
+1860 :REM'.....inductance
+1870 COLOR 7,0:VIEW PRINT 23 TO 24:CLS:VIEW PRINT:LOCATE 23
+1880 COLOR 0,7:LOCATE 23
+1890 INPUT " ENTER: Inductance (µH)";L
+1900 XL=L*2*PI*FO
+1910 LG=W*ATN(XL/ZIN)/(2*PI)
+1920 K=LG/W
+1930 LOCATE CSRLIN-1:PRINT X$;
+1940 LOCATE CSRLIN-1,8:GOTO 1340
+1950 GOSUB 2530:GOTO 1510
+1960 :REM'
+1970 :REM'.....inductive reactance
+1980 COLOR 7,0:VIEW PRINT 23 TO 24:CLS:VIEW PRINT:LOCATE 23
+1990 COLOR 0,7:LOCATE 23
+2000 INPUT " ENTER: Inductance Reactance XL (ohms)";XL
+2010 LG=W*ATN(XL/ZIN)/(2*PI)
+2020 K=LG/W
+2030 LOCATE CSRLIN-1:PRINT X$;
+2040 LOCATE CSRLIN-1,8:GOTO 1340
+2050 GOSUB 2530:GOTO 1510
+2060 :REM'
+2070 :REM'.....capacitance
+2080 COLOR 7,0:VIEW PRINT 23 TO 24:CLS:VIEW PRINT:LOCATE 23
+2090 COLOR 0,7:LOCATE 23
+2100 INPUT " ENTER: Capacitance (pF)";C
+2110 IF C<=0 THEN LG=0:K=0:GOTO 2150
+2120 XC=10^6/(2*PI*FO*C)
+2130 LG=W*ATN(ZIN/XC)/(2*PI)
+2140 K=LG/W
+2150 LOCATE CSRLIN-1:PRINT X$;
+2160 LOCATE CSRLIN-1,8:GOTO 1340
+2170 GOSUB 2530:GOTO 1510
+2180 :REM'
+2190 :REM'.....capacitive reactance
+2200 COLOR 7,0:VIEW PRINT 23 TO 24:CLS:VIEW PRINT:LOCATE 23
+2210 COLOR 0,7:LOCATE 23
+2220 INPUT " ENTER: Capacitance Reactance XC (ohms)";XC
+2230 IF XC<=0 THEN K=0.25!:LG=W/4:GOTO 2260
+2240 LG=W*ATN(ZIN/XC)/(2*PI)
+2250 K=LG/W
+2260 LOCATE CSRLIN-1:PRINT X$;
+2270 LOCATE CSRLIN-1,8:GOTO 1340
+2280 GOSUB 2530:GOTO 1510
+2290 :REM'
+2300 :REM'.....diagram
+2310 J=14
+2320 COLOR 0,7
+2330 LOCATE ,J:PRINT "        ┌─────────┐                 ┌─────────┐       "
+2340 LOCATE ,J:PRINT " ═══════╧═════════╧══════    ═══════╧═════════╧══════ "
+2350 LOCATE ,J:PRINT " ────line────┬───────────    ────line────┬─────────── "
+2360 LOCATE ,J:PRINT " ═══════╤══╗ │ ╔══╤══════    ═══════╤══╗ │ ╔══╤══════ "
+2370 LOCATE ,J:PRINT "        └─┐║ │ ║┌─┘«─tee connector-»└─┐║ │ ║┌─┘       "
+2380 LOCATE ,J:PRINT "          └╢ │ ╟┘                     └╢ │ ╟┘         "
+2390 LOCATE ,J:PRINT "           ║ │ ║«────── shield ───────»║ │ ║          "
+2400 LOCATE ,J:PRINT "           ║ │ ║                       ║ │ ║          "
+2410 LOCATE ,J:PRINT "           ╙ ┴ ╜                      ┌╨ │ ╜          "
+2420 LOCATE ,J:PRINT "                                      └──┘            "
+2430 LOCATE ,J:PRINT "         OPEN STUB                 SHORTED STUB       "
+2440 LOCATE ,J:PRINT "                                                      "
+2450 COLOR 7,0
+2460 RETURN
+2470 :REM'
+2480 :REM'.....end
+2490 GOSUB 2530
+2500 GOTO 300   :REM'start
+2510 END
+2520 :REM'
+2530 :REM'PRT
+2540 KEY OFF:GOSUB 2610:LOCATE 25,5:COLOR 0,2
+2550 PRINT " Send this page to:(1)Printer Queue? (2)Printout? ";
+2560 PRINT "(3)Next page? (1/2/3)";:COLOR 7,0
+2570 Z$=INKEY$:IF Z$<"1"OR Z$>"3"THEN 2570 :ELSE GOSUB 2610
+2580 IF Z$="3"THEN RETURN
+2590 FOR I%=1 TO 24:FOR J%=1 TO 80:LPRINT CHR$(SCREEN(I%,J%));:NEXT J%:NEXT I%
+2600 IF Z$="2"THEN LPRINT CHR$(12) :ELSE 2540
+2610 LOCATE 25,1:PRINT STRING$(80,32);:RETURN

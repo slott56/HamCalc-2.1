@@ -1,0 +1,32 @@
+############
+Antenna
+############
+
+Preface
+=======
+
+This calculator helps design simple antennas with some consideration
+for end-effects.
+
+The performance of any antenna depends upon many factors, not the least of
+which is its design. This program will help you arrive at a mathematically
+precise design, but the overall performance of any antenna also depends upon
+construction integrity, location, height, orientation, terrain, surrounding
+objects, etc. Some antenna adjustment and pruning to compensate for these
+variable conditions is nearly always required.
+
+Antenna Design
+==============
+
+To compute antenna size for a wire antenna
+
+1.  Enter the wire AWG # or diameter.
+
+2.  Enter the desired center frequency or wavelength
+
+..  applet::
+    :code: RadioCalc.class
+    :width: 200
+    :height: 350
+    :models: freqwavel diamawg antenna
+

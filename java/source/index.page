@@ -1,0 +1,315 @@
+..  include:: <isonum.txt>
+
+Disclaimer and Apology
+======================
+
+Origins
+-------
+
+This is a shameless rip-off of George Murphy's (VE3ERP) fabulous
+`HamCalc <ftp://ftp.qrz.com/pub/arrl/hamcal95.zip>`_ v. 9.4.
+Get the original if you want to see some nifty DOS-Basic programming.
+Lacking a full-time DOS machine, I've been forced to convert a tiny fraction
+of his massive collection. I originally built Excel spread-sheets, but
+they lack the polish of an application program. I found that Java worked
+much better, and also permits web publishing.
+
+The original works wonderfully in Metric or American units. I haven't
+attempted to make this program capable of arbitrary units on display. This
+is strictly in American units.
+
+Compatibility
+-------------
+
+There are two major, known compatibility issues.
+
+-   AOL. The AOL web browser doesn't understand Java. If the pages don't
+    have calculators on them, your browser doesn't understand Java. You'll
+    have to either get the original HamCalc or get a better browser.
+
+-   Internet Explorer 4.0. The IE 4.0 browser's Java is not standard, and
+    doesn't seem to work correctly. Also, IE 4.0 cannot be uninstalled, and has made
+    irrevocable changes to your Windows 95 system. Sorry.
+    Additionally, you may suffer
+    kernal32.dll crashes,
+    games that use DirectX 5 may stop working,
+    Windows 95 may freeze up when the channel screen saver is used,
+    you may not be able to use certain video cards in true color mode,
+    you may have problems with Microsoft Outlook 97,
+    you may lose profiles in Outlook and Exchange.
+
+Problem Resolution
+-------------------
+
+Problems, questions, complaints, etc. to `S_Lott@yahoo.com <mailto:s_lott@yahoo.com>`_
+
+Fine Print: This software has no warranty of fitness for
+any purpose whatsoever. If it doesn't seem to "work", I may be
+sorry, but I am not liable in any form. I will do my best to make such
+repairs as I see fit.
+
+Modules
+=======
+
+-   `555 One-shot Timer <ic555single.html>`_
+
+-   `555 Multivibrator <ic555multi.html>`_ (Oscillator)
+
+-   `Air-Core Single-Layer Coil <aircore.html>`_ Design for RF
+    Inductors, revised 7/21/97
+
+-   `Antenna Length <antenna.html>`_ Calculator with End-Effects
+
+-   `Attenuators <attenuator.html>`_: PI-network and T-section
+
+-   `|deg|C-|deg|F <temp_cf.html>`_ - Temperature Conversion
+
+-   `Frequency-Wavelength <freq_wavel.html>`_ - Frequency and
+    Wavelength Conversion
+
+-   `L-C "Tank" <lc_resonant.html>`_ Resonant Circuit Design
+
+-   `RTD_Statute <rtd_statute.html>`_ - Rate-Time-Distance calculator
+    (hours and statue miles)
+
+-   `RTD_Nautical <rtd_nautical.html>`_ - Nautical Rate-Time-Distance
+    calculator (minutes and nautical miles)
+
+-   `Short Dipole Antenna <shortantenna.html>`_ Design
+
+-   `Wire AWG-Diameter-Turns-per-inch <diamawgtpi.html>`_ Conversion
+
+`List of all HamCalc Modules`_
+
+Notes
+=====
+
+This is built with a Java applet based on my own Model class. A Model
+represents a mathematical model and includes fields which represent variables
+of that model. A Model can compute any one field given values in one or
+more other fields. Each field is dependent on zero or more other fields.
+A field which depends on zero other fields must be entered can cannot be
+computed. Other fields will be computed as data is entered.
+
+As an example, consider the RTD model: rate*time = distance. We can
+solve for either of the other two: r=d/t and t=d/r. The model knows all
+three formulae and picks one based on the order of the user's of inputs.
+
+As a usability note, Java does not recognize TAB as a significant GUI
+action. It's just another character. Return or Enter are GUI actions. I
+could (and perhaps will) change this in the future. For now, you must click
+on the field, enter the data, and either hit return or click on another
+field to see the calculation. Also, your JVM may not handle color changes
+correctly.
+
+As you enter values for fields, the model checks all other fields to
+see if they can be computed from the fields available. Fields you enter
+are marked in <FONT COLOR="#0000FF">blue</FONT>, fields it computes for
+you are marked in <FONT COLOR="#FF00FF">magenta</FONT>.
+
+Generally, the model uses a least-recently-used algorithm to determine
+what is computable. If you enter rate and time, it computes distance. If
+you change either rate or time, it recomputes distance. If you change distance,
+it recomputes whatever you entered earliest.
+
+For example, enter rate, enter time, get distance; change distance.
+Since rate is least recent, it will be computed from time and distance.
+The colors will change to reflect this.
+
+Some web pages have multiple models. When there are two (or more) models
+in the same panel, fields with identical names will be copied down the
+panel from a model to the model below. You can change these in subsequent
+models, but the change will *not* ripple back up the panel to prior
+models.
+
+Some models are fairly complex, and have several variables with complex
+relationships. An example is the air coil design. A typical scenario for
+coil design proceeds as follows.
+
+1.  Use the AWG-Diameter-Turns-per-Inch model to choose your wire. Adjust
+    the TPI or the diameter to allow for enamelled wire (0.005&quot; insulation).
+    If using insulated wire, wrap a ruler, measure and enter turns per inch.
+
+2.  Enter the inductance (in &micro;H's) for the coil. The form computes
+    an ideal coil diameter and number of turns.
+
+#.  Adjust the coil diameter for materials on hand.
+
+#.  Adjust the number of turns to be an integer -- the inductance and length/diameter
+    ratio will be recomputed to show you how your actual coil will match the
+    ideal coil.
+
+Note this common problem: If you do not change the coil diameter, the
+recomputation of iductance will not be completed. Manual entry of both
+coil diameter and number of turns (as well as TPI) is required to compute
+inductance. The computed (in <FONT COLOR="#FF00FF">magenta</FONT>) value
+is not sufficient, you must enter a value to make the field turn <FONT COLOR="#0000FF">blue</FONT>.
+
+List of all HamCalc Modules
+============================
+
+This is the complete list of HamCalc v 9.4 modules.
+
+-   555 Timers, see `555 One-shot Timer`_ and
+    `555 Multivibrator`_ (Oscillator)
+
+-   A.C. Circuit Calculator
+
+-   Antenna Length calculator, see `Antenna Length <antenna.html>`_
+    Calculator
+
+-   Attenuators: Pi-Net & T-Sect., see `Attenuators <attenuator.html>`_
+
+-   Audio Bandpass Filter
+
+-   Audio Tone Analyzer
+
+-   B. &amp; W. Air-Core Inductors
+
+-   Band-Reject Filter
+
+-   Battery Schedule
+
+-   Calendar
+
+-   Capacitor Design Calculator
+
+-   Capacitor - Custom Value
+
+-   CCD Antennas
+
+-   Circle - properties of
+
+-   Clock Screen Saver
+
+-   Coaxial Cable Characteristics
+
+-   Coax Traps for Multi-Band Antennas
+
+-   Code Practice
+
+-   Coil Designer, see `Air-Core Single-Layer Coil <aircore.html>`_,
+    revised 7/21/97.
+
+-   Coil Equation Calculator
+
+-   Copper Wire Tables and Calculator, see `Diameter-AWG
+    #-TPI <diamawgtpi.html>`_
+
+-   Decibel Calculator
+
+-   Decimal/Fraction Converter
+
+-   Equivalent Units of Measure
+
+-   Great Circle Paths &amp; Distances
+
+-   Guy Wires for Antenna Towers/Masts
+
+-   HAIRPIN Beta-Match for Yagis
+
+-   Ham Shack Stairs
+
+-   Helical Resonators (shielded)
+
+-   Helical Windings
+
+-   Impedance - series/parallel ccts.
+
+-   Inductors - Dryer Vent Hose
+
+-   Inverted Vee Antenna Dimensions
+
+-   L/C Network Tuned Circuits, see `L-C "Tank" <lc_resonant.html>`_
+
+-   LED Series Resistor
+
+-   Line-of-Sight radio wave
+
+-   Local Repeaters
+
+-   LOG-YAG log-periodic Yagi antenna
+
+-   LM317 Voltage Regulator
+
+-   L-Pad Impedance Matching
+
+-   Matching Networks for Transistors
+
+-   Metric Conversions
+
+-   MINILOOP miniature loop antenna
+
+-   MINIQUAD coil-shortened antenna
+
+-   Mobile Whip Antenna
+
+-   NiCad Battery Discharger
+
+-   Ohm's Law Calculator
+
+-   Open Wire Transmission Lines
+
+-   Parabolic Antenna
+
+-   PI-Network Impedance Matching
+
+-   Potentiometer - Custom Value
+
+-   Power Supply Design
+
+-   Prime Numbers
+
+-   Q Calculator - Resonant Circuits
+
+-   Quad Antenna Dimensions
+
+-   Quadratic Equations
+
+-   R/C Time Constant
+
+-   Resistor - Custom Value
+
+-   Resistor - Precision
+
+-   Sag in Horizontal Wire Antennas
+
+-   Satellite Orbit Parameters
+
+-   Series &amp; Parallel components
+
+-   Series-Section Balun Transformer
+
+-   Short Dipole for restricted space, see `Short
+    Dipole Antenna <shortantenna.html>`_
+
+-   Speed/Time/Distance calculator, see `RTD_Statute <rtd_statute.html>`_
+    and `RTD_Nautical <rtd_nautical.html>`_
+
+-   Stub Match for Antennas
+
+-   Sunrise/Sunset calculator
+
+-   SWR (Standing Wave Ratio)
+
+-   Telescoping Aluminum Tubing
+
+-   Toroid Antenna Traps
+
+-   Toroid Inductor Calculator
+
+-   Triangles - trigonometry
+
+-   Transformer ratio calculator
+
+-   Transformer Winding Calculator
+
+-   Transmission Line Losses
+
+-   Transmission Line Performance
+
+-   Trimmer Capacitor calculator
+
+-   Trap Dipole Design
+
+-   Zener Diode Voltage Regulator

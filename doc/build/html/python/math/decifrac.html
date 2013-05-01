@@ -1,0 +1,160 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>decifrac – Decimal/Fraction Converter &mdash; HamCalc 2.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '2.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="HamCalc 2.1 documentation" href="../../index.html" />
+    <link rel="up" title="math – Math, Physics, Units Conversion" href="index.html" />
+    <link rel="next" title="diamfind" href="diamfind.html" />
+    <link rel="prev" title="deciconv – Decimal Hour/Degree Converter" href="deciconv.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="diamfind.html" title="diamfind"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="deciconv.html" title="deciconv – Decimal Hour/Degree Converter"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../../index.html">HamCalc 2.1 documentation</a> &raquo;</li>
+          <li><a href="../index.html" >Python Modules</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">math &#8211; Math, Physics, Units Conversion</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="decifrac-decimal-fraction-converter">
+<h1>decifrac &#8211; Decimal/Fraction Converter<a class="headerlink" href="#decifrac-decimal-fraction-converter" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="analysis">
+<h2>Analysis<a class="headerlink" href="#analysis" title="Permalink to this headline">¶</a></h2>
+<p>Converting feet, inches and fractions to decimal feet is simply this.</p>
+<p>Given feet, <img class="math" src="../../_images/math/bb2c93730dbb48558bb3c4738c956c4e8f816437.png" alt="f"/>, inch, <img class="math" src="../../_images/math/34857b3ba74ce5cd8607f3ebd23e9015908ada71.png" alt="i"/>, numerator, <img class="math" src="../../_images/math/174fadd07fd54c9afe288e96558c92e0c1da733a.png" alt="n"/>, denominator, <img class="math" src="../../_images/math/96ab646de7704969b91c76a214126b45f2b07b25.png" alt="d"/>, we can compute decimal feet, <img class="math" src="../../_images/math/9d9b317ccda50e0c050322a15565da40c77c6c40.png" alt="f_d"/>.</p>
+<div class="math">
+<p><img src="../../_images/math/6c20e3b3721b1801a639f428c5fc891dd05c5053.png" alt="f_d  = f + \frac{i + \frac{n}{d}}{12} = f + \frac{id+n}{12d}"/></p>
+</div><p>Converting the other way involves approximating the decimal fraction.</p>
+<p>HamCalc uses 128ths; so we can develop an integer which is in 128ths of
+an inch, via <img class="math" src="../../_images/math/f29d4e5dc5ac07c599775eea92e069b0dbd402c5.png" alt="i_d = 12 \times 128 \times fd"/>. We can then
+work out a foot, inch and fraction for this value.</p>
+<div class="math">
+<p><img src="../../_images/math/ba482700d0ff0a18c4f554b4b5d5bc499653a644.png" alt="n/d = \lfloor 12 \times 128 \times f_d \rfloor \mod 128 / 128"/></p>
+</div><p>The <img class="math" src="../../_images/math/d6e1dd5b15cd4e83b38cb96a1add8c1c0b395b54.png" alt="n/d"/> fraction may get reduced to some smaller power of 2.</p>
+<div class="math">
+<p><img src="../../_images/math/aabd705049e5e87c2ee0cefcff93ebf790048fb5.png" alt="i = \lfloor 12 \times f_d \rfloor \mod 12"/></p>
+</div><div class="math">
+<p><img src="../../_images/math/834c793676dfa81c1dba2cf4df8b5f179d18e2bd.png" alt="f = \lfloor f_d \rfloor"/></p>
+</div></div>
+<div class="section" id="implementation">
+<h2>Implementation<a class="headerlink" href="#implementation" title="Permalink to this headline">¶</a></h2>
+<p>These are unit conversions.</p>
+</div>
+<div class="section" id="legacy">
+<h2>Legacy<a class="headerlink" href="#legacy" title="Permalink to this headline">¶</a></h2>
+<p>This program isn&#8217;t really what it appears to be.</p>
+<p>This is not simple dcimals to fractions and fractions to decimals.</p>
+<p>This is really about converting linear measurements in feet, inches and fractions to feet. And about converting decimal measuremnts of length
+(inches, feet, mm, cm, meter) to feet, inches and fractions.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">decifrac &#8211; Decimal/Fraction Converter</a><ul>
+<li><a class="reference internal" href="#analysis">Analysis</a></li>
+<li><a class="reference internal" href="#implementation">Implementation</a></li>
+<li><a class="reference internal" href="#legacy">Legacy</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="deciconv.html"
+                        title="previous chapter">deciconv &#8211; Decimal Hour/Degree Converter</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="diamfind.html"
+                        title="next chapter">diamfind</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../../_sources/python/math/decifrac.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="diamfind.html" title="diamfind"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="deciconv.html" title="deciconv – Decimal Hour/Degree Converter"
+             >previous</a> |</li>
+        <li><a href="../../index.html">HamCalc 2.1 documentation</a> &raquo;</li>
+          <li><a href="../index.html" >Python Modules</a> &raquo;</li>
+          <li><a href="index.html" >math &#8211; Math, Physics, Units Conversion</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2013, S.Lott.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2b1.
+    </div>
+  </body>
+</html>

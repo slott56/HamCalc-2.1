@@ -1,0 +1,29 @@
+{# ham template -- Used for HamCalc project #}
+{% extends "project.tmpl" %}
+
+{% block title %}Ham Calc &mdash; {{name}} &mdash; S.Lott v4.1 Site{% endblock %}
+{% set version = 2 %}
+{% set date = 1997 %}
+
+{% block leftMenu %}
+<P class=menu>
+<small>
+<A HREF="ic555single.html">555 One-shot Timer</A><br>
+<A HREF="ic555multi.html">555 Multivibrator</A> (Oscillator)<br>
+<A HREF="aircore.html">Air-Core Single-Layer Coil</A><br>
+<A HREF="antenna.html">Antenna Length</A><br>
+<A HREF="attenuator.html">Attenuators</A><br>
+<A HREF="audiofilt.html">Audio Filter</A><br>
+<A HREF="diamawgtpi.html">Diameter-AWG#-TPI</A><br>
+<A HREF="freq_wavel.html">Frequency-Wavelength</A><br>
+<A HREF="lc_resonant.html">L-C "Tank"</A><br>
+<A HREF="rtd_nautical.html">Rate-Time-Distance Nautical</A><br>
+<A HREF="rtd_statute.html">Rate-Time-Distance Statute</A><br>
+<A HREF="shortantenna.html">Short Dipole Antenna</A><br>
+<A HREF="temp_cf.html">Temperature Conversion</A><br>
+</small>
+{% endblock %}
+
+{% block content %}
+    {{text}}
+{% endblock %}

@@ -1,0 +1,57 @@
+#####################
+Short Dipole Antenna
+#####################
+
+Preface
+=======
+
+This calculator helps design a dipole antenna with a lumped-constant
+loading.
+
+At modest heights (10-30 meters) it will work well if its physical length
+is longer than 0.2xwavelength. This threshold length is displayed as the
+"best length". Shorter lengths will be less efficient.
+
+The antenna can be fed directly with 50 ohm coaxial cable. The design is
+based on the concept of inductive loading, widely used in center loaded
+mobile whip antennas.
+
+For maximum efficiency, the antenna should be as long as possible, consistent
+with available space. The loading coils should be as far from the center
+feed as possible, bearing in mind that the farther the coils are from the
+feed point the larger they become.
+
+For maximum efficiency, select the longest center-to-coil length and
+largest inductor that is practical for your application. To design the
+required coils, see the `Air Coil Design <aircore.html>`_ calculator.
+
+Antenna Design
+==============
+
+The following diagram illustrates the key measurements.
+
+..  image:: shortantdiag.gif
+    :alt: Short Antenna Diagram
+
+To compute inductance
+
+1.  Enter the wire AWG # or diameter.
+
+2.  Enter the desired center frequency or wavelength.
+
+3.  Describe the antenna.
+
+    -   Enter the available space for the dipole.
+
+    -   Enter the distance from center to coil, which must be less than half
+        the dipole's overall length.
+
+To try different locations for the load coil.
+
+1.  Change the center-to-coil distance, longer is more efficient.
+
+..  applet::
+    :code: RadioCalc.class
+    :width: 200
+    :height: 280
+    :models: diamawg freqwavel shortantenna

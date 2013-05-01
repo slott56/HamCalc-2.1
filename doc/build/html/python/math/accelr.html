@@ -1,0 +1,305 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>accelr – Acceleration Calculator &mdash; HamCalc 2.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '2.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="HamCalc 2.1 documentation" href="../../index.html" />
+    <link rel="up" title="math – Math, Physics, Units Conversion" href="index.html" />
+    <link rel="next" title="baromtr – Barometer Reading Equivalents" href="baromtr.html" />
+    <link rel="prev" title="math – Math, Physics, Units Conversion" href="index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="baromtr.html" title="baromtr – Barometer Reading Equivalents"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="math – Math, Physics, Units Conversion"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../../index.html">HamCalc 2.1 documentation</a> &raquo;</li>
+          <li><a href="../index.html" >Python Modules</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">math &#8211; Math, Physics, Units Conversion</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="accelr-acceleration-calculator">
+<h1>accelr &#8211; Acceleration Calculator<a class="headerlink" href="#accelr-acceleration-calculator" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="analysis">
+<h2>Analysis<a class="headerlink" href="#analysis" title="Permalink to this headline">¶</a></h2>
+<p>There are a number of formulae in the introduction.</p>
+<p>Force is Mass times Acceleration.</p>
+<div class="math">
+<p><img src="../../_images/math/6ee7632f7f2b4e7d069fc0d65d1d5acb93c55442.png" alt="F = M \times A"/></p>
+</div><p>Velocity is acceleration times time. Final Velocity depends on starting velocity.</p>
+<div class="math">
+<p><img src="../../_images/math/180d0f0fd237e575b621d69023346ab81ff4a917.png" alt="V_f = V_o + A t"/></p>
+</div><p>Distance is velocity times time; which is acceleration squared.</p>
+<div class="math">
+<p><img src="../../_images/math/87f2e6dea063c91bd388afc3fde37793e957c6ac.png" alt="D = V_ot + \frac{1}{2} A t^2"/></p>
+</div><p>Also, this.</p>
+<div class="math">
+<p><img src="../../_images/math/7c77fae9a7fa60b2641e8f25ba4ab88ebede6b08.png" alt="V_f^2 - V_o^2 = 2 A D"/></p>
+</div><p>We can solve for <img class="math" src="../../_images/math/54a8ef7da7b37c191ee81d474348e1f24e58447b.png" alt="V_o"/>, <img class="math" src="../../_images/math/e0d2bf360290fd61d1c1557e763f2622363b3d35.png" alt="t"/>.</p>
+<p>Given D, t and A:</p>
+<div class="math">
+<p><img src="../../_images/math/90a24b2e610d23206b5b51c17e5284aa83260199.png" alt="V_o = \frac{D}{t} - \frac{1}{2} \times A \times t"/></p>
+</div><p>Given V_f, V_o and A:</p>
+<div class="math">
+<p><img src="../../_images/math/26fc2b343bce2d4cdabe6f1fcb07d9d0ff764706.png" alt="t = \frac{V_f-V_o}{A}"/></p>
+</div></div>
+<div class="section" id="module-hamcalc.math.accelr">
+<span id="implementation"></span><h2>Implementation<a class="headerlink" href="#module-hamcalc.math.accelr" title="Permalink to this headline">¶</a></h2>
+<p>hamcalc.math.accelr &#8211; Acceleration Calculator</p>
+<p>These are two <strong>Solvers</strong> for acceleration and force problems.</p>
+<p>Here are some test cases</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">hamcalc.math.accelr</span> <span class="kn">import</span> <span class="n">force</span><span class="p">,</span> <span class="n">accel</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">accelr</span><span class="o">.</span><span class="n">force</span><span class="p">(</span> <span class="n">m</span><span class="o">=</span><span class="mi">12000</span><span class="p">,</span> <span class="n">a</span><span class="o">=-</span><span class="mf">2.5</span> <span class="p">)</span>
+<span class="go">{&#39;a&#39;: -2.5, &#39;m&#39;: 12000, &#39;f&#39;: -30000.0}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">accelr</span><span class="o">.</span><span class="n">force</span><span class="p">(</span> <span class="n">m</span><span class="o">=</span><span class="mi">12000</span><span class="p">,</span> <span class="n">f</span><span class="o">=</span><span class="mi">30000</span> <span class="p">)</span>
+<span class="go">{&#39;a&#39;: 2.5, &#39;m&#39;: 12000, &#39;f&#39;: 30000}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">accel</span><span class="p">(</span> <span class="n">d</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">t</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">v_o</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">a</span><span class="o">=-.</span><span class="mi">25</span> <span class="p">)</span>
+<span class="go">{&#39;a&#39;: -0.25, &#39;v_f&#39;: 0.5, &#39;v_o&#39;: 2, &#39;d&#39;: 50, &#39;t&#39;: 6}</span>
+</pre></div>
+</div>
+<dl class="function">
+<dt id="hamcalc.math.accelr.accel">
+<tt class="descclassname">hamcalc.math.accelr.</tt><tt class="descname">accel</tt><big>(</big><em>**kw</em><big>)</big><a class="reference internal" href="../../_modules/hamcalc/math/accelr.html#accel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.math.accelr.accel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Solve Acceleration problems.</p>
+<p>Some combination of a, d, t, v_o and v_f must be provided.
+The others will be deduced.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>d</strong> &#8211; Displacement (in m)</li>
+<li><strong>t</strong> &#8211; Time (in seconds)</li>
+<li><strong>v_o</strong> &#8211; Velocity at START</li>
+<li><strong>v_f</strong> &#8211; Velocity at END</li>
+<li><strong>a</strong> &#8211; Acceleration (m/s^2)</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Dictionary with all values.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="hamcalc.math.accelr.force">
+<tt class="descclassname">hamcalc.math.accelr.</tt><tt class="descname">force</tt><big>(</big><em>**kw</em><big>)</big><a class="reference internal" href="../../_modules/hamcalc/math/accelr.html#force"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.math.accelr.force" title="Permalink to this definition">¶</a></dt>
+<dd><p>Solve f = m * a problems.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>m</strong> &#8211; mass (kg)</li>
+<li><strong>a</strong> &#8211; acceleration (m/s^2)</li>
+<li><strong>f</strong> &#8211; force in Newtons (kg m/s^s)</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Dictionary with all three values.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="hamcalc.math.accelr.intro">
+<tt class="descclassname">hamcalc.math.accelr.</tt><tt class="descname">intro</tt><big>(</big><big>)</big><a class="reference internal" href="../../_modules/hamcalc/math/accelr.html#intro"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.math.accelr.intro" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the text from the introductory page.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="legacy-introduction">
+<h2>Legacy Introduction<a class="headerlink" href="#legacy-introduction" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><pre>ACCELERATION                                            by George Murphy VE3ERP
+
+ This program calculates force of acceleration using these equations:
+
+ F=MA, where Force = Mass x Acceleration.
+ d=vot+½at²
+ vf=vo+at
+ vf²-vo²=2ad
+ where d=displacement, vo=original velocity, vf=final velocity, t=time in
+ seconds and &#x27;a&#x27; is a constant calculated by the program.
+
+ Force of acceleration is calculated in kilogams and Standard Gravitys (g&#x27;s).</pre>
+</div>
+</div>
+<div class="section" id="legacy-output">
+<h2>Legacy Output<a class="headerlink" href="#legacy-output" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><pre>ENTER: Mass of moving object in kg? 12000
+ENTER: Displacement in metres ? 50
+ENTER: Duration of notion in seconds ? 6
+ENTER: Velocity at START of acceleration (metres/second)? 2
+ENTER: Velocity at END of acceleration (metres/second)? .5
+
+ACCELERATION CALCULATION
+
+Mass of moving object (kilograms)..M= 12000.000
+Displacement (metres)..............D=  50.000
+Duration of motion (seconds).......T=   6.000
+Start velocity (metres/second)....Vo=   2.000
+End velocity (metres/second)......Vf=   0.500
+Acceleration constant (m./sec.)....A=  -0.250
+Acceleration force (kilograms).....F= -3000.000
+Force (standard gravitys)............ -305.915
+
+(Standard gravity &lt;g-force&gt; is 9.80665 metres/second²).</pre>
+</div>
+</div>
+<div class="section" id="legacy-quirks">
+<h2>Legacy Quirks<a class="headerlink" href="#legacy-quirks" title="Permalink to this headline">¶</a></h2>
+<p>There are several quirks in this program.</p>
+<p>First, the legacy program conflates two problems.</p>
+<ol class="arabic simple">
+<li>Computing <img class="math" src="../../_images/math/945a10cf3fe964605bdcc4d87d1420d0b2993075.png" alt="F = M \times A"/> in units of <img class="math" src="../../_images/math/d4aadab1bfc2eaffc59039cc3d7fe8dff5d54be2.png" alt="km/s^2"/> (newtons) and gravities.</li>
+<li>Solving Velocty, Acceleration, Time and Distance.</li>
+</ol>
+<p>We can trivially strip away part 1 as a separate function that returns
+F values given M and A.</p>
+<p>After this, we&#8217;re left with part 2, which should be a <strong>Solver</strong> that derives one of
+the acceleration-related values (V_o, V_f, D, A or t) from the others.</p>
+<p>Actually, the program doesn&#8217;t solve for anything. No value can be meaningfully omitted.</p>
+<p>Line 390 effectively requires all inputs to be non-zero.</p>
+<div class="highlight-python"><pre>390 IF M*A*D*T*VO*VF THEN GOSUB 410:GOTO 470</pre>
+</div>
+<p>The value of <tt class="docutils literal"><span class="pre">A</span></tt> is the only one computed. Line 370 handles that.</p>
+<div class="highlight-python"><pre>370 IF VO*VF*T THEN A=(VF-VO)/T</pre>
+</div>
+<p>If we assume that line 390 is somehow incorrect, then
+lines 420-450 show an <em>intent</em> to solve for unknowns.</p>
+<div class="highlight-python"><pre>420 IF D=0 AND VO*T*A THEN D=VO*T+0.5!*A*T^2
+430 IF VF=0 AND VO*A*T THEN VF=VO+A*T
+440 IF VO=0 AND VF*A*T THEN V0=VF-A*T
+450 IF M*D*T*VO*VF*A THEN F=M*A:GOTO 470</pre>
+</div>
+<p>This looks like it can solve for D or V_f, V_o. All three require A, however,
+which is only computed from V_f, V_o and T on a previous line.</p>
+<p>So, the only thing this can actually solve for is D. And line 390 prevents that.</p>
+<p>Second, the &#8220;Acceleration Force&#8221; is in newtons, not kilograms.</p>
+<p>Third, omitted values will have an input value of zero. Using a starting or final velocity of zero makes the value appear to be omitted, when it&#8217;s actually supplied as zero.</p>
+<p>The &#8220;part 1&#8221;, force calculation, raises a further question: what&#8217;s the
+&#8220;Force (standard gravitys)&#8221; output?</p>
+<p>Let&#8217;s include the units.</p>
+<div class="math">
+<p><img src="../../_images/math/187ac42f4384731f39476d2edc10ecdf920a6bad.png" alt="F [kg\,m/s^2] = M [kg] \times A [m/s^2]"/></p>
+</div><div class="math">
+<p><img src="../../_images/math/23ef5135dfad305781c1a75b559ca8b4bb27a20c.png" alt="g = 9.81 [m/s^2]"/></p>
+</div><div class="math">
+<p><img src="../../_images/math/8d1d51da63f79a962575d0b81e545b974f65cb48.png" alt="F [kg\,m/s^2] / g [m/s^2] = m [kg]"/></p>
+</div><p>This appears to be an equivalent mass sitting on the surface of the earth.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">accelr &#8211; Acceleration Calculator</a><ul>
+<li><a class="reference internal" href="#analysis">Analysis</a></li>
+<li><a class="reference internal" href="#module-hamcalc.math.accelr">Implementation</a></li>
+<li><a class="reference internal" href="#legacy-introduction">Legacy Introduction</a></li>
+<li><a class="reference internal" href="#legacy-output">Legacy Output</a></li>
+<li><a class="reference internal" href="#legacy-quirks">Legacy Quirks</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="index.html"
+                        title="previous chapter">math &#8211; Math, Physics, Units Conversion</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="baromtr.html"
+                        title="next chapter">baromtr &#8211; Barometer Reading Equivalents</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../../_sources/python/math/accelr.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="baromtr.html" title="baromtr – Barometer Reading Equivalents"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="math – Math, Physics, Units Conversion"
+             >previous</a> |</li>
+        <li><a href="../../index.html">HamCalc 2.1 documentation</a> &raquo;</li>
+          <li><a href="../index.html" >Python Modules</a> &raquo;</li>
+          <li><a href="index.html" >math &#8211; Math, Physics, Units Conversion</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2013, S.Lott.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2b1.
+    </div>
+  </body>
+</html>

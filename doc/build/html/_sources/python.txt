@@ -1,0 +1,256 @@
+###############
+Python Modules
+###############
+
+These are the various modules in the HamCalc package.
+
+1.  `radio`_ -- Radio Engineering
+
+2.  `ham_ops`_ -- Ham Radio Operations
+
+#.  `electronics`_ -- General Electronics
+
+#.  `construction`_ -- Construction including Plumbing, Electrical and Masonry
+
+#.  `math`_ -- Mathematics and Physics including Unit Conversions
+
+#.  `navigation`_ -- Navigation and Astronomy
+
+#.  `calendar`_ -- Calendrical Calculations
+
+#.  `audio_photo`_ -- Audio and Photography
+
+#.  `software`_ -- Software Engineering, including ASCII codes and other algorithms
+
+#.  `other`_ -- Other, including finance and nutrition
+
+radio
+============================
+
+Radio Design and Engineering.
+
+ham_ops
+=================================
+
+Ham Radio Operations, this can also include club events.
+
+electronics
+======================================
+
+General Electronics, outside the focus area of Ham Radio.
+
+ohmslaw
+---------
+
+Ideally, we'd simply ``..   automodule  hamcalc.electronics.ohmslaw``
+
+more electronics
+-----------------
+
+Some other Electronics module.
+
+construction
+=================================================================
+
+Construction, including towers, stairs, plumbing, masonry, etc.
+
+math
+=============================================================
+
+Math, Physics, Units Conversion.
+
+accelr
+----------
+
+Acceleration Calculator
+
+baromtr
+----------
+
+Barometer Reading Equivalents
+
+binary
+----------
+
+Decimal to Binary Converter
+
+conecalc
+----------
+
+Cone Calculator
+
+decibel
+----------
+
+Decibel Calculator
+
+deciconv
+----------
+
+Decimal Hour/Degree Converter
+
+decifrac
+----------
+
+Decimal/Fraction Converter
+
+diamfind
+----------
+
+Diameter Finder
+
+equiv
+----------
+
+Degrees to radians
+Equivalent values
+Radians to degrees
+Temperature
+
+fibon
+----------
+
+Fibonacci Series
+
+The Fibonacci Series, :math:`F_n` is defined by a simple recurrence rule.
+
+..  math::
+
+    F_{n+2} = F_{n+1} + F_{n}
+
+Typically, :math:`F_0 = 1` and :math:`F_1 = 1`.
+
+This leads to the sequence
+
+..  math::
+
+    \{ 1, 1, 2, 3, 5, 8, ... \}
+
+There are number of interesting properties for the values in this series.
+
+Most notable, the Golden Ratio, :math:`\phi`, is related to this sequence.
+
+..  math::
+
+    \phi \approx \frac{F_{n+1}}{F_{n}} = \frac{1+\sqrt{5}}{2}
+
+Note that :math:`\phi` has this property:
+
+..  math::
+
+    \phi = (1/\phi+1)
+
+..  automodule:: hamcalc.math.fibon
+    :members:
+
+There are two implementations: object-oriented and functional.
+
+**Object-Oriented Fibonacci Series**
+
+..  automodule:: hamcalc.math.fibon.obj
+    :members:
+
+**Functional Fibonacci Series**
+
+..  automodule:: hamcalc.math.fibon.func
+    :members:
+
+formulae
+----------
+
+Formula Library
+
+graphs
+----------
+
+Graphs
+
+involute
+----------
+
+Involute of a Circle
+
+numderiv
+----------
+
+Logarithms to any base
+Numbers and Functions
+Powers of numbers
+Reciprocals of numbers
+Roots of numbers
+
+polygon
+----------
+
+Polygon Dimensions
+
+primenos
+----------
+
+Prime Number Calculator
+
+propcirc
+----------
+
+Circle - Properies of
+
+randnum
+----------
+
+Random Number Generator
+
+simuleq
+----------
+
+Simultaneous Equation Calculator
+
+solutri
+----------
+
+Triangles - solution of
+
+speedtd
+----------
+
+Speed/Time/Distance Calculator
+
+trig
+----------
+
+Trigonometric Functions
+
+navigation
+========================================
+
+Navigation and Astronomy.
+
+calendar
+=======================================
+
+Calendrical Calculations
+
+audio_photo
+=========================================
+
+Audio, Sound and Photography.
+
+software
+================================================================================
+
+Software Engineering, Programming and Computers.
+
+numsort
+--------
+
+Ideally, we'd simply ``..   automodule  hamcalc.software.numsort``
+
+more software
+--------------
+
+Some other Software Engineering module.
+
+
+other
+==================================================
+
+Other things, like Finance and Nutrition.

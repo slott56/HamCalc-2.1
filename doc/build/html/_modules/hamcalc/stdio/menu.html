@@ -1,0 +1,610 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>hamcalc.stdio.menu &mdash; HamCalc 2.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '2.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="top" title="HamCalc 2.1 documentation" href="../../../index.html" />
+    <link rel="up" title="Module code" href="../../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../index.html">HamCalc 2.1 documentation</a> &raquo;</li>
+          <li><a href="../../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for hamcalc.stdio.menu</h1><div class="highlight"><pre>
+<span class="sd">&quot;&quot;&quot;Menu.</span>
+
+<span class="sd">Displays menus, accepts choices, and executes programs.</span>
+
+<span class="sd">The default behavior is to be run from the :program:`intro` application.</span>
+
+<span class="sd">If the menu was run from the command line, then it will run the intro</span>
+<span class="sd">program with the ``menu=False`` parameter to prevent recursively invoking the menu.</span>
+
+<span class="sd">Application Programs</span>
+<span class="sd">====================</span>
+
+<span class="sd">Note that we don&#39;t trivially import the modules because we&#39;ve adopted a</span>
+<span class="sd">scripting style for &quot;main programs&quot; that doesn&#39;t work well with ``import``.</span>
+
+<span class="sd">..  note:: We Could But We Don&#39;t</span>
+
+<span class="sd">    We could demand that each application use a main program hook.</span>
+
+<span class="sd">    ::</span>
+
+<span class="sd">        if __name__ == &quot;__main__&quot;:</span>
+<span class="sd">            run()</span>
+
+<span class="sd">    It&#39;s only two lines of code.</span>
+
+<span class="sd">    But. The point is to encourage recreational programming, and this</span>
+<span class="sd">    is sometimes too much fussy overhead.</span>
+
+<span class="sd">Instead, we parse each omdule to extract the docstring comment. From this</span>
+<span class="sd">comment we determine two things.</span>
+
+<span class="sd">-   The program name is the first line.</span>
+
+<span class="sd">-   The Hamdex indexing information is the rest of the docstring.</span>
+<span class="sd">    This is expected to be in the same CSV format as the legacy</span>
+<span class="sd">    :file:`INDEX/HAMDEX.FIL` file.</span>
+
+<span class="sd">    ::</span>
+
+<span class="sd">        &quot;Heading&quot;,&quot;, Subheading&quot;,&quot;, note&quot;</span>
+
+<span class="sd">    Yes, the extra commas were part of the legacy. They&#39;re optional.</span>
+
+<span class="sd">All of the programs in the stdio directory except :program:`menu` and :program:`intro` are examined. These two programs are treated specially.</span>
+
+<span class="sd">Other Programs</span>
+<span class="sd">==================</span>
+
+<span class="sd">This program imports and runs the :program:`intro` program.</span>
+
+<span class="sd">The following other programs are simply incorporated into this one.</span>
+
+<span class="sd">::</span>
+
+<span class="sd">    720 DATA /hamcalc/prog/quiktabl,QuikTables</span>
+<span class="sd">    830 DATA /hamcalc/prog/helphint,READ ME</span>
+<span class="sd">    850 DATA /hamcalc/prog/newsince,Recent program additions &amp; upgrades</span>
+<span class="sd">    870 DATA /hamcalc/prog/zexit,EXIT</span>
+
+<span class="sd">The following program is explicitly referenced.</span>
+
+<span class="sd">::</span>
+
+<span class="sd">    840 DATA /hamcalc/prog/logoclok,Clock Screen Saver</span>
+
+<span class="sd">..  note:: Why Are These Special?</span>
+
+<span class="sd">    These &quot;other&quot; programs are like :program:`intro`: they&#39;re not proper calculations. They&#39;re just overhead.</span>
+
+<span class="sd">    However.</span>
+
+<span class="sd">    :program:`intro` is special in that it&#39;s called out by the external .BAT file as being the &quot;entry point&quot;.</span>
+
+<span class="sd">    Therefore, :program:`intro` needs to be left around as a visible artifact.</span>
+
+<span class="sd">    The other programs, (``helphint``, ``newsince`` and ``zexit``) seem to have</span>
+<span class="sd">    no stand-alone life.</span>
+
+<span class="sd">Quick Tables</span>
+<span class="sd">=============</span>
+
+<span class="sd">The &quot;QuikTables&quot; program, :file:`quiktabl`, specifically lists a few other</span>
+<span class="sd">programs that bypass the ordinary menu structure. Here&#39;s the list.</span>
+
+<span class="sd">::</span>
+
+<span class="sd">    Item( &quot;&quot;, &quot;awgexact&quot;, &quot;A.W.G. wire sizes&quot; ),</span>
+<span class="sd">    Item( &quot;&quot;, &quot;propcirc&quot;, &quot;Circles - properties of&quot; ),</span>
+<span class="sd">    Item( &quot;&quot;, &quot;decibel&quot;, &quot;Decibels&quot; ),</span>
+<span class="sd">    Item( &quot;&quot;, &quot;deciconv&quot;, &quot;Decimal numbers to degrees/minutes/seconds&quot; ),</span>
+<span class="sd">    Item( &quot;&quot;, &quot;decifrac&quot;, &quot;Decimals to fractions&quot; ),</span>
+<span class="sd">    Item( &quot;&quot;, &quot;equiv&quot;, &quot;Degrees to radians&quot; ),</span>
+<span class="sd">    Item( &quot;&quot;, &quot;deciconv&quot;, &quot;Degrees/minutes/seconds to decimal&quot; ),</span>
+<span class="sd">    Item( &quot;&quot;, &quot;equiv&quot;, &quot;Equivalent values&quot; ),</span>
+<span class="sd">    Item( &quot;&quot;, &quot;decifrac&quot;, &quot;Fractions to decimals&quot; ),</span>
+<span class="sd">    Item( &quot;&quot;, &quot;numderiv&quot;, &quot;Logarithms&quot; ),</span>
+<span class="sd">    Item( &quot;&quot;, &quot;numderiv&quot;, &quot;Numbers - functions of&quot; ),</span>
+<span class="sd">    Item( &quot;&quot;, &quot;numderiv&quot;, &quot;Powers of numbers&quot; ),</span>
+<span class="sd">    Item( &quot;&quot;, &quot;primenos&quot;, &quot;Prime numbers&quot; ),</span>
+<span class="sd">    Item( &quot;&quot;, &quot;equiv&quot;, &quot;Radians to degrees&quot; ),</span>
+<span class="sd">    Item( &quot;&quot;, &quot;numderiv&quot;, &quot;Reciprocals of numbers&quot; ),</span>
+<span class="sd">    Item( &quot;&quot;, &quot;numderiv&quot;, &quot;Roots of numbers&quot; ),</span>
+<span class="sd">    Item( &quot;&quot;, &quot;equiv&quot;, &quot;Temperature&quot; ),</span>
+<span class="sd">    Item( &quot;&quot;, &quot;solutri&quot;, &quot;Triangles - solution of&quot; ),</span>
+<span class="sd">    Item( &quot;&quot;, &quot;trig&quot;, &quot;Trigonometric functions&quot; ),</span>
+
+<span class="sd">Data Files</span>
+<span class="sd">==========</span>
+
+<span class="sd">This program reads and displays two documentation files.</span>
+
+<span class="sd">-   The change log file.  :file:`/hamcalc/docfiles/newsince.rtf`</span>
+
+<span class="sd">-   The ackowledgements file.  :file:`/hamcalc/docfiles/acknow.fil`</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="n">__version__</span> <span class="o">=</span> <span class="s">&quot;129&quot;</span>
+<span class="n">__release__</span> <span class="o">=</span> <span class="s">&quot;25 JAN 2011&quot;</span>
+
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">ast</span>
+<span class="kn">import</span> <span class="nn">runpy</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">namedtuple</span>
+<span class="kn">import</span> <span class="nn">string</span>
+<span class="kn">import</span> <span class="nn">csv</span>
+<span class="kn">import</span> <span class="nn">hamcalc.stdio.intro</span>
+
+<div class="viewcode-block" id="Item"><a class="viewcode-back" href="../../../python/stdio.html#hamcalc.stdio.menu.Item">[docs]</a><span class="k">class</span> <span class="nc">Item</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;A menu Item is a runnable program.</span>
+<span class="sd">    This will have a path, a name, and a docstring.</span>
+
+<span class="sd">    The docstring is further parsed into the title and the hamdex indexing phrases.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">docstring</span> <span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="o">=</span> <span class="n">path</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="o">=</span> <span class="n">name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">docstring</span><span class="o">=</span> <span class="n">docstring</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">title</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">hamdex</span> <span class="o">=</span> <span class="n">Item</span><span class="o">.</span><span class="n">parse_docstring</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">docstring</span> <span class="p">)</span>
+    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="Item.parse_docstring"><a class="viewcode-back" href="../../../python/stdio.html#hamcalc.stdio.menu.Item.parse_docstring">[docs]</a>    <span class="k">def</span> <span class="nf">parse_docstring</span><span class="p">(</span> <span class="n">docstring</span> <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Parse a docstring.</span>
+
+<span class="sd">        Line 1 is the title.</span>
+
+<span class="sd">        All other lines are CSV lines with Hamdex index information.</span>
+<span class="sd">        Generally, in the form &quot;Heading&quot;, &quot;Subheading&quot;, &quot;Notes&quot;, &quot;Program&quot;</span>
+<span class="sd">        We discard the fourth column, if present.</span>
+
+<span class="sd">        Also, old-style Hamdex had commas in the data:</span>
+
+<span class="sd">        ::</span>
+
+<span class="sd">            &quot;BAROMETER&quot;,&quot;, equivalent readings&quot;,&quot;&quot;,&quot;BAROMTR&quot;</span>
+
+<span class="sd">        This is silly; we don&#39;t need the comma.</span>
+
+<span class="sd">        We collapse the Hamdex index items into a single string.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">lines</span><span class="o">=</span> <span class="n">docstring</span><span class="o">.</span><span class="n">splitlines</span><span class="p">()</span>
+        <span class="n">title</span><span class="o">=</span> <span class="n">lines</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">hamdex</span><span class="o">=</span> <span class="p">[]</span>
+        <span class="n">rdr</span><span class="o">=</span> <span class="n">csv</span><span class="o">.</span><span class="n">reader</span><span class="p">(</span> <span class="n">lines</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="p">)</span>
+        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">rdr</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">line</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span> <span class="k">continue</span>
+            <span class="n">index</span><span class="o">=</span> <span class="s">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span> <span class="n">txt</span> <span class="k">if</span> <span class="n">txt</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="s">&#39;,&#39;</span> <span class="k">else</span> <span class="n">txt</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="k">for</span> <span class="n">txt</span> <span class="ow">in</span> <span class="n">line</span><span class="p">[:</span><span class="mi">3</span><span class="p">]</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">txt</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span> <span class="p">)</span>
+            <span class="n">hamdex</span><span class="o">.</span><span class="n">append</span><span class="p">(</span> <span class="n">index</span> <span class="p">)</span>
+        <span class="k">return</span> <span class="n">title</span><span class="p">,</span> <span class="n">hamdex</span>
+</div></div>
+<div class="viewcode-block" id="module_iter"><a class="viewcode-back" href="../../../python/stdio.html#hamcalc.stdio.menu.module_iter">[docs]</a><span class="k">def</span> <span class="nf">module_iter</span><span class="p">(</span> <span class="n">omit</span><span class="o">=</span><span class="p">(</span><span class="s">&#39;intro&#39;</span><span class="p">,</span><span class="s">&#39;menu&#39;</span><span class="p">)</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Iterator over the module files, excluding certain names.&quot;&quot;&quot;</span>
+    <span class="n">directory</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span> <span class="n">__file__</span> <span class="p">)</span>
+    <span class="k">for</span> <span class="n">path</span><span class="p">,</span> <span class="n">dirs</span><span class="p">,</span> <span class="n">files</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">walk</span><span class="p">(</span> <span class="n">directory</span> <span class="p">):</span>
+        <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">files</span><span class="p">:</span>
+            <span class="n">name</span><span class="p">,</span> <span class="n">ext</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span> <span class="n">f</span> <span class="p">)</span>
+            <span class="k">if</span> <span class="n">name</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span> <span class="s">&quot;__&quot;</span> <span class="p">):</span> <span class="k">continue</span>
+            <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">omit</span><span class="p">:</span> <span class="k">continue</span>
+            <span class="k">if</span> <span class="n">ext</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span> <span class="s">&quot;.py&quot;</span> <span class="p">):</span>
+                <span class="k">yield</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span> <span class="n">path</span><span class="p">,</span> <span class="n">f</span> <span class="p">)</span> <span class="p">)</span>
+</div>
+<div class="viewcode-block" id="mod_docstring_iter"><a class="viewcode-back" href="../../../python/stdio.html#hamcalc.stdio.menu.mod_docstring_iter">[docs]</a><span class="k">def</span> <span class="nf">mod_docstring_iter</span><span class="p">(</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Iterator over the module names and docstrings; to create menu Items.&quot;&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">module_name</span> <span class="ow">in</span> <span class="n">module_iter</span><span class="p">():</span>
+        <span class="n">path</span><span class="p">,</span> <span class="n">full_name</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span> <span class="n">module_name</span> <span class="p">)</span>
+        <span class="n">name</span><span class="p">,</span> <span class="n">ext</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span> <span class="n">full_name</span> <span class="p">)</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">module_name</span><span class="p">)</span> <span class="k">as</span> <span class="n">source</span><span class="p">:</span>
+            <span class="n">module</span><span class="o">=</span> <span class="n">ast</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span> <span class="n">source</span><span class="o">.</span><span class="n">read</span><span class="p">()</span> <span class="p">)</span>
+            <span class="c"># get docstring, assuming it&#39;s the first String in the module</span>
+            <span class="n">docstring</span><span class="p">,</span> <span class="n">title</span><span class="p">,</span> <span class="n">hamdex</span><span class="o">=</span> <span class="s">&quot;&quot;</span><span class="p">,</span> <span class="s">&quot;&quot;</span><span class="p">,</span> <span class="s">&quot;&quot;</span>
+            <span class="k">for</span> <span class="n">stmt</span> <span class="ow">in</span> <span class="n">module</span><span class="o">.</span><span class="n">body</span><span class="p">:</span>
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span> <span class="n">stmt</span><span class="p">,</span> <span class="n">ast</span><span class="o">.</span><span class="n">Expr</span> <span class="p">)</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span> <span class="n">stmt</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="n">ast</span><span class="o">.</span><span class="n">Str</span> <span class="p">):</span>
+                    <span class="n">docstring</span><span class="o">=</span> <span class="n">stmt</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">s</span>
+                    <span class="k">break</span>
+            <span class="k">yield</span> <span class="n">Item</span><span class="p">(</span> <span class="n">module_name</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">docstring</span> <span class="p">)</span>
+</div>
+<span class="k">def</span> <span class="nf">helphint</span><span class="p">():</span>
+    <span class="n">text</span><span class="o">=</span><span class="s">&quot;&quot;&quot;</span><span class="se">\</span>
+<span class="s"> IMPORTANT! PLEASE READ THE INSTRUCTIONS PROVIDED WITH THE HAMCALC PROGRAM!</span>
+
+<span class="s"> Most of these programs ask you to input data. If you are asked to enter some</span>
+<span class="s">data that you don&#39;t know, or that you want the computer to tell YOU, just</span>
+<span class="s">press the &lt;ENTER&gt; key to by-pass the question.</span>
+
+<span class="s"> Some of the data asked for is essential. In this case the computer will keep</span>
+<span class="s">hounding you for it no matter how many times you try to dodge the question.</span>
+<span class="s">Don&#39;t worry if you by-pass a question you feel you should have answered. The</span>
+<span class="s">computer will ask it again if it is something the computer really needs.</span>
+
+<span class="s"> If a prompt begins with the word ENTER then type in the data and press the</span>
+<span class="s">&lt;ENTER&gt; key. If you are prompted to PRESS a key then just press the indicated</span>
+<span class="s">key. There is no need to press &lt;ENTER&gt; as well.</span>
+
+<span class="s"> If something goes wrong press the CTRL key and hold it down while you press</span>
+<span class="s">the PAUSE/BREAK key. This will halt the program and a &#39;Break&#39; message will</span>
+<span class="s">appear on the screen. Then press the F2 key to re-start the program from the</span>
+<span class="s">beginning, or the F10 key to return to GWBASIC. You can try this right now if</span>
+<span class="s">you wish, just to see how it works . . . . .</span>
+<span class="s">&quot;&quot;&quot;</span>
+    <span class="k">print</span><span class="p">(</span> <span class="n">text</span> <span class="p">)</span>
+    <span class="nb">input</span><span class="p">(</span> <span class="s">&quot;Continue?&quot;</span> <span class="p">)</span>
+
+<div class="viewcode-block" id="newsince"><a class="viewcode-back" href="../../../python/stdio.html#hamcalc.stdio.menu.newsince">[docs]</a><span class="k">def</span> <span class="nf">newsince</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;The change log.</span>
+
+<span class="sd">    ..   todo:: Display the change log file.</span>
+<span class="sd">        :file:`/hamcalc/docfiles/newsince.rtf`</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">pass</span>
+</div>
+<div class="viewcode-block" id="zexit"><a class="viewcode-back" href="../../../python/stdio.html#hamcalc.stdio.menu.zexit">[docs]</a><span class="k">def</span> <span class="nf">zexit</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;The exit message.</span>
+
+<span class="sd">    ..  todo:: Build this from the ackowledgements file.</span>
+<span class="sd">        :file:`/hamcalc/docfiles/acknow.fil`</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">text</span><span class="o">=</span> <span class="s">&quot;&quot;&quot;</span><span class="se">\</span>
+<span class="s">      HAMCALC could never have been what and where it is without the</span>
+<span class="s">      encouragement and input in terms of friendship, time, and expertise</span>
+<span class="s">      from many people worldwide, especially</span>
+
+<span class="s">  Tom Atkins VE3CDM, IARU Region II       Goran Hosinsky, EA8YU, Canary Islands</span>
+<span class="s">  Prof. Walter Banzhaf, U.of Hartford     Prof. Larry Huelsman, U.of Arizona</span>
+<span class="s">  Dr. J.H.R. Beaujon, PJ2HB, Neth.Ant.    Harold Kane, W2AHW, USA</span>
+<span class="s">  Dr. Ing Boutsen, ON1ABU, U.of Brussels  Roel Koekoek, PA0RBK, Holland</span>
+<span class="s">  Al Buxton, W8NX, USA                    David LaHay, VE7FVW, Canada</span>
+<span class="s">  L.B. Cebik, W4RNL, USA                  Erik Madsen, OZ8EM, Denmark</span>
+<span class="s">  Robert J. Dehoney, IEEE, USA            Rich Moseson, W2VU, USA</span>
+<span class="s">  Doug DeMaw, W1FB, USA                   Jimmy Mistry, VU2IJ, India</span>
+<span class="s">  Bob Dunn, VE3ATK, Canada                Gary O&#39;Neil, N3GO, USA</span>
+<span class="s">  Dr. Brian Egan, ZL1LE, New Zealand      Dr. Val Pristavko, EW1AAA, Belarus</span>
+<span class="s">  Istvan Ehmann, HA7VE, U.of Budapest     Dr. James Resh, Michigan State U.</span>
+<span class="s">  Bob Eldridge, VE7BS, Canada             Joe Southward, VE3SCY, Canada</span>
+<span class="s">  Mark Ellison, VA2MKE, Canada            Bob Stein, W6NBI, USA</span>
+<span class="s">  Günter Hoch, DL6WU, Germany             Hal Wright, W9UYA, USA</span>
+
+<span class="s">      and most especially my wonderful wife Anne, who has forgiven me for</span>
+<span class="s">      letting HAMCALC turn what started out to be a part-time retirement</span>
+<span class="s">      project into a most pleasurable (and almost full-time) occupation.</span>
+<span class="s">&quot;&quot;&quot;</span>
+    <span class="k">print</span><span class="p">(</span> <span class="n">text</span> <span class="p">)</span>
+</div>
+<span class="k">def</span> <span class="nf">logoclok</span><span class="p">():</span>
+    <span class="n">runpy</span><span class="o">.</span><span class="n">run_module</span><span class="p">(</span> <span class="s">&#39;hamcalc.stdio.logoclok&#39;</span> <span class="p">)</span>
+
+<div class="viewcode-block" id="Menu"><a class="viewcode-back" href="../../../python/stdio.html#hamcalc.stdio.menu.Menu">[docs]</a><span class="k">class</span> <span class="nc">Menu</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Show a menu, pick an item.</span>
+
+<span class="sd">    For a top-level menu, that reveals a sub-menu.</span>
+<span class="sd">    For a sub-menu, that executes a program.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">name</span> <span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="o">=</span> <span class="n">name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">quit</span><span class="o">=</span> <span class="bp">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">finished</span><span class="o">=</span> <span class="bp">False</span>
+    <span class="k">def</span> <span class="nf">display</span><span class="p">(</span> <span class="bp">self</span> <span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span> <span class="s">&quot;Not Implemented&quot;</span> <span class="p">)</span>
+    <span class="k">def</span> <span class="nf">get_choice</span><span class="p">(</span> <span class="bp">self</span> <span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span> <span class="s">&quot;Not Implemented&quot;</span> <span class="p">)</span>
+<div class="viewcode-block" id="Menu.handle_choice"><a class="viewcode-back" href="../../../python/stdio.html#hamcalc.stdio.menu.Menu.handle_choice">[docs]</a>    <span class="k">def</span> <span class="nf">handle_choice</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">choice</span> <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;May set self.quit or self.finished.&quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span> <span class="s">&quot;Not Implemented&quot;</span> <span class="p">)</span></div>
+    <span class="k">def</span> <span class="nf">process</span><span class="p">(</span> <span class="bp">self</span> <span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">finished</span><span class="o">=</span> <span class="bp">False</span>
+        <span class="k">while</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">finished</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">quit</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">display</span><span class="p">()</span>
+            <span class="n">choice</span><span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_choice</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">handle_choice</span><span class="p">(</span> <span class="n">choice</span> <span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">quit</span>
+</div>
+<div class="viewcode-block" id="Top_Menu"><a class="viewcode-back" href="../../../python/stdio.html#hamcalc.stdio.menu.Top_Menu">[docs]</a><span class="k">class</span> <span class="nc">Top_Menu</span><span class="p">(</span> <span class="n">Menu</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;The top-level menu.</span>
+
+<span class="sd">    Picking an item here shows a sub-menu.&quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">quicktables</span><span class="p">,</span> <span class="n">item_list</span> <span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span> <span class="s">&quot;&quot;</span> <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">quicktables</span><span class="o">=</span> <span class="n">quicktables</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">item_list</span><span class="o">=</span> <span class="n">item_list</span>
+<div class="viewcode-block" id="Top_Menu.display"><a class="viewcode-back" href="../../../python/stdio.html#hamcalc.stdio.menu.Top_Menu.display">[docs]</a>    <span class="k">def</span> <span class="nf">display</span><span class="p">(</span> <span class="bp">self</span> <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Display the top-level menu.&quot;&quot;&quot;</span>
+        <span class="k">print</span><span class="p">(</span> <span class="s">&quot;H  A  M  C  A  L  C     Version {0:3s},{1:14s}   by George Murphy VE3ERP&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">__version__</span><span class="p">,</span><span class="n">__release__</span><span class="p">)</span><span class="o">.</span><span class="n">center</span><span class="p">(</span><span class="mi">80</span><span class="p">)</span> <span class="p">)</span>
+        <span class="k">print</span><span class="p">(</span> <span class="s">&quot;PAINLESS MATH for RADIO AMATEURS&quot;</span><span class="o">.</span><span class="n">center</span><span class="p">(</span><span class="mi">80</span><span class="p">)</span> <span class="p">)</span>
+        <span class="k">print</span><span class="p">(</span> <span class="s">&quot;M A I N    M E N U&quot;</span><span class="o">.</span><span class="n">center</span><span class="p">(</span><span class="mi">80</span><span class="p">)</span> <span class="p">)</span>
+        <span class="k">print</span><span class="p">()</span>
+        <span class="k">print</span><span class="p">(</span> <span class="s">&quot;(z)  QuickTables&quot;</span> <span class="p">)</span>
+        <span class="k">for</span> <span class="n">code</span><span class="p">,</span> <span class="n">item</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">item_list</span><span class="p">):</span>
+            <span class="k">print</span><span class="p">(</span> <span class="s">&quot;({0})  {1}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">string</span><span class="o">.</span><span class="n">ascii_lowercase</span><span class="p">[</span><span class="n">code</span><span class="p">],</span> <span class="n">item</span><span class="o">.</span><span class="n">name</span><span class="p">)</span> <span class="p">)</span>
+        <span class="k">print</span><span class="p">(</span> <span class="s">&quot;(j)  INDEX&quot;</span> <span class="p">)</span>
+        <span class="k">print</span><span class="p">(</span> <span class="s">&quot;(k)  READ ME&quot;</span> <span class="p">)</span>
+        <span class="k">print</span><span class="p">(</span> <span class="s">&quot;(l)  Clock Screen Saver&quot;</span> <span class="p">)</span>
+        <span class="k">print</span><span class="p">(</span> <span class="s">&quot;(m)  Recent program additions &amp; upgrades&quot;</span> <span class="p">)</span>
+        <span class="k">print</span><span class="p">(</span> <span class="s">&quot;(n)  EXIT &quot;</span> <span class="p">)</span>
+        <span class="k">print</span><span class="p">(</span> <span class="s">&#39;&quot;Aversion to mathematics is not an acquired distaste - it comes naturally&quot;&#39;</span><span class="o">.</span><span class="n">center</span><span class="p">(</span><span class="mi">80</span><span class="p">)</span> <span class="p">)</span></div>
+<div class="viewcode-block" id="Top_Menu.get_choice"><a class="viewcode-back" href="../../../python/stdio.html#hamcalc.stdio.menu.Top_Menu.get_choice">[docs]</a>    <span class="k">def</span> <span class="nf">get_choice</span><span class="p">(</span> <span class="bp">self</span> <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Prompt and get the user&#39;s choice.&quot;&quot;&quot;</span>
+        <span class="n">page_raw</span><span class="o">=</span> <span class="nb">input</span><span class="p">(</span> <span class="s">&quot;Choice? &quot;</span> <span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">page_raw</span></div>
+<div class="viewcode-block" id="Top_Menu.handle_choice"><a class="viewcode-back" href="../../../python/stdio.html#hamcalc.stdio.menu.Top_Menu.handle_choice">[docs]</a>    <span class="k">def</span> <span class="nf">handle_choice</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">choice</span> <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Handle the user&#39;s choice.&quot;&quot;&quot;</span>
+        <span class="k">global</span> <span class="n">hamdex</span>
+        <span class="k">if</span> <span class="n">choice</span> <span class="o">==</span> <span class="s">&#39;z&#39;</span><span class="p">:</span>
+            <span class="c"># quick tables -- special menu</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">quicktables</span><span class="o">.</span><span class="n">process</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="n">choice</span> <span class="o">==</span> <span class="s">&#39;j&#39;</span><span class="p">:</span>
+            <span class="n">hamdex</span><span class="o">.</span><span class="n">process</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="n">choice</span> <span class="o">==</span> <span class="s">&#39;k&#39;</span><span class="p">:</span>
+            <span class="c"># Display the Readme .RTF file</span>
+            <span class="n">helphint</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="n">choice</span> <span class="o">==</span> <span class="s">&#39;l&#39;</span><span class="p">:</span>
+            <span class="c"># Run some other program</span>
+            <span class="n">logoclok</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="n">choice</span> <span class="o">==</span> <span class="s">&#39;m&#39;</span><span class="p">:</span>
+            <span class="c"># Display the change log file</span>
+            <span class="n">newsince</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="n">choice</span> <span class="o">==</span> <span class="s">&#39;n&#39;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">quit</span><span class="o">=</span> <span class="bp">True</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">page</span><span class="o">=</span> <span class="n">string</span><span class="o">.</span><span class="n">ascii_lowercase</span><span class="o">.</span><span class="n">find</span><span class="p">(</span> <span class="n">choice</span> <span class="p">)</span>
+            <span class="k">if</span> <span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">page</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">item_list</span><span class="p">):</span>
+                <span class="n">program_menu</span><span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">item_list</span><span class="p">[</span><span class="n">page</span><span class="p">]</span>
+                <span class="n">program_menu</span><span class="o">.</span><span class="n">process</span><span class="p">()</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">quit</span><span class="o">=</span> <span class="n">program_menu</span><span class="o">.</span><span class="n">quit</span>
+</div></div>
+<div class="viewcode-block" id="Program_Menu"><a class="viewcode-back" href="../../../python/stdio.html#hamcalc.stdio.menu.Program_Menu">[docs]</a><span class="k">class</span> <span class="nc">Program_Menu</span><span class="p">(</span> <span class="n">Menu</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;The program menu.</span>
+
+<span class="sd">    Picking an item runs a program.&quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">item_list</span> <span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span> <span class="n">name</span> <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">item_list</span><span class="o">=</span> <span class="n">item_list</span>
+<div class="viewcode-block" id="Program_Menu.display"><a class="viewcode-back" href="../../../python/stdio.html#hamcalc.stdio.menu.Program_Menu.display">[docs]</a>    <span class="k">def</span> <span class="nf">display</span><span class="p">(</span> <span class="bp">self</span> <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Display the two-column program menu.&quot;&quot;&quot;</span>
+        <span class="k">print</span><span class="p">(</span> <span class="s">&quot; H A M C A L C  Program Menu {0}                           by George Murphy VE3ERP&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="p">)</span> <span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span> <span class="nb">min</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">item_list</span><span class="p">)</span> <span class="p">)</span> <span class="p">):</span>
+            <span class="k">print</span><span class="p">(</span> <span class="s">&quot;{0:02d} {1.title:32s}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">item_list</span><span class="p">[</span><span class="n">i</span><span class="p">]),</span> <span class="n">end</span><span class="o">=</span><span class="s">&#39;&#39;</span> <span class="p">)</span>
+            <span class="k">if</span> <span class="n">i</span><span class="o">+</span><span class="mi">20</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">item_list</span><span class="p">):</span>
+                <span class="k">print</span><span class="p">(</span> <span class="s">&quot;{0:02d} {1.title:32s}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">20</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">item_list</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">20</span><span class="p">]),</span> <span class="n">end</span><span class="o">=</span><span class="s">&#39;&#39;</span> <span class="p">)</span>
+            <span class="k">print</span><span class="p">()</span>
+        <span class="k">print</span><span class="p">(</span> <span class="s">&quot;41:MENU   42:INDEX   43:EXIT&quot;</span> <span class="p">)</span></div>
+<div class="viewcode-block" id="Program_Menu.get_choice"><a class="viewcode-back" href="../../../python/stdio.html#hamcalc.stdio.menu.Program_Menu.get_choice">[docs]</a>    <span class="k">def</span> <span class="nf">get_choice</span><span class="p">(</span> <span class="bp">self</span> <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Prompt and get the user&#39;s choice.&quot;&quot;&quot;</span>
+        <span class="n">program_num</span><span class="o">=</span> <span class="bp">None</span>
+        <span class="k">while</span> <span class="n">program_num</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">program_raw</span><span class="o">=</span> <span class="nb">input</span><span class="p">(</span> <span class="s">&quot;Program to run? &quot;</span> <span class="p">)</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">program_num</span><span class="o">=</span> <span class="nb">int</span><span class="p">(</span> <span class="n">program_raw</span> <span class="p">)</span>
+            <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+                <span class="k">pass</span>
+        <span class="k">return</span> <span class="n">program_num</span></div>
+<div class="viewcode-block" id="Program_Menu.handle_choice"><a class="viewcode-back" href="../../../python/stdio.html#hamcalc.stdio.menu.Program_Menu.handle_choice">[docs]</a>    <span class="k">def</span> <span class="nf">handle_choice</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">choice</span> <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Handle the user&#39;s choice.&quot;&quot;&quot;</span>
+        <span class="k">global</span> <span class="n">hamdex</span>
+        <span class="k">if</span> <span class="n">choice</span> <span class="o">==</span> <span class="mi">41</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">finished</span><span class="o">=</span> <span class="bp">True</span>
+        <span class="k">elif</span> <span class="n">choice</span> <span class="o">==</span> <span class="mi">42</span><span class="p">:</span>
+            <span class="n">hamdex</span><span class="o">.</span><span class="n">process</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="n">choice</span> <span class="o">==</span> <span class="mi">43</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">quit</span><span class="o">=</span> <span class="bp">True</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">program</span><span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">item_list</span><span class="p">[</span><span class="n">choice</span><span class="p">]</span>
+                <span class="n">runpy</span><span class="o">.</span><span class="n">run_module</span><span class="p">(</span> <span class="s">&#39;hamcalc.stdio.&#39;</span> <span class="o">+</span> <span class="n">program</span><span class="o">.</span><span class="n">name</span> <span class="p">)</span>
+            <span class="k">except</span> <span class="ne">IndexError</span><span class="p">:</span>
+                <span class="k">pass</span>
+</div></div>
+<div class="viewcode-block" id="Topic_Index"><a class="viewcode-back" href="../../../python/stdio.html#hamcalc.stdio.menu.Topic_Index">[docs]</a><span class="k">class</span> <span class="nc">Topic_Index</span><span class="p">(</span> <span class="n">Menu</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;The Hamdex topic index.</span>
+
+<span class="sd">    Picking an item runs a program.</span>
+
+<span class="sd">    Each page is 24 rows of one-letter codes: ``&lt;a&gt;-&lt;x&gt;`` plus</span>
+<span class="sd">    a additional menu items for navigation</span>
+
+<span class="sd">    ``1-NEXT PAGE │2-PREVIOUS PAGE │3-ANOTHER PAGE │4-EXIT``</span>
+
+<span class="sd">    The &quot;ANOTHER PAGE&quot; prompt gets a starting letter to be</span>
+<span class="sd">    used to filter the programs in the index.</span>
+
+<span class="sd">    Note that programs are listed multiple times if they</span>
+<span class="sd">    have multiple Hamdex index lines in their docstring.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">item_list</span> <span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span> <span class="s">&quot;&quot;</span> <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">item_dict</span><span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">item_list</span><span class="p">:</span>
+            <span class="n">count</span><span class="o">=</span> <span class="mi">0</span>
+            <span class="k">for</span> <span class="n">ham</span> <span class="ow">in</span> <span class="n">item</span><span class="o">.</span><span class="n">hamdex</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">item_dict</span><span class="p">[</span><span class="n">ham</span><span class="p">]</span><span class="o">=</span> <span class="n">item</span>
+                <span class="n">count</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="k">if</span> <span class="n">count</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">item_dict</span><span class="p">[</span><span class="n">item</span><span class="o">.</span><span class="n">title</span><span class="p">]</span><span class="o">=</span> <span class="n">item</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">item_list</span><span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">item_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">()))</span>
+    <span class="k">def</span> <span class="nf">display</span><span class="p">(</span> <span class="bp">self</span> <span class="p">):</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">item</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">item_list</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">count</span><span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">count</span><span class="o">+</span><span class="mi">24</span><span class="p">]):</span>
+            <span class="k">print</span><span class="p">(</span> <span class="s">&quot;&lt;{0}&gt; {1}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span> <span class="n">string</span><span class="o">.</span><span class="n">ascii_lowercase</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">item</span> <span class="p">)</span> <span class="p">)</span>
+        <span class="k">print</span><span class="p">(</span> <span class="s">&quot;1-NEXT PAGE │2-PREVIOUS PAGE │3-ANOTHER PAGE │4-EXIT&quot;</span> <span class="p">)</span>
+    <span class="k">def</span> <span class="nf">get_choice</span><span class="p">(</span> <span class="bp">self</span> <span class="p">):</span>
+        <span class="n">choice</span><span class="o">=</span> <span class="nb">input</span><span class="p">(</span> <span class="s">&quot;Choice? &quot;</span> <span class="p">)</span>
+        <span class="k">return</span> <span class="n">choice</span>
+    <span class="k">def</span> <span class="nf">handle_choice</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">choice</span> <span class="p">):</span>
+        <span class="k">if</span> <span class="n">choice</span> <span class="o">==</span> <span class="s">&#39;1&#39;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">count</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">count</span><span class="o">+</span><span class="mi">24</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">count</span><span class="o">+</span><span class="mi">24</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">item_list</span><span class="p">)</span> <span class="k">else</span> <span class="mi">0</span>
+        <span class="k">elif</span> <span class="n">choice</span> <span class="o">==</span> <span class="s">&#39;2&#39;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">count</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">count</span><span class="o">-</span><span class="mi">24</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">count</span><span class="o">-</span><span class="mi">24</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="k">else</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">item_list</span><span class="p">)</span><span class="o">-</span><span class="mi">24</span>
+        <span class="k">elif</span> <span class="n">choice</span> <span class="o">==</span> <span class="s">&#39;3&#39;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">filter</span><span class="o">=</span> <span class="nb">input</span><span class="p">(</span> <span class="s">&quot;ENTER LETTER AT WHICH YOU WANT AN INDEX PAGE TO BEGIN? &quot;</span> <span class="p">)</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
+            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">item</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">item_list</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">item</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">filter</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">count</span><span class="o">=</span> <span class="n">i</span>
+                    <span class="k">break</span>
+        <span class="k">elif</span> <span class="n">choice</span> <span class="o">==</span> <span class="s">&#39;4&#39;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">quit</span><span class="o">=</span> <span class="bp">True</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">choice_num</span><span class="o">=</span> <span class="n">string</span><span class="o">.</span><span class="n">ascii_lowercase</span><span class="o">.</span><span class="n">find</span><span class="p">(</span> <span class="n">choice</span> <span class="p">)</span>
+            <span class="k">if</span> <span class="n">choice_num</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span> <span class="k">return</span>
+            <span class="n">index</span><span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">count</span> <span class="o">+</span> <span class="n">choice_num</span>
+            <span class="n">program</span><span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">item_dict</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">item_list</span><span class="p">[</span><span class="n">index</span><span class="p">]]</span>
+            <span class="n">runpy</span><span class="o">.</span><span class="n">run_module</span><span class="p">(</span> <span class="s">&#39;hamcalc.stdio.&#39;</span> <span class="o">+</span> <span class="n">program</span><span class="o">.</span><span class="n">name</span> <span class="p">)</span>
+    <span class="k">def</span> <span class="nf">process</span><span class="p">(</span> <span class="bp">self</span> <span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">count</span><span class="o">=</span> <span class="mi">0</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">process</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="QT_Menu"><a class="viewcode-back" href="../../../python/stdio.html#hamcalc.stdio.menu.QT_Menu">[docs]</a><span class="k">class</span> <span class="nc">QT_Menu</span><span class="p">(</span> <span class="n">Menu</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;The QuikTabl menu.&quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span> <span class="bp">self</span> <span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span> <span class="s">&quot;QuikTables                                              by George Murphy VE3ERP&quot;</span> <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">item_list</span><span class="o">=</span> <span class="p">[</span>
+        <span class="n">Item</span><span class="p">(</span> <span class="s">&quot;&quot;</span><span class="p">,</span> <span class="s">&quot;awgexact&quot;</span><span class="p">,</span> <span class="s">&quot;A.W.G. wire sizes&quot;</span> <span class="p">),</span>
+        <span class="n">Item</span><span class="p">(</span> <span class="s">&quot;&quot;</span><span class="p">,</span> <span class="s">&quot;propcirc&quot;</span><span class="p">,</span> <span class="s">&quot;Circles - properties of&quot;</span> <span class="p">),</span>
+        <span class="n">Item</span><span class="p">(</span> <span class="s">&quot;&quot;</span><span class="p">,</span> <span class="s">&quot;decibel&quot;</span><span class="p">,</span> <span class="s">&quot;Decibels&quot;</span> <span class="p">),</span>
+        <span class="n">Item</span><span class="p">(</span> <span class="s">&quot;&quot;</span><span class="p">,</span> <span class="s">&quot;deciconv&quot;</span><span class="p">,</span> <span class="s">&quot;Decimal numbers to degrees/minutes/seconds&quot;</span> <span class="p">),</span>
+        <span class="n">Item</span><span class="p">(</span> <span class="s">&quot;&quot;</span><span class="p">,</span> <span class="s">&quot;decifrac&quot;</span><span class="p">,</span> <span class="s">&quot;Decimals to fractions&quot;</span> <span class="p">),</span>
+        <span class="n">Item</span><span class="p">(</span> <span class="s">&quot;&quot;</span><span class="p">,</span> <span class="s">&quot;equiv&quot;</span><span class="p">,</span> <span class="s">&quot;Degrees to radians&quot;</span> <span class="p">),</span>
+        <span class="n">Item</span><span class="p">(</span> <span class="s">&quot;&quot;</span><span class="p">,</span> <span class="s">&quot;deciconv&quot;</span><span class="p">,</span> <span class="s">&quot;Degrees/minutes/seconds to decimal&quot;</span> <span class="p">),</span>
+        <span class="n">Item</span><span class="p">(</span> <span class="s">&quot;&quot;</span><span class="p">,</span> <span class="s">&quot;equiv&quot;</span><span class="p">,</span> <span class="s">&quot;Equivalent values&quot;</span> <span class="p">),</span>
+        <span class="n">Item</span><span class="p">(</span> <span class="s">&quot;&quot;</span><span class="p">,</span> <span class="s">&quot;decifrac&quot;</span><span class="p">,</span> <span class="s">&quot;Fractions to decimals&quot;</span> <span class="p">),</span>
+        <span class="n">Item</span><span class="p">(</span> <span class="s">&quot;&quot;</span><span class="p">,</span> <span class="s">&quot;numderiv&quot;</span><span class="p">,</span> <span class="s">&quot;Logarithms&quot;</span> <span class="p">),</span>
+        <span class="n">Item</span><span class="p">(</span> <span class="s">&quot;&quot;</span><span class="p">,</span> <span class="s">&quot;numderiv&quot;</span><span class="p">,</span> <span class="s">&quot;Numbers - functions of&quot;</span> <span class="p">),</span>
+        <span class="n">Item</span><span class="p">(</span> <span class="s">&quot;&quot;</span><span class="p">,</span> <span class="s">&quot;numderiv&quot;</span><span class="p">,</span> <span class="s">&quot;Powers of numbers&quot;</span> <span class="p">),</span>
+        <span class="n">Item</span><span class="p">(</span> <span class="s">&quot;&quot;</span><span class="p">,</span> <span class="s">&quot;primenos&quot;</span><span class="p">,</span> <span class="s">&quot;Prime numbers&quot;</span> <span class="p">),</span>
+        <span class="n">Item</span><span class="p">(</span> <span class="s">&quot;&quot;</span><span class="p">,</span> <span class="s">&quot;equiv&quot;</span><span class="p">,</span> <span class="s">&quot;Radians to degrees&quot;</span> <span class="p">),</span>
+        <span class="n">Item</span><span class="p">(</span> <span class="s">&quot;&quot;</span><span class="p">,</span> <span class="s">&quot;numderiv&quot;</span><span class="p">,</span> <span class="s">&quot;Reciprocals of numbers&quot;</span> <span class="p">),</span>
+        <span class="n">Item</span><span class="p">(</span> <span class="s">&quot;&quot;</span><span class="p">,</span> <span class="s">&quot;numderiv&quot;</span><span class="p">,</span> <span class="s">&quot;Roots of numbers&quot;</span> <span class="p">),</span>
+        <span class="n">Item</span><span class="p">(</span> <span class="s">&quot;&quot;</span><span class="p">,</span> <span class="s">&quot;equiv&quot;</span><span class="p">,</span> <span class="s">&quot;Temperature&quot;</span> <span class="p">),</span>
+        <span class="n">Item</span><span class="p">(</span> <span class="s">&quot;&quot;</span><span class="p">,</span> <span class="s">&quot;solutri&quot;</span><span class="p">,</span> <span class="s">&quot;Triangles - solution of&quot;</span> <span class="p">),</span>
+        <span class="n">Item</span><span class="p">(</span> <span class="s">&quot;&quot;</span><span class="p">,</span> <span class="s">&quot;trig&quot;</span><span class="p">,</span> <span class="s">&quot;Trigonometric functions&quot;</span> <span class="p">),</span>
+         <span class="p">]</span>
+<div class="viewcode-block" id="QT_Menu.display"><a class="viewcode-back" href="../../../python/stdio.html#hamcalc.stdio.menu.QT_Menu.display">[docs]</a>    <span class="k">def</span> <span class="nf">display</span><span class="p">(</span> <span class="bp">self</span> <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Display the QuickTable menu.&quot;&quot;&quot;</span>
+        <span class="k">print</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">center</span><span class="p">(</span><span class="mi">80</span><span class="p">)</span> <span class="p">)</span>
+        <span class="k">print</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">code</span><span class="p">,</span> <span class="n">item</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">item_list</span><span class="p">):</span>
+            <span class="k">print</span><span class="p">(</span> <span class="s">&quot;({0}) {1}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">string</span><span class="o">.</span><span class="n">ascii_lowercase</span><span class="p">[</span><span class="n">code</span><span class="p">],</span> <span class="n">item</span><span class="o">.</span><span class="n">title</span><span class="p">)</span> <span class="p">)</span>
+        <span class="k">print</span><span class="p">(</span> <span class="s">&quot;(z) EXIT this program&quot;</span> <span class="p">)</span></div>
+<div class="viewcode-block" id="QT_Menu.get_choice"><a class="viewcode-back" href="../../../python/stdio.html#hamcalc.stdio.menu.QT_Menu.get_choice">[docs]</a>    <span class="k">def</span> <span class="nf">get_choice</span><span class="p">(</span> <span class="bp">self</span> <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Prompt and get the user&#39;s choice.&quot;&quot;&quot;</span>
+        <span class="n">page_raw</span><span class="o">=</span> <span class="nb">input</span><span class="p">(</span> <span class="s">&quot;Choice? &quot;</span> <span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">page_raw</span></div>
+    <span class="k">def</span> <span class="nf">handle_choice</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">choice</span> <span class="p">):</span>
+        <span class="k">if</span> <span class="n">choice</span> <span class="o">==</span> <span class="s">&#39;z&#39;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">quit</span><span class="o">=</span> <span class="bp">True</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">choice_num</span><span class="o">=</span> <span class="n">string</span><span class="o">.</span><span class="n">ascii_lowercase</span><span class="o">.</span><span class="n">find</span><span class="p">(</span> <span class="n">choice</span> <span class="p">)</span>
+            <span class="k">if</span> <span class="n">choice_num</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span> <span class="k">return</span>
+            <span class="n">program</span><span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">item_list</span><span class="p">[</span><span class="n">choice_num</span><span class="p">]</span>
+            <span class="n">runpy</span><span class="o">.</span><span class="n">run_module</span><span class="p">(</span> <span class="s">&#39;hamcalc.stdio.&#39;</span> <span class="o">+</span> <span class="n">program</span><span class="o">.</span><span class="n">name</span> <span class="p">)</span>
+    <span class="k">def</span> <span class="nf">process</span><span class="p">(</span> <span class="bp">self</span> <span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">quit</span><span class="o">=</span> <span class="bp">False</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">process</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="run"><a class="viewcode-back" href="../../../python/stdio.html#hamcalc.stdio.menu.run">[docs]</a><span class="k">def</span> <span class="nf">run</span><span class="p">(</span> <span class="n">intro</span><span class="o">=</span><span class="bp">True</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Examine the STDIO path to locate all programs, build a two-tier index</span>
+<span class="sd">    and a &quot;flat&quot; Hamdex index.</span>
+
+<span class="sd">    Present a menu of available programs, get the user&#39;s choice, run the requested program.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">global</span> <span class="n">hamdex</span>
+    <span class="k">if</span> <span class="n">intro</span><span class="p">:</span>
+        <span class="n">hamcalc</span><span class="o">.</span><span class="n">stdio</span><span class="o">.</span><span class="n">intro</span><span class="o">.</span><span class="n">run</span><span class="p">(</span> <span class="n">menu</span><span class="o">=</span><span class="bp">False</span> <span class="p">)</span>
+
+    <span class="c"># Find all programs</span>
+    <span class="n">all_programs</span><span class="o">=</span> <span class="nb">list</span><span class="p">(</span> <span class="n">mod_docstring_iter</span><span class="p">()</span> <span class="p">)</span>
+    <span class="c"># Group into 40-program subsets.</span>
+    <span class="n">page_group_iter</span><span class="o">=</span> <span class="p">(</span> <span class="n">all_programs</span><span class="p">[</span><span class="n">i</span><span class="p">:</span><span class="n">i</span><span class="o">+</span><span class="mi">40</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">all_programs</span><span class="p">),</span> <span class="mi">40</span> <span class="p">)</span> <span class="p">)</span>
+    <span class="c"># Build Program_Menu instances for each subset.</span>
+    <span class="n">pages</span><span class="o">=</span> <span class="p">[</span> <span class="n">Program_Menu</span><span class="p">(</span> <span class="s">&quot;Program Menu {0}  ( {1}-{2} )&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+        <span class="n">string</span><span class="o">.</span><span class="n">ascii_uppercase</span><span class="p">[</span><span class="n">i</span><span class="o">//</span><span class="mi">40</span><span class="p">],</span> <span class="n">pg</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">title</span><span class="p">[:</span><span class="mi">3</span><span class="p">],</span> <span class="n">pg</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">title</span><span class="p">[:</span><span class="mi">3</span><span class="p">]</span> <span class="p">),</span> <span class="n">pg</span> <span class="p">)</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">pg</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">page_group_iter</span><span class="p">)</span> <span class="p">]</span>
+    <span class="c"># Build the special Quick Tables menu.</span>
+    <span class="n">quick_tables</span><span class="o">=</span> <span class="n">QT_Menu</span><span class="p">()</span>
+    <span class="c"># Build a top-level menu from the Quick Tables and the Pages</span>
+    <span class="n">menu</span><span class="o">=</span> <span class="n">Top_Menu</span><span class="p">(</span> <span class="n">quick_tables</span><span class="p">,</span> <span class="n">pages</span> <span class="p">)</span>
+    <span class="c"># Also build the flat index.</span>
+    <span class="n">hamdex</span><span class="o">=</span> <span class="n">Topic_Index</span><span class="p">(</span> <span class="n">all_programs</span> <span class="p">)</span>
+
+    <span class="n">menu</span><span class="o">.</span><span class="n">process</span><span class="p">()</span>
+    <span class="n">zexit</span><span class="p">()</span>
+</div>
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">run</span><span class="p">()</span>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../index.html">HamCalc 2.1 documentation</a> &raquo;</li>
+          <li><a href="../../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2013, S.Lott.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2b1.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,105 @@
+10 :REM'ARCH - arch calculator 23 FEB 08
+20 IF EX$=""THEN EX$="EXIT"
+30 IF PROG$=""THEN GO$=EX$ :ELSE GO$=PROG$
+40 PROG$="arch"
+50 COMMON EX$,PROG$
+60 CLS:KEY OFF
+70 COLOR 7,0,0
+80 P=4*ATN(1)  :REM'PI
+90 U$="##,###.###"
+100 :REM'.....start
+110 CLS:COLOR 15,2
+120 PRINT " ARCH CALCULATOR";TAB(57);"by George Murphy VE3ERP ";
+130 COLOR 7,0
+140 R=0:D=0:CF=0:AR=0:A=0:C=0:AC=0:B=0
+150 PRINT
+160 GOSUB 850
+170 PRINT
+180 T=30
+190 PRINT " This program calculates the following elements of an arch:"
+200 PRINT TAB(T)"   Curved arch AHB"
+210 PRINT TAB(T)"   Chord AB"
+220 PRINT TAB(T)"   Segment height CH"
+230 PRINT TAB(T)"   Radii XA, XH, XB"
+240 PRINT TAB(T)"   Angle AXB"
+250 PRINT
+260 PRINT  " All dimensions in ANY identical units of measure:"
+270 LN=CSRLIN:PRINT "...Press 1 to RUN or 0 to EXIT...";
+280 Z$=INKEY$:IF Z$=""THEN 280
+290 IF Z$="0"THEN CLS:RUN EX$
+300 IF Z$="1"THEN 320
+310 GOTO 290
+320 VIEW PRINT LN TO 24:CLS:VIEW PRINT:LOCATE LN
+330 COLOR 0,7:PRINT " If you do not know a value press <ENTER>":COLOR 7,0
+340 :REM'.....inputs
+350 IF  R=0 THEN INPUT " ENTER: Radii XA, XH, XB";R:D=2*R:GOSUB 410
+360 IF  A=0 THEN INPUT " ENTER: Angle AXB in degrees";Q:A=Q*P/180:GOSUB 410
+370 IF  C=0 THEN INPUT " ENTER: Chord AB";C:GOSUB 410
+380 IF AC=0 THEN INPUT " ENTER: Curved arch AHB";AC:GOSUB 410
+390 IF  B=0 THEN INPUT " ENTER: Segment height CH";B:GOSUB 410
+400 IF AC*D*CF*AR*A*R*C*B THEN 760 :ELSE GOSUB 410:GOTO 340
+410 :REM'.....calculate properties
+420 VIEW PRINT LN TO 24:CLS:VIEW PRINT:LOCATE LN
+430 FOR Y=1 TO 21
+440 IF B=0  AND A=P     THEN B=0:GOSUB 640
+450 IF AR=0 AND R<>0    THEN AR=P*R^2:D=2*R:CF=P*D
+460 IF D=0  AND R<>0    THEN D=2*R
+470 IF CF=0 AND R<>0    THEN CF=P*2*R
+480 IF AC=0 AND A*R<>0  THEN AC=A*R
+490 IF A=0  AND AC*R<>0 THEN A=AC/R
+500 IF A=0  AND R*C<>0  THEN Z=C/2/R:A=2*ATN(Z/SQR(-Z*Z+1))
+510 IF R=0  AND A*B<>0  THEN R=B/(1-COS(A/2))
+520 IF R=0  AND B*C<>0  THEN R=(4*B^2+C^2)/(8*B):A=2*(P-(2*(ATN((C/2)/B))))
+530 IF C=0  AND B*R<>0  THEN C=2*(SQR(2*B*R-B^2))
+540 IF C=0  AND A*R<>0  THEN C=2*R*SIN(A/2)
+550 IF B=0  AND R*C<>0  THEN B=R-0.5!*(SQR(4*R^2-C^2))
+560 IF B=0  AND A*C<>0  THEN B=C/2*TAN(A/4)
+570 IF B=0  AND A*R<>0  THEN B=2*R*(SIN(A/4)^2)
+580 IF R=0  AND AR<>0   THEN R=SQR(AR/P)
+590 IF R=0  AND CF<>0   THEN R=CF/(2*P)
+600 IF R=0  AND A*AC<>0 THEN R=AC/A
+610 IF A=0  AND AC*B<>0 THEN GOSUB 640
+620 IF A=0  AND AC*C<>0 THEN GOSUB 700
+630 NEXT Y:RETURN
+640 :REM'.....solve angle A by iteration if AC (arc) and B (height) known
+650 Z=10*P/180
+660 A=A+Z:X=A*B/(1-COS(A/2))
+670 IF ABS(X-AC)<=X*9.999999974752427e-07! THEN RETURN
+680 IF X<AC THEN A=A-Z:Z=Z/10
+690 GOTO 660
+700 :REM'.....solve angle A by iteration if AC (arc) and C (chord) known
+710 Z=10*P/180:J=2*AC/C
+720 A=A+Z:X=A/SIN(A/2)
+730 IF ABS(X-J)<=X*9.999999974752427e-07! THEN RETURN
+740 IF X>J THEN A=A-Z:Z=Z/10
+750 GOTO 720
+760 :REM'.....display data
+770 D$=" units"
+780 PRINT " Curved arch AHB....";USING U$;AC;:PRINT D$
+790 PRINT " Chord AB...........";USING U$;ABS(C);:PRINT D$
+800 PRINT " Segment Height CH..";USING U$;B;:PRINT D$
+810 PRINT " Radii XA, XH, XB...";USING U$;R;:PRINT D$
+820 PRINT " Angle AXB..........";USING U$;A*180/P;:PRINT "°"
+830 PRINT TAB(21)"(Values rounded off to nearest .001)"
+840 GOTO 950
+850 :REM'.....diagram
+860 COLOR 0,7:T=28
+870 LOCATE ,T:PRINT "            *H           "
+880 LOCATE ,T:PRINT " A*         *C        *B "
+890 LOCATE ,T:PRINT "                         "
+900 LOCATE ,T:PRINT "                         "
+910 LOCATE ,T:PRINT "                         "
+920 LOCATE ,T:PRINT "            *X           "
+930 COLOR 7,0
+940 RETURN
+950 :REM'.....end
+960 GOSUB 970:GOTO 100
+970 :REM'.....PRT
+980 KEY OFF:GOSUB 1050:LOCATE 25,5:COLOR 0,2
+990 PRINT " Send this page to:(1)Printer Queue? (2)Printout? ";
+1000 PRINT "(3)Next page? (1/2/3)";:COLOR 7,0
+1010 Z$=INKEY$:IF Z$<"1"OR Z$>"3"THEN 1010 :ELSE GOSUB 1050
+1020 IF Z$="3"THEN RETURN
+1030 FOR I%=1 TO 24:FOR J%=1 TO 80:LPRINT CHR$(SCREEN(I%,J%));:NEXT J%:NEXT I%
+1040 IF Z$="2"THEN LPRINT CHR$(12) :ELSE 980
+1050 LOCATE 25,1:PRINT STRING$(80,32);:RETURN

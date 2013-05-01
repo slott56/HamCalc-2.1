@@ -1,0 +1,289 @@
+10 :REM'LENSES - 10 MAY 86 rev. 12 MAR 2000
+20 CLS:KEY OFF
+30 UL$=STRING$(80,205)
+40 U1$="###.#"
+50 U2$="###.##"
+60 E$=STRING$(80,32)
+70 T$=" LENS MATHEMATICS "
+80 COLOR 0,2,2
+90 PRINT UL$;
+100 LOCATE 1,(80-LEN(T$))/2:PRINT T$
+110 COLOR 2,0:PRINT STRING$(80,223);
+120 COLOR 7,0
+130 GOSUB 2440  :REM'preface
+140 PRINT UL$;
+150 PRINT " Press number in < > to:"
+160 PRINT UL$;
+170 PRINT "  < 1 >  Continue"
+180 PRINT "  < 0 >  EXIT";              :REM'line 24
+190 Z$=INKEY$
+200 IF Z$="0"THEN CLS:RUN "fotomenu"
+210 IF Z$="1"THEN 240
+220 GOTO 190
+230 :REM'
+240 :REM'.....diagram
+250 VIEW PRINT 3 TO 24:CLS:VIEW PRINT:LOCATE 3
+260 PRINT "         ┌────────» ┌──» ░▒▓░▒▓░▒▓░▒▓░▒▓░▒▓░ «─SUBJECT:length..."
+270 PRINT "         │          │             ^                   :width...."
+280 PRINT "         │          │             ^                   :diagonal."
+290 PRINT "         │   Subject to lens      ^"
+300 PRINT "         │          │             ^"
+310 PRINT "  Subject to film   │             ^"
+320 PRINT "      to film       │          ┌─────┐ LENS:focal length..."
+330 PRINT "         │          ├─────»    └┬───┬┘     :extension......"
+340 PRINT "         │    Lens to Film  ┌───┴───┴───┐"
+350 PRINT "         │          │       │           │ «── CAMERA"
+360 PRINT "         └────────» └─────» └───═════───┘ «── FILM PLANE"
+370 PRINT "                              ─»│   │«─ IMAGE:length...."
+380 PRINT " Magnification:                              :width....."
+390 PRINT " Exposure factor:                            :diagonal.."
+400 LOCATE 11,43:PRINT "*may need extension rings or bellows"
+410 LOCATE 17:PRINT UL$;
+420 :REM'
+430 :REM'.....select units of measure
+440 PRINT " Press number in < > to select unit of measurement of the Subject:"
+450 PRINT UL$;
+460 PRINT "  < 1 >  millimetres"
+470 PRINT "  < 2 >  metres"
+480 PRINT "  < 3 >  inches"
+490 PRINT "  < 4 >  feet"
+500 Z$=INKEY$:IF Z$=""THEN 500
+510 IF Z$="1"THEN M$=" mm ":FAC=1:GOTO 560
+520 IF Z$="2"THEN M$=" m. ":FAC=1000.0!:GOTO 560
+530 IF Z$="3"THEN M$=" in.":FAC=25.399999618530273!:GOTO 560
+540 IF Z$="4"THEN M$=" ft.":FAC=304.79998779296875!:GOTO 560
+550 GOTO 500
+560 VIEW PRINT 18 TO 24:CLS:VIEW PRINT:LOCATE 18
+570 IF MENU THEN SWAP A,B:GOTO 1690
+580 :REM'
+590 :REM'.....input data
+600 IF A THEN 740
+610 LOCATE 18:PRINT " (Note: 35mm film frames are 36mm long x 24mm wide)"
+620 K$=CHR$(34)
+630 PRINT " (Other common sizes: 1-5/8";K$;"= 41mm, 2-1/4";K$;"= 57mm,";
+640 PRINT " 3-1/4";K$;"= 82mm)"
+650 COLOR 0,7
+660 LOCATE 20:INPUT " ENTER: Film format - frame length (mm) ";A
+670 COLOR 7,0
+680 VIEW PRINT 20 TO 24:CLS:VIEW PRINT
+690 IF A=0 THEN BEEP:GOTO 650
+700 COLOR 0,7
+710 LOCATE 14,57:PRINT USING U1$;A;:PRINT " mm "
+720 COLOR 7,0
+730 :REM'
+740 IF B THEN 850
+750 COLOR 0,7
+760 LOCATE 20:INPUT " ENTER: Film format - frame width (mm) ";B
+770 COLOR 7,0
+780 VIEW PRINT 20 TO 24:CLS:VIEW PRINT
+790 IF B=0 THEN BEEP:GOTO 750
+800 COLOR 0,7
+810 LOCATE 15,57:PRINT USING U1$;B;:PRINT " mm "
+820 COLOR 7,0
+830 VIEW PRINT 18 TO 24:CLS:VIEW PRINT
+840 :REM'
+850 IF(A+B)AND(A*B=0)THEN 600
+860 IF A>B THEN SWAP A,B
+870 IF W*T THEN 1130
+880 IF A*M THEN 1280
+890 :REM'
+900 IF C THEN 1000
+910 COLOR 0,7
+920 LOCATE 18:PRINT " ENTER: Subject length (";M$;") ";:INPUT C
+930 COLOR 7,0
+940 C=C*FAC      :REM'convert to mm
+950 LOCATE CSRLIN-1:PRINT E$;
+960 IF C=0 THEN 1000
+970 COLOR 0,7:LOCATE 3,65:PRINT USING U2$;C/FAC;:PRINT M$
+980 COLOR 7,0
+990 :REM'
+1000 IF D THEN 1120
+1010 COLOR 0,7
+1020 LOCATE 18:PRINT " ENTER: Subject width (";M$;") ";:INPUT D
+1030 COLOR 7,0
+1040 COLOR 7,0
+1050 D=D*FAC      :REM'convert to mm
+1060 W=C+D
+1070 LOCATE CSRLIN-1:PRINT E$;
+1080 IF D=0 THEN 1120
+1090 COLOR 0,7:LOCATE 4,65:PRINT USING U2$;D/FAC;:PRINT M$
+1100 COLOR 7,0
+1110 :REM'
+1120 IF C*D THEN C=(C+D-ABS(C-D))/2:D=W-C
+1130 IF A*W=0 THEN 1190
+1140 IF C THEN Y=A/C
+1150 IF D THEN Z=B/D
+1160 M=(Y+Z-ABS(Y-Z))/2:IF M=0 THEN M=Y+Z
+1170 GOSUB 1690
+1180 :REM'
+1190 IF M THEN 1280
+1200 COLOR 0,7
+1210 LOCATE 18:INPUT " ENTER: Magnification ";M
+1220 COLOR 7,0
+1230 LOCATE CSRLIN-1:PRINT E$;
+1240 IF M=0 THEN 1280
+1250 COLOR 0,7:LOCATE 15,18:PRINT USING U2$;M;:PRINT "x ":GOSUB 1690
+1260 COLOR 7,0
+1270 :REM'
+1280 IF F THEN 1370
+1290 COLOR 0,7
+1300 LOCATE 18:INPUT " ENTER: Focal length of lens (mm) ";F
+1310 COLOR 7,0
+1320 LOCATE CSRLIN-1:PRINT E$;
+1330 IF F=0 THEN 1370
+1340 COLOR 0,7:LOCATE 9,60:PRINT USING U1$;F;:PRINT " mm "
+1350 COLOR 7,0:GOSUB 1690
+1360 :REM'
+1370 IF U THEN 1470
+1380 COLOR 0,7
+1390 LOCATE 18:PRINT " ENTER: Lens-to-Subject Distance (";M$;") ";:INPUT U
+1400 COLOR 7,0
+1410 U=U*FAC       :REM'convert to mm
+1420 LOCATE CSRLIN-1:PRINT E$;
+1430 IF U=0 THEN 1470
+1440 COLOR 0,7:LOCATE 7,16:PRINT USING U2$;U/FAC;:PRINT M$
+1450 COLOR 7,0:GOSUB 1690
+1460 :REM'
+1470 IF V THEN 1560
+1480 COLOR 0,7
+1490 LOCATE 18:INPUT " ENTER: Lens-to-Film Plane Distance (mm) ";V
+1500 COLOR 7,0
+1510 LOCATE CSRLIN-1:PRINT E$;
+1520 IF V=0 THEN 1560
+1530 COLOR 0,7:LOCATE 12,17:PRINT USING U1$;V;:PRINT " mm "
+1540 COLOR 7,0:GOSUB 1690
+1550 :REM'
+1560 IF X THEN 1670
+1570 COLOR 0,7
+1580 IF F=0 THEN IF X*M THEN F=X/M:GOTO 1760
+1590 LOCATE 18:PRINT " ENTER: Lens Extension (mm) - (may require bellows or ";
+1600 PRINT "extension rings) ";:INPUT X
+1610 COLOR 7,0
+1620 LOCATE CSRLIN-1:PRINT E$;
+1630 IF X=0 THEN 1670
+1640 COLOR 0,7:LOCATE 10,60:PRINT USING U1$;X;:PRINT " mm "
+1650 COLOR 7,0:GOSUB 1690
+1660 :REM'
+1670 GOTO 600
+1680 :REM'
+1690 IF F=0 THEN IF X*V THEN F=V-X:GOTO 1860
+1700 IF V=0 THEN IF X*F THEN V=X+F:GOTO 1860
+1710 IF F=0 THEN IF X*M THEN F=X/M:GOTO 1760
+1720 IF M=0 THEN IF X*U THEN M=(X/U*SQR(ABS(-X^2/U^2-4*X/U)/2))
+1730 IF M=0 THEN IF V*U THEN M=V/U:GOTO 1810
+1740 IF U=0 THEN IF V*M THEN U=V/M:GOTO 1810
+1750 IF V=0 THEN IF M*U THEN V=M*U:GOTO 1810
+1760 IF V=0 THEN IF F*M THEN V=F*M+F:U=V/M:GOTO 1820
+1770 IF F*V THEN 1860
+1780 IF F*U THEN 1840
+1790 RETURN
+1800 :REM'
+1810 F=V/(M+1)
+1820 X=V-F:IF C*D=0 THEN C=A/M:D=B/M
+1830 A=C*M:B=D*M:GOTO 1960
+1840 IF U>F THEN M=F/(U-F):V=M*U:GOTO 1820
+1850 GOSUB 1900:U=0:GOTO 1370
+1860 M=V/F-1:IF M THEN U=V/M:GOTO 1820
+1870 IF M<0 THEN GOSUB 1900:V=0:GOTO 1470
+1880 GOTO 1830
+1890 :REM'
+1900 COLOR 14,4
+1910 LOCATE 25,2:BEEP:PRINT " NOT POSSIBLE !.... Press any key to continue ";
+1920 COLOR 7,0
+1930 IF INKEY$=""THEN 1930
+1940 CLEAR:CLS:GOTO 10
+1950 :REM'
+1960 :REM'.....print
+1970 COLOR 15,1
+1980 LOCATE 14,57:PRINT USING U1$;B;:PRINT " mm "
+1990 LOCATE 15,57:PRINT USING U1$;A;:PRINT " mm "
+2000 LOCATE 16,57:PRINT USING U1$;SQR(A^2+B^2);:PRINT " mm "   :REM'image diagonal
+2010 LOCATE  9,60:PRINT USING U1$;F;:PRINT " mm "
+2020 LOCATE 10,60:PRINT USING U1$;X;:PRINT " mm*"
+2030 LOCATE 12,17:PRINT USING U1$;V;:PRINT " mm "
+2040 IF M=0 THEN LOCATE 7,16:PRINT "INFINITY":GOTO 2130
+2050 LOCATE  7,16:PRINT USING U2$;U/FAC;:PRINT M$
+2060 Z=U+V                                            :REM'film plane to subject
+2070 LOCATE 9,5:PRINT USING U2$;Z/FAC;:PRINT M$
+2080 IF C*D=0 THEN 2130
+2090 LOCATE 3,65:PRINT USING U2$;D/FAC;:PRINT M$
+2100 LOCATE 4,65:PRINT USING U2$;C/FAC;:PRINT M$
+2110 T=SQR(C^2+D^2)                                   :REM'subject diagonal
+2120 LOCATE 5,65:PRINT USING U2$;T/FAC;:PRINT M$
+2130 Z=2*ATN(T/2/U):Z=Z*180/3.1415929794311523!
+2140 LOCATE 4,25:PRINT USING "###.#";Z;:PRINT "° angle of view "
+2150 LOCATE 15,18:PRINT USING U2$;M;:PRINT "x "
+2160 Z=(V/F)^2                                        :REM'exposure factor
+2170 LOCATE 16,18:PRINT USING U2$;Z;:PRINT "x "
+2180 COLOR 7,0
+2190 :REM'
+2200 LOCATE 17,29:COLOR 15,1:PRINT " EFFECTIVE APERTURES "
+2210 LOCATE 18:COLOR 7,0:PRINT STRING$(80,32);:LOCATE CSRLIN-1
+2220 :REM'
+2230 DATA 1.4,11,2,16,2.8,22,4,32,5.6,45,8,64
+2240 FOR Y=1 TO 6
+2250 READ N1$,N2$
+2260 Z=VAL(N1$):Q=Z*V/F:Z1=CINT(Q*10)/10
+2270 Z=VAL(N2$):Q=Z*V/F:Z2=CINT(Q*10)/10
+2280 N=Z1:GOSUB 2380
+2290 PRINT TAB(3);"Setting ƒ/";N1$;TAB(16);" functions as ƒ/";USING U$;Z1;
+2300 N=Z2:GOSUB 2380
+2310 PRINT TAB(45);"Setting ƒ/";N2$;TAB(57);" functions as ƒ/";USING U$;Z2
+2320 NEXT Y:RESTORE
+2330 PRINT UL$;
+2340 GOSUB 2810
+2350 IF MENU THEN CLS:RUN"\hamcalc\fotocalc\fotomenu"
+2360 CLEAR:CLS:GOTO 10
+2370 :REM'
+2380 :REM'.....format numbers
+2390 IF N<1000 THEN U$="###.#"
+2400 IF N<100 THEN U$="##.#"
+2410 IF N<10 THEN U$="#.#"
+2420 RETURN
+2430 :REM'
+2440 :REM'.....preface
+2450 T=7
+2460 IF MENU THEN 2650
+2470 PRINT TAB(T);
+2480 PRINT "  This program asks for a lot of data to be entered. As each"
+2490 PRINT TAB(T);
+2500 PRINT "question is asked, if you do not know the data requested, just"
+2510 PRINT TAB(T);
+2520 PRINT "press <ENTER> without typing anything. This will bypass that"
+2530 PRINT TAB(T);
+2540 PRINT "question and go on to the next one."
+2550 PRINT TAB(T);
+2560 PRINT "  Enter the data you DO know by typing in the data and pressing"
+2570 PRINT TAB(T);
+2580 PRINT "<ENTER>. Don't panic if you miss an entry. If the entry you missed"
+2590 PRINT TAB(T);
+2600 PRINT "is essential it will be asked for again."
+2610 PRINT TAB(T);
+2620 PRINT "  The computer repeats its unanswered questions over and over again"
+2630 PRINT TAB(T);
+2640 PRINT "in rotation until it gets what it needs to go into orbit!"
+2650 PRINT TAB(T);
+2660 PRINT "  Measurements relating to the lens are to and from the optical"
+2670 PRINT TAB(T);
+2680 PRINT "centre of the lens. This is the point at which the light rays"
+2690 PRINT TAB(T);
+2700 PRINT "entering the lens cross, and the image turns upside down."
+2710 PRINT TAB(T);
+2720 PRINT "  In most lenses this point is somewhere between the front and rear"
+2730 PRINT TAB(T);
+2740 PRINT "glass elements. In some lenses it is completely outside the lens"
+2750 PRINT TAB(T);
+2760 PRINT "body. IT IS THEREFORE ADVISABLE, ESPECIALLY IN CLOSE-UP SHOTS,"
+2770 PRINT TAB(T);
+2780 PRINT "TO MEASURE TO AND FROM THE FILM PLANE RATHER THAN THE LENS."
+2790 RETURN
+2800 :REM'
+2810 :REM'PRT
+2820 KEY OFF:GOSUB 2890:LOCATE 25,5:COLOR 0,2
+2830 PRINT " Send this page to:(1)Printer Queue? (2)Printout? ";
+2840 PRINT "(3)Next page? (1/2/3)";:COLOR 7,0
+2850 Z$=INKEY$:IF Z$<"1"OR Z$>"3"THEN 2850 :ELSE GOSUB 2890
+2860 IF Z$="3"THEN RETURN
+2870 FOR I%=1 TO 24:FOR J%=1 TO 80:LPRINT CHR$(SCREEN(I%,J%));:NEXT J%:NEXT I%
+2880 IF Z$="2"THEN LPRINT CHR$(12) :ELSE 2820
+2890 LOCATE 25,1:PRINT STRING$(80,32);:RETURN

@@ -1,0 +1,38 @@
+#################################
+555 Timer: Monostable One-Shot
+#################################
+
+Preface
+=======
+
+This calculator helps design monostable one-shot from a
+standard 555 timer IC.
+
+R1 should be between 1000 and 3.3 Meg Ohms
+
+C1 should be .0005 microfarads or more
+
+Multivibrator Design
+====================
+
+The following diagram illustrates the basic hookup.
+
+..  image:: 555single.gif
+    :alt:   555 chip hookup
+
+To compute R1 and C1 for a given pulse duration
+
+1.  Enter the desired frequency.
+
+2.  Enter any of R1 (1K-3.3M Ohms), and/or C1 (more than 0.0005 microfarads)
+
+
+To reverse engineer a timer-based circuit to determine duration
+
+1.  Enter R1 and C1
+
+..  applet::
+    :code: RadioCalc.class
+    :width: 200
+    :height: 250
+    :models: u555single

@@ -1,0 +1,12 @@
+###################
+Rate-Time-Distance
+###################
+
+This calculator solves simple rate*time=distance calculations in
+hours and statute miles.
+
+..  applet::
+    :code: RadioCalc.class
+    :width: 200
+    :height: 150
+    :models: rtd_statute

@@ -1,0 +1,136 @@
+10 :REM'\hamcalc\prog\METRICS - 21 AUG 86  rev. 02 MAY 2001
+20 IF EX$=""THEN EX$="EXIT"
+30 CLS:KEY OFF:SCREEN 0
+40 COLOR 7,0,0
+50 DIM A$(38,3)
+60 U$=STRING$(80,205)
+70 RESTORE:GOTO 130
+80 :REM'
+90 :REM'ERASE LINE
+100 LOCATE 23:PRINT STRING$(80," ");:LOCATE 23
+110 RETURN
+120 :REM'
+130 :REM'.....start
+140 N=38                                   :REM'NUMBER OF DATA GROUPS
+150 FOR X=1 TO N:FOR Y=1 TO 3
+160 READ A$(X,Y)
+170 NEXT Y:NEXT X
+180 :REM'
+190 :REM'.....menu
+200 CLS:COLOR 15,1
+210 PRINT " METRIC CONVERTER";TAB(61);"by George C. Murphy ";
+220 COLOR 5,0:PRINT STRING$(80,223);
+230 COLOR 7,0
+240 PRINT " Press number in < > for desired conversion":PRINT U$;
+250 PRINT "  < 1 >  Imperial to Metric"
+260 PRINT "  < 2 >  Metric to Imperial"
+270 PRINT U$;
+280 PRINT "  < 0 >  EXIT"
+290 Z$=INKEY$
+300 IF Z$="1"THEN A=1:B=2:C=0:GOTO 360
+310 IF Z$="2"THEN A=2:B=1:C=1:GOTO 360
+320 IF Z$="0"THEN CLS:RUN EX$
+330 GOTO 290
+340 :REM'
+350 :REM'.....print menu
+360 VIEW PRINT 3 TO 24:CLS:VIEW PRINT:LOCATE 3
+370 LOCATE 2,39:PRINT "│"
+380 LOCATE 3:FOR Z=1 TO 19
+390 N1$="("+CHR$(Z+96)+")":N2$="("+CHR$(Z+115)+")"
+400 IF Z>7 THEN N2$="("+CHR$(Z+40)+")"
+410 IF Z=18 THEN N2$="(-)"
+420 IF Z=19 THEN N2$="(=)"
+430 COLOR 0,7:PRINT N1$;:COLOR 7,0
+440 PRINT TAB(5)A$(Z,A);TAB(20)"to  ";A$(Z,B);
+450 PRINT TAB(39);"│";
+460 LOCATE CSRLIN,41:COLOR 0,7:PRINT N2$;:COLOR 7,0
+470 PRINT TAB(46)A$(Z+19,A);TAB(61)"to  ";A$(Z+19,B)
+480 NEXT Z:PRINT U$;
+490 LOCATE CSRLIN-1,39:PRINT "╧"
+500 :REM'
+510 GOSUB 90
+520 PRINT "Press character in ";:COLOR 0,7:PRINT "( )";
+530 COLOR 7,0:PRINT " for required conversion..."
+540 Z$=INKEY$:IF Z$=""THEN 540
+550 IF Z$="-"THEN Q=133:GOTO 590
+560 IF Z$="="THEN Q=134:GOTO 590
+570 Q=ASC(Z$)
+580 IF Q>=48 AND Q<=57 OR Q>=96 AND Q<=122 THEN X=Q:GOTO 590 :ELSE 540
+590 GOSUB 90
+600 X=Q-96:IF X<0 THEN X=Q-21
+610 Y=VAL (A$(X,3))
+620 IF C=1 THEN Y=1/Y
+630 PRINT "ENTER: How many ";A$(X,A);:INPUT H
+640 T=H*Y
+650 A$=A$(X,A):B$=A$(X,B)
+660 IF Y<>1 THEN 800            :REM'Y=1 is flag for temperature conversion only
+670 :REM'
+680 :REM'.......temperature
+690 F$=CHR$(248)+"F"
+700 C$=CHR$(248)+"C"
+710 IF A$(X,A)="fahrenheit"THEN T=(H-32)/1.7999999523162842!:A$=F$:B$=C$
+720 IF A$(X,A)="celsius"THEN T=1.7999999523162842!*H+32:A$=C$:B$=F$
+730 T=INT(T*10+0.5!)/10
+740 GOSUB 90
+750 LOCATE CSRLIN-1,39:COLOR 7,0:PRINT "╪"
+760 COLOR 1,2
+770 PRINT H;A$;" = ";T;B$;" ":COLOR 7,0
+780 GOTO 880
+790 :REM'
+800 :REM'.....display answer
+810 IF T<1 THEN USIN$=".####":GOTO 830
+820 USIN$=STRING$(LEN(STR$(FIX(T))),"#")+".##"
+830 GOSUB 90
+840 LOCATE CSRLIN-1,39:COLOR 7,0:PRINT "╪"
+850 COLOR 15,2
+860 PRINT H;A$;" = ";USING USIN$;T;:PRINT " ";B$;" ":COLOR 7,0
+870 :REM'
+880 PRINT U$;:LOCATE 24,39:PRINT "╧";
+890 LOCATE 23,39:PRINT "│";
+900 LOCATE 23,41:COLOR 15,2
+910 PRINT " Press <1> to continue or <0> for menu  ";
+920 COLOR 7,0
+930 Z$=INKEY$
+940 IF Z$="0"OR Z$="1"THEN LOCATE 24:PRINT STRING$(80," ");:COLOR 7,0
+950 IF Z$="0"THEN 980
+960 IF Z$="1"THEN 510
+970 GOTO 930
+980 VIEW PRINT 3 TO 24:CLS:VIEW PRINT:LOCATE 3:ERASE A$:GOTO 40
+990 DATA ounces(weight),grams,28.3495
+1000 DATA lb.,Kg(kilograms),.4535925
+1010 DATA short tons,tonnes,.907185
+1020 DATA long tons,tonnes,1.016047
+1030 DATA fl.oz. (Impl.),ml,28.41167
+1040 DATA fl.oz. (U.S.),ml,29.57285
+1050 DATA pints  (Impl.),litres,.56823
+1060 DATA pints  (U.S.),litres,.47317
+1070 DATA quarts (Impl.),litres,1.13647
+1080 DATA quarts (U.S.),litres,.94633
+1090 DATA gallons(Impl.),litres,4.546092
+1100 DATA gallons(U.S.),litres,3.785412
+1110 DATA inches,mm,25.4
+1120 DATA inches,cm,2.54
+1130 DATA feet,metres,.3048
+1140 DATA yards,metres,.9144
+1150 DATA miles,Km(kilometres),1.609347
+1160 DATA sq.in.,sq.cm,6.4516
+1170 DATA sq.ft.,sq.metres,.0929
+1180 DATA sq.yd.,sq.metres,.836
+1190 DATA cu.in.,cu.cm.(c.c.),16.38706
+1200 DATA cu.in.,litres,.0163873
+1210 DATA cu.ft.,cu.metres,.02832
+1220 DATA cu.ft.,litres,28.317
+1230 DATA cu.yd.,cu.metres,.7646
+1240 DATA Acres,Hectares,.4047
+1250 DATA P.S.I.,kPa(kilopascal),6.894757
+1260 DATA P.S.I.,MPa(megapascal),.006894757
+1270 DATA P.S.I.,bar,.068621
+1280 DATA lb/sq.in,Kg/sq.metre,.07030697
+1290 DATA lb/sq.ft,Kg/sq.metre,4.882429
+1300 DATA ft/lb,BTU,778.26
+1310 DATA HP,kW(kilowatt),.7456999
+1320 DATA lb.force,newtons,4.448222
+1330 DATA lb/in,newton-metres,.1129848
+1340 DATA lb/ft,newton-metres,14.5939
+1350 DATA fahrenheit,celsius,1
+1360 DATA in.mercury,KPa,3.408024

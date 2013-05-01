@@ -1,0 +1,133 @@
+10 :REM'COMPINT : 13 DEC 85  rev. 30 DEC 2000
+20 CLS:KEY OFF:COLOR 7,0,0
+30 IF EX$=""THEN EX$="EXIT"
+40 IF PROG$=""THEN GO$=EX$ :ELSE GO$=PROG$
+50 COMMON EX$,PROG$
+60 U1$=STRING$(80,205):U2$=STRING$(40,205)
+70 B$="###,###,###.##"
+80 B1$="###,###,###.###"
+90 C$="##############"
+100 :REM'
+110 :REM'.....start
+120 F=0:P=0:R=0:N=0:L=0:M=0:M=0:T=0:B=0:V=0
+130 CLS
+140 PRINT TAB(26)"COMPOUND INTEREST CALCULATOR"
+150 PRINT U1$;
+160 PRINT TAB(24)"  Press letter in ( ) to select program"
+170 PRINT U1$;
+180 PRINT TAB(19)"  (a)  Find Future Value"
+190 PRINT TAB(19)"  (b)  Find Present Value"
+200 PRINT TAB(19)"  (c)  Find Annual Interest Rate"
+210 PRINT TAB(19)"  (d)  Find Number of Years"
+220 PRINT TAB(19)"  (e)  Determine Monthly Time Payments"
+230 PRINT TAB(19)"  (f)  Find Monthly Time Payment Annual Interest Rate"
+240 PRINT
+250 PRINT TAB(19)"  (g)  Exit"
+260 J$=INKEY$
+270 IF J$="a"THEN 540
+280 IF J$="b"THEN 590
+290 IF J$="c"THEN 640
+300 IF J$="d"THEN 690
+310 IF J$="e"THEN 740
+320 IF J$="f"THEN 790
+330 IF J$="g"THEN CLS:CHAIN GO$
+340 GOTO 260
+350 :REM'
+360 :REM'.....inputs
+370 INPUT " Amount of loan .......";P:IF P=0 THEN LOCATE CSRLIN-1:GOTO 370
+380 RETURN
+390 INPUT " Present value ........";P:IF P=0 THEN LOCATE CSRLIN-1:GOTO 390
+400 RETURN
+410 INPUT " Annual Interest % ....";R:IF R=0 THEN LOCATE CSRLIN-1:GOTO 410
+420 R=R/100
+430 RETURN
+440 INPUT " Number of years ......";N:IF N=0 THEN LOCATE CSRLIN-1:GOTO 440
+450 RETURN
+460 INPUT " Future value .........";F:IF F=0 THEN LOCATE CSRLIN-1:GOTO 460
+470 RETURN
+480 INPUT " Number of months .....";M:IF M=0 THEN LOCATE CSRLIN-1:GOTO 480
+490 M=CINT(M)
+500 RETURN
+510 INPUT " Monthly payment ......";L:IF L=0 THEN LOCATE CSRLIN-1:GOTO 510
+520 RETURN
+530 :REM'
+540 :REM'.....future value
+550 CLS:PRINT " To find Future Value, ENTER to following:"
+560 PRINT :GOSUB 390:GOSUB 410:GOSUB 440:CLS
+570 F=P*((1+R)^N):GOTO 890
+580 :REM'
+590 :REM'.....present value
+600 CLS:PRINT " To find Present Value, ENTER to following:"
+610 PRINT :GOSUB 460:GOSUB 410:GOSUB 440:CLS
+620 P=F/((1+R)^N):GOTO 890
+630 :REM'
+640 :REM'.....interest
+650 CLS:PRINT " To find Annual Interest rate, ENTER to following:"
+660 PRINT :GOSUB 390:GOSUB 460:GOSUB 440:CLS
+670 R=((F/P)^(1/N))-1:GOTO 890
+680 :REM'
+690 :REM'.....number of years
+700 CLS:PRINT " To find Number of Years, ENTER to following:"
+710 PRINT :GOSUB 390:GOSUB 460:GOSUB 410
+720 N=(LOG(F/P))/(LOG(1+R)):GOTO 890
+730 :REM'
+740 :REM'.....monthly payment
+750 CLS:PRINT " To find Monthly Payment, ENTER to following:"
+760 PRINT :GOSUB 370:GOSUB 410:K=R/12:GOSUB 480
+770 L=P*K/(1-(1+K)^-M):F=M*L:V=1:Q=1:GOTO 890
+780 :REM'
+790 :REM'.....time payment interest
+800 CLS:PRINT " To find Annual Interest rate, ENTER to following:"
+810 PRINT :GOSUB 370:GOSUB 510:GOSUB 480
+820 X=0:Y=0.009999999776482582!:Q=1
+830 X=X+Y:REM'  :LOCATE 2,45:PRINT L,Z
+840 Z=INT(P*X/(1-(1+X)^-M)*100)/100
+850 IF Z=L THEN K=X:R=12*X:F=M*L:GOTO 890
+860 IF SGN(L-Z)=SGN (Y) THEN 830
+870 Y=-1.100000023841858!*Y/10:GOTO 830
+880 :REM'
+890 :REM'.....display results
+900 CLS:PRINT " COMPOUND INTEREST ":PRINT U2$
+910 IF F THEN PRINT " Future value .........";USING B$;F
+920 IF P THEN PRINT " Present value ........";USING B$;P
+930 IF F*P THEN Z=F-P:PRINT " Total Interest .......";USING B$;Z
+940 IF R THEN Z=R*100:PRINT " Annual Interest rate..";USING B$;Z;:PRINT "%"
+950 IF N THEN PRINT " Number of years ......";USING B1$;N
+960 IF L THEN W=L:PRINT " Monthly payment ......";USING B$;L
+970 IF J$="e"THEN 990
+980 IF V THEN Z=F-(L*(M-1)):PRINT " Last monthly payment..";USING B$;Z
+990 IF M THEN PRINT " Number of months .....";USING C$;M
+1000 PRINT U2$
+1010 GOTO 1050
+1020 :REM'
+1030 FOR U=C1 TO C2:LOCATE U:PRINT STRING$(40,32):NEXT U:RETURN
+1040 :REM'
+1050 :REM'.....balance of loan
+1060 IF Q=0 THEN GOSUB 1250:GOTO 110
+1070 X=CSRLIN+1
+1080 BA$=" some "
+1090 LOCATE X,1
+1100 PRINT " Do you want to see";BA$;"balances? (y/n)"
+1110 Z$= INKEY$
+1120 IF Z$="n"THEN LOCATE CSRLIN-1:PRINT STRING$(40,32):GOSUB 1250:GOTO 110
+1130 IF Z$="y"THEN 1150
+1140 GOTO 1110
+1150 LOCATE X+2,1
+1160 INPUT " ENTER: For what month no. ";T
+1170 LOCATE CSRLIN-3:PRINT STRING$(40,32)
+1180 LOCATE CSRLIN+1:PRINT STRING$(40,32)
+1190 B=((P*K-W)*(1+K)^T+W)/K:Q=Q+1:BA$=" more "
+1200 LOCATE Q,48
+1210 PRINT "Month #";USING "###";T;
+1220 PRINT " ......$";USING B$;B
+1230 GOTO 1090
+1240 :REM'
+1250 :REM'PRT
+1260 KEY OFF:GOSUB 1330:LOCATE 25,5:COLOR 0,2
+1270 PRINT " Send this page to:(1)Printer Queue? (2)Printout? ";
+1280 PRINT "(3)Next page? (1/2/3)";:COLOR 7,0
+1290 Z$=INKEY$:IF Z$<"1"OR Z$>"3"THEN 1290 :ELSE GOSUB 1330
+1300 IF Z$="3"THEN RETURN
+1310 FOR I%=1 TO 24:FOR J%=1 TO 80:LPRINT CHR$(SCREEN(I%,J%));:NEXT J%:NEXT I%
+1320 IF Z$="2"THEN LPRINT CHR$(12) :ELSE 1260
+1330 LOCATE 25,1:PRINT STRING$(80,32);:RETURN

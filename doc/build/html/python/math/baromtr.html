@@ -1,0 +1,362 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>baromtr – Barometer Reading Equivalents &mdash; HamCalc 2.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '2.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="HamCalc 2.1 documentation" href="../../index.html" />
+    <link rel="up" title="math – Math, Physics, Units Conversion" href="index.html" />
+    <link rel="next" title="binary – Decimal to Binary Converter" href="binary.html" />
+    <link rel="prev" title="accelr – Acceleration Calculator" href="accelr.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="binary.html" title="binary – Decimal to Binary Converter"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="accelr.html" title="accelr – Acceleration Calculator"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../../index.html">HamCalc 2.1 documentation</a> &raquo;</li>
+          <li><a href="../index.html" >Python Modules</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">math &#8211; Math, Physics, Units Conversion</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="baromtr-barometer-reading-equivalents">
+<h1>baromtr &#8211; Barometer Reading Equivalents<a class="headerlink" href="#baromtr-barometer-reading-equivalents" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="analysis">
+<h2>Analysis<a class="headerlink" href="#analysis" title="Permalink to this headline">¶</a></h2>
+<p>Atmophere pressure can be measured in a variety of units.</p>
+<p>This program provides conversions from Standard Atmospheres (atm) to a variety of other units.
+Specifically:</p>
+<ul class="simple">
+<li>Standard atmospheres, atm</li>
+<li>Millibars, mb, 1033*atm</li>
+<li>Centimetres of mercury, cm.Hg, 76*atm</li>
+<li>Inches of mercury, in.Hg, 29.921*atm</li>
+<li>Metres of water, m.w, 10.3322*atm</li>
+<li>Inches of water, in.w, 406.782*atm</li>
+<li>Feet of water, ft.w, 33.899*atm</li>
+<li>Pounds per square inch, lb/in², 14.696*atm</li>
+<li>Pounds per square foot, lb/ft², 2116.2*atm</li>
+<li>Kilograms per square centimetre, kg/cm², 1.033*atm</li>
+<li>Kilopascals, kPa, 101.325*atm</li>
+</ul>
+<p>It also provides a table with kPa, in.Hg, lb/in², millibars and atm.</p>
+</div>
+<div class="section" id="module-hamcalc.math.baromtr">
+<span id="implementation"></span><h2>Implementation<a class="headerlink" href="#module-hamcalc.math.baromtr" title="Permalink to this headline">¶</a></h2>
+<p>hamcalc.math.baromtr &#8211; Barometer Reading Equivalents</p>
+<p>This is, essentially, a collection of unit conversions for various
+ways to measure atmospheric presssure.</p>
+<p>The units include:</p>
+<ul class="simple">
+<li>MB Millibars</li>
+<li>ATM Standard Atmospheres, sometimes abbreviated S.A.</li>
+<li>CM_Hg cm of Mercury</li>
+<li>IN_Hg inches of Mercury</li>
+<li>M_W meters of Water</li>
+<li>IN_W inches of Water</li>
+<li>FT_W feet of Water</li>
+<li>PSI pounds per square inch, lb/in²</li>
+<li>PSF pounds per square foot, lb/ft²</li>
+<li>BAR kilograms per square cm, kg/cm²</li>
+<li>KPA kilo Pascals</li>
+</ul>
+<p>These units are wrapped in two functions to provide features for the application.</p>
+<p>Ths includes is a <strong>Table</strong> of values, and all unit <strong>Equivalents</strong> for a given value.</p>
+<p>Here are some test cases.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">t</span><span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">table</span><span class="p">())</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">t</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="go">(95.5, 28.200893165556376, 13.85115223291389, 973.6146064643474, 0.9425117197137922)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">t</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+<span class="go">(106.0, 31.301514927214406, 15.374053787318035, 1080.6612385886997, 1.0461386627189735)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+<span class="go">22</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">equivalent</span><span class="p">(</span> <span class="mi">1033</span><span class="p">,</span> <span class="n">MB</span> <span class="p">)</span>
+<span class="go">(1033.0, 1.0, 76.0, 29.921, 10.3322, 406.782, 33.899, 14.696, 2116.2, 1.033, 101.325)</span>
+</pre></div>
+</div>
+<dl class="class">
+<dt id="hamcalc.math.baromtr.ATM">
+<em class="property">class </em><tt class="descclassname">hamcalc.math.baromtr.</tt><tt class="descname">ATM</tt><a class="reference internal" href="../../_modules/hamcalc/math/baromtr.html#ATM"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.math.baromtr.ATM" title="Permalink to this definition">¶</a></dt>
+<dd><p>Standard atmospheres</p>
+<dl class="attribute">
+<dt id="hamcalc.math.baromtr.ATM.standard">
+<tt class="descname">standard</tt><a class="headerlink" href="#hamcalc.math.baromtr.ATM.standard" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#hamcalc.math.baromtr.ATM" title="hamcalc.math.baromtr.ATM"><tt class="xref py py-class docutils literal"><span class="pre">ATM</span></tt></a></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="hamcalc.math.baromtr.BAR">
+<em class="property">class </em><tt class="descclassname">hamcalc.math.baromtr.</tt><tt class="descname">BAR</tt><a class="reference internal" href="../../_modules/hamcalc/math/baromtr.html#BAR"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.math.baromtr.BAR" title="Permalink to this definition">¶</a></dt>
+<dd><p>Kilograms per square centimetre</p>
+<dl class="attribute">
+<dt id="hamcalc.math.baromtr.BAR.standard">
+<tt class="descname">standard</tt><a class="headerlink" href="#hamcalc.math.baromtr.BAR.standard" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#hamcalc.math.baromtr.ATM" title="hamcalc.math.baromtr.ATM"><tt class="xref py py-class docutils literal"><span class="pre">ATM</span></tt></a></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="hamcalc.math.baromtr.CM_Hg">
+<em class="property">class </em><tt class="descclassname">hamcalc.math.baromtr.</tt><tt class="descname">CM_Hg</tt><a class="reference internal" href="../../_modules/hamcalc/math/baromtr.html#CM_Hg"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.math.baromtr.CM_Hg" title="Permalink to this definition">¶</a></dt>
+<dd><p>Centimetres of mercury</p>
+<dl class="attribute">
+<dt id="hamcalc.math.baromtr.CM_Hg.standard">
+<tt class="descname">standard</tt><a class="headerlink" href="#hamcalc.math.baromtr.CM_Hg.standard" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#hamcalc.math.baromtr.ATM" title="hamcalc.math.baromtr.ATM"><tt class="xref py py-class docutils literal"><span class="pre">ATM</span></tt></a></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="hamcalc.math.baromtr.FT_W">
+<em class="property">class </em><tt class="descclassname">hamcalc.math.baromtr.</tt><tt class="descname">FT_W</tt><a class="reference internal" href="../../_modules/hamcalc/math/baromtr.html#FT_W"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.math.baromtr.FT_W" title="Permalink to this definition">¶</a></dt>
+<dd><p>Feet of water</p>
+<dl class="attribute">
+<dt id="hamcalc.math.baromtr.FT_W.standard">
+<tt class="descname">standard</tt><a class="headerlink" href="#hamcalc.math.baromtr.FT_W.standard" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#hamcalc.math.baromtr.ATM" title="hamcalc.math.baromtr.ATM"><tt class="xref py py-class docutils literal"><span class="pre">ATM</span></tt></a></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="hamcalc.math.baromtr.IN_Hg">
+<em class="property">class </em><tt class="descclassname">hamcalc.math.baromtr.</tt><tt class="descname">IN_Hg</tt><a class="reference internal" href="../../_modules/hamcalc/math/baromtr.html#IN_Hg"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.math.baromtr.IN_Hg" title="Permalink to this definition">¶</a></dt>
+<dd><p>Inches of mercury</p>
+<dl class="attribute">
+<dt id="hamcalc.math.baromtr.IN_Hg.standard">
+<tt class="descname">standard</tt><a class="headerlink" href="#hamcalc.math.baromtr.IN_Hg.standard" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#hamcalc.math.baromtr.ATM" title="hamcalc.math.baromtr.ATM"><tt class="xref py py-class docutils literal"><span class="pre">ATM</span></tt></a></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="hamcalc.math.baromtr.IN_W">
+<em class="property">class </em><tt class="descclassname">hamcalc.math.baromtr.</tt><tt class="descname">IN_W</tt><a class="reference internal" href="../../_modules/hamcalc/math/baromtr.html#IN_W"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.math.baromtr.IN_W" title="Permalink to this definition">¶</a></dt>
+<dd><p>Inches of water</p>
+<dl class="attribute">
+<dt id="hamcalc.math.baromtr.IN_W.standard">
+<tt class="descname">standard</tt><a class="headerlink" href="#hamcalc.math.baromtr.IN_W.standard" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#hamcalc.math.baromtr.ATM" title="hamcalc.math.baromtr.ATM"><tt class="xref py py-class docutils literal"><span class="pre">ATM</span></tt></a></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="hamcalc.math.baromtr.KPA">
+<em class="property">class </em><tt class="descclassname">hamcalc.math.baromtr.</tt><tt class="descname">KPA</tt><a class="reference internal" href="../../_modules/hamcalc/math/baromtr.html#KPA"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.math.baromtr.KPA" title="Permalink to this definition">¶</a></dt>
+<dd><p>Kilopascals</p>
+<dl class="attribute">
+<dt id="hamcalc.math.baromtr.KPA.standard">
+<tt class="descname">standard</tt><a class="headerlink" href="#hamcalc.math.baromtr.KPA.standard" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#hamcalc.math.baromtr.ATM" title="hamcalc.math.baromtr.ATM"><tt class="xref py py-class docutils literal"><span class="pre">ATM</span></tt></a></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="hamcalc.math.baromtr.MB">
+<em class="property">class </em><tt class="descclassname">hamcalc.math.baromtr.</tt><tt class="descname">MB</tt><a class="reference internal" href="../../_modules/hamcalc/math/baromtr.html#MB"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.math.baromtr.MB" title="Permalink to this definition">¶</a></dt>
+<dd><p>Millibars</p>
+<dl class="attribute">
+<dt id="hamcalc.math.baromtr.MB.standard">
+<tt class="descname">standard</tt><a class="headerlink" href="#hamcalc.math.baromtr.MB.standard" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#hamcalc.math.baromtr.ATM" title="hamcalc.math.baromtr.ATM"><tt class="xref py py-class docutils literal"><span class="pre">ATM</span></tt></a></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="hamcalc.math.baromtr.M_W">
+<em class="property">class </em><tt class="descclassname">hamcalc.math.baromtr.</tt><tt class="descname">M_W</tt><a class="reference internal" href="../../_modules/hamcalc/math/baromtr.html#M_W"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.math.baromtr.M_W" title="Permalink to this definition">¶</a></dt>
+<dd><p>Metres of water</p>
+<dl class="attribute">
+<dt id="hamcalc.math.baromtr.M_W.standard">
+<tt class="descname">standard</tt><a class="headerlink" href="#hamcalc.math.baromtr.M_W.standard" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#hamcalc.math.baromtr.ATM" title="hamcalc.math.baromtr.ATM"><tt class="xref py py-class docutils literal"><span class="pre">ATM</span></tt></a></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="hamcalc.math.baromtr.PSF">
+<em class="property">class </em><tt class="descclassname">hamcalc.math.baromtr.</tt><tt class="descname">PSF</tt><a class="reference internal" href="../../_modules/hamcalc/math/baromtr.html#PSF"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.math.baromtr.PSF" title="Permalink to this definition">¶</a></dt>
+<dd><p>Pounds per square foot</p>
+<dl class="attribute">
+<dt id="hamcalc.math.baromtr.PSF.standard">
+<tt class="descname">standard</tt><a class="headerlink" href="#hamcalc.math.baromtr.PSF.standard" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#hamcalc.math.baromtr.ATM" title="hamcalc.math.baromtr.ATM"><tt class="xref py py-class docutils literal"><span class="pre">ATM</span></tt></a></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="hamcalc.math.baromtr.PSI">
+<em class="property">class </em><tt class="descclassname">hamcalc.math.baromtr.</tt><tt class="descname">PSI</tt><a class="reference internal" href="../../_modules/hamcalc/math/baromtr.html#PSI"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.math.baromtr.PSI" title="Permalink to this definition">¶</a></dt>
+<dd><p>Pounds per square inch</p>
+<dl class="attribute">
+<dt id="hamcalc.math.baromtr.PSI.standard">
+<tt class="descname">standard</tt><a class="headerlink" href="#hamcalc.math.baromtr.PSI.standard" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#hamcalc.math.baromtr.ATM" title="hamcalc.math.baromtr.ATM"><tt class="xref py py-class docutils literal"><span class="pre">ATM</span></tt></a></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="hamcalc.math.baromtr.equivalent">
+<tt class="descclassname">hamcalc.math.baromtr.</tt><tt class="descname">equivalent</tt><big>(</big><em>value</em>, <em>unit</em><big>)</big><a class="reference internal" href="../../_modules/hamcalc/math/baromtr.html#equivalent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.math.baromtr.equivalent" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts a value in the given units to a series of other units.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>value</strong> &#8211; Measurement</li>
+<li><strong>unit</strong> &#8211; Source unit class.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Tuple with pressure in mb, atm, cm_hg, in_hg, m_w, in_w, ft_w, psi, psf, bar, kpa.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="hamcalc.math.baromtr.intro">
+<tt class="descclassname">hamcalc.math.baromtr.</tt><tt class="descname">intro</tt><big>(</big><big>)</big><a class="reference internal" href="../../_modules/hamcalc/math/baromtr.html#intro"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.math.baromtr.intro" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the text from the introductory page.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="hamcalc.math.baromtr.table">
+<tt class="descclassname">hamcalc.math.baromtr.</tt><tt class="descname">table</tt><big>(</big><em>kpa_start=95.5</em>, <em>kpa_stop=106.5</em>, <em>kpa_step=0.5</em><big>)</big><a class="reference internal" href="../../_modules/hamcalc/math/baromtr.html#table"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.math.baromtr.table" title="Permalink to this definition">¶</a></dt>
+<dd><p>Yields a sequence of values from 95.5 kPa to 106 kPa in .5 kPa steps.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">tuple of kPa, in.hg, lb/in², mb, atm</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="legacy-notes">
+<h2>Legacy Notes<a class="headerlink" href="#legacy-notes" title="Permalink to this headline">¶</a></h2>
+<p>None, interestingly.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">baromtr &#8211; Barometer Reading Equivalents</a><ul>
+<li><a class="reference internal" href="#analysis">Analysis</a></li>
+<li><a class="reference internal" href="#module-hamcalc.math.baromtr">Implementation</a></li>
+<li><a class="reference internal" href="#legacy-notes">Legacy Notes</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="accelr.html"
+                        title="previous chapter">accelr &#8211; Acceleration Calculator</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="binary.html"
+                        title="next chapter">binary &#8211; Decimal to Binary Converter</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../../_sources/python/math/baromtr.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="binary.html" title="binary – Decimal to Binary Converter"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="accelr.html" title="accelr – Acceleration Calculator"
+             >previous</a> |</li>
+        <li><a href="../../index.html">HamCalc 2.1 documentation</a> &raquo;</li>
+          <li><a href="../index.html" >Python Modules</a> &raquo;</li>
+          <li><a href="index.html" >math &#8211; Math, Physics, Units Conversion</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2013, S.Lott.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2b1.
+    </div>
+  </body>
+</html>

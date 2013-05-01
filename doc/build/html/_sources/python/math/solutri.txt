@@ -1,0 +1,4 @@
+solutri
+----------
+
+Triangles - solution of

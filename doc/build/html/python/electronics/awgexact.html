@@ -1,0 +1,290 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>awgexact – AWG wire size calculator &mdash; HamCalc 2.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '2.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="HamCalc 2.1 documentation" href="../../index.html" />
+    <link rel="up" title="electronics – General Electronics" href="index.html" />
+    <link rel="next" title="decibel – Decibel Calculator" href="decibel.html" />
+    <link rel="prev" title="electronics – General Electronics" href="index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="decibel.html" title="decibel – Decibel Calculator"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="electronics – General Electronics"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../../index.html">HamCalc 2.1 documentation</a> &raquo;</li>
+          <li><a href="../index.html" >Python Modules</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">electronics &#8211; General Electronics</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="awgexact-awg-wire-size-calculator">
+<h1>awgexact &#8211; AWG wire size calculator<a class="headerlink" href="#awgexact-awg-wire-size-calculator" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="analysis">
+<h2>Analysis<a class="headerlink" href="#analysis" title="Permalink to this headline">¶</a></h2>
+<p>Apparently, it works like this.</p>
+<div class="math">
+<p><img src="../../_images/math/149fca26cce18e8631ed30ffec319c0463a41b31.png" alt="G(n) = \frac{0.46}{K^n}"/></p>
+</div><p>Gauges G(0) to G(3) are called &#8220;#0000&#8221;, &#8220;#000&#8221;, &#8220;#00&#8221; and &#8220;#0&#8221;.</p>
+<p>Gauges G(4) to G(43) are called &#8220;#1&#8221; to &#8220;#40&#8221;.</p>
+<p>The value <em>K</em> is the multiplier from one gauge to the next.</p>
+<div class="math">
+<p><img src="../../_images/math/90b3e30b95b1aefa123bc043577caf0936bc6792.png" alt="K = \left(\frac{0.46}{0.05}\right)^{\frac{1}{39}}"/></p>
+</div><p>Note that gauges beyond 39 (&#8220;#36&#8221;) are what make the math a little more complex.</p>
+<p>For gauges 0 (&#8220;#0000&#8221;) to 39 (&#8220;#36&#8221;), the formula is this.</p>
+<div class="math">
+<p><img src="../../_images/math/ef7c1d6f3fbe0d81b272f0e0546b038b357d01e1.png" alt="G(n) = 0.005 \times K^n"/></p>
+</div><p>For the smallest four gauges (40, 41, 42 and 43), that simple formula doesn&#8217;t
+work as cleanly. Therefore, the formula given above is generally correct for
+all defined gauges.</p>
+</div>
+<div class="section" id="implementation">
+<h2>Implementation<a class="headerlink" href="#implementation" title="Permalink to this headline">¶</a></h2>
+<p>This is a units conversion between AWG wire gauge units,
+inches and millimeters.</p>
+<p>If we define inches as the &#8220;standard&#8221; unit, then we have two other units
+that must be converted.</p>
+<p>We can throw in the AWG table as a generator function that simply converts
+AWG gauges to inches for all values of AWG Gauge.</p>
+<p>Note that the wire gauges are represented as strings.
+We can&#8217;t represent <tt class="docutils literal"><span class="pre">#0000</span></tt> gauge as an integer.
+Further, some people write it as <tt class="docutils literal"><span class="pre">#0000</span></tt> as <tt class="docutils literal"><span class="pre">#4/0</span></tt>.
+Also, we have to consider the <tt class="docutils literal"><span class="pre">#</span></tt> as optional punctuation.</p>
+<span class="target" id="module-hamcalc.electronics.awgexact"></span><p>hamcalc.electronics.awgexact &#8211; AWG wire size calculator</p>
+<p>There are three AWG Units:</p>
+<ul class="simple">
+<li>AWG String guage numbers from #0000 (#4/0) to #40</li>
+<li>Inches</li>
+<li>Millimeters</li>
+</ul>
+<p>Note that converting a diameter in inches will retrieve a Gauge string
+that&#8217;s perhaps smaller than the requested size.</p>
+<p>Ths includes is a <strong>Table</strong> of values, as well.</p>
+<p>Here are some test cases.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">AWG</span><span class="o">.</span><span class="n">to_std</span><span class="p">(</span> <span class="s">&quot;#0&quot;</span> <span class="p">)</span>
+<span class="go">0.32486074024297096</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">AWG</span><span class="o">.</span><span class="n">to_std</span><span class="p">(</span> <span class="s">&quot;#0000&quot;</span> <span class="p">)</span>
+<span class="go">0.46</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">AWG</span><span class="o">.</span><span class="n">to_std</span><span class="p">(</span> <span class="s">&quot;#36&quot;</span> <span class="p">)</span>
+<span class="go">0.005000000000000004</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">MM</span><span class="o">.</span><span class="n">from_std</span><span class="p">(</span> <span class="mf">0.005</span> <span class="p">)</span>
+<span class="go">0.127</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">AWG</span><span class="o">.</span><span class="n">from_std</span><span class="p">(</span> <span class="mf">0.005</span> <span class="p">)</span>
+<span class="go">&#39;#36&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">AWG</span><span class="o">.</span><span class="n">from_std</span><span class="p">(</span> <span class="mf">0.006</span> <span class="p">)</span>
+<span class="go">&#39;#34&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">AWG</span><span class="o">.</span><span class="n">to_std</span><span class="p">(</span> <span class="s">&quot;#34&quot;</span> <span class="p">)</span>
+<span class="go">0.006304883590044074</span>
+</pre></div>
+</div>
+<dl class="class">
+<dt id="hamcalc.electronics.awgexact.AWG">
+<em class="property">class </em><tt class="descclassname">hamcalc.electronics.awgexact.</tt><tt class="descname">AWG</tt><a class="reference internal" href="../../_modules/hamcalc/electronics/awgexact.html#AWG"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.electronics.awgexact.AWG" title="Permalink to this definition">¶</a></dt>
+<dd><p>AWG Gauge</p>
+<dl class="classmethod">
+<dt id="hamcalc.electronics.awgexact.AWG.from_std">
+<em class="property">classmethod </em><tt class="descname">from_std</tt><big>(</big><em>class_</em>, <em>value</em><big>)</big><a class="reference internal" href="../../_modules/hamcalc/electronics/awgexact.html#AWG.from_std"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.electronics.awgexact.AWG.from_std" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute approximate AWG Gauge from inches.
+This will return the next smaller size in the event that the measuremnt isn&#8217;t an exact AWG gauge.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="hamcalc.electronics.awgexact.AWG.standard">
+<tt class="descname">standard</tt><a class="headerlink" href="#hamcalc.electronics.awgexact.AWG.standard" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#hamcalc.electronics.awgexact.INCH" title="hamcalc.electronics.awgexact.INCH"><tt class="xref py py-class docutils literal"><span class="pre">INCH</span></tt></a></p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="hamcalc.electronics.awgexact.AWG.to_std">
+<em class="property">classmethod </em><tt class="descname">to_std</tt><big>(</big><em>class_</em>, <em>value</em><big>)</big><a class="reference internal" href="../../_modules/hamcalc/electronics/awgexact.html#AWG.to_std"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.electronics.awgexact.AWG.to_std" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute inches from AWG Gauge.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="hamcalc.electronics.awgexact.INCH">
+<em class="property">class </em><tt class="descclassname">hamcalc.electronics.awgexact.</tt><tt class="descname">INCH</tt><a class="reference internal" href="../../_modules/hamcalc/electronics/awgexact.html#INCH"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.electronics.awgexact.INCH" title="Permalink to this definition">¶</a></dt>
+<dd><p>Inch</p>
+<dl class="attribute">
+<dt id="hamcalc.electronics.awgexact.INCH.standard">
+<tt class="descname">standard</tt><a class="headerlink" href="#hamcalc.electronics.awgexact.INCH.standard" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#hamcalc.electronics.awgexact.INCH" title="hamcalc.electronics.awgexact.INCH"><tt class="xref py py-class docutils literal"><span class="pre">INCH</span></tt></a></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="hamcalc.electronics.awgexact.MM">
+<em class="property">class </em><tt class="descclassname">hamcalc.electronics.awgexact.</tt><tt class="descname">MM</tt><a class="reference internal" href="../../_modules/hamcalc/electronics/awgexact.html#MM"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.electronics.awgexact.MM" title="Permalink to this definition">¶</a></dt>
+<dd><p>Millimeter</p>
+<dl class="attribute">
+<dt id="hamcalc.electronics.awgexact.MM.standard">
+<tt class="descname">standard</tt><a class="headerlink" href="#hamcalc.electronics.awgexact.MM.standard" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#hamcalc.electronics.awgexact.INCH" title="hamcalc.electronics.awgexact.INCH"><tt class="xref py py-class docutils literal"><span class="pre">INCH</span></tt></a></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="hamcalc.electronics.awgexact.intro">
+<tt class="descclassname">hamcalc.electronics.awgexact.</tt><tt class="descname">intro</tt><big>(</big><big>)</big><a class="reference internal" href="../../_modules/hamcalc/electronics/awgexact.html#intro"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.electronics.awgexact.intro" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the text from the introductory page.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="hamcalc.electronics.awgexact.table">
+<tt class="descclassname">hamcalc.electronics.awgexact.</tt><tt class="descname">table</tt><big>(</big><big>)</big><a class="reference internal" href="../../_modules/hamcalc/electronics/awgexact.html#table"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.electronics.awgexact.table" title="Permalink to this definition">¶</a></dt>
+<dd><p>Yields a sequence of sizes in AWG Gauge and Inches.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">tuple of AWG # and Inches.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="legacy-intro">
+<h2>Legacy Intro<a class="headerlink" href="#legacy-intro" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><pre>In the A.W.G. system, each size is 1.122932 times
+the diameter of the next smaller size, based on an original
+concept of 40 sizes in arithmetic progression ranging from
+.460 in.(#0000) to .005 in.(#36).</pre>
+</div>
+</div>
+<div class="section" id="legacy-output">
+<h2>Legacy Output<a class="headerlink" href="#legacy-output" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span class="c">#0000= 0.4600000&quot;</span>
+ <span class="c"># 000= 0.4096418&quot;</span>
+ <span class="c">#  00= 0.3647966&quot;</span>
+ <span class="c">#   0= 0.3248607&quot;</span>
+ <span class="c">#  1 = 0.2892968&quot;             # 15 = 0.0570682&quot;             # 29 = 0.0112576&quot;</span>
+ <span class="c">#  2 = 0.2576263&quot;             # 16 = 0.0508207&quot;             # 30 = 0.0100252&quot;</span>
+ <span class="c">#  3 = 0.2294228&quot;             # 17 = 0.0452571&quot;             # 31 = 0.0089277&quot;</span>
+ <span class="c">#  4 = 0.2043069&quot;             # 18 = 0.0403027&quot;             # 32 = 0.0079503&quot;</span>
+ <span class="c">#  5 = 0.1819406&quot;             # 19 = 0.0358905&quot;             # 33 = 0.0070800&quot;</span>
+ <span class="c">#  6 = 0.1620228&quot;             # 20 = 0.0319615&quot;             # 34 = 0.0063049&quot;</span>
+ <span class="c">#  7 = 0.1442854&quot;             # 21 = 0.0284625&quot;             # 35 = 0.0056147&quot;</span>
+ <span class="c">#  8 = 0.1284899&quot;             # 22 = 0.0253466&quot;             # 36 = 0.0050000&quot;</span>
+ <span class="c">#  9 = 0.1144236&quot;             # 23 = 0.0225718&quot;             # 37 = 0.0044526&quot;</span>
+ <span class="c"># 10 = 0.1018971&quot;             # 24 = 0.0201008&quot;             # 38 = 0.0039652&quot;</span>
+ <span class="c"># 11 = 0.0907420&quot;             # 25 = 0.0179002&quot;             # 39 = 0.0035311&quot;</span>
+ <span class="c"># 12 = 0.0808081&quot;             # 26 = 0.0159406&quot;             # 40 = 0.0031445&quot;</span>
+ <span class="c"># 13 = 0.0719617&quot;             # 27 = 0.0141955&quot;</span>
+ <span class="c"># 14 = 0.0640837&quot;             # 28 = 0.0126415&quot;</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">awgexact &#8211; AWG wire size calculator</a><ul>
+<li><a class="reference internal" href="#analysis">Analysis</a></li>
+<li><a class="reference internal" href="#implementation">Implementation</a></li>
+<li><a class="reference internal" href="#legacy-intro">Legacy Intro</a></li>
+<li><a class="reference internal" href="#legacy-output">Legacy Output</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="index.html"
+                        title="previous chapter">electronics &#8211; General Electronics</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="decibel.html"
+                        title="next chapter">decibel &#8211; Decibel Calculator</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../../_sources/python/electronics/awgexact.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="decibel.html" title="decibel – Decibel Calculator"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="electronics – General Electronics"
+             >previous</a> |</li>
+        <li><a href="../../index.html">HamCalc 2.1 documentation</a> &raquo;</li>
+          <li><a href="../index.html" >Python Modules</a> &raquo;</li>
+          <li><a href="index.html" >electronics &#8211; General Electronics</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2013, S.Lott.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2b1.
+    </div>
+  </body>
+</html>

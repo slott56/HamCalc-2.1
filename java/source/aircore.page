@@ -1,0 +1,73 @@
+#####################
+Air Core Coil Design
+#####################
+
+Revised 7/21/97
+
+Preface
+=======
+
+This calculator helps you to design a single-layer air core coil of a given inductance.
+The formulae come from the <EM>ARRL Handbook for Radio Amateurs.</EM>
+These formulae provide close approximations of values for
+frequencies in the 1-30MHz range which are sufficiently accurate for
+most amateur radio purposes.  The calculations are useful in the VHF and UHF
+range by only as a basis for further calculation and experimentation.
+
+Turns per Inch
+--------------
+
+This program designs close-wound coils.  For turn spacing (Turns per Inch) choose
+one of the following:
+
+-   Bare Wire - Enter the guage, then double the diameter.  During assembly,
+    use a length of the same size wire as a spacer between turns.</LI>
+
+-   Enamelled Wire - Manually add 0.005" to the diameter.</LI>
+
+-   Insulated Wire - Either measure the OD including insulation and enter this
+    directly, or wrap several turns around a ruler and enter the turns per inch.</LI>
+
+
+In all cases, spread the winding evenly over the calculated winding length
+before securing in place.
+
+Standard Forms
+--------------
+
+Standard plastic water and drain pipe is available in the following outside
+diameters:
+0.66", 0.88", 1.66", 1.90", 2.38", 2.88", 3.50", 4.50"
+
+Coil Design
+===========
+
+To calculate diameter and number of turns:
+
+1.  Determine turns per inch.
+
+    -   Enter AWG # for bare or enamelled wire.  Note the resistance in Ohms per inch for the wire chosen.
+
+    -   Adjust diameter: add 0.005 for enamelled, double for bare wire.
+
+    -   For insulated wire, wrap a form and count the turns per inch.
+        Enter turns per inch directly for insulated wire.
+
+2.  Enter the desired micro-Henries of inductance.
+
+To calculate actual inductance for a standard sized wire form and whole number
+of turns:
+
+1.  Adjust coil diameter to a standard form.  If you will make a form, you must
+    still enter a number for diameter (possibly the number given as output).
+
+2.  Adjust the number of turns to the nearest integer
+
+2.  Note the total length of wire.  Compute total length * ohms per inch to get the
+    overall resistance of the coil.
+
+..  applet::
+    :code: RadioCalc.class
+    :width: 200
+    :height: 350
+    :models: diamawgtpi aircore

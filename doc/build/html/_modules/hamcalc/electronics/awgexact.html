@@ -1,0 +1,197 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>hamcalc.electronics.awgexact &mdash; HamCalc 2.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '2.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="top" title="HamCalc 2.1 documentation" href="../../../index.html" />
+    <link rel="up" title="Module code" href="../../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../index.html">HamCalc 2.1 documentation</a> &raquo;</li>
+          <li><a href="../../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for hamcalc.electronics.awgexact</h1><div class="highlight"><pre>
+<span class="sd">&quot;&quot;&quot;hamcalc.electronics.awgexact -- AWG wire size calculator</span>
+
+<span class="sd">There are three AWG Units:</span>
+
+<span class="sd">-   AWG String guage numbers from #0000 (#4/0) to #40</span>
+
+<span class="sd">-   Inches</span>
+
+<span class="sd">-   Millimeters</span>
+
+<span class="sd">Note that converting a diameter in inches will retrieve a Gauge string</span>
+<span class="sd">that&#39;s perhaps smaller than the requested size.</span>
+
+<span class="sd">Ths includes is a **Table** of values, as well.</span>
+
+<span class="sd">Here are some test cases.</span>
+
+<span class="sd">&gt;&gt;&gt; AWG.to_std( &quot;#0&quot; )</span>
+<span class="sd">0.32486074024297096</span>
+<span class="sd">&gt;&gt;&gt; AWG.to_std( &quot;#0000&quot; )</span>
+<span class="sd">0.46</span>
+<span class="sd">&gt;&gt;&gt; AWG.to_std( &quot;#36&quot; )</span>
+<span class="sd">0.005000000000000004</span>
+<span class="sd">&gt;&gt;&gt; MM.from_std( 0.005 )</span>
+<span class="sd">0.127</span>
+<span class="sd">&gt;&gt;&gt; AWG.from_std( 0.005 )</span>
+<span class="sd">&#39;#36&#39;</span>
+<span class="sd">&gt;&gt;&gt; AWG.from_std( 0.006 )</span>
+<span class="sd">&#39;#34&#39;</span>
+<span class="sd">&gt;&gt;&gt; AWG.to_std( &quot;#34&quot; )</span>
+<span class="sd">0.006304883590044074</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="n">__version__</span> <span class="o">=</span> <span class="s">&quot;2.1&quot;</span>
+
+<span class="n">introduction</span> <span class="o">=</span> <span class="s">&quot;&quot;&quot;</span><span class="se">\</span>
+<span class="s"> A.W.G. WIRE SIZE CALCULATOR                             by George Murphy VE3ERP</span>
+
+<span class="s"> This program computes precise theoretical diameters of A.W.G. wire to seven</span>
+<span class="s"> decimal places. Due to manufacturing tolerances, actual wire diameters are</span>
+<span class="s"> held to only the first 3 or 4 decimal places.</span>
+<span class="s">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">hamcalc.lib</span> <span class="kn">import</span> <span class="n">Unit</span><span class="p">,</span> <span class="n">Standard_Unit</span><span class="p">,</span> <span class="n">convert</span>
+<span class="kn">import</span> <span class="nn">math</span>
+
+<span class="k">class</span> <span class="nc">Error</span><span class="p">(</span> <span class="ne">Exception</span> <span class="p">):</span>
+    <span class="k">pass</span>
+
+<div class="viewcode-block" id="intro"><a class="viewcode-back" href="../../../python/electronics/awgexact.html#hamcalc.electronics.awgexact.intro">[docs]</a><span class="k">def</span> <span class="nf">intro</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Returns the text from the introductory page.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">introduction</span>
+</div>
+<div class="viewcode-block" id="INCH"><a class="viewcode-back" href="../../../python/electronics/awgexact.html#hamcalc.electronics.awgexact.INCH">[docs]</a><span class="k">class</span> <span class="nc">INCH</span><span class="p">(</span> <span class="n">Standard_Unit</span> <span class="p">):</span>
+    <span class="n">full_name</span><span class="o">=</span> <span class="s">&#39;Inch&#39;</span>
+    <span class="n">name</span><span class="o">=</span> <span class="s">&#39;in&#39;</span>
+</div>
+<div class="viewcode-block" id="MM"><a class="viewcode-back" href="../../../python/electronics/awgexact.html#hamcalc.electronics.awgexact.MM">[docs]</a><span class="k">class</span> <span class="nc">MM</span><span class="p">(</span> <span class="n">Unit</span> <span class="p">):</span>
+    <span class="n">standard</span><span class="o">=</span> <span class="n">INCH</span>
+    <span class="n">full_name</span><span class="o">=</span> <span class="s">&#39;Millimeter&#39;</span>
+    <span class="n">name</span><span class="o">=</span> <span class="s">&#39;mm&#39;</span>
+    <span class="n">factor</span><span class="o">=</span> <span class="mf">25.4</span>
+</div>
+<div class="viewcode-block" id="AWG"><a class="viewcode-back" href="../../../python/electronics/awgexact.html#hamcalc.electronics.awgexact.AWG">[docs]</a><span class="k">class</span> <span class="nc">AWG</span><span class="p">(</span> <span class="n">Unit</span> <span class="p">):</span>
+    <span class="n">standard</span><span class="o">=</span> <span class="n">INCH</span>
+    <span class="n">full_name</span><span class="o">=</span> <span class="s">&quot;AWG Gauge&quot;</span>
+    <span class="n">name</span><span class="o">=</span> <span class="s">&quot;AWG&quot;</span>
+    <span class="n">K</span> <span class="o">=</span> <span class="p">(</span><span class="mf">0.460</span><span class="o">/</span><span class="mf">0.0050</span><span class="p">)</span><span class="o">**</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="mi">39</span><span class="p">)</span>
+    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="AWG.to_std"><a class="viewcode-back" href="../../../python/electronics/awgexact.html#hamcalc.electronics.awgexact.AWG.to_std">[docs]</a>    <span class="k">def</span> <span class="nf">to_std</span><span class="p">(</span> <span class="n">class_</span><span class="p">,</span> <span class="n">value</span> <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Compute inches from AWG Gauge.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">value</span> <span class="ow">in</span> <span class="p">(</span> <span class="s">&#39;#0000&#39;</span><span class="p">,</span> <span class="s">&#39;#4/0&#39;</span><span class="p">,</span> <span class="s">&#39;0000&#39;</span><span class="p">,</span> <span class="s">&#39;4/0&#39;</span> <span class="p">):</span>
+            <span class="n">g</span><span class="o">=</span> <span class="mi">0</span>
+        <span class="k">elif</span> <span class="n">value</span> <span class="ow">in</span> <span class="p">(</span> <span class="s">&#39;#000&#39;</span><span class="p">,</span> <span class="s">&#39;#3/0&#39;</span><span class="p">,</span> <span class="s">&#39;000&#39;</span><span class="p">,</span> <span class="s">&#39;3/0&#39;</span> <span class="p">):</span>
+            <span class="n">g</span><span class="o">=</span> <span class="mi">1</span>
+        <span class="k">elif</span> <span class="n">value</span> <span class="ow">in</span> <span class="p">(</span> <span class="s">&#39;#00&#39;</span><span class="p">,</span> <span class="s">&#39;#2/0&#39;</span><span class="p">,</span> <span class="s">&#39;00&#39;</span><span class="p">,</span> <span class="s">&#39;2/0&#39;</span> <span class="p">):</span>
+            <span class="n">g</span><span class="o">=</span> <span class="mi">2</span>
+        <span class="k">elif</span> <span class="n">value</span> <span class="ow">in</span> <span class="p">(</span> <span class="s">&#39;#0&#39;</span><span class="p">,</span> <span class="s">&#39;#1/0&#39;</span><span class="p">,</span> <span class="s">&#39;0&#39;</span><span class="p">,</span> <span class="s">&#39;1/0&#39;</span> <span class="p">):</span>
+            <span class="n">g</span><span class="o">=</span> <span class="mi">3</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">value</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s">&quot;#&quot;</span><span class="p">:</span> <span class="n">value</span><span class="o">=</span> <span class="n">value</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
+            <span class="n">g</span><span class="o">=</span> <span class="mi">3</span><span class="o">+</span><span class="nb">int</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+        <span class="n">d</span><span class="o">=</span> <span class="mf">0.460</span><span class="o">/</span><span class="p">(</span><span class="n">class_</span><span class="o">.</span><span class="n">K</span><span class="o">**</span><span class="n">g</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">d</span></div>
+    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="AWG.from_std"><a class="viewcode-back" href="../../../python/electronics/awgexact.html#hamcalc.electronics.awgexact.AWG.from_std">[docs]</a>    <span class="k">def</span> <span class="nf">from_std</span><span class="p">(</span> <span class="n">class_</span><span class="p">,</span> <span class="n">value</span> <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Compute approximate AWG Gauge from inches.</span>
+<span class="sd">        This will return the next smaller size in the event that the measuremnt isn&#39;t an exact AWG gauge.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">g</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mf">0.460</span><span class="o">/</span><span class="n">value</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">class_</span><span class="o">.</span><span class="n">K</span><span class="p">)))</span>
+        <span class="k">if</span> <span class="n">g</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s">&quot;#&quot;</span> <span class="o">+</span> <span class="p">(</span><span class="mi">4</span><span class="o">-</span><span class="n">g</span><span class="p">)</span><span class="o">*</span><span class="s">&quot;0&quot;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s">&quot;#&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">g</span><span class="o">-</span><span class="mi">3</span><span class="p">)</span>
+</div></div>
+<div class="viewcode-block" id="table"><a class="viewcode-back" href="../../../python/electronics/awgexact.html#hamcalc.electronics.awgexact.table">[docs]</a><span class="k">def</span> <span class="nf">table</span><span class="p">(</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Yields a sequence of sizes in AWG Gauge and Inches.</span>
+
+<span class="sd">    :return: tuple of AWG # and Inches.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">gauges</span> <span class="o">=</span> <span class="p">[</span><span class="s">&quot;#0000&quot;</span><span class="p">,</span> <span class="s">&quot;#000&quot;</span><span class="p">,</span> <span class="s">&quot;#00&quot;</span><span class="p">,</span> <span class="s">&quot;#0&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span> <span class="s">&quot;#{0}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">41</span><span class="p">)</span> <span class="p">]</span>
+    <span class="k">for</span> <span class="n">gauge</span> <span class="ow">in</span> <span class="n">gauges</span><span class="p">:</span>
+        <span class="n">diameter</span><span class="o">=</span> <span class="n">AWG</span><span class="o">.</span><span class="n">to_std</span><span class="p">(</span> <span class="n">gauge</span> <span class="p">)</span>
+        <span class="n">inch</span><span class="o">=</span> <span class="n">INCH</span><span class="o">.</span><span class="n">from_std</span><span class="p">(</span> <span class="n">diameter</span> <span class="p">)</span>
+        <span class="k">yield</span> <span class="n">gauge</span><span class="p">,</span> <span class="n">inch</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../index.html">HamCalc 2.1 documentation</a> &raquo;</li>
+          <li><a href="../../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2013, S.Lott.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2b1.
+    </div>
+  </body>
+</html>

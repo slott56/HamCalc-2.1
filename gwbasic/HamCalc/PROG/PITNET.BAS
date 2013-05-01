@@ -1,0 +1,129 @@
+10 :REM'PITNET- Pi & T Networks  - 04 AUG 09, rev. 29 AUG 09
+20 CLS:KEY OFF
+30 IF EX$=""THEN EX$="EXIT"
+40 IF PROG$=""THEN GO$=EX$ :ELSE GO$=PROG$
+50 COMMON EX$,PROG$
+60 PI=4*ATN(1)  :REM'3.141593
+70 :REM'....title page
+80 CLS
+90 COLOR 15,2
+100 PRINT " Pi and T NETWORKS"TAB(57)"by George Murphy VE3ERP ";
+110 COLOR 1,0:PRINT STRING$(80,223);
+120 COLOR 7,0
+130 :REM'..... diagram
+140 GOSUB 150:GOTO 240
+150 T=18:COLOR 0,7
+160 LOCATE ,T:PRINT "                                           "
+170 LOCATE ,T:PRINT "    ┌───┬─ L ─┬───┐       ┌─ L1─┬─ L2─┐    "
+180 LOCATE ,T:PRINT "   Rin  C1   C2  Rout    Rin    C    Rout  "
+190 LOCATE ,T:PRINT "    │   │     │   │       │     │     │    "
+200 LOCATE ,T:PRINT "    ╧   ╧     ╧   ╧       ╧     ╧     ╧    "
+210 LOCATE ,T:PRINT "       Pi Network            T Network     "
+220 COLOR 7,0
+230 RETURN
+240 :REM'.....start
+250 PRINT:LN=8
+260 PRINT " This program designs Pi and T networks"
+270 PRINT " Ref. QST August,2009, 'Experiment #79', H.Ward Silver, N0AX, pp.58-59"
+280 PRINT
+290 PRINT " Press (1) to run program or (0) to EXIT"
+300 Z$=INKEY$:IF Z$=""THEN 300
+310 IF Z$="0"THEN CLS:RUN EX$
+320 IF Z$="1"THEN CLS:GOSUB 150:GOTO 370
+330 GOTO 310
+340 :REM'.....erase
+350 VIEW PRINT LN TO 24:CLS:VIEW PRINT:LOCATE LN
+360 RETURN
+370 :REM'.....date inputs
+380 GOSUB 340:INPUT " ENTER: one end of band of operation (MHz)";FL
+390 GOSUB 340:INPUT " ENTER: other end of band of operation (MHz)";FH
+400 IF FL>FH THEN SWAP FL,FH
+410 GOSUB 340
+420 PRINT USING " Low band edge.......... ####.### MHz";FL
+430 PRINT USING " High band edge......... ####.### MHz";FH
+440 BW=FH-FL
+450 PRINT USING " Bandwidth.............. ####.### MHz";BW
+460 FC=SQR(FH*FL)
+470 PRINT USING " Centre frequency....... ####.### MHz";FC
+480 Q=FC/BW
+490 PRINT USING " Q...................... ####.###";Q
+500 LN=CSRLIN
+510 GOSUB 340:INPUT " ENTER: Rin (ohms)";RIN
+520 GOSUB 340:INPUT " ENTER: Rout (ohms)";ROUT
+530 IF RIN<ROUT THEN SWAP RIN,ROUT
+540 GOSUB 340
+550 PRINT USING " Rin.................... ####.### Ω";RIN
+560 PRINT USING " Rout................... ####.### Ω";ROUT
+570 PRINT " NOTE: In the following table Ro=Relative Output:"
+580 PRINT STRING$(80,205);
+590 XC1=RIN/Q
+600 PRINT USING " Parallel Reactance XC1. ####.### Ω";XC1
+610 XC2=ROUT*SQR((RIN/ROUT)/(Q^2+1-RIN/ROUT))
+620 PRINT USING " Parallel Reactance XC2. ####.### Ω";XC2
+630 XL=(Q*RIN+RIN*ROUT/XC2)/(Q^2+1)
+640 PRINT USING " Series reactance XL.... ####.### Ω";XL
+650 C1=(1/(2*PI*FC*XC1))*10^6
+660 PRINT USING " C1..................... ####.### pF";C1
+670 C2=(1/(2*PI*FC*XC2))*10^6
+680 PRINT USING " C2..................... ####.### pF";C2
+690 L=XL/(2*PI*FC)
+700 PRINT USING " L...................... ####.### µH";L
+710 LOCATE LN+3,8:PRINT "Pi Network":LOCATE LN+3,50:PRINT "T Network"
+720 GOTO 740
+730 :REM'.....T network
+740 A=RIN*(Q^2+1)
+750 B=SQR(A/ROUT-1)
+760 XL1=RIN*Q
+770 LOCATE LN+4,43:PRINT USING "Series Reactance XL1... ####.### Ω";XL1
+780 XL2=ROUT *B
+790 LOCATE LN+5,43:PRINT USING "Series Reactance XL2... ####.### Ω";XL2
+800 L1=XL1/(2*PI*FC)
+810 L2=XL2/(2*PI*FC)
+820 LOCATE LN+7,43:PRINT USING "L1..................... ####.### µH";L1
+830 LOCATE LN+8,43:PRINT USING "L2..................... ####.### µH";L2
+840 XC=A/(Q+B)
+850 LOCATE LN+6,43:PRINT USING "Parallel Reactance XC.. ####.### pf";XC
+860 C=10^6/(2*PI*FC*XC)
+870 LOCATE LN+9,43:PRINT USING "C...................... ####.### pf";C
+880 GOSUB 1000
+890 :REM'.....end
+900 GOSUB 910:GOTO 70
+910 :REM'.....PRT
+920 KEY OFF:GOSUB 990:LOCATE 25,5:COLOR 0,2
+930 PRINT " Send this page to:(1)Printer Queue? (2)Printout? ";
+940 PRINT "(3)Next page? (1/2/3)";:COLOR 7,0
+950 Z$=INKEY$:IF Z$<"1"OR Z$>"3"THEN 950 :ELSE GOSUB 990
+960 IF Z$="3"THEN RETURN
+970 FOR I%=1 TO 24:FOR J%=1 TO 80:LPRINT CHR$(SCREEN(I%,J%));:NEXT J%:NEXT I%
+980 IF Z$="2"THEN LPRINT CHR$(12) :ELSE 920
+990 LOCATE 25,1:PRINT STRING$(80,32);:RETURN
+1000 :REM'-------------Subroutine to calculate loss at band edges--------
+1010 :REM'.....Pi network
+1020 TP=2*PI :C1=C1*9.999999960041972e-13! :C2=C2*9.999999960041972e-13! :L=L*9.999999974752427e-07! :WL=TP*FL*1000000.0!
+1030 RE=RIN+ROUT-WL^2*L*(RIN*C1+ROUT*C2)
+1040 IM=WL*(L+RIN*ROUT*(C1+C2)-WL^2*RIN*ROUT*L*C1*C2)
+1050 VOUT=ROUT/SQR(RE^2+IM^2):VMAX=SQR(ROUT/RIN/4):DBL=20*LOG(VOUT/VMAX)/LOG(10)
+1060 PRINT USING" Ro: ####.### MHz=";FL;
+1070 PRINT USING " ##.## dB";DBL
+1080 WH=TP*FH*10^6
+1090 RE=RIN+ROUT-WH^2*L*(RIN*C1+ROUT*C2)
+1100 IM=WH*(L+RIN*ROUT*(C1+C2)-WH^2*RIN*ROUT*L*C1*C2)
+1110 VOUT=ROUT/SQR(RE^2+IM^2):VMAX=SQR(ROUT/RIN/4):DBH=20*LOG(VOUT/VMAX)/LOG(10)
+1120 PRINT USING" Ro: ####.### MHz=";FH;
+1130 PRINT USING " ##.## dB";DBH
+1140 :REM'.....T network
+1150 L1=L1*9.999999974752427e-07! :L2=L2*9.999999974752427e-07! :C=C*9.999999960041972e-13! :WL=TP*FL*10^6
+1160 RE=RIN+ROUT-WL^2*C*(RIN*L2+ROUT*L1)
+1170 IM=WL*(L1+L2+RIN*ROUT*C-WL^2*L1*C*L2)
+1180 VOUT=ROUT/SQR(RE^2+IM^2):VMAX=SQR(ROUT/RIN/4):DBL=20*LOG(VOUT/VMAX)/LOG(10)
+1190 LOCATE LN+9,43
+1200 PRINT USING" ####.### MHz=";FL;
+1210 PRINT USING" ##.## dB";DBL
+1220 WH=TP*FH*10^6
+1230 RE=RIN+ROUT-WH^2*C*(RIN*L2+ROUT*L1)
+1240 IM=WH*(L1+L2+RIN*ROUT*C-WH^2*L1*C*L2)
+1250 VOUT=ROUT/SQR(RE^2+IM^2):VMAX=SQR(ROUT/RIN/4):DBH=20*LOG(VOUT/VMAX)/LOG(10)
+1260 LOCATE LN+10,43
+1270 PRINT USING" ####.### MHz=";FH;
+1280 PRINT USING" ##.## dB";DBH
+1290 RETURN

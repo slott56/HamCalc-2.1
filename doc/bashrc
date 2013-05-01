@@ -1,0 +1,5 @@
+# Setup to use MAKE and Sphinx 1.2 for gwbasic project
+export PATH=$PATH:"/Developer/usr/bin"
+# Expect that /Library/Frameworks/Python.framework/Versions/3.2/bin is already present in PATH
+
+export PYTHONPATH="/Users/slott/github/local/HamCalc-2.1/python"

@@ -1,0 +1,1226 @@
+10 :REM'PSUP - Power Supply Analyzer - 19 MAR 2000 rev. 15 MAY 2004
+20 CLS:KEY OFF
+30 IF EX$=""THEN EX$="EXIT"
+40 IF PROG$=""THEN GO$=EX$ :ELSE GO$=PROG$
+50 COMMON EX$,PROG$
+60 COLOR 7,0,1
+70 GOTO 220
+80 :REM'
+90 :REM'.....standard inputs
+100 TB=48:LOCATE 1
+110 LOCATE ,TB:PRINT "To change value enter its letter.";
+120 PRINT
+130 LOCATE ,TB:PRINT "When all OK press <enter>."
+140 PRINT
+150 LOCATE ,TB:PRINT "To return to main menu enter <r>.";
+160 PRINT:COLOR 15
+170 LOCATE ,TB:INPUT "ENTER one of the above";X$:COLOR 7
+180 IF X$<>""THEN X$=CHR$(ASC(X$)-32)
+190 FOR Z=1 TO 7:LOCATE Z,48:PRINT STRING$(33,32);:NEXT Z
+200 RETURN
+210 :REM'
+220 :REM'.....title page
+230 CLS
+240 COLOR 15,2
+250 PRINT " POWER SUPPLY ANALYZER"TAB(60)"by Robert J. Dehoney ";
+260 COLOR 1,0:PRINT STRING$(80,223);
+270 COLOR 15,2:LOCATE CSRLIN-1,18
+280 PRINT " Edited for HAMCALC by George Murphy VE3ERP "
+290 COLOR 7,0
+300 :REM'
+310 :REM'.....preface
+320 PRINT
+330 PRINT "  This program calculates the performance of various power supply ";
+340 PRINT "circuits     "
+350 PRINT " using the time step method. It provides a way to account for dyna";
+360 PRINT "mic diode    "
+370 PRINT " drop and transformer winding resistance. Pick a transformer, meas";
+380 PRINT "ure the      "
+390 PRINT " secondary open circuit voltage and the primary and secondary resi";
+400 PRINT "stance,      "
+410 PRINT " choose a configuration, put in some values and go!"
+420 PRINT "  If the average diode current Iave does not equal Icheck, increas";
+430 PRINT "e number of  "
+440 PRINT " iterations."
+450 PRINT "  Values entered remain until you change them."
+460 PRINT "  To recover the original default values, re-start the program."
+470 :REM'
+480 :REM'.....define strings
+490 AA$="a) AC input voltage=" :VAC$="Volts"          :REM'VPRI
+500 AB$="b) Secondary leg/leg voltage="               :REM'VSEC
+510 AC$="c) Primary resistance=": R$="Ohms"           :REM'RPRI
+520 AD$="d) Secondary resistance="                    :REM'RSEC
+530 AE$="e) Diode (H=1N4004, L=1N645)="               :REM'DT$
+540 AF$="f) Frequency=" :F$="Hz"                      :REM'F
+550 AG$="g) Steps per iteration="                     :REM'SC
+560 AH$="h) Number of iterations="                    :REM'MT
+570 AI$="i) Load resistance="                         :REM'RL
+580 AJ$="j) Load cap. Ca=" :C$="uF"                   :REM'CA
+590 AK$="k) First doubler cap. Cb="                   :REM'CB
+600 AL$="l) Second doubler cap. Cc="                  :REM'CC
+610 AM$="m) Battery voltage="                         :REM'VBAT
+620 AN$="n) Charging resistance R ="                  :REM'RBAT
+630 AO$="o) Regulator output voltage=" :D$="Vdc"      :REM'VREG
+640 AP$="p) Regulator drop-out voltage="              :REM'VOP
+650 AQ$="q) Regulator quiescent current=" :I$="Amps"  :REM'IREG0
+660 :REM'
+670 :REM'.....Set default values
+680 VPRI=117 :VSEC=13.5! :RPRI=44 :RSEC=1 :DT$="H" :SC=180 :MT=15 :F=60
+690 TP=2*3.141592025756836! :VD=0.6000000238418579! :VD1=0.699999988079071! :VD2=0.699999988079071! :CA=1000 :CB=1000 :CC=1000 :UF=9.999999974752427e-07!
+700 RL=98 : VBAT=3.5999999046325684! :RBAT=98 : VREG=5 :VOP=0.8999999761581421! :IREG0=0.004999999888241291! :VMIN=3*VSEC
+710 :REM'
+720 PRINT:T=16
+730 PRINT TAB(T)"──────── Power Supply Configuration Menu ───────-"
+740 PRINT TAB(T)"    Supply Type                     Load"
+750 PRINT TAB(T)"───────────────────        ─────────────────────-"
+760 PRINT TAB(T)"1) Fullwave CT             a) Battery"
+770 PRINT TAB(T)"2) Fullwave bridge         b) Capacitor/Battery"
+780 PRINT TAB(T)"3) 1/2 wave                c) Capacitor/Regulator"
+790 PRINT TAB(T)"4) Floating doubler        d) Capacitor/Resistor"
+800 PRINT TAB(T)"5) Grounded doubler        e) Resistor"
+810 PRINT
+820 INPUT " ENTER: Supply Type and Load (e.g., 3b) or press <ENTER> to quit ";A$
+830 IF A$="" THEN 870 :ELSE IF RIGHT$(A$,1)>"e" OR RIGHT$(A$,1)<"a" OR LEFT$(A$,1)>"5" THEN CLS:BEEP:PRINT TAB(25)"──────- Improper choice ───────" :GOTO 730
+840 P=5*VAL(LEFT$(A$,1))-101+ASC(RIGHT$(A$,1)) :PRINT "P="P
+850 ONP GOTO 900,1210,1580,1980,2340,2680,3020,3390,3770,4140,4470,4800,5170,5550,5910,6250,6760,7300,7870,8410,8930,9450,9970,10530,11070
+860 :REM'
+870 :REM'.....exit
+880 CLS:RUN GO$
+890 :REM'
+900 CLS:COLOR 0,7,0
+910 SC=360:MT=1 :REM'no caps in cct
+920 PRINT "    FULLWAVE CT RECTIFIER BATTERY CHARGER    "
+930 PRINT "                                             "
+940 PRINT "    ──────┐ ┌────->├─────┐                   "
+950 PRINT "          )║(            │      R            "
+960 PRINT " AC INPUT )║(──┐         ├────\/\/\────┐     "
+970 PRINT "          )║(  │         │             │+    "
+980 PRINT "    ──────┘ └──│──>├─────┘          BATTERY  "
+990 PRINT "               │                       │-    "
+1000 PRINT "               └───────────────────────┘     "
+1010 PRINT "                                             "
+1020 COLOR 7,0
+1030 PRINT
+1040 GOSUB 11890 :GOSUB 11970 :PRINT AM$;VBAT;D$;TAB(40);AN$;RBAT;R$
+1050 LN=CSRLIN:GOSUB 90:LOCATE LN
+1060 IF X$="" GOTO 1090 :ELSE IF ASC(X$)<65 GOTO 900 :ELSE X=ASC(X$)-64
+1070 ONX GOSUB 11670,11680,11690,11700,11710,11750,11760,11770,11780,11790,11800,11810,11820,11830,11840,11850,11860,11880
+1080 GOTO 900
+1090 ISUM=0 :ISQ=0 :NT=VPRI/VSEC :RT=0.25!*RPRI/NT^2+RSEC/2
+1100 FOR N=1 TO SC
+1110 VAC=SQR(2)*VSEC/2*ABS(SIN(TP*F*N*S))
+1120 IF VAC>(VD+VBAT) THEN I=(VAC-VD-VBAT)/(RT+RBAT) :ELSE I=0
+1130 VD=A+B*LOG(1000*I+C)
+1140 ISUM=ISUM+I :ISQ=ISQ+I^2
+1150 NEXT N
+1160 PRINT
+1170 PRINT USING "Iave= ##.#### amps, Irms= ##.#### amps";ISUM/SC,SQR(ISQ/SC)
+1180 X=0:Y=0:GOSUB 12120:LOCATE 23
+1190 INPUT "Enter <r> to return to main menu, or <CR> to re-run ";B$
+1200 IF B$="r" THEN CLS: GOSUB 11880 :ELSE GOTO 900
+1210 :REM'
+1220 CLS:COLOR 0,7,0
+1230 PRINT " FULLWAVE CT RECTIFIER w/CAP BATTERY CHARGER "
+1240 PRINT "                                             "
+1250 PRINT "    ──────┐ ┌─────>├─────┐                   "
+1260 PRINT "          )║(            │         R         "
+1270 PRINT " AC INPUT )║(──┐         ├────┬──\/\/\──┐    "
+1280 PRINT "          )║(  │         │    │+        │+   "
+1290 PRINT "    ──────┘ └──│──>├─────┘   ═╪═ Ca  BATTERY "
+1300 PRINT "               │              │-        │-   "
+1310 PRINT "               └──────────────┴─────────┘    "
+1320 PRINT "                                             "
+1330 PRINT
+1340 COLOR 7,0
+1350 GOSUB 11890 :GOSUB 11970 :PRINT AJ$;CA;C$;TAB(40);AM$;VBAT;VAC$
+1360 PRINT AN$;RBAT;R$
+1370 LN=CSRLIN:GOSUB 90:LOCATE LN
+1380 IF X$="" GOTO 1410 :ELSE IF ASC(X$)<65 GOTO 1220 :ELSE X=ASC(X$)-64
+1390 ONX GOSUB 11670,11680,11690,11700,11710,11750,11760,11770,11780,11790,11800,11810,11820,11830,11840,11850,11860,11880
+1400 GOTO 1220
+1410 ICK=0 :ISUM=0 :ISQ=0 :VC=0.699999988079071!*VSEC :VMIN=2*VSEC :VMAX=0
+1420 VC=0.699999988079071!*VSEC :VCR=VC: C1=CA*UF :NT=VPRI/VSEC :RT=0.25!*RPRI/NT^2+RSEC/2
+1430 FOR M=1 TO MT :FOR N=1 TO SC
+1440 VAC=SQR(2)*VSEC/2*ABS(SIN(TP*F*N*S))
+1450 IF VAC>(VC+VD) THEN I=(VAC-VD-VC)/RT :ELSE I=0
+1460 IBAT=(VC-VBAT)/RBAT :IC=I-IBAT :DV=IC*S/C1
+1470 IF ABS(DV)>0.05000000074505806!*VCR THEN GOSUB 12020:GOTO 1350
+1480 VC=VC+DV
+1490 VD=A+B*LOG(1000*I+C)
+1500 IF M=MT THEN ISUM=ISUM+IBAT :ISQ=ISQ+I^2 :ICK=ICK+I :V=VC :GOSUB 11600
+1510 NEXT N :LOCATE ,1:PRINT M; :NEXT M:PRINT "iterations"
+1520 PRINT
+1530 PRINT USING "VCmax= ###.###, VCmin= ###.###, Vpp= ###.###";VMAX,VMIN,VPP
+1540 PRINT USING "Iave= ##.####, Icheck= ##.####, Irms= ##.####";ISUM/SC,ICK/SC,SQR(ISQ/SC)
+1550 X=ISUM/SC:Y=ICK/SC:GOSUB 12120:LOCATE 23
+1560 PRINT :INPUT "Enter <r> to return to main menu, or <CR> to re-run ";B$
+1570 IF B$="r" THEN CLS: GOSUB 11880 :ELSE GOTO 1220
+1580 :REM'
+1590 CLS:COLOR 0,7,0
+1600 PRINT "     FULLWAVE CT RECTIFIER w/CAP/REG LOAD     "
+1610 PRINT "                                              "
+1620 PRINT "    ──────┐ ┌─────>├─────┐                    "
+1630 PRINT "          )║(            │        ┌───┐       "
+1640 PRINT " AC INPUT )║(──┐         ├────┬───┤REG├───┐   "
+1650 PRINT "          )║(  │         │    │+  └─┬─┘   │+  "
+1660 PRINT "    ──────┘ └──│──>├─────┘   ═╪═ Ca │    LOAD "
+1670 PRINT "               │              │-    │     │-  "
+1680 PRINT "               └──────────────┴─────┴─────┘   "
+1690 PRINT "                                              "
+1700 COLOR 7,0
+1710 PRINT
+1720 GOSUB 11890 :GOSUB 11970 :PRINT AI$;RL;R$;TAB(40);AJ$;CA;C$
+1730 PRINT AO$;VREG;D$;TAB(40);AP$;VOP;D$
+1740 PRINT AQ$;IREG0;I$
+1750 LN=CSRLIN:GOSUB 90:LOCATE LN
+1760 IF X$="" GOTO 1790 :ELSE IF ASC(X$)<65 GOTO 1590 :ELSE X=ASC(X$)-64
+1770 ONX GOSUB 11670,11680,11690,11700,11710,11750,11760,11770,11780,11790,11800,11810,11820,11830,11840,11850,11860,11880
+1780 GOTO 1590
+1790 ICK=0 :ISQ=0 :VC=0.699999988079071!*VSEC :VMIN=2*VSEC :VMAX=0
+1800 VC=0.699999988079071!*VSEC: VCR=VC :C1=CA*UF :NT=VPRI/VSEC :RT=0.25!*RPRI/NT^2+RSEC/2
+1810 IREGT=VREG/RL+IREG0
+1820 FOR M=1 TO MT :FOR N=1 TO SC
+1830 VAC=SQR(2)*VSEC/2*ABS(COS(TP*F*N*S))
+1840 IF VAC>(VC+VD) THEN I=(VAC-VD-VC)/RT :ELSE I=0
+1850 IC=I-IREGT :DV=IC*S/C1
+1860 IF ABS(DV)>0.05000000074505806!*VCR THEN GOSUB 12020:GOTO 1720
+1870 IF VC<VREG+VOP THEN GOSUB 12070:GOTO 1720
+1880 VC=VC+DV
+1890 VD=A+B*LOG(1000*I+C)
+1900 IF M=MT THEN ISQ=ISQ+I^2 :ICK=ICK+I :V=VC :GOSUB 11600
+1910 NEXT N :LOCATE ,1:PRINT M; :NEXT M:PRINT "iterations"
+1920 PRINT
+1930 PRINT USING "VCmax= ###.###, VCmin= ###.###, Vpp= ###.###";VMAX,VMIN,VPP
+1940 PRINT USING "Iave= ##.####, Icheck= ##.####, Irms= ##.####";VREG/RL,ICK/SC-IREG0,SQR(ISQ/SC)
+1950 X=VREG/RL:Y=ICK/SC-IREG0:GOSUB 12120:LOCATE 23
+1960 PRINT :INPUT "Enter <r> to return to main menu, or <CR> to re-run ";B$
+1970 IF B$="r" THEN CLS: GOSUB 11880 :ELSE GOTO 1590
+1980 :REM'
+1990 CLS:COLOR 0,7,0
+2000 PRINT "     FULLWAVE CT RECTIFIER w/C/R LOAD     "
+2010 PRINT "                                          "
+2020 PRINT "    ──────┐ ┌─────>├─────┐                "
+2030 PRINT "          )║(            │                "
+2040 PRINT " AC INPUT )║(──┐         ├─────┬───────┐  "
+2050 PRINT "          )║(  │         │     │+    +┌┴┐ "
+2060 PRINT "    ──────┘ └──│──>├─────┘    ═╪═ Ca  │R│ "
+2070 PRINT "               │               │-    -└┬┘ "
+2080 PRINT "               └───────────────┴───────┘  "
+2090 PRINT "                                          "
+2100 COLOR 7,0
+2110 PRINT
+2120 GOSUB 11890:GOSUB 11970 :PRINT AI$;RL;R$;TAB(40);AJ$;CA;C$
+2130 LN=CSRLIN:GOSUB 90:LOCATE LN
+2140 IF X$="" GOTO 2170 :ELSE IF ASC(X$)<65 GOTO 1990 :ELSE X=ASC(X$)-64
+2150 ONX GOSUB 11670,11680,11690,11700,11710,11750,11760,11770,11780,11790,11800,11810,11820,11830,11840,11850,11860,11880
+2160 GOTO 1990
+2170 ICK=0 :ISUM=0 :ISQ=0 :VC=0.699999988079071!*VSEC :VMIN=2*VSEC :VMAX=0
+2180 VC=0.699999988079071!*VSEC :VCR=VC :C1=CA*9.999999974752427e-07! :NT=VPRI/VSEC :RT=0.25!*RPRI/NT^2+RSEC/2
+2190 FOR M=1 TO MT :FOR N=1 TO SC
+2200 VAC=SQR(2)*VSEC/2*ABS(COS(TP*F*N*S))
+2210 IF VAC>(VC+VD) THEN I=(VAC-VD-VC)/RT :ELSE I=0
+2220 IC=I-VC/RL :DV=IC*S/C1
+2230 IF ABS(DV)>0.05000000074505806!*VCR THEN GOSUB 12020:GOTO 2120
+2240 VC=VC+DV
+2250 VD=A+B*LOG(1000*I+C)
+2260 IF M=MT THEN ISUM=ISUM+VC/RL :ISQ=ISQ+I^2 :ICK=ICK+I :V=VC :GOSUB 11600
+2270 NEXT N :LOCATE ,1:PRINT M; :NEXT M :PRINT "iterations"
+2280 PRINT
+2290 PRINT USING "VCmax= ###.###, VCmin= ##.####, Vpp= ###.###";VMAX,VMIN,VPP
+2300 PRINT USING "Iave= ##.####, Icheck= ##.####, Irms= ##.####";ISUM/SC,ICK/SC,SQR(ISQ/SC)
+2310 X=ISUM/SC:Y=ICK/SC:GOSUB 12120:LOCATE 23
+2320 PRINT :INPUT "Enter <r> to return to main menu, or <CR> to re-run ";B$
+2330 IF B$="r" THEN CLS: GOSUB 11880 :ELSE GOTO 1990
+2340 :REM'
+2350 CLS:COLOR 0,7,0
+2360 SC=360 :MT=1 :REM'no caps in cct
+2370 PRINT "   FULLWAVE CT RECTIFIER w/R LOAD   "
+2380 PRINT "                                    "
+2390 PRINT "    ──────┐ ┌─────>├─────┐          "
+2400 PRINT "          )║(            │          "
+2410 PRINT " AC INPUT )║(──┐         ├───────┐  "
+2420 PRINT "          )║(  │         │     +┌┴┐ "
+2430 PRINT "    ──────┘ └──│──>├─────┘      │R│ "
+2440 PRINT "               │               -└┬┘ "
+2450 PRINT "               └─────────────────┘  "
+2460 PRINT "                                    "
+2470 COLOR 7,0
+2480 PRINT
+2490 GOSUB 11890 :GOSUB 11970 :PRINT AI$;RL;R$
+2500 LN=CSRLIN:GOSUB 90:LOCATE LN
+2510 IF X$="" GOTO 2540 :ELSE IF ASC(X$)<65 GOTO 2350 :ELSE X=ASC(X$)-64
+2520 ONX GOSUB 11670,11680,11690,11700,11710,11750,11760,11770,11780,11790,11800,11810,11820,11830,11840,11850,11860,11880
+2530 GOTO 2350
+2540 ISUM=0 :ISQ=0 :VMAX=0
+2550 NT=VPRI/VSEC :RT=0.25!*RPRI/NT^2+RSEC/2
+2560 FOR N=1 TO SC
+2570 VAC=SQR(2)*VSEC/2*ABS(COS(TP*F*N*S))
+2580 IF VAC>VD THEN I=(VAC-VD)/(RT+RL) :ELSE I=0
+2590 VD=A+B*LOG(1000*I+C)
+2600 ISUM=ISUM+I :ISQ=ISQ+I^2 :V=I*RL :GOSUB 11600
+2610 NEXT N
+2620 PRINT
+2630 PRINT USING "Vmax= ###.###";VMAX
+2640 PRINT USING "Iave= ##.####, Irms= ##.####";ISUM/SC,SQR(ISQ/SC)
+2650 X=0:Y=0:GOSUB 12120:LOCATE 23
+2660 PRINT :INPUT "Enter <r> to return to main menu, or <CR> to re-run ";B$
+2670 IF B$="r" THEN CLS: GOSUB 11880 :ELSE GOTO 2350
+2680 :REM'
+2690 CLS:COLOR 0,7,0
+2700 SC=360 :MT=1 :REM'no caps in cct
+2710 PRINT " FULLWAVE BRIDGE RECTIFIER  BATTERY CHARGER "
+2720 PRINT "                                            "
+2730 PRINT "    ──────┐ ┌──┬──>├──────┐                 "
+2740 PRINT "          )║(  │          │     R           "
+2750 PRINT "          )║(  └──┤<───┐  ├───\/\/\────┐    "
+2760 PRINT " AC INPUT )║(          │  │            │ +  "
+2770 PRINT "          )║(  ┌──>├───│──┘         BATTERY "
+2780 PRINT "          )║(  │       │               │ -  "
+2790 PRINT "    ──────┘ └──┴──┤<───┴───────────────┘    "
+2800 PRINT "                                            "
+2810 COLOR 7,0
+2820 PRINT
+2830 GOSUB 11890 :GOSUB 11970 :PRINT AM$;VBAT;TAB(40);AN$;RBAT
+2840 LN=CSRLIN:GOSUB 90:LOCATE LN
+2850 IF X$="" GOTO 2880 :ELSE IF ASC(X$)<65 GOTO 2690 :ELSE X=ASC(X$)-64
+2860 ONX GOSUB 11670,11680,11690,11700,11710,11750,11760,11770,11780,11790,11800,11810,11820,11830,11840,11850,11860,11880
+2870 GOTO 2690
+2880 ISUM=0 :ISQ=0
+2890 NT=VPRI/VSEC :RT=RPRI/NT^2+RSEC
+2900 FOR N=1 TO SC
+2910 VAC=SQR(2)*VSEC*ABS(COS(TP*F*N*S))
+2920 IF VAC>(2*VD+VBAT) THEN I=(VAC-2*VD-VBAT)/(RT+RBAT) :ELSE I=0
+2930 VD=A+B*LOG(1000*I+C)
+2940 ISUM=ISUM+I :ISQ=ISQ+I^2
+2950 NEXT N
+2960 PRINT
+2970 PRINT USING "Iave= ##.#### amps, Irms= ##.#### amps";ISUM/SC,SQR(ISQ/SC)
+2980 X=0:Y=0:GOSUB 12120:LOCATE 23
+2990 PRINT :INPUT "Enter <r> to return to main menu, or <CR> to re-run ";B$
+3000 IF B$="r" THEN CLS: GOSUB 11880 :ELSE GOTO 2690
+3010 :REM'
+3020 CLS:COLOR 0,7,0
+3030 PRINT " FULLWAVE BRIDGE RECT. w/CAP BATTERY CHARGER "
+3040 PRINT "                                             "
+3050 PRINT "    ──────┐ ┌──┬─>├─────┐                    "
+3060 PRINT "          )║(  │        │        R           "
+3070 PRINT "          )║(  └─┤<─┐   ├───┬───\/\/\───┐    "
+3080 PRINT " AC INPUT )║(       │   │   │+          │+   "
+3090 PRINT "          )║(  ┌─>├─│───┘  ═╪═ Ca    BATTERY "
+3100 PRINT "          )║(  │    │       │-          │-   "
+3110 PRINT "    ──────┘ └──┴─┤<─┴───────┴───────────┘    "
+3120 PRINT "                                             "
+3130 COLOR 7,0
+3140 PRINT
+3150 GOSUB 11890 :GOSUB 11970 :PRINT AJ$;CA;C$;TAB(40);AM$;VBAT;D$
+3160 PRINT AN$;RBAT;R$
+3170 LN=CSRLIN:GOSUB 90:LOCATE LN
+3180 IF X$="" GOTO 3210 :ELSE IF ASC(X$)<65 GOTO 3020 :ELSE X=ASC(X$)-64
+3190 ONX GOSUB 11670,11680,11690,11700,11710,11750,11760,11770,11780,11790,11800,11810,11820,11830,11840,11850,11860,11880
+3200 GOTO 3020
+3210 ICK=0 :ISUM=0 :ISQ=0 :VC=1.399999976158142!*VSEC :VMIN=2*VSEC :VMAX=0
+3220 C1=CA*9.999999974752427e-07!:VC=1.399999976158142!*VSEC :VCR=VC :NT=VPRI/VSEC :RT=RPRI/NT^2+RSEC
+3230 FOR M=1 TO MT :FOR N=1 TO SC
+3240 VAC=SQR(2)*VSEC*ABS(COS(TP*F*N*S))
+3250 IF VAC>(VC+2*VD) THEN I=(VAC-2*VD-VC)/RT :ELSE I=0
+3260 IBAT=(VC-VBAT)/RBAT :IC=I-IBAT :DV=IC*S/C1
+3270 IF ABS(DV)>0.05000000074505806!*VCR THEN GOSUB 12020:GOTO 3150
+3280 VC=VC+DV
+3290 VD=A+B*LOG(1000*I+C)
+3300 IF M=MT THEN ISUM=ISUM+IBAT :ISQ=ISQ+I^2 :ICK=ICK+I :V=VC :GOSUB 11600
+3310 NEXT N :PRINT M; :NEXT M :PRINT "cycles"
+3320 PRINT
+3330 PRINT USING "VCmax= ###.###, VCmin= ###.###, Vpp= ###.###";VMAX,VMIN,VPP
+3340 PRINT USING "Iave= ##.####, Icheck= ##.####, Irms= ##.####";ISUM/SC,ICK/SC,SQR (ISQ/SC)
+3350 X=ISUM/SC:Y=ICK/SC:GOSUB 12120:LOCATE 23
+3360 PRINT :INPUT "Enter <r> to return to main menu, or <CR> to re-run ";B$
+3370 IF B$="r" THEN CLS: GOSUB 11880 :ELSE GOTO 3020
+3380 :REM'
+3390 CLS:COLOR 0,7,0
+3400 PRINT "  FULLWAVE BRIDGE RECTIFIER w/CAP/REG LOAD  "
+3410 PRINT "                                            "
+3420 PRINT "    ──────┐ ┌──┬──>├─────┐                  "
+3430 PRINT "          )║(  │         │       ┌───┐      "
+3440 PRINT "          )║(  └──┤<──┐  ├───┬───┤REG├───┐  "
+3450 PRINT " AC INPUT )║(         │  │   │+  └─┬─┘  +│  "
+3460 PRINT "          )║(  ┌──>├──│──┘  ═╪═ Ca │   LOAD "
+3470 PRINT "          )║(  │      │      │-    │    -│  "
+3480 PRINT "    ──────┘ └──┴──┤<──┴──────┴─────┴─────┘  "
+3490 PRINT "                                            "
+3500 COLOR 7,0
+3510 PRINT
+3520 GOSUB 11890:GOSUB 11970 :PRINT AI$;RL;R$;TAB(40);AJ$;CA;C$
+3530 PRINT AO$;VREG;D$;TAB(40);AP$;VOP;D$:
+3540 PRINT AQ$;IREG0;I$
+3550 LN=CSRLIN:GOSUB 90:LOCATE LN
+3560 IF X$="" GOTO 3590 :ELSE IF ASC(X$)<65 GOTO 3390 :ELSE X=ASC(X$)-64
+3570 ONX GOSUB 11670,11680,11690,11700,11710,11750,11760,11770,11780,11790,11800,11810,11820,11830,11840,11850,11860,11880
+3580 GOTO 3390
+3590 ICK=0 :ISQ=0 :VC=1.399999976158142!*VSEC :VMIN=2*VSEC :VMAX=0
+3600 VC=1.399999976158142!*VSEC :VCR=VC :C1=CA*9.999999974752427e-07! :NT=VPRI/VSEC :RT=RPRI/NT^2+RSEC
+3610 IREGT=VREG/RL+IREG0 :FOR M=1 TO MT :FOR N=1 TO SC
+3620 VAC=SQR(2)*VSEC*ABS(COS(TP*F*N*S))
+3630 IF VAC>(VC+2*VD) THEN I=(VAC-2*VD-VC)/RT :ELSE I=0
+3640 IC=I-IREGT :DV=IC*S/C1
+3650 IF ABS(DV)>0.05000000074505806!*VCR THEN GOSUB 12020:GOTO 3520
+3660 IF VC<VREG+VOP THEN GOSUB 12070:GOTO 3520
+3670 VC=VC+DV
+3680 VD=A+B*LOG(1000*I+C)
+3690 IF M=MT THEN ISQ=ISQ+I^2 :ICK=ICK+I :V=VC :GOSUB 11600
+3700 NEXT N :LOCATE ,1:PRINT M; :NEXT M :PRINT "iterations"
+3710 PRINT
+3720 PRINT USING "VCmax= ###.###, VCmin= ###.###, Vpp= ###.###";VMAX,VMIN,VPP
+3730 PRINT USING "Iave= ##.####, Icheck= ##.####, Irms= ##.###";VREG/RL,ICK/SC-IREG0,SQR(ISQ/SC)
+3740 X=VREG/RL:Y=ICK/SC-IREG0:GOSUB 12120:LOCATE 23
+3750 PRINT :INPUT "Enter <r> to return to main menu, or <CR> to re-run ";B$
+3760 IF B$="r" THEN CLS: GOSUB 11880 :ELSE GOTO 3390
+3770 :REM'
+3780 CLS:COLOR 0,7,0
+3790 PRINT "  FULLWAVE BRIDGE RECTIFIER w/C/R LOAD  "
+3800 PRINT "                                        "
+3810 PRINT "    ──────┐ ┌──┬──>├─────┐              "
+3820 PRINT "          )║(  │         │              "
+3830 PRINT "          )║(  └──┤<──┐  ├───┬───────┐  "
+3840 PRINT " AC INPUT )║(         │  │   │+    +┌┴┐ "
+3850 PRINT "          )║(  ┌──>├──│──┘  ═╪═ Ca  │R│ "
+3860 PRINT "          )║(  │      │      │-    -└┬┘ "
+3870 PRINT "    ──────┘ └──┴──┤<──┴──────┴───────┘  "
+3880 PRINT "                                        "
+3890 COLOR 7,0
+3900 PRINT
+3910 GOSUB 11890 :GOSUB 11970 :PRINT AI$;RL;R$;TAB(40);AJ$;CA;C$
+3920 LN=CSRLIN:GOSUB 90:LOCATE LN
+3930 IF X$="" GOTO 3960 :ELSE IF ASC(X$)<65 GOTO 3780 :ELSE X=ASC(X$)-64
+3940 ONX GOSUB 11670,11680,11690,11700,11710,11750,11760,11770,11780,11790,11800,11810,11820,11830,11840,11850,11860,11880
+3950 GOTO 3780
+3960 ICK=0 :ISUM=0 :ISQ=0 :VC=1.399999976158142!*VSEC :VMIN=2*VSEC :VMAX=0
+3970 VC=1.399999976158142!*VSEC: VCR=VC :C1=CA*9.999999974752427e-07! :NT=VPRI/VSEC :RT=RPRI/NT^2+RSEC
+3980 FOR M=1 TO MT :FOR N=1 TO SC
+3990 VAC=SQR(2)*VSEC*ABS(COS(TP*F*N*S))
+4000 IF VAC>(VC+2*VD) THEN I=(VAC-2*VD-VC)/RT :ELSE I=0
+4010 IC=I-VC/RL :DV=IC*S/C1
+4020 IF ABS(DV)>0.05000000074505806!*VCR THEN GOSUB 12020:GOTO 3910
+4030 VC=VC+DV
+4040 VD=A+B*LOG(1000*I+C)
+4050 IF M=MT THEN ISUM=ISUM+VC/RL :ISQ=ISQ+I^2 :ICK=ICK+I :V=VC :GOSUB 11600
+4060 NEXT N :LOCATE ,1:PRINT M; :NEXT M :PRINT "iterations"
+4070 PRINT
+4080 PRINT USING "VCmax= ###.###, VCmin= ###.###, Vpp= ###.###";VMAX,VMIN,VPP
+4090 PRINT USING "Iave= ##.####, Icheck= ##.####, Irms= ##.####";ISUM/SC,ICK/SC,SQR(ISQ/SC)
+4100 X=ISUM/SC:Y=ICK/SC:GOSUB 12120:LOCATE 23
+4110 PRINT :INPUT "Enter <r> to return to main menu, or <CR> to re-run ";B$
+4120 IF B$="r" THEN CLS: GOSUB 11880 :ELSE GOTO 3780
+4130 :REM'
+4140 CLS:COLOR 0,7,0
+4150 SC=360 :MT=1 :REM'no caps in cct
+4160 PRINT " FULLWAVE BRIDGE RECTIFIER w/R LOAD "
+4170 PRINT "                                    "
+4180 PRINT "    ──────┐ ┌──┬──>├─────┐          "
+4190 PRINT "          )║(  │         │          "
+4200 PRINT "          )║(  └──┤<──┐  ├───────┐  "
+4210 PRINT " AC INPUT )║(         │  │     +┌┴┐ "
+4220 PRINT "          )║(  ┌──>├──│──┘      │R│ "
+4230 PRINT "          )║(  │      │        -└┬┘ "
+4240 PRINT "    ──────┘ └──┴──┤<──┴──────────┘  "
+4250 PRINT "                                    "
+4260 COLOR 7,0
+4270 PRINT
+4280 GOSUB 11890 :GOSUB 11970 :PRINT AI$;RL;R$
+4290 LN=CSRLIN:GOSUB 90:LOCATE LN
+4300 IF X$="" GOTO 4330 :ELSE IF ASC(X$)<65 GOTO 4140 :ELSE X=ASC(X$)-64
+4310 ONX GOSUB 11670,11680,11690,11700,11710,11750,11760,11770,11780,11790,11800,11810,11820,11830,11840,11850,11860,11880
+4320 GOTO 4140
+4330 ISUM=0 :ISQ=0 :VMIN=2*VSEC :VMAX=0
+4340 NT=VPRI/VSEC :RT=RPRI/NT^2+RSEC
+4350 FOR M=1 TO MT :FOR N=1 TO SC
+4360 VAC=SQR(2)*VSEC*ABS(COS(TP*F*N*S))
+4370 IF VAC>2*VD THEN I=(VAC-2*VD)/(RT+RL) :ELSE I=0
+4380 VD=A+B*LOG(1000*I+C)
+4390 IF M=MT THEN ISUM=ISUM+I :ISQ=ISQ+I^2 :V=I*RL :GOSUB 11600
+4400 NEXT N :LOCATE ,1:PRINT M; :NEXT M:PRINT "iteration"
+4410 PRINT
+4420 PRINT USING "Vmax= ###.###";VMAX
+4430 PRINT USING "Iave= ##.####, Irms= ##.###";ISUM/SC,SQR(ISQ/SC)
+4440 X=0:Y=0:GOSUB 12120:LOCATE 23
+4450 PRINT :INPUT "Enter <r> to return to main menu, or <CR> to re-run ";B$
+4460 IF B$="r" THEN CLS: GOSUB 11880 :ELSE GOTO 4140
+4470 :REM'
+4480 CLS:COLOR 0,7,0
+4490 SC=360 :MT=1 :REM'no caps in cct
+4500 PRINT " HALFWAVE RECTIFIER  BATTERY CHARGER "
+4510 PRINT "                                     "
+4520 PRINT "                         R           "
+4530 PRINT "    ──────┐ ┌────>├────/\/\/────┐    "
+4540 PRINT "          )║(                   │ +  "
+4550 PRINT " AC INPUT )║(                BATTERY "
+4560 PRINT "          )║(                   │ -  "
+4570 PRINT "    ──────┘ └───────────────────┘    "
+4580 PRINT "                                     "
+4590 PRINT "                                     "
+4600 COLOR 7,0
+4610 PRINT
+4620 GOSUB 11890 :GOSUB 11970 :PRINT AM$;VBAT;D$;TAB(40);AN$;RBAT;R$
+4630 LN=CSRLIN:GOSUB 90:LOCATE LN
+4640 IF X$="" GOTO 4670 :ELSE IF ASC(X$)<65 GOTO 4480 :ELSE X=ASC(X$)-64
+4650 ONX GOSUB 11670,11680,11690,11700,11710,11750,11760,11770,11780,11790,11800,11810,11820,11830,11840,11850,11860,11880
+4660 GOTO 4480
+4670 ISUM=0 :ISQ=0
+4680 NT=VPRI/VSEC :RT=RPRI/NT^2+RSEC
+4690 FOR N=1 TO SC
+4700 VAC=SQR(2)*VSEC*(SIN(TP*F*N*S))
+4710 IF VAC>(VD+VBAT) THEN I=(VAC-VD-VBAT)/(RT+RBAT) :ELSE I=0
+4720 VD=A+B*LOG(1000*I+C)
+4730 ISUM=ISUM+I :ISQ=ISQ+I^2
+4740 NEXT N
+4750 PRINT
+4760 PRINT USING "Iave= ##.#### amps, Irms= ##.#### amps";ISUM/SC,SQR(ISQ/SC)
+4770 X=0:Y=0:GOSUB 12120:LOCATE 23
+4780 PRINT :INPUT "Enter <r> to return to main menu, or <CR> to re-run ";B$
+4790 IF B$="r" THEN CLS: GOSUB 11880 :ELSE GOTO 4480
+4800 :REM'
+4810 CLS:COLOR 0,7,0
+4820 PRINT " HALFWAVE RECTIFIER w/CAP BATTERY CHARGER "
+4830 PRINT "                                          "
+4840 PRINT "                              R           "
+4850 PRINT "    ──────┐ ┌────>├────┬────\/\/\────┐    "
+4860 PRINT "          )║(          │+            │ +  "
+4870 PRINT " AC INPUT )║(         ═╪═ Ca      BATTERY "
+4880 PRINT "          )║(          │-            │ -  "
+4890 PRINT "    ──────┘ └──────────┴─────────────┘    "
+4900 PRINT "                                          "
+4910 PRINT "                                          "
+4920 COLOR 7,0
+4930 PRINT
+4940 GOSUB 11890 :GOSUB 11970 :PRINT AJ$;CA;C$;TAB(40);AM$;VBAT;D$
+4950 PRINT AN$;RBAT;R$
+4960 LN=CSRLIN:GOSUB 90:LOCATE LN
+4970 IF X$="" GOTO 5000 :ELSE IF ASC(X$)<65 GOTO 4810 :ELSE X=ASC(X$)-64
+4980 ONX GOSUB 11670,11680,11690,11700,11710,11750,11760,11770,11780,11790,11800,11810,11820,11830,11840,11850,11860,11880
+4990 GOTO 4810
+5000 ICK=0 :ISUM=0 :ISQ=0 :VC=1.399999976158142!*VSEC :VMIN=2*VSEC :VMAX=0
+5010 C1=CA*9.999999974752427e-07! :VC=1.399999976158142!*VSEC :VCR=VC :NT=VPRI/VSEC :RT=RPRI/NT^2+RSEC
+5020 FOR M=1 TO MT :FOR N=1 TO SC
+5030 VAC=SQR(2)*VSEC*(SIN(TP*F*N*S))
+5040 IF VAC>(VC+VD) THEN I=(VAC-VD-VC)/RT :ELSE I=0
+5050 IBAT=(VC-VBAT)/RBAT :IC=I-IBAT :DV=IC*S/C1
+5060 IF ABS(DV)>0.05000000074505806!*VCR THEN GOSUB 12020:GOTO 4940
+5070 VC=VC+DV
+5080 VD=A+B*LOG(1000*I+C)
+5090 IF M=MT THEN ISUM=ISUM+IBAT :ISQ=ISQ+I^2 :ICK=ICK+I :V=VC :GOSUB 11600
+5100 NEXT N :LOCATE ,1:PRINT M; :NEXT M :PRINT "iterations"
+5110 PRINT
+5120 PRINT USING "VCmax= ###.###, VCmin= ###.###, VPP= ###.###";VMAX,VMIN,VPP
+5130 PRINT USING "Iave= ##.####, Icheck= ##.####, Irms= ##.####";ISUM/SC,ICK/SC,SQR(ISQ/SC)
+5140 X=ISUM/SC:Y=ICK/SC:GOSUB 12120:LOCATE 23
+5150 PRINT :INPUT "Enter <r> to return to main menu, or <CR> to re-run ";B$
+5160 IF B$="r" THEN CLS: GOSUB 11880 :ELSE GOTO 4810
+5170 :REM'
+5180 CLS:COLOR 0,7,0
+5190 PRINT " HALFWAVE RECTIFIER w/CAP/REG LOAD "
+5200 PRINT "                                   "
+5210 PRINT "                       ┌───┐       "
+5220 PRINT "    ──────┐ ┌─->├──┬───┤REG├───┐   "
+5230 PRINT "          )║(      │+  └─┬─┘   │+  "
+5240 PRINT " AC INPUT )║(     ═╪═ Ca │    LOAD "
+5250 PRINT "          )║(      │-    │     │-  "
+5260 PRINT "    ──────┘ └──────┴─────┴─────┘   "
+5270 PRINT "                                   "
+5280 PRINT "                                   "
+5290 COLOR 7,0
+5300 PRINT
+5310 GOSUB 11890 :GOSUB 11970 :PRINT AI$;RL;R$;TAB(40);AJ$;CA;C$
+5320 PRINT AO$;VREG;D$;TAB(40);AP$;VOP;D$
+5330 PRINT AQ$;IREG0;I$
+5340 LN=CSRLIN:GOSUB 90:LOCATE LN
+5350 IF X$="" GOTO 5380 :ELSE IF ASC(X$)<65 GOTO 5180 :ELSE X=ASC(X$)-64
+5360 ONX GOSUB 11670,11680,11690,11700,11710,11750,11760,11770,11780,11790,11800,11810,11820,11830,11840,11850,11860,11880
+5370 GOTO 5180
+5380 ICK=0 :ISQ=0 :VC=1.399999976158142!*VSEC :VMIN=2*VSEC :VMAX=0
+5390 VC=1.399999976158142!*VSEC: VCR=VC :C1=CA*UF :NT=VPRI/VSEC :RT=RPRI/NT^2+RSEC
+5400 IREGT=VREG/RL+IREG0 :FOR M=1 TO MT :FOR N=1 TO SC
+5410 VAC=SQR(2)*VSEC*(SIN(TP*F*N*S))
+5420 IF VAC>(VC+VD) THEN I=(VAC-VD-VC)/RT :ELSE I=0
+5430 IC=I-IREGT :DV=IC*S/C1
+5440 IF ABS(DV)>0.05000000074505806!*VCR THEN GOSUB 12170:GOTO 5310
+5450 VC=VC+DV :IF VC<VREG+VOP THEN GOSUB 12070:GOTO 5310
+5460 VD=A+B*LOG(1000*I+C)
+5470 IF M=MT THEN ISQ=ISQ+I^2 :ICK=ICK+I :V=VC :GOSUB 11600
+5480 NEXT N :LOCATE ,1:PRINT M; :NEXT M :PRINT "iterations"
+5490 PRINT
+5500 PRINT USING "VCmax= ###.###, VCmin= ###.###, Vpp= ###.###";VMAX,VMIN,VPP
+5510 PRINT USING "Iload= ##.####, Icheck= ##.####, Irms= ##.####";VREG/RL,ICK/SC-IREG0,SQR(ISQ/SC)
+5520 X=VREG/RL:Y=ICK/SC-IREG0:GOSUB 12120:LOCATE 23
+5530 PRINT :INPUT "Enter <r> to return to main menu, or <CR> to re-run ";B$
+5540 IF B$="r" THEN CLS: GOSUB 11880 :ELSE GOTO 5180
+5550 :REM'
+5560 CLS:COLOR 0,7,0
+5570 PRINT " HALFWAVE RECTIFIER w/C/R LOAD "
+5580 PRINT "                               "
+5590 PRINT "                               "
+5600 PRINT "    ──────┐ ┌───>├───┬──────┐  "
+5610 PRINT "          )║(       +│    +┌┴┐ "
+5620 PRINT " AC INPUT )║(     Ca═╪═    │R│ "
+5630 PRINT "          )║(       -│    -└┬┘ "
+5640 PRINT "    ──────┘ └────────┴──────┘  "
+5650 PRINT "                               "
+5660 PRINT "                               "
+5670 COLOR 7,0
+5680 PRINT
+5690 GOSUB 11890 :GOSUB 11970 :PRINT AI$;RL;R$;TAB(40);AJ$;CA;C$
+5700 LN=CSRLIN:GOSUB 90:LOCATE LN
+5710 IF X$="" GOTO 5740 :ELSE IF ASC(X$)<65 GOTO 5560 :ELSE X=ASC(X$)-64
+5720 ONX GOSUB 11670,11680,11690,11700,11710,11750,11760,11770,11780,11790,11800,11810,11820,11830,11840,11850,11860,11880
+5730 GOTO 5560
+5740 ICK=0 :ISUM=0 :ISQ=0 :VC=1.399999976158142!*VSEC :VMIN=2*VSEC :VMAX=0
+5750 VC=1.399999976158142!*VSEC: VCR=VC :C1=CA*9.999999974752427e-07! :NT=VPRI/VSEC :RT=RPRI/NT^2+RSEC
+5760 FOR M=1 TO MT :FOR N=1 TO SC
+5770 VAC=SQR(2)*VSEC*(SIN(TP*F*N*S))
+5780 IF VAC>(VC+VD) THEN I=(VAC-VD-VC)/RT :ELSE I=0
+5790 IC=I-VC/RL :DV=IC*S/C1
+5800 IF ABS(DV)>0.05000000074505806!*VCR THEN GOSUB 12020:GOTO 5690
+5810 VC=VC+DV
+5820 VD=A+B*LOG(1000*I+C)
+5830 IF M=MT THEN ISUM=ISUM+VC/RL :ISQ=ISQ+I^2 :ICK=ICK+I :V=VC :GOSUB 11600
+5840 NEXT N :LOCATE ,1:PRINT M; :NEXT M :PRINT "iterations"
+5850 PRINT
+5860 PRINT USING "VCmax= ###.###, VCmin= ###.###, Vpp= ###.###";VMAX,VMIN,VPP
+5870 PRINT USING "Iave= ##.####, Icheck= ##.####, Irms= ##.####";ISUM/SC,ICK/SC,SQR(ISQ/SC)
+5880 X=ISUM/SC:Y=ICK/SC:GOSUB 12120:LOCATE 23
+5890 PRINT :INPUT "Enter <r> to return to main menu, or <CR> to re-run ";B$
+5900 IF B$="r" THEN CLS: GOSUB 11880 :ELSE GOTO 5560
+5910 :REM'
+5920 CLS:COLOR 0,7,0
+5930 SC=360 :MT=1 :REM'no caps in cct
+5940 PRINT " HALFWAVE  RECTIFIER w/R LOAD "
+5950 PRINT "                              "
+5960 PRINT "                              "
+5970 PRINT "    ──────┐ ┌──────>├──────┐  "
+5980 PRINT "          )║(            +┌┴┐ "
+5990 PRINT " AC INPUT )║(             │R│ "
+6000 PRINT "          )║(            -└┬┘ "
+6010 PRINT "    ──────┘ └──────────────┘  "
+6020 PRINT "                              "
+6030 PRINT "                              "
+6040 COLOR 7,0
+6050 PRINT
+6060 GOSUB 11890 :GOSUB 11970 :PRINT AI$;RL;R$
+6070 LN=CSRLIN:GOSUB 90:LOCATE LN
+6080 IF X$="" GOTO 6110 :ELSE IF ASC(X$)<65 GOTO 5920 :ELSE X=ASC(X$)-64
+6090 ONX GOSUB 11670,11680,11690,11700,11710,11750,11760,11770,11780,11790,11800,11810,11820,11830,11840,11850,11860,11880
+6100 GOTO 5920
+6110 ISUM=0 :ISQ=0 :VMIN=2*VSEC :VMAX=0
+6120 NT=VPRI/VSEC :RT=RPRI/NT^2+RSEC
+6130 FOR M=1 TO MT :FOR N=1 TO SC
+6140 VAC=SQR(2)*VSEC*(SIN(TP*F*N*S))
+6150 IF VAC>VD THEN I=(VAC-VD)/(RT+RL) :ELSE I=0
+6160 VD=A+B*LOG(1000*I+C)
+6170 IF M=MT THEN ISUM=ISUM+I :ISQ=ISQ+I^2 :V=I*RL :GOSUB 11600
+6180 NEXT N :LOCATE ,1:PRINT M; :NEXT M :PRINT "iteration"
+6190 PRINT
+6200 PRINT USING "Vmax= ###.###";VMAX
+6210 PRINT USING "Iave= ##.####, Irms= ##.####";ISUM/SC,SQR(ISQ/SC)
+6220 X=0:Y=0:GOSUB 12120:LOCATE 23
+6230 PRINT :INPUT "Enter <r> to return to main menu, or <CR> to re-run ";B$
+6240 IF B$="r" THEN CLS: GOSUB 11880 :ELSE GOTO 5920
+6250 :REM'
+6260 CLS:COLOR 0,7,0
+6270 PRINT "    FLOATING DOUBLER BATTERY CHARGER    "
+6280 PRINT "                       +                "
+6290 PRINT "    ──────┐ ┌──┬───>├──┬───\/\/\───┐    "
+6300 PRINT "          )║(  │    Cb═╪═    R     │+   "
+6310 PRINT " AC INPUT )║(  │  ┌────┤        BATTERY "
+6320 PRINT "          )║(  │  │ Cc═╪═          │-   "
+6330 PRINT "    ──────┘ └──│──┘    ├───────────┘    "
+6340 PRINT "               └───┤<──┘                "
+6350 PRINT "                       -                "
+6360 PRINT "                                        "
+6370 COLOR 7,0
+6380 PRINT
+6390 GOSUB 11890 :GOSUB 11970 :PRINT AK$;CB;C$;TAB(40);AL$;CC;C$
+6400 PRINT AM$;VBAT;D$;TAB(40);AN$;RBAT;R$
+6410 LN=CSRLIN:GOSUB 90:LOCATE LN
+6420 IF X$="" GOTO 6450 :ELSE IF ASC(X$)<65 GOTO 6260 :ELSE X=ASC(X$)-64
+6430 ONX GOSUB 11670,11680,11690,11700,11710,11750,11760,11770,11780,11790,11800,11810,11820,11830,11840,11850,11860,11880
+6440 GOTO 6260
+6450 ICK=0 :ISUM=0 :ISQ=0 :VMAX=0 :VMIN=3*VSEC
+6460 C2=CB*9.999999974752427e-07! :C3=CC*9.999999974752427e-07! :NT=VPRI/VSEC :RT=RPRI/NT^2+RSEC
+6470 VC2=1.399999976158142!*VSEC :VC2R=VC2 :VC3=VC2 :VC3R=VC3
+6480 FOR M=1 TO MT :FOR N=1 TO SC
+6490 VAC=SQR(2)*VSEC*COS(TP*F*N*S) :IBAT=(VC2+VC3-VBAT)/RBAT
+6500 IF VAC>VD1+VC2 THEN GOSUB 6680
+6510 IF VAC<-(VD2+VC3) THEN GOSUB 6720
+6520 I1=0 :I2=0  :IC2=-IBAT :IC3=IC2
+6530 DV2=IC2*S/C2 :DV3=IC3*S/C3
+6540 IF ABS(DV2)>0.05000000074505806!*VC2R OR ABS(DV3)>0.05000000074505806!*VC3R THEN GOSUB 12020:GOTO 6390
+6550 VC2=VC2+DV2 :VC3=VC3+DV3
+6560 IF M=MT THEN ICK=ICK+I1 :ISUM=ISUM+IBAT :ISQ=ISQ+(I1+I2)^2
+6570 IF M=MT THEN V=VC2+VC3 : GOSUB 11590
+6580 VD1=A+B*LOG(1000*I1+C)
+6590 VD2=A+B*LOG(1000*I2+C)
+6600 NEXT N :LOCATE ,1:PRINT M; :NEXT M:PRINT "iterations"
+6610 PRINT
+6620 PRINT USING "Vmax= ###.###, Vmin= ###.###, Vpp= ###.###";VMAX,VMIN,VPP
+6630 PRINT USING "Iave= ##.####, Icheck= ##.####, Irms= ##.####";ISUM/SC,ICK/SC,SQR(ISQ/SC)
+6640 X=ISUM/SC:Y=ICK/SC:GOSUB 12120:LOCATE 23
+6650 PRINT :INPUT "Enter <r> to return to main menu, or <CR> to re-run ";B$
+6660 IF B$="r" THEN CLS: GOSUB 11880 :ELSE GOTO 6260
+6670 :REM'
+6680 :REM'.....Subroutine for VAC>(VD1+VC2)
+6690 I1=(VAC-VD1-VC2)/RT :IC2=I1-IBAT
+6700 IC3=-IBAT :I2=0
+6710 RETURN 6530
+6720 :REM'.....Subroutine for VAC<-(VD2+VC3)
+6730 I2=(-VAC-VD2-VC3)/RT :IC3=I2-IBAT
+6740 IC2=-IBAT :I1=0
+6750 RETURN 6530
+6760 :REM'
+6770 CLS:COLOR 0,7,0
+6780 PRINT "   FLOATING DOUBLER w/CAP BATTERY CHARGER   "
+6790 PRINT "                      +                     "
+6800 PRINT "    ──────┐ ┌──┬──>├──┬──────┬─-\/\/\──┐    "
+6810 PRINT "          )║(  │   Cb═╪═     │+   R    │+   "
+6820 PRINT " AC INPUT )║(  │ ┌────┤   Ca═╪═     BATTERY "
+6830 PRINT "          )║(  │ │ Cc═╪═     │-        │-   "
+6840 PRINT "    ──────┘ └──│─┘    ├──────┴─────────┘    "
+6850 PRINT "               └──┤<──┘                     "
+6860 PRINT "                      -                     "
+6870 PRINT "                                            "
+6880 COLOR 7,0
+6890 PRINT
+6900 GOSUB 11890 :GOSUB 11970 :PRINT AJ$;CA;C$;TAB(40);AK$;CB;C$
+6910 PRINT AL$;CC;C$TAB(40);AM$;VBAT;D$
+6920 PRINT AN$;RBAT;R$
+6930 LN=CSRLIN:GOSUB 90:LOCATE LN
+6940 IF X$="" GOTO 6970 :ELSE IF ASC(X$)<65 GOTO 6770 :ELSE X=ASC(X$)-64
+6950 ONX GOSUB 11670,11680,11690,11700,11710,11750,11760,11770,11780,11790,11800,11810,11820,11830,11840,11850,11860,11880
+6960 GOTO 6770
+6970 ICK=0 :ISUM=0 :ISQ=0 :VMAX=0 :VMIN=3*VSEC
+6980 C1=CA*UF :C2=CB*UF :C3=CC*UF :NT=VPRI/VSEC :RT=RPRI/NT^2+RSEC
+6990 CT=C1*C2+C2*C3+C3*C1 :CYA=CT/C3 :CYB=CT/C2 :CYC=CT/C1
+7000 VCYA=1.399999976158142!*VSEC :VCYB=VCYA :VCYC=0 :VCYAR=VCYA :VCYBR=VCYA
+7010 FOR M=1 TO MT :FOR N=1 TO SC
+7020 VAC=SQR(2)*VSEC*COS(TP*F*N*S) :IBAT=(VCYA+VCYB-VBAT)/RBAT
+7030 IF VAC>VD1+VCYA+VCYC THEN GOSUB 7210
+7040 IF VAC<-(VD2+VCYB-VCYC) THEN GOSUB 7260
+7050 I1=0 :I2=0  :ICYA=-IBAT :ICYB=-IBAT :ICYC=0
+7060 DVA=ICYA*S/CYA :DVB=ICYB*S/CYB :DVC=ICYC*S/CYC
+7070 IF ABS(DVA)>0.05000000074505806!*VCYAR OR ABS(DVB)>0.05000000074505806!*VCYBR THEN GOSUB 12020:GOTO 6900
+7080 VCYA=VCYA+DVA :VCYB=VCYB+DVB :VCYC=VCYC+DVC
+7090 IF M=MT THEN ICK=ICK+I1 :ISUM=ISUM+IBAT :ISQ=ISQ+(I1+I2)^2
+7100 IF M=MT THEN V=VCYA+VCYB :GOSUB 11590
+7110 VD1=A+B*LOG(1000*I1+C)
+7120 VD2=A+B*LOG(1000*I2+C)
+7130 NEXT N :LOCATE ,1:PRINT M; :NEXT M:PRINT "iterations"
+7140 PRINT
+7150 PRINT USING "Vmax= ###.###, Vmin= ###.###, Vpp= ###.###";VMAX,VMIN,VPP
+7160 PRINT USING "Iave= ##.####, Icheck= ##.####, Irms= ##.###";ISUM/SC,ICK/SC,SQR(ISQ/SC)
+7170 X=ISUM/SC:Y=ICK/SC:GOSUB 12120:LOCATE 23
+7180 PRINT :INPUT "Enter <r> to return to main menu, or <CR> to re-run ";B$
+7190 IF B$="r" THEN CLS: GOSUB 11880 :ELSE GOTO 6770
+7200 :REM'
+7210 :REM'.....Subroutine for VAC>(VD1+VCYA+VCYC)
+7220 I1=(VAC-VD1-VCYA-VCYC)/RT :ICYA=I1-IBAT
+7230 ICYB=-IBAT :ICYC=I1 :I2=0
+7240 RETURN 7060
+7250 :REM'
+7260 :REM'.....Subroutine for VAC<-(VD2+VCYB-VCYC)
+7270 I2=(-VAC-VD2-VCYB+VCYC)/RT :ICYB=I2-IBAT
+7280 ICYA=-IBAT :ICYC=-I2 :I1=0
+7290 RETURN 7060
+7300 :REM'
+7310 CLS:COLOR 0,7,0
+7320 PRINT "      FLOATING DOUBLER w/CAP/REG LOAD      "
+7330 PRINT "                                           "
+7340 PRINT "                      +        ┌───┐       "
+7350 PRINT "    ──────┐ ┌──┬──>├──┬────┬───┤REG├───┐   "
+7360 PRINT "          )║(  │   Cb═╪═   │+  └─┬─┘   │+  "
+7370 PRINT " AC INPUT )║(  │ ┌────┤   ═╪═Ca  │    LOAD "
+7380 PRINT "          )║(  │ │ Cc═╪═   │-    │     │-  "
+7390 PRINT "    ──────┘ └──│─┘    ├────┴─────┴─────┘   "
+7400 PRINT "               └──┤<──┘                    "
+7410 PRINT "                      -                    "
+7420 COLOR 7,0
+7430 PRINT
+7440 GOSUB 11890 :GOSUB 11970 :PRINT AI$;RL;R$;TAB(40);AJ$;CA;C$
+7450 PRINT AK$;CB;C$;TAB(40);AL$;CC;C$
+7460 PRINT AO$;VREG;D$;TAB(40);AP$;VOP;D$
+7470 PRINT AQ$;IREG0;R$
+7480 LN=CSRLIN:GOSUB 90:LOCATE LN
+7490 IF X$="" GOTO 7520 :ELSE IF ASC(X$)<65 GOTO 7310 :ELSE X=ASC(X$)-64
+7500 ONX GOSUB 11670,11680,11690,11700,11710,11750,11760,11770,11780,11790,11800,11810,11820,11830,11840,11850,11860,11880
+7510 GOTO 7310
+7520 ICK=0 :ISUM=0 :ISQ=0 :VMAX=0 :VMIN=3*VSEC
+7530 C1=CA*UF :C2=CB*UF :C3=CC*UF :NT=VPRI/VSEC :RT=RPRI/NT^2+RSEC
+7540 CT=C1*C2+C2*C3+C3*C1 :CYA=CT/C3 :CYB=CT/C2 :CYC=CT/C1
+7550 VCYA=1.399999976158142!*VSEC :VCYB=VCYA :VCYC=0 :VCYAR=VCYA :VCYBR=VCYA
+7560 IL=VREG/RL :IREGT=IREG0+IL
+7570 FOR M=1 TO MT :FOR N=1 TO SC
+7580 VAC=SQR(2)*VSEC*COS(TP*F*N*S)
+7590 IF VAC>VD1+VCYA+VCYC THEN GOSUB 7780
+7600 IF VAC<-(VD2+VCYB-VCYC) THEN GOSUB 7830
+7610 I1=0 :I2=0  :ICYA=-IREGT :ICYB=-IREGT :ICYC=0
+7620 DVA=ICYA*S/CYA :DVB=ICYB*S/CYB :DVC=ICYC*S/CYC
+7630 IF ABS(DVA)>0.05000000074505806!*VCYAR OR ABS(DVB)>0.05000000074505806!*VCYBR THEN GOSUB 12020:GOTO 7440
+7640 VCYA=VCYA+DVA :VCYB=VCYB+DVB :VCYC=VCYC+DVC
+7650 IF VCYA+VCYB<VREG+VOP THEN GOSUB 12070:GOTO 7450
+7660 IF M=MT THEN ICK=ICK+I1 :ISUM=ISUM+IREGT :ISQ=ISQ+(I1+I2)^2
+7670 IF M=MT THEN V=VCYA+VCYB :GOSUB 11590
+7680 VD1=A+B*LOG(1000*I1+C)
+7690 VD2=A+B*LOG(1000*I2+C)
+7700 NEXT N :LOCATE ,1:PRINT M; :NEXT M:PRINT "iterations"
+7710 PRINT
+7720 PRINT USING "Vmax= ###.###, Vmin= ###.###, Vpp= ###.###";VMAX,VMIN,VPP
+7730 PRINT USING "Iave= ##.####, Icheck= ##.####, Irms= ##.####";ISUM/SC,ICK/SC,SQR(ISQ/SC)
+7740 X=ISUM/SC:Y=ICK/SC:GOSUB 12120:LOCATE 23
+7750 PRINT :INPUT "Enter <r> to return to main menu, or <CR> to re-run ";B$
+7760 IF B$="r" THEN CLS: GOSUB 11880 :ELSE GOTO 7310
+7770 :REM'
+7780 :REM'.....Subroutine for VAC>(VD1+VCYA+VCYC)
+7790 I1=(VAC-VD1-VCYA-VCYC)/RT :ICYA=I1-IREGT
+7800 ICYB=-IREGT :ICYC=I1 :I2=0
+7810 RETURN 7620
+7820 :REM'
+7830 :REM'.....Subroutine for VAC<-(VD2+VCYB-VCYC)
+7840 I2=(-VAC-VD2-VCYB+VCYC)/RT :ICYB=I2-IREGT
+7850 ICYA=-IREGT :ICYC=-I2 :I1=0
+7860 RETURN 7620
+7870 :REM'
+7880 CLS:COLOR 0,7,0
+7890 PRINT "     FLOATING DOUBLER w/C/R LOAD     "
+7900 PRINT "                      +              "
+7910 PRINT "    ──────┐ ┌──┬──>├──┬─────┬─────┐  "
+7920 PRINT "          )║(  │   Cb═╪═    │+  +┌┴┐ "
+7930 PRINT " AC INPUT )║(  │ ┌────┤  Ca═╪═   │R│ "
+7940 PRINT "          )║(  │ │ Cc═╪═    │-  -└┬┘ "
+7950 PRINT "    ──────┘ └──│─┘    ├─────┴─────┘  "
+7960 PRINT "               └──┤<──┘              "
+7970 PRINT "                      -              "
+7980 PRINT "                                     "
+7990 COLOR 7,0
+8000 PRINT
+8010 GOSUB 11890 :GOSUB 11970 :PRINT AI$;RL;R$;TAB(40);AJ$;CA;C$
+8020 PRINT AK$;CB;TAB(40);AL$;CC
+8030 LN=CSRLIN:GOSUB 90:LOCATE LN
+8040 IF X$="" GOTO 8070 :ELSE IF ASC(X$)<65 GOTO 7880 :ELSE X=ASC(X$)-64
+8050 ONX GOSUB 11670,11680,11690,11700,11710,11750,11760,11770,11780,11790,11800,11810,11820,11830,11840,11850,11860,11880
+8060 GOTO 7880
+8070 ICK=0 :ISUM=0 :ISQ=0 :VMAX=0 :VMIN=3*VSEC
+8080 C1=CA*UF :C2=CB*UF :C3=CC*UF :NT=VPRI/VSEC :RT=RPRI/NT^2+RSEC
+8090 CT=C1*C2+C2*C3+C3*C1 :CYA=CT/C3 :CYB=CT/C2 :CYC=CT/C1
+8100 VCYA=1.399999976158142!*VSEC :VCYB=VCYA :VCYC=0 :VCYAR=VCYA :VCYBR=VCYA
+8110 FOR M=1 TO MT :FOR N=1 TO SC
+8120 VAC=SQR(2)*VSEC*COS(TP*F*N*S) :IL=(VCYA+VCYB)/RL
+8130 IF VAC>VD1+VCYA+VCYC THEN GOSUB 8320
+8140 IF VAC<-(VD2+VCYB-VCYC) THEN GOSUB 8370
+8150 I1=0 :I2=0  :ICYA=-IL :ICYB=-IL :ICYC=0
+8160 DVA=ICYA*S/CYA :DVB=ICYB*S/CYB :DVC=ICYC*S/CYC
+8170 IF ABS(DVA)>0.05000000074505806!*VCYAR OR ABS(DVB)>0.05000000074505806!*VCYBR THEN GOSUB 12020:GOTO 8010
+8180 VCYA=VCYA+DVA :VCYB=VCYB+DVB :VCYC=VCYC+DVC
+8190 IF M=MT THEN ICK=ICK+I1 :ISUM=ISUM+IL :ISQ=ISQ+(I1+I2)^2
+8200 IF M=MT THEN V=VCYA+VCYB :GOSUB 11590
+8210 VD1=A+B*LOG(1000*I1+C)
+8220 VD2=A+B*LOG(1000*I2+C)
+8230 NEXT N :LOCATE ,1:PRINT M; :NEXT M: PRINT "iterations"
+8240 PRINT
+8250 PRINT USING "Vmax= ###.###, Vmin= ###.###, Vpp= ###.###";VMAX,VMIN,VPP
+8260 PRINT USING "Iave= ##.####, Icheck= ##.####, Irms= ##.####";ISUM/SC,ICK/SC,SQR(ISQ/SC)
+8270 VCYC=0
+8280 X=ISUM/SC:Y=ICK/SC:GOSUB 12120:LOCATE 23
+8290 PRINT :INPUT "Enter <r> to return to main menu, or <CR> to re-run ";B$
+8300 IF B$="r" THEN CLS: GOSUB 11880 :ELSE GOTO 7880
+8310 :REM'
+8320 :REM'.....Subroutine for VAC>(VD1+VCYA+VCYC)
+8330 I1=(VAC-VD1-VCYA-VCYC)/RT :ICYA=I1-IL
+8340 ICYB=-IL :ICYC=I1 :I2=0
+8350 RETURN 8160
+8360 :REM'
+8370 :REM'     Subroutine for VAC<-(VD2+VCYB-VCYC)
+8380 I2=(-VAC-VD2-VCYB+VCYC)/RT :ICYB=I2-IL
+8390 ICYA=-IL :ICYC=-I2 :I1=0
+8400 RETURN 8160
+8410 :REM'
+8420 CLS:COLOR 0,7,0
+8430 PRINT " FLOATING DOUBLER w/RESISTOR LOAD "
+8440 PRINT "                      +           "
+8450 PRINT "    ──────┐ ┌──┬──>├──┬──────┐    "
+8460 PRINT "          )║(  │   Cb═╪═    ┌┴┐+  "
+8470 PRINT " AC INPUT )║(  │ ┌────┤     │R│   "
+8480 PRINT "          )║(  │ │ Cc═╪═    └┬┘-  "
+8490 PRINT "    ──────┘ └──│─┘    ├──────┘    "
+8500 PRINT "               └──┤<──┘           "
+8510 PRINT "                      -           "
+8520 PRINT "                                  "
+8530 COLOR 7,0
+8540 PRINT
+8550 GOSUB 11890 :GOSUB 11970 :PRINT AI$;RL;R$;TAB(40);AK$;CB;C$
+8560 PRINT AL$;CC;C$
+8570 LN=CSRLIN:GOSUB 90:LOCATE LN
+8580 IF X$="" GOTO 8610 :ELSE IF ASC(X$)<65 GOTO 8420 :ELSE X=ASC(X$)-64
+8590 ONX GOSUB 11670,11680,11690,11700,11710,11750,11760,11770,11780,11790,11800,11810,11820,11830,11840,11850,11860,11880
+8600 GOTO 8420
+8610 ICK=0 :ISUM=0 :ISQ=0 :VMAX=0 :VMIN=3*VSEC
+8620 C2=CB*UF :C3=CC*UF :NT=VPRI/VSEC :RT=RPRI/NT^2+RSEC
+8630 VC2=1.399999976158142!*VSEC :VC2R=VC2 :VC3=VC2 :VC3R=VC3
+8640 FOR M=1 TO MT :FOR N=1 TO SC
+8650 VAC=SQR(2)*VSEC*COS(TP*F*N*S) :IL=(VC2+VC3)/RL
+8660 IF VAC>VD1+VC2 THEN GOSUB 8840
+8670 IF VAC<-(VD2+VC3) THEN GOSUB 8890
+8680 I1=0 :I2=0  :IC2=-IL :IC3=IC2
+8690 DV2=IC2*S/C2 :DV3=IC3*S/C3
+8700 IF ABS(DV2)>0.05000000074505806!*VC2R OR ABS(DV3)>0.05000000074505806!*VC3R THEN GOSUB 12020:GOTO 8550
+8710 VC2=VC2+DV2 :VC3=VC3+DV3
+8720 IF M=MT THEN ICK=ICK+I1 :ISUM=ISUM+IL :ISQ=ISQ+(I1+I2)^2
+8730 IF M=MT THEN V=VC2+VC3 : GOSUB 11590
+8740 VD1=A+B*LOG(1000*I1+C)
+8750 VD2=A+B*LOG(1000*I2+C)
+8760 NEXT N :LOCATE ,1:PRINT M; :NEXT M:PRINT "iterations"
+8770 PRINT
+8780 PRINT USING "Vmax= ###.###, Vmin= ###.###, Vpp= ###.###";VMAX,VMIN,VPP
+8790 PRINT USING "Iave= ##.####, Icheck= ##.####, Irms= ##.####";ISUM/SC,ICK/SC,SQR(ISQ/SC)
+8800 X=ISUM/SC:Y=ICK/SC:GOSUB 12120:LOCATE 23
+8810 PRINT :INPUT "Enter <r> to return to main menu, or <CR> to re-run ";B$
+8820 IF B$="r" THEN CLS: GOSUB 11880 :ELSE GOTO 8420
+8830 :REM'
+8840 :REM'.....Subroutine for VAC>(VD1+VC2)
+8850 I1=(VAC-VD1-VC2)/RT :IC2=I1-IL
+8860 IC3=-IL :I2=0
+8870 RETURN 8690
+8880 :REM'
+8890 :REM'.....Subroutine for VAC<-(VD2+VC3)
+8900 I2=(-VAC-VD2-VC3)/RT :IC3=I2-IL
+8910 IC2=-IL :I1=0
+8920 RETURN 8690
+8930 :REM'
+8940 CLS:COLOR 0,7,0
+8950 PRINT "     GROUNDED DOUBLER BATTERY CHARGER     "
+8960 PRINT "                                          "
+8970 PRINT "             - Cb +             R         "
+8980 PRINT "    ──────┐ ┌───╫───┬──>├──┬──\/\/\──┐    "
+8990 PRINT "          )║(       │      │+        │+   "
+9000 PRINT " AC INPUT )║(  ┌─>├─┘   Cc═╪═     BATTERY "
+9010 PRINT "          )║(  │           │-        │-   "
+9020 PRINT "    ──────┘ └──┴───────────┴─────────┘    "
+9030 PRINT "                                          "
+9040 PRINT "                                          "
+9050 COLOR 7,0
+9060 PRINT
+9070 GOSUB 11890 :GOSUB 11970 :PRINT AM$;VBAT;D$;TAB(40);AN$;RBAT;R$
+9080 PRINT AK$;CB;C$;TAB(40)AL$;CC;C$
+9090 LN=CSRLIN:GOSUB 90:LOCATE LN
+9100 IF X$="" GOTO 9130 :ELSE IF ASC(X$)<65 GOTO 8940 :ELSE X=ASC(X$)-64
+9110 ONX GOSUB 11670,11680,11690,11700,11710,11750,11760,11770,11780,11790,11800,11810,11820,11830,11840,11850,11860,11880
+9120 GOTO 8940
+9130 ICK=0 :ISUM=0 :ISQ=0 :VMAX=0 :VMIN=3*VSEC
+9140 C2=CB*UF :C3=CC*UF :NT=VPRI/VSEC :RT=RPRI/NT^2+RSEC
+9150 VC2=1.399999976158142!*VSEC :VC2R=VC2 :VC3=2*VC2 :VC3R=VC3
+9160 FOR M=1 TO MT :FOR N=1 TO SC
+9170 VAC=SQR(2)*VSEC*COS(TP*F*N*S) :IBAT=(VC3-VBAT)/RBAT
+9180 IF VAC<-(VD1+VC2) THEN GOSUB 9360
+9190 IF VAC+VC2>(VD2+VC3) THEN GOSUB 9410
+9200 I1=0 :I2=0  :IC3=-IBAT :IC2=0
+9210 DV2=IC2*S/C2 :DV3=IC3*S/C3
+9220 IF ABS(DV2)>0.05000000074505806!*VC2R OR ABS(DV3)>0.05000000074505806!*VC3R THEN GOSUB 12020:GOTO 9070
+9230 VC2=VC2+DV2 :VC3=VC3+DV3
+9240 IF M=MT THEN ICK=ICK+I1 :ISUM=ISUM+IBAT :ISQ=ISQ+(I1+I2)^2
+9250 IF M=MT THEN V=VC3 : GOSUB 11590
+9260 VD1=A+B*LOG(1000*I1+C)
+9270 VD2=A+B*LOG(1000*I2+C)
+9280 NEXT N :LOCATE ,1:PRINT M; :NEXT M :PRINT "iterations"
+9290 PRINT
+9300 PRINT USING "Vmax= ###.###, Vmin= ###.###, Vpp= ###.###";VMAX,VMIN,VPP
+9310 PRINT USING "Iave= ##.####, Icheck= ##.####, Irms= ##.####";ISUM/SC,ICK/SC,SQR(ISQ/SC)
+9320 X=ISUM/SC:Y=ICK/SC:GOSUB 12120:LOCATE 23
+9330 PRINT :INPUT "Enter <r> to return to main menu, or <CR> to re-run ";B$
+9340 IF B$="r" THEN CLS: GOSUB 11880 :ELSE GOTO 8940
+9350 :REM'
+9360 :REM'.....Subroutine for VAC<-(VD1+VC2)
+9370 I1=(-VAC-VD1-VC2)/RT :IC2=I1
+9380 IC3=-IBAT :I2=0
+9390 RETURN 9210
+9400 :REM'
+9410 :REM'.....Subroutine for VAC+VC2>(VD2+VC3)
+9420 I2=(VAC+VC2-VD2-VC3)/RT :IC3=I2-IBAT
+9430 IC2=-I2 :I1=0
+9440 RETURN 9210
+9450 :REM'
+9460 CLS:COLOR 0,7,0
+9470 PRINT "    GROUNDED DOUBLER w/CAP BATTERY CHARGER    "
+9480 PRINT "                                              "
+9490 PRINT "             - Cb +                 R         "
+9500 PRINT "    ──────┐ ┌───╫──┬─>├─┬──────┬──\/\/\──┐    "
+9510 PRINT "          )║(      │    │+     │+        │+   "
+9520 PRINT " AC INPUT )║(  ┌─>├┘ Cc═╪═  Ca═╪═     BATTERY "
+9530 PRINT "          )║(  │        │-     │-        │-   "
+9540 PRINT "    ──────┘ └──┴────────┴──────┴─────────┘    "
+9550 PRINT "                                              "
+9560 PRINT "                                              "
+9570 COLOR 7,0
+9580 PRINT
+9590 GOSUB 11890:GOSUB 11970:PRINT AI$;RL;R$;TAB(40)AJ$;CA;C$
+9600 PRINT AK$;CB;C$;TAB(40)AL$;CC;C$
+9610 LN=CSRLIN:GOSUB 90:LOCATE LN
+9620 IF X$="" GOTO 9650 :ELSE IF ASC(X$)<65 GOTO 9460 :ELSE X=ASC(X$)-64
+9630 ONX GOSUB 11670,11680,11690,11700,11710,11750,11760,11770,11780,11790,11800,11810,11820,11830,11840,11850,11860,11880
+9640 GOTO 9460
+9650 ICK1=0 :ICK2=0 :ISUM=0 :ISQ=0 :VMAX=0 :VMIN=3*VSEC
+9660 C1=CA*UF :C2=CB*UF :C3=CC*UF :NT=VPRI/VSEC :RT=RPRI/NT^2+RSEC
+9670 CP=C1+C3 :VC2=1.399999976158142!*VSEC :VC2R=VC2 :VCP=2*VC2 :VCPR=VCP
+9680 FOR M=1 TO MT :FOR N=1 TO SC
+9690 VAC=SQR(2)*VSEC*COS(TP*F*N*S) :IBAT=(VCP-VBAT)/RBAT
+9700 IF VAC<-(VD1+VC2) THEN GOSUB 9880
+9710 IF VAC+VC2>(VD2+VCP) THEN GOSUB 9930
+9720 I1=0 :I2=0  :ICP=-IBAT :IC2=0
+9730 DV2=IC2*S/C2 :DVP=ICP*S/CP
+9740 IF ABS(DV2)>0.05000000074505806!*VC2R OR ABS(DVP)>0.05000000074505806!*VCPR THEN GOSUB 12020:GOTO 9590
+9750 VC2=VC2+DV2 :VCP=VCP+DVP
+9760 IF M=MT THEN ICK1=ICK1+I1 :ISUM=ISUM+IBAT :ISQ=ISQ+(I1+I2)^2
+9770 IF M=MT THEN ICK2=ICK2+I2 :V=VCP : GOSUB 11590
+9780 VD1=A+B*LOG(1000*I1+C)
+9790 VD2=A+B*LOG(1000*I2+C)
+9800 NEXT N :LOCATE ,1:PRINT M; :NEXT M :PRINT "iterations"
+9810 PRINT
+9820 PRINT USING "Vmax= ###.###, Vmin= ###.###, Vpp= ###.###";VMAX,VMIN,VPP
+9830 PRINT USING "Iave= ##.####, Icheck1= ##.####, Icheck2= ##.####, Irms= ##.####";ISUM/SC,ICK1/SC,ICK2/SC,SQR(ISQ/SC)
+9840 X=ISUM/SC:Y=ICK1/SC:GOSUB 12120:LOCATE 23
+9850 PRINT :INPUT "Enter <r> to return to main menu, or <CR> to re-run ";B$
+9860 IF B$="r" THEN CLS: GOSUB 11880 :ELSE GOTO 9460
+9870 :REM'
+9880 :REM'.....Subroutine for VAC<-(VD1+VC2)
+9890 I1=(-VAC-VD1-VC2)/RT :IC2=I1
+9900 ICP=-IBAT :I2=0
+9910 RETURN 9730
+9920 :REM'
+9930 :REM'.....Subroutine for VAC+VC2>(VD2+VCP)
+9940 I2=(VAC+VC2-VD2-VCP)/RT :ICP=I2-IBAT
+9950 IC2=-I2 :I1=0
+9960 RETURN 9730
+9970 :REM'
+9980 CLS:COLOR 0,7,0
+9990 PRINT "       GROUNDED DOUBLER w/CAP/REG LOAD       "
+10000 PRINT "                                             "
+10010 PRINT "             - Cb +               ┌───┐      "
+10020 PRINT "    ──────┐ ┌───╫───┬─>├─┬─────┬──┤REG├──┐   "
+10030 PRINT "          )║(       │    │+    │+ └─┬─┘  │+  "
+10040 PRINT " AC INPUT )║(  ┌─>├─┘ Cc═╪═ Ca═╪═   │   LOAD "
+10050 PRINT "          )║(  │         │-    │-   │    │-  "
+10060 PRINT "    ──────┘ └──┴─────────┴─────┴────┴────┘   "
+10070 PRINT "                                             "
+10080 PRINT "                                             "
+10090 COLOR 7,0
+10100 PRINT
+10110 GOSUB 11890 :GOSUB 11970 :PRINT AI$;RL;R$;TAB(40);AJ$;CA;C$
+10120 PRINT AK$;CB;C$;TAB(40);AL$;CC;C$
+10130 PRINT AO$;VREG;D$;TAB(40);AP$;VOP;D$
+10140 PRINT AQ$;IREG0;I$
+10150 LN=CSRLIN:GOSUB 90:LOCATE LN
+10160 IF X$="" GOTO 10190 :ELSE IF ASC(X$)<65 GOTO 9980 :ELSE X=ASC(X$)-64
+10170 ONX GOSUB 11670,11680,11690,11700,11710,11750,11760,11770,11780,11790,11800,11810,11820,11830,11840,11850,11860,11880
+10180 GOTO 9980
+10190 ICK=0 :ISUM=0 :ISQ=0 :VMAX=0 :VMIN=3*VSEC
+10200 C1=CA*UF :C2=CB*UF :C3=CC*UF :NT=VPRI/VSEC :RT=RPRI/NT^2+RSEC
+10210 CP=C1+C3
+10220 VC2=1.399999976158142!*VSEC :VC2R=VC2 :VCP=2*VC2 :VCPR=VCP :IL=VREG/RL :IREGT=IREG0+IL
+10230 FOR M=1 TO MT :FOR N=1 TO SC
+10240 VAC=SQR(2)*VSEC*COS(TP*F*N*S)
+10250 IF VAC<-(VD1+VC2) THEN GOSUB 10440
+10260 IF VAC+VC2>(VD2+VCP) THEN GOSUB 10490
+10270 I1=0 :I2=0  :ICP=-IREGT :IC2=0
+10280 DV2=IC2*S/C2 :DVP=ICP*S/CP
+10290 IF ABS(DV2)>0.05000000074505806!*VC2R OR ABS(DVP)>0.05000000074505806!*VCPR THEN GOSUB 12020:GOTO 10110
+10300 IF VCP<VREG+VOP THEN GOSUB 12070:GOTO 10110
+10310 VC2=VC2+DV2 :VCP=VCP+DVP
+10320 IF M=MT THEN ICK=ICK+I1 :ISUM=ISUM+IREGT :ISQ=ISQ+(I1+I2)^2
+10330 IF M=MT THEN V=VCP : GOSUB 11590
+10340 VD1=A+B*LOG(1000*I1+C)
+10350 VD2=A+B*LOG(1000*I2+C)
+10360 NEXT N :LOCATE ,1:PRINT M; :NEXT M :PRINT "iterations"
+10370 PRINT
+10380 PRINT USING "Vmax= ###.###, Vmin= ###.###, Vpp= ###.###";VMAX,VMIN,VPP
+10390 PRINT USING "Iave= ##.####, Icheck= ##.####, Irms= ##.####";ISUM/SC,ICK/SC,SQR(ISQ/SC)
+10400 X=ISUM/SC:Y=ICK/SC:GOSUB 12120:LOCATE 23
+10410 PRINT :INPUT "Enter <r> to return to main menu, or <CR> to re-run ";B$
+10420 IF B$="r" THEN CLS: GOSUB 11880 :ELSE GOTO 9980
+10430 :REM'
+10440 :REM'.....Subroutine for VAC<-(VD1+VC2)
+10450 I1=(-VAC-VD1-VC2)/RT :IC2=I1
+10460 ICP=-IREGT :I2=0
+10470 RETURN 10280
+10480 :REM'
+10490 :REM'.....Subroutine for VAC+VC2>(VD2+VCP)
+10500 I2=(VAC+VC2-VD2-VCP)/RT :ICP=I2-IREGT
+10510 IC2=-I2 :I1=0
+10520 RETURN 10280
+10530 :REM'
+10540 CLS:COLOR 0,7,0
+10550 PRINT "         GROUNDED DOUBLER w/C/R LOAD         "
+10560 PRINT "                                             "
+10570 PRINT "             - Cb +                          "
+10580 PRINT "    ──────┐ ┌───╫───┬──>├──┬──────┬──────┐   "
+10590 PRINT "          )║(       │      │+     │+     │+  "
+10600 PRINT " AC INPUT )║(  ┌─>├─┘   Cc═╪═  Ca═╪═    LOAD "
+10610 PRINT "          )║(  │           │-     │-     │-  "
+10620 PRINT "    ──────┘ └──┴───────────┴──────┴──────┘   "
+10630 PRINT "                                             "
+10640 PRINT "                                             "
+10650 COLOR 7,0
+10660 PRINT
+10670 GOSUB 11890 :GOSUB 11970 :PRINT AI$;RL;R$;TAB(40);AJ$;CA;C$
+10680 PRINT AK$;CB;C$;TAB(40);AL$;CC;C$
+10690 :REM'
+10700 LN=CSRLIN:GOSUB 90:LOCATE LN
+10710 IF X$="" GOTO 10740 :ELSE IF ASC(X$)<65 GOTO 10540 :ELSE X=ASC(X$)-64
+10720 ONX GOSUB 11670,11680,11690,11700,11710,11750,11760,11770,11780,11790,11800,11810,11820,11830,11840,11850,11860,11880
+10730 GOTO 10540
+10740 ICK=0 :ISUM=0 :ISQ=0 :VMAX=0 :VMIN=3*VSEC
+10750 C1=CA*UF :C2=CB*UF :C3=CC*UF :NT=VPRI/VSEC :RT=RPRI/NT^2+RSEC
+10760 CP=C1+C3
+10770 VC2=1.399999976158142!*VSEC :VC2R=VC2 :VCP=2*VC2 :VCPR=VCP :IL=VCP/RL
+10780 FOR M=1 TO MT :FOR N=1 TO SC
+10790 VAC=SQR(2)*VSEC*COS(TP*F*N*S)
+10800 IF VAC<-(VD1+VC2) THEN GOSUB 10980
+10810 IF VAC+VC2>(VD2+VCP) THEN GOSUB 11030
+10820 I1=0 :I2=0  :ICP=-IL :IC2=0
+10830 DV2=IC2*S/C2 :DVP=ICP*S/CP
+10840 IF ABS(DV2)>0.05000000074505806!*VC2R OR ABS(DVP)>0.05000000074505806!*VCPR THEN GOSUB 12020:GOTO 10670
+10850 VC2=VC2+DV2 :VCP=VCP+DVP:IL=VCP/RL
+10860 IF M=MT THEN ICK=ICK+I1 :ISUM=ISUM+IL :ISQ=ISQ+(I1+I2)^2
+10870 IF M=MT THEN V=VCP : GOSUB 11590
+10880 VD1=A+B*LOG(1000*I1+C)
+10890 VD2=A+B*LOG(1000*I2+C)
+10900 NEXT N :LOCATE ,1:PRINT M; :NEXT M :PRINT "iterations"
+10910 PRINT
+10920 PRINT USING "Vmax= ###.###, Vmin= ###.###, Vpp= ###.###";VMAX,VMIN,VPP
+10930 PRINT USING "Iave= ##.####, Icheck= ##.####, Irms= ##.####";ISUM/SC,ICK/SC,SQR(ISQ/SC)
+10940 X=ISUM/SC:Y=ICK/SC:GOSUB 12120:LOCATE 23
+10950 PRINT :INPUT "Enter <r> to return to main menu, or <CR> to re-run ";B$
+10960 IF B$="r" THEN CLS: GOSUB 11880 :ELSE GOTO 10540
+10970 :REM'
+10980 :REM'.....Subroutine for VAC<-(VD1+VC2)
+10990 I1=(-VAC-VD1-VC2)/RT :IC2=I1
+11000 ICP=-IL :I2=0
+11010 RETURN 10830
+11020 :REM'
+11030 :REM'.....Subroutine for VAC+VC2>(VD2+VCP)
+11040 I2=(VAC+VC2-VD2-VCP)/RT :ICP=I2-IL
+11050 IC2=-I2 :I1=0
+11060 RETURN 10830
+11070 :REM'
+11080 CLS:COLOR 0,7,0
+11090 PRINT "   GROUNDED DOUBLER w/RESISTOR LOAD   "
+11100 PRINT "                                      "
+11110 PRINT "             - Cb +                   "
+11120 PRINT "    ──────┐ ┌───╫───┬──>├──┬──────┐   "
+11130 PRINT "          )║(       │      │+    ┌┴┐+ "
+11140 PRINT " AC INPUT )║(  ┌─>├─┘   Cc═╪═    │R│  "
+11150 PRINT "          )║(  │           │-    └┬┘- "
+11160 PRINT "    ──────┘ └──┴───────────┴──────┘   "
+11170 PRINT "                                      "
+11180 PRINT "                                      "
+11190 COLOR 7,0
+11200 PRINT
+11210 GOSUB 11890 :GOSUB 11970 :PRINT AI$;RL;R$;TAB(40);AK$;CB;C$
+11220 PRINT AL$;CC;C$
+11230 LN=CSRLIN:GOSUB 90:LOCATE LN
+11240 IF X$="" GOTO 11270 :ELSE IF ASC(X$)<65 GOTO 11080 :ELSE X=ASC(X$)-64
+11250 ONX GOSUB 11670,11680,11690,11700,11710,11750,11760,11770,11780,11790,11800,11810,11820,11830,11840,11850,11860,11880
+11260 GOTO 11080
+11270 ICK=0 :ISUM=0 :ISQ=0 :VMAX=0 :VMIN=3*VSEC
+11280 C2=CB*UF :C3=CC*UF :NT=VPRI/VSEC :RT=RPRI/NT^2+RSEC
+11290 VC2=1.399999976158142!*VSEC :VC2R=VC2 :VC3=2*VC2 :VC3R=VC3
+11300 FOR M=1 TO MT :FOR N=1 TO SC
+11310 VAC=SQR(2)*VSEC*COS(TP*F*N*S) :IL=VC3/RL
+11320 IF VAC<-(VD1+VC2) THEN GOSUB 11500
+11330 IF VAC+VC2>(VD2+VC3) THEN GOSUB 11550
+11340 I1=0 :I2=0  :IC3=-IL :IC2=0
+11350 DV2=IC2*S/C2 :DV3=IC3*S/C3
+11360 IF ABS(DV2)>0.05000000074505806!*VC2R OR ABS(DV3)>0.05000000074505806!*VC3R THEN GOSUB 12020:GOTO 11210
+11370 VC2=VC2+DV2 :VC3=VC3+DV3
+11380 IF M=MT THEN ICK=ICK+I1 :ISUM=ISUM+IL :ISQ=ISQ+(I1+I2)^2
+11390 IF M=MT THEN V=VC3 : GOSUB 11590
+11400 VD1=A+B*LOG(1000*I1+C)
+11410 VD2=A+B*LOG(1000*I2+C)
+11420 NEXT N :LOCATE ,1:PRINT M; :NEXT M :PRINT "iterations"
+11430 PRINT
+11440 PRINT USING "Vmax= ###.###, Vmin= ###.###, Vpp= ###.###";VMAX,VMIN,VPP
+11450 PRINT USING "Iave= ##.####, Icheck= ##.####, Irms= ##.####";ISUM/SC,ICK/SC,SQR(ISQ/SC)
+11460 X=ISUM/SC:Y=ICK/SC:GOSUB 12120:LOCATE 23
+11470 PRINT :INPUT "Enter <r> to return to main menu, or <CR> to re-run ";B$
+11480 IF B$="r" THEN CLS: GOTO 680 :ELSE IF B$="" GOTO 11080 :ELSE CLS :LOCATE 10,1 :GOTO 11470
+11490 :REM'
+11500 :REM'.....Subroutine for VAC<-(VD1+VC2)
+11510 I1=(-VAC-VD1-VC2)/RT :IC2=I1
+11520 IC3=-IL :I2=0
+11530 RETURN 11350
+11540 :REM'
+11550 :REM'.....Subroutine for VAC+VC2>(VD2+VC3)
+11560 I2=(VAC+VC2-VD2-VC3)/RT :IC3=I2-IL
+11570 IC2=-I2 :I1=0
+11580 RETURN 11350
+11590 :REM'
+11600 :REM'.....Subroutine to get Vmax and Vmin
+11610 IF V>VMAX THEN VMAX=V
+11620 IF V<VMIN THEN VMIN=V
+11630 VPP=VMAX-VMIN
+11640 RETURN
+11650 :REM'
+11660 :REM'.....Subroutines to enter new values
+11670 INPUT "Enter new AC input voltage ",VPRI :RETURN
+11680 INPUT "Enter new secondary voltage ",VSEC :RETURN
+11690 INPUT "Enter new primary resistance ",RPRI :RETURN
+11700 INPUT "Enter new secondary resistance ",RSEC :RETURN
+11710 INPUT "Enter new diode type, <h> or <l> ",DT$:IF ASC(DT$)>96 THEN DT$=CHR$(ASC(DT$)-32)
+11720 IF DT$="H"OR DT$="L"THEN 11730 :ELSE 11710
+11730 RETURN
+11740 :REM'
+11750 COLOR 15:INPUT "ENTER: New frequency ";F:GOTO 11870
+11760 COLOR 15:INPUT "ENTER: New number of steps per iteration ";SC:GOTO 11870
+11770 COLOR 15:INPUT "ENTER: New number of iterations ";MT:GOTO 11870
+11780 COLOR 15:INPUT "ENTER: New load resistance ";RL:GOTO 11870
+11790 COLOR 15:INPUT "ENTER: New capacitor Ca value ";CA:GOTO 11870
+11800 COLOR 15:INPUT "ENTER: New capacitor Cb value ";CB:GOTO 11870
+11810 COLOR 15:INPUT "ENTER: New capacitor Cc value ";CC:GOTO 11870
+11820 COLOR 15:INPUT "ENTER: New battery voltage ";VBAT:GOTO 11870
+11830 COLOR 15:INPUT "ENTER: New charging resistance ";RBAT:GOTO 11870
+11840 COLOR 15:INPUT "ENTER: New regulator output voltage ";VREG:GOTO 11870
+11850 COLOR 15:INPUT "ENTER: New regulator drop-out voltage ";VOP:GOTO 11870
+11860 COLOR 15:INPUT "ENTER: New regulator quiescent current ";IREG0:GOTO 11870
+11870 COLOR 7:RETURN
+11880 CLS :RETURN 720
+11890 :REM'
+11900 :REM'.....Subroutine to print values
+11910 PRINT AA$;VPRI;VAC$;TAB(40);AB$;VSEC;VAC$
+11920 PRINT AC$;RPRI;R$;TAB(40);AD$;RSEC;R$
+11930 PRINT AE$;DT$;TAB(40);AF$;F;F$
+11940 PRINT AG$;SC;TAB(40);AH$;MT
+11950 RETURN
+11960 :REM'
+11970 :REM'.....Subroutine to update diode values.
+11980 S=1/SC/F: IF DT$="H" THEN A=0.5! :B=0.0560000017285347! :C=5.800000190734863!
+11990 IF DT$="L" THEN A=0.33000001311302185! :B=0.09799999743700027! :C=16
+12000 RETURN
+12010 :REM'
+12020 :REM'.....Subroutine for Vc change
+12030 LOCATE 11:COLOR 14
+12040 PRINT " Greater than 5% change in Vc!     Increase steps per iteration! "
+12050 COLOR 7,0:RETURN
+12060 :REM'
+12070 :REM'.....Subroutine for regulator dropout
+12080 LOCATE 11:COLOR 14
+12090 PRINT" Regulator dropout! Increase value of capacitor to decrease ripple!"
+12100 COLOR 7,0:RETURN
+12110 :REM'
+12120 :REM'PRT (special)
+12130 IF ABS(X-Y)<9.999999747378752e-05! THEN 12160
+12140 COLOR 14:LOCATE 24,18
+12150 PRINT "Iave<>Icheck. Increase h) number of iterations";:COLOR 7:GOTO 12180
+12160 X=0:Y=0
+12170 COLOR 10:LOCATE 24,30:PRINT "Icheck agrees: All OK";:COLOR 7
+12180 GOSUB 12260:LOCATE 25,5:COLOR 0,2
+12190 PRINT " Send this page to:(1)Printer Queue? (2)Printout? ";
+12200 PRINT "(3)Next page? (1/2/3)";:COLOR 7,0
+12210 COLOR 7,0
+12220 Z$=INKEY$:IF Z$<"1"OR Z$>"3"THEN 12220 :ELSE GOSUB 12260
+12230 IF Z$="3"THEN RETURN
+12240 FOR I%=1 TO 24:FOR J%=1 TO 80:LPRINT CHR$(SCREEN(I%,J%));:NEXT J%:NEXT I%
+12250 IF Z$="2"THEN LPRINT CHR$(12) :ELSE 12180
+12260 COLOR 7,0:LOCATE 25,1:PRINT STRING$(80,32);:RETURN

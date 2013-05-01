@@ -1,0 +1,30 @@
+###############
+Audio Filter
+###############
+
+Preface
+=======
+
+This calculator helps design a simple Audio Filter
+
+Filter Design
+=============
+
+The following diagram illustrates the key measurements.
+
+..  image:: audiofilt.gif
+    :alt: Filter Diagram
+
+To compute resistors and capacitors
+
+1.  Enter Frequency in Hz.
+
+2.  Enter Q.
+
+3.  Enter Gain.
+
+..  applet::
+    :code: RadioCalc.class
+    :width: 200
+    :height: 200
+    :models: audiofilt

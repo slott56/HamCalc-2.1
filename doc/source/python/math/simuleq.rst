@@ -1,0 +1,4 @@
+simuleq
+----------
+
+Simultaneous Equation Calculator

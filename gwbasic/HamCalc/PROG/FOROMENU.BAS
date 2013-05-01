@@ -1,0 +1,72 @@
+10 :REM'FOTOMENU - main menu  10 FEB 94 rev. 03 DEC 2007
+20 IF EX$=""THEN EX$="exit"
+30 CLS:KEY OFF
+40 COMMON EX$
+50 KEY 10,"SYSTEM"+CHR$(13)
+60 V$="version 2.0  26 DEC 2001 "
+70 T$="  F O T O C A L C  "
+80 U$=STRING$(80,205)
+90 DIM A$(13),B$(13),C$(13)
+100 ON ERROR  GOTO 240
+110 COLOR 7,1,1
+120 PRINT U$;
+130 LOCATE 1,(80-LEN(T$))/2
+140 COLOR 15,1:PRINT T$
+150 COLOR 11,1
+160 PRINT " by George C. Murphy";TAB(56);V$;
+170 COLOR 1,0
+180 PRINT STRING$(80,223);
+190 T=23    :REM'margin
+200 COLOR 7,0
+210 PRINT TAB(T-9);" Press LOWER CASE letter in < > to select program:"
+220 PRINT U$;
+230 N=0:GOTO 290
+240 :REM'.....error trap
+250 CLS
+260 IF ERR=53 AND ERL=470 THEN CLS:CHAIN EX$
+270 PRINT "Error ";ERR;" in line ";ERL:END
+280 :REM'.....load data
+290 FOR N=1 TO 11:A$(N)=CHR$(N+96)
+300 READ B$(N),C$(N)
+310 NEXT N:RESTORE
+320 :REM'.....display
+330   FOR Z=1 TO 11
+340 COLOR 7,0
+350 LOCATE CSRLIN,T:PRINT " <";A$(Z);">  ";C$(Z)
+360   NEXT Z
+370 COLOR 7,0
+380 :REM'
+390 Z$=INKEY$:IF Z$=""THEN 390
+400 IF ASC(Z$)>=65 AND ASC(Z$)<=90 THEN 490
+410 FOR Z=1 TO 11
+420 IF Z$=A$(Z)THEN 460
+430 NEXT Z
+440 GOTO 390
+450 :REM'
+460 IF B$(Z)=""THEN 390
+470 CHAIN B$(Z)
+480 :REM'
+490 :REM'.....caps lock warning
+500 CLS:BEEP:COLOR 14,4
+510 PRINT
+520 PRINT " Please turn your CAPS LOCK off and make all entries in lower case ";
+530 PRINT " characters only."
+540 PRINT
+550 PRINT " The computer will provide upper case characters where appropriate."
+560 PRINT
+570 PRINT " Press any key to continue.................."
+580 IF INKEY$="" THEN 580
+590 CLS:CLEAR:COLOR 7,0,0:GOTO 10
+600 :REM'.....data
+610 DATA elflash,ELECTRONIC FLASH
+620 DATA exposure,EXPOSURE
+630 DATA lensring,EXTENSION RINGS and BELLOWS
+640 DATA filter,FILTERS
+650 DATA focus,FOCUSING
+660 DATA lenses, LENSES
+670 DATA fotocopy,PHOTOCOPIER IMAGE SIZE
+680 DATA fotomove,SUBJECTS IN MOTION
+690 DATA titler,TITLER
+700 DATA pixel,DIGITAL CAMERAS & SCANNERS
+710 DATA ex$,"EXIT "
+720 END

@@ -1,0 +1,288 @@
+10 :REM'\hamcalc\prog\HAMDEX - 18 FEB 94 rev. 28 DEP 2003
+20 EX$="\hamcalc\prog\hamdex"
+30 COMMON EX$
+40 CLS:KEY OFF
+50 COLOR 15,4:LOCATE 13,15
+60 T=TIMER
+70 PRINT " LOADING AND SORTING A LARGE FILE . . . PLEASE WAIT "
+80 IF TIMER<T+0.5! THEN 80
+90 ON ERROR  GOTO 490
+100 COLOR 7,0,1
+110 DIM A$(720,4),F$(256,4)
+120 UL$=STRING$(80,205)
+130 :REM'
+140 :REM'.....load file
+150 OPEN "I",1,"\hamcalc\index\hamdex.fil"
+160 N=0
+170 IF EOF(1)THEN 210
+180 N=N+1:FOR Y=1 TO 4
+190 INPUT# 1,A$(N,Y):NEXT Y
+200 GOTO 170
+210 CLOSE
+220 GOSUB 240:GOTO 380
+230 :REM'
+240 :REM'....sort
+250 SN=N
+260 SM=SN
+270 SM=INT(SM/2):IF SM=0 THEN 360
+280 SK=SN-SM:SJ=1
+290 SI=SJ
+300 SL=SI+SM
+310 IF A$(SI,1)+A$(SI,2)<=A$(SL,1)+A$(SL,2)THEN 340
+320 FOR Z=1 TO 4:SWAP A$(SI,Z),A$(SL,Z):NEXT Z
+330 SI=SI-SM:IF SI>0 THEN 300
+340 SJ=SJ+1:IF SJ>SK THEN 270
+350 GOTO 290
+360 RETURN
+370 :REM'
+380 :REM'.....start
+390 CLS
+400 COLOR 15,2:PRINT STRING$(80,32);
+410 LOCATE CSRLIN-1,23:PRINT "A L P H A B E T I C A L   I N D E X"
+420 COLOR 1,0:PRINT STRING$(80,223);
+430 COLOR 7,0
+440 LOCATE 15,36
+450 GOSUB 2600  :REM'preface
+460 GOSUB 2350  :REM'start a page
+470 GOTO 1060
+480 :REM'
+490 BEEP:CLS
+500 PRINT "Error";ERR;"in line";ERL:END
+510 :REM'
+520 :REM'.....Index menu
+530 CLS
+540 PRINT MN$
+550 PRINT UL$;
+560 PRINT "Press letter in ( ) to:"
+570 PRINT UL$;
+580 PRINT "  (a) ADD a listing to the Index"
+590 PRINT "  (b) LOOK UP an Index listing"
+600 PRINT "  (c) DISPLAY/PRINT Index"
+610 PRINT "  (d) Return to Index Menu"
+620 Z$=INKEY$
+630 IF Z$="a"THEN CLS:GOTO 1000
+640 IF Z$="b"THEN CLS:GOTO 1320
+650 IF Z$="c"THEN CLS:GOTO 1060
+660 IF Z$="d"THEN CLS:CHAIN EX$
+670 GOTO 620
+680 :REM'
+690 :REM'.....save data
+700 CLS
+710 OPEN "O",1,"\hamcalc\index\hamdex.fil"
+720 FOR Z=1 TO N
+730 WRITE# 1,A$(Z,1),A$(Z,2),A$(Z,3),A$(Z,4)
+740 NEXT Z
+750 CLOSE
+760 CLS:GOTO 380
+770 :REM'
+780 :REM'.....convert to upper case
+790 FOR U=1 TO LEN(I$):V=ASC(MID$(I$,U,1)):IF V=44 THEN RETURN
+800 IF V>96 AND V<123 THEN MID$(I$,U,1)=CHR$(V-32)
+810 NEXT U:RETURN
+820 :REM'
+830 :REM'.....inputs
+840 LINE INPUT "ENTER Word or Heading..............? ";I$:GOSUB 780
+850 RETURN
+860 :REM'
+870 LINE INPUT "ENTER Subheading...................? ";I$
+880 IF I$=""THEN 900
+890 I$=", "+I$
+900 RETURN
+910 :REM'
+920 LINE INPUT "ENTER Supplementary note, if any...? ";I$
+930 IF I$=""THEN 950
+940 I$=", "+I$
+950 RETURN
+960 :REM'
+970 LINE INPUT "ENTER Program Filename............ ? ";I$:GOSUB 780
+980 RETURN
+990 :REM'
+1000 :REM'.....new listing
+1010 N=N+1
+1020 PRINT "NEW LISTING":PRINT
+1030 FOR Z=1 TO 4:ONZ GOSUB 840,870,920,970:A$(N,Z)=I$
+1040 NEXT Z:CLS:Z=N:GOTO 1850
+1050 :REM'
+1060 :REM'.....screen display
+1070 CLS
+1080 IF Z<>0 THEN A=Z+1 :ELSE A=1
+1090 LN=0:C=0   :REM'line number,counter
+1100   FOR Z=A TO N
+1110 LN=LN+1:C=C+1
+1120   IF Z=1 THEN 1130
+1130 Z$=CHR$(C+96)
+1140 IF Z<1 THEN Z=1
+1150 F$(C,1)=A$(Z,4)
+1160 PRINT " <";Z$;">  ";
+1170 COLOR 12,0:PRINT A$(Z,1);
+1180 COLOR 7,0:PRINT A$(Z,2);A$(Z,3);
+1190 IF LN<24 THEN PRINT "":GOTO 1220
+1200 GOSUB 2090     :REM'command line
+1210 CLS:LN=0:C=0   :REM'clear screen
+1220   NEXT Z
+1230 GOSUB 2090     :REM'command line
+1240 GOTO 1060
+1250 :REM'
+1260 :REM'.....return to menu
+1270 BEEP:PRINT:PRINT "There is nothing starting with ";I$;" on file......"
+1280 PRINT:PRINT "Press SPACE BAR to return to Menu"
+1290 Z$=INKEY$:IF Z$=" "THEN CLS:GOTO 560
+1300 GOTO 1290
+1310 :REM'
+1320 :REM'.....search
+1330 INPUT "ENTER first 1 or 2 letters of word";I$:GOSUB 780
+1340 L=LEN(I$):F=0
+1350 FOR Z=1 TO N
+1360  IF LEFT$(A$(Z,1),L)<>I$ THEN 1390
+1370  F=F+1:F$(F,1)=A$(Z,1)+A$(Z,2)+A$(Z,3):F$(F,2)=STR$(Z):F$(F,3)=A$(Z,4)
+1380 F$(F,4)=STR$(Z)
+1390 NEXT Z
+1400 IF F=0 THEN 1260
+1410 CLS:REM':IF F<=22 THEN 1170
+1420 IF F=1 THEN Z=VAL(F$(F,2)):GOTO 1600
+1430 ROW=0     :REM'screen row number
+1440 FOR Z=1 TO F
+1450 ROW=ROW+1
+1460  IF ROW<25 THEN 1510
+1470  COLOR 0,7
+1480  LOCATE 25,20:PRINT "......press any key for more......";
+1490  COLOR 7,0
+1500  IF INKEY$=""THEN 1500 :ELSE ROW=0:CLS
+1510 IF Z<10 THEN PRINT " ";
+1520 PRINT Z;"   ";F$(Z,1);
+1530 IF ROW<24 THEN PRINT ""
+1540 NEXT Z
+1550 COLOR 0,7
+1560 INPUT " ENTER item no. to select listing ";J
+1570 COLOR 7,0
+1580 Z=VAL(F$(J,4))
+1590 CLS
+1600 PRINT "You have just looked up ";:COLOR 0,7
+1610 PRINT " ";:FOR Q=1 TO 3:PRINT A$(Z,Q);:NEXT Q:PRINT " "
+1620 COLOR 7,0
+1630 PRINT UL$;
+1640 PRINT "Press number in ( ) to:"
+1650 PRINT UL$;
+1660 PRINT "(1) RUN program pertaining to this listing"
+1670 PRINT "(2) EDIT Listing"
+1680 PRINT "(3) DELETE Listing"
+1690 PRINT "(4) Return to menu"
+1700 Z$=INKEY$
+1710 IF Z$="1"THEN CLS:X$=A$(Z,4):CHAIN X$
+1720 IF Z$="2"THEN CLS:GOTO 1860
+1730 IF Z$="3"THEN 1980
+1740 IF Z$="4"THEN CLS:GOTO 560
+1750 GOTO 1700
+1760 :REM'
+1770 PRINT UL$;
+1780 PRINT "Line 1: Main Heading..........";A$(Z,1)
+1790 PRINT "Line 2: Sub-Heading...........";A$(Z,2)
+1800 PRINT "Line 3: Supplementary note....";A$(Z,3)
+1810 PRINT "Line 4: Program filename......";A$(Z,4)
+1820 PRINT UL$;
+1830 RETURN
+1840 :REM'
+1850 :REM'.....edit listing
+1860 FOR Q=1 TO 3:PRINT A$(Z,Q);:NEXT Q:PRINT ""
+1870 GOSUB 1770:PRINT "Press number in ( ) for next step:"
+1880 PRINT UL$;
+1890 FOR Y=1 TO 4:PRINT "(";Y;")  Change Line";Y:NEXT Y
+1900 PRINT "( 5 )  O.K. as is":PRINT
+1910 Z$=INKEY$:Q=VAL(Z$):IF Q<1 OR Q>5 THEN 1970
+1920 IF Z$="1"THEN GOSUB 840:A$(Z,1)=I$:CLS:GOTO 1850
+1930 IF Z$="2"THEN GOSUB 870:A$(Z,2)=I$:CLS:GOTO 1850
+1940 IF Z$="3"THEN GOSUB 920:A$(Z,3)=I$:CLS:GOTO 1850
+1950 IF Z$="4"THEN GOSUB 970:A$(Z,4)=I$:CLS:GOTO 1850
+1960 IF Z$="5"THEN CLS:GOSUB 240:GOTO 690                      :REM'sort and save
+1970 GOTO 1910
+1980 :REM'
+1990 :REM'.....delete listing
+2000 PRINT:PRINT "Are you sure you want this listing deleted ?  (y/n)"
+2010 Z$=INKEY$
+2020 IF Z$="n"THEN CLS:GOTO 1640
+2030 IF Z$="y"THEN 2050
+2040 GOTO 2010
+2050 FOR X=Z TO N:LOCATE 1,40:PRINT N-X:FOR Y=1 TO 4
+2060 A$(X,Y)=A$(X+1,Y):NEXT Y:NEXT X:N=N-1
+2070 GOSUB 240:GOTO 690     :REM'sort & save
+2080 :REM'
+2090 :REM'.....command line 25
+2100 LOCATE 25,1:COLOR 15,1
+2110 PRINT " < > RUN PROGRAM    1-NEXT PAGE    2-PREVIOUS PAGE    ";
+2120 PRINT "3-ANOTHER PAGE     4-EXIT ";
+2130 COLOR 7,0
+2140   Z$=INKEY$:IF Z$="" THEN 2140
+2150 IF Z$="0"THEN 520
+2160 IF (Z$="1") AND Z>=N THEN Z=0:GOTO 2270
+2170 IF Z$="1" THEN 2270
+2180 IF Z$="2" THEN Z=Z-48:GOTO 2270
+2190 IF Z$="3" THEN CLS:GOTO 2350
+2200 IF Z$="4" THEN GOSUB 240:GOTO 690
+2210 R=ASC(Z$)-96
+2220 IF R+96<97 OR R>C THEN BEEP:GOTO 2090
+2230 R$=F$(R,1)
+2240 IF R$=M$ THEN ERASE A$,F$:GOTO 10
+2250 CLS:CHAIN R$
+2260   GOTO 2140
+2270 RETURN
+2280 :REM'
+2290 LOCATE 12:COLOR 15
+2300 PRINT " Options shown below are accessible only from an index page."
+2310 PRINT " Follow instructions above to select an index page or return to ";
+2320 PRINT "Main Menu."
+2330 COLOR 7:GOTO 2450
+2340 :REM'
+2350 :REM'.....find
+2360 LOCATE 4,12:COLOR 14,4
+2370 PRINT " PRESS A LETTER AT WHICH YOU WANT AN INDEX PAGE TO BEGIN "
+2380 PRINT
+2390 LOCATE ,37:PRINT " - or - "
+2400 PRINT
+2410 LOCATE ,25:PRINT " Press 0 to return to main menu "
+2420 COLOR 7,0
+2430 PRINT
+2440 PRINT UL$;
+2450 I$=INKEY$:IF I$=""THEN 2450
+2460 IF I$="0"THEN CLS:EX$="\hamcalc\menu\hcal":CHAIN EX$
+2470 IF ASC(I$)>=97 AND ASC(I$)<=122 THEN I$=CHR$(ASC(I$)-32)
+2480 IF ASC(I$)>=49 AND ASC(I$)<=52 THEN 2290
+2490 CLS
+2500 FOR Y=1 TO N
+2510 IF LEFT$(A$(Y,1),1)=I$ THEN Z=Y-1:RETURN
+2520 NEXT Y
+2530 CLS:LOCATE 20,18
+2540 PRINT "There is nothing in the Index starting with ";
+2550 COLOR 0,7:PRINT " ";I$;" ";:COLOR 7,0:PRINT"."
+2560 LOCATE 22,18:PRINT "Press any key.........."
+2570 IF INKEY$=""THEN 2570
+2580 CLEAR:CLS:GOTO 10
+2590 :REM'
+2600 :REM'.....preface
+2610 S=7:T=9
+2620 PRINT TAB(S+1);
+2630 PRINT "Each page has a prompt line to select one of the following options:"
+2640 PRINT TAB(S);
+2650 PRINT STRING$(68,196)
+2660 PRINT TAB(T+7);"Prompt                         Option"
+2670 PRINT TAB(S);
+2680 PRINT STRING$(68,196)
+2690 T=12
+2700 :REM'PRINT TAB(T);
+2710 :REM'PRINT "  0                   Press any letter in < > to RUN a PROGRAM"
+2720 PRINT TAB(T);
+2730 PRINT "  1-NEXT PAGE         Press 1 to display NEXT index page"
+2740 PRINT TAB(T);
+2750 PRINT "  2-PRECEDING PAGE    Press 2 to display PRECEDING index page"
+2760 PRINT TAB(T);
+2770 PRINT "  3-ANOTHER PAGE      Press 3 to display ANOTHER index page"
+2780 PRINT TAB(T);
+2790 PRINT "  4-EXIT              Press 4 to EXIT";
+2800 PRINT TAB(T);
+2810 PRINT "  0-new listing       Press 0 to add a listing"
+2820 RETURN
+2830 LOCATE 9
+2840 PRINT " Options 1 to 4 below are accessible only from and index page."
+2850 PRINT " To select an index page or return to menu, follow instructions ";
+2860 PRINT "above."
+2870 GOTO 2450
+2880 END

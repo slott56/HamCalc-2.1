@@ -1,0 +1,105 @@
+10 :REM'SORTER3  -  Character String Sorter - 07 JAN 2003
+20 CLS:KEY OFF
+30 IF EX$=""THEN EX$="EXIT"
+40 IF PROG$=""THEN GO$=EX$ :ELSE GO$=PROG$
+50 COMMON EX$,PROG$
+60 DIM A$(500)
+70 VIEW PRINT
+80 :REM'
+90 :REM'.....title page
+100 CLS
+110 COLOR 15,2,1
+120 PRINT " SORTER"TAB(57)"by George Murphy VE3ERP ";
+130 COLOR 1,0:PRINT STRING$(80,223);
+140 COLOR 7,0
+150 :REM'
+160 :REM'.....preface
+170 PRINT TAB(7)"This program sorts strings of up to 9 characters (e.g., VE3E";
+180 PRINT "RP, 12345678,"
+190 PRINT TAB(7)"qwerty). Strings of more than 9 characters will be truncated";
+200 PRINT " to the first"
+210 PRINT TAB(7)"9 characters."
+220 PRINT
+230 PRINT  TAB(7)"Leading zeros will be ignored. e.g., an entry of 00123 will";
+240 PRINT " be recorded "
+250 PRINT TAB(7)"as 123."
+260 PRINT
+270 PRINT TAB(7)"To run program.....press 1"
+280 PRINT TAB(7)"To EXIT............press 0"
+290 Z$=INKEY$:IF Z$=""THEN 290
+300 IF Z$="0"THEN CHAIN EX$
+310 IF Z$="1"THEN 340
+320 GOTO 290
+330 :REM'
+340 :REM'.....start
+350 REM  (Shell-Metzner algorithm) QST Dec 1985, page 53
+360 CLS :COLOR 7,0,0
+370 SN=0
+380 :REM'....input numbers to be sorted
+390 X$=""
+400 PRINT "........ENTER a string of characters"
+410 PRINT "or......ENTER * to sort character strings already entered"
+420 PRINT "or......ENTER / to erase last number entered"
+430 LN=CSRLIN:VIEW PRINT LN TO 24
+440 INPUT "........";N$
+450 GOSUB 860
+460 IF LEN(N$)>8 THEN N$=LEFT$(N$,9)
+470 IF VAL(N$)>0 AND LEN(N$)<9 THEN N$="0"+N$:GOTO 470
+480 IF N$="*"THEN GOSUB 580:GOTO 710
+490 IF LEFT$(N$,1)<>"/"THEN 530
+500 IF SN=0 THEN 530
+510 LN=CSRLIN-2:VIEW PRINT LN TO 23:CLS:VIEW PRINT:LOCATE LN
+520 SN=SN-1
+530 IF N$="*"THEN GOSUB 580:GOTO 710
+540 SN=SN+1
+550 A$(SN)=N$
+560 GOTO 440
+570 :REM'
+580 :REM'.....start sort
+590 :REM'.....REM      SN= (no. of data)
+600 SM=SN
+610 SM=INT(SM/2):IF SM=0 THEN CLS:GOTO 690 :ELSE CLS:PRINT SM*2
+620 SK=SN-SM:SJ=1
+630 SI=SJ
+640 SL=SI+SM
+650 IF A$(SI)<=A$(SL)THEN 670 :ELSE SWAP A$(SI),A$(SL)
+660 SI=SI-SM:IF SI>0 THEN 640
+670 SJ=SJ+1:IF SJ>SK THEN 610
+680 GOTO 630
+690 RETURN
+700 :REM'
+710 :REM'.....screen display
+720 VIEW PRINT:CLS
+730 PRINT SN;"items sorted:"
+740 FOR Z=1 TO SN
+750 :REM'IF VAL(A$(Z))>0 THEN 710
+760 FOR U=1 TO LEN(A$(Z))
+770 V=ASC(MID$(A$(Z),U,1))
+780 IF V=48 THEN MID$(A$(Z),U,1)=CHR$(32)
+790 NEXT  U
+800 IF LEFT$(A$(Z),1)="/"THEN 830
+810 :REM'IF VAL(A$(Z))=0 THEN PRINT A$(Z)". ";:GOTO 750
+820 PRINT USING "\        \";A$(Z);
+830 NEXT Z:PRINT " "
+840 GOTO 930
+850 :REM'
+860 :REM'....capitalize
+870 FOR U=1 TO LEN(N$)
+880 V=ASC(MID$(N$,U,1))
+890 IF V>96 AND V<123 THEN MID$(N$,U,1)=CHR$(V-32)
+900 NEXT U
+910 RETURN
+920 :REM'
+930 :REM'.....end
+940 GOSUB 960:GOTO 90
+950 :REM'
+960 :REM'.....PRT
+970 KEY OFF:GOSUB 1040:LOCATE 25,5:COLOR 0,2
+980 PRINT " Send this page to:(1)Printer Queue? (2)Printout? ";
+990 PRINT "(3)Next page? (1/2/3)";:COLOR 7,0
+1000 Z$=INKEY$:IF Z$<"1"OR Z$>"3"THEN 1000 :ELSE GOSUB 1040
+1010 IF Z$="3"THEN RETURN
+1020 FOR I%=1 TO 24:FOR J%=1 TO 80:LPRINT CHR$(SCREEN(I%,J%));:NEXT J%:NEXT I%
+1030 IF Z$="2"THEN LPRINT CHR$(12) :ELSE 970
+1040 LOCATE 25,1:PRINT STRING$(80,32);:RETURN
+1050 STOP

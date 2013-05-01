@@ -1,0 +1,50 @@
+################################
+555 Timer: Astable Multivibrator
+################################
+
+Preface
+-------
+
+This calculator helps design an astable multivibrator from a
+standard 555 timer IC.
+
+R1 should be 1000 Ohms or more
+
+R2 should be 1000 Ohms or more
+
+Total of R1+R2 should be 3.3 megOhms or less
+
+C1 should be .0005 Microfarads or more
+
+Frequency should be 1.0 MHz or less
+
+Percent High Time is a function of the relationship of R1 and 2*R2.
+Percent High Time must be greater than 50% and less than 100%.
+
+Multivibrator Design
+--------------------
+
+The following diagram illustrates the basic hookup.
+
+..  image:: 555multi.gif
+    :alt: 555 chip hookup
+
+To compute R1, R2 and C1 for a given frequency
+
+1.  Enter the desired frequency.
+
+2.  Enter any two of R1 (more than 1K Ohms), R2 (more than 1K Ohms)
+    and/or C1 (more than 0.0005 microfarads)
+
+#.  Click and leave the field of (R1,R2 and C1) which was computed for you.
+    This will compute the duty cycle fields.
+
+To reverse engineer a timer-based circuit to determine frequency
+
+1.  Enter R1, R2 and C1
+
+..  applet::
+    :code: RadioCalc.class
+    :width: 200
+    :height: 250
+    :models: u555multi

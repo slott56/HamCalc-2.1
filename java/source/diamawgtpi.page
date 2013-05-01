@@ -1,0 +1,24 @@
+###################
+Turns per Inch
+###################
+
+This calculator computes turns per inch for standard AWG wires.
+This model is also part of the `air core coil <aircore.html>`_ design.
+
+For turn spacing (Turns per Inch) choose
+one of the following:
+
+-   Bare Wire - Enter the guage, then double the diameter.  During assembly,
+    use a length of the same size wire as a spacer between turns.
+
+-   Enamelled Wire - Manually add 0.005" to the diameter.
+
+-   Insulated Wire - Either measure the OD including insulation and use this,
+    or wrap several turns around a ruler and measure the turns per inch.
+
+
+..  applet::
+    :code: RadioCalc.class
+    :width: 200
+    :height: 150
+    :models: diamawgtpi

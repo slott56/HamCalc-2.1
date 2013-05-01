@@ -1,0 +1,56 @@
+10 :REM'ELSPEC 14 APR 09
+20 CLS:KEY OFF:
+30 IF EX$=""THEN EX$="EXIT"
+40 IF PROG$=""THEN GO$=EX$ :ELSE GO$=PROG$
+50 COMMON EX$,PROG$
+60 COLOR 15:PRINT " ELECTOMAGNETIC SPECCTRUM"
+70 PRINT " ....press 1 to continue or 0 to exit...."
+80 Z$=INKEY$:IF Z$=""THEN 80
+90 IF Z$="0"THEN RUN EX$
+100 IF Z$="1"THEN 120
+110 GOTO 90
+120 LOCATE CSRLIN-1
+130 PRINT " Band Name"TAB(17)"Abbr."TAB(25)"Frequencies"TAB(43)"Uses"
+140 PRINT STRING$(79,205)
+150 COLOR 7,0
+160 PRINT " Extremely low"TAB(17)"ELF"TAB(25)"3-30 Hz";
+170 PRINT TAB(43)"Communication with submarines"
+180 PRINT " Super Low"TAB(17)"SLF"TAB(25)"30-300 Hz";
+190 PRINT TAB(43)"Communication with submarines"
+200 PRINT " Ultra Low"TAB(17)"ULF"TAB(25)"300-3000 Hz";
+210 PRINT TAB(43)"Communication within mines"
+220 PRINT " Very Low"TAB(17)"VLF"TAB(25)"3-30 kHz";
+230 PRINT TAB(43)"Submarines, beacons, heart monitors"
+240 PRINT " Low"TAB(17)"LF"TAB(25)"30-300 kHz";
+250 PRINT TAB(43)"AM broadcast, navigation, time"
+260 PRINT " Medium"TAB(17)"MF"TAB(25)"300-3000 kHz";
+270 PRINT TAB(43)"AM broadcast"
+280 PRINT " High"TAB(17)"HF"TAB(25)"3-30 MHz";
+290 PRINT TAB(43)"Amateur Radio, shortwave broadcast"
+300 PRINT " Very high"TAB(17)"VHF"TAB(25)"30-300 MHz";
+310 PRINT TAB(43)"FM, TV, aircraft, mobile, marine"
+320 PRINT " Ultra high"TAB(17)"UHF"TAB(25)"300-3000 MHz";
+330 PRINT TAB(43)"TV, GPS, cell phones, etc."
+340 PRINT " Super high"TAB(17)"SHF"TAB(25)"3-30 GHz";
+350 PRINT TAB(43)"Microwave devices, radar"
+360 PRINT " Extremely high"TAB(17)"EHF"TAB(25)"30-300 GHz";
+370 PRINT TAB(43)"Astrology, microwave radio"
+380 PRINT :T=25
+390 PRINT TAB(17)"LF"TAB(25)"148.5-283.5 kHz"TAB(43)"Lomgwave AM radio"
+400 PRINT TAB(17)"MF"TAB(25)"530-1730 kHz"TAB(43)"Medium wave AM radio"
+410 PRINT TAB(17)"HF"TAB(25)"3-30 MHz"TAB(43)"Shortwave AM radio"
+420 PRINT TAB(17)"VHF"TAB(25)"54-88 MHz"TAB(43)"TV channels 2-6"
+430 PRINT TAB(17)"VHF"TAB(25)"88-108 MHz"TAB(43)"FM radio"
+440 PRINT TAB(17)"VHF"TAB(25)"174-216 MHz"TAB(43)"TV channels 7-13"
+450 PRINT TAB(17)"UHF"TAB(25)"470-806 MHz"TAB(43)"TV channels 14-69"
+460 :REM'......end
+470 GOSUB 480:CLS:GOTO 60
+480 :REM'.....PRT
+490 KEY OFF:GOSUB 560:LOCATE 25,5:COLOR 0,2
+500 PRINT " Send this page to:(1)Printer Queue? (2)Printout? ";
+510 PRINT "(3)Next page? (1/2/3)";:COLOR 7,0
+520 Z$=INKEY$:IF Z$<"1"OR Z$>"3"THEN 520 :ELSE GOSUB 560
+530 IF Z$="3"THEN RETURN
+540 FOR I%=1 TO 24:FOR J%=1 TO 80:LPRINT CHR$(SCREEN(I%,J%));:NEXT J%:NEXT I%
+550 IF Z$="2"THEN LPRINT CHR$(12) :ELSE 490
+560 LOCATE 25,1:PRINT STRING$(80,32);:RETURN

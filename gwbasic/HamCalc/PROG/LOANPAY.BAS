@@ -1,0 +1,114 @@
+10 :REM'LOANPAY - 18 JUL 87    latest rev. 30 DEC 2000
+20 VIEW PRINT
+30 CLS:KEY OFF:COLOR 7,0,0
+40 IF EX$=""THEN EX$="EXIT"
+50 IF PROG$=""THEN GO$=EX$ :ELSE GO$=PROG$
+60 COMMON EX$,PROG$
+70 U$="#####,###.##"
+80 UL$=STRING$(80,205)
+90 N$="#####,###":M$="#########.###"
+100 DATA JAN,FEB,MAR,APR,MAY,JUN,JUL,AUG,SEP,OCT,NOV,DEC
+110 GOTO 150
+120 :REM'
+130 LOCATE CSRLIN-1:PRINT STRING$(6," "):LOCATE CSRLIN-1,38:RETURN
+140 :REM'
+150 :REM'.....start
+160 CLS
+170 PRINT "MONTHLY TIME PAYMENTS"
+180 PRINT UL$;
+190 COLOR 0,7:PRINT " Press 1 to run program or 0 to EXIT ":COLOR 7,0
+200 Z$=INKEY$:IF Z$=""THEN 200
+210 IF Z$="0"THEN CLS:CHAIN GO$
+220 IF Z$="1"THEN CLS:GOTO 240
+230 GOTO 200
+240 INPUT "ENTER: Amount of loan ...............";PR
+250 IF PR=0 THEN LOCATE CSRLIN-1:GOTO 240
+260 GOSUB 130:PRINT USING U$;PR
+270 INPUT "ENTER: Annual Interest rate (%)......";IR
+280 IF IR=0 THEN LOCATE CSRLIN-1:GOTO 270
+290 GOSUB 130:PRINT USING M$;IR
+300 INPUT "ENTER: Number of months .............";N
+310 IF N=0 THEN LOCATE CSRLIN-1:GOTO 300
+320 DIM X(N),Y(N,5),D$(N),M$(12)
+330 FOR Z=1 TO 12:READ M$(Z):NEXT Z:RESTORE
+340 GOSUB 130:PRINT USING N$;N
+350 INPUT "ENTER: First payment month number ...";MO
+360 IF MO=0 THEN LOCATE CSRLIN-1:GOTO 350
+370 GOSUB 130:PRINT USING N$;MO;:PRINT "  ( ";M$(MO);" )"
+380 INPUT "ENTER: First payment year (yyyy) ....";YR
+390 IF YR=0 THEN LOCATE CSRLIN-1:GOTO 380
+400 GOSUB 130:GOSUB 130:LOCATE CSRLIN,54:PRINT YR;")"
+410 R=IR/1200                                      :REM'monthly interest rate
+420 MP=PR*R/(1-(1+R)^(-N)):MP=INT(MP*100+0.5!)/100   :REM'monthly payment
+430 PRINT "       Monthly payment ..............";USING U$;MP
+440 GOSUB 130:PRINT USING U$;MP
+450 PRINT UL$;
+460 PRINT "Extra payment? .............? (y/n)"
+470 Z$=INKEY$
+480 IF Z$="y"THEN 510
+490 IF Z$="n"THEN 560
+500 GOTO 470
+510 INPUT "Amount of extra payment ....";EP
+520 INPUT "Month number ...............";M
+530 X(M)=EP
+540 GOTO 460
+550 :REM'
+560 :REM'.....screen display
+570 PRINT "Do you want to see a payment shchedule?  (y/n)"
+580 Z$=INKEY$
+590 IF Z$="n"THEN ERASE X,Y,D$,M$:GOTO 150
+600 IF Z$="y"THEN 620
+610 GOTO 580
+620 CLS
+630 T$="Mo.#     Date     Extra Pay     Reg.Pay   Principal    Interest     "
+640 T$=T$+"Balance"
+650 B=PR
+660 N=0:M=MO-1:TI=0
+670 N=N+1:LOCATE 12,39,0:PRINT N
+680 M=M+1:IF M=13 THEN M=1:YR=YR+1
+690 YR$=STR$(YR)
+700 D$(N)=M$(M)+YR$
+710 IP=B*R:IP=INT(IP*100+0.5!)/100  :REM'Interest payment
+720 TI=TI+IP                      :REM'Total interest
+730 RP=MP:TP=RP+X(N)              :REM'Total payment
+740 PP=TP-IP                      :REM'Principal payment
+750 IF B>=TP THEN 760 :ELSE 790
+760 B=B-PP
+770 Y(N,1)=X(N):Y(N,2)=RP:Y(N,3)=PP:Y(N,4)=IP:Y(N,5)=B
+780 GOTO 670
+790 RP=B+IP
+800 TP=RP+X(N)                    :REM'Total payment
+810 PP=TP-IP                      :REM'Principal payment
+820 B=B-PP
+830 Y(N,1)=X(N):Y(N,2)=RP:Y(N,3)=PP:Y(N,4)=IP:Y(N,5)=B
+840 :REM'
+850 :REM'.....schedule display
+860 TOP$=" TIME PAYMENT SCHEDULE for "
+870 CLS:LOCATE ,,1
+880 PRINT TOP$;USING "$####,###.## @ ##.##% for ### months";PR,IR,N
+890 :REM'PRINT " @";STR$(IR);" % for";N;"months"
+900 PRINT UL$;
+910 PRINT T$
+920 PRINT UL$;
+930 VIEW PRINT 5 TO 24
+940 PRINT "Amount of loan........";TAB(64)USING U$;PR
+950 :REM'
+960 FOR Z=1 TO N
+970 IF Z=1 THEN 1000
+980 IF RIGHT$(D$(Z),2)=RIGHT$(D$(Z-1),2)THEN 1000
+990 PRINT UL$;:VIEW PRINT:GOSUB 1060:VIEW PRINT 5 TO 24:CLS
+1000 PRINT USING "###";Z;:PRINT TAB(8)D$(Z);
+1010 PRINT TAB(16)USING U$;Y(Z,1);Y(Z,2);Y(Z,3);Y(Z,4);Y(Z,5)
+1020 NEXT Z:PRINT UL$;
+1030 PRINT "Total interest:";TAB(52);USING U$;TI
+1040 VIEW PRINT:GOSUB 1060:ERASE X,Y,D$,M$:GOTO 150
+1050 :REM'
+1060 :REM'PRT
+1070 KEY OFF:GOSUB 1140:LOCATE 25,5:COLOR 0,2
+1080 PRINT " Send this page to:(1)Printer Queue? (2)Printout? ";
+1090 PRINT "(3)Next page? (1/2/3)";:COLOR 7,0
+1100 Z$=INKEY$:IF Z$<"1"OR Z$>"3"THEN 1100 :ELSE GOSUB 1140
+1110 IF Z$="3"THEN RETURN
+1120 FOR I%=1 TO 24:FOR J%=1 TO 80:LPRINT CHR$(SCREEN(I%,J%));:NEXT J%:NEXT I%
+1130 IF Z$="2"THEN LPRINT CHR$(12) :ELSE 1070
+1140 LOCATE 25,1:PRINT STRING$(80,32);:RETURN

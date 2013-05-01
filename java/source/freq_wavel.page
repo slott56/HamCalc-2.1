@@ -1,0 +1,11 @@
+#########################
+Frequency and Wavelength
+#########################
+
+This calculator converts frequency and wavelength.
+
+..  applet::
+    :code: RadioCalc.class
+    :width: 200
+    :height: 150
+    :models: freqwavel
