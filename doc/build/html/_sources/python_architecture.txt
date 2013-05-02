@@ -255,6 +255,28 @@ Here's how temperature would be implemented.
         def from_std( class_, value ):
             return 32+value*9/5
 
+Unit Testing
+=============
+
+For the most part, these programs are very simple.
+
+Doctest should cover enough basees without too much brain-cramping.
+
+Each claculation module docstring should contain doctest examples.
+
+Class and function docstrings can also contain additional doctest examples.
+
+We can run the doctest suite with this command:
+
+::
+
+    python3.2 python/test/__main__.py
+
+We can also run the doctest suite with this command in the :file:`doc` directory. This uses the Sphinx Doctest module.
+
+::
+
+    make doctest
 
 Legacy Example
 ==============

@@ -247,6 +247,19 @@ JSON serialization for a RESTful interface is much simpler.</p>
 </div>
 </div>
 </div>
+<div class="section" id="unit-testing">
+<h2>Unit Testing<a class="headerlink" href="#unit-testing" title="Permalink to this headline">¶</a></h2>
+<p>For the most part, these programs are very simple.</p>
+<p>Doctest should cover enough basees without too much brain-cramping.</p>
+<p>Each claculation module docstring should contain doctest examples.</p>
+<p>Class and function docstrings can also contain additional doctest examples.</p>
+<p>We can run the doctest suite with this command:</p>
+<div class="highlight-python"><pre>python3.2 python/test/__main__.py</pre>
+</div>
+<p>We can also run the doctest suite with this command in the <tt class="file docutils literal"><span class="pre">doc</span></tt> directory. This uses the Sphinx Doctest module.</p>
+<div class="highlight-python"><pre>make doctest</pre>
+</div>
+</div>
 <div class="section" id="legacy-example">
 <h2>Legacy Example<a class="headerlink" href="#legacy-example" title="Permalink to this headline">¶</a></h2>
 <p>Let&#8217;s pick one HamCalc program, <tt class="file docutils literal"><span class="pre">FIBON.BAS</span></tt>, to examine in detail.</p>
@@ -914,6 +927,7 @@ appropriate details.</p>
 <li><a class="reference internal" href="#the-equivalents-pattern">The <strong>Equivalents</strong> Pattern</a></li>
 </ul>
 </li>
+<li><a class="reference internal" href="#unit-testing">Unit Testing</a></li>
 <li><a class="reference internal" href="#legacy-example">Legacy Example</a><ul>
 <li><a class="reference internal" href="#code-overview">Code Overview</a></li>
 <li><a class="reference internal" href="#gw-basic-quirk">GW Basic Quirk</a></li>

@@ -7,3 +7,7 @@ HamCalc.bbprojectd/Unix Worksheet.worksheet
 
 HamCalc.bbprojectd/project.bbprojectdata
 
+
+*.pyc
+
+*.pyc

@@ -83,17 +83,18 @@ Degree:Minute:Second values.</p>
 </ol>
 <p>We provide both implementations, since strings are an extension to tuples.</p>
 <p>Test Cases</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">HRS_MIN_SEC</span><span class="o">.</span><span class="n">to_std</span><span class="p">(</span> <span class="s">&quot;12:34:56&quot;</span> <span class="p">)</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">hamcalc.math.deciconv</span> <span class="kn">as</span> <span class="nn">deciconv</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">deciconv</span><span class="o">.</span><span class="n">HRS_MIN_SEC</span><span class="o">.</span><span class="n">to_std</span><span class="p">(</span> <span class="s">&quot;12:34:56&quot;</span> <span class="p">)</span>
 <span class="go">12.582222222222223</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">HRS_MIN_SEC</span><span class="o">.</span><span class="n">from_std</span><span class="p">(</span> <span class="mf">12.582</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">deciconv</span><span class="o">.</span><span class="n">HRS_MIN_SEC</span><span class="o">.</span><span class="n">from_std</span><span class="p">(</span> <span class="mf">12.582</span> <span class="p">)</span>
 <span class="go">&#39;12:34:55.2&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">HRS_MIN_SEC</span><span class="o">.</span><span class="n">from_std</span><span class="p">(</span> <span class="mf">12.5822</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">deciconv</span><span class="o">.</span><span class="n">HRS_MIN_SEC</span><span class="o">.</span><span class="n">from_std</span><span class="p">(</span> <span class="mf">12.5822</span> <span class="p">)</span>
 <span class="go">&#39;12:34:55.9&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">HRS_MIN_SEC</span><span class="o">.</span><span class="n">from_std</span><span class="p">(</span> <span class="mf">12.58222</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">deciconv</span><span class="o">.</span><span class="n">HRS_MIN_SEC</span><span class="o">.</span><span class="n">from_std</span><span class="p">(</span> <span class="mf">12.58222</span> <span class="p">)</span>
 <span class="go">&#39;12:34:56.0&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">HMS_TUPLE</span><span class="o">.</span><span class="n">to_std</span><span class="p">(</span> <span class="p">(</span><span class="mi">12</span><span class="p">,</span><span class="mi">34</span><span class="p">,</span><span class="mi">56</span><span class="p">)</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">deciconv</span><span class="o">.</span><span class="n">HMS_TUPLE</span><span class="o">.</span><span class="n">to_std</span><span class="p">(</span> <span class="p">(</span><span class="mi">12</span><span class="p">,</span><span class="mi">34</span><span class="p">,</span><span class="mi">56</span><span class="p">)</span> <span class="p">)</span>
 <span class="go">12.582222222222223</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">HMS_TUPLE</span><span class="o">.</span><span class="n">from_std</span><span class="p">(</span> <span class="mf">12.58222</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">deciconv</span><span class="o">.</span><span class="n">HMS_TUPLE</span><span class="o">.</span><span class="n">from_std</span><span class="p">(</span> <span class="mf">12.58222</span> <span class="p">)</span>
 <span class="go">(12.0, 34.0, 55.99199999999837)</span>
 </pre></div>
 </div>

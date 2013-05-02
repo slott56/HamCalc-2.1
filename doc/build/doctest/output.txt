@@ -1,4 +1,4 @@
-Results of doctest builder run on 2013-05-01 17:09:59
+Results of doctest builder run on 2013-05-02 10:16:39
 =====================================================
 
 Document: python/math/baromtr
@@ -15,6 +15,14 @@ Document: python/electronics/awgexact
    8 tests in default
 8 tests in 1 items.
 8 passed and 0 failed.
+Test passed.
+
+Document: python/math/decifrac
+------------------------------
+1 items passed all tests:
+   7 tests in default
+7 tests in 1 items.
+7 passed and 0 failed.
 Test passed.
 
 Document: python/math/accelr
@@ -59,7 +67,7 @@ Test passed.
 
 Doctest summary
 ===============
-   64 tests
+   71 tests
     0 failures in tests
     0 failures in setup code
     0 failures in cleanup code

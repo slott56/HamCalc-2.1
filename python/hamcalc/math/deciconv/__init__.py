@@ -52,11 +52,11 @@ class HMS_TUPLE( Unit ):
     name= "HMS"
     standard= HOURS
     @classmethod
-    def to_std( _class, value ):
+    def to_std( class_, value ):
         h, m, s = value
         return h+(m+s/60)/60
     @classmethod
-    def from_std( _class, value ):
+    def from_std( class_, value ):
         hms= value*3600
         sec= hms % 60
         hm= hms // 60
@@ -69,11 +69,11 @@ class HRS_MIN_SEC( HMS_TUPLE ):
     name= "HMS"
     standard= HOURS
     @classmethod
-    def to_std( _class, value ):
+    def to_std( class_, value ):
         h, m, s = map( float, value.split( ":" ) )
         return super().to_std( (h,m,s) )
     @classmethod
-    def from_std( _class, value ):
+    def from_std( class_, value ):
         hrs, min, sec = super().from_std( value )
         return "{0:02.0f}:{1:02.0f}:{2:03.1f}".format( hrs, min, sec )
 
@@ -92,12 +92,12 @@ class DEG_MIN_SEC( DMS_TUPLE ):
     standard= DEGREES
     number_pat= re.compile( "\d+\.?\d*" )
     @classmethod
-    def to_std( _class, value ):
-        _class.number_pat.findall( value )
-        d, m, s = map( float, _class.number_pat.findall( value ) )
+    def to_std( class_, value ):
+        class_.number_pat.findall( value )
+        d, m, s = map( float, class_.number_pat.findall( value ) )
         return super().to_std( (d,m,s) )
     @classmethod
-    def from_std( _class, value ):
+    def from_std( class_, value ):
         deg, min, sec = super().from_std( value )
         return "{0:02.0f}° {1:02.0f}' {2:03.1f}\"".format( deg, min, sec )
 

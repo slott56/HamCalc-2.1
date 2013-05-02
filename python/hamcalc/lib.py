@@ -71,10 +71,10 @@ class Standard_Unit( Unit, metaclass=UnitMeta ):
     """
     name= "" # Abbreviation of the unit's name
     @classmethod
-    def to_std( _class, value ):
+    def to_std( class_, value ):
         return value
     @classmethod
-    def from_std( _class, value ):
+    def from_std( class_, value ):
         return value
 
 def convert( value, unit, *to ):

@@ -1,0 +1,166 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>hamcalc.math.decifrac &mdash; HamCalc 2.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '2.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="top" title="HamCalc 2.1 documentation" href="../../../index.html" />
+    <link rel="up" title="Module code" href="../../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../index.html">HamCalc 2.1 documentation</a> &raquo;</li>
+          <li><a href="../../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for hamcalc.math.decifrac</h1><div class="highlight"><pre>
+<span class="sd">&quot;&quot;&quot;hamcalc.math.decifrac -- Decimals to fractions</span>
+
+<span class="sd">Some Test Cases</span>
+
+<span class="sd">&gt;&gt;&gt; import  hamcalc.math.decifrac as decifrac</span>
+<span class="sd">&gt;&gt;&gt; decifrac.FEET_INCH_FRAC_TUPLE.to_std( 13, 3, 5, 8 )</span>
+<span class="sd">&gt;&gt;&gt; 13.302</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">hamcalc.lib</span> <span class="kn">import</span> <span class="n">Unit</span><span class="p">,</span> <span class="n">Standard_Unit</span>
+<span class="kn">import</span> <span class="nn">re</span>
+
+<span class="n">introduction</span> <span class="o">=</span> <span class="s">&quot;&quot;&quot;</span><span class="se">\</span>
+<span class="s">DECIMAL / FRACTION CONVERTER                                by George C. Murphy</span>
+<span class="s">&quot;&quot;&quot;</span>
+
+<span class="k">def</span> <span class="nf">intro</span><span class="p">():</span>
+    <span class="k">return</span> <span class="n">introduction</span>
+
+<div class="viewcode-block" id="INCHES"><a class="viewcode-back" href="../../../python/math/decifrac.html#hamcalc.math.decifrac.INCHES">[docs]</a><span class="k">class</span> <span class="nc">INCHES</span><span class="p">(</span> <span class="n">Standard_Unit</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Decimal Inches&quot;&quot;&quot;</span>
+    <span class="n">name</span><span class="o">=</span> <span class="s">&quot;in&quot;</span>
+</div>
+<div class="viewcode-block" id="FEET"><a class="viewcode-back" href="../../../python/math/decifrac.html#hamcalc.math.decifrac.FEET">[docs]</a><span class="k">class</span> <span class="nc">FEET</span><span class="p">(</span> <span class="n">Unit</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Decimal Feet&quot;&quot;&quot;</span>
+    <span class="n">name</span><span class="o">=</span> <span class="s">&quot;ft&quot;</span>
+    <span class="n">standard</span><span class="o">=</span> <span class="n">INCHES</span>
+    <span class="n">factor</span><span class="o">=</span> <span class="mi">1</span><span class="o">/</span><span class="mi">12</span>
+</div>
+<div class="viewcode-block" id="FEET_INCH_FRAC_TUPLE"><a class="viewcode-back" href="../../../python/math/decifrac.html#hamcalc.math.decifrac.FEET_INCH_FRAC_TUPLE">[docs]</a><span class="k">class</span> <span class="nc">FEET_INCH_FRAC_TUPLE</span><span class="p">(</span> <span class="n">Unit</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Feet-Inch-Fraction&quot;&quot;&quot;</span>
+    <span class="n">name</span><span class="o">=</span><span class="s">&#39;ft-in&#39;</span>
+    <span class="n">standard</span><span class="o">=</span> <span class="n">INCHES</span>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">_gcd</span><span class="p">(</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="p">):</span>
+        <span class="k">if</span> <span class="n">a</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span> <span class="k">return</span> <span class="n">b</span>
+        <span class="k">elif</span> <span class="n">b</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span> <span class="k">return</span> <span class="n">a</span>
+        <span class="k">elif</span> <span class="n">a</span> <span class="o">&lt;</span> <span class="n">b</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">gcd</span><span class="p">(</span> <span class="n">b</span><span class="o">-</span><span class="n">a</span><span class="p">,</span> <span class="n">a</span> <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">gcd</span><span class="p">(</span> <span class="n">a</span><span class="o">-</span><span class="n">b</span><span class="p">,</span> <span class="n">b</span> <span class="p">)</span>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">to_std</span><span class="p">(</span> <span class="n">class_</span><span class="p">,</span> <span class="n">value</span> <span class="p">):</span>
+        <span class="n">f</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">d</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="k">return</span> <span class="n">f</span><span class="o">*</span><span class="mi">12</span><span class="o">+</span><span class="n">i</span><span class="o">+</span><span class="n">n</span><span class="o">/</span><span class="n">d</span>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_std</span><span class="p">(</span> <span class="n">class_</span><span class="p">,</span> <span class="n">value</span> <span class="p">):</span>
+        <span class="n">n</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">value</span><span class="o">*</span><span class="mi">128</span><span class="p">)</span> <span class="o">%</span> <span class="mi">128</span>
+        <span class="n">i</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="o">%</span> <span class="mi">12</span>
+        <span class="n">f</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">value</span><span class="o">//</span><span class="mi">12</span><span class="p">)</span>
+        <span class="c"># Reduce the n/128, if possible.</span>
+        <span class="n">r</span> <span class="o">=</span> <span class="n">class_</span><span class="o">.</span><span class="n">_gcd</span><span class="p">(</span> <span class="n">n</span><span class="p">,</span> <span class="mi">128</span> <span class="p">)</span>
+        <span class="n">n</span><span class="o">=</span> <span class="n">n</span> <span class="o">//</span> <span class="n">r</span>
+        <span class="n">d</span><span class="o">=</span> <span class="mi">128</span> <span class="o">//</span> <span class="n">r</span>
+        <span class="k">return</span> <span class="n">f</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">d</span>
+</div>
+<div class="viewcode-block" id="MILLIMETRES"><a class="viewcode-back" href="../../../python/math/decifrac.html#hamcalc.math.decifrac.MILLIMETRES">[docs]</a><span class="k">class</span> <span class="nc">MILLIMETRES</span><span class="p">(</span> <span class="n">Unit</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Decimal Millimetres&quot;&quot;&quot;</span>
+    <span class="n">name</span><span class="o">=</span> <span class="s">&quot;in&quot;</span>
+    <span class="n">standard</span><span class="o">=</span> <span class="n">FEET</span>
+    <span class="n">factor</span><span class="o">=</span> <span class="mf">25.4</span>
+</div>
+<div class="viewcode-block" id="CENTIMETRES"><a class="viewcode-back" href="../../../python/math/decifrac.html#hamcalc.math.decifrac.CENTIMETRES">[docs]</a><span class="k">class</span> <span class="nc">CENTIMETRES</span><span class="p">(</span> <span class="n">Unit</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Decimal Centimetres&quot;&quot;&quot;</span>
+    <span class="n">name</span><span class="o">=</span> <span class="s">&quot;in&quot;</span>
+    <span class="n">standard</span><span class="o">=</span> <span class="n">FEET</span>
+    <span class="n">factor</span><span class="o">=</span> <span class="mf">2.54</span>
+</div>
+<div class="viewcode-block" id="METRES"><a class="viewcode-back" href="../../../python/math/decifrac.html#hamcalc.math.decifrac.METRES">[docs]</a><span class="k">class</span> <span class="nc">METRES</span><span class="p">(</span> <span class="n">Unit</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Decimal Metres&quot;&quot;&quot;</span>
+    <span class="n">name</span><span class="o">=</span> <span class="s">&quot;in&quot;</span>
+    <span class="n">standard</span><span class="o">=</span> <span class="n">FEET</span>
+    <span class="n">factor</span><span class="o">=</span> <span class="o">.</span><span class="mo">0254</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../index.html">HamCalc 2.1 documentation</a> &raquo;</li>
+          <li><a href="../../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2013, S.Lott.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2b1.
+    </div>
+  </body>
+</html>

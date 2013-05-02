@@ -32,23 +32,47 @@ The :math:`n/d` fraction may get reduced to some smaller power of 2.
 
     f = \lfloor f_d \rfloor
 
+We can also do the entire thing in inches instead of feet.
+
+..  math::
+
+    i_d  = 12f + i + \frac{n}{d}
+
+This doesn't change much, really.
+
 Implementation
 ~~~~~~~~~~~~~~~
 
 These are unit conversions.
 
-
+..  automodule:: hamcalc.math.decifrac
+    :members:
 
 Legacy
 ~~~~~~~~
 
 This program isn't really what it appears to be.
 
-This is not simple dcimals to fractions and fractions to decimals.
+This is not **simple** decimals to fractions and fractions to decimals.
 
 This is really about converting linear measurements in feet, inches and fractions to feet. And about converting decimal measuremnts of length
 (inches, feet, mm, cm, meter) to feet, inches and fractions.
 
+Sample Output
+~~~~~~~~~~~~~~~~
 
+::
+
+     ENTER: number of whole feet................................? 13
+    13'-
+     ENTER: number of whole inches..............................? 3
+    13'- 3
+     ENTER: fraction enumerator (top number of fraction)........? 5
+    13'- 3 5/
+     ENTER: fraction denominator (bottom number of fraction)....? 8
+    13'- 3 5/8"
+     =  13.302 feet
+     = 159.625 inches
+     =   4.054 metres
 
 
