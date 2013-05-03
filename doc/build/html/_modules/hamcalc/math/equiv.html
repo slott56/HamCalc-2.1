@@ -1,0 +1,177 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>hamcalc.math.equiv &mdash; HamCalc 2.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../../_static/agogo.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '2.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="top" title="HamCalc 2.1 documentation" href="../../../index.html" />
+    <link rel="up" title="Module code" href="../../index.html" /> 
+  </head>
+  <body>
+    <div class="header-wrapper">
+      <div class="header">
+        <div class="headertitle"><a
+          href="../../../index.html">HamCalc 2.1 documentation</a></div>
+        <div class="rel">
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a>
+        </div>
+       </div>
+    </div>
+
+    <div class="content-wrapper">
+      <div class="content">
+        <div class="document">
+            
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for hamcalc.math.equiv</h1><div class="highlight"><pre>
+<span class="sd">&quot;&quot;&quot;hamcalc.meth.equiv -- Unit Conversions</span>
+
+<span class="sd">Simple Units</span>
+
+<span class="sd">-   Capacitance</span>
+<span class="sd">-   Current</span>
+<span class="sd">-   Degrees / Radians</span>
+<span class="sd">-   Inductance</span>
+<span class="sd">-   Length / Distance</span>
+<span class="sd">-   Resistance</span>
+<span class="sd">-   Temperature</span>
+<span class="sd">-   Time</span>
+<span class="sd">-   MPG/KPL</span>
+
+<span class="sd">Plus, the Frequencies/Wavelengths is both units conversion and a :math:`c=\lambda\nu`  **Solver**.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">hamcalc.lib</span> <span class="kn">import</span> <span class="n">Unit</span><span class="p">,</span> <span class="n">Standard_Unit</span><span class="p">,</span> <span class="n">AttrDict</span>
+
+<div class="viewcode-block" id="FARAD"><a class="viewcode-back" href="../../../python/math/equiv.html#hamcalc.math.equiv.FARAD">[docs]</a><span class="k">class</span> <span class="nc">FARAD</span><span class="p">(</span> <span class="n">Standard_Unit</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Farad&quot;&quot;&quot;</span>
+    <span class="n">name</span><span class="o">=</span> <span class="s">&quot;F&quot;</span>
+</div>
+<div class="viewcode-block" id="AMPERE"><a class="viewcode-back" href="../../../python/math/equiv.html#hamcalc.math.equiv.AMPERE">[docs]</a><span class="k">class</span> <span class="nc">AMPERE</span><span class="p">(</span> <span class="n">Standard_Unit</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Ampere&quot;&quot;&quot;</span>
+    <span class="n">name</span><span class="o">=</span> <span class="s">&quot;A&quot;</span>
+</div>
+<div class="viewcode-block" id="RADIAN"><a class="viewcode-back" href="../../../python/math/equiv.html#hamcalc.math.equiv.RADIAN">[docs]</a><span class="k">class</span> <span class="nc">RADIAN</span><span class="p">(</span> <span class="n">Standard_Unit</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Radian&quot;&quot;&quot;</span>
+    <span class="n">name</span><span class="o">=</span> <span class="s">&quot;R&quot;</span>
+</div>
+<div class="viewcode-block" id="HERTZ"><a class="viewcode-back" href="../../../python/math/equiv.html#hamcalc.math.equiv.HERTZ">[docs]</a><span class="k">class</span> <span class="nc">HERTZ</span><span class="p">(</span> <span class="n">Standard_Unit</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Hertz&quot;&quot;&quot;</span>
+    <span class="n">name</span><span class="o">=</span> <span class="s">&quot;Hz&quot;</span>
+</div>
+<div class="viewcode-block" id="HENRY"><a class="viewcode-back" href="../../../python/math/equiv.html#hamcalc.math.equiv.HENRY">[docs]</a><span class="k">class</span> <span class="nc">HENRY</span><span class="p">(</span> <span class="n">Standard_Unit</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Henry&quot;&quot;&quot;</span>
+    <span class="n">name</span><span class="o">=</span> <span class="s">&quot;H&quot;</span>
+</div>
+<div class="viewcode-block" id="METRE"><a class="viewcode-back" href="../../../python/math/equiv.html#hamcalc.math.equiv.METRE">[docs]</a><span class="k">class</span> <span class="nc">METRE</span><span class="p">(</span> <span class="n">Standard_Unit</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Metre&quot;&quot;&quot;</span>
+    <span class="n">name</span><span class="o">=</span> <span class="s">&quot;M&quot;</span>
+</div>
+<div class="viewcode-block" id="OHM"><a class="viewcode-back" href="../../../python/math/equiv.html#hamcalc.math.equiv.OHM">[docs]</a><span class="k">class</span> <span class="nc">OHM</span><span class="p">(</span> <span class="n">Standard_Unit</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Ohm&quot;&quot;&quot;</span>
+    <span class="n">name</span><span class="o">=</span> <span class="s">&quot;Ω&quot;</span>
+</div>
+<div class="viewcode-block" id="CELSIUS"><a class="viewcode-back" href="../../../python/math/equiv.html#hamcalc.math.equiv.CELSIUS">[docs]</a><span class="k">class</span> <span class="nc">CELSIUS</span><span class="p">(</span> <span class="n">Standard_Unit</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Degrees C&quot;&quot;&quot;</span>
+    <span class="n">name</span><span class="o">=</span><span class="s">&quot;°C&quot;</span>
+</div>
+<div class="viewcode-block" id="SECOND"><a class="viewcode-back" href="../../../python/math/equiv.html#hamcalc.math.equiv.SECOND">[docs]</a><span class="k">class</span> <span class="nc">SECOND</span><span class="p">(</span> <span class="n">Standard_Unit</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Second&quot;&quot;&quot;</span>
+    <span class="n">name</span><span class="o">=</span> <span class="s">&quot;Sec&quot;</span>
+</div>
+<div class="viewcode-block" id="MPG"><a class="viewcode-back" href="../../../python/math/equiv.html#hamcalc.math.equiv.MPG">[docs]</a><span class="k">class</span> <span class="nc">MPG</span><span class="p">(</span> <span class="n">Standard_Unit</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Miles per Gallon (US)&quot;&quot;&quot;</span>
+    <span class="n">name</span><span class="o">=</span> <span class="s">&quot;MPG&quot;</span>
+</div>
+<div class="viewcode-block" id="freq_wavelength"><a class="viewcode-back" href="../../../python/math/equiv.html#hamcalc.math.equiv.freq_wavelength">[docs]</a><span class="k">def</span> <span class="nf">freq_wavelength</span><span class="p">(</span> <span class="o">**</span><span class="n">kw</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Solver for frequency-wavelength problems in Standard units</span>
+<span class="sd">    of meters and Hertz.</span>
+
+<span class="sd">    :param f: Frequency in Hz</span>
+<span class="sd">    :param l: Wavelength in m</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">c</span><span class="o">=</span> <span class="mf">299792.458</span>
+    <span class="n">args</span><span class="o">=</span> <span class="n">AttrDict</span><span class="p">(</span> <span class="n">kw</span> <span class="p">)</span>
+    <span class="k">if</span> <span class="s">&#39;f&#39;</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
+        <span class="n">args</span><span class="o">.</span><span class="n">l</span><span class="o">=</span> <span class="mi">1000</span><span class="o">*</span><span class="n">c</span><span class="o">/</span><span class="n">f</span>
+    <span class="k">elif</span> <span class="s">&#39;l&#39;</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
+        <span class="n">args</span><span class="o">.</span><span class="n">f</span> <span class="o">=</span> <span class="n">c</span><span class="o">/</span><span class="n">l</span><span class="o">/</span><span class="mi">1000</span>
+    <span class="k">return</span> <span class="n">args</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+        </div>
+        <div class="sidebar">
+          <h3>Table Of Contents</h3>
+          <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../background.html">Background</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../legacy.html">The HamCalc Legacy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../python_architecture.html">Python Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../python/index.html">Python Modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../todo.html">The To Do List</a></li>
+</ul>
+
+          <h3 style="margin-top: 1.5em;">Search</h3>
+          <form class="search" action="../../../search.html" method="get">
+            <input type="text" name="q" />
+            <input type="submit" value="Go" />
+            <input type="hidden" name="check_keywords" value="yes" />
+            <input type="hidden" name="area" value="default" />
+          </form>
+          <p class="searchtip" style="font-size: 90%">
+            Enter search terms or a module, class or function name.
+          </p>
+        </div>
+        <div class="clearer"></div>
+      </div>
+    </div>
+
+    <div class="footer-wrapper">
+      <div class="footer">
+        <div class="left">
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |
+          <a href="../../../genindex.html" title="General Index"
+             >index</a>
+        </div>
+
+        <div class="right">
+          
+    <div class="footer">
+        &copy; Copyright 2013, S.Lott.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2b1.
+    </div>
+        </div>
+        <div class="clearer"></div>
+      </div>
+    </div>
+
+  </body>
+</html>

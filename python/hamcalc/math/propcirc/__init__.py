@@ -1,4 +1,4 @@
-"""hamcalc.math.propcirc -- Circle, Properies of
+"""hamcalc.math.propcirc -- Circle, Properties of
 
 Here are some test cases.
 

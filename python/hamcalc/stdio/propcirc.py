@@ -1,4 +1,4 @@
-"""Circle, Properies of
+"""Circle, Properties of
 
 "Properties of Circle","","","PROPCIRC"
 "Circle","Properties Of","","PROPCIRC"

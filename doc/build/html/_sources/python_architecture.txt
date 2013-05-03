@@ -155,18 +155,24 @@ This doesn't cover temperatures well, but that's so specialized that it doesn't 
 Fahrenheit and Celsius conversions aren't simple multiplies.
 All other conversions are.
 
-A completely general "dimensioned number" class is potentially overkill for
-this application. As a subclass of :class:`float`, it would add features to track dimensions. For :meth:`__add__` and :meth:`__sub__` it would assure that
+Over the Top Dimensioned Number Design
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+A completely general "dimensioned number" class is overkill for
+this application. We could define a subclass of :class:`float`; this could add features to track dimensions. For :meth:`__add__` and :meth:`__sub__` it would assure that
 the units where the same or it would convert. For :meth:`__mul__` and :meth:`__div__` it would infer the resulting units.
 
 So, we could have :samp:`Dim(2.5, M_SEC) * Dim(2, SEC)` resulting in
 :samp:`Dim( 5, M )`. The resulting object would have the proper units.
 
 Note that this doesn't work trivially with JSON seralization. We need to provide ways
-to serialize these values that would work outside Python as well as inside Python.f
+to serialize these values that would work outside Python as well as inside Python.
 
-Rather than do all that work to correctly reason out the dimensions, we'll
-stick to the intent of HamCalc and simply provide conversion factors.
+Simpler Unit Conversion Design
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Rather than create a class hierarchy which includes algorithms to correctly reason out the dimensions, we'll
+stick to the **intent** of HamCalc and simply provide conversion factors.
 
 However.
 
@@ -174,23 +180,32 @@ We don't want to have the conversions be simple, semantically empty, multiply
 or divide operations. We'd like a unit or dimension to be an object or perhaps
 a class that has independent existence.
 
-Note that a conversion is a two step process.  First, we convert the value from source unit to standard unit. Second, we convert from the standard unit to target unit. Yes. Two steps. It's simpler than building a matrix of all conversion combinations.
+Note that a conversion should be implemented as a two step process.  First, we convert the value from source unit to standard unit. Second, we convert from the standard unit to target unit. Yes. Two steps. It's simpler than building a matrix of all possible conversion combinations.
 
 We have two chocies for definition of a Unit.
 
 **Object**. If each unit is an object (of class Unit) a dimensioned number becomes a tuple of value and unit. The unit objects have to be loaded and identified with
-some kind of name. This makes JSON serialization annoying and complex.
+some kind of name. This makes JSON serialization annoying and slightly more complex.
 
 **Class**. If each unit is a distinct class, a dimensioned number is still a tuple of value and unit. The unit class definitions are imported (and global).
 The name is unique by Python class naming rules. The unit can be transformed
 from string to class with :func:`eval()`.
 
-The abstract base classes look like this.
+The Dimensioned Number ("Unit") Class
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Each non-standard unit can only convert to and from the standard unit.
+Here's the class-based definition of a **Unit**. This packages each conversion
+as stand-alone class with all "static" and "class" methods. No instance needs
+to be created.
+
+Each non-standard unit will be able convert to and from the standard unit.
 The standard unit does no conversion.
 
-For temperature, the methods must be overridden.
+For temperature, the methods must be overridden. For all other units,
+factors can be provided.
+
+The abstract base classes look like this.
+
 
 ::
 
@@ -237,7 +252,9 @@ and from the standard unit back to the output unit.
     length_mm= MM.from_std( length )
 
 The syntax is a bit clunky, but numbers are not bound to the units, and
-JSON serialization for a RESTful interface is much simpler.
+JSON serialization for a RESTful interface is much simpler. And the two-step
+conversion means that we don't have a giant matrix with all combinations of
+conversions.
 
 Here's how temperature would be implemented.
 
@@ -255,14 +272,35 @@ Here's how temperature would be implemented.
         def from_std( class_, value ):
             return 32+value*9/5
 
+Measurement Unit Package Design
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+HamCalc has many programs that have the **Equivalents** design pattern.
+They convert among various units.
+
+Additionally, there's a :program:`equiv` program.  See :ref:`math.equiv` that
+contains some (but not all) unit conversions.
+
+Clearly, it's ineffective to scatter the various units throughout HamCalc.
+
+However, it's also difficult to discover all **Equivalents** applications as part of an up-front survey.
+
+A sensible approach seems to be this.
+
+1.  Convert all **Equivalents** to use the :class:`Unit` design pattern.
+
+2.  As a later release, move all the various :class:`Unit` definitions to a
+    single module, and rewrite all other modules to import units from this one
+    source.
+
 Unit Testing
 =============
 
 For the most part, these programs are very simple.
 
-Doctest should cover enough basees without too much brain-cramping.
+Python's Doctest should cover enough basees without too much brain-cramping.
 
-Each claculation module docstring should contain doctest examples.
+Each claculation module docstring **shall** contain doctest examples.
 
 Class and function docstrings can also contain additional doctest examples.
 
@@ -272,7 +310,7 @@ We can run the doctest suite with this command:
 
     python3.2 python/test/__main__.py
 
-We can also run the doctest suite with this command in the :file:`doc` directory. This uses the Sphinx Doctest module.
+We can also run the doctest suite through Sphinx's makefile with this command in the :file:`doc` directory.
 
 ::
 

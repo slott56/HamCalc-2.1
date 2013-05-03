@@ -6,9 +6,9 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>equiv &mdash; HamCalc 2.1 documentation</title>
+    <title>equiv – Unit Conversions &mdash; HamCalc 2.1 documentation</title>
     
-    <link rel="stylesheet" href="../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/agogo.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     
     <script type="text/javascript">
@@ -29,97 +29,901 @@
     <link rel="prev" title="diamfind" href="diamfind.html" /> 
   </head>
   <body>
-    <div class="related">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="../../genindex.html" title="General Index"
-             accesskey="I">index</a></li>
-        <li class="right" >
-          <a href="../../py-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li class="right" >
-          <a href="fibon.html" title="fibon – Fibonacci Series"
-             accesskey="N">next</a> |</li>
-        <li class="right" >
+    <div class="header-wrapper">
+      <div class="header">
+        <div class="headertitle"><a
+          href="../../index.html">HamCalc 2.1 documentation</a></div>
+        <div class="rel">
           <a href="diamfind.html" title="diamfind"
-             accesskey="P">previous</a> |</li>
-        <li><a href="../../index.html">HamCalc 2.1 documentation</a> &raquo;</li>
-          <li><a href="../index.html" >Python Modules</a> &raquo;</li>
-          <li><a href="index.html" accesskey="U">math &#8211; Math, Physics, Units Conversion</a> &raquo;</li> 
-      </ul>
-    </div>  
+             accesskey="P">previous</a> |
+          <a href="fibon.html" title="fibon – Fibonacci Series"
+             accesskey="N">next</a> |
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a>
+        </div>
+       </div>
+    </div>
 
-    <div class="document">
+    <div class="content-wrapper">
+      <div class="content">
+        <div class="document">
+            
       <div class="documentwrapper">
         <div class="bodywrapper">
           <div class="body">
             
-  <div class="section" id="equiv">
-<h1>equiv<a class="headerlink" href="#equiv" title="Permalink to this headline">¶</a></h1>
-<p>Degrees to radians
-Equivalent values
-Radians to degrees
-Temperature</p>
+  <div class="section" id="equiv-unit-conversions">
+<span id="math-equiv"></span><h1>equiv &#8211; Unit Conversions<a class="headerlink" href="#equiv-unit-conversions" title="Permalink to this headline">¶</a></h1>
+<p>From the QuickTables menu, we see the following four labels for this program.</p>
+<ul class="simple">
+<li>Degrees to radians</li>
+<li>Equivalent values</li>
+<li>Radians to degrees</li>
+<li>Temperature</li>
+</ul>
+<div class="section" id="analysis">
+<h2>Analysis<a class="headerlink" href="#analysis" title="Permalink to this headline">¶</a></h2>
+<p>There are 14 entries on the <strong class="program">equiv</strong> menu. One is a referene to the <strong class="program">deciconv</strong> program. One is copy-and-paste from <strong class="program">deciconv</strong>.
+Two are actually versions of one <strong>Solver</strong> that is the <strong class="program">elecleng</strong> program.
+Nine of the remaining ten are pretty simple <strong>Equivalents</strong> conversions.
+The tenth has a simple <strong>Solver</strong> in it.</p>
+<p>Capacitance</p>
+<blockquote>
+<div><p>This is the conversion among the following units:</p>
+<div class="highlight-python"><pre>960 U$(1)=&quot;Farads..............(F)&quot;:X(1)=1
+970 U$(2)=&quot;Microfarads........(µF)&quot;:X(2)=10^6
+980 U$(3)=&quot;Nanofarads.........(nF)&quot;:X(3)=10^9
+990 U$(4)=&quot;Picofarads.........(pF)&quot;:X(4)=10^12</pre>
+</div>
+</div></blockquote>
+<p>Current</p>
+<blockquote>
+<div><p>This is the conversion among the following units:</p>
+<div class="highlight-python"><pre>1170 U$(1)=&quot;Amperes.............(A)&quot;:X(1)=1
+1180 U$(2)=&quot;Milliamperes.......(mA)&quot;:X(2)=10^3
+1190 U$(3)=&quot;Microamperes.......(µA)&quot;:X(3)=10^6</pre>
+</div>
+</div></blockquote>
+<p>Degrees / Minutes / Seconds</p>
+<blockquote>
+<div>See <a class="reference internal" href="deciconv.html#math-deciconv"><em>deciconv &#8211; Decimal Hour/Degree Converter</em></a>. This is copy-and-paste code
+that&#8217;s very similar to <strong class="program">deciconv</strong>.</div></blockquote>
+<p>Degrees / Radians</p>
+<blockquote>
+<div><p>Here&#8217;s the Radians to Degrees equation. Solve for <img class="math" src="../../_images/math/96ab646de7704969b91c76a214126b45f2b07b25.png" alt="d"/> or <img class="math" src="../../_images/math/b55ca7a0aa88ab7d58f4fc035317fdac39b17861.png" alt="r"/>.</p>
+<div class="math">
+<p><img src="../../_images/math/f14ce0d205cd2adfa056158b5ef08d26589bc2cd.png" alt="\frac{r}{\pi} = \frac{d}{180}"/></p>
+</div></div></blockquote>
+<p>Frequencies/Wavelengths</p>
+<blockquote>
+<div><p>This is the conversion among the following units:</p>
+<div class="highlight-python"><pre>1260 U$(1)=&quot;hertz..............(Hz)&quot;:X(1)=1
+1270 U$(2)=&quot;kilohertz.........(kHz)&quot;:X(2)=10^-3
+1280 U$(3)=&quot;megahertz.........(MHz)&quot;:X(3)=10^-6
+1290 U$(4)=&quot;gigahertz.........(GHz)&quot;:X(4)=10^-9
+1300 U$(5)=&quot;wavelength (metres)....&quot;:X(5)=999</pre>
+</div>
+<p>The &#8220;999&#8221; is code for the frequency-wavelength equivalence.
+This is actually a piece of a <strong>Solver</strong>.</p>
+<div class="math">
+<p><img src="../../_images/math/2c57e20f8312bfea5853c14794b07580f0e6ccf2.png" alt="c = \lambda \nu"/></p>
+</div><p>The speed of light is wavelength (km) times frequency (per second).</p>
+<p>The constant HamCalc uses is <img class="math" src="../../_images/math/7ab52f0f3b396696972f6105a19bd392364a3275.png" alt="c=299792.458 \; km/s"/>.</p>
+</div></blockquote>
+<p>Inductance</p>
+<blockquote>
+<div><p>This is the conversion among the following units:</p>
+<div class="highlight-python"><pre>1060 U$(1)=&quot;Henrys..............(H)&quot;:X(1)=1
+1070 U$(2)=&quot;Millihenrys........(mH)&quot;:X(2)=10^3
+1080 U$(3)=&quot;Microhenrys........(µH)&quot;:X(3)=10^6
+1090 U$(4)=&quot;Nanohenrys.........(nH)&quot;:X(4)=10^9
+1100 U$(5)=&quot;Picohenrys.........(pH)&quot;:X(5)=10^12</pre>
+</div>
+</div></blockquote>
+<p>Length / Distance</p>
+<blockquote>
+<div><p>This is the conversion among the following units:</p>
+<div class="highlight-python"><pre>1370 U$(1)=&quot;Millimetres........(mm)&quot;:X(1)=10^3
+1380 U$(2)=&quot;Centimeters........(cm)&quot;:X(2)=10^2
+1390 U$(3)=&quot;Metres..............(m)&quot;:X(3)=1
+1400 U$(4)=&quot;Kilometres.........(km)&quot;:X(4)=0.001
+1410 U$(5)=&quot;Inches.............(in)&quot;:X(5)=39.370079
+1420 U$(6)=&quot;Feet...............(ft)&quot;:X(6)=39.370079/12
+1430 U$(7)=&quot;Miles..............(mi)&quot;:X(7)=39.370079/12/5280</pre>
+</div>
+</div></blockquote>
+<p>Transmission Line Length</p>
+<blockquote>
+<div><p>See <a class="reference internal" href="../electronics/elecleng.html#electronics-elecleng"><em>elecleng</em></a>.</p>
+<p>Nothing like any of the other conversions. This is a <strong>Solver</strong>
+for Frequency, Length (physical), Length Electrical (&#8220;degrees&#8221;) and
+Velocity Factor of the line.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">L:</th><td class="field-body">Line length in feet</td>
+</tr>
+<tr class="field-even field"><th class="field-name">N:</th><td class="field-body">Line length, electrical, in degrees</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">F:</th><td class="field-body">Frequency</td>
+</tr>
+<tr class="field-even field"><th class="field-name">V:</th><td class="field-body">Velocity Factor</td>
+</tr>
+</tbody>
+</table>
+<div class="math">
+<p><img src="../../_images/math/038fb94e0694af585453647d8a330fd6ff46de59.png" alt="L = 984 \frac{V N}{360 F}"/></p>
+</div><div class="math">
+<p><img src="../../_images/math/75fb2d1782ef1a3be605270aab4395f737ca1aab.png" alt="N = L F \frac{360}{984 V}"/></p>
+</div></div></blockquote>
+<p>Resistance</p>
+<blockquote>
+<div><p>This is the conversion among the following units:</p>
+<div class="highlight-python"><pre>1500 U$(1)=&quot;Ohms................(Ω)&quot;:X(1)=1
+1510 U$(2)=&quot;Kilohm.............(kΩ)&quot;:X(2)=10^-3
+1520 U$(3)=&quot;Megohm.............(MΩ)&quot;:X(3)=10^-6</pre>
+</div>
+</div></blockquote>
+<p>Temperature</p>
+<blockquote>
+<div><p>This is the conversion among the following units:</p>
+<div class="highlight-python"><pre>2420 U$(1)=&quot;Degrees Fahrenheit.....&quot;
+2430 U$(2)=&quot;Degrees Celsius........&quot;</pre>
+</div>
+</div></blockquote>
+<p>Time</p>
+<blockquote>
+<div><p>This is the conversion among the following units:</p>
+<div class="highlight-python"><pre>2150 U$(1)=&quot;Seconds................&quot;:X(1)=1
+2160 U$(2)=&quot;Minutes................&quot;:X(2)=1/60
+2170 U$(3)=&quot;Hours..................&quot;:X(3)=1/3600
+2180 U$(4)=&quot;Days...................&quot;:X(4)=1/86400.0!
+2190 U$(5)=&quot;Weeks..................&quot;:X(5)=1/604800.0!
+2200 U$(6)=&quot;Years (365.25 days)....&quot;:X(6)=1/31557600.0#</pre>
+</div>
+</div></blockquote>
+<p>Sexigesimal/decimal converter</p>
+<blockquote>
+<div>See <a class="reference internal" href="deciconv.html#math-deciconv"><em>deciconv &#8211; Decimal Hour/Degree Converter</em></a>.</div></blockquote>
+<p>Miles per imperial gallon / kilometres per litre</p>
+<blockquote>
+<div><p>This is the conversion among the following units:</p>
+<div class="highlight-python"><pre>2950 PRINT &quot; Is known factor (m)iles per imperial gallon or (k)ilometres &quot;;
+2960 PRINT &quot;per litre?  (m/k)&quot;
+
+3020 IF Z$=&quot;m&quot;THEN A=Z:B=Z*0.354:C=100/B:D=A/1.2
+3030 IF Z$=&quot;k&quot;THEN A=Z:B=Z/0.354:C=100/A:D=B/1.2</pre>
+</div>
+</div></blockquote>
+<p>Electrical length / Physical length</p>
+<blockquote>
+<div><p>See <a class="reference internal" href="../electronics/elecleng.html#electronics-elecleng"><em>elecleng</em></a>.</p>
+<p>This is more of the <strong>Solver</strong> shown above under <strong>Transmission Line Length</strong>.</p>
+<div class="highlight-python"><pre>3190 PRINT &quot; Is known length in (d)egrees, (i)nches, or (c)entimetres? (d/i/c)&quot;
+
+3270 IF L$=&quot;d&quot;THEN LD=L:LI=L*(32.8/F):LC=LI*2.54:GOTO 3300
+3280 IF L$=&quot;i&quot;THEN LI=L:LC=LI*2.54:LD=LI/(32.8/F):GOTO 3300
+3290 IF L$=&quot;c&quot;THEN LC=L:LI=LC/2.54:LD=LI/(32.8/F):GOTO 3300
+
+3310 PRINT USING &quot; Frequency.......... ###.### MHz&quot;;F
+3320 PRINT USING &quot; Electrical length.. ###.### deg.&quot;;LD
+3330 PRINT USING &quot; Physical length.... ###.### in.&quot;;LI
+3340 PRINT USING &quot;                .... ###.### cm.&quot;;LC</pre>
+</div>
+</div></blockquote>
+</div>
+<div class="section" id="implementation">
+<h2>Implementation<a class="headerlink" href="#implementation" title="Permalink to this headline">¶</a></h2>
+<p>We can ignore the electical line length and sexagesimal conversions.
+They&#8217;re simply links to other programs.</p>
+<span class="target" id="module-hamcalc.math.equiv"></span><p>hamcalc.meth.equiv &#8211; Unit Conversions</p>
+<p>Simple Units</p>
+<ul class="simple">
+<li>Capacitance</li>
+<li>Current</li>
+<li>Degrees / Radians</li>
+<li>Inductance</li>
+<li>Length / Distance</li>
+<li>Resistance</li>
+<li>Temperature</li>
+<li>Time</li>
+<li>MPG/KPL</li>
+</ul>
+<p>Plus, the Frequencies/Wavelengths is both units conversion and a <img class="math" src="../../_images/math/3520a52b733a0dc958033dce67ecf4b300364ef0.png" alt="c=\lambda
+u"/>  <strong>Solver</strong>.</p>
+<p>Test Cases, Unit-by-Unit</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">hamcalc.math.equiv</span> <span class="kn">as</span> <span class="nn">equiv</span>
+</pre></div>
+</div>
+<p>Capacitance</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span><span class="o">=</span> <span class="n">equiv</span><span class="o">.</span><span class="n">FARAD</span><span class="o">.</span><span class="n">to_std</span><span class="p">(</span> <span class="o">.</span><span class="mo">0000001</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">equiv</span><span class="o">.</span><span class="n">MICROFARAD</span><span class="o">.</span><span class="n">from_std</span><span class="p">(</span> <span class="n">x</span> <span class="p">)</span>
+<span class="go">0.09999999999999999</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">equiv</span><span class="o">.</span><span class="n">NANOFARAD</span><span class="o">.</span><span class="n">from_std</span><span class="p">(</span> <span class="n">x</span> <span class="p">)</span>
+<span class="go">100.0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">equiv</span><span class="o">.</span><span class="n">PICOFARAD</span><span class="o">.</span><span class="n">from_std</span><span class="p">(</span> <span class="n">x</span> <span class="p">)</span>
+<span class="go">100000.0</span>
+</pre></div>
+</div>
+<p>Current</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span><span class="o">=</span> <span class="n">equiv</span><span class="o">.</span><span class="n">MILLIAMPERE</span><span class="o">.</span><span class="n">to_std</span><span class="p">(</span> <span class="mi">150</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">equiv</span><span class="o">.</span><span class="n">AMPERE</span><span class="o">.</span><span class="n">from_std</span><span class="p">(</span> <span class="n">x</span> <span class="p">)</span>
+<span class="go">0.15</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">equiv</span><span class="o">.</span><span class="n">MICROAMPERE</span><span class="o">.</span><span class="n">from_std</span><span class="p">(</span> <span class="n">x</span> <span class="p">)</span>
+<span class="go">150000.0</span>
+</pre></div>
+</div>
+<p>Degree/Radians</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span><span class="o">=</span> <span class="n">equiv</span><span class="o">.</span><span class="n">DEGREE</span><span class="o">.</span><span class="n">to_std</span><span class="p">(</span> <span class="mi">30</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">equiv</span><span class="o">.</span><span class="n">RADIAN</span><span class="o">.</span><span class="n">from_std</span><span class="p">(</span> <span class="n">x</span> <span class="p">)</span>
+<span class="go">0.5235987755982988</span>
+</pre></div>
+</div>
+<p>Frequency</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span><span class="o">=</span> <span class="n">equiv</span><span class="o">.</span><span class="n">MEGAHERTZ</span><span class="o">.</span><span class="n">to_std</span><span class="p">(</span> <span class="mf">157.100</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">equiv</span><span class="o">.</span><span class="n">HERTZ</span><span class="o">.</span><span class="n">from_std</span><span class="p">(</span> <span class="n">x</span> <span class="p">)</span>
+<span class="go">157100000.0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">equiv</span><span class="o">.</span><span class="n">KILOHERTZ</span><span class="o">.</span><span class="n">from_std</span><span class="p">(</span> <span class="n">x</span> <span class="p">)</span>
+<span class="go">157100.0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">equiv</span><span class="o">.</span><span class="n">GIGAHERTZ</span><span class="o">.</span><span class="n">from_std</span><span class="p">(</span> <span class="n">x</span> <span class="p">)</span>
+<span class="go">0.15710000000000002</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">equiv</span><span class="o">.</span><span class="n">freq_wavelength</span><span class="p">(</span> <span class="n">f</span><span class="o">=</span><span class="mf">157100000.0</span> <span class="p">)</span>
+<span class="go">{&#39;l&#39;: 1.908290630171865, &#39;f&#39;: 157100000.0}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">equiv</span><span class="o">.</span><span class="n">freq_wavelength</span><span class="p">(</span> <span class="n">l</span><span class="o">=</span><span class="mi">10</span> <span class="p">)</span>
+<span class="go">{&#39;l&#39;: 10, &#39;f&#39;: 29979245.799999997}</span>
+</pre></div>
+</div>
+<p>Inductance</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span><span class="o">=</span><span class="n">equiv</span><span class="o">.</span><span class="n">MILLIHENRY</span><span class="o">.</span><span class="n">to_std</span><span class="p">(</span> <span class="mi">2</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">equiv</span><span class="o">.</span><span class="n">HENRY</span><span class="o">.</span><span class="n">from_std</span><span class="p">(</span> <span class="n">x</span> <span class="p">)</span>
+<span class="go">0.002</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">equiv</span><span class="o">.</span><span class="n">MICROHENRY</span><span class="o">.</span><span class="n">from_std</span><span class="p">(</span> <span class="n">x</span> <span class="p">)</span>
+<span class="go">2000.0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">equiv</span><span class="o">.</span><span class="n">NANOHENRY</span><span class="o">.</span><span class="n">from_std</span><span class="p">(</span> <span class="n">x</span> <span class="p">)</span>
+<span class="go">2000000.0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">equiv</span><span class="o">.</span><span class="n">PICOHENRY</span><span class="o">.</span><span class="n">from_std</span><span class="p">(</span> <span class="n">x</span> <span class="p">)</span>
+<span class="go">2000000000.0</span>
+</pre></div>
+</div>
+<p>Length/Distance</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span><span class="o">=</span> <span class="n">equiv</span><span class="o">.</span><span class="n">FOOT</span><span class="o">.</span><span class="n">to_std</span><span class="p">(</span> <span class="mf">6076.1155</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">equiv</span><span class="o">.</span><span class="n">KILOMETRE</span><span class="o">.</span><span class="n">from_std</span><span class="p">(</span> <span class="n">x</span> <span class="p">)</span>
+<span class="go">1.8519999921768002</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">equiv</span><span class="o">.</span><span class="n">MILE</span><span class="o">.</span><span class="n">from_std</span><span class="p">(</span> <span class="n">x</span> <span class="p">)</span>
+<span class="go">1.1507794507575757</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">y</span><span class="o">=</span> <span class="n">equiv</span><span class="o">.</span><span class="n">FOOT</span><span class="o">.</span><span class="n">to_std</span><span class="p">(</span> <span class="mf">13.302</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">equiv</span><span class="o">.</span><span class="n">METRE</span><span class="o">.</span><span class="n">from_std</span><span class="p">(</span> <span class="n">y</span> <span class="p">)</span>
+<span class="go">4.054449573240633</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">equiv</span><span class="o">.</span><span class="n">CENTIMETRE</span><span class="o">.</span><span class="n">from_std</span><span class="p">(</span> <span class="n">y</span> <span class="p">)</span>
+<span class="go">405.4449573240633</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">equiv</span><span class="o">.</span><span class="n">MILLIMETRE</span><span class="o">.</span><span class="n">from_std</span><span class="p">(</span> <span class="n">y</span> <span class="p">)</span>
+<span class="go">4054.4495732406326</span>
+</pre></div>
+</div>
+<p>Resistance</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span><span class="o">=</span> <span class="n">equiv</span><span class="o">.</span><span class="n">KILOHM</span><span class="o">.</span><span class="n">to_std</span><span class="p">(</span> <span class="mf">4.70</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">equiv</span><span class="o">.</span><span class="n">OHM</span><span class="o">.</span><span class="n">from_std</span><span class="p">(</span> <span class="n">x</span> <span class="p">)</span>
+<span class="go">4700.0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">equiv</span><span class="o">.</span><span class="n">MEGOHM</span><span class="o">.</span><span class="n">from_std</span><span class="p">(</span> <span class="n">x</span> <span class="p">)</span>
+<span class="go">0.0047</span>
+</pre></div>
+</div>
+<p>Temperature</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span><span class="o">=</span> <span class="n">equiv</span><span class="o">.</span><span class="n">FAHRENHEIT</span><span class="o">.</span><span class="n">to_std</span><span class="p">(</span> <span class="mi">72</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">equiv</span><span class="o">.</span><span class="n">CELSIUS</span><span class="o">.</span><span class="n">from_std</span><span class="p">(</span> <span class="n">x</span> <span class="p">)</span>
+<span class="go">22.22222222222222</span>
+</pre></div>
+</div>
+<p>Time</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span><span class="o">=</span> <span class="n">equiv</span><span class="o">.</span><span class="n">WEEK</span><span class="o">.</span><span class="n">to_std</span><span class="p">(</span> <span class="mi">3</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">equiv</span><span class="o">.</span><span class="n">DAY</span><span class="o">.</span><span class="n">from_std</span><span class="p">(</span> <span class="n">x</span> <span class="p">)</span>
+<span class="go">21.0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">equiv</span><span class="o">.</span><span class="n">YEAR</span><span class="o">.</span><span class="n">from_std</span><span class="p">(</span> <span class="n">x</span> <span class="p">)</span>
+<span class="go">0.05749486652977412</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">y</span><span class="o">=</span> <span class="n">equiv</span><span class="o">.</span><span class="n">MINUTE</span><span class="o">.</span><span class="n">to_std</span><span class="p">(</span> <span class="mi">45</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">equiv</span><span class="o">.</span><span class="n">HOUR</span><span class="o">.</span><span class="n">from_std</span><span class="p">(</span> <span class="n">y</span> <span class="p">)</span>
+<span class="go">0.75</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">equiv</span><span class="o">.</span><span class="n">SECOND</span><span class="o">.</span><span class="n">from_std</span><span class="p">(</span> <span class="n">y</span> <span class="p">)</span>
+<span class="go">2700.0</span>
+</pre></div>
+</div>
+<p>MPG</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span><span class="o">=</span> <span class="n">equiv</span><span class="o">.</span><span class="n">MPGI</span><span class="o">.</span><span class="n">to_std</span><span class="p">(</span> <span class="mf">12.5</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">equiv</span><span class="o">.</span><span class="n">MPG</span><span class="o">.</span><span class="n">from_std</span><span class="p">(</span> <span class="n">x</span> <span class="p">)</span>
+<span class="go">10.416666666666668</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">equiv</span><span class="o">.</span><span class="n">KPL</span><span class="o">.</span><span class="n">from_std</span><span class="p">(</span> <span class="n">x</span> <span class="p">)</span>
+<span class="go">4.425</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">equiv</span><span class="o">.</span><span class="n">LPK</span><span class="o">.</span><span class="n">from_std</span><span class="p">(</span> <span class="n">x</span> <span class="p">)</span>
+<span class="go">35.31073446327684</span>
+</pre></div>
+</div>
+<p>It&#8217;s possible that the legacy computes this incorrectly.
+The result from the legacy may be 22.6 LPK.</p>
+<dl class="class">
+<dt id="hamcalc.math.equiv.AMPERE">
+<em class="property">class </em><tt class="descclassname">hamcalc.math.equiv.</tt><tt class="descname">AMPERE</tt><a class="reference internal" href="../../_modules/hamcalc/math/equiv.html#AMPERE"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.math.equiv.AMPERE" title="Permalink to this definition">¶</a></dt>
+<dd><p>Ampere</p>
+<dl class="attribute">
+<dt id="hamcalc.math.equiv.AMPERE.standard">
+<tt class="descname">standard</tt><a class="headerlink" href="#hamcalc.math.equiv.AMPERE.standard" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#hamcalc.math.equiv.AMPERE" title="hamcalc.math.equiv.AMPERE"><tt class="xref py py-class docutils literal"><span class="pre">AMPERE</span></tt></a></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="hamcalc.math.equiv.CELSIUS">
+<em class="property">class </em><tt class="descclassname">hamcalc.math.equiv.</tt><tt class="descname">CELSIUS</tt><a class="reference internal" href="../../_modules/hamcalc/math/equiv.html#CELSIUS"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.math.equiv.CELSIUS" title="Permalink to this definition">¶</a></dt>
+<dd><p>Degrees C</p>
+<dl class="attribute">
+<dt id="hamcalc.math.equiv.CELSIUS.standard">
+<tt class="descname">standard</tt><a class="headerlink" href="#hamcalc.math.equiv.CELSIUS.standard" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#hamcalc.math.equiv.CELSIUS" title="hamcalc.math.equiv.CELSIUS"><tt class="xref py py-class docutils literal"><span class="pre">CELSIUS</span></tt></a></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="hamcalc.math.equiv.CENTIMETRE">
+<em class="property">class </em><tt class="descclassname">hamcalc.math.equiv.</tt><tt class="descname">CENTIMETRE</tt><a class="headerlink" href="#hamcalc.math.equiv.CENTIMETRE" title="Permalink to this definition">¶</a></dt>
+<dd><p>centimetre</p>
+<dl class="attribute">
+<dt id="hamcalc.math.equiv.CENTIMETRE.standard">
+<tt class="descname">standard</tt><a class="headerlink" href="#hamcalc.math.equiv.CENTIMETRE.standard" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#hamcalc.math.equiv.METRE" title="hamcalc.math.equiv.METRE"><tt class="xref py py-class docutils literal"><span class="pre">METRE</span></tt></a></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="hamcalc.math.equiv.DAY">
+<em class="property">class </em><tt class="descclassname">hamcalc.math.equiv.</tt><tt class="descname">DAY</tt><a class="headerlink" href="#hamcalc.math.equiv.DAY" title="Permalink to this definition">¶</a></dt>
+<dd><p>Day</p>
+<dl class="attribute">
+<dt id="hamcalc.math.equiv.DAY.standard">
+<tt class="descname">standard</tt><a class="headerlink" href="#hamcalc.math.equiv.DAY.standard" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#hamcalc.math.equiv.SECOND" title="hamcalc.math.equiv.SECOND"><tt class="xref py py-class docutils literal"><span class="pre">SECOND</span></tt></a></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="hamcalc.math.equiv.DEGREE">
+<em class="property">class </em><tt class="descclassname">hamcalc.math.equiv.</tt><tt class="descname">DEGREE</tt><a class="headerlink" href="#hamcalc.math.equiv.DEGREE" title="Permalink to this definition">¶</a></dt>
+<dd><p>Degree</p>
+<dl class="attribute">
+<dt id="hamcalc.math.equiv.DEGREE.standard">
+<tt class="descname">standard</tt><a class="headerlink" href="#hamcalc.math.equiv.DEGREE.standard" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#hamcalc.math.equiv.RADIAN" title="hamcalc.math.equiv.RADIAN"><tt class="xref py py-class docutils literal"><span class="pre">RADIAN</span></tt></a></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="hamcalc.math.equiv.FAHRENHEIT">
+<em class="property">class </em><tt class="descclassname">hamcalc.math.equiv.</tt><tt class="descname">FAHRENHEIT</tt><a class="headerlink" href="#hamcalc.math.equiv.FAHRENHEIT" title="Permalink to this definition">¶</a></dt>
+<dd><p>Degrees F</p>
+<dl class="attribute">
+<dt id="hamcalc.math.equiv.FAHRENHEIT.standard">
+<tt class="descname">standard</tt><a class="headerlink" href="#hamcalc.math.equiv.FAHRENHEIT.standard" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#hamcalc.math.equiv.CELSIUS" title="hamcalc.math.equiv.CELSIUS"><tt class="xref py py-class docutils literal"><span class="pre">CELSIUS</span></tt></a></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="hamcalc.math.equiv.FARAD">
+<em class="property">class </em><tt class="descclassname">hamcalc.math.equiv.</tt><tt class="descname">FARAD</tt><a class="reference internal" href="../../_modules/hamcalc/math/equiv.html#FARAD"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.math.equiv.FARAD" title="Permalink to this definition">¶</a></dt>
+<dd><p>Farad</p>
+<dl class="attribute">
+<dt id="hamcalc.math.equiv.FARAD.standard">
+<tt class="descname">standard</tt><a class="headerlink" href="#hamcalc.math.equiv.FARAD.standard" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#hamcalc.math.equiv.FARAD" title="hamcalc.math.equiv.FARAD"><tt class="xref py py-class docutils literal"><span class="pre">FARAD</span></tt></a></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="hamcalc.math.equiv.FOOT">
+<em class="property">class </em><tt class="descclassname">hamcalc.math.equiv.</tt><tt class="descname">FOOT</tt><a class="headerlink" href="#hamcalc.math.equiv.FOOT" title="Permalink to this definition">¶</a></dt>
+<dd><p>Foot</p>
+<dl class="attribute">
+<dt id="hamcalc.math.equiv.FOOT.standard">
+<tt class="descname">standard</tt><a class="headerlink" href="#hamcalc.math.equiv.FOOT.standard" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#hamcalc.math.equiv.METRE" title="hamcalc.math.equiv.METRE"><tt class="xref py py-class docutils literal"><span class="pre">METRE</span></tt></a></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="hamcalc.math.equiv.GIGAHERTZ">
+<em class="property">class </em><tt class="descclassname">hamcalc.math.equiv.</tt><tt class="descname">GIGAHERTZ</tt><a class="headerlink" href="#hamcalc.math.equiv.GIGAHERTZ" title="Permalink to this definition">¶</a></dt>
+<dd><p>gigahertz</p>
+<dl class="attribute">
+<dt id="hamcalc.math.equiv.GIGAHERTZ.standard">
+<tt class="descname">standard</tt><a class="headerlink" href="#hamcalc.math.equiv.GIGAHERTZ.standard" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#hamcalc.math.equiv.HERTZ" title="hamcalc.math.equiv.HERTZ"><tt class="xref py py-class docutils literal"><span class="pre">HERTZ</span></tt></a></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="hamcalc.math.equiv.HENRY">
+<em class="property">class </em><tt class="descclassname">hamcalc.math.equiv.</tt><tt class="descname">HENRY</tt><a class="reference internal" href="../../_modules/hamcalc/math/equiv.html#HENRY"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.math.equiv.HENRY" title="Permalink to this definition">¶</a></dt>
+<dd><p>Henry</p>
+<dl class="attribute">
+<dt id="hamcalc.math.equiv.HENRY.standard">
+<tt class="descname">standard</tt><a class="headerlink" href="#hamcalc.math.equiv.HENRY.standard" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#hamcalc.math.equiv.HENRY" title="hamcalc.math.equiv.HENRY"><tt class="xref py py-class docutils literal"><span class="pre">HENRY</span></tt></a></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="hamcalc.math.equiv.HERTZ">
+<em class="property">class </em><tt class="descclassname">hamcalc.math.equiv.</tt><tt class="descname">HERTZ</tt><a class="reference internal" href="../../_modules/hamcalc/math/equiv.html#HERTZ"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.math.equiv.HERTZ" title="Permalink to this definition">¶</a></dt>
+<dd><p>Hertz</p>
+<dl class="attribute">
+<dt id="hamcalc.math.equiv.HERTZ.standard">
+<tt class="descname">standard</tt><a class="headerlink" href="#hamcalc.math.equiv.HERTZ.standard" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#hamcalc.math.equiv.HERTZ" title="hamcalc.math.equiv.HERTZ"><tt class="xref py py-class docutils literal"><span class="pre">HERTZ</span></tt></a></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="hamcalc.math.equiv.HOUR">
+<em class="property">class </em><tt class="descclassname">hamcalc.math.equiv.</tt><tt class="descname">HOUR</tt><a class="headerlink" href="#hamcalc.math.equiv.HOUR" title="Permalink to this definition">¶</a></dt>
+<dd><p>Hour</p>
+<dl class="attribute">
+<dt id="hamcalc.math.equiv.HOUR.standard">
+<tt class="descname">standard</tt><a class="headerlink" href="#hamcalc.math.equiv.HOUR.standard" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#hamcalc.math.equiv.SECOND" title="hamcalc.math.equiv.SECOND"><tt class="xref py py-class docutils literal"><span class="pre">SECOND</span></tt></a></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="hamcalc.math.equiv.INCH">
+<em class="property">class </em><tt class="descclassname">hamcalc.math.equiv.</tt><tt class="descname">INCH</tt><a class="headerlink" href="#hamcalc.math.equiv.INCH" title="Permalink to this definition">¶</a></dt>
+<dd><p>Inch</p>
+<dl class="attribute">
+<dt id="hamcalc.math.equiv.INCH.standard">
+<tt class="descname">standard</tt><a class="headerlink" href="#hamcalc.math.equiv.INCH.standard" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#hamcalc.math.equiv.METRE" title="hamcalc.math.equiv.METRE"><tt class="xref py py-class docutils literal"><span class="pre">METRE</span></tt></a></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="hamcalc.math.equiv.KILOHERTZ">
+<em class="property">class </em><tt class="descclassname">hamcalc.math.equiv.</tt><tt class="descname">KILOHERTZ</tt><a class="headerlink" href="#hamcalc.math.equiv.KILOHERTZ" title="Permalink to this definition">¶</a></dt>
+<dd><p>kilohertz</p>
+<dl class="attribute">
+<dt id="hamcalc.math.equiv.KILOHERTZ.standard">
+<tt class="descname">standard</tt><a class="headerlink" href="#hamcalc.math.equiv.KILOHERTZ.standard" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#hamcalc.math.equiv.HERTZ" title="hamcalc.math.equiv.HERTZ"><tt class="xref py py-class docutils literal"><span class="pre">HERTZ</span></tt></a></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="hamcalc.math.equiv.KILOHM">
+<em class="property">class </em><tt class="descclassname">hamcalc.math.equiv.</tt><tt class="descname">KILOHM</tt><a class="headerlink" href="#hamcalc.math.equiv.KILOHM" title="Permalink to this definition">¶</a></dt>
+<dd><p>kilohm</p>
+<dl class="attribute">
+<dt id="hamcalc.math.equiv.KILOHM.standard">
+<tt class="descname">standard</tt><a class="headerlink" href="#hamcalc.math.equiv.KILOHM.standard" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#hamcalc.math.equiv.OHM" title="hamcalc.math.equiv.OHM"><tt class="xref py py-class docutils literal"><span class="pre">OHM</span></tt></a></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="hamcalc.math.equiv.KILOMETRE">
+<em class="property">class </em><tt class="descclassname">hamcalc.math.equiv.</tt><tt class="descname">KILOMETRE</tt><a class="headerlink" href="#hamcalc.math.equiv.KILOMETRE" title="Permalink to this definition">¶</a></dt>
+<dd><p>kilometre</p>
+<dl class="attribute">
+<dt id="hamcalc.math.equiv.KILOMETRE.standard">
+<tt class="descname">standard</tt><a class="headerlink" href="#hamcalc.math.equiv.KILOMETRE.standard" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#hamcalc.math.equiv.METRE" title="hamcalc.math.equiv.METRE"><tt class="xref py py-class docutils literal"><span class="pre">METRE</span></tt></a></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="hamcalc.math.equiv.KPL">
+<em class="property">class </em><tt class="descclassname">hamcalc.math.equiv.</tt><tt class="descname">KPL</tt><a class="headerlink" href="#hamcalc.math.equiv.KPL" title="Permalink to this definition">¶</a></dt>
+<dd><p>Kilometres per Litre</p>
+<dl class="attribute">
+<dt id="hamcalc.math.equiv.KPL.standard">
+<tt class="descname">standard</tt><a class="headerlink" href="#hamcalc.math.equiv.KPL.standard" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#hamcalc.math.equiv.MPGI" title="hamcalc.math.equiv.MPGI"><tt class="xref py py-class docutils literal"><span class="pre">MPGI</span></tt></a></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="hamcalc.math.equiv.LPK">
+<em class="property">class </em><tt class="descclassname">hamcalc.math.equiv.</tt><tt class="descname">LPK</tt><a class="headerlink" href="#hamcalc.math.equiv.LPK" title="Permalink to this definition">¶</a></dt>
+<dd><p>Litres per 100 Kilometre</p>
+<dl class="attribute">
+<dt id="hamcalc.math.equiv.LPK.standard">
+<tt class="descname">standard</tt><a class="headerlink" href="#hamcalc.math.equiv.LPK.standard" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#hamcalc.math.equiv.MPGI" title="hamcalc.math.equiv.MPGI"><tt class="xref py py-class docutils literal"><span class="pre">MPGI</span></tt></a></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="hamcalc.math.equiv.MEGAHERTZ">
+<em class="property">class </em><tt class="descclassname">hamcalc.math.equiv.</tt><tt class="descname">MEGAHERTZ</tt><a class="headerlink" href="#hamcalc.math.equiv.MEGAHERTZ" title="Permalink to this definition">¶</a></dt>
+<dd><p>megahertz</p>
+<dl class="attribute">
+<dt id="hamcalc.math.equiv.MEGAHERTZ.standard">
+<tt class="descname">standard</tt><a class="headerlink" href="#hamcalc.math.equiv.MEGAHERTZ.standard" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#hamcalc.math.equiv.HERTZ" title="hamcalc.math.equiv.HERTZ"><tt class="xref py py-class docutils literal"><span class="pre">HERTZ</span></tt></a></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="hamcalc.math.equiv.MEGOHM">
+<em class="property">class </em><tt class="descclassname">hamcalc.math.equiv.</tt><tt class="descname">MEGOHM</tt><a class="headerlink" href="#hamcalc.math.equiv.MEGOHM" title="Permalink to this definition">¶</a></dt>
+<dd><p>megohm</p>
+<dl class="attribute">
+<dt id="hamcalc.math.equiv.MEGOHM.standard">
+<tt class="descname">standard</tt><a class="headerlink" href="#hamcalc.math.equiv.MEGOHM.standard" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#hamcalc.math.equiv.OHM" title="hamcalc.math.equiv.OHM"><tt class="xref py py-class docutils literal"><span class="pre">OHM</span></tt></a></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="hamcalc.math.equiv.METRE">
+<em class="property">class </em><tt class="descclassname">hamcalc.math.equiv.</tt><tt class="descname">METRE</tt><a class="reference internal" href="../../_modules/hamcalc/math/equiv.html#METRE"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.math.equiv.METRE" title="Permalink to this definition">¶</a></dt>
+<dd><p>Metre</p>
+<dl class="attribute">
+<dt id="hamcalc.math.equiv.METRE.standard">
+<tt class="descname">standard</tt><a class="headerlink" href="#hamcalc.math.equiv.METRE.standard" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#hamcalc.math.equiv.METRE" title="hamcalc.math.equiv.METRE"><tt class="xref py py-class docutils literal"><span class="pre">METRE</span></tt></a></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="hamcalc.math.equiv.MICROAMPERE">
+<em class="property">class </em><tt class="descclassname">hamcalc.math.equiv.</tt><tt class="descname">MICROAMPERE</tt><a class="headerlink" href="#hamcalc.math.equiv.MICROAMPERE" title="Permalink to this definition">¶</a></dt>
+<dd><p>micrampere</p>
+<dl class="attribute">
+<dt id="hamcalc.math.equiv.MICROAMPERE.standard">
+<tt class="descname">standard</tt><a class="headerlink" href="#hamcalc.math.equiv.MICROAMPERE.standard" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#hamcalc.math.equiv.AMPERE" title="hamcalc.math.equiv.AMPERE"><tt class="xref py py-class docutils literal"><span class="pre">AMPERE</span></tt></a></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="hamcalc.math.equiv.MICROFARAD">
+<em class="property">class </em><tt class="descclassname">hamcalc.math.equiv.</tt><tt class="descname">MICROFARAD</tt><a class="headerlink" href="#hamcalc.math.equiv.MICROFARAD" title="Permalink to this definition">¶</a></dt>
+<dd><p>microfarad</p>
+<dl class="attribute">
+<dt id="hamcalc.math.equiv.MICROFARAD.standard">
+<tt class="descname">standard</tt><a class="headerlink" href="#hamcalc.math.equiv.MICROFARAD.standard" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#hamcalc.math.equiv.FARAD" title="hamcalc.math.equiv.FARAD"><tt class="xref py py-class docutils literal"><span class="pre">FARAD</span></tt></a></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="hamcalc.math.equiv.MICROHENRY">
+<em class="property">class </em><tt class="descclassname">hamcalc.math.equiv.</tt><tt class="descname">MICROHENRY</tt><a class="headerlink" href="#hamcalc.math.equiv.MICROHENRY" title="Permalink to this definition">¶</a></dt>
+<dd><p>microhenry</p>
+<dl class="attribute">
+<dt id="hamcalc.math.equiv.MICROHENRY.standard">
+<tt class="descname">standard</tt><a class="headerlink" href="#hamcalc.math.equiv.MICROHENRY.standard" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#hamcalc.math.equiv.HENRY" title="hamcalc.math.equiv.HENRY"><tt class="xref py py-class docutils literal"><span class="pre">HENRY</span></tt></a></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="hamcalc.math.equiv.MILE">
+<em class="property">class </em><tt class="descclassname">hamcalc.math.equiv.</tt><tt class="descname">MILE</tt><a class="headerlink" href="#hamcalc.math.equiv.MILE" title="Permalink to this definition">¶</a></dt>
+<dd><p>Mile</p>
+<dl class="attribute">
+<dt id="hamcalc.math.equiv.MILE.standard">
+<tt class="descname">standard</tt><a class="headerlink" href="#hamcalc.math.equiv.MILE.standard" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#hamcalc.math.equiv.METRE" title="hamcalc.math.equiv.METRE"><tt class="xref py py-class docutils literal"><span class="pre">METRE</span></tt></a></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="hamcalc.math.equiv.MILLIAMPERE">
+<em class="property">class </em><tt class="descclassname">hamcalc.math.equiv.</tt><tt class="descname">MILLIAMPERE</tt><a class="headerlink" href="#hamcalc.math.equiv.MILLIAMPERE" title="Permalink to this definition">¶</a></dt>
+<dd><p>millimpere</p>
+<dl class="attribute">
+<dt id="hamcalc.math.equiv.MILLIAMPERE.standard">
+<tt class="descname">standard</tt><a class="headerlink" href="#hamcalc.math.equiv.MILLIAMPERE.standard" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#hamcalc.math.equiv.AMPERE" title="hamcalc.math.equiv.AMPERE"><tt class="xref py py-class docutils literal"><span class="pre">AMPERE</span></tt></a></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="hamcalc.math.equiv.MILLIHENRY">
+<em class="property">class </em><tt class="descclassname">hamcalc.math.equiv.</tt><tt class="descname">MILLIHENRY</tt><a class="headerlink" href="#hamcalc.math.equiv.MILLIHENRY" title="Permalink to this definition">¶</a></dt>
+<dd><p>millihenry</p>
+<dl class="attribute">
+<dt id="hamcalc.math.equiv.MILLIHENRY.standard">
+<tt class="descname">standard</tt><a class="headerlink" href="#hamcalc.math.equiv.MILLIHENRY.standard" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#hamcalc.math.equiv.HENRY" title="hamcalc.math.equiv.HENRY"><tt class="xref py py-class docutils literal"><span class="pre">HENRY</span></tt></a></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="hamcalc.math.equiv.MILLIMETRE">
+<em class="property">class </em><tt class="descclassname">hamcalc.math.equiv.</tt><tt class="descname">MILLIMETRE</tt><a class="headerlink" href="#hamcalc.math.equiv.MILLIMETRE" title="Permalink to this definition">¶</a></dt>
+<dd><p>millimetre</p>
+<dl class="attribute">
+<dt id="hamcalc.math.equiv.MILLIMETRE.standard">
+<tt class="descname">standard</tt><a class="headerlink" href="#hamcalc.math.equiv.MILLIMETRE.standard" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#hamcalc.math.equiv.METRE" title="hamcalc.math.equiv.METRE"><tt class="xref py py-class docutils literal"><span class="pre">METRE</span></tt></a></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="hamcalc.math.equiv.MINUTE">
+<em class="property">class </em><tt class="descclassname">hamcalc.math.equiv.</tt><tt class="descname">MINUTE</tt><a class="headerlink" href="#hamcalc.math.equiv.MINUTE" title="Permalink to this definition">¶</a></dt>
+<dd><p>Minute</p>
+<dl class="attribute">
+<dt id="hamcalc.math.equiv.MINUTE.standard">
+<tt class="descname">standard</tt><a class="headerlink" href="#hamcalc.math.equiv.MINUTE.standard" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#hamcalc.math.equiv.SECOND" title="hamcalc.math.equiv.SECOND"><tt class="xref py py-class docutils literal"><span class="pre">SECOND</span></tt></a></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="hamcalc.math.equiv.MPG">
+<em class="property">class </em><tt class="descclassname">hamcalc.math.equiv.</tt><tt class="descname">MPG</tt><a class="reference internal" href="../../_modules/hamcalc/math/equiv.html#MPG"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.math.equiv.MPG" title="Permalink to this definition">¶</a></dt>
+<dd><p>Miles per US Gallon</p>
+<dl class="attribute">
+<dt id="hamcalc.math.equiv.MPG.standard">
+<tt class="descname">standard</tt><a class="headerlink" href="#hamcalc.math.equiv.MPG.standard" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#hamcalc.math.equiv.MPGI" title="hamcalc.math.equiv.MPGI"><tt class="xref py py-class docutils literal"><span class="pre">MPGI</span></tt></a></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="hamcalc.math.equiv.MPGI">
+<em class="property">class </em><tt class="descclassname">hamcalc.math.equiv.</tt><tt class="descname">MPGI</tt><a class="headerlink" href="#hamcalc.math.equiv.MPGI" title="Permalink to this definition">¶</a></dt>
+<dd><p>Miles per Imperial Gallon</p>
+<dl class="attribute">
+<dt id="hamcalc.math.equiv.MPGI.standard">
+<tt class="descname">standard</tt><a class="headerlink" href="#hamcalc.math.equiv.MPGI.standard" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#hamcalc.math.equiv.MPGI" title="hamcalc.math.equiv.MPGI"><tt class="xref py py-class docutils literal"><span class="pre">MPGI</span></tt></a></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="hamcalc.math.equiv.NANOFARAD">
+<em class="property">class </em><tt class="descclassname">hamcalc.math.equiv.</tt><tt class="descname">NANOFARAD</tt><a class="headerlink" href="#hamcalc.math.equiv.NANOFARAD" title="Permalink to this definition">¶</a></dt>
+<dd><p>nanofarad</p>
+<dl class="attribute">
+<dt id="hamcalc.math.equiv.NANOFARAD.standard">
+<tt class="descname">standard</tt><a class="headerlink" href="#hamcalc.math.equiv.NANOFARAD.standard" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#hamcalc.math.equiv.FARAD" title="hamcalc.math.equiv.FARAD"><tt class="xref py py-class docutils literal"><span class="pre">FARAD</span></tt></a></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="hamcalc.math.equiv.NANOHENRY">
+<em class="property">class </em><tt class="descclassname">hamcalc.math.equiv.</tt><tt class="descname">NANOHENRY</tt><a class="headerlink" href="#hamcalc.math.equiv.NANOHENRY" title="Permalink to this definition">¶</a></dt>
+<dd><p>nanohenry</p>
+<dl class="attribute">
+<dt id="hamcalc.math.equiv.NANOHENRY.standard">
+<tt class="descname">standard</tt><a class="headerlink" href="#hamcalc.math.equiv.NANOHENRY.standard" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#hamcalc.math.equiv.HENRY" title="hamcalc.math.equiv.HENRY"><tt class="xref py py-class docutils literal"><span class="pre">HENRY</span></tt></a></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="hamcalc.math.equiv.OHM">
+<em class="property">class </em><tt class="descclassname">hamcalc.math.equiv.</tt><tt class="descname">OHM</tt><a class="reference internal" href="../../_modules/hamcalc/math/equiv.html#OHM"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.math.equiv.OHM" title="Permalink to this definition">¶</a></dt>
+<dd><p>Ohm</p>
+<dl class="attribute">
+<dt id="hamcalc.math.equiv.OHM.standard">
+<tt class="descname">standard</tt><a class="headerlink" href="#hamcalc.math.equiv.OHM.standard" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#hamcalc.math.equiv.OHM" title="hamcalc.math.equiv.OHM"><tt class="xref py py-class docutils literal"><span class="pre">OHM</span></tt></a></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="hamcalc.math.equiv.PICOFARAD">
+<em class="property">class </em><tt class="descclassname">hamcalc.math.equiv.</tt><tt class="descname">PICOFARAD</tt><a class="headerlink" href="#hamcalc.math.equiv.PICOFARAD" title="Permalink to this definition">¶</a></dt>
+<dd><p>picofarad</p>
+<dl class="attribute">
+<dt id="hamcalc.math.equiv.PICOFARAD.standard">
+<tt class="descname">standard</tt><a class="headerlink" href="#hamcalc.math.equiv.PICOFARAD.standard" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#hamcalc.math.equiv.FARAD" title="hamcalc.math.equiv.FARAD"><tt class="xref py py-class docutils literal"><span class="pre">FARAD</span></tt></a></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="hamcalc.math.equiv.PICOHENRY">
+<em class="property">class </em><tt class="descclassname">hamcalc.math.equiv.</tt><tt class="descname">PICOHENRY</tt><a class="headerlink" href="#hamcalc.math.equiv.PICOHENRY" title="Permalink to this definition">¶</a></dt>
+<dd><p>picohenry</p>
+<dl class="attribute">
+<dt id="hamcalc.math.equiv.PICOHENRY.standard">
+<tt class="descname">standard</tt><a class="headerlink" href="#hamcalc.math.equiv.PICOHENRY.standard" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#hamcalc.math.equiv.HENRY" title="hamcalc.math.equiv.HENRY"><tt class="xref py py-class docutils literal"><span class="pre">HENRY</span></tt></a></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="hamcalc.math.equiv.RADIAN">
+<em class="property">class </em><tt class="descclassname">hamcalc.math.equiv.</tt><tt class="descname">RADIAN</tt><a class="reference internal" href="../../_modules/hamcalc/math/equiv.html#RADIAN"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.math.equiv.RADIAN" title="Permalink to this definition">¶</a></dt>
+<dd><p>Radian</p>
+<dl class="attribute">
+<dt id="hamcalc.math.equiv.RADIAN.standard">
+<tt class="descname">standard</tt><a class="headerlink" href="#hamcalc.math.equiv.RADIAN.standard" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#hamcalc.math.equiv.RADIAN" title="hamcalc.math.equiv.RADIAN"><tt class="xref py py-class docutils literal"><span class="pre">RADIAN</span></tt></a></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="hamcalc.math.equiv.SECOND">
+<em class="property">class </em><tt class="descclassname">hamcalc.math.equiv.</tt><tt class="descname">SECOND</tt><a class="reference internal" href="../../_modules/hamcalc/math/equiv.html#SECOND"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.math.equiv.SECOND" title="Permalink to this definition">¶</a></dt>
+<dd><p>Second</p>
+<dl class="attribute">
+<dt id="hamcalc.math.equiv.SECOND.standard">
+<tt class="descname">standard</tt><a class="headerlink" href="#hamcalc.math.equiv.SECOND.standard" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#hamcalc.math.equiv.SECOND" title="hamcalc.math.equiv.SECOND"><tt class="xref py py-class docutils literal"><span class="pre">SECOND</span></tt></a></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="hamcalc.math.equiv.WEEK">
+<em class="property">class </em><tt class="descclassname">hamcalc.math.equiv.</tt><tt class="descname">WEEK</tt><a class="headerlink" href="#hamcalc.math.equiv.WEEK" title="Permalink to this definition">¶</a></dt>
+<dd><p>Week</p>
+<dl class="attribute">
+<dt id="hamcalc.math.equiv.WEEK.standard">
+<tt class="descname">standard</tt><a class="headerlink" href="#hamcalc.math.equiv.WEEK.standard" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#hamcalc.math.equiv.SECOND" title="hamcalc.math.equiv.SECOND"><tt class="xref py py-class docutils literal"><span class="pre">SECOND</span></tt></a></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="hamcalc.math.equiv.YEAR">
+<em class="property">class </em><tt class="descclassname">hamcalc.math.equiv.</tt><tt class="descname">YEAR</tt><a class="headerlink" href="#hamcalc.math.equiv.YEAR" title="Permalink to this definition">¶</a></dt>
+<dd><p>Year (365.25 days)</p>
+<dl class="attribute">
+<dt id="hamcalc.math.equiv.YEAR.standard">
+<tt class="descname">standard</tt><a class="headerlink" href="#hamcalc.math.equiv.YEAR.standard" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#hamcalc.math.equiv.SECOND" title="hamcalc.math.equiv.SECOND"><tt class="xref py py-class docutils literal"><span class="pre">SECOND</span></tt></a></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="hamcalc.math.equiv.freq_wavelength">
+<tt class="descclassname">hamcalc.math.equiv.</tt><tt class="descname">freq_wavelength</tt><big>(</big><em>**kw</em><big>)</big><a class="reference internal" href="../../_modules/hamcalc/math/equiv.html#freq_wavelength"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.math.equiv.freq_wavelength" title="Permalink to this definition">¶</a></dt>
+<dd><p>Solver for frequency-wavelength problems in Standard units
+of meters and Hertz.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>f</strong> &#8211; Frequency in Hz</li>
+<li><strong>l</strong> &#8211; Wavelength in m</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="legacy-quirks">
+<h2>Legacy Quirks<a class="headerlink" href="#legacy-quirks" title="Permalink to this headline">¶</a></h2>
+<p>Having multiple paths to a given program (like <strong class="program">deciconv</strong>) is a minor quirk. It can be called good UI design to put popular things in places
+where people will look for them.</p>
+<p>The &#8220;copy-and-paste&#8221; repetition of <strong>Degrees / Minutes / Seconds</strong> is quirky.</p>
+<p>The presence of the electrical line length solver in this program &#8211; in two places &#8211; seems silly, since there&#8217;s a separate program that appears to do this.  See <a class="reference internal" href="../electronics/elecleng.html#electronics-elecleng"><em>elecleng</em></a>.</p>
+</div>
 </div>
 
 
           </div>
         </div>
       </div>
-      <div class="sphinxsidebar">
-        <div class="sphinxsidebarwrapper">
-  <h4>Previous topic</h4>
-  <p class="topless"><a href="diamfind.html"
-                        title="previous chapter">diamfind</a></p>
-  <h4>Next topic</h4>
-  <p class="topless"><a href="fibon.html"
-                        title="next chapter">fibon &#8211; Fibonacci Series</a></p>
-  <h3>This Page</h3>
-  <ul class="this-page-menu">
-    <li><a href="../../_sources/python/math/equiv.txt"
-           rel="nofollow">Show Source</a></li>
-  </ul>
-<div id="searchbox" style="display: none">
-  <h3>Quick search</h3>
-    <form class="search" action="../../search.html" method="get">
-      <input type="text" name="q" />
-      <input type="submit" value="Go" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
-    </form>
-    <p class="searchtip" style="font-size: 90%">
-    Enter search terms or a module, class or function name.
-    </p>
-</div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
+        <div class="sidebar">
+          <h3>Table Of Contents</h3>
+          <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../background.html">Background</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../legacy.html">The HamCalc Legacy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../python_architecture.html">Python Architecture</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Python Modules</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../lib.html">lib &#8211; Supporting Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../radio.html">radio &#8211; Radio Design and Engineering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ham.html">ham &#8211; Ham Radio Operations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../electronics/index.html">electronics &#8211; General Electronics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../construction.html">construction &#8211; Construction and Related Projects</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">math &#8211; Math, Physics, Units Conversion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../navigation.html">navigation &#8211; Navigation and Astronomy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../calendar.html">calendar &#8211; Calendrical Calculations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../audio_photo.html">audio_photo &#8211; Audio, Sound and Photography</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../software.html">software &#8211; Software Engineering, Programming and Computers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../other.html">other &#8211; including Finance and Nutrition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../stdio.html">STDIO Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../rest.html">RESTful Web Services Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../cli.html">Command-Line Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../gui.html">GUI Interface</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../todo.html">The To Do List</a></li>
+</ul>
+
+          <h3 style="margin-top: 1.5em;">Search</h3>
+          <form class="search" action="../../search.html" method="get">
+            <input type="text" name="q" />
+            <input type="submit" value="Go" />
+            <input type="hidden" name="check_keywords" value="yes" />
+            <input type="hidden" name="area" value="default" />
+          </form>
+          <p class="searchtip" style="font-size: 90%">
+            Enter search terms or a module, class or function name.
+          </p>
+        </div>
+        <div class="clearer"></div>
       </div>
-      <div class="clearer"></div>
     </div>
-    <div class="related">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="../../genindex.html" title="General Index"
-             >index</a></li>
-        <li class="right" >
-          <a href="../../py-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li class="right" >
-          <a href="fibon.html" title="fibon – Fibonacci Series"
-             >next</a> |</li>
-        <li class="right" >
+
+    <div class="footer-wrapper">
+      <div class="footer">
+        <div class="left">
           <a href="diamfind.html" title="diamfind"
-             >previous</a> |</li>
-        <li><a href="../../index.html">HamCalc 2.1 documentation</a> &raquo;</li>
-          <li><a href="../index.html" >Python Modules</a> &raquo;</li>
-          <li><a href="index.html" >math &#8211; Math, Physics, Units Conversion</a> &raquo;</li> 
-      </ul>
-    </div>
+             >previous</a> |
+          <a href="fibon.html" title="fibon – Fibonacci Series"
+             >next</a> |
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |
+          <a href="../../genindex.html" title="General Index"
+             >index</a>
+            <br/>
+            <a href="../../_sources/python/math/equiv.txt"
+               rel="nofollow">Show Source</a>
+        </div>
+
+        <div class="right">
+          
     <div class="footer">
         &copy; Copyright 2013, S.Lott.
       Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2b1.
     </div>
+        </div>
+        <div class="clearer"></div>
+      </div>
+    </div>
+
   </body>
 </html>

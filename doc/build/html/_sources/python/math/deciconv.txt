@@ -1,3 +1,5 @@
+..  _`math.deciconv`:
+
 deciconv -- Decimal Hour/Degree Converter
 ------------------------------------------
 
@@ -25,6 +27,9 @@ from the time, if we handle time in seconds or minutes, not hours.
 
     T_h = \lfloor T \rfloor
 
+Degrees have an identical analysis. The only distinction between HH:MM:SS
+and DEG°MM'SS" is the formatting.
+
 Implementation
 ~~~~~~~~~~~~~~~
 
@@ -33,4 +38,19 @@ We can use simple unit conversion class definitions for this.
 ..  automodule:: hamcalc.math.deciconv
     :members:
 
+Legacy Quirks
+~~~~~~~~~~~~~~~~
 
+Note that this has three places in the menu structure.
+
+-   It's own top-level entry.
+
+-   As part of QuickTables.
+
+-   As part of the sub-menu under the :program:`equiv` program. See :ref:`math.equiv`.
+
+Perhaps this should simply be merged into :program:`equiv` so that
+**all** unit conversions are in one place.
+
+The legacy program uses multi-step input rather than parsing a single string.
+That's not a quirk, *per se*; the lack of good string parsing is a limitation of GW-Basic.

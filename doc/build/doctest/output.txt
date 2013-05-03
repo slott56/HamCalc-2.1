@@ -1,4 +1,4 @@
-Results of doctest builder run on 2013-05-02 10:16:39
+Results of doctest builder run on 2013-05-03 12:26:52
 =====================================================
 
 Document: python/math/baromtr
@@ -31,6 +31,14 @@ Document: python/math/accelr
    4 tests in default
 4 tests in 1 items.
 4 passed and 0 failed.
+Test passed.
+
+Document: python/math/equiv
+---------------------------
+1 items passed all tests:
+  43 tests in default
+43 tests in 1 items.
+43 passed and 0 failed.
 Test passed.
 
 Document: python/math/fibon
@@ -67,7 +75,7 @@ Test passed.
 
 Doctest summary
 ===============
-   71 tests
+  114 tests
     0 failures in tests
     0 failures in setup code
     0 failures in cleanup code

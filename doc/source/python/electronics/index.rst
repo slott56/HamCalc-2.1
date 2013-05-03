@@ -8,4 +8,5 @@ General Electronics, outside the narrow focus area of radio design.
 
     awgexact
     decibel
+    elecleng
     ohmslaw

@@ -1,4 +1,4 @@
-propcirc -- Circle, Properies of
+propcirc -- Circle, Properties of
 ----------------------------------
 
 Analysis
