@@ -13,3 +13,5 @@ HamCalc.bbprojectd/project.bbprojectdata
 *.pyc
 
 *.pickle
+
+*.pyc

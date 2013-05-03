@@ -79,7 +79,7 @@ while z != '0':
     print( "< 5 > Find diameter of any AWG value" )
     print()
     print( "< 0 > EXIT" )
-    z= input( "? " )
+    z= input( "Choice? " )
     if z == '1':
         table()
     elif z == '2':

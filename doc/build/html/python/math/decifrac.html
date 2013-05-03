@@ -58,7 +58,7 @@
 <h1>decifrac &#8211; Decimal/Fraction Converter<a class="headerlink" href="#decifrac-decimal-fraction-converter" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="analysis">
 <h2>Analysis<a class="headerlink" href="#analysis" title="Permalink to this headline">¶</a></h2>
-<p>Converting feet, inches and fractions to decimal feet is simply this.</p>
+<p>Converting feet, inches and fractions to decimal feet is done as follows.</p>
 <p>Given feet, <img class="math" src="../../_images/math/bb2c93730dbb48558bb3c4738c956c4e8f816437.png" alt="f"/>, inch, <img class="math" src="../../_images/math/34857b3ba74ce5cd8607f3ebd23e9015908ada71.png" alt="i"/>, numerator, <img class="math" src="../../_images/math/174fadd07fd54c9afe288e96558c92e0c1da733a.png" alt="n"/>, denominator, <img class="math" src="../../_images/math/96ab646de7704969b91c76a214126b45f2b07b25.png" alt="d"/>, we can compute decimal feet, <img class="math" src="../../_images/math/9d9b317ccda50e0c050322a15565da40c77c6c40.png" alt="f_d"/>.</p>
 <div class="math">
 <p><img src="../../_images/math/6c20e3b3721b1801a639f428c5fc891dd05c5053.png" alt="f_d  = f + \frac{i + \frac{n}{d}}{12} = f + \frac{id+n}{12d}"/></p>
@@ -84,99 +84,99 @@ work out a foot, inch and fraction for this value.</p>
 <span class="target" id="module-hamcalc.math.decifrac"></span><p>hamcalc.math.decifrac &#8211; Decimals to fractions</p>
 <p>Some Test Cases</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span>  <span class="nn">hamcalc.math.decifrac</span> <span class="kn">as</span> <span class="nn">decifrac</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span><span class="o">=</span><span class="n">decifrac</span><span class="o">.</span><span class="n">FEET_INCH_FRAC_TUPLE</span><span class="o">.</span><span class="n">to_std</span><span class="p">(</span> <span class="p">(</span><span class="mi">13</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span> <span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">decifrac</span><span class="o">.</span><span class="n">INCHES</span><span class="o">.</span><span class="n">from_std</span><span class="p">(</span> <span class="n">x</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span><span class="o">=</span><span class="n">decifrac</span><span class="o">.</span><span class="n">FOOT_INCH_FRAC_TUPLE</span><span class="o">.</span><span class="n">to_std</span><span class="p">(</span> <span class="p">(</span><span class="mi">13</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">decifrac</span><span class="o">.</span><span class="n">INCH</span><span class="o">.</span><span class="n">from_std</span><span class="p">(</span> <span class="n">x</span> <span class="p">)</span>
 <span class="go">159.625</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">decifrac</span><span class="o">.</span><span class="n">FEET</span><span class="o">.</span><span class="n">from_std</span><span class="p">(</span> <span class="n">x</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">decifrac</span><span class="o">.</span><span class="n">FOOT</span><span class="o">.</span><span class="n">from_std</span><span class="p">(</span> <span class="n">x</span> <span class="p">)</span>
 <span class="go">13.302083333333332</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">decifrac</span><span class="o">.</span><span class="n">METRES</span><span class="o">.</span><span class="n">from_std</span><span class="p">(</span> <span class="n">x</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">decifrac</span><span class="o">.</span><span class="n">METRE</span><span class="o">.</span><span class="n">from_std</span><span class="p">(</span> <span class="n">x</span> <span class="p">)</span>
 <span class="go">4.054475</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">decifrac</span><span class="o">.</span><span class="n">FEET_INCH_FRAC_TUPLE</span><span class="o">.</span><span class="n">from_std</span><span class="p">(</span> <span class="n">x</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">decifrac</span><span class="o">.</span><span class="n">FOOT_INCH_FRAC_TUPLE</span><span class="o">.</span><span class="n">from_std</span><span class="p">(</span> <span class="n">x</span> <span class="p">)</span>
 <span class="go">(13, 3, 5, 8)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">decifrac</span><span class="o">.</span><span class="n">FEET_INCH_FRAC</span><span class="o">.</span><span class="n">from_std</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">decifrac</span><span class="o">.</span><span class="n">FOOT_INCH_FRAC</span><span class="o">.</span><span class="n">from_std</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
 <span class="go">&#39;13\&#39;- 3 5/8&quot;&#39;</span>
 </pre></div>
 </div>
 <dl class="class">
-<dt id="hamcalc.math.decifrac.CENTIMETRES">
-<em class="property">class </em><tt class="descclassname">hamcalc.math.decifrac.</tt><tt class="descname">CENTIMETRES</tt><a class="reference internal" href="../../_modules/hamcalc/math/decifrac.html#CENTIMETRES"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.math.decifrac.CENTIMETRES" title="Permalink to this definition">¶</a></dt>
+<dt id="hamcalc.math.decifrac.CENTIMETRE">
+<em class="property">class </em><tt class="descclassname">hamcalc.math.decifrac.</tt><tt class="descname">CENTIMETRE</tt><a class="headerlink" href="#hamcalc.math.decifrac.CENTIMETRE" title="Permalink to this definition">¶</a></dt>
 <dd><p>Decimal Centimetres</p>
 <dl class="attribute">
-<dt id="hamcalc.math.decifrac.CENTIMETRES.standard">
-<tt class="descname">standard</tt><a class="headerlink" href="#hamcalc.math.decifrac.CENTIMETRES.standard" title="Permalink to this definition">¶</a></dt>
-<dd><p>alias of <a class="reference internal" href="#hamcalc.math.decifrac.INCHES" title="hamcalc.math.decifrac.INCHES"><tt class="xref py py-class docutils literal"><span class="pre">INCHES</span></tt></a></p>
+<dt id="hamcalc.math.decifrac.CENTIMETRE.standard">
+<tt class="descname">standard</tt><a class="headerlink" href="#hamcalc.math.decifrac.CENTIMETRE.standard" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#hamcalc.math.decifrac.INCH" title="hamcalc.math.decifrac.INCH"><tt class="xref py py-class docutils literal"><span class="pre">INCH</span></tt></a></p>
 </dd></dl>
 
 </dd></dl>
 
 <dl class="class">
-<dt id="hamcalc.math.decifrac.FEET">
-<em class="property">class </em><tt class="descclassname">hamcalc.math.decifrac.</tt><tt class="descname">FEET</tt><a class="reference internal" href="../../_modules/hamcalc/math/decifrac.html#FEET"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.math.decifrac.FEET" title="Permalink to this definition">¶</a></dt>
+<dt id="hamcalc.math.decifrac.FOOT">
+<em class="property">class </em><tt class="descclassname">hamcalc.math.decifrac.</tt><tt class="descname">FOOT</tt><a class="headerlink" href="#hamcalc.math.decifrac.FOOT" title="Permalink to this definition">¶</a></dt>
 <dd><p>Decimal Feet</p>
 <dl class="attribute">
-<dt id="hamcalc.math.decifrac.FEET.standard">
-<tt class="descname">standard</tt><a class="headerlink" href="#hamcalc.math.decifrac.FEET.standard" title="Permalink to this definition">¶</a></dt>
-<dd><p>alias of <a class="reference internal" href="#hamcalc.math.decifrac.INCHES" title="hamcalc.math.decifrac.INCHES"><tt class="xref py py-class docutils literal"><span class="pre">INCHES</span></tt></a></p>
+<dt id="hamcalc.math.decifrac.FOOT.standard">
+<tt class="descname">standard</tt><a class="headerlink" href="#hamcalc.math.decifrac.FOOT.standard" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#hamcalc.math.decifrac.INCH" title="hamcalc.math.decifrac.INCH"><tt class="xref py py-class docutils literal"><span class="pre">INCH</span></tt></a></p>
 </dd></dl>
 
 </dd></dl>
 
 <dl class="class">
-<dt id="hamcalc.math.decifrac.FEET_INCH_FRAC">
-<em class="property">class </em><tt class="descclassname">hamcalc.math.decifrac.</tt><tt class="descname">FEET_INCH_FRAC</tt><a class="headerlink" href="#hamcalc.math.decifrac.FEET_INCH_FRAC" title="Permalink to this definition">¶</a></dt>
+<dt id="hamcalc.math.decifrac.FOOT_INCH_FRAC">
+<em class="property">class </em><tt class="descclassname">hamcalc.math.decifrac.</tt><tt class="descname">FOOT_INCH_FRAC</tt><a class="headerlink" href="#hamcalc.math.decifrac.FOOT_INCH_FRAC" title="Permalink to this definition">¶</a></dt>
 <dd><p>Feet-Inch-Fraction &#8211; as String</p>
 <dl class="attribute">
-<dt id="hamcalc.math.decifrac.FEET_INCH_FRAC.standard">
-<tt class="descname">standard</tt><a class="headerlink" href="#hamcalc.math.decifrac.FEET_INCH_FRAC.standard" title="Permalink to this definition">¶</a></dt>
-<dd><p>alias of <a class="reference internal" href="#hamcalc.math.decifrac.INCHES" title="hamcalc.math.decifrac.INCHES"><tt class="xref py py-class docutils literal"><span class="pre">INCHES</span></tt></a></p>
+<dt id="hamcalc.math.decifrac.FOOT_INCH_FRAC.standard">
+<tt class="descname">standard</tt><a class="headerlink" href="#hamcalc.math.decifrac.FOOT_INCH_FRAC.standard" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#hamcalc.math.decifrac.INCH" title="hamcalc.math.decifrac.INCH"><tt class="xref py py-class docutils literal"><span class="pre">INCH</span></tt></a></p>
 </dd></dl>
 
 </dd></dl>
 
 <dl class="class">
-<dt id="hamcalc.math.decifrac.FEET_INCH_FRAC_TUPLE">
-<em class="property">class </em><tt class="descclassname">hamcalc.math.decifrac.</tt><tt class="descname">FEET_INCH_FRAC_TUPLE</tt><a class="reference internal" href="../../_modules/hamcalc/math/decifrac.html#FEET_INCH_FRAC_TUPLE"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.math.decifrac.FEET_INCH_FRAC_TUPLE" title="Permalink to this definition">¶</a></dt>
+<dt id="hamcalc.math.decifrac.FOOT_INCH_FRAC_TUPLE">
+<em class="property">class </em><tt class="descclassname">hamcalc.math.decifrac.</tt><tt class="descname">FOOT_INCH_FRAC_TUPLE</tt><a class="headerlink" href="#hamcalc.math.decifrac.FOOT_INCH_FRAC_TUPLE" title="Permalink to this definition">¶</a></dt>
 <dd><p>Feet-Inch-Fraction &#8211; as tuple</p>
 <dl class="attribute">
-<dt id="hamcalc.math.decifrac.FEET_INCH_FRAC_TUPLE.standard">
-<tt class="descname">standard</tt><a class="headerlink" href="#hamcalc.math.decifrac.FEET_INCH_FRAC_TUPLE.standard" title="Permalink to this definition">¶</a></dt>
-<dd><p>alias of <a class="reference internal" href="#hamcalc.math.decifrac.INCHES" title="hamcalc.math.decifrac.INCHES"><tt class="xref py py-class docutils literal"><span class="pre">INCHES</span></tt></a></p>
+<dt id="hamcalc.math.decifrac.FOOT_INCH_FRAC_TUPLE.standard">
+<tt class="descname">standard</tt><a class="headerlink" href="#hamcalc.math.decifrac.FOOT_INCH_FRAC_TUPLE.standard" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#hamcalc.math.decifrac.INCH" title="hamcalc.math.decifrac.INCH"><tt class="xref py py-class docutils literal"><span class="pre">INCH</span></tt></a></p>
 </dd></dl>
 
 </dd></dl>
 
 <dl class="class">
-<dt id="hamcalc.math.decifrac.INCHES">
-<em class="property">class </em><tt class="descclassname">hamcalc.math.decifrac.</tt><tt class="descname">INCHES</tt><a class="reference internal" href="../../_modules/hamcalc/math/decifrac.html#INCHES"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.math.decifrac.INCHES" title="Permalink to this definition">¶</a></dt>
+<dt id="hamcalc.math.decifrac.INCH">
+<em class="property">class </em><tt class="descclassname">hamcalc.math.decifrac.</tt><tt class="descname">INCH</tt><a class="headerlink" href="#hamcalc.math.decifrac.INCH" title="Permalink to this definition">¶</a></dt>
 <dd><p>Decimal Inches</p>
 <dl class="attribute">
-<dt id="hamcalc.math.decifrac.INCHES.standard">
-<tt class="descname">standard</tt><a class="headerlink" href="#hamcalc.math.decifrac.INCHES.standard" title="Permalink to this definition">¶</a></dt>
-<dd><p>alias of <a class="reference internal" href="#hamcalc.math.decifrac.INCHES" title="hamcalc.math.decifrac.INCHES"><tt class="xref py py-class docutils literal"><span class="pre">INCHES</span></tt></a></p>
+<dt id="hamcalc.math.decifrac.INCH.standard">
+<tt class="descname">standard</tt><a class="headerlink" href="#hamcalc.math.decifrac.INCH.standard" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#hamcalc.math.decifrac.INCH" title="hamcalc.math.decifrac.INCH"><tt class="xref py py-class docutils literal"><span class="pre">INCH</span></tt></a></p>
 </dd></dl>
 
 </dd></dl>
 
 <dl class="class">
-<dt id="hamcalc.math.decifrac.METRES">
-<em class="property">class </em><tt class="descclassname">hamcalc.math.decifrac.</tt><tt class="descname">METRES</tt><a class="reference internal" href="../../_modules/hamcalc/math/decifrac.html#METRES"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.math.decifrac.METRES" title="Permalink to this definition">¶</a></dt>
+<dt id="hamcalc.math.decifrac.METRE">
+<em class="property">class </em><tt class="descclassname">hamcalc.math.decifrac.</tt><tt class="descname">METRE</tt><a class="headerlink" href="#hamcalc.math.decifrac.METRE" title="Permalink to this definition">¶</a></dt>
 <dd><p>Decimal Metres</p>
 <dl class="attribute">
-<dt id="hamcalc.math.decifrac.METRES.standard">
-<tt class="descname">standard</tt><a class="headerlink" href="#hamcalc.math.decifrac.METRES.standard" title="Permalink to this definition">¶</a></dt>
-<dd><p>alias of <a class="reference internal" href="#hamcalc.math.decifrac.INCHES" title="hamcalc.math.decifrac.INCHES"><tt class="xref py py-class docutils literal"><span class="pre">INCHES</span></tt></a></p>
+<dt id="hamcalc.math.decifrac.METRE.standard">
+<tt class="descname">standard</tt><a class="headerlink" href="#hamcalc.math.decifrac.METRE.standard" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#hamcalc.math.decifrac.INCH" title="hamcalc.math.decifrac.INCH"><tt class="xref py py-class docutils literal"><span class="pre">INCH</span></tt></a></p>
 </dd></dl>
 
 </dd></dl>
 
 <dl class="class">
-<dt id="hamcalc.math.decifrac.MILLIMETRES">
-<em class="property">class </em><tt class="descclassname">hamcalc.math.decifrac.</tt><tt class="descname">MILLIMETRES</tt><a class="reference internal" href="../../_modules/hamcalc/math/decifrac.html#MILLIMETRES"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.math.decifrac.MILLIMETRES" title="Permalink to this definition">¶</a></dt>
+<dt id="hamcalc.math.decifrac.MILLIMETRE">
+<em class="property">class </em><tt class="descclassname">hamcalc.math.decifrac.</tt><tt class="descname">MILLIMETRE</tt><a class="headerlink" href="#hamcalc.math.decifrac.MILLIMETRE" title="Permalink to this definition">¶</a></dt>
 <dd><p>Decimal Millimetres</p>
 <dl class="attribute">
-<dt id="hamcalc.math.decifrac.MILLIMETRES.standard">
-<tt class="descname">standard</tt><a class="headerlink" href="#hamcalc.math.decifrac.MILLIMETRES.standard" title="Permalink to this definition">¶</a></dt>
-<dd><p>alias of <a class="reference internal" href="#hamcalc.math.decifrac.INCHES" title="hamcalc.math.decifrac.INCHES"><tt class="xref py py-class docutils literal"><span class="pre">INCHES</span></tt></a></p>
+<dt id="hamcalc.math.decifrac.MILLIMETRE.standard">
+<tt class="descname">standard</tt><a class="headerlink" href="#hamcalc.math.decifrac.MILLIMETRE.standard" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#hamcalc.math.decifrac.INCH" title="hamcalc.math.decifrac.INCH"><tt class="xref py py-class docutils literal"><span class="pre">INCH</span></tt></a></p>
 </dd></dl>
 
 </dd></dl>

@@ -36,7 +36,7 @@ while z != '0':
     print( " To display progressive series (in ascending) order.....press 1 " )
     print( " To display regressive series (in descending) order.....press 2 " )
     print( " To EXIT program........................................press 0 " )
-    z= input( "? " )
+    z= input( "Choice? " )
     if z == '1':
         progressive()
     elif z == '2':

@@ -68,7 +68,7 @@ The bottom line is this:
 ..  important:: Given *R* and *A*, all other values can be determined.
 
 While HamCalc does quite a bit of work, it
- seems simpler, if *R* or *A* is omitted, to do the following:
+seems simpler, if *R* or *A* is omitted, to do the following:
 
 **Step 1**. Compute the missing value(s) for *R*, *A* (or both) from the available values. Step 1A is to compute *R*. Step 1B is to compute *A* if possible.
 

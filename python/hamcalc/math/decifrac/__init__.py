@@ -3,16 +3,16 @@
 Some Test Cases
 
 >>> import  hamcalc.math.decifrac as decifrac
->>> x=decifrac.FEET_INCH_FRAC_TUPLE.to_std( (13, 3, 5, 8) )
->>> decifrac.INCHES.from_std( x )
+>>> x=decifrac.FOOT_INCH_FRAC_TUPLE.to_std( (13, 3, 5, 8) )
+>>> decifrac.INCH.from_std( x )
 159.625
->>> decifrac.FEET.from_std( x )
+>>> decifrac.FOOT.from_std( x )
 13.302083333333332
->>> decifrac.METRES.from_std( x )
+>>> decifrac.METRE.from_std( x )
 4.054475
->>> decifrac.FEET_INCH_FRAC_TUPLE.from_std( x )
+>>> decifrac.FOOT_INCH_FRAC_TUPLE.from_std( x )
 (13, 3, 5, 8)
->>> decifrac.FEET_INCH_FRAC.from_std(x)
+>>> decifrac.FOOT_INCH_FRAC.from_std(x)
 '13\\'- 3 5/8"'
 
 """
@@ -27,20 +27,20 @@ DECIMAL / FRACTION CONVERTER                                by George C. Murphy
 def intro():
     return introduction
 
-class INCHES( Standard_Unit ):
+class INCH( Standard_Unit ):
     """Decimal Inches"""
     name= "in"
 
-class FEET( Unit ):
+class FOOT( Unit ):
     """Decimal Feet"""
     name= "ft"
-    standard= INCHES
+    standard= INCH
     factor= 1/12
 
-class FEET_INCH_FRAC_TUPLE( Unit ):
+class FOOT_INCH_FRAC_TUPLE( Unit ):
     """Feet-Inch-Fraction -- as tuple"""
     name='ft-in'
-    standard= INCHES
+    standard= INCH
     @classmethod
     def _gcd( class_, a, b ):
         if a == 0: return b
@@ -69,10 +69,10 @@ class FEET_INCH_FRAC_TUPLE( Unit ):
         d= 128 // r
         return f, i, n, d
 
-class FEET_INCH_FRAC( FEET_INCH_FRAC_TUPLE ):
+class FOOT_INCH_FRAC( FOOT_INCH_FRAC_TUPLE ):
     """Feet-Inch-Fraction -- as String"""
     name= "ft-in"
-    standard= INCHES
+    standard= INCH
     number_pat= re.compile( "\d+" )
     @classmethod
     def to_std( class_, value ):
@@ -86,20 +86,20 @@ class FEET_INCH_FRAC( FEET_INCH_FRAC_TUPLE ):
         ft, in_, num, den = super().from_std( value )
         return "{0:.0f}'- {1:.0f} {2:.0f}/{3:.0f}\"".format( ft, in_, num, den )
 
-class MILLIMETRES( Unit ):
+class MILLIMETRE( Unit ):
     """Decimal Millimetres"""
     name= "in"
-    standard= INCHES
+    standard= INCH
     factor= 25.4
 
-class CENTIMETRES( Unit ):
+class CENTIMETRE( Unit ):
     """Decimal Centimetres"""
     name= "in"
-    standard= INCHES
+    standard= INCH
     factor= 2.54
 
-class METRES( Unit ):
+class METRE( Unit ):
     """Decimal Metres"""
     name= "in"
-    standard= INCHES
+    standard= INCH
     factor= .0254

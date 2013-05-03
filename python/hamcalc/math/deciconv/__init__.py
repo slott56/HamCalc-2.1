@@ -12,13 +12,13 @@ We provide both implementations, since strings are an extension to tuples.
 Test Cases
 
 >>> import hamcalc.math.deciconv as deciconv
->>> deciconv.HRS_MIN_SEC.to_std( "12:34:56" )
+>>> deciconv.HR_MIN_SEC.to_std( "12:34:56" )
 12.582222222222223
->>> deciconv.HRS_MIN_SEC.from_std( 12.582 )
+>>> deciconv.HR_MIN_SEC.from_std( 12.582 )
 '12:34:55.2'
->>> deciconv.HRS_MIN_SEC.from_std( 12.5822 )
+>>> deciconv.HR_MIN_SEC.from_std( 12.5822 )
 '12:34:55.9'
->>> deciconv.HRS_MIN_SEC.from_std( 12.58222 )
+>>> deciconv.HR_MIN_SEC.from_std( 12.58222 )
 '12:34:56.0'
 >>> deciconv.HMS_TUPLE.to_std( (12,34,56) )
 12.582222222222223
@@ -43,14 +43,14 @@ introduction= """\
 def intro():
     return introduction
 
-class HOURS( Standard_Unit ):
+class HOUR( Standard_Unit ):
     """Decimal Hours"""
     name= "hrs"
 
 class HMS_TUPLE( Unit ):
     """Hours Minutes Seconds -- as Tuple"""
     name= "HMS"
-    standard= HOURS
+    standard= HOUR
     @classmethod
     def to_std( class_, value ):
         h, m, s = value
@@ -64,10 +64,10 @@ class HMS_TUPLE( Unit ):
         hrs= hm // 60
         return hrs, min, sec
 
-class HRS_MIN_SEC( HMS_TUPLE ):
+class HR_MIN_SEC( HMS_TUPLE ):
     """Hours Minutes Seconds -- as String"""
     name= "HMS"
-    standard= HOURS
+    standard= HOUR
     @classmethod
     def to_std( class_, value ):
         h, m, s = map( float, value.split( ":" ) )
@@ -77,19 +77,19 @@ class HRS_MIN_SEC( HMS_TUPLE ):
         hrs, min, sec = super().from_std( value )
         return "{0:02.0f}:{1:02.0f}:{2:03.1f}".format( hrs, min, sec )
 
-class DEGREES( Standard_Unit ):
+class DEGREE( Standard_Unit ):
     """Decimal Degrees"""
     name= "deg"
 
 class DMS_TUPLE( HMS_TUPLE ):
     """Degrees Minutes Seconds -- as Tuple"""
     name= "DMS"
-    standard= DEGREES
+    standard= DEGREE
 
 class DEG_MIN_SEC( DMS_TUPLE ):
     """Degrees Minutes Seconds -- as String"""
     name= "DMS"
-    standard= DEGREES
+    standard= DEGREE
     number_pat= re.compile( "\d+\.?\d*" )
     @classmethod
     def to_std( class_, value ):

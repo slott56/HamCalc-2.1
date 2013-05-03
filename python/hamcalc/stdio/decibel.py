@@ -114,7 +114,7 @@ while z != '0':
         series of values.""")
     print( """\
    <0>  EXIT""")
-    z= input( "? " )
+    z= input( "Choice? " )
     if z == '1':
         solve_2()
     elif z == '2':

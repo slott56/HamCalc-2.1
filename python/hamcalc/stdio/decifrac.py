@@ -6,11 +6,11 @@ import hamcalc.math.decifrac as decifrac
 def fraction_to_decimal():
     ft_in_raw= input( "ENTER: number of whole feet and inches [f'- i n/d\"]...? " )
     if len(ft_in_raw) == 0: return
-    measure= decifrac.FEET_INCH_FRAC.to_std( ft_in_raw )
-    text= decifrac.FEET_INCH_FRAC.from_std( measure )
-    feet= decifrac.FEET.from_std( measure )
-    inches= decifrac.INCHES.from_std( measure )
-    metres= decifrac.METRES.from_std( measure )
+    measure= decifrac.FOOT_INCH_FRAC.to_std( ft_in_raw )
+    text= decifrac.FOOT_INCH_FRAC.from_std( measure )
+    feet= decifrac.FOOT.from_std( measure )
+    inches= decifrac.INCH.from_std( measure )
+    metres= decifrac.METRE.from_std( measure )
     print( "{0:s}\n = {1:7.3f} feet\n = {2:7.3f} inches\n = {3:7.3f} metres".format( text, feet, inches, metres ) )
 
 def decimal_to_fraction():
@@ -22,22 +22,22 @@ def decimal_to_fraction():
     print( "  < 5 >  Decimal METRES")
     unit_raw= input( "Units? " )
     if len(unit_raw) == 0: return
-    unit= { '1': decifrac.INCHES, '2': decifrac.FEET,
-        '3': decifrac.MILLIMETRES, '4': decifrac.CENTIMETRES, '5': decifrac.METRES }[unit_raw]
+    unit= { '1': decifrac.INCH, '2': decifrac.FOOT,
+        '3': decifrac.MILLIMETRE, '4': decifrac.CENTIMETRE, '5': decifrac.METRE }[unit_raw]
     measure_raw= input( "ENTER: dimension (in {0}) to be converted........?".format(unit.__doc__) )
     if len(measure_raw) == 0: return
     measure_num= float( measure_raw )
     if measure_num == 0: return
     measure= unit.to_std( measure_num )
-    text= decifrac.FEET_INCH_FRAC.from_std( measure )
+    text= decifrac.FOOT_INCH_FRAC.from_std( measure )
     print( "     {0:8.3f} {1} = {2:s}".format( measure_num, unit.__doc__, text ) )
-    f, i, n, d= decifrac.FEET_INCH_FRAC_TUPLE.from_std( measure )
+    f, i, n, d= decifrac.FOOT_INCH_FRAC_TUPLE.from_std( measure )
     if d==128:
         # Couldn't reduce. Check for nearby values.
-        longer= decifrac.FEET_INCH_FRAC_TUPLE.to_std( (f,i,n+1,d) )
-        shorter= decifrac.FEET_INCH_FRAC_TUPLE.to_std( (f,i,n-1,d) )
-        print( "      near {0} and {1}".format( decifrac.FEET_INCH_FRAC.from_std(shorter),
-        decifrac.FEET_INCH_FRAC.from_std(longer) ) )
+        longer= decifrac.FOOT_INCH_FRAC_TUPLE.to_std( (f,i,n+1,d) )
+        shorter= decifrac.FOOT_INCH_FRAC_TUPLE.to_std( (f,i,n-1,d) )
+        print( "      near {0} and {1}".format( decifrac.FOOT_INCH_FRAC.from_std(shorter),
+        decifrac.FOOT_INCH_FRAC.from_std(longer) ) )
 
 print( decifrac.intro() )
 
@@ -47,7 +47,7 @@ while z != '0':
     print("  < 2 >  DECIMAL to FRACTION" )
     print()
     print("  < 0 > EXIT")
-    z= input( "? " )
+    z= input( "Choice? " )
     if z == '1':
         fraction_to_decimal()
     elif z == '2':

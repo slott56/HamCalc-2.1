@@ -48,7 +48,7 @@ z= None
 while z != '0':
     print()
     print( " Press 1 to continue or 0 to EXIT" )
-    z= input( "? " )
+    z= input( "Choice? " )
     if z == '1':
         solve()
 

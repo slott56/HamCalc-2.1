@@ -57,7 +57,7 @@ while z != '0':
     print( "< 1 > Typical barometer reading equivalents" )
     print( "< 2 > Atmosphere pressure equivalents" )
     print( "< 0 > EXIT" )
-    z= input( "? " )
+    z= input( "Choice? " )
     if z == '1':
         table()
     elif z == '2':

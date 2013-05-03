@@ -56,11 +56,54 @@
             
   <div class="section" id="numderiv">
 <h1>numderiv<a class="headerlink" href="#numderiv" title="Permalink to this headline">¶</a></h1>
-<p>Logarithms to any base
-Numbers and Functions
-Powers of numbers
-Reciprocals of numbers
-Roots of numbers</p>
+<ul class="simple">
+<li>Logarithms to any base</li>
+<li>Numbers and Functions</li>
+<li>Powers of numbers</li>
+<li>Reciprocals of numbers</li>
+<li>Roots of numbers</li>
+</ul>
+<div class="section" id="analysis">
+<h2>Analysis<a class="headerlink" href="#analysis" title="Permalink to this headline">¶</a></h2>
+<p>There are three menu items:</p>
+<ul>
+<li><p class="first">Powers, roots, reciprocals &amp; logarithms</p>
+<div class="highlight-python"><pre>360 PRINT &quot; Number.................................&quot;;A
+370 PRINT &quot; Square.................................&quot;;A^2
+380 PRINT &quot; Cube...................................&quot;;A^3</pre>
+</div>
+<p>etc.</p>
+<p>For any given <img class="math" src="../../_images/math/df3f9bd7ea38f7336f5a64109d4053d775858f28.png" alt="n \neq 0"/>:</p>
+<div class="math">
+<p><img src="../../_images/math/1e90469b8a05082dd5044cd302ed9f13f45bfa57.png" alt="n^2, n^3, \sqrt n, \sqrt[3]{n}, n^{-1}=\frac{1}{n}, \log n, \log_{10} n"/></p>
+</div></li>
+<li><p class="first">Antilogarithms</p>
+<div class="highlight-python"><pre>570 PRINT &quot;        Value of logarithm...............&quot;;A
+580 ANL=EXP(A)
+590 PRINT &quot;        Antilogarithm if natural log.....&quot;;ANL
+600 ACL=10^A
+610 PRINT &quot;        Antilogarithm if common log......&quot;;ACL</pre>
+</div>
+<p>For any given <img class="math" src="../../_images/math/174fadd07fd54c9afe288e96558c92e0c1da733a.png" alt="n"/>:</p>
+<div class="math">
+<p><img src="../../_images/math/1a567873b6b58d4c95c2620f2237376e151cfd5a.png" alt="e^n, 10^n"/></p>
+</div></li>
+<li><p class="first">Logarithms to any base</p>
+<p>For any given base, <img class="math" src="../../_images/math/8136a7ef6a03334a7246df9097e5bcc31ba33fd2.png" alt="b"/> and <img class="math" src="../../_images/math/df3f9bd7ea38f7336f5a64109d4053d775858f28.png" alt="n \neq 0"/>:</p>
+<div class="math">
+<p><img src="../../_images/math/2ecae797a09ff9e41240e2ca0d02729b0e13fd58.png" alt="\log_{b} n = \frac{\log n}{\log b}"/></p>
+</div></li>
+</ul>
+</div>
+<div class="section" id="implementation">
+<h2>Implementation<a class="headerlink" href="#implementation" title="Permalink to this headline">¶</a></h2>
+<p>This is all in the exiting Python <tt class="xref py py-mod docutils literal"><span class="pre">math</span></tt> package.</p>
+<p>Which raises a subtle question of what to test and how to test it.</p>
+</div>
+<div class="section" id="quirks">
+<h2>Quirks<a class="headerlink" href="#quirks" title="Permalink to this headline">¶</a></h2>
+<p>None, really.</p>
+</div>
 </div>
 
 

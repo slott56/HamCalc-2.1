@@ -4,7 +4,7 @@ decifrac -- Decimal/Fraction Converter
 Analysis
 ~~~~~~~~~~
 
-Converting feet, inches and fractions to decimal feet is simply this.
+Converting feet, inches and fractions to decimal feet is done as follows.
 
 Given feet, :math:`f`, inch, :math:`i`, numerator, :math:`n`, denominator, :math:`d`, we can compute decimal feet, :math:`f_d`.
 

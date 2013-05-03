@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>primenos &mdash; HamCalc 2.1 documentation</title>
+    <title>primenos – Prime Number Calculator &mdash; HamCalc 2.1 documentation</title>
     
     <link rel="stylesheet" href="../../_static/agogo.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
@@ -54,9 +54,56 @@
         <div class="bodywrapper">
           <div class="body">
             
-  <div class="section" id="primenos">
-<h1>primenos<a class="headerlink" href="#primenos" title="Permalink to this headline">¶</a></h1>
-<p>Prime Number Calculator</p>
+  <div class="section" id="primenos-prime-number-calculator">
+<h1>primenos &#8211; Prime Number Calculator<a class="headerlink" href="#primenos-prime-number-calculator" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="analysis">
+<h2>Analysis<a class="headerlink" href="#analysis" title="Permalink to this headline">¶</a></h2>
+<p>This does two things.</p>
+<ul>
+<li><p class="first">Sieve of Eratosthones to show prime numbers between two values.</p>
+<p>There are potentially several variations on the Sieve algorithm.
+We&#8217;ll create  s generator function which iterates through the prime
+numbers.</p>
+</li>
+<li><p class="first">Prime factoring of any number.</p>
+</li>
+</ul>
+</div>
+<div class="section" id="module-hamcalc.math.primenos">
+<span id="implementation"></span><h2>Implementation<a class="headerlink" href="#module-hamcalc.math.primenos" title="Permalink to this headline">¶</a></h2>
+<p>hamcalc.math.primenos &#8211; Prime Number Calculator</p>
+<p>This includes a Sieve of Eratosthones plus a factorization.</p>
+<p>Some test cases.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">hamcalc.math.primenos</span> <span class="kn">as</span> <span class="nn">primenos</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">primenos</span><span class="o">.</span><span class="n">sieve_range_iter</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">))</span>
+<span class="go">[2]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">primenos</span><span class="o">.</span><span class="n">sieve_range_iter</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">))</span>
+<span class="go">[]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">primenos</span><span class="o">.</span><span class="n">sieve_range_iter</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">10</span><span class="p">))</span>
+<span class="go">[2, 3, 5, 7]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">primenos</span><span class="o">.</span><span class="n">factor</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>
+<span class="go">[2]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">primenos</span><span class="o">.</span><span class="n">factor</span><span class="p">(</span><span class="mi">99</span><span class="p">))</span>
+<span class="go">[3, 3, 11]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">primenos</span><span class="o">.</span><span class="n">factor</span><span class="p">(</span><span class="mi">2</span><span class="o">**</span><span class="mi">32</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span>
+<span class="go">[641, 6700417]</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="quirks">
+<h2>Quirks<a class="headerlink" href="#quirks" title="Permalink to this headline">¶</a></h2>
+<p>The legacy used fairly inefficient and brute-force algorothims.
+Fine for recreational programming.</p>
+<p>We&#8217;ll leave it at that, rather than provide really cool, high-powered factoring
+algorithms.</p>
+<p>Indeed, this program contains the following quirky bit of code.</p>
+<div class="highlight-python"><pre>730 FOR N=A TO T STEP B
+750 IF T/N=INT(T/N)THEN X=X+1:PN(X)=N:T=T/N:GOTO 730
+760 A=3:B=2
+770 NEXT N</pre>
+</div>
+<p>It&#8217;s not clear what the <tt class="docutils literal"><span class="pre">GOTO</span></tt> on line 750 even means.</p>
+</div>
 </div>
 
 

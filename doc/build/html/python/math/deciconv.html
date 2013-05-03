@@ -85,13 +85,13 @@ Degree:Minute:Second values.</p>
 <p>We provide both implementations, since strings are an extension to tuples.</p>
 <p>Test Cases</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">hamcalc.math.deciconv</span> <span class="kn">as</span> <span class="nn">deciconv</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">deciconv</span><span class="o">.</span><span class="n">HRS_MIN_SEC</span><span class="o">.</span><span class="n">to_std</span><span class="p">(</span> <span class="s">&quot;12:34:56&quot;</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">deciconv</span><span class="o">.</span><span class="n">HR_MIN_SEC</span><span class="o">.</span><span class="n">to_std</span><span class="p">(</span> <span class="s">&quot;12:34:56&quot;</span> <span class="p">)</span>
 <span class="go">12.582222222222223</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">deciconv</span><span class="o">.</span><span class="n">HRS_MIN_SEC</span><span class="o">.</span><span class="n">from_std</span><span class="p">(</span> <span class="mf">12.582</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">deciconv</span><span class="o">.</span><span class="n">HR_MIN_SEC</span><span class="o">.</span><span class="n">from_std</span><span class="p">(</span> <span class="mf">12.582</span> <span class="p">)</span>
 <span class="go">&#39;12:34:55.2&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">deciconv</span><span class="o">.</span><span class="n">HRS_MIN_SEC</span><span class="o">.</span><span class="n">from_std</span><span class="p">(</span> <span class="mf">12.5822</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">deciconv</span><span class="o">.</span><span class="n">HR_MIN_SEC</span><span class="o">.</span><span class="n">from_std</span><span class="p">(</span> <span class="mf">12.5822</span> <span class="p">)</span>
 <span class="go">&#39;12:34:55.9&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">deciconv</span><span class="o">.</span><span class="n">HRS_MIN_SEC</span><span class="o">.</span><span class="n">from_std</span><span class="p">(</span> <span class="mf">12.58222</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">deciconv</span><span class="o">.</span><span class="n">HR_MIN_SEC</span><span class="o">.</span><span class="n">from_std</span><span class="p">(</span> <span class="mf">12.58222</span> <span class="p">)</span>
 <span class="go">&#39;12:34:56.0&#39;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">deciconv</span><span class="o">.</span><span class="n">HMS_TUPLE</span><span class="o">.</span><span class="n">to_std</span><span class="p">(</span> <span class="p">(</span><span class="mi">12</span><span class="p">,</span><span class="mi">34</span><span class="p">,</span><span class="mi">56</span><span class="p">)</span> <span class="p">)</span>
 <span class="go">12.582222222222223</span>
@@ -100,13 +100,13 @@ Degree:Minute:Second values.</p>
 </pre></div>
 </div>
 <dl class="class">
-<dt id="hamcalc.math.deciconv.DEGREES">
-<em class="property">class </em><tt class="descclassname">hamcalc.math.deciconv.</tt><tt class="descname">DEGREES</tt><a class="reference internal" href="../../_modules/hamcalc/math/deciconv.html#DEGREES"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.math.deciconv.DEGREES" title="Permalink to this definition">¶</a></dt>
+<dt id="hamcalc.math.deciconv.DEGREE">
+<em class="property">class </em><tt class="descclassname">hamcalc.math.deciconv.</tt><tt class="descname">DEGREE</tt><a class="headerlink" href="#hamcalc.math.deciconv.DEGREE" title="Permalink to this definition">¶</a></dt>
 <dd><p>Decimal Degrees</p>
 <dl class="attribute">
-<dt id="hamcalc.math.deciconv.DEGREES.standard">
-<tt class="descname">standard</tt><a class="headerlink" href="#hamcalc.math.deciconv.DEGREES.standard" title="Permalink to this definition">¶</a></dt>
-<dd><p>alias of <a class="reference internal" href="#hamcalc.math.deciconv.DEGREES" title="hamcalc.math.deciconv.DEGREES"><tt class="xref py py-class docutils literal"><span class="pre">DEGREES</span></tt></a></p>
+<dt id="hamcalc.math.deciconv.DEGREE.standard">
+<tt class="descname">standard</tt><a class="headerlink" href="#hamcalc.math.deciconv.DEGREE.standard" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#hamcalc.math.deciconv.DEGREE" title="hamcalc.math.deciconv.DEGREE"><tt class="xref py py-class docutils literal"><span class="pre">DEGREE</span></tt></a></p>
 </dd></dl>
 
 </dd></dl>
@@ -118,7 +118,7 @@ Degree:Minute:Second values.</p>
 <dl class="attribute">
 <dt id="hamcalc.math.deciconv.DEG_MIN_SEC.standard">
 <tt class="descname">standard</tt><a class="headerlink" href="#hamcalc.math.deciconv.DEG_MIN_SEC.standard" title="Permalink to this definition">¶</a></dt>
-<dd><p>alias of <a class="reference internal" href="#hamcalc.math.deciconv.DEGREES" title="hamcalc.math.deciconv.DEGREES"><tt class="xref py py-class docutils literal"><span class="pre">DEGREES</span></tt></a></p>
+<dd><p>alias of <a class="reference internal" href="#hamcalc.math.deciconv.DEGREE" title="hamcalc.math.deciconv.DEGREE"><tt class="xref py py-class docutils literal"><span class="pre">DEGREE</span></tt></a></p>
 </dd></dl>
 
 </dd></dl>
@@ -130,7 +130,7 @@ Degree:Minute:Second values.</p>
 <dl class="attribute">
 <dt id="hamcalc.math.deciconv.DMS_TUPLE.standard">
 <tt class="descname">standard</tt><a class="headerlink" href="#hamcalc.math.deciconv.DMS_TUPLE.standard" title="Permalink to this definition">¶</a></dt>
-<dd><p>alias of <a class="reference internal" href="#hamcalc.math.deciconv.DEGREES" title="hamcalc.math.deciconv.DEGREES"><tt class="xref py py-class docutils literal"><span class="pre">DEGREES</span></tt></a></p>
+<dd><p>alias of <a class="reference internal" href="#hamcalc.math.deciconv.DEGREE" title="hamcalc.math.deciconv.DEGREE"><tt class="xref py py-class docutils literal"><span class="pre">DEGREE</span></tt></a></p>
 </dd></dl>
 
 </dd></dl>
@@ -142,31 +142,31 @@ Degree:Minute:Second values.</p>
 <dl class="attribute">
 <dt id="hamcalc.math.deciconv.HMS_TUPLE.standard">
 <tt class="descname">standard</tt><a class="headerlink" href="#hamcalc.math.deciconv.HMS_TUPLE.standard" title="Permalink to this definition">¶</a></dt>
-<dd><p>alias of <a class="reference internal" href="#hamcalc.math.deciconv.HOURS" title="hamcalc.math.deciconv.HOURS"><tt class="xref py py-class docutils literal"><span class="pre">HOURS</span></tt></a></p>
+<dd><p>alias of <a class="reference internal" href="#hamcalc.math.deciconv.HOUR" title="hamcalc.math.deciconv.HOUR"><tt class="xref py py-class docutils literal"><span class="pre">HOUR</span></tt></a></p>
 </dd></dl>
 
 </dd></dl>
 
 <dl class="class">
-<dt id="hamcalc.math.deciconv.HOURS">
-<em class="property">class </em><tt class="descclassname">hamcalc.math.deciconv.</tt><tt class="descname">HOURS</tt><a class="reference internal" href="../../_modules/hamcalc/math/deciconv.html#HOURS"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.math.deciconv.HOURS" title="Permalink to this definition">¶</a></dt>
+<dt id="hamcalc.math.deciconv.HOUR">
+<em class="property">class </em><tt class="descclassname">hamcalc.math.deciconv.</tt><tt class="descname">HOUR</tt><a class="headerlink" href="#hamcalc.math.deciconv.HOUR" title="Permalink to this definition">¶</a></dt>
 <dd><p>Decimal Hours</p>
 <dl class="attribute">
-<dt id="hamcalc.math.deciconv.HOURS.standard">
-<tt class="descname">standard</tt><a class="headerlink" href="#hamcalc.math.deciconv.HOURS.standard" title="Permalink to this definition">¶</a></dt>
-<dd><p>alias of <a class="reference internal" href="#hamcalc.math.deciconv.HOURS" title="hamcalc.math.deciconv.HOURS"><tt class="xref py py-class docutils literal"><span class="pre">HOURS</span></tt></a></p>
+<dt id="hamcalc.math.deciconv.HOUR.standard">
+<tt class="descname">standard</tt><a class="headerlink" href="#hamcalc.math.deciconv.HOUR.standard" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#hamcalc.math.deciconv.HOUR" title="hamcalc.math.deciconv.HOUR"><tt class="xref py py-class docutils literal"><span class="pre">HOUR</span></tt></a></p>
 </dd></dl>
 
 </dd></dl>
 
 <dl class="class">
-<dt id="hamcalc.math.deciconv.HRS_MIN_SEC">
-<em class="property">class </em><tt class="descclassname">hamcalc.math.deciconv.</tt><tt class="descname">HRS_MIN_SEC</tt><a class="reference internal" href="../../_modules/hamcalc/math/deciconv.html#HRS_MIN_SEC"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.math.deciconv.HRS_MIN_SEC" title="Permalink to this definition">¶</a></dt>
+<dt id="hamcalc.math.deciconv.HR_MIN_SEC">
+<em class="property">class </em><tt class="descclassname">hamcalc.math.deciconv.</tt><tt class="descname">HR_MIN_SEC</tt><a class="headerlink" href="#hamcalc.math.deciconv.HR_MIN_SEC" title="Permalink to this definition">¶</a></dt>
 <dd><p>Hours Minutes Seconds &#8211; as String</p>
 <dl class="attribute">
-<dt id="hamcalc.math.deciconv.HRS_MIN_SEC.standard">
-<tt class="descname">standard</tt><a class="headerlink" href="#hamcalc.math.deciconv.HRS_MIN_SEC.standard" title="Permalink to this definition">¶</a></dt>
-<dd><p>alias of <a class="reference internal" href="#hamcalc.math.deciconv.HOURS" title="hamcalc.math.deciconv.HOURS"><tt class="xref py py-class docutils literal"><span class="pre">HOURS</span></tt></a></p>
+<dt id="hamcalc.math.deciconv.HR_MIN_SEC.standard">
+<tt class="descname">standard</tt><a class="headerlink" href="#hamcalc.math.deciconv.HR_MIN_SEC.standard" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#hamcalc.math.deciconv.HOUR" title="hamcalc.math.deciconv.HOUR"><tt class="xref py py-class docutils literal"><span class="pre">HOUR</span></tt></a></p>
 </dd></dl>
 
 </dd></dl>
