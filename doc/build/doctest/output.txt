@@ -1,4 +1,4 @@
-Results of doctest builder run on 2013-05-03 17:13:42
+Results of doctest builder run on 2013-05-04 17:37:34
 =====================================================
 
 Document: python/math/baromtr
@@ -49,6 +49,14 @@ Document: python/math/primenos
 7 passed and 0 failed.
 Test passed.
 
+Document: python/math/solutri
+-----------------------------
+1 items passed all tests:
+   8 tests in default
+8 tests in 1 items.
+8 passed and 0 failed.
+Test passed.
+
 Document: python/math/fibon
 ---------------------------
 1 items passed all tests:
@@ -83,7 +91,7 @@ Test passed.
 
 Doctest summary
 ===============
-  121 tests
+  129 tests
     0 failures in tests
     0 failures in setup code
     0 failures in cleanup code

@@ -30,17 +30,13 @@ introduction = """\
 def intro():
     return introduction
 
-def sieve_iter( last ):
+def sieve_set_iter( last ):
     """Sieve of Eratosthones: generate primes, p, such that :math:`2 \leq p < last`
 
-    This creates a potentially large set object, which can use a LOT of memory.
-    But it's simple.
+    This creates a potentially large ``set`` object, which can use a LOT of memory.
 
-    Factoring small numbers (less than 2**32) is quick because small integer
-    values are fast in Python.
-
-    Factoring a number as large as 2**48+1 can take a while because it uses
-    long integers which tie up a fair amount of memory.
+    The downside of a large set is the problem of hash collisions when trying
+    to collect a large number of elements. The upside is simplicity.
 
     :param last: primes will be 2 <= p < last.
     :returns: Yields prime numbers
@@ -52,23 +48,49 @@ def sieve_iter( last ):
             for m in range(i+i,last,i):
                 composite.add( m )
 
+def sieve_list_iter( last ):
+    """Sieve of Eratosthones: generate primes, p, such that :math:`2 \leq p < last`
+
+    This creates a large ``list`` object, which can use a LOT of memory.
+    But it's simple. The list is a trifle faster than a set because it avoids
+    hash collisions.
+
+    :param last: primes will be 2 <= p < last.
+    :returns: Yields prime numbers
+    """
+    sieve = [ True for i in range(last) ] # Ouch.
+    for i in range(2,last):
+        if sieve[i]:
+            yield i
+            for m in range(i+i,last,i):
+                sieve[m]= False
+
 def sieve_range_iter( low, high ):
-    """Sieve of Eratosthones such that :math:`low \leq p < last`
+    """Sieve of Eratosthones such that :math:`low \leq p < last`.
+
+    This uses the :func:`sieve_list_iter` because it's potentially
+    faster for factoring.
 
     :param low: lowest value.
     :param last: primes will be low <= p < last.
     :returns: Yields prime numbers
     """
-    return itertools.dropwhile( lambda a: a < low, sieve_iter(high) )
+    return itertools.dropwhile( lambda a: a < low, sieve_list_iter(high) )
 
 def factor( n ):
     """Simple prime factorization of n.
+
+    Factoring small numbers (less than 2**32) is quick because small integer
+    values are fast in Python.
+
+    Factoring larger numbers is slower because it uses
+    long integers which are slower and tie up more memory.
 
     :param n: Number of factor
     :returns: Yields factors.
     """
     n= int(n) # just in case.
-    for i in sieve_iter( int(n**.5)+1 ):
+    for i in sieve_list_iter( int(n**.5)+1 ):
         while n % i == 0 and n != 1:
             yield i
             n = n // i

@@ -58,9 +58,97 @@
 <h1>solutri &#8211; Triangles, solution of<a class="headerlink" href="#solutri-triangles-solution-of" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="analysis">
 <h2>Analysis<a class="headerlink" href="#analysis" title="Permalink to this headline">¶</a></h2>
+<p>The separation into right-triangle and non-right-triangle is mostly a quirk.
+At best, it saves entering &#8220;90°&#8221; for one of the angles.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>Right Triangle Rules</p>
+<p>In the case of a right triangle, there&#8217;s a known 90° angle. Given
+one angle, <img class="math" src="../../_images/math/52e8ed7a3ba22130ad3984eb2cd413406475a689.png" alt="\theta"/>, the remaining angle is <img class="math" src="../../_images/math/42880fc831a53dca1ef7e06cdb6b7c848cdc6f8c.png" alt="90-\theta"/>.</p>
+<p>The lengths of the sides of a right triangle follow the Pythagorean Theorem: <img class="math" src="../../_images/math/e2bfc6278926625cfac3670f05e69d5e05729d0b.png" alt="c^2+d^2=e^2"/>. Two sides determine the third.</p>
+<p class="last">Since one angle is 90°, two sides or angles define the remaining five values.
+There are 10 combinations of the five values; because the angles are so simple, the combinations boil down to three rules for pairs of sides and three rules
+for side and angle.</p>
+</div>
+<p>HamCalc does an &#8220;incremental&#8221; solution. Given two angles it will compute the third, making no effort to compute the sides.</p>
+<p>In the general case, there are 15 combinations of values.
+The three angles are <em>f</em>, <em>g</em> and <em>h</em>,
+measured in radians. The three sides are <em>I</em>, <em>J</em>, and <em>K</em>.</p>
+<ul>
+<li><p class="first">Three sides, <em>I</em>, <em>J</em>, and <em>K</em>, known. We can compute the angles.</p>
+<div class="math">
+<p><img src="../../_images/math/3d2bc0718e682da4002183004f52298490c4d124.png" alt="S=(I+J+K)/2"/></p>
+</div><div class="math">
+<p><img src="../../_images/math/a689802f1de8d57174ad961b3b40380fbc59d46f.png" alt="f=2 \arctan{\sqrt{\frac{(S-J)(S-I)}{S(S-K)}}}"/></p>
+</div><p>Similar formulae provide values for <em>g</em> and <em>h</em>.</p>
+</li>
+<li><p class="first">Two angles known: <em>f</em> and <em>g</em>, <em>f</em> and <em>h</em> or <em>g</em> amd <em>h</em>.
+The third angle is <img class="math" src="../../_images/math/733c73d578d0ef14a765c56952539b682f494dc3.png" alt="h = \pi - (f+g)"/> or some variant for the other two
+combinations.</p>
+</li>
+<li><p class="first">Three angles known and one side give us the two other sides. <em>f</em>, <em>g</em> and <em>h</em> and a side (<em>I</em>, <em>J</em> or <em>K</em>):</p>
+<div class="math">
+<p><img src="../../_images/math/568770d28ed9816158015929739c6cdae474270a.png" alt="J=I \frac{\sin h}{\sin g}"/></p>
+</div><div class="math">
+<p><img src="../../_images/math/343a9e6f8a8e36a3b5befad1ce444c35783a8361.png" alt="K=I \frac{\sin f}{\sin g}"/></p>
+</div><p>Three similar pairs of equations deduce other pairs of sides from three angles and a side.</p>
+</li>
+<li><p class="first">One angle and an adjacent and opposite sides known &#8211; for example, <em>f</em>, <em>J</em> and <em>K</em> &#8211; we can derive another angle.</p>
+<div class="math">
+<p><img src="../../_images/math/9f5bf5c85b6100ba5a7a0cd06cf7d01cd526f27f.png" alt="h = \arcsin{\frac{J}{K}\sin f}"/></p>
+</div><p>Given two angles, we can deduce the missing angle. Now we&#8217;re working
+with three angles and two sides, so the third side is also available
+using rules above.</p>
+</li>
+<li><p class="first">One angle and two adjacent sides known &#8211; for example, <em>f</em>, <em>I</em> and <em>J</em> &#8211; we can derive the missing side.</p>
+<div class="math">
+<p><img src="../../_images/math/c129ce92ae7b836af90f552159e47090dc821b46.png" alt="K = \sqrt{I^2+J^2-(2IJ\cos f)}"/></p>
+</div></li>
+</ul>
 </div>
 <div class="section" id="implementation">
 <h2>Implementation<a class="headerlink" href="#implementation" title="Permalink to this headline">¶</a></h2>
+<p>This is a sophisticated <strong>Solver</strong> with six variables.</p>
+<p>It can deal with just three angles or various combinations of sides
+and angles.</p>
+<span class="target" id="module-hamcalc.math.solutri"></span><p>hamcalc.math.solutri &#8211; Triangles, solution of</p>
+<p>Some test cases</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">hamcalc.math.solutri</span> <span class="kn">as</span> <span class="nn">solutri</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">solutri</span><span class="o">.</span><span class="n">triangle</span><span class="p">(</span> <span class="n">A_f</span><span class="o">=</span><span class="n">solutri</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="mi">60</span><span class="p">),</span> <span class="n">S_i</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">A_g</span><span class="o">=</span><span class="n">solutri</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="mi">60</span><span class="p">)</span> <span class="p">)</span>
+<span class="go">{&#39;A_g&#39;: 1.0471975511965976, &#39;A_f&#39;: 1.0471975511965976, &#39;S_i&#39;: 3, &#39;S_k&#39;: 3.0000000000000004, &#39;S_j&#39;: 3.000000000000001, &#39;A_h&#39;: 1.047197551196598}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">solutri</span><span class="o">.</span><span class="n">triangle</span><span class="p">(</span> <span class="n">A_f</span><span class="o">=</span><span class="n">solutri</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="mi">45</span><span class="p">),</span> <span class="n">S_i</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">A_h</span><span class="o">=</span><span class="n">solutri</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="mi">90</span><span class="p">),</span> <span class="n">S_k</span><span class="o">=</span><span class="mi">3</span> <span class="p">)</span>
+<span class="go">{&#39;A_g&#39;: 0.7853981633974483, &#39;A_f&#39;: 0.7853981633974483, &#39;S_i&#39;: 3, &#39;S_k&#39;: 3.0, &#39;S_j&#39;: 4.242640687119286, &#39;A_h&#39;: 1.5707963267948966}</span>
+</pre></div>
+</div>
+<dl class="function">
+<dt id="hamcalc.math.solutri.triangle">
+<tt class="descclassname">hamcalc.math.solutri.</tt><tt class="descname">triangle</tt><big>(</big><em>**kw</em><big>)</big><a class="reference internal" href="../../_modules/hamcalc/math/solutri.html#triangle"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.math.solutri.triangle" title="Permalink to this definition">¶</a></dt>
+<dd><p>Solve the various elements of a Triangle.</p>
+<p>Angles are A_f, A_g, A_h; Sides are S_i, S_j, S_k.</p>
+<p>Further, A_f is opposite S_k, and adjacent to S_i and S_j.</p>
+<p>Angles must be measured in radians.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="quirks">
+<h2>Quirks<a class="headerlink" href="#quirks" title="Permalink to this headline">¶</a></h2>
+<p>Having a separate right-triangle case is a quirk. The general case
+with one angle = 90° will produce the correct answers, also.</p>
+<p>The use of similar single-letter variables (F, G, H, I, J, K) for angles and sides makes the code somewhat difficult to interpret.</p>
+<p>The implementation of arcsin and arccos is peculiar. Rather than define
+proper functions, a <tt class="docutils literal"><span class="pre">GOSUB</span></tt> using three global variables is used.</p>
+<p>Here&#8217;s the &#8220;definition&#8221;:</p>
+<div class="highlight-python"><pre>380 :REM&#x27;.....inverse sin and cos
+390 ASN=ATN(X/SQR(-X*X+1))         :REM&#x27;arc sin
+400 ACS=-ASN+PI/2                  :REM&#x27;arc cos
+410 RETURN</pre>
+</div>
+<p>Here&#8217;s a &#8220;reference&#8221;. This line will put a value in <tt class="docutils literal"><span class="pre">X</span></tt>, then <tt class="docutils literal"><span class="pre">GOSUB</span> <span class="pre">380</span></tt> and
+find a value in <tt class="docutils literal"><span class="pre">ASN</span></tt> and <tt class="docutils literal"><span class="pre">ACS</span></tt>.</p>
+<div class="highlight-python"><pre>1080 IF D*E THEN C=SQR(E^2-D^2):X=D/E:GOSUB 380:T1=ASN:T2=PI/2-T1:GOTO 1460</pre>
+</div>
+<p>The legacy application has a kind of cool character-mode graphics look-and-feel.
+The values are displayed adjacent to the relevant bits of the triangle.</p>
 </div>
 <div class="section" id="legacy-menu">
 <h2>Legacy Menu<a class="headerlink" href="#legacy-menu" title="Permalink to this headline">¶</a></h2>

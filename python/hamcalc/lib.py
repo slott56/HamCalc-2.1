@@ -6,9 +6,19 @@
 
 -   Units and Unit Conversions.
 
+-   Utility functions for degree and radian conversions.
 
 """
 from collections import namedtuple
+import math
+
+def radians( degrees ):
+    """Convert degrees to radians."""
+    return math.pi*degrees/180
+
+def degrees( radians ):
+    """Convert radians to degrees."""
+    return 180*radians/math.pi
 
 class Unit:
     """Generic definition of a unit.

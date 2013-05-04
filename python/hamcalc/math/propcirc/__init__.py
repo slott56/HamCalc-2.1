@@ -29,7 +29,7 @@ Here are some test cases.
 __version__ = "2.1"
 
 import math
-from hamcalc.lib import AttrDict
+from hamcalc.lib import AttrDict, radians, degrees
 
 introduction = """\
 
@@ -64,14 +64,6 @@ class Error( Exception ):
 def intro():
     """Returns the text from the introductory page."""
     return introduction
-
-def radians( degrees ):
-    """Convert degrees to radians."""
-    return math.pi*degrees/180
-
-def degrees( radians ):
-    """Convert radians to degrees."""
-    return 180*radians/math.pi
 
 def bisection( L_A, G, eps=1.0E-7 ):
     """Approximate a value for *R* from *L_A* and *G* via bisection.
