@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Welcome to HamCalc! &mdash; HamCalc 2.1 documentation</title>
+    <title>The HamCalc Port Project &mdash; HamCalc 2.1 documentation</title>
     
     <link rel="stylesheet" href="_static/agogo.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -50,8 +50,8 @@
         <div class="bodywrapper">
           <div class="body">
             
-  <div class="section" id="welcome-to-hamcalc">
-<h1>Welcome to HamCalc!<a class="headerlink" href="#welcome-to-hamcalc" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="the-hamcalc-port-project">
+<h1>The HamCalc Port Project<a class="headerlink" href="#the-hamcalc-port-project" title="Permalink to this headline">¶</a></h1>
 <p>This is a project to convert HamCalc from GW-Basic
 to other, more universally useful languages.</p>
 <p>See <a class="reference external" href="http://www.cq-amateur-radio.com/cq_ham_calc/cq_ham_calc.html">http://www.cq-amateur-radio.com/cq_ham_calc/cq_ham_calc.html</a></p>
@@ -78,28 +78,76 @@ legacy HamCalc will be discareded and new features added.</p>
 <li class="toctree-l2"><a class="reference internal" href="python_architecture.html#essential-features">Essential Features</a></li>
 <li class="toctree-l2"><a class="reference internal" href="python_architecture.html#revised-designs">Revised Designs</a></li>
 <li class="toctree-l2"><a class="reference internal" href="python_architecture.html#the-explanations">The Explanations</a></li>
-<li class="toctree-l2"><a class="reference internal" href="python_architecture.html#the-stdio-application">The STDIO Application</a></li>
-<li class="toctree-l2"><a class="reference internal" href="python_architecture.html#restful-web-service">RESTful Web Service</a></li>
+<li class="toctree-l2"><a class="reference internal" href="python_architecture.html#a-stdio-implementation">A STDIO Implementation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="python_architecture.html#a-restful-web-service-implementation">A RESTful Web Service Implementation</a></li>
 </ul>
 </li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
 <li class="toctree-l1"><a class="reference internal" href="python/index.html">Python Modules</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="python/lib.html">lib &#8211; Supporting Library</a></li>
 <li class="toctree-l2"><a class="reference internal" href="python/radio.html">radio &#8211; Radio Design and Engineering</a></li>
 <li class="toctree-l2"><a class="reference internal" href="python/ham.html">ham &#8211; Ham Radio Operations</a></li>
-<li class="toctree-l2"><a class="reference internal" href="python/electronics/index.html">electronics &#8211; General Electronics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="python/electronics/index.html">electronics &#8211; General Electronics</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="python/electronics/awgexact.html">awgexact &#8211; AWG wire size calculator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="python/electronics/decibel.html">decibel &#8211; Decibel Calculator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="python/electronics/elecleng.html">elecleng</a></li>
+<li class="toctree-l3"><a class="reference internal" href="python/electronics/ohmslaw.html">ohmslaw</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="python/construction.html">construction &#8211; Construction and Related Projects</a></li>
-<li class="toctree-l2"><a class="reference internal" href="python/math/index.html">math &#8211; Math, Physics, Units Conversion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="python/math/index.html">math &#8211; Math, Physics, Units Conversion</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="python/math/accelr.html">accelr &#8211; Acceleration Calculator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="python/math/baromtr.html">baromtr &#8211; Barometer Reading Equivalents</a></li>
+<li class="toctree-l3"><a class="reference internal" href="python/math/binary.html">binary &#8211; Decimal to Binary Converter</a></li>
+<li class="toctree-l3"><a class="reference internal" href="python/math/centrif.html">centrif &#8211; Centrifugal/Centripetel Force</a></li>
+<li class="toctree-l3"><a class="reference internal" href="python/math/conecalc.html">conecalc</a></li>
+<li class="toctree-l3"><a class="reference internal" href="python/math/curvefit.html">curvefit</a></li>
+<li class="toctree-l3"><a class="reference internal" href="python/math/deciconv.html">deciconv &#8211; Decimal Hour/Degree Converter</a></li>
+<li class="toctree-l3"><a class="reference internal" href="python/math/decifrac.html">decifrac &#8211; Decimal/Fraction Converter</a></li>
+<li class="toctree-l3"><a class="reference internal" href="python/math/diamfind.html">diamfind</a></li>
+<li class="toctree-l3"><a class="reference internal" href="python/math/equiv.html">equiv &#8211; Unit Conversions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="python/math/fibon.html">fibon &#8211; Fibonacci Series</a></li>
+<li class="toctree-l3"><a class="reference internal" href="python/math/formulae.html">formulae</a></li>
+<li class="toctree-l3"><a class="reference internal" href="python/math/graphs.html">graphs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="python/math/involute.html">involute</a></li>
+<li class="toctree-l3"><a class="reference internal" href="python/math/numderiv.html">numderiv</a></li>
+<li class="toctree-l3"><a class="reference internal" href="python/math/polygon.html">polygon</a></li>
+<li class="toctree-l3"><a class="reference internal" href="python/math/primenos.html">primenos &#8211; Prime Number Calculator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="python/math/propcirc.html">propcirc &#8211; Circle, Properties of</a></li>
+<li class="toctree-l3"><a class="reference internal" href="python/math/randnum.html">randnum</a></li>
+<li class="toctree-l3"><a class="reference internal" href="python/math/rotaplot.html">rotaplot</a></li>
+<li class="toctree-l3"><a class="reference internal" href="python/math/simuleq.html">simuleq</a></li>
+<li class="toctree-l3"><a class="reference internal" href="python/math/solutri.html">solutri &#8211; Triangles, solution of</a></li>
+<li class="toctree-l3"><a class="reference internal" href="python/math/speedtd.html">speedtd</a></li>
+<li class="toctree-l3"><a class="reference internal" href="python/math/trig.html">trig &#8211; Trigonometric Functions</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="python/navigation.html">navigation &#8211; Navigation and Astronomy</a></li>
 <li class="toctree-l2"><a class="reference internal" href="python/calendar.html">calendar &#8211; Calendrical Calculations</a></li>
 <li class="toctree-l2"><a class="reference internal" href="python/audio_photo.html">audio_photo &#8211; Audio, Sound and Photography</a></li>
-<li class="toctree-l2"><a class="reference internal" href="python/software.html">software &#8211; Software Engineering, Programming and Computers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="python/software.html">software &#8211; Software Engineering, Programming and Computers</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="python/software.html#numsort">numsort</a></li>
+<li class="toctree-l3"><a class="reference internal" href="python/software.html#more-software">more software</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="python/other.html">other &#8211; including Finance and Nutrition</a></li>
-<li class="toctree-l2"><a class="reference internal" href="python/stdio.html">STDIO Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="python/stdio.html">STDIO Interface</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="python/stdio.html#module-hamcalc.stdio.intro">Intro</a></li>
+<li class="toctree-l3"><a class="reference internal" href="python/stdio.html#module-hamcalc.stdio.menu">Menu</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="python/rest.html">RESTful Web Services Interface</a></li>
 <li class="toctree-l2"><a class="reference internal" href="python/cli.html">Command-Line Interface</a></li>
 <li class="toctree-l2"><a class="reference internal" href="python/gui.html">GUI Interface</a></li>
 </ul>
 </li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
 <li class="toctree-l1"><a class="reference internal" href="todo.html">The To Do List</a></li>
 </ul>
 </div>
@@ -124,7 +172,11 @@ legacy HamCalc will be discareded and new features added.</p>
 <li class="toctree-l1"><a class="reference internal" href="background.html">Background</a></li>
 <li class="toctree-l1"><a class="reference internal" href="legacy.html">The HamCalc Legacy</a></li>
 <li class="toctree-l1"><a class="reference internal" href="python_architecture.html">Python Architecture</a></li>
+</ul>
+<ul>
 <li class="toctree-l1"><a class="reference internal" href="python/index.html">Python Modules</a></li>
+</ul>
+<ul>
 <li class="toctree-l1"><a class="reference internal" href="todo.html">The To Do List</a></li>
 </ul>
 

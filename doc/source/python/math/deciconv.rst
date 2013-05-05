@@ -33,7 +33,18 @@ and DEG°MM'SS" is the formatting.
 Implementation
 ~~~~~~~~~~~~~~~
 
-We can use simple unit conversion class definitions for this.
+This gives us pause. We have three degree-radian and degree-minute-second locations.
+
+-   :mod:`hamcalc.math.trig`
+
+-   :mod:`hamcalc.math.deciconv`
+
+-   :mod:`hamcalc.math.equiv`
+
+Which is "fundamental"? Or do we have  a common module that is shared by all three?
+
+We can use simple unit conversion class definitions for the Hour-Minute-Second
+conversion.  The trigonometry needs to be moved into :mod:`hamcalc.math.trig`.
 
 ..  automodule:: hamcalc.math.deciconv
     :members:

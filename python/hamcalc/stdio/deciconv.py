@@ -1,4 +1,4 @@
-"""Decimal numbers to degrees/minutes/seconds.
+"""Decimal numbers to degrees/minutes/seconds
 
 "DECIMAL/SEXIGESIMAL CONVERSION","","","DECICONV"
 "HOURS",", conversion",", decimal to clock display","DECICONV"

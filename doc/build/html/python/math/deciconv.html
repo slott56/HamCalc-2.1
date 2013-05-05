@@ -74,7 +74,15 @@ and DEG°MM&#8217;SS&#8221; is the formatting.</p>
 </div>
 <div class="section" id="implementation">
 <h2>Implementation<a class="headerlink" href="#implementation" title="Permalink to this headline">¶</a></h2>
-<p>We can use simple unit conversion class definitions for this.</p>
+<p>This gives us pause. We have three degree-radian and degree-minute-second locations.</p>
+<ul class="simple">
+<li><tt class="xref py py-mod docutils literal"><span class="pre">hamcalc.math.trig</span></tt></li>
+<li><a class="reference internal" href="#module-hamcalc.math.deciconv" title="hamcalc.math.deciconv"><tt class="xref py py-mod docutils literal"><span class="pre">hamcalc.math.deciconv</span></tt></a></li>
+<li><a class="reference internal" href="equiv.html#module-hamcalc.math.equiv" title="hamcalc.math.equiv"><tt class="xref py py-mod docutils literal"><span class="pre">hamcalc.math.equiv</span></tt></a></li>
+</ul>
+<p>Which is &#8220;fundamental&#8221;? Or do we have  a common module that is shared by all three?</p>
+<p>We can use simple unit conversion class definitions for the Hour-Minute-Second
+conversion.  The trigonometry needs to be moved into <tt class="xref py py-mod docutils literal"><span class="pre">hamcalc.math.trig</span></tt>.</p>
 <span class="target" id="module-hamcalc.math.deciconv"></span><p>hamcalc.math.deciconv &#8211; Decimal numbers to degrees/minutes/seconds.</p>
 <p>There are two ways to handle &#8220;sexigesimal&#8221; Hour:Minute:Second and
 Degree:Minute:Second values.</p>
@@ -98,6 +106,10 @@ Degree:Minute:Second values.</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">deciconv</span><span class="o">.</span><span class="n">HMS_TUPLE</span><span class="o">.</span><span class="n">from_std</span><span class="p">(</span> <span class="mf">12.58222</span> <span class="p">)</span>
 <span class="go">(12.0, 34.0, 55.99199999999837)</span>
 </pre></div>
+</div>
+<div class="admonition-todo admonition" id="index-0">
+<p class="first admonition-title">Todo</p>
+<p class="last">Move Degrees to <tt class="xref py py-mod docutils literal"><span class="pre">hamcalc.math.trig</span></tt></p>
 </div>
 <dl class="class">
 <dt id="hamcalc.math.deciconv.DEGREE">

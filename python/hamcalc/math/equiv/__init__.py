@@ -1,10 +1,10 @@
-"""hamcalc.meth.equiv -- Unit Conversions
+"""hamcalc.math.equiv -- Unit Conversions
 
 Simple Units
 
 -   Capacitance
 -   Current
--   Degrees / Radians
+-   Degrees / Radians (imported from :mod:`hamcalc.math.trig`)
 -   Inductance
 -   Length / Distance
 -   Resistance
@@ -126,6 +126,7 @@ The result from the legacy may be 22.6 LPK.
 """
 
 from hamcalc.lib import Unit, Standard_Unit, AttrDict
+from hamcalc.math.trig import DEGREE, RADIAN
 import math
 
 def intro():
@@ -169,16 +170,6 @@ class MICROAMPERE( Unit ):
     standard= AMPERE
     name= "µA"
     factor= 1.0E6
-
-class RADIAN( Standard_Unit ):
-    """Radian"""
-    name= "Rad"
-
-class DEGREE( Unit ):
-    """Degree"""
-    name= "Deg"
-    standard= RADIAN
-    factor= 180/math.pi
 
 class HERTZ( Standard_Unit ):
     """Hertz"""

@@ -3,7 +3,7 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to HamCalc!
+The HamCalc Port Project
 ===================================
 
 This is a project to convert HamCalc from GW-Basic
@@ -25,7 +25,15 @@ Contents:
     background
     legacy
     python_architecture
+
+..  toctree::
+    :maxdepth: 3
+
     python/index
+
+..  toctree::
+    :maxdepth: 2
+
     todo
 
 Indices and tables

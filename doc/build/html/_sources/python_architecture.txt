@@ -868,7 +868,7 @@ Correcting the minor errors, perhaps this is more sensible.
 -   :math:`n = \frac{n}{\phi^2} + \frac{n}{\phi}` or maybe :math:`0 = n\phi^2+n\phi-n`.
 
 
-The STDIO Application
+A STDIO Implementation
 ========================
 
 The point behind our two-tier architecture is to separate the essential
@@ -1039,8 +1039,8 @@ that doesn't seem essential.
 We'll opt for the third style because of the copy-and-paste simplicity of
 moving lines from :file:`INDEX/HAMDEX.FIL` into the docstring comments.
 
-RESTful Web Service
-====================
+A RESTful Web Service Implementation
+======================================
 
 The point behind our two-tier architecture is to separate the essential
 calculation from the final application programs.

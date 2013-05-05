@@ -6,6 +6,10 @@ Some test cases
 >>> import math
 >>> solutri.triangle( A_f=solutri.radians(60), S_i=3, A_g=solutri.radians(60) )
 {'A_g': 1.0471975511965976, 'A_f': 1.0471975511965976, 'S_i': 3, 'S_k': 3.0000000000000004, 'S_j': 3.000000000000001, 'A_h': 1.047197551196598}
+>>> solutri.triangle( A_f=solutri.radians(60), S_j=3, A_g=solutri.radians(60) )
+{'A_g': 1.0471975511965976, 'A_f': 1.0471975511965976, 'S_i': 2.9999999999999996, 'S_k': 2.9999999999999996, 'S_j': 3, 'A_h': 1.047197551196598}
+>>> solutri.triangle( A_f=solutri.radians(60), S_k=3, A_g=solutri.radians(60) )
+{'A_g': 1.0471975511965976, 'A_f': 1.0471975511965976, 'S_i': 3.0000000000000004, 'S_k': 3, 'S_j': 3.0, 'A_h': 1.047197551196598}
 >>> solutri.degrees( 1.0471975511965976 )
 59.99999999999999
 >>> solutri.triangle( A_f=solutri.radians(45), S_i=3, A_h=solutri.radians(90), S_k=3 )

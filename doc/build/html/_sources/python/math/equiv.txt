@@ -7,11 +7,13 @@ From the QuickTables menu, we see the following four labels for this program.
 
 - Degrees to radians
 
-- Equivalent values
-
 - Radians to degrees
 
+- Equivalent values
+
 - Temperature
+
+The first two are imported from :mod:`hamcalc.math.trig`.
 
 Analysis
 ~~~~~~~~~~
@@ -50,6 +52,8 @@ Degrees / Radians
     ..  math::
 
         \frac{r}{\pi} = \frac{d}{180}
+
+    This is defined in :mod:`hamcalc.math.trig`.
 
 Frequencies/Wavelengths
 
@@ -185,6 +189,16 @@ Electrical length / Physical length
 
 Implementation
 ~~~~~~~~~~~~~~~~
+
+This gives us pause. We have three degree-radian and degree-minute-second locations.
+
+-   :mod:`hamcalc.math.trig`
+
+-   :mod:`hamcalc.math.deciconv`
+
+-   :mod:`hamcalc.math.equiv`
+
+Which is "fundamental"? Or do we have  a common module that is shared by all three?
 
 We can ignore the electical line length and sexagesimal conversions.
 They're simply links to other programs.

@@ -25,9 +25,16 @@ Test Cases
 >>> deciconv.HMS_TUPLE.from_std( 12.58222 )
 (12.0, 34.0, 55.99199999999837)
 
+>>> lat= deciconv.DEG_MIN_SEC.to_std( "36° 50' 45\\"" )
+>>> deciconv.DEGREE.from_std( lat )
+36.84583333333334
+>>> lon= deciconv.DEG_MIN_SEC.to_std( "76° 18' 28\\"" )
+>>> deciconv.DEGREE.from_std( lon )
+76.30777777777777
 """
 
 from hamcalc.lib import Unit, Standard_Unit
+from hamcalc.math.trig import DEGREE, RADIAN, DMS_TUPLE, DEG_MIN_SEC
 import re
 
 introduction= """\
@@ -35,9 +42,11 @@ introduction= """\
 
  This program converts decimal hours or decimal degrees to sexigesimal formats:
 
-   HH:MM:SS  (hours/min./sec.) for time
    DD°MM'SS" (degrees/min./sec.) for degrees
- and vice versa.
+
+   HH:MM:SS  (hours/min./sec.) for time
+
+   and vice versa.
 """
 
 def intro():
@@ -76,28 +85,3 @@ class HR_MIN_SEC( HMS_TUPLE ):
     def from_std( class_, value ):
         hrs, min, sec = super().from_std( value )
         return "{0:02.0f}:{1:02.0f}:{2:03.1f}".format( hrs, min, sec )
-
-class DEGREE( Standard_Unit ):
-    """Decimal Degrees"""
-    name= "deg"
-
-class DMS_TUPLE( HMS_TUPLE ):
-    """Degrees Minutes Seconds -- as Tuple"""
-    name= "DMS"
-    standard= DEGREE
-
-class DEG_MIN_SEC( DMS_TUPLE ):
-    """Degrees Minutes Seconds -- as String"""
-    name= "DMS"
-    standard= DEGREE
-    number_pat= re.compile( "\d+\.?\d*" )
-    @classmethod
-    def to_std( class_, value ):
-        class_.number_pat.findall( value )
-        d, m, s = map( float, class_.number_pat.findall( value ) )
-        return super().to_std( (d,m,s) )
-    @classmethod
-    def from_std( class_, value ):
-        deg, min, sec = super().from_std( value )
-        return "{0:02.0f}° {1:02.0f}' {2:03.1f}\"".format( deg, min, sec )
-

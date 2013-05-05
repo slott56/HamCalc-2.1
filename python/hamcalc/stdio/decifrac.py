@@ -1,4 +1,4 @@
-"""Decimals to fractions.
+"""Decimals to fractions
 """
 
 import hamcalc.math.decifrac as decifrac
