@@ -12,23 +12,17 @@ Analysis
 
 For a given base, :math:`b`, a number, :math:`n` is simply a polynomial in that base.
 
-..  math::
-
-    n = a_kb^k + a_{k-1}b^{k-1} + a_{k-2}b^{k-2} + \dots + a_{0}b^{0}
+..  math:: n = a_kb^k + a_{k-1}b^{k-1} + a_{k-2}b^{k-2} + \dots + a_{0}b^{0}
 
 Essentially, we're calculating the various values :math:`\{ a_{k}, a_{k-1}, a_{k-2}, \dots, a_{0} \}`
 
 The easy way to do this is to start from the Least Significant Bit (LSB).
 
-..  math::
-
-    l \gets n \mod b
+..  math:: l \gets n \mod b
 
 Once this bit has been determined, then  dividing the input value, :math:`n`, by the base, :math:`b`, makes another bit the LSB.
 
-..  math::
-
-    n \gets n \div b
+..  math:: n \gets n \div b
 
 Here's a Python version.
 

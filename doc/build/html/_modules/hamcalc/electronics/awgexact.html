@@ -66,19 +66,20 @@
 
 <span class="sd">Here are some test cases.</span>
 
-<span class="sd">&gt;&gt;&gt; AWG.to_std( &quot;#0&quot; )</span>
+<span class="sd">&gt;&gt;&gt; import hamcalc.electronics.awgexact as awgexact</span>
+<span class="sd">&gt;&gt;&gt; awgexact.AWG.to_std( &quot;#0&quot; )</span>
 <span class="sd">0.32486074024297096</span>
-<span class="sd">&gt;&gt;&gt; AWG.to_std( &quot;#0000&quot; )</span>
+<span class="sd">&gt;&gt;&gt; awgexact.AWG.to_std( &quot;#0000&quot; )</span>
 <span class="sd">0.46</span>
-<span class="sd">&gt;&gt;&gt; AWG.to_std( &quot;#36&quot; )</span>
+<span class="sd">&gt;&gt;&gt; awgexact.AWG.to_std( &quot;#36&quot; )</span>
 <span class="sd">0.005000000000000004</span>
-<span class="sd">&gt;&gt;&gt; MM.from_std( 0.005 )</span>
+<span class="sd">&gt;&gt;&gt; awgexact.MM.from_std( 0.005 )</span>
 <span class="sd">0.127</span>
-<span class="sd">&gt;&gt;&gt; AWG.from_std( 0.005 )</span>
+<span class="sd">&gt;&gt;&gt; awgexact.AWG.from_std( 0.005 )</span>
 <span class="sd">&#39;#36&#39;</span>
-<span class="sd">&gt;&gt;&gt; AWG.from_std( 0.006 )</span>
+<span class="sd">&gt;&gt;&gt; awgexact.AWG.from_std( 0.006 )</span>
 <span class="sd">&#39;#34&#39;</span>
-<span class="sd">&gt;&gt;&gt; AWG.to_std( &quot;#34&quot; )</span>
+<span class="sd">&gt;&gt;&gt; awgexact.AWG.to_std( &quot;#34&quot; )</span>
 <span class="sd">0.006304883590044074</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
@@ -103,18 +104,18 @@
     <span class="k">return</span> <span class="n">introduction</span>
 </div>
 <div class="viewcode-block" id="INCH"><a class="viewcode-back" href="../../../python/electronics/awgexact.html#hamcalc.electronics.awgexact.INCH">[docs]</a><span class="k">class</span> <span class="nc">INCH</span><span class="p">(</span> <span class="n">Standard_Unit</span> <span class="p">):</span>
-    <span class="n">full_name</span><span class="o">=</span> <span class="s">&#39;Inch&#39;</span>
+    <span class="sd">&quot;&quot;&quot;Inch&quot;&quot;&quot;</span>
     <span class="n">name</span><span class="o">=</span> <span class="s">&#39;in&#39;</span>
 </div>
 <div class="viewcode-block" id="MM"><a class="viewcode-back" href="../../../python/electronics/awgexact.html#hamcalc.electronics.awgexact.MM">[docs]</a><span class="k">class</span> <span class="nc">MM</span><span class="p">(</span> <span class="n">Unit</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Millimeter&quot;&quot;&quot;</span>
     <span class="n">standard</span><span class="o">=</span> <span class="n">INCH</span>
-    <span class="n">full_name</span><span class="o">=</span> <span class="s">&#39;Millimeter&#39;</span>
     <span class="n">name</span><span class="o">=</span> <span class="s">&#39;mm&#39;</span>
     <span class="n">factor</span><span class="o">=</span> <span class="mf">25.4</span>
 </div>
 <div class="viewcode-block" id="AWG"><a class="viewcode-back" href="../../../python/electronics/awgexact.html#hamcalc.electronics.awgexact.AWG">[docs]</a><span class="k">class</span> <span class="nc">AWG</span><span class="p">(</span> <span class="n">Unit</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;AWG Gauge&quot;&quot;&quot;</span>
     <span class="n">standard</span><span class="o">=</span> <span class="n">INCH</span>
-    <span class="n">full_name</span><span class="o">=</span> <span class="s">&quot;AWG Gauge&quot;</span>
     <span class="n">name</span><span class="o">=</span> <span class="s">&quot;AWG&quot;</span>
     <span class="n">K</span> <span class="o">=</span> <span class="p">(</span><span class="mf">0.460</span><span class="o">/</span><span class="mf">0.0050</span><span class="p">)</span><span class="o">**</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="mi">39</span><span class="p">)</span>
     <span class="nd">@classmethod</span>

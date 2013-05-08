@@ -57,10 +57,20 @@
 
 <span class="sd">-   Units and Unit Conversions.</span>
 
+<span class="sd">-   Utility functions for degree and radian conversions.</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">namedtuple</span>
+<span class="kn">import</span> <span class="nn">math</span>
 
+<div class="viewcode-block" id="radians"><a class="viewcode-back" href="../../python/lib.html#hamcalc.lib.radians">[docs]</a><span class="k">def</span> <span class="nf">radians</span><span class="p">(</span> <span class="n">degrees</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Convert degrees to radians.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span><span class="o">*</span><span class="n">degrees</span><span class="o">/</span><span class="mi">180</span>
+</div>
+<div class="viewcode-block" id="degrees"><a class="viewcode-back" href="../../python/lib.html#hamcalc.lib.degrees">[docs]</a><span class="k">def</span> <span class="nf">degrees</span><span class="p">(</span> <span class="n">radians</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Convert radians to degrees.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="mi">180</span><span class="o">*</span><span class="n">radians</span><span class="o">/</span><span class="n">math</span><span class="o">.</span><span class="n">pi</span>
+</div>
 <div class="viewcode-block" id="Unit"><a class="viewcode-back" href="../../python/lib.html#hamcalc.lib.Unit">[docs]</a><span class="k">class</span> <span class="nc">Unit</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Generic definition of a unit.</span>
 <span class="sd">    This unit is not the &quot;standard&quot; used for conversions.</span>
@@ -69,8 +79,8 @@
 <span class="sd">    ::</span>
 
 <span class="sd">        class X( Unit ):</span>
-<span class="sd">            full_name= &quot;X name&quot;</span>
-<span class="sd">            name= &quot;x&quot;</span>
+<span class="sd">            &#39;&#39;&#39;X full name&#39;&#39;&#39;</span>
+<span class="sd">            name= &quot;x&quot; # Abbreviation</span>
 <span class="sd">            factor= 123.45</span>
 
 <span class="sd">    Create a standard value from input in units of X.</span>
@@ -87,8 +97,13 @@
 
 <span class="sd">    Note that for Temperature, a simple &quot;factor&quot; isn&#39;t appropriate and the</span>
 <span class="sd">    :meth:`to_std` and :meth:`from_std` need to be overridden.</span>
+
+<span class="sd">    For all subclasses, the long version of the unit&#39;s name should</span>
+<span class="sd">    be the docstring.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">factor</span><span class="o">=</span> <span class="mf">1.0</span>
+    <span class="n">standard</span><span class="o">=</span> <span class="bp">None</span> <span class="c"># Reference to the StandardUnit</span>
+    <span class="n">name</span><span class="o">=</span> <span class="s">&quot;&quot;</span> <span class="c"># Abbreviation of the unit&#39;s name.</span>
     <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">to_std</span><span class="p">(</span> <span class="n">class_</span><span class="p">,</span> <span class="n">value</span> <span class="p">):</span>
         <span class="k">return</span> <span class="n">value</span><span class="o">/</span><span class="n">class_</span><span class="o">.</span><span class="n">factor</span>
@@ -96,18 +111,31 @@
     <span class="k">def</span> <span class="nf">from_std</span><span class="p">(</span> <span class="n">class_</span><span class="p">,</span> <span class="n">value</span> <span class="p">):</span>
         <span class="k">return</span> <span class="n">value</span><span class="o">*</span><span class="n">class_</span><span class="o">.</span><span class="n">factor</span>
 </div>
-<div class="viewcode-block" id="Standard_Unit"><a class="viewcode-back" href="../../python/lib.html#hamcalc.lib.Standard_Unit">[docs]</a><span class="k">class</span> <span class="nc">Standard_Unit</span><span class="p">(</span> <span class="n">Unit</span> <span class="p">):</span>
+<div class="viewcode-block" id="UnitMeta"><a class="viewcode-back" href="../../python/lib.html#hamcalc.lib.UnitMeta">[docs]</a><span class="k">class</span> <span class="nc">UnitMeta</span><span class="p">(</span><span class="nb">type</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Metaclass for Standard_Unit&#39;s to insert a circular reference.</span>
+<span class="sd">    That way ``SomeStandardUnit.standard is SomeStandardUnit``.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__new__</span><span class="p">(</span><span class="n">mcs</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">bases</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+        <span class="n">new_class</span><span class="o">=</span> <span class="nb">type</span><span class="o">.</span><span class="n">__new__</span><span class="p">(</span><span class="n">mcs</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">bases</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span>
+        <span class="n">new_class</span><span class="o">.</span><span class="n">standard</span> <span class="o">=</span> <span class="n">new_class</span>
+        <span class="k">return</span> <span class="n">new_class</span>
+</div>
+<div class="viewcode-block" id="Standard_Unit"><a class="viewcode-back" href="../../python/lib.html#hamcalc.lib.Standard_Unit">[docs]</a><span class="k">class</span> <span class="nc">Standard_Unit</span><span class="p">(</span> <span class="n">Unit</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">UnitMeta</span> <span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;The standard unit used for conversions.</span>
 <span class="sd">    Other units will convert to this.</span>
 <span class="sd">    This will convert to other units.</span>
 
 <span class="sd">    This is still a unit, but a conversion factor is not used.</span>
+
+<span class="sd">    For all subclasses, the long version of the unit&#39;s name should</span>
+<span class="sd">    be the docstring.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">name</span><span class="o">=</span> <span class="s">&quot;&quot;</span> <span class="c"># Abbreviation of the unit&#39;s name</span>
     <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">to_std</span><span class="p">(</span> <span class="n">_class</span><span class="p">,</span> <span class="n">value</span> <span class="p">):</span>
+    <span class="k">def</span> <span class="nf">to_std</span><span class="p">(</span> <span class="n">class_</span><span class="p">,</span> <span class="n">value</span> <span class="p">):</span>
         <span class="k">return</span> <span class="n">value</span>
     <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">from_std</span><span class="p">(</span> <span class="n">_class</span><span class="p">,</span> <span class="n">value</span> <span class="p">):</span>
+    <span class="k">def</span> <span class="nf">from_std</span><span class="p">(</span> <span class="n">class_</span><span class="p">,</span> <span class="n">value</span> <span class="p">):</span>
         <span class="k">return</span> <span class="n">value</span>
 </div>
 <div class="viewcode-block" id="convert"><a class="viewcode-back" href="../../python/lib.html#hamcalc.lib.convert">[docs]</a><span class="k">def</span> <span class="nf">convert</span><span class="p">(</span> <span class="n">value</span><span class="p">,</span> <span class="n">unit</span><span class="p">,</span> <span class="o">*</span><span class="n">to</span> <span class="p">):</span>

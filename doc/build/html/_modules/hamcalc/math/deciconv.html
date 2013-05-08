@@ -62,37 +62,61 @@
 
 <span class="sd">Test Cases</span>
 
-<span class="sd">&gt;&gt;&gt; HRS_MIN_SEC.to_std( &quot;12:34:56&quot; )</span>
+<span class="sd">&gt;&gt;&gt; import hamcalc.math.deciconv as deciconv</span>
+<span class="sd">&gt;&gt;&gt; deciconv.HR_MIN_SEC.to_std( &quot;12:34:56&quot; )</span>
 <span class="sd">12.582222222222223</span>
-<span class="sd">&gt;&gt;&gt; HRS_MIN_SEC.from_std( 12.582 )</span>
+<span class="sd">&gt;&gt;&gt; deciconv.HR_MIN_SEC.from_std( 12.582 )</span>
 <span class="sd">&#39;12:34:55.2&#39;</span>
-<span class="sd">&gt;&gt;&gt; HRS_MIN_SEC.from_std( 12.5822 )</span>
+<span class="sd">&gt;&gt;&gt; deciconv.HR_MIN_SEC.from_std( 12.5822 )</span>
 <span class="sd">&#39;12:34:55.9&#39;</span>
-<span class="sd">&gt;&gt;&gt; HRS_MIN_SEC.from_std( 12.58222 )</span>
+<span class="sd">&gt;&gt;&gt; deciconv.HR_MIN_SEC.from_std( 12.58222 )</span>
 <span class="sd">&#39;12:34:56.0&#39;</span>
-<span class="sd">&gt;&gt;&gt; HMS_TUPLE.to_std( (12,34,56) )</span>
+<span class="sd">&gt;&gt;&gt; deciconv.HMS_TUPLE.to_std( (12,34,56) )</span>
 <span class="sd">12.582222222222223</span>
-<span class="sd">&gt;&gt;&gt; HMS_TUPLE.from_std( 12.58222 )</span>
+<span class="sd">&gt;&gt;&gt; deciconv.HMS_TUPLE.from_std( 12.58222 )</span>
 <span class="sd">(12.0, 34.0, 55.99199999999837)</span>
 
+<span class="sd">&gt;&gt;&gt; lat= deciconv.DEG_MIN_SEC.to_std( &quot;36° 50&#39; 45\\&quot;&quot; )</span>
+<span class="sd">&gt;&gt;&gt; deciconv.DEGREE.from_std( lat )</span>
+<span class="sd">36.84583333333334</span>
+<span class="sd">&gt;&gt;&gt; lon= deciconv.DEG_MIN_SEC.to_std( &quot;76° 18&#39; 28\\&quot;&quot; )</span>
+<span class="sd">&gt;&gt;&gt; deciconv.DEGREE.from_std( lon )</span>
+<span class="sd">76.30777777777777</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="kn">from</span> <span class="nn">hamcalc.lib</span> <span class="kn">import</span> <span class="n">Unit</span><span class="p">,</span> <span class="n">Standard_Unit</span>
+<span class="kn">from</span> <span class="nn">hamcalc.math.trig</span> <span class="kn">import</span> <span class="n">DEGREE</span><span class="p">,</span> <span class="n">RADIAN</span><span class="p">,</span> <span class="n">DMS_TUPLE</span><span class="p">,</span> <span class="n">DEG_MIN_SEC</span>
+<span class="kn">import</span> <span class="nn">re</span>
 
-<div class="viewcode-block" id="HOURS"><a class="viewcode-back" href="../../../python/math/deciconv.html#hamcalc.math.deciconv.HOURS">[docs]</a><span class="k">class</span> <span class="nc">HOURS</span><span class="p">(</span> <span class="n">Standard_Unit</span> <span class="p">):</span>
+<span class="n">introduction</span><span class="o">=</span> <span class="s">&quot;&quot;&quot;</span><span class="se">\</span>
+<span class="s"> DECIMAL HOUR/DEGREE CONVERTER                           by George Murphy VE3ERP</span>
+
+<span class="s"> This program converts decimal hours or decimal degrees to sexigesimal formats:</span>
+
+<span class="s">   DD°MM&#39;SS&quot; (degrees/min./sec.) for degrees</span>
+
+<span class="s">   HH:MM:SS  (hours/min./sec.) for time</span>
+
+<span class="s">   and vice versa.</span>
+<span class="s">&quot;&quot;&quot;</span>
+
+<span class="k">def</span> <span class="nf">intro</span><span class="p">():</span>
+    <span class="k">return</span> <span class="n">introduction</span>
+
+<div class="viewcode-block" id="HOUR"><a class="viewcode-back" href="../../../python/math/deciconv.html#hamcalc.math.deciconv.HOUR">[docs]</a><span class="k">class</span> <span class="nc">HOUR</span><span class="p">(</span> <span class="n">Standard_Unit</span> <span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Decimal Hours&quot;&quot;&quot;</span>
     <span class="n">name</span><span class="o">=</span> <span class="s">&quot;hrs&quot;</span>
 </div>
 <div class="viewcode-block" id="HMS_TUPLE"><a class="viewcode-back" href="../../../python/math/deciconv.html#hamcalc.math.deciconv.HMS_TUPLE">[docs]</a><span class="k">class</span> <span class="nc">HMS_TUPLE</span><span class="p">(</span> <span class="n">Unit</span> <span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Hours Minutes Seconds -- as Tuple&quot;&quot;&quot;</span>
     <span class="n">name</span><span class="o">=</span> <span class="s">&quot;HMS&quot;</span>
-    <span class="n">standard</span><span class="o">=</span> <span class="n">HOURS</span>
+    <span class="n">standard</span><span class="o">=</span> <span class="n">HOUR</span>
     <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">to_std</span><span class="p">(</span> <span class="n">_class</span><span class="p">,</span> <span class="n">value</span> <span class="p">):</span>
+    <span class="k">def</span> <span class="nf">to_std</span><span class="p">(</span> <span class="n">class_</span><span class="p">,</span> <span class="n">value</span> <span class="p">):</span>
         <span class="n">h</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">s</span> <span class="o">=</span> <span class="n">value</span>
         <span class="k">return</span> <span class="n">h</span><span class="o">+</span><span class="p">(</span><span class="n">m</span><span class="o">+</span><span class="n">s</span><span class="o">/</span><span class="mi">60</span><span class="p">)</span><span class="o">/</span><span class="mi">60</span>
     <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">from_std</span><span class="p">(</span> <span class="n">_class</span><span class="p">,</span> <span class="n">value</span> <span class="p">):</span>
+    <span class="k">def</span> <span class="nf">from_std</span><span class="p">(</span> <span class="n">class_</span><span class="p">,</span> <span class="n">value</span> <span class="p">):</span>
         <span class="n">hms</span><span class="o">=</span> <span class="n">value</span><span class="o">*</span><span class="mi">3600</span>
         <span class="n">sec</span><span class="o">=</span> <span class="n">hms</span> <span class="o">%</span> <span class="mi">60</span>
         <span class="n">hm</span><span class="o">=</span> <span class="n">hms</span> <span class="o">//</span> <span class="mi">60</span>
@@ -100,31 +124,19 @@
         <span class="n">hrs</span><span class="o">=</span> <span class="n">hm</span> <span class="o">//</span> <span class="mi">60</span>
         <span class="k">return</span> <span class="n">hrs</span><span class="p">,</span> <span class="nb">min</span><span class="p">,</span> <span class="n">sec</span>
 </div>
-<div class="viewcode-block" id="HRS_MIN_SEC"><a class="viewcode-back" href="../../../python/math/deciconv.html#hamcalc.math.deciconv.HRS_MIN_SEC">[docs]</a><span class="k">class</span> <span class="nc">HRS_MIN_SEC</span><span class="p">(</span> <span class="n">HMS_TUPLE</span> <span class="p">):</span>
+<div class="viewcode-block" id="HR_MIN_SEC"><a class="viewcode-back" href="../../../python/math/deciconv.html#hamcalc.math.deciconv.HR_MIN_SEC">[docs]</a><span class="k">class</span> <span class="nc">HR_MIN_SEC</span><span class="p">(</span> <span class="n">HMS_TUPLE</span> <span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Hours Minutes Seconds -- as String&quot;&quot;&quot;</span>
+    <span class="n">name</span><span class="o">=</span> <span class="s">&quot;HMS&quot;</span>
+    <span class="n">standard</span><span class="o">=</span> <span class="n">HOUR</span>
     <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">to_std</span><span class="p">(</span> <span class="n">_class</span><span class="p">,</span> <span class="n">value</span> <span class="p">):</span>
+    <span class="k">def</span> <span class="nf">to_std</span><span class="p">(</span> <span class="n">class_</span><span class="p">,</span> <span class="n">value</span> <span class="p">):</span>
         <span class="n">h</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">s</span> <span class="o">=</span> <span class="nb">map</span><span class="p">(</span> <span class="nb">float</span><span class="p">,</span> <span class="n">value</span><span class="o">.</span><span class="n">split</span><span class="p">(</span> <span class="s">&quot;:&quot;</span> <span class="p">)</span> <span class="p">)</span>
         <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">to_std</span><span class="p">(</span> <span class="p">(</span><span class="n">h</span><span class="p">,</span><span class="n">m</span><span class="p">,</span><span class="n">s</span><span class="p">)</span> <span class="p">)</span>
     <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">from_std</span><span class="p">(</span> <span class="n">_class</span><span class="p">,</span> <span class="n">value</span> <span class="p">):</span>
+    <span class="k">def</span> <span class="nf">from_std</span><span class="p">(</span> <span class="n">class_</span><span class="p">,</span> <span class="n">value</span> <span class="p">):</span>
         <span class="n">hrs</span><span class="p">,</span> <span class="nb">min</span><span class="p">,</span> <span class="n">sec</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">from_std</span><span class="p">(</span> <span class="n">value</span> <span class="p">)</span>
-        <span class="k">return</span> <span class="s">&quot;{0:02.0f}:{1:02.0f}:{2:03.1f}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span> <span class="n">hrs</span><span class="p">,</span> <span class="nb">min</span><span class="p">,</span> <span class="n">sec</span> <span class="p">)</span>
-</div>
-<div class="viewcode-block" id="DEGREES"><a class="viewcode-back" href="../../../python/math/deciconv.html#hamcalc.math.deciconv.DEGREES">[docs]</a><span class="k">class</span> <span class="nc">DEGREES</span><span class="p">(</span> <span class="n">Standard_Unit</span> <span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Decimal Degrees&quot;&quot;&quot;</span>
-    <span class="n">name</span><span class="o">=</span> <span class="s">&quot;deg&quot;</span>
-</div>
-<div class="viewcode-block" id="DMS_TUPLE"><a class="viewcode-back" href="../../../python/math/deciconv.html#hamcalc.math.deciconv.DMS_TUPLE">[docs]</a><span class="k">class</span> <span class="nc">DMS_TUPLE</span><span class="p">(</span> <span class="n">HMS_TUPLE</span> <span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Degrees Minutes Seconds -- as Tuple&quot;&quot;&quot;</span>
-    <span class="n">name</span><span class="o">=</span> <span class="s">&quot;DMS&quot;</span>
-    <span class="n">standard</span><span class="o">=</span> <span class="n">DEGREES</span>
-</div>
-<div class="viewcode-block" id="DEG_MIN_SEC"><a class="viewcode-back" href="../../../python/math/deciconv.html#hamcalc.math.deciconv.DEG_MIN_SEC">[docs]</a><span class="k">class</span> <span class="nc">DEG_MIN_SEC</span><span class="p">(</span> <span class="n">HRS_MIN_SEC</span> <span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Degrees Minutes Seconds -- as String&quot;&quot;&quot;</span>
-    <span class="n">name</span><span class="o">=</span> <span class="s">&quot;DMS&quot;</span>
-    <span class="n">standard</span><span class="o">=</span> <span class="n">DEGREES</span>
-</pre></div></div>
+        <span class="k">return</span> <span class="s">&quot;{0:02.0f}:{1:02.0f}:{2:03.1f}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span> <span class="n">hrs</span><span class="p">,</span> <span class="nb">min</span><span class="p">,</span> <span class="n">sec</span> <span class="p">)</span></div>
+</pre></div>
 
           </div>
         </div>

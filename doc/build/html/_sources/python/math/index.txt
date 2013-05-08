@@ -11,7 +11,6 @@ programs.
     baromtr
     binary
     centrif
-    conecalc
     curvefit
     deciconv
     decifrac

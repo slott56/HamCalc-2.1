@@ -4,6 +4,10 @@
 """
 import hamcalc.math.solutri as solutri
 
+def format( args, item, convert=lambda a:a, fmt="{0:.3f}", if_none="" ):
+    if item not in args: return if_none
+    return fmt.format(convert(args[item]))
+
 def right_triangle(z):
     global args
     args['A_h']= solutri.radians(90)
@@ -19,11 +23,11 @@ def right_triangle(z):
         args['S_j']= float( input( "ENTER: Side <e>? " ) )
     args= solutri.triangle( **args )
     report= {
-        'a': solutri.degrees(args.A_f) if 'A_f' in args else "",
-        'b': solutri.degrees(args.A_g) if 'A_g' in args else "",
-        'c': args.S_k if 'S_k' in args else "",
-        'd': args.S_i if 'S_i' in args else "",
-        'e': args.S_j if 'S_j' in args else "",
+        'a': format(args, 'A_f', convert=solutri.degrees),
+        'b': format(args, 'A_g', convert=solutri.degrees),
+        'c': format(args, 'S_k'),
+        'd': format(args, 'S_i'),
+        'e': format(args, 'S_j'),
     }
     print( "   |\\" )
     print( "   | \\" )
@@ -52,12 +56,12 @@ def general_triangle( z ):
         args['S_k']= float( input( "ENTER: Side <k>? " ) )
     args= solutri.triangle( **args )
     report= {
-        'f': solutri.degrees(args.A_f) if 'A_f' in args else "",
-        'g': solutri.degrees(args.A_g) if 'A_g' in args else "",
-        'h': solutri.degrees(args.A_h) if 'A_h' in args else "",
-        'i': args.S_k if 'S_k' in args else "",
-        'j': args.S_i if 'S_i' in args else "",
-        'k': args.S_j if 'S_j' in args else "",
+        'f': format(args, 'A_f', convert=solutri.degrees),
+        'g': format(args, 'A_g', convert=solutri.degrees),
+        'h': format(args, 'A_h', convert=solutri.degrees),
+        'i': format(args, 'S_k'),
+        'j': format(args, 'S_i'),
+        'k': format(args, 'S_j'),
     }
     print( "              /^\\" )
     print( "            / (f) \\ <-- {f}°".format(**report) )

@@ -1,4 +1,4 @@
-Results of doctest builder run on 2013-05-05 09:15:46
+Results of doctest builder run on 2013-05-08 09:27:52
 =====================================================
 
 Document: python/math/baromtr
@@ -7,6 +7,14 @@ Document: python/math/baromtr
    6 tests in default
 6 tests in 1 items.
 6 passed and 0 failed.
+Test passed.
+
+Document: python/math/curvefit
+------------------------------
+1 items passed all tests:
+  31 tests in default
+31 tests in 1 items.
+31 passed and 0 failed.
 Test passed.
 
 Document: python/electronics/awgexact
@@ -31,6 +39,14 @@ Document: python/math/decifrac
    7 tests in default
 7 tests in 1 items.
 7 passed and 0 failed.
+Test passed.
+
+Document: python/math/centrif
+-----------------------------
+1 items passed all tests:
+  13 tests in default
+13 tests in 1 items.
+13 passed and 0 failed.
 Test passed.
 
 Document: python/math/accelr
@@ -99,7 +115,7 @@ Test passed.
 
 Doctest summary
 ===============
-  142 tests
+  186 tests
     0 failures in tests
     0 failures in setup code
     0 failures in cleanup code

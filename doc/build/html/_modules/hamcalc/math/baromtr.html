@@ -74,14 +74,15 @@
 
 <span class="sd">Here are some test cases.</span>
 
-<span class="sd">&gt;&gt;&gt; t= list(table())</span>
+<span class="sd">&gt;&gt;&gt; import hamcalc.math.baromtr as baromtr</span>
+<span class="sd">&gt;&gt;&gt; t= list(baromtr.table())</span>
 <span class="sd">&gt;&gt;&gt; t[0]</span>
 <span class="sd">(95.5, 28.200893165556376, 13.85115223291389, 973.6146064643474, 0.9425117197137922)</span>
 <span class="sd">&gt;&gt;&gt; t[-1]</span>
 <span class="sd">(106.0, 31.301514927214406, 15.374053787318035, 1080.6612385886997, 1.0461386627189735)</span>
 <span class="sd">&gt;&gt;&gt; len(t)</span>
 <span class="sd">22</span>
-<span class="sd">&gt;&gt;&gt; equivalent( 1033, MB )</span>
+<span class="sd">&gt;&gt;&gt; baromtr.equivalent( 1033, baromtr.MB )</span>
 <span class="sd">(1033.0, 1.0, 76.0, 29.921, 10.3322, 406.782, 33.899, 14.696, 2116.2, 1.033, 101.325)</span>
 
 
@@ -101,66 +102,66 @@
     <span class="k">return</span> <span class="n">introduction</span>
 </div>
 <div class="viewcode-block" id="ATM"><a class="viewcode-back" href="../../../python/math/baromtr.html#hamcalc.math.baromtr.ATM">[docs]</a><span class="k">class</span> <span class="nc">ATM</span><span class="p">(</span> <span class="n">Standard_Unit</span> <span class="p">):</span>
-    <span class="n">full_name</span><span class="o">=</span> <span class="s">&#39;Standard atmospheres&#39;</span>
+    <span class="sd">&quot;&quot;&quot;Standard atmospheres&quot;&quot;&quot;</span>
     <span class="n">name</span><span class="o">=</span> <span class="s">&#39;atm&#39;</span>
 </div>
 <div class="viewcode-block" id="MB"><a class="viewcode-back" href="../../../python/math/baromtr.html#hamcalc.math.baromtr.MB">[docs]</a><span class="k">class</span> <span class="nc">MB</span><span class="p">(</span> <span class="n">Unit</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Millibars&quot;&quot;&quot;</span>
     <span class="n">standard</span><span class="o">=</span> <span class="n">ATM</span>
-    <span class="n">full_name</span><span class="o">=</span> <span class="s">&#39;Millibars&#39;</span>
     <span class="n">name</span><span class="o">=</span> <span class="s">&#39;mb&#39;</span>
     <span class="n">factor</span><span class="o">=</span> <span class="mi">1033</span>
 </div>
 <div class="viewcode-block" id="CM_Hg"><a class="viewcode-back" href="../../../python/math/baromtr.html#hamcalc.math.baromtr.CM_Hg">[docs]</a><span class="k">class</span> <span class="nc">CM_Hg</span><span class="p">(</span> <span class="n">Unit</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Centimetres of mercury&quot;&quot;&quot;</span>
     <span class="n">standard</span><span class="o">=</span> <span class="n">ATM</span>
-    <span class="n">full_name</span><span class="o">=</span> <span class="s">&#39;Centimetres of mercury&#39;</span>
     <span class="n">name</span><span class="o">=</span> <span class="s">&#39;cm.Hg&#39;</span>
     <span class="n">factor</span><span class="o">=</span> <span class="mi">76</span>
 </div>
 <div class="viewcode-block" id="IN_Hg"><a class="viewcode-back" href="../../../python/math/baromtr.html#hamcalc.math.baromtr.IN_Hg">[docs]</a><span class="k">class</span> <span class="nc">IN_Hg</span><span class="p">(</span> <span class="n">Unit</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Inches of mercury&quot;&quot;&quot;</span>
     <span class="n">standard</span><span class="o">=</span> <span class="n">ATM</span>
-    <span class="n">full_name</span><span class="o">=</span> <span class="s">&#39;Inches of mercury&#39;</span>
     <span class="n">name</span><span class="o">=</span> <span class="s">&#39;in.Hg&#39;</span>
     <span class="n">factor</span><span class="o">=</span> <span class="mf">29.921</span>
 </div>
 <div class="viewcode-block" id="M_W"><a class="viewcode-back" href="../../../python/math/baromtr.html#hamcalc.math.baromtr.M_W">[docs]</a><span class="k">class</span> <span class="nc">M_W</span><span class="p">(</span> <span class="n">Unit</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Metres of water&quot;&quot;&quot;</span>
     <span class="n">standard</span><span class="o">=</span> <span class="n">ATM</span>
-    <span class="n">full_name</span><span class="o">=</span> <span class="s">&#39;Metres of water&#39;</span>
     <span class="n">name</span><span class="o">=</span> <span class="s">&#39;m.w&#39;</span>
     <span class="n">factor</span><span class="o">=</span> <span class="mf">10.3322</span>
 </div>
 <div class="viewcode-block" id="IN_W"><a class="viewcode-back" href="../../../python/math/baromtr.html#hamcalc.math.baromtr.IN_W">[docs]</a><span class="k">class</span> <span class="nc">IN_W</span><span class="p">(</span> <span class="n">Unit</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Inches of water&quot;&quot;&quot;</span>
     <span class="n">standard</span><span class="o">=</span> <span class="n">ATM</span>
-    <span class="n">full_name</span><span class="o">=</span> <span class="s">&#39;Inches of water&#39;</span>
     <span class="n">name</span><span class="o">=</span> <span class="s">&#39;in.w&#39;</span>
     <span class="n">factor</span><span class="o">=</span> <span class="mf">406.782</span>
 </div>
 <div class="viewcode-block" id="FT_W"><a class="viewcode-back" href="../../../python/math/baromtr.html#hamcalc.math.baromtr.FT_W">[docs]</a><span class="k">class</span> <span class="nc">FT_W</span><span class="p">(</span> <span class="n">Unit</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Feet of water&quot;&quot;&quot;</span>
     <span class="n">standard</span><span class="o">=</span> <span class="n">ATM</span>
-    <span class="n">full_name</span><span class="o">=</span> <span class="s">&#39;Feet of water&#39;</span>
     <span class="n">name</span><span class="o">=</span> <span class="s">&#39;ft.w&#39;</span>
     <span class="n">factor</span><span class="o">=</span> <span class="mf">33.899</span>
 </div>
 <div class="viewcode-block" id="PSI"><a class="viewcode-back" href="../../../python/math/baromtr.html#hamcalc.math.baromtr.PSI">[docs]</a><span class="k">class</span> <span class="nc">PSI</span><span class="p">(</span> <span class="n">Unit</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Pounds per square inch&quot;&quot;&quot;</span>
     <span class="n">standard</span><span class="o">=</span> <span class="n">ATM</span>
-    <span class="n">full_name</span><span class="o">=</span> <span class="s">&#39;Pounds per square inch&#39;</span>
     <span class="n">name</span><span class="o">=</span> <span class="s">&#39;lb/in²&#39;</span>
     <span class="n">factor</span><span class="o">=</span> <span class="mf">14.696</span>
 </div>
 <div class="viewcode-block" id="PSF"><a class="viewcode-back" href="../../../python/math/baromtr.html#hamcalc.math.baromtr.PSF">[docs]</a><span class="k">class</span> <span class="nc">PSF</span><span class="p">(</span> <span class="n">Unit</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Pounds per square foot&quot;&quot;&quot;</span>
     <span class="n">standard</span><span class="o">=</span> <span class="n">ATM</span>
-    <span class="n">full_name</span><span class="o">=</span> <span class="s">&#39;Pounds per square foot&#39;</span>
     <span class="n">name</span><span class="o">=</span> <span class="s">&#39;lb/ft²&#39;</span>
     <span class="n">factor</span><span class="o">=</span> <span class="mf">2116.2</span>
 </div>
 <div class="viewcode-block" id="BAR"><a class="viewcode-back" href="../../../python/math/baromtr.html#hamcalc.math.baromtr.BAR">[docs]</a><span class="k">class</span> <span class="nc">BAR</span><span class="p">(</span> <span class="n">Unit</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Kilograms per square centimetre&quot;&quot;&quot;</span>
     <span class="n">standard</span><span class="o">=</span> <span class="n">ATM</span>
-    <span class="n">full_name</span><span class="o">=</span> <span class="s">&#39;Kilograms per square centimetre&#39;</span>
     <span class="n">name</span><span class="o">=</span> <span class="s">&#39;kg/cm²&#39;</span>
     <span class="n">factor</span><span class="o">=</span> <span class="mf">1.033</span>
 </div>
 <div class="viewcode-block" id="KPA"><a class="viewcode-back" href="../../../python/math/baromtr.html#hamcalc.math.baromtr.KPA">[docs]</a><span class="k">class</span> <span class="nc">KPA</span><span class="p">(</span> <span class="n">Unit</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Kilopascals&quot;&quot;&quot;</span>
     <span class="n">standard</span><span class="o">=</span> <span class="n">ATM</span>
-    <span class="n">full_name</span><span class="o">=</span> <span class="s">&#39;Kilopascals&#39;</span>
     <span class="n">name</span><span class="o">=</span> <span class="s">&#39;kPa&#39;</span>
     <span class="n">factor</span><span class="o">=</span> <span class="mf">101.325</span>
 </div>

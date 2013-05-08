@@ -54,8 +54,17 @@
 <span class="sd">Some Test Cases</span>
 
 <span class="sd">&gt;&gt;&gt; import  hamcalc.math.decifrac as decifrac</span>
-<span class="sd">&gt;&gt;&gt; decifrac.FEET_INCH_FRAC_TUPLE.to_std( 13, 3, 5, 8 )</span>
-<span class="sd">&gt;&gt;&gt; 13.302</span>
+<span class="sd">&gt;&gt;&gt; x=decifrac.FOOT_INCH_FRAC_TUPLE.to_std( (13, 3, 5, 8) )</span>
+<span class="sd">&gt;&gt;&gt; decifrac.INCH.from_std( x )</span>
+<span class="sd">159.625</span>
+<span class="sd">&gt;&gt;&gt; decifrac.FOOT.from_std( x )</span>
+<span class="sd">13.302083333333332</span>
+<span class="sd">&gt;&gt;&gt; decifrac.METRE.from_std( x )</span>
+<span class="sd">4.054475</span>
+<span class="sd">&gt;&gt;&gt; decifrac.FOOT_INCH_FRAC_TUPLE.from_std( x )</span>
+<span class="sd">(13, 3, 5, 8)</span>
+<span class="sd">&gt;&gt;&gt; decifrac.FOOT_INCH_FRAC.from_std(x)</span>
+<span class="sd">&#39;13\\&#39;- 3 5/8&quot;&#39;</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
 
@@ -69,35 +78,40 @@
 <span class="k">def</span> <span class="nf">intro</span><span class="p">():</span>
     <span class="k">return</span> <span class="n">introduction</span>
 
-<div class="viewcode-block" id="INCHES"><a class="viewcode-back" href="../../../python/math/decifrac.html#hamcalc.math.decifrac.INCHES">[docs]</a><span class="k">class</span> <span class="nc">INCHES</span><span class="p">(</span> <span class="n">Standard_Unit</span> <span class="p">):</span>
+<div class="viewcode-block" id="INCH"><a class="viewcode-back" href="../../../python/math/decifrac.html#hamcalc.math.decifrac.INCH">[docs]</a><span class="k">class</span> <span class="nc">INCH</span><span class="p">(</span> <span class="n">Standard_Unit</span> <span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Decimal Inches&quot;&quot;&quot;</span>
     <span class="n">name</span><span class="o">=</span> <span class="s">&quot;in&quot;</span>
 </div>
-<div class="viewcode-block" id="FEET"><a class="viewcode-back" href="../../../python/math/decifrac.html#hamcalc.math.decifrac.FEET">[docs]</a><span class="k">class</span> <span class="nc">FEET</span><span class="p">(</span> <span class="n">Unit</span> <span class="p">):</span>
+<div class="viewcode-block" id="FOOT"><a class="viewcode-back" href="../../../python/math/decifrac.html#hamcalc.math.decifrac.FOOT">[docs]</a><span class="k">class</span> <span class="nc">FOOT</span><span class="p">(</span> <span class="n">Unit</span> <span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Decimal Feet&quot;&quot;&quot;</span>
     <span class="n">name</span><span class="o">=</span> <span class="s">&quot;ft&quot;</span>
-    <span class="n">standard</span><span class="o">=</span> <span class="n">INCHES</span>
+    <span class="n">standard</span><span class="o">=</span> <span class="n">INCH</span>
     <span class="n">factor</span><span class="o">=</span> <span class="mi">1</span><span class="o">/</span><span class="mi">12</span>
 </div>
-<div class="viewcode-block" id="FEET_INCH_FRAC_TUPLE"><a class="viewcode-back" href="../../../python/math/decifrac.html#hamcalc.math.decifrac.FEET_INCH_FRAC_TUPLE">[docs]</a><span class="k">class</span> <span class="nc">FEET_INCH_FRAC_TUPLE</span><span class="p">(</span> <span class="n">Unit</span> <span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Feet-Inch-Fraction&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="FOOT_INCH_FRAC_TUPLE"><a class="viewcode-back" href="../../../python/math/decifrac.html#hamcalc.math.decifrac.FOOT_INCH_FRAC_TUPLE">[docs]</a><span class="k">class</span> <span class="nc">FOOT_INCH_FRAC_TUPLE</span><span class="p">(</span> <span class="n">Unit</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Feet-Inch-Fraction -- as tuple&quot;&quot;&quot;</span>
     <span class="n">name</span><span class="o">=</span><span class="s">&#39;ft-in&#39;</span>
-    <span class="n">standard</span><span class="o">=</span> <span class="n">INCHES</span>
+    <span class="n">standard</span><span class="o">=</span> <span class="n">INCH</span>
     <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">_gcd</span><span class="p">(</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_gcd</span><span class="p">(</span> <span class="n">class_</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="p">):</span>
         <span class="k">if</span> <span class="n">a</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span> <span class="k">return</span> <span class="n">b</span>
         <span class="k">elif</span> <span class="n">b</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span> <span class="k">return</span> <span class="n">a</span>
         <span class="k">elif</span> <span class="n">a</span> <span class="o">&lt;</span> <span class="n">b</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">gcd</span><span class="p">(</span> <span class="n">b</span><span class="o">-</span><span class="n">a</span><span class="p">,</span> <span class="n">a</span> <span class="p">)</span>
+            <span class="k">return</span> <span class="n">class_</span><span class="o">.</span><span class="n">_gcd</span><span class="p">(</span> <span class="n">b</span><span class="o">-</span><span class="n">a</span><span class="p">,</span> <span class="n">a</span> <span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">gcd</span><span class="p">(</span> <span class="n">a</span><span class="o">-</span><span class="n">b</span><span class="p">,</span> <span class="n">b</span> <span class="p">)</span>
+            <span class="k">return</span> <span class="n">class_</span><span class="o">.</span><span class="n">_gcd</span><span class="p">(</span> <span class="n">a</span><span class="o">-</span><span class="n">b</span><span class="p">,</span> <span class="n">b</span> <span class="p">)</span>
     <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">to_std</span><span class="p">(</span> <span class="n">class_</span><span class="p">,</span> <span class="n">value</span> <span class="p">):</span>
-        <span class="n">f</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">d</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="n">f</span><span class="p">,</span> <span class="n">i</span> <span class="o">=</span> <span class="n">value</span>
+            <span class="n">n</span><span class="p">,</span> <span class="n">d</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">f</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">d</span> <span class="o">=</span> <span class="n">value</span>
         <span class="k">return</span> <span class="n">f</span><span class="o">*</span><span class="mi">12</span><span class="o">+</span><span class="n">i</span><span class="o">+</span><span class="n">n</span><span class="o">/</span><span class="n">d</span>
     <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_std</span><span class="p">(</span> <span class="n">class_</span><span class="p">,</span> <span class="n">value</span> <span class="p">):</span>
-        <span class="n">n</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">value</span><span class="o">*</span><span class="mi">128</span><span class="p">)</span> <span class="o">%</span> <span class="mi">128</span>
+        <span class="c"># A round up that may lead to more accurate fractions.</span>
+        <span class="n">n</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">value</span><span class="o">*</span><span class="mi">128</span><span class="o">+</span><span class="mf">0.5</span><span class="p">)</span> <span class="o">%</span> <span class="mi">128</span>
         <span class="n">i</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="o">%</span> <span class="mi">12</span>
         <span class="n">f</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">value</span><span class="o">//</span><span class="mi">12</span><span class="p">)</span>
         <span class="c"># Reduce the n/128, if possible.</span>
@@ -106,22 +120,39 @@
         <span class="n">d</span><span class="o">=</span> <span class="mi">128</span> <span class="o">//</span> <span class="n">r</span>
         <span class="k">return</span> <span class="n">f</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">d</span>
 </div>
-<div class="viewcode-block" id="MILLIMETRES"><a class="viewcode-back" href="../../../python/math/decifrac.html#hamcalc.math.decifrac.MILLIMETRES">[docs]</a><span class="k">class</span> <span class="nc">MILLIMETRES</span><span class="p">(</span> <span class="n">Unit</span> <span class="p">):</span>
+<div class="viewcode-block" id="FOOT_INCH_FRAC"><a class="viewcode-back" href="../../../python/math/decifrac.html#hamcalc.math.decifrac.FOOT_INCH_FRAC">[docs]</a><span class="k">class</span> <span class="nc">FOOT_INCH_FRAC</span><span class="p">(</span> <span class="n">FOOT_INCH_FRAC_TUPLE</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Feet-Inch-Fraction -- as String&quot;&quot;&quot;</span>
+    <span class="n">name</span><span class="o">=</span> <span class="s">&quot;ft-in&quot;</span>
+    <span class="n">standard</span><span class="o">=</span> <span class="n">INCH</span>
+    <span class="n">number_pat</span><span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span> <span class="s">&quot;\d+&quot;</span> <span class="p">)</span>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">to_std</span><span class="p">(</span> <span class="n">class_</span><span class="p">,</span> <span class="n">value</span> <span class="p">):</span>
+        <span class="n">values</span><span class="o">=</span> <span class="nb">list</span><span class="p">(</span> <span class="nb">map</span><span class="p">(</span> <span class="nb">float</span><span class="p">,</span> <span class="n">class_</span><span class="o">.</span><span class="n">number_pat</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span> <span class="n">value</span> <span class="p">)</span> <span class="p">)</span> <span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">values</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="c"># Only entered feet, append zero inches.</span>
+            <span class="n">values</span><span class="o">.</span><span class="n">append</span><span class="p">(</span> <span class="mi">0</span> <span class="p">)</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">to_std</span><span class="p">(</span> <span class="n">values</span> <span class="p">)</span>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_std</span><span class="p">(</span> <span class="n">class_</span><span class="p">,</span> <span class="n">value</span> <span class="p">):</span>
+        <span class="n">ft</span><span class="p">,</span> <span class="n">in_</span><span class="p">,</span> <span class="n">num</span><span class="p">,</span> <span class="n">den</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">from_std</span><span class="p">(</span> <span class="n">value</span> <span class="p">)</span>
+        <span class="k">return</span> <span class="s">&quot;{0:.0f}&#39;- {1:.0f} {2:.0f}/{3:.0f}</span><span class="se">\&quot;</span><span class="s">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span> <span class="n">ft</span><span class="p">,</span> <span class="n">in_</span><span class="p">,</span> <span class="n">num</span><span class="p">,</span> <span class="n">den</span> <span class="p">)</span>
+</div>
+<div class="viewcode-block" id="MILLIMETRE"><a class="viewcode-back" href="../../../python/math/decifrac.html#hamcalc.math.decifrac.MILLIMETRE">[docs]</a><span class="k">class</span> <span class="nc">MILLIMETRE</span><span class="p">(</span> <span class="n">Unit</span> <span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Decimal Millimetres&quot;&quot;&quot;</span>
     <span class="n">name</span><span class="o">=</span> <span class="s">&quot;in&quot;</span>
-    <span class="n">standard</span><span class="o">=</span> <span class="n">FEET</span>
+    <span class="n">standard</span><span class="o">=</span> <span class="n">INCH</span>
     <span class="n">factor</span><span class="o">=</span> <span class="mf">25.4</span>
 </div>
-<div class="viewcode-block" id="CENTIMETRES"><a class="viewcode-back" href="../../../python/math/decifrac.html#hamcalc.math.decifrac.CENTIMETRES">[docs]</a><span class="k">class</span> <span class="nc">CENTIMETRES</span><span class="p">(</span> <span class="n">Unit</span> <span class="p">):</span>
+<div class="viewcode-block" id="CENTIMETRE"><a class="viewcode-back" href="../../../python/math/decifrac.html#hamcalc.math.decifrac.CENTIMETRE">[docs]</a><span class="k">class</span> <span class="nc">CENTIMETRE</span><span class="p">(</span> <span class="n">Unit</span> <span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Decimal Centimetres&quot;&quot;&quot;</span>
     <span class="n">name</span><span class="o">=</span> <span class="s">&quot;in&quot;</span>
-    <span class="n">standard</span><span class="o">=</span> <span class="n">FEET</span>
+    <span class="n">standard</span><span class="o">=</span> <span class="n">INCH</span>
     <span class="n">factor</span><span class="o">=</span> <span class="mf">2.54</span>
 </div>
-<div class="viewcode-block" id="METRES"><a class="viewcode-back" href="../../../python/math/decifrac.html#hamcalc.math.decifrac.METRES">[docs]</a><span class="k">class</span> <span class="nc">METRES</span><span class="p">(</span> <span class="n">Unit</span> <span class="p">):</span>
+<div class="viewcode-block" id="METRE"><a class="viewcode-back" href="../../../python/math/decifrac.html#hamcalc.math.decifrac.METRE">[docs]</a><span class="k">class</span> <span class="nc">METRE</span><span class="p">(</span> <span class="n">Unit</span> <span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Decimal Metres&quot;&quot;&quot;</span>
     <span class="n">name</span><span class="o">=</span> <span class="s">&quot;in&quot;</span>
-    <span class="n">standard</span><span class="o">=</span> <span class="n">FEET</span>
+    <span class="n">standard</span><span class="o">=</span> <span class="n">INCH</span>
     <span class="n">factor</span><span class="o">=</span> <span class="o">.</span><span class="mo">0254</span></div>
 </pre></div>
 

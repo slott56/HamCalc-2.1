@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>curvefit &mdash; HamCalc 2.1 documentation</title>
+    <title>curvefit – Curve Fit program &mdash; HamCalc 2.1 documentation</title>
     
     <link rel="stylesheet" href="../../_static/agogo.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
@@ -26,7 +26,7 @@
     <link rel="top" title="HamCalc 2.1 documentation" href="../../index.html" />
     <link rel="up" title="math – Math, Physics, Units Conversion" href="index.html" />
     <link rel="next" title="deciconv – Decimal Hour/Degree Converter" href="deciconv.html" />
-    <link rel="prev" title="conecalc" href="conecalc.html" /> 
+    <link rel="prev" title="centrif – Centrifugal/Centripetel Force" href="centrif.html" /> 
   </head>
   <body>
     <div class="header-wrapper">
@@ -34,7 +34,7 @@
         <div class="headertitle"><a
           href="../../index.html">HamCalc 2.1 documentation</a></div>
         <div class="rel">
-          <a href="conecalc.html" title="conecalc"
+          <a href="centrif.html" title="centrif – Centrifugal/Centripetel Force"
              accesskey="P">previous</a> |
           <a href="deciconv.html" title="deciconv – Decimal Hour/Degree Converter"
              accesskey="N">next</a> |
@@ -54,9 +54,427 @@
         <div class="bodywrapper">
           <div class="body">
             
-  <div class="section" id="curvefit">
-<h1>curvefit<a class="headerlink" href="#curvefit" title="Permalink to this headline">¶</a></h1>
-<p>Curve Fit program</p>
+  <div class="section" id="curvefit-curve-fit-program">
+<h1>curvefit &#8211; Curve Fit program<a class="headerlink" href="#curvefit-curve-fit-program" title="Permalink to this headline">¶</a></h1>
+<p>From the introduction:</p>
+<blockquote>
+<div>This program uses a least squares procedure to find the constants in an
+equation in the form Y=A+B*Z+C*Z^2+D*Z^3+E*Z^4 where Z=f(X) and X and Y
+are data pairs. You are first asked to input the data pairs. A data pair
+number is used so changes and corrections can be made. If an error is made
+when entering the data pair number, enter &lt;D&gt; at the X prompt. After all the
+data is entered, you are asked to select f(X). If, for instance, X covers
+many more decades than Y, you might try Z=log(X). You are next asked what
+degree of equation you want&#8211;for instance if you want Y=A+B*Z+C*Z^2, enter
+&lt;2&gt;. Finally, you are asked to choose between procedures that minimize
+relative or absolute error. If the Y data covers many orders of magnitude,
+small errors at large Y will cause large errors at small Y when using the
+absolute routine. If the Y data contains 0, the relative routine cannot
+be used.</div></blockquote>
+<p>From the comments:</p>
+<blockquote>
+<div>Adapted from Bob Dehoney&#8217;s &#8220;FITCURVE&#8221; program</div></blockquote>
+<p>Also from the comments:</p>
+<blockquote>
+<div><p>Miller&#8217;s prog, p74 in &#8220;Basic Prog for S &amp; E&#8221;</p>
+<p>Presumably this:
+<a class="reference external" href="http://www.amazon.com/Basic-Programs-Scientists-Engineers-Miller/dp/0895880733">http://www.amazon.com/Basic-Programs-Scientists-Engineers-Miller/dp/0895880733</a></p>
+</div></blockquote>
+<p>Therefore, the HamCalc program is a revision of Bob Dehoney&#8217;s &#8220;FITCURVE&#8221; program which is, in turn, a rewrite of a program in Miller&#8217;s book.
+It doesn&#8217;t seem valuable to attempt to preserve this revision of a revision.
+It seems that it would be more valuable to create the Gaussian Elimination from scratch.</p>
+<p>See <a class="reference external" href="http://en.wikipedia.org/wiki/Linear_least_squares_(mathematics)">Linear least squares</a> in Wikipedia.</p>
+<p>This is relatively simple using <tt class="xref py py-mod docutils literal"><span class="pre">numpy</span></tt>. See
+<a class="reference external" href="http://pingswept.org/2009/01/24/least-squares-polynomial-fitting-in-python/">http://pingswept.org/2009/01/24/least-squares-polynomial-fitting-in-python/</a></p>
+<div class="section" id="analysis">
+<h2>Analysis<a class="headerlink" href="#analysis" title="Permalink to this headline">¶</a></h2>
+<p>This program contains a rather complex matrix manipulation.  There are several major sections to the code base.</p>
+<ol class="arabic simple">
+<li>The <a class="reference internal" href="#overall-processing">overall processing</a>. Acquire Data. Build Polynomial Fit Matrices. Solve Matrices. Display results.</li>
+<li><a class="reference internal" href="#build-matrices">Build Matrices</a>.</li>
+<li><a class="reference internal" href="#solve-matrices">Solve Matrices</a>, also known as the &#8220;Gauss-Jordan routine&#8221;.</li>
+<li>The <a class="reference internal" href="#graphics-display">graphics display</a>.</li>
+</ol>
+<div class="section" id="overall-processing">
+<h3>Overall Processing<a class="headerlink" href="#overall-processing" title="Permalink to this headline">¶</a></h3>
+<p>390-530: Accumulate X-Y pairs: <img class="math" src="../../_images/math/cdde7d15b1fa42a1aceff73748d0f510abfb2a57.png" alt="\lbrace \langle x_i, y_i \rangle \vert 1 \leq i \leq n_{max} \rbrace"/>.</p>
+<p>540: Assert that <img class="math" src="../../_images/math/fb07810f62d27875fd1f084fb766fad2e169dd13.png" alt="n_{max} \geq 2"/>.</p>
+<p>550-570: Get the relation. (1) <img class="math" src="../../_images/math/97cc3fdf4850a95b6d4e1a29c512656efbd489f9.png" alt="Z=X"/>  (2) <img class="math" src="../../_images/math/278f9de3fec7f35e293cbcebd23043851e23781e.png" alt="Z=(X+K)^P"/>  (3) <img class="math" src="../../_images/math/12dbd32ac9939533fa6a6648436fbf2b22b65940.png" alt="Z=\log(X+K)"/>  (4) <img class="math" src="../../_images/math/8b18df3356f5f308235a8f23e256edb4ce17e9db.png" alt="Z=e^{XK}"/>.
+Each of these involves some additional processing to create <img class="math" src="../../_images/math/e8e8627e203fe0bdebfd839285815274c4a41665.png" alt="Z = f(X)"/>.</p>
+<ol class="arabic">
+<li><p class="first"><img class="math" src="../../_images/math/5b3b6e7eb50d7d995594b460a1ddb7a53472eafc.png" alt="z = \lbrace x_n  \vert 1 \leq n \leq n_{max} \rbrace"/></p>
+<div class="highlight-python"><pre>1250 FOR N=1 TO NMAX :Z(N)=X(N) :NEXT N :RETURN</pre>
+</div>
+</li>
+<li><p class="first">Input K and P; <img class="math" src="../../_images/math/1c0040473c98764ffb0371f1d099c7e309bc2b3e.png" alt="z = \lbrace (x_n+K)^P \vert 1 \leq n \leq n_{max} \rbrace"/></p>
+<div class="highlight-python"><pre>1260 INPUT &quot;Enter K,P &quot;,DD,PP :FOR N=1 TO NMAX :Z(N)=(X(N)+DD)^PP :NEXT N :RETURN</pre>
+</div>
+</li>
+<li><p class="first">Input K; <img class="math" src="../../_images/math/85d439ed12990ae49d6a3507c73beedf9d6c11d3.png" alt="z = \lbrace \log(x_n+K) \vert 1 \leq n \leq n_{max} \rbrace"/></p>
+<div class="highlight-python"><pre>1270 INPUT &quot;Enter K &quot;,DD :FOR N=1 TO NMAX :Z(N)=LOG(X(N)+DD) :NEXT N :RETURN</pre>
+</div>
+</li>
+<li><p class="first">Input K; <img class="math" src="../../_images/math/b2e60398ed994ab8f4f10923b49e0a1ecef1a2a7.png" alt="z = \lbrace e^{Kx_n} \vert 1 \leq n \leq n_{max} \rbrace"/></p>
+<div class="highlight-python"><pre>1280 INPUT &quot;Enter K &quot;,DD :FOR N=1 TO NMAX :Z(N)=EXP(X(N)*DD) :NEXT N :RETURN</pre>
+</div>
+</li>
+</ol>
+<p>580-590: Get the order of the polynomial, <img class="math" src="../../_images/math/681e8a9cd61d71bbf227b51f031e542b1eeffda6.png" alt="n_x"/>. Set <img class="math" src="../../_images/math/373feebafb7b29a9b9d949dbfcf21119334d5d9d.png" alt="n_s \gets n_x+1"/>.</p>
+<p>600: Assert that <img class="math" src="../../_images/math/3ae43db54ca6118e32c381d24490ccc33abb593c.png" alt="n_s \leq n_{max}"/>.</p>
+<p>610-630: Get optimization goal: minimum relative error vs. minimum absolute error.</p>
+<p>It appears that the next steps build Vandermonde Matrices. There are two variants.</p>
+<ul class="simple">
+<li>Minimize Relative Error: lines 1290 - 1470 builds the A and W matrices.</li>
+<li>Minimize Absolute Error: Lines 1480 - 1699 builds the A and W matrices.</li>
+</ul>
+<p>640: Initailize the C vector, <img class="math" src="../../_images/math/f7ba08365411b16f825277f499c0d53b8fa3a861.png" alt="C = \lbrace 0 | 1 \leq n \leq 5 \rbrace"/></p>
+<p>650: Find A,B,&amp; C using Miller&#8217;s prog, p74 in &#8220;Basic Prog for S &amp; E&#8221;. This is lines 820-1210, the &#8220;Gauss-Jordan routine&#8221;. See <a class="reference internal" href="#gaussian-elimination">Gaussian Elimination</a>.</p>
+<p>660-790: Print X, Y, computed Y, error, and the five values in the C vector.</p>
+<p>800: Final option to edit data, or plot the curve. Plotting is lines 1610-1770.
+See <a class="reference internal" href="#graphics-display">Graphics Display</a>.</p>
+</div>
+<div class="section" id="build-matrices">
+<h3>Build Matrices<a class="headerlink" href="#build-matrices" title="Permalink to this headline">¶</a></h3>
+<p>See <a class="reference external" href="http://en.wikipedia.org/wiki/Vandermonde_matrix">http://en.wikipedia.org/wiki/Vandermonde_matrix</a></p>
+<ul>
+<li><p class="first">Minimum Relative Error: lines 1290 - 1470 builds the A and W matrices.</p>
+<div class="math">
+<p><img src="../../_images/math/c5343682f8c1e42c02a7e5f5e47d591b99fb8e55.png" alt="A = \begin{Bmatrix}
+\sum{\frac{Z_n^0}{Y_n^2}}&amp;    \sum{\frac{Z_n}{Y_n^2}}&amp; \sum{\frac{Z_n^2}{Y_n^2}}&amp; \sum{\frac{Z_n^3}{Y_n^2}}&amp; \sum{\frac{Z_n^4}{Y_n^2}} \\
+\sum{\frac{Z_n}{Y_n^2}}&amp; \sum{\frac{Z_n^2}{Y_n^2}}&amp; \sum{\frac{Z_n^3}{Y_n^2}}&amp; \sum{\frac{Z_n^4}{Y_n^2}}&amp; \sum{\frac{Z_n^5}{Y_n^2}} \\
+\sum{\frac{Z_n^2}{Y_n^2}}&amp; \sum{\frac{Z_n^3}{Y_n^2}}&amp; \sum{\frac{Z_n^4}{Y_n^2}}&amp; \sum{\frac{Z_n^5}{Y_n^2}}&amp; \sum{\frac{Z_n^6}{Y_n^2}} \\
+\sum{\frac{Z_n^3}{Y_n^2}}&amp; \sum{\frac{Z_n^4}{Y_n^2}}&amp; \sum{\frac{Z_n^5}{Y_n^2}}&amp; \sum{\frac{Z_n^6}{Y_n^2}}&amp; \sum{\frac{Z_n^7}{Y_n^2}} \\
+\sum{\frac{Z_n^4}{Y_n^2}}&amp; \sum{\frac{Z_n^5}{Y_n^2}}&amp; \sum{\frac{Z_n^6}{Y_n^2}}&amp; \sum{\frac{Z_n^7}{Y_n^2}}&amp; \sum{\frac{Z_n^8}{Y_n^2}}
+\end{Bmatrix}"/></p>
+</div><div class="math">
+<p><img src="../../_images/math/c462ecbaa0c4eabfb8d5ddc23a202f94aa62f103.png" alt="W = \begin{Bmatrix}
+\sum{\frac{Z_n^0}{Y_n}} \\
+\sum{\frac{Z_n^1}{Y_n}} \\
+\sum{\frac{Z_n^2}{Y_n}} \\
+\sum{\frac{Z_n^3}{Y_n}} \\
+\sum{\frac{Z_n^4}{Y_n}}
+\end{Bmatrix}"/></p>
+</div></li>
+<li><p class="first">Minimize Absolute Error: Lines 1480 - 1699 builds the A and W matrices.</p>
+<div class="math">
+<p><img src="../../_images/math/fd44e4ffdf2ba8cae2231d5ed61e605f1d476509.png" alt="A = \begin{Bmatrix}
+\sum{Z_n^0}=n_{max}&amp; \sum{Z_n}&amp; \sum{Z_n^2}&amp; \sum{Z_n^3}&amp; \sum{Z_n^4} \\
+\sum{Z_n}&amp;     \sum{Z_n^2}&amp; \sum{Z_n^3}&amp; \sum{Z_n^4}&amp; \sum{Z_n^5} \\
+\sum{Z_n^2}&amp;     \sum{Z_n^3}&amp; \sum{Z_n^4}&amp; \sum{Z_n^5}&amp; \sum{Z_n^6} \\
+\sum{Z_n^3}&amp;     \sum{Z_n^4}&amp; \sum{Z_n^5}&amp; \sum{Z_n^6}&amp; \sum{Z_n^7} \\
+\sum{Z_n^4}&amp;     \sum{Z_n^5}&amp; \sum{Z_n^6}&amp; \sum{Z_n^7}&amp; \sum{Z_n^8}
+\end{Bmatrix}"/></p>
+</div><div class="math">
+<p><img src="../../_images/math/58551d715081c1f5535a711856e90630e3779d5c.png" alt="W = \begin{Bmatrix}
+\sum{Y_n Z_n^0} \\
+\sum{Y_n Z_n^1} \\
+\sum{Y_n Z_n^2} \\
+\sum{Y_n Z_n^3} \\
+\sum{Y_n Z_n^4}
+\end{Bmatrix}"/></p>
+</div></li>
+</ul>
+<p>See <a class="reference external" href="http://en.wikipedia.org/wiki/Least_squares_regression">http://en.wikipedia.org/wiki/Least_squares_regression</a></p>
+</div>
+<div class="section" id="solve-matrices">
+<h3>Solve Matrices<a class="headerlink" href="#solve-matrices" title="Permalink to this headline">¶</a></h3>
+<p>This is the Gauss-Jorden, or Gaussian Elimination algorithm.</p>
+<p>Here&#8217;s the <tt class="docutils literal"><span class="pre">numpy</span></tt> solution.</p>
+<p><a class="reference external" href="http://pingswept.org/2009/01/24/least-squares-polynomial-fitting-in-python/">http://pingswept.org/2009/01/24/least-squares-polynomial-fitting-in-python/</a></p>
+<p>Here&#8217;s the Gaussian Elimination algorithm.</p>
+<p>See <a class="reference external" href="http://en.wikipedia.org/wiki/Gaussian_elimination">http://en.wikipedia.org/wiki/Gaussian_elimination</a></p>
+<p>There are three types of elementary row operations which may be performed on the rows of a matrix:</p>
+<blockquote>
+<div><p>Type 1: Swap the positions of two rows.</p>
+<p>Type 2: Multiply a row by a nonzero scalar.</p>
+<p>Type 3: Add to one row a scalar multiple of another.</p>
+</div></blockquote>
+<p><strong>Phase 1</strong>. Get to Echelon Form.</p>
+<blockquote>
+<div><p>For each row in a matrix, if the row does not consist of only zeros, then the left-most non-zero entry is called the leading coefficient (or pivot) of that row. So if two leading coefficients are in the same column, then a row operation of type 3 (see above) could be used to make one of those coefficients zero. Then by using the row swapping operation, one can always order the rows so that for every non-zero row, the leading coefficient is to the right of the leading coefficient of the row above. If this is the case, then matrix is said to be in row echelon form. So the lower left part of the matrix contains only zeros, and all of the zero rows are below the non-zero rows. The word &#8220;echelon&#8221; is used here because one can roughly think of the rows being ranked by their size, with the largest being at the top and the smallest being at the bottom.</p>
+<div class="math">
+<p><img src="../../_images/math/6c36001152ea1debaafe1d6e50cebfb076e9585b.png" alt="\begin{bmatrix}
+     2&amp;  1&amp; -1&amp; \vert &amp; 8 \\
+    -3&amp; -1&amp;  2&amp; \vert &amp; -11 \\
+    -2&amp;  1&amp;  2&amp; \vert &amp; -3 \\
+\end{bmatrix}"/></p>
+</div><div class="math">
+<p><img src="../../_images/math/1081690b85a2a50f7873c6795c3dc39aadc134f5.png" alt="\begin{bmatrix}
+     2&amp;  1&amp; -1&amp;   \vert &amp; 8 \\
+     0&amp; 1/2&amp; 1/2&amp; \vert &amp; 1 \\
+     0&amp;  0&amp;  -1&amp;  \vert &amp; 1 \\
+\end{bmatrix}"/></p>
+</div></div></blockquote>
+<p><strong>Phase 2</strong>. Get to Reduced Echelon Form.</p>
+<blockquote>
+<div><p>A matrix is said to be in reduced row echelon form if furthermore all of the leading coefficients are equal to 1 (which can be achieved by using the elementary row operation of type 2), and in every column containing a leading coefficient, all of the other entries in that column are zero (which can be achieved by using elementary row operations of type 3).</p>
+<div class="math">
+<p><img src="../../_images/math/56de7d514950b6e69d57dc1d6b1c8016af506910.png" alt="\begin{bmatrix}
+     1&amp;  0&amp; 0&amp; \vert &amp; 2 \\
+     0&amp;  1&amp; 0&amp; \vert &amp; 3 \\
+     0&amp;  0&amp; 1&amp; \vert &amp; -1 \\
+\end{bmatrix}"/></p>
+</div></div></blockquote>
+</div>
+<div class="section" id="graphics-display">
+<h3>Graphics Display<a class="headerlink" href="#graphics-display" title="Permalink to this headline">¶</a></h3>
+<p>TBD.  This may involve <tt class="docutils literal"><span class="pre">matplotlib</span></tt>.</p>
+</div>
+</div>
+<div class="section" id="implementation">
+<h2>Implementation<a class="headerlink" href="#implementation" title="Permalink to this headline">¶</a></h2>
+<p>There appears to be little value is scrupulously analyzing the GW Basic programming.</p>
+<p>It seems simpler to make <tt class="docutils literal"><span class="pre">numpy</span></tt> a dependency and use it. The variant Vandermonde matrices for minimum relative error vs. minimum absolute error seem to be of some value.</p>
+<p>However.</p>
+<p><tt class="xref py py-mod docutils literal"><span class="pre">numpy</span></tt> for Python 3.2 is not the easiest thing to install. And we only want a small piece of <tt class="xref py py-mod docutils literal"><span class="pre">numpy</span></tt>: the Gaussian Elimination algorithm.
+It does make a small amount of sense to provide a streamlined Gaussian Elimination.</p>
+<span class="target" id="module-hamcalc.math.curvefit"></span><p>hamcalc.math.curvefit &#8211; Curve Fit program</p>
+<p>This is linear least squares curve fitting.</p>
+<p>There are several important features.</p>
+<ul class="simple">
+<li><a class="reference internal" href="#data-collection">Data Collection</a></li>
+<li><a class="reference internal" href="#transformation">Transformation</a></li>
+<li><a class="reference internal" href="#polynomial-curve-fitting">Polynomial Curve Fitting</a></li>
+<li><a class="reference internal" href="#gaussian-elimination">Gaussian Elimination</a></li>
+</ul>
+<div class="section" id="data-collection">
+<h3>Data Collection<a class="headerlink" href="#data-collection" title="Permalink to this headline">¶</a></h3>
+<p>A simple list-of-tuple structure is used to contain the sample data points.
+The client application will probably have fancy input and output features
+to gather the collection of data points.</p>
+</div>
+<div class="section" id="transformation">
+<h3>Transformation<a class="headerlink" href="#transformation" title="Permalink to this headline">¶</a></h3>
+<p>There are four transformation functions that can be applied to the X values
+for the data points.</p>
+<ul class="simple">
+<li>NUL: X_i -&gt; X_i does nothing</li>
+<li>POW(K,P): X_i -&gt; (X_i+K)**P</li>
+<li>LOG(K): X_i -&gt; log(X_i+K)</li>
+<li>EXP(K): X_i -&gt; exp(K*X_i)</li>
+</ul>
+<p>Currently, the function is provided as a string name, to make
+the interface simpler for RESTful web services and JSON encoding
+the arguments.</p>
+</div>
+<div class="section" id="polynomial-curve-fitting">
+<h3>Polynomial Curve Fitting<a class="headerlink" href="#polynomial-curve-fitting" title="Permalink to this headline">¶</a></h3>
+<p>The polynomial degree (0 to 5) must be provided.</p>
+<p>Additionally, there&#8217;s a specific function to be minimized.</p>
+<ul class="simple">
+<li>Absolute Error.</li>
+<li>Relative Error &#8211; undefined if Y is ever zero.</li>
+</ul>
+</div>
+<div class="section" id="gaussian-elimination">
+<h3>Gaussian Elimination<a class="headerlink" href="#gaussian-elimination" title="Permalink to this headline">¶</a></h3>
+<p>From Wikipedia</p>
+<p><a class="reference external" href="http://en.wikipedia.org/wiki/Gaussian_elimination">http://en.wikipedia.org/wiki/Gaussian_elimination</a></p>
+<p>Pseudo-Code</p>
+<div class="highlight-python"><pre>for k = 1 ... m:
+  #Find pivot for column k:
+  i_max := argmax (i = k ... m, abs(A[i, k]))
+  if A[i_max, k] = 0
+    error &quot;Matrix is singular!&quot;
+  swap rows(k, i_max)
+  #Do for all rows below pivot:
+  for i = k + 1 ... m:
+    #Do for all remaining elements in current row:
+    for j = k + 1 ... n:
+      A[i, j] := A[i, j] - A[k, j] * (A[i, k] / A[k, k])
+    #Fill lower triangular matrix with zeros:
+    A[i, k] := 0</pre>
+</div>
+</div>
+<div class="section" id="overall-test-cases">
+<h3>Overall Test Cases<a class="headerlink" href="#overall-test-cases" title="Permalink to this headline">¶</a></h3>
+<p>See <a class="reference external" href="http://en.wikipedia.org/wiki/Linear_least_squares_(mathematics">http://en.wikipedia.org/wiki/Linear_least_squares_(mathematics</a>)#Motivational_example</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">hamcalc.math.curvefit</span> <span class="kn">as</span> <span class="nn">curvefit</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">DATA</span> <span class="o">=</span> <span class="p">[</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">6</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">5</span><span class="p">),</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">7</span><span class="p">),</span> <span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="mi">10</span><span class="p">)</span> <span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="p">[</span> <span class="nb">round</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">curvefit</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span> <span class="n">DATA</span> <span class="p">)</span> <span class="p">]</span>
+<span class="go">[3.5, 1.4]</span>
+</pre></div>
+</div>
+<p>The output vector has the following interpretation.</p>
+<div class="math">
+<p><img src="../../_images/math/5f19ab0942fc2e0ede2866e398ac454c7d13b437.png" alt="y= 3.5 + 1.4x"/></p>
+</div><p>For higher-order polynomials there will be more terms.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">hamcalc.math.curvefit</span> <span class="kn">as</span> <span class="nn">curvefit</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">DATA</span> <span class="o">=</span> <span class="p">[</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">6</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">5</span><span class="p">),</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">7</span><span class="p">),</span> <span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="mi">10</span><span class="p">)</span> <span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="p">[</span> <span class="nb">round</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">curvefit</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span> <span class="n">DATA</span><span class="p">,</span> <span class="n">minimize</span><span class="o">=</span><span class="s">&#39;rel&#39;</span> <span class="p">)</span> <span class="p">]</span>
+<span class="go">[3.803, 1.13]</span>
+</pre></div>
+</div>
+<dl class="function">
+<dt id="hamcalc.math.curvefit.argmax">
+<tt class="descclassname">hamcalc.math.curvefit.</tt><tt class="descname">argmax</tt><big>(</big><em>indices</em>, <em>A</em>, <em>column</em>, <em>f=&lt;built-in function abs&gt;</em><big>)</big><a class="reference internal" href="../../_modules/hamcalc/math/curvefit.html#argmax"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.math.curvefit.argmax" title="Permalink to this definition">¶</a></dt>
+<dd><p>Locate the argument for which the function of A[i,column]
+is maximized for i in indices.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">hamcalc.math.curvefit</span> <span class="kn">as</span> <span class="nn">curvefit</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">A</span> <span class="o">=</span> <span class="p">[</span>
+<span class="gp">... </span>    <span class="p">[</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span>  <span class="mi">8</span><span class="p">],</span>
+<span class="gp">... </span>    <span class="p">[</span><span class="o">-</span><span class="mi">3</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span><span class="o">-</span><span class="mi">11</span><span class="p">],</span>
+<span class="gp">... </span>    <span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">3</span><span class="p">],</span>
+<span class="gp">... </span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">curvefit</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">),</span> <span class="n">A</span><span class="p">,</span> <span class="n">column</span><span class="o">=</span><span class="mi">3</span> <span class="p">)</span>
+<span class="go">1</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>indices</strong> &#8211; index values for rows to examine</li>
+<li><strong>A</strong> &#8211; Matrix</li>
+<li><strong>column</strong> &#8211; column to examine.</li>
+<li><strong>f</strong> &#8211; Function to use, default is <tt class="xref py py-func docutils literal"><span class="pre">abs()</span></tt>.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="hamcalc.math.curvefit.data_transform">
+<tt class="descclassname">hamcalc.math.curvefit.</tt><tt class="descname">data_transform</tt><big>(</big><em>points_raw</em>, <em>name</em>, <em>args=None</em><big>)</big><a class="headerlink" href="#hamcalc.math.curvefit.data_transform" title="Permalink to this definition">¶</a></dt>
+<dd><p>Various transformation functions.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>points_raw</strong> &#8211; Sequence of (x,y) pairs.</li>
+<li><strong>name</strong> &#8211; Name of transformation: NULL, POW, LOG, EXP.</li>
+<li><strong>args</strong> &#8211; dictionary of arguments, &#8216;k&#8217; and &#8216;p&#8217;.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Sequence of (f(x),y) pairs.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">hamcalc.math.curvefit</span> <span class="kn">as</span> <span class="nn">curvefit</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">DATA</span> <span class="o">=</span> <span class="p">[</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">6</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">5</span><span class="p">),</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">7</span><span class="p">),</span> <span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="mi">10</span><span class="p">)</span> <span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">curvefit</span><span class="o">.</span><span class="n">data_transform</span><span class="p">(</span> <span class="n">DATA</span><span class="p">,</span> <span class="s">&quot;NULL&quot;</span> <span class="p">)</span>
+<span class="go">[(1, 6), (2, 5), (3, 7), (4, 10)]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">curvefit</span><span class="o">.</span><span class="n">data_transform</span><span class="p">(</span> <span class="n">DATA</span><span class="p">,</span> <span class="s">&quot;POW&quot;</span><span class="p">,</span> <span class="p">{</span> <span class="s">&#39;k&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="s">&#39;p&#39;</span><span class="p">:</span> <span class="mi">2</span> <span class="p">}</span> <span class="p">)</span>
+<span class="go">[(16, 6), (25, 5), (36, 7), (49, 10)]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">curvefit</span><span class="o">.</span><span class="n">data_transform</span><span class="p">(</span> <span class="n">DATA</span><span class="p">,</span> <span class="s">&quot;LOG&quot;</span><span class="p">,</span> <span class="p">{</span> <span class="s">&#39;k&#39;</span><span class="p">:</span> <span class="mi">5</span> <span class="p">}</span> <span class="p">)</span>
+<span class="go">[(1.791759469228055, 6), (1.9459101490553132, 5), (2.0794415416798357, 7), (2.1972245773362196, 10)]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">curvefit</span><span class="o">.</span><span class="n">data_transform</span><span class="p">(</span> <span class="n">DATA</span><span class="p">,</span> <span class="s">&quot;EXP&quot;</span><span class="p">,</span> <span class="p">{</span> <span class="s">&#39;k&#39;</span><span class="p">:</span> <span class="mi">1</span> <span class="p">}</span> <span class="p">)</span>
+<span class="go">[(2.718281828459045, 6), (7.38905609893065, 5), (20.085536923187668, 7), (54.598150033144236, 10)]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="hamcalc.math.curvefit.fit">
+<tt class="descclassname">hamcalc.math.curvefit.</tt><tt class="descname">fit</tt><big>(</big><em>points_raw</em>, <em>transform='NULL'</em>, <em>args=None</em>, <em>order=2</em>, <em>minimize='absolute'</em><big>)</big><a class="headerlink" href="#hamcalc.math.curvefit.fit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Curve Fit.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>points</strong> &#8211; is a sequence of (x,y) tuples</li>
+<li><strong>transform</strong> &#8211; is the name of the transform function.
+&#8220;NULL&#8221;, &#8220;POW&#8221;, &#8220;LOG&#8221;, &#8220;EXP&#8221; are the defined functions.
+The &#8220;POW&#8221; function requires both &#8220;k&#8221; and &#8220;p&#8221;.
+The &#8220;LOG&#8221; and &#8220;EXP&#8221; functions require &#8220;k&#8221;.</li>
+<li><strong>args</strong> &#8211; is a dictionary with values of &#8220;k&#8221; or &#8220;p&#8221; or both
+for the transformation function.</li>
+<li><strong>order</strong> &#8211; Polynomial order (0 to 5).</li>
+<li><strong>minmize</strong> &#8211; is either &#8220;absolute&#8221; or &#8220;relative&#8221;.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Coefficients for the polynomial that fits the points.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="hamcalc.math.curvefit.gauss">
+<tt class="descclassname">hamcalc.math.curvefit.</tt><tt class="descname">gauss</tt><big>(</big><em>A</em><big>)</big><a class="reference internal" href="../../_modules/hamcalc/math/curvefit.html#gauss"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.math.curvefit.gauss" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gaussian Elimination on an m row by n column matrix A.
+n is expected to be m+1 when solving simultaneous linear equations.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>A</strong> &#8211; is a &#8220;list-of-lists&#8221; matrix with m rows.  Each row
+is an n-element list.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">New matrix in reduced echelon form.</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">hamcalc.math.curvefit</span> <span class="kn">as</span> <span class="nn">curvefit</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">A</span> <span class="o">=</span> <span class="p">[</span>
+<span class="gp">... </span>    <span class="p">[</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span>  <span class="mi">8</span><span class="p">],</span>
+<span class="gp">... </span>    <span class="p">[</span><span class="o">-</span><span class="mi">3</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span><span class="o">-</span><span class="mi">11</span><span class="p">],</span>
+<span class="gp">... </span>    <span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">3</span><span class="p">],</span>
+<span class="gp">... </span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">B</span><span class="o">=</span> <span class="n">curvefit</span><span class="o">.</span><span class="n">gauss</span><span class="p">(</span> <span class="n">A</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="p">[</span> <span class="p">[</span> <span class="nb">round</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">row</span> <span class="p">]</span> <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">B</span> <span class="p">]</span>
+<span class="go">[[1, 0, 0, 2], [0, 1, 0, 3], [0, 0, 1, -1]]</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">C</span> <span class="o">=</span> <span class="p">[</span>
+<span class="gp">... </span>    <span class="p">[</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">9</span><span class="p">],</span>
+<span class="gp">... </span>    <span class="p">[</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
+<span class="gp">... </span>    <span class="p">[</span> <span class="mi">3</span><span class="p">,</span><span class="mi">11</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">35</span><span class="p">],</span>
+<span class="gp">... </span>    <span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">D</span> <span class="o">=</span> <span class="n">curvefit</span><span class="o">.</span><span class="n">gauss</span><span class="p">(</span> <span class="n">C</span> <span class="p">)</span> 
+<span class="gt">Traceback (most recent call last):</span>
+  File <span class="nb">&quot;/Library/Frameworks/Python.framework/Versions/3.2/lib/python3.2/doctest.py&quot;</span>, line <span class="m">1288</span>, in <span class="n">__run</span>
+    <span class="n">compileflags</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">test</span><span class="o">.</span><span class="n">globs</span><span class="p">)</span>
+  File <span class="nb">&quot;&lt;doctest default[1]&gt;&quot;</span>, line <span class="m">1</span>, in <span class="n">&lt;module&gt;</span>
+    <span class="n">D</span> <span class="o">=</span> <span class="n">curvefit</span><span class="o">.</span><span class="n">gauss</span><span class="p">(</span> <span class="n">C</span> <span class="p">)</span>
+  File <span class="nb">&quot;/Users/slott/github/local/HamCalc-2.1/python/hamcalc/math/curvefit/__init__.py&quot;</span>, line <span class="m">124</span>, in <span class="n">gauss</span>
+    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span> <span class="s">&quot;Matrix is singular!&quot;</span> <span class="p">)</span>
+<span class="gr">ValueError</span>: <span class="n">Matrix is singular!</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="hamcalc.math.curvefit.min_absolute">
+<tt class="descclassname">hamcalc.math.curvefit.</tt><tt class="descname">min_absolute</tt><big>(</big><em>points</em>, <em>order</em><big>)</big><a class="headerlink" href="#hamcalc.math.curvefit.min_absolute" title="Permalink to this definition">¶</a></dt>
+<dd><p>Minimize Absolute Error.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">hamcalc.math.curvefit</span> <span class="kn">as</span> <span class="nn">curvefit</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">DATA</span> <span class="o">=</span> <span class="p">[</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">6</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">5</span><span class="p">),</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">7</span><span class="p">),</span> <span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="mi">10</span><span class="p">)</span> <span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">curvefit</span><span class="o">.</span><span class="n">min_absolute</span><span class="p">(</span> <span class="n">DATA</span><span class="p">,</span> <span class="mi">4</span> <span class="p">)</span>
+<span class="go">[[4, 10, 30, 100, 28], [10, 30, 100, 354, 77], [30, 100, 354, 1300, 249], [100, 354, 1300, 4890, 875]]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="hamcalc.math.curvefit.min_relative">
+<tt class="descclassname">hamcalc.math.curvefit.</tt><tt class="descname">min_relative</tt><big>(</big><em>points</em>, <em>order</em><big>)</big><a class="headerlink" href="#hamcalc.math.curvefit.min_relative" title="Permalink to this definition">¶</a></dt>
+<dd><p>Minimize Relative Error; requires Y != 0.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">hamcalc.math.curvefit</span> <span class="kn">as</span> <span class="nn">curvefit</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">DATA</span> <span class="o">=</span> <span class="p">[</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">6</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">5</span><span class="p">),</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">7</span><span class="p">),</span> <span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="mi">10</span><span class="p">)</span> <span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">curvefit</span><span class="o">.</span><span class="n">min_relative</span><span class="p">(</span> <span class="n">DATA</span><span class="p">,</span> <span class="mi">4</span> <span class="p">)</span>
+<span class="go">[[0.09818594104308388, 0.20900226757369614, 0.5314512471655329, 1.538798185941043, 0.6095238095238095], [0.20900226757369614, 0.5314512471655329, 1.538798185941043, 4.8808390022675745, 1.3952380952380952], [0.5314512471655329, 1.538798185941043, 4.8808390022675745, 16.506961451247165, 3.8523809523809525], [1.538798185941043, 4.8808390022675745, 16.506961451247165, 58.425328798185944, 12.023809523809526]]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="quirks">
+<h2>Quirks<a class="headerlink" href="#quirks" title="Permalink to this headline">¶</a></h2>
+<p>Because GW-Basic variables have a default value of zero, sums are reset <strong>after</strong> they&#8217;re used.</p>
+<p>Look, for example at lines 1290 to 1470. Also look at lines 1480 to 1600.
+In both cases, sums are accumulated assuming an initial value of zero. After the sums are used, the variables are reset back to zero.</p>
+</div>
 </div>
 
 
@@ -66,17 +484,44 @@
         </div>
         <div class="sidebar">
           <h3>Table Of Contents</h3>
-          <ul class="current">
+          <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../background.html">Background</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../legacy.html">The HamCalc Legacy</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../python_architecture.html">Python Architecture</a></li>
+</ul>
+<ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html">Python Modules</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../lib.html">lib &#8211; Supporting Library</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../radio.html">radio &#8211; Radio Design and Engineering</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../ham.html">ham &#8211; Ham Radio Operations</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../electronics/index.html">electronics &#8211; General Electronics</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../construction.html">construction &#8211; Construction and Related Projects</a></li>
-<li class="toctree-l2 current"><a class="reference internal" href="index.html">math &#8211; Math, Physics, Units Conversion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../construction/index.html">construction &#8211; Construction and Related Projects</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">math &#8211; Math, Physics, Units Conversion</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="accelr.html">accelr &#8211; Acceleration Calculator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="baromtr.html">baromtr &#8211; Barometer Reading Equivalents</a></li>
+<li class="toctree-l3"><a class="reference internal" href="binary.html">binary &#8211; Decimal to Binary Converter</a></li>
+<li class="toctree-l3"><a class="reference internal" href="centrif.html">centrif &#8211; Centrifugal/Centripetel Force</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="">curvefit &#8211; Curve Fit program</a></li>
+<li class="toctree-l3"><a class="reference internal" href="deciconv.html">deciconv &#8211; Decimal Hour/Degree Converter</a></li>
+<li class="toctree-l3"><a class="reference internal" href="decifrac.html">decifrac &#8211; Decimal/Fraction Converter</a></li>
+<li class="toctree-l3"><a class="reference internal" href="diamfind.html">diamfind</a></li>
+<li class="toctree-l3"><a class="reference internal" href="equiv.html">equiv &#8211; Unit Conversions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="fibon.html">fibon &#8211; Fibonacci Series</a></li>
+<li class="toctree-l3"><a class="reference internal" href="formulae.html">formulae</a></li>
+<li class="toctree-l3"><a class="reference internal" href="graphs.html">graphs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="involute.html">involute</a></li>
+<li class="toctree-l3"><a class="reference internal" href="numderiv.html">numderiv</a></li>
+<li class="toctree-l3"><a class="reference internal" href="polygon.html">polygon</a></li>
+<li class="toctree-l3"><a class="reference internal" href="primenos.html">primenos &#8211; Prime Number Calculator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="propcirc.html">propcirc &#8211; Circle, Properties of</a></li>
+<li class="toctree-l3"><a class="reference internal" href="randnum.html">randnum</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rotaplot.html">rotaplot</a></li>
+<li class="toctree-l3"><a class="reference internal" href="simuleq.html">simuleq</a></li>
+<li class="toctree-l3"><a class="reference internal" href="solutri.html">solutri &#8211; Triangles, solution of</a></li>
+<li class="toctree-l3"><a class="reference internal" href="speedtd.html">speedtd</a></li>
+<li class="toctree-l3"><a class="reference internal" href="trig.html">trig &#8211; Trigonometric Functions</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="../navigation.html">navigation &#8211; Navigation and Astronomy</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../calendar.html">calendar &#8211; Calendrical Calculations</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../audio_photo.html">audio_photo &#8211; Audio, Sound and Photography</a></li>
@@ -88,6 +533,8 @@
 <li class="toctree-l2"><a class="reference internal" href="../gui.html">GUI Interface</a></li>
 </ul>
 </li>
+</ul>
+<ul>
 <li class="toctree-l1"><a class="reference internal" href="../../todo.html">The To Do List</a></li>
 </ul>
 
@@ -109,7 +556,7 @@
     <div class="footer-wrapper">
       <div class="footer">
         <div class="left">
-          <a href="conecalc.html" title="conecalc"
+          <a href="centrif.html" title="centrif – Centrifugal/Centripetel Force"
              >previous</a> |
           <a href="deciconv.html" title="deciconv – Decimal Hour/Degree Converter"
              >next</a> |

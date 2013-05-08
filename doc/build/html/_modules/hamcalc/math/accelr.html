@@ -55,13 +55,14 @@
 
 <span class="sd">Here are some test cases</span>
 
-<span class="sd">&gt;&gt;&gt; from hamcalc.math.accelr import force, accel</span>
+<span class="sd">&gt;&gt;&gt; import hamcalc.math.accelr as accelr</span>
 <span class="sd">&gt;&gt;&gt; accelr.force( m=12000, a=-2.5 )</span>
 <span class="sd">{&#39;a&#39;: -2.5, &#39;m&#39;: 12000, &#39;f&#39;: -30000.0}</span>
 <span class="sd">&gt;&gt;&gt; accelr.force( m=12000, f=30000 )</span>
 <span class="sd">{&#39;a&#39;: 2.5, &#39;m&#39;: 12000, &#39;f&#39;: 30000}</span>
-<span class="sd">&gt;&gt;&gt; accel( d=50, t=6, v_o=2, a=-.25 )</span>
+<span class="sd">&gt;&gt;&gt; accelr.accel( d=50, t=6, v_o=2, a=-.25 )</span>
 <span class="sd">{&#39;a&#39;: -0.25, &#39;v_f&#39;: 0.5, &#39;v_o&#39;: 2, &#39;d&#39;: 50, &#39;t&#39;: 6}</span>
+
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="n">__version__</span> <span class="o">=</span> <span class="s">&quot;2.1&quot;</span>
 

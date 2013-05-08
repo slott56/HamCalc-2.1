@@ -11,7 +11,7 @@ These are the various HamCalc core calculation packages.
     radio
     ham
     electronics/index
-    construction
+    construction/index
     math/index
     navigation
     calendar

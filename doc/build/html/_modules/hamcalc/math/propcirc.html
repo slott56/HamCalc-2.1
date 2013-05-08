@@ -49,28 +49,28 @@
           <div class="body">
             
   <h1>Source code for hamcalc.math.propcirc</h1><div class="highlight"><pre>
-<span class="sd">&quot;&quot;&quot;hamcalc.math.propcirc -- Circle, Properies of</span>
+<span class="sd">&quot;&quot;&quot;hamcalc.math.propcirc -- Circle, Properties of</span>
 
 <span class="sd">Here are some test cases.</span>
 
 <span class="sd">&gt;&gt;&gt; import hamcalc.math.propcirc as propcirc</span>
-<span class="sd">&gt;&gt;&gt; propcirc.circle( R=12, propcirc.radians(60) )</span>
+<span class="sd">&gt;&gt;&gt; propcirc.circle( R=12, angle=propcirc.radians(60) )</span>
 <span class="sd">{&#39;A&#39;: 452.3893421169302, &#39;C&#39;: 75.39822368615503, &#39;angle&#39;: 1.0471975511965976, &#39;D&#39;: 24, &#39;G&#39;: 1.6076951545867355, &#39;L_A&#39;: 12.566370614359172, &#39;A_G&#39;: 13.044394613675443, &#39;L_C&#39;: 11.999999999999998, &#39;R&#39;: 12, &#39;A_C&#39;: 75.39822368615502}</span>
-<span class="sd">&gt;&gt;&gt; circle( D=24, angle=propcirc.radians(60) )</span>
+<span class="sd">&gt;&gt;&gt; propcirc.circle( D=24, angle=propcirc.radians(60) )</span>
 <span class="sd">{&#39;A&#39;: 452.3893421169302, &#39;C&#39;: 75.39822368615503, &#39;angle&#39;: 1.0471975511965976, &#39;D&#39;: 24.0, &#39;G&#39;: 1.6076951545867355, &#39;L_A&#39;: 12.566370614359172, &#39;A_G&#39;: 13.044394613675443, &#39;L_C&#39;: 11.999999999999998, &#39;R&#39;: 12.0, &#39;A_C&#39;: 75.39822368615502}</span>
-<span class="sd">&gt;&gt;&gt; circle( C=75.4, angle=propcirc.radians(60) )</span>
+<span class="sd">&gt;&gt;&gt; propcirc.circle( C=75.4, angle=propcirc.radians(60) )</span>
 <span class="sd">{&#39;A&#39;: 452.41065813415986, &#39;C&#39;: 75.4, &#39;angle&#39;: 1.0471975511965976, &#39;D&#39;: 24.000565418257818, &#39;G&#39;: 1.6077330304281274, &#39;L_A&#39;: 12.566666666666666, &#39;A_G&#39;: 13.045009249155228, &#39;L_C&#39;: 12.000282709128907, &#39;R&#39;: 12.000282709128909, &#39;A_C&#39;: 75.40177635569331}</span>
-<span class="sd">&gt;&gt;&gt; circle( A=452.4, angle=propcirc.radians(60) )</span>
+<span class="sd">&gt;&gt;&gt; propcirc.circle( A=452.4, angle=propcirc.radians(60) )</span>
 <span class="sd">{&#39;A&#39;: 452.4, &#39;C&#39;: 75.39911183784653, &#39;angle&#39;: 1.0471975511965976, &#39;D&#39;: 24.000282707463835, &#39;G&#39;: 1.6077140923958928, &#39;L_A&#39;: 12.566518639641089, &#39;A_G&#39;: 13.044701927795316, &#39;L_C&#39;: 12.000141353731916, &#39;R&#39;: 12.000141353731918, &#39;A_C&#39;: 75.39999999999999}</span>
-<span class="sd">&gt;&gt;&gt; circle( L_C=12, angle=propcirc.radians(60) )</span>
+<span class="sd">&gt;&gt;&gt; propcirc.circle( L_C=12, angle=propcirc.radians(60) )</span>
 <span class="sd">{&#39;A&#39;: 452.3893421169304, &#39;C&#39;: 75.39822368615505, &#39;angle&#39;: 1.0471975511965976, &#39;D&#39;: 24.000000000000004, &#39;G&#39;: 1.6076951545867357, &#39;L_A&#39;: 12.566370614359174, &#39;A_G&#39;: 13.04439461367545, &#39;L_C&#39;: 12.0, &#39;R&#39;: 12.000000000000002, &#39;A_C&#39;: 75.39822368615505}</span>
-<span class="sd">&gt;&gt;&gt; circle( L_A=12.56, angle=propcirc.radians(60) )</span>
+<span class="sd">&gt;&gt;&gt; propcirc.circle( L_A=12.56, angle=propcirc.radians(60) )</span>
 <span class="sd">{&#39;A&#39;: 451.93077414974937, &#39;C&#39;: 75.36000000000001, &#39;angle&#39;: 1.0471975511965976, &#39;D&#39;: 23.98783302281047, &#39;G&#39;: 1.60688012165867, &#39;L_A&#39;: 12.56, &#39;A_G&#39;: 13.031172061850732, &#39;L_C&#39;: 11.993916511405233, &#39;R&#39;: 11.993916511405235, &#39;A_C&#39;: 75.3217956916249}</span>
-<span class="sd">&gt;&gt;&gt; circle( G=1.6, angle=propcirc.radians(60) )</span>
+<span class="sd">&gt;&gt;&gt; propcirc.circle( G=1.6, angle=propcirc.radians(60) )</span>
 <span class="sd">{&#39;A&#39;: 448.0690272864175, &#39;C&#39;: 75.03733375924637, &#39;angle&#39;: 1.0471975511965976, &#39;D&#39;: 23.885125168440826, &#39;G&#39;: 1.6, &#39;L_A&#39;: 12.506222293207728, &#39;A_G&#39;: 12.919820742768572, &#39;L_C&#39;: 11.942562584220411, &#39;R&#39;: 11.942562584220413, &#39;A_C&#39;: 74.67817121440291}</span>
-<span class="sd">&gt;&gt;&gt; circle( R=12, L_C=12 )</span>
+<span class="sd">&gt;&gt;&gt; propcirc.circle( R=12, L_C=12 )</span>
 <span class="sd">{&#39;A&#39;: 452.3893421169302, &#39;C&#39;: 75.39822368615503, &#39;angle&#39;: 1.0471975511965979, &#39;D&#39;: 24, &#39;G&#39;: 1.6076951545867368, &#39;L_A&#39;: 12.566370614359174, &#39;A_G&#39;: 13.044394613675465, &#39;L_C&#39;: 12.0, &#39;R&#39;: 12, &#39;A_C&#39;: 75.39822368615505}</span>
-<span class="sd">&gt;&gt;&gt; circle( R=12, G=1.6 )</span>
+<span class="sd">&gt;&gt;&gt; propcirc.circle( R=12, G=1.6 )</span>
 <span class="sd">{&#39;A&#39;: 452.3893421169302, &#39;C&#39;: 75.39822368615503, &#39;angle&#39;: 1.0446296436120974, &#39;D&#39;: 24, &#39;G&#39;: 1.600000000000001, &#39;L_A&#39;: 12.535555723345169, &#39;A_G&#39;: 12.952155424152622, &#39;L_C&#39;: 11.973303637676615, &#39;R&#39;: 12, &#39;A_C&#39;: 75.21333434007101}</span>
 <span class="sd">&gt;&gt;&gt; propcirc.circle( L_A=12.56, G=1.61 )</span>
 <span class="sd">{&#39;A&#39;: 450.09677997191295, &#39;C&#39;: 75.20693418466634, &#39;angle&#39;: 1.049328872579753, &#39;D&#39;: 23.939110660552977, &#39;G&#39;: 1.6099999693011857, &#39;L_A&#39;: 12.56, &#39;A_G&#39;: 13.054769563165337, &#39;L_C&#39;: 11.991641677007895, &#39;R&#39;: 11.969555330276489, &#39;A_C&#39;: 75.16880747413634}</span>
@@ -80,7 +80,7 @@
 <span class="n">__version__</span> <span class="o">=</span> <span class="s">&quot;2.1&quot;</span>
 
 <span class="kn">import</span> <span class="nn">math</span>
-<span class="kn">from</span> <span class="nn">hamcalc.lib</span> <span class="kn">import</span> <span class="n">AttrDict</span>
+<span class="kn">from</span> <span class="nn">hamcalc.lib</span> <span class="kn">import</span> <span class="n">AttrDict</span><span class="p">,</span> <span class="n">radians</span><span class="p">,</span> <span class="n">degrees</span>
 
 <span class="n">introduction</span> <span class="o">=</span> <span class="s">&quot;&quot;&quot;</span><span class="se">\</span>
 
@@ -116,12 +116,6 @@
     <span class="sd">&quot;&quot;&quot;Returns the text from the introductory page.&quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">introduction</span>
 </div>
-<div class="viewcode-block" id="radians"><a class="viewcode-back" href="../../../python/math/propcirc.html#hamcalc.math.propcirc.radians">[docs]</a><span class="k">def</span> <span class="nf">radians</span><span class="p">(</span> <span class="n">degrees</span> <span class="p">):</span>
-    <span class="k">return</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span><span class="o">*</span><span class="n">degrees</span><span class="o">/</span><span class="mi">180</span>
-</div>
-<div class="viewcode-block" id="degrees"><a class="viewcode-back" href="../../../python/math/propcirc.html#hamcalc.math.propcirc.degrees">[docs]</a><span class="k">def</span> <span class="nf">degrees</span><span class="p">(</span> <span class="n">radians</span> <span class="p">):</span>
-    <span class="k">return</span> <span class="mi">180</span><span class="o">*</span><span class="n">radians</span><span class="o">/</span><span class="n">math</span><span class="o">.</span><span class="n">pi</span>
-</div>
 <div class="viewcode-block" id="bisection"><a class="viewcode-back" href="../../../python/math/propcirc.html#hamcalc.math.propcirc.bisection">[docs]</a><span class="k">def</span> <span class="nf">bisection</span><span class="p">(</span> <span class="n">L_A</span><span class="p">,</span> <span class="n">G</span><span class="p">,</span> <span class="n">eps</span><span class="o">=</span><span class="mf">1.0E-7</span> <span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Approximate a value for *R* from *L_A* and *G* via bisection.</span>
 
@@ -138,7 +132,8 @@
 <span class="sd">    :param G: Height of Arc</span>
 <span class="sd">    :return: R radius</span>
 
-<span class="sd">    &gt;&gt;&gt; approx(  L_A=12.56, G=1.61 )</span>
+<span class="sd">    &gt;&gt;&gt; import hamcalc.math.propcirc as propcirc</span>
+<span class="sd">    &gt;&gt;&gt; propcirc.bisection(  L_A=12.56, G=1.61 )</span>
 <span class="sd">    11.969555330276489</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>

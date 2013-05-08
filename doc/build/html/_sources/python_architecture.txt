@@ -4,7 +4,7 @@ Python Architecture
 
 The HamCalc Python rewrite extracts the useful bits from HamCalc, leaving out the GW-Basic quirks.
 
-The target platform should Python 3.x (3.2.4 or later.) There's no compelling
+The target platform is Python 3.x (3.2.4 or later.) There's no compelling
 reason to support Python 2.7.
 
 This section will review the architecture for the Python port of HamCalc.
@@ -50,6 +50,62 @@ A test package is also essential for demonstrating that the calculations
 actually work.
 
 Finally, this documentation package can include references and links.
+
+Dependencies
+===============
+
+Ideally, we'd like HamCalc to have relatively few dependencies on other Python
+packages. Pragmatically, this is crazy because we don't need to clone or reinvent existing well-respected programming.
+
+The difficulty with a tall "tech-stack" is the complexity of installing a large number of dependencies before HamCalc becomes useful. The difficulty with a short or non-existent tech stack is all the wheels which have to be reinvented.
+
+**Audio**.
+
+-   For general audio output:
+
+    http://people.csail.mit.edu/hubert/pyaudio/
+
+    https://pypi.python.org/pypi/PyAudio/
+
+-   For audio output, the `play_wav` module from:
+
+    http://home.arcor.de/mdoege/pysynth/
+
+    https://pypi.python.org/pypi/PySynth/1.0
+
+**Graphics**.
+
+-   Python has a :mod:`turtle` package, built on ``Tkinter``, that may provided
+    sufficient graphic capabilities.
+
+-   The ``matplotlib`` package may be far more suitable for HamCalc.
+
+    http://matplotlib.org
+
+    https://pypi.python.org/pypi/matplotlib/1.2.1
+
+    http://en.wikipedia.org/wiki/Matplotlib
+
+**Matrix Math**.
+
+HamCalc does at least three complex matrix calculations. Specifically, the programs :program:`curvefit`, :program:`antmatch` and :program:`antsyn2` explicitly create and solve matrices. Other programs may also involve matrix calculations.
+
+Interestingly, :program:`simuleq` does not use the general Gaussian
+Elimination approach to solving simultaneous equations.
+
+A Gaussian Elimination algorithm, written from scratch, is far simpler and more
+clear than porting the legacy GW-Basic code.
+
+Using :mod:`numpy` is also an option. HamCalc does not seem to require this
+level of flexibility and sophistication.
+
+    http://www.numpy.org
+
+    https://pypi.python.org/pypi/numpy
+
+    http://en.wikipedia.org/wiki/NumPy
+
+    http://sourceforge.net/projects/numpy/files/NumPy/1.7.1/
 
 Key Design Patterns
 ====================

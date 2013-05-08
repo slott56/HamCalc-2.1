@@ -55,18 +55,24 @@
 
 <span class="sd">Here are some test cases:</span>
 
-<span class="sd">&gt;&gt;&gt; from hamcalc.electronics.decibel import power, voltage, current</span>
-<span class="sd">&gt;&gt;&gt; voltage( f_1=13.2, f_2=12 )</span>
+<span class="sd">&gt;&gt;&gt; import hamcalc.electronics.decibel as decibel</span>
+<span class="sd">&gt;&gt;&gt; decibel.voltage( f_1=13.2, f_2=12 )</span>
 <span class="sd">{&#39;db&#39;: -0.8278537031645, &#39;f_1&#39;: 13.2, &#39;f_2&#39;: 12}</span>
-<span class="sd">&gt;&gt;&gt; current( f_1=2.3, db=2 )</span>
+<span class="sd">&gt;&gt;&gt; decibel.current( f_1=2.3, db=2 )</span>
 <span class="sd">{&#39;db&#39;: 2, &#39;f_1&#39;: 2.3, &#39;f_2&#39;: 2.8955284471265843}</span>
-<span class="sd">&gt;&gt;&gt; power( f_2=800, db=5 )</span>
+<span class="sd">&gt;&gt;&gt; decibel.power( f_2=800, db=5 )</span>
 <span class="sd">{&#39;db&#39;: 5, &#39;f_1&#39;: 252.98221281347034, &#39;f_2&#39;: 800}</span>
+<span class="sd">&gt;&gt;&gt; decibel.WATT.dBm( decibel.MILLIWATT.to_std(900) )</span>
+<span class="sd">29.542689153465723</span>
+<span class="sd">&gt;&gt;&gt; decibel.VOLT.dBm(decibel.VOLT.to_std(12.36))</span>
+<span class="sd">34.85093343076822</span>
+<span class="sd">&gt;&gt;&gt; decibel.AMP.dBm(decibel.AMP.to_std(2.3))</span>
+<span class="sd">54.22452082278453</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="n">__version__</span> <span class="o">=</span> <span class="s">&quot;2.1&quot;</span>
 
-<span class="kn">from</span> <span class="nn">hamcalc.lib</span> <span class="kn">import</span> <span class="n">AttrDict</span>
+<span class="kn">from</span> <span class="nn">hamcalc.lib</span> <span class="kn">import</span> <span class="n">AttrDict</span><span class="p">,</span> <span class="n">Standard_Unit</span><span class="p">,</span> <span class="n">Unit</span>
 <span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">Callable</span>
 <span class="kn">import</span> <span class="nn">math</span>
 
@@ -81,9 +87,75 @@
     <span class="sd">&quot;&quot;&quot;Returns the text from the introductory page.&quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">introduction</span>
 </div>
+<div class="viewcode-block" id="VOLT"><a class="viewcode-back" href="../../../python/electronics/decibel.html#hamcalc.electronics.decibel.VOLT">[docs]</a><span class="k">class</span> <span class="nc">VOLT</span><span class="p">(</span> <span class="n">Standard_Unit</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Volt&quot;&quot;&quot;</span>
+    <span class="n">name</span><span class="o">=</span> <span class="s">&quot;V&quot;</span>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">dBm</span><span class="p">(</span> <span class="n">value</span> <span class="p">):</span>
+        <span class="k">return</span> <span class="mi">20</span><span class="o">*</span><span class="n">math</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span> <span class="n">value</span><span class="o">/</span><span class="mf">0.2236</span> <span class="p">)</span>
+</div>
+<div class="viewcode-block" id="MILLIVOLT"><a class="viewcode-back" href="../../../python/electronics/decibel.html#hamcalc.electronics.decibel.MILLIVOLT">[docs]</a><span class="k">class</span> <span class="nc">MILLIVOLT</span><span class="p">(</span> <span class="n">Unit</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Millivolt&quot;&quot;&quot;</span>
+    <span class="n">standard</span><span class="o">=</span> <span class="n">VOLT</span>
+    <span class="n">name</span><span class="o">=</span> <span class="s">&quot;mV&quot;</span>
+    <span class="n">factor</span><span class="o">=</span> <span class="mi">1000</span>
+</div>
+<div class="viewcode-block" id="MICROVOLT"><a class="viewcode-back" href="../../../python/electronics/decibel.html#hamcalc.electronics.decibel.MICROVOLT">[docs]</a><span class="k">class</span> <span class="nc">MICROVOLT</span><span class="p">(</span> <span class="n">Unit</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Microvolt&quot;&quot;&quot;</span>
+    <span class="n">standard</span><span class="o">=</span> <span class="n">VOLT</span>
+    <span class="n">name</span><span class="o">=</span> <span class="s">&quot;µV&quot;</span>
+    <span class="n">factor</span><span class="o">=</span> <span class="mi">1000000</span>
+</div>
+<div class="viewcode-block" id="AMP"><a class="viewcode-back" href="../../../python/electronics/decibel.html#hamcalc.electronics.decibel.AMP">[docs]</a><span class="k">class</span> <span class="nc">AMP</span><span class="p">(</span> <span class="n">Standard_Unit</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Ampere&quot;&quot;&quot;</span>
+    <span class="n">name</span><span class="o">=</span> <span class="s">&quot;A&quot;</span>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">dBm</span><span class="p">(</span> <span class="n">value</span> <span class="p">):</span>
+        <span class="k">return</span> <span class="mi">20</span><span class="o">*</span><span class="n">math</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span> <span class="mi">50</span><span class="o">*</span><span class="n">value</span><span class="o">/</span><span class="mf">0.2236</span> <span class="p">)</span>
+</div>
+<div class="viewcode-block" id="MILLIAMP"><a class="viewcode-back" href="../../../python/electronics/decibel.html#hamcalc.electronics.decibel.MILLIAMP">[docs]</a><span class="k">class</span> <span class="nc">MILLIAMP</span><span class="p">(</span> <span class="n">Unit</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Milliampere&quot;&quot;&quot;</span>
+    <span class="n">standard</span><span class="o">=</span> <span class="n">AMP</span>
+    <span class="n">name</span><span class="o">=</span> <span class="s">&quot;mA&quot;</span>
+    <span class="n">factor</span><span class="o">=</span> <span class="mi">1000</span>
+</div>
+<div class="viewcode-block" id="MICROAMP"><a class="viewcode-back" href="../../../python/electronics/decibel.html#hamcalc.electronics.decibel.MICROAMP">[docs]</a><span class="k">class</span> <span class="nc">MICROAMP</span><span class="p">(</span> <span class="n">Unit</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Microampere&quot;&quot;&quot;</span>
+    <span class="n">standard</span><span class="o">=</span> <span class="n">AMP</span>
+    <span class="n">name</span><span class="o">=</span> <span class="s">&quot;µA&quot;</span>
+    <span class="n">factor</span><span class="o">=</span> <span class="mi">1000000</span>
+</div>
+<div class="viewcode-block" id="WATT"><a class="viewcode-back" href="../../../python/electronics/decibel.html#hamcalc.electronics.decibel.WATT">[docs]</a><span class="k">class</span> <span class="nc">WATT</span><span class="p">(</span> <span class="n">Standard_Unit</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Watt&quot;&quot;&quot;</span>
+    <span class="n">name</span><span class="o">=</span> <span class="s">&quot;W&quot;</span>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">dBm</span><span class="p">(</span> <span class="n">value</span> <span class="p">):</span>
+        <span class="k">return</span> <span class="mi">20</span><span class="o">*</span><span class="n">math</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">50</span><span class="o">*</span><span class="n">value</span><span class="p">)</span><span class="o">/</span><span class="mf">0.2236</span> <span class="p">)</span>
+</div>
+<div class="viewcode-block" id="MILLIWATT"><a class="viewcode-back" href="../../../python/electronics/decibel.html#hamcalc.electronics.decibel.MILLIWATT">[docs]</a><span class="k">class</span> <span class="nc">MILLIWATT</span><span class="p">(</span> <span class="n">Unit</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Milliwatt&quot;&quot;&quot;</span>
+    <span class="n">standard</span><span class="o">=</span> <span class="n">WATT</span>
+    <span class="n">name</span><span class="o">=</span> <span class="s">&quot;mW&quot;</span>
+    <span class="n">factor</span><span class="o">=</span> <span class="mi">1000</span>
+</div>
+<div class="viewcode-block" id="MICROWATT"><a class="viewcode-back" href="../../../python/electronics/decibel.html#hamcalc.electronics.decibel.MICROWATT">[docs]</a><span class="k">class</span> <span class="nc">MICROWATT</span><span class="p">(</span> <span class="n">Unit</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Microwatt&quot;&quot;&quot;</span>
+    <span class="n">standard</span><span class="o">=</span> <span class="n">WATT</span>
+    <span class="n">name</span><span class="o">=</span> <span class="s">&quot;µW&quot;</span>
+    <span class="n">factor</span><span class="o">=</span> <span class="mi">1000000</span>
+</div>
 <div class="viewcode-block" id="DB_Solver"><a class="viewcode-back" href="../../../python/electronics/decibel.html#hamcalc.electronics.decibel.DB_Solver">[docs]</a><span class="k">class</span> <span class="nc">DB_Solver</span><span class="p">(</span> <span class="n">Callable</span> <span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Superclass for all dB solvers. This handles the generic</span>
 <span class="sd">    case.</span>
+
+<span class="sd">    This is a callable object, an instance is created and used</span>
+<span class="sd">    as follows::</span>
+
+<span class="sd">        &gt;&gt;&gt; voltage= DB_Solver( M=20 )</span>
+<span class="sd">        &gt;&gt;&gt; voltage( f_1= 13.2, f_2= 12 )</span>
+<span class="sd">        {&#39;db&#39;: -0.8278537031645, &#39;f_1&#39;: 13.2, &#39;f_2&#39;: 12}</span>
+
+<span class="sd">    Similar solvers can be built for Power or Current.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">M</span><span class="o">=</span><span class="mi">10</span> <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Initialize this solver with the &quot;M&quot; factor, 10 or 20.&quot;&quot;&quot;</span>

@@ -49,7 +49,7 @@
           <div class="body">
             
   <h1>Source code for hamcalc.math.fibon.obj</h1><div class="highlight"><pre>
-<span class="sd">&quot;&quot;&quot;hamcalc.math.fibon -- Fibonacci Numbers, object-oriented implementation.</span>
+<span class="sd">&quot;&quot;&quot;hamcalc.math.fibon.obj -- Fibonacci Numbers, object-oriented implementation.</span>
 
 <span class="sd">This module defines a callable class which can efficiently</span>
 <span class="sd">generate Fibonacci numbers.</span>
@@ -59,17 +59,18 @@
 
 <span class="sd">Test Cases</span>
 
-<span class="sd">&gt;&gt;&gt; fibon= Fibonacci()</span>
-<span class="sd">&gt;&gt;&gt; a, b = fibon(11), fibon(12)</span>
+<span class="sd">&gt;&gt;&gt; import hamcalc.math.fibon.obj as fibon</span>
+<span class="sd">&gt;&gt;&gt; fibon_func= fibon.Fibonacci()</span>
+<span class="sd">&gt;&gt;&gt; a, b = fibon_func(11), fibon_func(12)</span>
 <span class="sd">&gt;&gt;&gt; a</span>
 <span class="sd">144</span>
 <span class="sd">&gt;&gt;&gt; b</span>
 <span class="sd">233</span>
 <span class="sd">&gt;&gt;&gt; b/a</span>
 <span class="sd">1.6180555555555556</span>
-<span class="sd">&gt;&gt;&gt; list( fibon_count_iter( count=5 ) )</span>
+<span class="sd">&gt;&gt;&gt; list( fibon.fibon_count_iter( count=5 ) )</span>
 <span class="sd">[1, 1, 2, 3, 5]</span>
-<span class="sd">&gt;&gt;&gt; list( fibon_last_iter( last=100 ) )</span>
+<span class="sd">&gt;&gt;&gt; list( fibon.fibon_last_iter( last=100 ) )</span>
 <span class="sd">[1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89]</span>
 
 <span class="sd">For HamCalc compatibility, use f_0=0 in the constructor.</span>

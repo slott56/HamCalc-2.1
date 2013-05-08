@@ -49,13 +49,13 @@
           <div class="body">
             
   <h1>Source code for hamcalc.math.equiv</h1><div class="highlight"><pre>
-<span class="sd">&quot;&quot;&quot;hamcalc.meth.equiv -- Unit Conversions</span>
+<span class="sd">&quot;&quot;&quot;hamcalc.math.equiv -- Unit Conversions</span>
 
 <span class="sd">Simple Units</span>
 
 <span class="sd">-   Capacitance</span>
 <span class="sd">-   Current</span>
-<span class="sd">-   Degrees / Radians</span>
+<span class="sd">-   Degrees / Radians (imported from :mod:`hamcalc.math.trig`)</span>
 <span class="sd">-   Inductance</span>
 <span class="sd">-   Length / Distance</span>
 <span class="sd">-   Resistance</span>
@@ -64,49 +64,343 @@
 <span class="sd">-   MPG/KPL</span>
 
 <span class="sd">Plus, the Frequencies/Wavelengths is both units conversion and a :math:`c=\lambda\nu`  **Solver**.</span>
+
+<span class="sd">Test Cases, Unit-by-Unit</span>
+
+<span class="sd">&gt;&gt;&gt; import hamcalc.math.equiv as equiv</span>
+
+<span class="sd">Capacitance</span>
+
+<span class="sd">&gt;&gt;&gt; x= equiv.FARAD.to_std( .0000001 )</span>
+<span class="sd">&gt;&gt;&gt; equiv.MICROFARAD.from_std( x )</span>
+<span class="sd">0.09999999999999999</span>
+<span class="sd">&gt;&gt;&gt; equiv.NANOFARAD.from_std( x )</span>
+<span class="sd">100.0</span>
+<span class="sd">&gt;&gt;&gt; equiv.PICOFARAD.from_std( x )</span>
+<span class="sd">100000.0</span>
+
+<span class="sd">Current</span>
+
+<span class="sd">&gt;&gt;&gt; x= equiv.MILLIAMPERE.to_std( 150 )</span>
+<span class="sd">&gt;&gt;&gt; equiv.AMPERE.from_std( x )</span>
+<span class="sd">0.15</span>
+<span class="sd">&gt;&gt;&gt; equiv.MICROAMPERE.from_std( x )</span>
+<span class="sd">150000.0</span>
+
+<span class="sd">Degree/Radians</span>
+
+<span class="sd">&gt;&gt;&gt; x= equiv.DEGREE.to_std( 30 )</span>
+<span class="sd">&gt;&gt;&gt; equiv.RADIAN.from_std( x )</span>
+<span class="sd">0.5235987755982988</span>
+
+<span class="sd">Frequency</span>
+
+<span class="sd">&gt;&gt;&gt; x= equiv.MEGAHERTZ.to_std( 157.100 )</span>
+<span class="sd">&gt;&gt;&gt; equiv.HERTZ.from_std( x )</span>
+<span class="sd">157100000.0</span>
+<span class="sd">&gt;&gt;&gt; equiv.KILOHERTZ.from_std( x )</span>
+<span class="sd">157100.0</span>
+<span class="sd">&gt;&gt;&gt; equiv.GIGAHERTZ.from_std( x )</span>
+<span class="sd">0.15710000000000002</span>
+<span class="sd">&gt;&gt;&gt; equiv.freq_wavelength( f=157100000.0 )</span>
+<span class="sd">{&#39;l&#39;: 1.908290630171865, &#39;f&#39;: 157100000.0}</span>
+<span class="sd">&gt;&gt;&gt; equiv.freq_wavelength( l=10 )</span>
+<span class="sd">{&#39;l&#39;: 10, &#39;f&#39;: 29979245.799999997}</span>
+
+<span class="sd">Inductance</span>
+
+<span class="sd">&gt;&gt;&gt; x=equiv.MILLIHENRY.to_std( 2 )</span>
+<span class="sd">&gt;&gt;&gt; equiv.HENRY.from_std( x )</span>
+<span class="sd">0.002</span>
+<span class="sd">&gt;&gt;&gt; equiv.MICROHENRY.from_std( x )</span>
+<span class="sd">2000.0</span>
+<span class="sd">&gt;&gt;&gt; equiv.NANOHENRY.from_std( x )</span>
+<span class="sd">2000000.0</span>
+<span class="sd">&gt;&gt;&gt; equiv.PICOHENRY.from_std( x )</span>
+<span class="sd">2000000000.0</span>
+
+<span class="sd">Length/Distance</span>
+
+<span class="sd">&gt;&gt;&gt; x= equiv.FOOT.to_std( 6076.1155 )</span>
+<span class="sd">&gt;&gt;&gt; equiv.KILOMETRE.from_std( x )</span>
+<span class="sd">1.8519999921768002</span>
+<span class="sd">&gt;&gt;&gt; equiv.MILE.from_std( x )</span>
+<span class="sd">1.1507794507575757</span>
+<span class="sd">&gt;&gt;&gt; y= equiv.FOOT.to_std( 13.302 )</span>
+<span class="sd">&gt;&gt;&gt; equiv.METRE.from_std( y )</span>
+<span class="sd">4.054449573240633</span>
+<span class="sd">&gt;&gt;&gt; equiv.CENTIMETRE.from_std( y )</span>
+<span class="sd">405.4449573240633</span>
+<span class="sd">&gt;&gt;&gt; equiv.MILLIMETRE.from_std( y )</span>
+<span class="sd">4054.4495732406326</span>
+
+<span class="sd">Resistance</span>
+
+<span class="sd">&gt;&gt;&gt; x= equiv.KILOHM.to_std( 4.70 )</span>
+<span class="sd">&gt;&gt;&gt; equiv.OHM.from_std( x )</span>
+<span class="sd">4700.0</span>
+<span class="sd">&gt;&gt;&gt; equiv.MEGOHM.from_std( x )</span>
+<span class="sd">0.0047</span>
+
+<span class="sd">Temperature</span>
+
+<span class="sd">&gt;&gt;&gt; x= equiv.FAHRENHEIT.to_std( 72 )</span>
+<span class="sd">&gt;&gt;&gt; equiv.CELSIUS.from_std( x )</span>
+<span class="sd">22.22222222222222</span>
+
+<span class="sd">Time</span>
+
+<span class="sd">&gt;&gt;&gt; x= equiv.WEEK.to_std( 3 )</span>
+<span class="sd">&gt;&gt;&gt; equiv.DAY.from_std( x )</span>
+<span class="sd">21.0</span>
+<span class="sd">&gt;&gt;&gt; equiv.YEAR.from_std( x )</span>
+<span class="sd">0.05749486652977412</span>
+<span class="sd">&gt;&gt;&gt; y= equiv.MINUTE.to_std( 45 )</span>
+<span class="sd">&gt;&gt;&gt; equiv.HOUR.from_std( y )</span>
+<span class="sd">0.75</span>
+<span class="sd">&gt;&gt;&gt; equiv.SECOND.from_std( y )</span>
+<span class="sd">2700.0</span>
+
+<span class="sd">MPG</span>
+
+<span class="sd">&gt;&gt;&gt; x= equiv.MPGI.to_std( 12.5 )</span>
+<span class="sd">&gt;&gt;&gt; equiv.MPG.from_std( x )</span>
+<span class="sd">10.416666666666668</span>
+<span class="sd">&gt;&gt;&gt; equiv.KPL.from_std( x )</span>
+<span class="sd">4.425</span>
+<span class="sd">&gt;&gt;&gt; equiv.LPK.from_std( x )</span>
+<span class="sd">35.31073446327684</span>
+
+<span class="sd">It&#39;s possible that the legacy computes this incorrectly.</span>
+<span class="sd">The result from the legacy may be 22.6 LPK.</span>
+
 <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="kn">from</span> <span class="nn">hamcalc.lib</span> <span class="kn">import</span> <span class="n">Unit</span><span class="p">,</span> <span class="n">Standard_Unit</span><span class="p">,</span> <span class="n">AttrDict</span>
+<span class="kn">from</span> <span class="nn">hamcalc.math.trig</span> <span class="kn">import</span> <span class="n">DEGREE</span><span class="p">,</span> <span class="n">RADIAN</span>
+<span class="kn">import</span> <span class="nn">math</span>
+
+<span class="k">def</span> <span class="nf">intro</span><span class="p">():</span>
+    <span class="k">return</span> <span class="s">&quot;&quot;&quot;</span><span class="se">\</span>
+<span class="s">EQUIVALENT VALUES                                       by George Murphy VE3ERP&quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="FARAD"><a class="viewcode-back" href="../../../python/math/equiv.html#hamcalc.math.equiv.FARAD">[docs]</a><span class="k">class</span> <span class="nc">FARAD</span><span class="p">(</span> <span class="n">Standard_Unit</span> <span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Farad&quot;&quot;&quot;</span>
     <span class="n">name</span><span class="o">=</span> <span class="s">&quot;F&quot;</span>
 </div>
+<div class="viewcode-block" id="MICROFARAD"><a class="viewcode-back" href="../../../python/math/equiv.html#hamcalc.math.equiv.MICROFARAD">[docs]</a><span class="k">class</span> <span class="nc">MICROFARAD</span><span class="p">(</span> <span class="n">Unit</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;microfarad&quot;&quot;&quot;</span>
+    <span class="n">standard</span><span class="o">=</span> <span class="n">FARAD</span>
+    <span class="n">name</span><span class="o">=</span> <span class="s">&quot;µF&quot;</span>
+    <span class="n">factor</span><span class="o">=</span> <span class="mf">1.0E6</span>
+</div>
+<div class="viewcode-block" id="NANOFARAD"><a class="viewcode-back" href="../../../python/math/equiv.html#hamcalc.math.equiv.NANOFARAD">[docs]</a><span class="k">class</span> <span class="nc">NANOFARAD</span><span class="p">(</span> <span class="n">Unit</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;nanofarad&quot;&quot;&quot;</span>
+    <span class="n">standard</span><span class="o">=</span> <span class="n">FARAD</span>
+    <span class="n">name</span><span class="o">=</span> <span class="s">&quot;nF&quot;</span>
+    <span class="n">factor</span><span class="o">=</span> <span class="mf">1.0E9</span>
+</div>
+<div class="viewcode-block" id="PICOFARAD"><a class="viewcode-back" href="../../../python/math/equiv.html#hamcalc.math.equiv.PICOFARAD">[docs]</a><span class="k">class</span> <span class="nc">PICOFARAD</span><span class="p">(</span> <span class="n">Unit</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;picofarad&quot;&quot;&quot;</span>
+    <span class="n">standard</span><span class="o">=</span> <span class="n">FARAD</span>
+    <span class="n">name</span><span class="o">=</span> <span class="s">&quot;pF&quot;</span>
+    <span class="n">factor</span><span class="o">=</span> <span class="mf">1.0E12</span>
+</div>
 <div class="viewcode-block" id="AMPERE"><a class="viewcode-back" href="../../../python/math/equiv.html#hamcalc.math.equiv.AMPERE">[docs]</a><span class="k">class</span> <span class="nc">AMPERE</span><span class="p">(</span> <span class="n">Standard_Unit</span> <span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Ampere&quot;&quot;&quot;</span>
     <span class="n">name</span><span class="o">=</span> <span class="s">&quot;A&quot;</span>
 </div>
-<div class="viewcode-block" id="RADIAN"><a class="viewcode-back" href="../../../python/math/equiv.html#hamcalc.math.equiv.RADIAN">[docs]</a><span class="k">class</span> <span class="nc">RADIAN</span><span class="p">(</span> <span class="n">Standard_Unit</span> <span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Radian&quot;&quot;&quot;</span>
-    <span class="n">name</span><span class="o">=</span> <span class="s">&quot;R&quot;</span>
+<div class="viewcode-block" id="MILLIAMPERE"><a class="viewcode-back" href="../../../python/math/equiv.html#hamcalc.math.equiv.MILLIAMPERE">[docs]</a><span class="k">class</span> <span class="nc">MILLIAMPERE</span><span class="p">(</span> <span class="n">Unit</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;millimpere&quot;&quot;&quot;</span>
+    <span class="n">standard</span><span class="o">=</span> <span class="n">AMPERE</span>
+    <span class="n">name</span><span class="o">=</span> <span class="s">&quot;mA&quot;</span>
+    <span class="n">factor</span><span class="o">=</span> <span class="mf">1.0E3</span>
+</div>
+<div class="viewcode-block" id="MICROAMPERE"><a class="viewcode-back" href="../../../python/math/equiv.html#hamcalc.math.equiv.MICROAMPERE">[docs]</a><span class="k">class</span> <span class="nc">MICROAMPERE</span><span class="p">(</span> <span class="n">Unit</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;micrampere&quot;&quot;&quot;</span>
+    <span class="n">standard</span><span class="o">=</span> <span class="n">AMPERE</span>
+    <span class="n">name</span><span class="o">=</span> <span class="s">&quot;µA&quot;</span>
+    <span class="n">factor</span><span class="o">=</span> <span class="mf">1.0E6</span>
 </div>
 <div class="viewcode-block" id="HERTZ"><a class="viewcode-back" href="../../../python/math/equiv.html#hamcalc.math.equiv.HERTZ">[docs]</a><span class="k">class</span> <span class="nc">HERTZ</span><span class="p">(</span> <span class="n">Standard_Unit</span> <span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Hertz&quot;&quot;&quot;</span>
     <span class="n">name</span><span class="o">=</span> <span class="s">&quot;Hz&quot;</span>
 </div>
+<div class="viewcode-block" id="KILOHERTZ"><a class="viewcode-back" href="../../../python/math/equiv.html#hamcalc.math.equiv.KILOHERTZ">[docs]</a><span class="k">class</span> <span class="nc">KILOHERTZ</span><span class="p">(</span> <span class="n">Unit</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;kilohertz&quot;&quot;&quot;</span>
+    <span class="n">standard</span><span class="o">=</span> <span class="n">HERTZ</span>
+    <span class="n">name</span><span class="o">=</span> <span class="s">&quot;kHz&quot;</span>
+    <span class="n">factor</span><span class="o">=</span> <span class="mf">1.0E-3</span>
+</div>
+<div class="viewcode-block" id="MEGAHERTZ"><a class="viewcode-back" href="../../../python/math/equiv.html#hamcalc.math.equiv.MEGAHERTZ">[docs]</a><span class="k">class</span> <span class="nc">MEGAHERTZ</span><span class="p">(</span> <span class="n">Unit</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;megahertz&quot;&quot;&quot;</span>
+    <span class="n">standard</span><span class="o">=</span> <span class="n">HERTZ</span>
+    <span class="n">name</span><span class="o">=</span> <span class="s">&quot;mHz&quot;</span>
+    <span class="n">factor</span><span class="o">=</span> <span class="mf">1.0E-6</span>
+</div>
+<div class="viewcode-block" id="GIGAHERTZ"><a class="viewcode-back" href="../../../python/math/equiv.html#hamcalc.math.equiv.GIGAHERTZ">[docs]</a><span class="k">class</span> <span class="nc">GIGAHERTZ</span><span class="p">(</span> <span class="n">Unit</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;gigahertz&quot;&quot;&quot;</span>
+    <span class="n">standard</span><span class="o">=</span> <span class="n">HERTZ</span>
+    <span class="n">name</span><span class="o">=</span> <span class="s">&quot;gHz&quot;</span>
+    <span class="n">factor</span><span class="o">=</span> <span class="mf">1.0E-9</span>
+</div>
 <div class="viewcode-block" id="HENRY"><a class="viewcode-back" href="../../../python/math/equiv.html#hamcalc.math.equiv.HENRY">[docs]</a><span class="k">class</span> <span class="nc">HENRY</span><span class="p">(</span> <span class="n">Standard_Unit</span> <span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Henry&quot;&quot;&quot;</span>
     <span class="n">name</span><span class="o">=</span> <span class="s">&quot;H&quot;</span>
+</div>
+<div class="viewcode-block" id="MILLIHENRY"><a class="viewcode-back" href="../../../python/math/equiv.html#hamcalc.math.equiv.MILLIHENRY">[docs]</a><span class="k">class</span> <span class="nc">MILLIHENRY</span><span class="p">(</span> <span class="n">Unit</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;millihenry&quot;&quot;&quot;</span>
+    <span class="n">standard</span><span class="o">=</span> <span class="n">HENRY</span>
+    <span class="n">name</span><span class="o">=</span> <span class="s">&quot;mH&quot;</span>
+    <span class="n">factor</span><span class="o">=</span> <span class="mf">1.0E3</span>
+</div>
+<div class="viewcode-block" id="MICROHENRY"><a class="viewcode-back" href="../../../python/math/equiv.html#hamcalc.math.equiv.MICROHENRY">[docs]</a><span class="k">class</span> <span class="nc">MICROHENRY</span><span class="p">(</span> <span class="n">Unit</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;microhenry&quot;&quot;&quot;</span>
+    <span class="n">standard</span><span class="o">=</span> <span class="n">HENRY</span>
+    <span class="n">name</span><span class="o">=</span> <span class="s">&quot;µH&quot;</span>
+    <span class="n">factor</span><span class="o">=</span> <span class="mf">1.0E6</span>
+</div>
+<div class="viewcode-block" id="NANOHENRY"><a class="viewcode-back" href="../../../python/math/equiv.html#hamcalc.math.equiv.NANOHENRY">[docs]</a><span class="k">class</span> <span class="nc">NANOHENRY</span><span class="p">(</span> <span class="n">Unit</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;nanohenry&quot;&quot;&quot;</span>
+    <span class="n">standard</span><span class="o">=</span> <span class="n">HENRY</span>
+    <span class="n">name</span><span class="o">=</span> <span class="s">&quot;nH&quot;</span>
+    <span class="n">factor</span><span class="o">=</span> <span class="mf">1.0E9</span>
+</div>
+<div class="viewcode-block" id="PICOHENRY"><a class="viewcode-back" href="../../../python/math/equiv.html#hamcalc.math.equiv.PICOHENRY">[docs]</a><span class="k">class</span> <span class="nc">PICOHENRY</span><span class="p">(</span> <span class="n">Unit</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;picohenry&quot;&quot;&quot;</span>
+    <span class="n">standard</span><span class="o">=</span> <span class="n">HENRY</span>
+    <span class="n">name</span><span class="o">=</span> <span class="s">&quot;pH&quot;</span>
+    <span class="n">factor</span><span class="o">=</span> <span class="mf">1.0E12</span>
 </div>
 <div class="viewcode-block" id="METRE"><a class="viewcode-back" href="../../../python/math/equiv.html#hamcalc.math.equiv.METRE">[docs]</a><span class="k">class</span> <span class="nc">METRE</span><span class="p">(</span> <span class="n">Standard_Unit</span> <span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Metre&quot;&quot;&quot;</span>
     <span class="n">name</span><span class="o">=</span> <span class="s">&quot;M&quot;</span>
 </div>
+<div class="viewcode-block" id="CENTIMETRE"><a class="viewcode-back" href="../../../python/math/equiv.html#hamcalc.math.equiv.CENTIMETRE">[docs]</a><span class="k">class</span> <span class="nc">CENTIMETRE</span><span class="p">(</span> <span class="n">Unit</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;centimetre&quot;&quot;&quot;</span>
+    <span class="n">standard</span><span class="o">=</span> <span class="n">METRE</span>
+    <span class="n">name</span><span class="o">=</span> <span class="s">&quot;cm&quot;</span>
+    <span class="n">factor</span><span class="o">=</span> <span class="mf">1.0E2</span>
+</div>
+<div class="viewcode-block" id="MILLIMETRE"><a class="viewcode-back" href="../../../python/math/equiv.html#hamcalc.math.equiv.MILLIMETRE">[docs]</a><span class="k">class</span> <span class="nc">MILLIMETRE</span><span class="p">(</span> <span class="n">Unit</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;millimetre&quot;&quot;&quot;</span>
+    <span class="n">standard</span><span class="o">=</span> <span class="n">METRE</span>
+    <span class="n">name</span><span class="o">=</span> <span class="s">&quot;mm&quot;</span>
+    <span class="n">factor</span><span class="o">=</span> <span class="mf">1.0E3</span>
+</div>
+<div class="viewcode-block" id="KILOMETRE"><a class="viewcode-back" href="../../../python/math/equiv.html#hamcalc.math.equiv.KILOMETRE">[docs]</a><span class="k">class</span> <span class="nc">KILOMETRE</span><span class="p">(</span> <span class="n">Unit</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;kilometre&quot;&quot;&quot;</span>
+    <span class="n">standard</span><span class="o">=</span> <span class="n">METRE</span>
+    <span class="n">name</span><span class="o">=</span> <span class="s">&quot;km&quot;</span>
+    <span class="n">factor</span><span class="o">=</span> <span class="mf">1.0E-3</span>
+</div>
+<div class="viewcode-block" id="INCH"><a class="viewcode-back" href="../../../python/math/equiv.html#hamcalc.math.equiv.INCH">[docs]</a><span class="k">class</span> <span class="nc">INCH</span><span class="p">(</span> <span class="n">Unit</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Inch&quot;&quot;&quot;</span>
+    <span class="n">standard</span><span class="o">=</span> <span class="n">METRE</span>
+    <span class="n">name</span><span class="o">=</span> <span class="s">&quot;in&quot;</span>
+    <span class="n">factor</span><span class="o">=</span> <span class="mf">39.370079</span>
+</div>
+<div class="viewcode-block" id="FOOT"><a class="viewcode-back" href="../../../python/math/equiv.html#hamcalc.math.equiv.FOOT">[docs]</a><span class="k">class</span> <span class="nc">FOOT</span><span class="p">(</span> <span class="n">Unit</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Foot&quot;&quot;&quot;</span>
+    <span class="n">standard</span><span class="o">=</span> <span class="n">METRE</span>
+    <span class="n">name</span><span class="o">=</span> <span class="s">&quot;ft&quot;</span>
+    <span class="n">factor</span><span class="o">=</span> <span class="mf">39.370079</span><span class="o">/</span><span class="mi">12</span>
+</div>
+<div class="viewcode-block" id="MILE"><a class="viewcode-back" href="../../../python/math/equiv.html#hamcalc.math.equiv.MILE">[docs]</a><span class="k">class</span> <span class="nc">MILE</span><span class="p">(</span> <span class="n">Unit</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Mile&quot;&quot;&quot;</span>
+    <span class="n">standard</span><span class="o">=</span> <span class="n">METRE</span>
+    <span class="n">name</span><span class="o">=</span> <span class="s">&quot;mi&quot;</span>
+    <span class="n">factor</span><span class="o">=</span> <span class="mf">39.370079</span><span class="o">/</span><span class="mi">12</span><span class="o">/</span><span class="mi">5280</span>
+</div>
 <div class="viewcode-block" id="OHM"><a class="viewcode-back" href="../../../python/math/equiv.html#hamcalc.math.equiv.OHM">[docs]</a><span class="k">class</span> <span class="nc">OHM</span><span class="p">(</span> <span class="n">Standard_Unit</span> <span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Ohm&quot;&quot;&quot;</span>
     <span class="n">name</span><span class="o">=</span> <span class="s">&quot;Ω&quot;</span>
+</div>
+<div class="viewcode-block" id="KILOHM"><a class="viewcode-back" href="../../../python/math/equiv.html#hamcalc.math.equiv.KILOHM">[docs]</a><span class="k">class</span> <span class="nc">KILOHM</span><span class="p">(</span> <span class="n">Unit</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;kilohm&quot;&quot;&quot;</span>
+    <span class="n">standard</span><span class="o">=</span> <span class="n">OHM</span>
+    <span class="n">name</span><span class="o">=</span> <span class="s">&quot;kΩ&quot;</span>
+    <span class="n">factor</span><span class="o">=</span> <span class="mf">1.0E-3</span>
+</div>
+<div class="viewcode-block" id="MEGOHM"><a class="viewcode-back" href="../../../python/math/equiv.html#hamcalc.math.equiv.MEGOHM">[docs]</a><span class="k">class</span> <span class="nc">MEGOHM</span><span class="p">(</span> <span class="n">Unit</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;megohm&quot;&quot;&quot;</span>
+    <span class="n">standard</span><span class="o">=</span> <span class="n">OHM</span>
+    <span class="n">name</span><span class="o">=</span> <span class="s">&quot;mΩ&quot;</span>
+    <span class="n">factor</span><span class="o">=</span> <span class="mf">1.0E-6</span>
 </div>
 <div class="viewcode-block" id="CELSIUS"><a class="viewcode-back" href="../../../python/math/equiv.html#hamcalc.math.equiv.CELSIUS">[docs]</a><span class="k">class</span> <span class="nc">CELSIUS</span><span class="p">(</span> <span class="n">Standard_Unit</span> <span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Degrees C&quot;&quot;&quot;</span>
     <span class="n">name</span><span class="o">=</span><span class="s">&quot;°C&quot;</span>
 </div>
+<div class="viewcode-block" id="FAHRENHEIT"><a class="viewcode-back" href="../../../python/math/equiv.html#hamcalc.math.equiv.FAHRENHEIT">[docs]</a><span class="k">class</span> <span class="nc">FAHRENHEIT</span><span class="p">(</span> <span class="n">Unit</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Degrees F&quot;&quot;&quot;</span>
+    <span class="n">name</span><span class="o">=</span><span class="s">&quot;°F&quot;</span>
+    <span class="n">standard</span><span class="o">=</span> <span class="n">CELSIUS</span>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">to_std</span><span class="p">(</span> <span class="n">class_</span><span class="p">,</span> <span class="n">value</span> <span class="p">):</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">value</span><span class="o">-</span><span class="mi">32</span><span class="p">)</span><span class="o">*</span><span class="mi">5</span><span class="o">/</span><span class="mi">9</span>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_std</span><span class="p">(</span> <span class="n">class_</span><span class="p">,</span> <span class="n">value</span> <span class="p">):</span>
+        <span class="k">return</span> <span class="n">value</span><span class="o">*</span><span class="mi">9</span><span class="o">/</span><span class="mi">5</span><span class="o">+</span><span class="mi">32</span>
+</div>
 <div class="viewcode-block" id="SECOND"><a class="viewcode-back" href="../../../python/math/equiv.html#hamcalc.math.equiv.SECOND">[docs]</a><span class="k">class</span> <span class="nc">SECOND</span><span class="p">(</span> <span class="n">Standard_Unit</span> <span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Second&quot;&quot;&quot;</span>
     <span class="n">name</span><span class="o">=</span> <span class="s">&quot;Sec&quot;</span>
 </div>
-<div class="viewcode-block" id="MPG"><a class="viewcode-back" href="../../../python/math/equiv.html#hamcalc.math.equiv.MPG">[docs]</a><span class="k">class</span> <span class="nc">MPG</span><span class="p">(</span> <span class="n">Standard_Unit</span> <span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Miles per Gallon (US)&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="MINUTE"><a class="viewcode-back" href="../../../python/math/equiv.html#hamcalc.math.equiv.MINUTE">[docs]</a><span class="k">class</span> <span class="nc">MINUTE</span><span class="p">(</span> <span class="n">Unit</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Minute&quot;&quot;&quot;</span>
+    <span class="n">name</span><span class="o">=</span> <span class="s">&quot;Min&quot;</span>
+    <span class="n">standard</span><span class="o">=</span> <span class="n">SECOND</span>
+    <span class="n">factor</span><span class="o">=</span> <span class="mi">1</span><span class="o">/</span><span class="mi">60</span>
+</div>
+<div class="viewcode-block" id="HOUR"><a class="viewcode-back" href="../../../python/math/equiv.html#hamcalc.math.equiv.HOUR">[docs]</a><span class="k">class</span> <span class="nc">HOUR</span><span class="p">(</span> <span class="n">Unit</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Hour&quot;&quot;&quot;</span>
+    <span class="n">name</span><span class="o">=</span> <span class="s">&quot;Hr&quot;</span>
+    <span class="n">standard</span><span class="o">=</span> <span class="n">SECOND</span>
+    <span class="n">factor</span><span class="o">=</span> <span class="mi">1</span><span class="o">/</span><span class="mi">3600</span>
+</div>
+<div class="viewcode-block" id="DAY"><a class="viewcode-back" href="../../../python/math/equiv.html#hamcalc.math.equiv.DAY">[docs]</a><span class="k">class</span> <span class="nc">DAY</span><span class="p">(</span> <span class="n">Unit</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Day&quot;&quot;&quot;</span>
+    <span class="n">name</span><span class="o">=</span> <span class="s">&quot;Day&quot;</span>
+    <span class="n">standard</span><span class="o">=</span> <span class="n">SECOND</span>
+    <span class="n">factor</span><span class="o">=</span> <span class="mi">1</span><span class="o">/</span><span class="mi">86400</span>
+</div>
+<div class="viewcode-block" id="WEEK"><a class="viewcode-back" href="../../../python/math/equiv.html#hamcalc.math.equiv.WEEK">[docs]</a><span class="k">class</span> <span class="nc">WEEK</span><span class="p">(</span> <span class="n">Unit</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Week&quot;&quot;&quot;</span>
+    <span class="n">name</span><span class="o">=</span> <span class="s">&quot;Wk&quot;</span>
+    <span class="n">standard</span><span class="o">=</span> <span class="n">SECOND</span>
+    <span class="n">factor</span><span class="o">=</span> <span class="mi">1</span><span class="o">/</span><span class="mi">604800</span>
+</div>
+<div class="viewcode-block" id="YEAR"><a class="viewcode-back" href="../../../python/math/equiv.html#hamcalc.math.equiv.YEAR">[docs]</a><span class="k">class</span> <span class="nc">YEAR</span><span class="p">(</span> <span class="n">Unit</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Year (365.25 days)&quot;&quot;&quot;</span>
+    <span class="n">name</span><span class="o">=</span> <span class="s">&quot;Yr&quot;</span>
+    <span class="n">standard</span><span class="o">=</span> <span class="n">SECOND</span>
+    <span class="n">factor</span><span class="o">=</span> <span class="mi">1</span><span class="o">/</span><span class="mi">31557600</span>
+
+</div>
+<div class="viewcode-block" id="MPGI"><a class="viewcode-back" href="../../../python/math/equiv.html#hamcalc.math.equiv.MPGI">[docs]</a><span class="k">class</span> <span class="nc">MPGI</span><span class="p">(</span> <span class="n">Standard_Unit</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Miles per Imperial Gallon&quot;&quot;&quot;</span>
+    <span class="n">name</span><span class="o">=</span> <span class="s">&quot;MPGI&quot;</span>
+</div>
+<div class="viewcode-block" id="MPG"><a class="viewcode-back" href="../../../python/math/equiv.html#hamcalc.math.equiv.MPG">[docs]</a><span class="k">class</span> <span class="nc">MPG</span><span class="p">(</span> <span class="n">Unit</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Miles per US Gallon&quot;&quot;&quot;</span>
     <span class="n">name</span><span class="o">=</span> <span class="s">&quot;MPG&quot;</span>
+    <span class="n">standard</span><span class="o">=</span> <span class="n">MPGI</span>
+    <span class="n">factor</span><span class="o">=</span> <span class="mi">1</span><span class="o">/</span><span class="mf">1.2</span>
+</div>
+<div class="viewcode-block" id="KPL"><a class="viewcode-back" href="../../../python/math/equiv.html#hamcalc.math.equiv.KPL">[docs]</a><span class="k">class</span> <span class="nc">KPL</span><span class="p">(</span> <span class="n">Unit</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Kilometres per Litre&quot;&quot;&quot;</span>
+    <span class="n">name</span><span class="o">=</span> <span class="s">&quot;KPL&quot;</span>
+    <span class="n">standard</span><span class="o">=</span> <span class="n">MPGI</span>
+    <span class="n">factor</span><span class="o">=</span> <span class="mf">0.354</span>
+</div>
+<div class="viewcode-block" id="LPK"><a class="viewcode-back" href="../../../python/math/equiv.html#hamcalc.math.equiv.LPK">[docs]</a><span class="k">class</span> <span class="nc">LPK</span><span class="p">(</span> <span class="n">Unit</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Litres per 100 Kilometre&quot;&quot;&quot;</span>
+    <span class="c"># [Imperial Gallons]/[Mile] * [liters]/[Imperial Gallon] * [Miles]/[100 Kilometre]</span>
+    <span class="c"># 1/value * 4.54609 * 62.137119</span>
+    <span class="n">name</span><span class="o">=</span> <span class="s">&quot;LPK&quot;</span>
+    <span class="n">standard</span><span class="o">=</span> <span class="n">MPGI</span>
+    <span class="n">factor</span><span class="o">=</span> <span class="mi">1</span><span class="o">/</span><span class="mf">0.354</span>
 </div>
 <div class="viewcode-block" id="freq_wavelength"><a class="viewcode-back" href="../../../python/math/equiv.html#hamcalc.math.equiv.freq_wavelength">[docs]</a><span class="k">def</span> <span class="nf">freq_wavelength</span><span class="p">(</span> <span class="o">**</span><span class="n">kw</span> <span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Solver for frequency-wavelength problems in Standard units</span>
@@ -118,10 +412,26 @@
     <span class="n">c</span><span class="o">=</span> <span class="mf">299792.458</span>
     <span class="n">args</span><span class="o">=</span> <span class="n">AttrDict</span><span class="p">(</span> <span class="n">kw</span> <span class="p">)</span>
     <span class="k">if</span> <span class="s">&#39;f&#39;</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
-        <span class="n">args</span><span class="o">.</span><span class="n">l</span><span class="o">=</span> <span class="mi">1000</span><span class="o">*</span><span class="n">c</span><span class="o">/</span><span class="n">f</span>
+        <span class="n">args</span><span class="o">.</span><span class="n">l</span><span class="o">=</span> <span class="mi">1000</span><span class="o">*</span><span class="n">c</span><span class="o">/</span><span class="n">args</span><span class="o">.</span><span class="n">f</span>
     <span class="k">elif</span> <span class="s">&#39;l&#39;</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
-        <span class="n">args</span><span class="o">.</span><span class="n">f</span> <span class="o">=</span> <span class="n">c</span><span class="o">/</span><span class="n">l</span><span class="o">/</span><span class="mi">1000</span>
-    <span class="k">return</span> <span class="n">args</span></div>
+        <span class="n">args</span><span class="o">.</span><span class="n">f</span> <span class="o">=</span> <span class="n">c</span><span class="o">/</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">l</span><span class="o">/</span><span class="mi">1000</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">args</span>
+</div>
+<span class="n">unit_map</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s">&#39;capacitance&#39;</span><span class="p">:</span> <span class="p">(</span><span class="n">FARAD</span><span class="p">,</span> <span class="n">MICROFARAD</span><span class="p">,</span> <span class="n">NANOFARAD</span><span class="p">,</span> <span class="n">PICOFARAD</span><span class="p">),</span>
+    <span class="s">&#39;current&#39;</span><span class="p">:</span> <span class="p">(</span><span class="n">AMPERE</span><span class="p">,</span> <span class="n">MILLIAMPERE</span><span class="p">,</span> <span class="n">MICROAMPERE</span><span class="p">),</span>
+    <span class="s">&#39;degrees&#39;</span><span class="p">:</span> <span class="p">(</span><span class="n">DEGREE</span><span class="p">,</span> <span class="n">RADIAN</span><span class="p">),</span>
+    <span class="s">&#39;radians&#39;</span><span class="p">:</span> <span class="p">(</span><span class="n">DEGREE</span><span class="p">,</span> <span class="n">RADIAN</span><span class="p">),</span>
+    <span class="s">&#39;inductance&#39;</span><span class="p">:</span> <span class="p">(</span><span class="n">HENRY</span><span class="p">,</span> <span class="n">MICROHENRY</span><span class="p">,</span> <span class="n">MILLIHENRY</span><span class="p">,</span> <span class="n">NANOHENRY</span><span class="p">,</span> <span class="n">PICOHENRY</span><span class="p">),</span>
+    <span class="s">&#39;length&#39;</span><span class="p">:</span>  <span class="p">(</span><span class="n">METRE</span><span class="p">,</span> <span class="n">CENTIMETRE</span><span class="p">,</span> <span class="n">MILLIMETRE</span><span class="p">,</span> <span class="n">KILOMETRE</span><span class="p">,</span> <span class="n">INCH</span><span class="p">,</span> <span class="n">FOOT</span><span class="p">,</span> <span class="n">MILE</span><span class="p">),</span>
+    <span class="s">&#39;distance&#39;</span><span class="p">:</span> <span class="p">(</span><span class="n">METRE</span><span class="p">,</span> <span class="n">CENTIMETRE</span><span class="p">,</span> <span class="n">MILLIMETRE</span><span class="p">,</span> <span class="n">KILOMETRE</span><span class="p">,</span> <span class="n">INCH</span><span class="p">,</span> <span class="n">FOOT</span><span class="p">,</span> <span class="n">MILE</span><span class="p">),</span>
+    <span class="s">&#39;resistance&#39;</span><span class="p">:</span> <span class="p">(</span><span class="n">OHM</span><span class="p">,</span> <span class="n">KILOHM</span><span class="p">,</span> <span class="n">MEGOHM</span><span class="p">),</span>
+    <span class="s">&#39;temperature&#39;</span><span class="p">:</span> <span class="p">(</span><span class="n">CELSIUS</span><span class="p">,</span> <span class="n">FAHRENHEIT</span><span class="p">),</span>
+    <span class="s">&#39;time&#39;</span><span class="p">:</span> <span class="p">(</span><span class="n">SECOND</span><span class="p">,</span> <span class="n">MINUTE</span><span class="p">,</span> <span class="n">HOUR</span><span class="p">,</span> <span class="n">DAY</span><span class="p">,</span> <span class="n">WEEK</span><span class="p">,</span> <span class="n">YEAR</span><span class="p">),</span>
+    <span class="s">&#39;mpg&#39;</span><span class="p">:</span> <span class="p">(</span><span class="n">MPGI</span><span class="p">,</span> <span class="n">MPG</span><span class="p">,</span> <span class="n">KPL</span><span class="p">,</span> <span class="n">LPK</span><span class="p">),</span>
+    <span class="s">&#39;kpl&#39;</span><span class="p">:</span> <span class="p">(</span><span class="n">MPGI</span><span class="p">,</span> <span class="n">MPG</span><span class="p">,</span> <span class="n">KPL</span><span class="p">,</span> <span class="n">LPK</span><span class="p">),</span>
+    <span class="s">&#39;frequency&#39;</span><span class="p">:</span> <span class="p">(</span><span class="n">HERTZ</span><span class="p">,</span> <span class="n">KILOHERTZ</span><span class="p">,</span> <span class="n">MEGAHERTZ</span><span class="p">,</span> <span class="n">GIGAHERTZ</span><span class="p">),</span> <span class="c"># Plus freq_wavelength Solver</span>
+<span class="p">}</span>
 </pre></div>
 
           </div>

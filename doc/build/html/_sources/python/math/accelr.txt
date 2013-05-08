@@ -9,41 +9,29 @@ There are a number of formulae in the introduction.
 
 Force is Mass times Acceleration.
 
-..  math::
-
-    F = M \times A
+..  math:: F = M \times A
 
 Velocity is acceleration times time. Final Velocity depends on starting velocity.
 
-..  math::
-
-    V_f = V_o + A t
+..  math:: V_f = V_o + A t
 
 Distance is velocity times time; which is acceleration squared.
 
-..  math::
-
-    D = V_ot + \frac{1}{2} A t^2
+..  math:: D = V_ot + \frac{1}{2} A t^2
 
 Also, this.
 
-..  math::
-
-    V_f^2 - V_o^2 = 2 A D
+..  math:: V_f^2 - V_o^2 = 2 A D
 
 We can solve for :math:`V_o`, :math:`t`.
 
 Given D, t and A:
 
-..  math::
-
-    V_o = \frac{D}{t} - \frac{1}{2} \times A \times t
+..  math:: V_o = \frac{D}{t} - \frac{1}{2} \times A \times t
 
 Given V_f, V_o and A:
 
-..  math::
-
-    t = \frac{V_f-V_o}{A}
+..  math:: t = \frac{V_f-V_o}{A}
 
 Implementation
 ~~~~~~~~~~~~~~~~~
