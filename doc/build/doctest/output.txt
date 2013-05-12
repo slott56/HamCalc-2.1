@@ -1,4 +1,4 @@
-Results of doctest builder run on 2013-05-08 09:27:52
+Results of doctest builder run on 2013-05-11 21:51:50
 =====================================================
 
 Document: python/math/baromtr
@@ -7,6 +7,14 @@ Document: python/math/baromtr
    6 tests in default
 6 tests in 1 items.
 6 passed and 0 failed.
+Test passed.
+
+Document: python/math/polygon
+-----------------------------
+1 items passed all tests:
+  11 tests in default
+11 tests in 1 items.
+11 passed and 0 failed.
 Test passed.
 
 Document: python/math/curvefit
@@ -81,6 +89,14 @@ Document: python/math/solutri
 10 passed and 0 failed.
 Test passed.
 
+Document: python/math/involute
+------------------------------
+1 items passed all tests:
+   6 tests in default
+6 tests in 1 items.
+6 passed and 0 failed.
+Test passed.
+
 Document: python/math/fibon
 ---------------------------
 1 items passed all tests:
@@ -115,7 +131,7 @@ Test passed.
 
 Doctest summary
 ===============
-  186 tests
+  203 tests
     0 failures in tests
     0 failures in setup code
     0 failures in cleanup code

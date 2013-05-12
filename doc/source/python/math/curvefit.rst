@@ -160,11 +160,11 @@ Solve Matrices
 
 This is the Gauss-Jorden, or Gaussian Elimination algorithm.
 
-Here's the ``numpy`` solution.
+..  note:: Alternative
 
-http://pingswept.org/2009/01/24/least-squares-polynomial-fitting-in-python/
+    There's a clean ``numpy`` solution.
 
-Here's the Gaussian Elimination algorithm.
+    http://pingswept.org/2009/01/24/least-squares-polynomial-fitting-in-python/
 
 See http://en.wikipedia.org/wiki/Gaussian_elimination
 
@@ -208,8 +208,15 @@ There are three types of elementary row operations which may be performed on the
 Graphics Display
 ^^^^^^^^^^^^^^^^^^
 
-TBD.  This may involve ``matplotlib``.
+This is a simple display of actual points and the calculated
+curve.
 
+..  note:: Alternative
+
+    This could involve ``matplotlib``.
+
+Instead, parts of the :mod:`hamcalc.stdio.graphs` module is used to provide
+the graphics display.
 
 Implementation
 ~~~~~~~~~~~~~~~~

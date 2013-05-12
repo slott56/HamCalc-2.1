@@ -96,9 +96,7 @@ It appears that the next steps build Vandermonde Matrices. There are two variant
 
 -   Minimize Absolute Error: Lines 1480 - 1699 builds the A and W matrices.
 
-640: Initailize the C vector, :math:`C = \lbrace 0 | 1 \leq n \leq 5 \rbrace`
-
-650: Find A,B,& C using Miller's prog, p74 in "Basic Prog for S & E". This is lines 820-1210, the "Gauss-Jordan routine". See `Gaussian Elimination`_.
+640-650: Find A,B,& C using Miller's prog, p74 in "Basic Prog for S & E". This is lines 820-1210, the "Gauss-Jordan routine". See `Gaussian Elimination`_.
 
 660-790: Print X, Y, computed Y, error, and the five values in the C vector.
 
@@ -162,11 +160,11 @@ Solve Matrices
 
 This is the Gauss-Jorden, or Gaussian Elimination algorithm.
 
-Here's the ``numpy`` solution.
+..  note:: Alternative
 
-http://pingswept.org/2009/01/24/least-squares-polynomial-fitting-in-python/
+    There's a clean ``numpy`` solution.
 
-Here's the Gaussian Elimination algorithm.
+    http://pingswept.org/2009/01/24/least-squares-polynomial-fitting-in-python/
 
 See http://en.wikipedia.org/wiki/Gaussian_elimination
 
@@ -210,8 +208,15 @@ There are three types of elementary row operations which may be performed on the
 Graphics Display
 ^^^^^^^^^^^^^^^^^^
 
-TBD.  This may involve ``matplotlib``.
+This is a simple display of actual points and the calculated
+curve.
 
+..  note:: Alternative
+
+    This could involve ``matplotlib``.
+
+Instead, parts of the :mod:`hamcalc.stdio.graphs` module is used to provide
+the graphics display.
 
 Implementation
 ~~~~~~~~~~~~~~~~

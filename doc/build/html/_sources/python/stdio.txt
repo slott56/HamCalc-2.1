@@ -8,13 +8,26 @@ This is approximately like the legacy HamCalc user experience.
 
 There are two subgroups of stdio programs.
 
--   The intro and menu programs. These are special because they're not
-    specific HamCalc applications. They're just a "splash page" and
-    a menu system.
+-   Importable Modules.
 
--   All the other programs.
+    These are modules with a proper "main/import" switch block of code.
+    They can be imported and reused.
+
+    -   The :mod:`hamlcalc.stdio.intro`, :mod:`hamlcalc.stdio.menu`.
+        :program:`intro` is just a "splash page", which imports the menu.
+        :program:`menu` (circularly) imports :program:`intro`.
+
+    -   :mod:`hamcalc.stdio.graphs`. This contains a useful class
+        for graphing functions.
+
+    -   :mod:`hamcalc.stdio.gwgraphics`. This contains a useful
+        class for emulating some aspects of GW-Basic graphics mode output.
+
+-   Simple Programs.
+
     These programs are so short that they don't really need documentation.
-    Also, they simply wrap a calculation module, which does have documentation.
+    Also, they simply wrap a calculation module, which has
+    the relevant documentation.
 
 Intro
 ----------------
@@ -28,3 +41,16 @@ Menu
 ..  automodule:: hamcalc.stdio.menu
     :members:
 
+..  _`stdio.graphs`:
+
+Graphs
+---------
+
+..  automodule:: hamcalc.stdio.graphs
+    :members:
+
+GW Graphics
+------------
+
+..  automodule:: hamcalc.stdio.gwgraphics
+    :members:

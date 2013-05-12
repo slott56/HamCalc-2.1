@@ -1,5 +1,5 @@
-numderiv
-----------
+numderiv -- Numbers and Functions
+----------------------------------
 
 - Logarithms to any base
 

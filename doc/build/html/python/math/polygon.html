@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>polygon &mdash; HamCalc 2.1 documentation</title>
+    <title>polygon – Polygon Dimensions &mdash; HamCalc 2.1 documentation</title>
     
     <link rel="stylesheet" href="../../_static/agogo.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
@@ -25,8 +25,8 @@
     <script type="text/javascript" src="../../_static/doctools.js"></script>
     <link rel="top" title="HamCalc 2.1 documentation" href="../../index.html" />
     <link rel="up" title="math – Math, Physics, Units Conversion" href="index.html" />
-    <link rel="next" title="primenos" href="primenos.html" />
-    <link rel="prev" title="numderiv" href="numderiv.html" /> 
+    <link rel="next" title="primenos – Prime Number Calculator" href="primenos.html" />
+    <link rel="prev" title="numderiv – Numbers and Functions" href="numderiv.html" /> 
   </head>
   <body>
     <div class="header-wrapper">
@@ -34,9 +34,9 @@
         <div class="headertitle"><a
           href="../../index.html">HamCalc 2.1 documentation</a></div>
         <div class="rel">
-          <a href="numderiv.html" title="numderiv"
+          <a href="numderiv.html" title="numderiv – Numbers and Functions"
              accesskey="P">previous</a> |
-          <a href="primenos.html" title="primenos"
+          <a href="primenos.html" title="primenos – Prime Number Calculator"
              accesskey="N">next</a> |
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |
@@ -54,9 +54,107 @@
         <div class="bodywrapper">
           <div class="body">
             
-  <div class="section" id="polygon">
-<h1>polygon<a class="headerlink" href="#polygon" title="Permalink to this headline">¶</a></h1>
-<p>Polygon Dimensions</p>
+  <div class="section" id="polygon-polygon-dimensions">
+<h1>polygon &#8211; Polygon Dimensions<a class="headerlink" href="#polygon-polygon-dimensions" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="analysis">
+<h2>Analysis<a class="headerlink" href="#analysis" title="Permalink to this headline">¶</a></h2>
+<p>This program computes the following features of a regular N-sided Polygon</p>
+<p>Given</p>
+<p>N = &#8220;Number of sides/radials&#8221;</p>
+<div class="math">
+<p><img src="../../_images/math/949564a107746827069deddd55ac4c505c7a946c.png" alt="A = \frac{2 \pi}{N}
+
+B = \frac{A}{2}"/></p>
+</div><p>And one of these:</p>
+<ul>
+<li><p class="first">H = &#8220;Perpendicular distance from centre to mid point of each side&#8221;</p>
+<div class="math">
+<p><img src="../../_images/math/80831b96c879343fb6d7f15faa0f9fbab66ce98c.png" alt="R = \frac{H}{\cos B}
+
+S = 2 H \tan{B}"/></p>
+</div></li>
+<li><p class="first">R = &#8220;Length of radial from centre to end of each side&#8221;</p>
+<div class="math">
+<p><img src="../../_images/math/74174ae75154ca0a03319837f53378669f5ffbc4.png" alt="H = R \cos{B}
+
+S = 2 R \sin{B}"/></p>
+</div></li>
+<li><p class="first">S = &#8220;Length of each side&#8221;</p>
+<div class="math">
+<p><img src="../../_images/math/5c3596614621ad0d82ff420df049da0f22b2324a.png" alt="H = \frac{S}{2 \tan B}
+
+R = \frac{S}{2 \sin B}"/></p>
+</div></li>
+</ul>
+<p>It computes the following:</p>
+<p>H = &#8220;Perpendicular distance from centre to mid point of each side&#8221;</p>
+<p>R = &#8220;Length of radial from centre to end of each side&#8221;</p>
+<p>A = &#8220;Angle between radials&#8221;</p>
+<p>S = &#8220;Length of each side&#8221;</p>
+<p>P = &#8220;Perimeter&#8221;</p>
+<div class="math">
+<p><img src="../../_images/math/2934acbd2ecb161ac81e1ab43a8754bff8c37a8d.png" alt="P = N \times S"/></p>
+</div><p>D = &#8220;Circumference of circle running thru mid points of sides&#8221;</p>
+<div class="math">
+<p><img src="../../_images/math/99a24905131844cfbed743812a744c33fc8e30a7.png" alt="D = 2 \pi H"/></p>
+</div><p>E = &#8220;Circumference of circle running thru end points of sides&#8221;</p>
+<div class="math">
+<p><img src="../../_images/math/35e7e1cf6e9da43867fc5e7fa43c51de68cf9141.png" alt="E = 2 \pi R"/></p>
+</div><p>C = &#8220;Area of polygon&#8221;</p>
+<div class="math">
+<p><img src="../../_images/math/fc3475455fb44005572ef8e16d0580ecaea4124f.png" alt="C= \frac{S H N}{2}"/></p>
+</div></div>
+<div class="section" id="implementation">
+<h2>Implementation<a class="headerlink" href="#implementation" title="Permalink to this headline">¶</a></h2>
+<p>This is a <strong>Solver</strong> that works with B, S and H to derive the missing values.</p>
+<span class="target" id="module-hamcalc.math.polygon"></span><p>hamcalc.math.polygon</p>
+<p>A <strong>Solver</strong> for properties of a regular N-sided polygon.</p>
+<p>Example Output</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">hamcalc.math.polygon</span> <span class="kn">as</span> <span class="nn">polygon</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">hamcalc.lib</span> <span class="kn">import</span> <span class="n">degrees</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">polygon</span><span class="o">.</span><span class="n">polygon</span><span class="p">(</span> <span class="n">N</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">S</span><span class="o">=</span><span class="mi">12</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span>
+<span class="go">{&#39;A&#39;: 2.0943951023931953, &#39;B&#39;: 1.0471975511965976, &#39;E&#39;: 43.53118474162123, &#39;D&#39;: 21.76559237081062, &#39;A_P&#39;: 62.353829072479606, &#39;H&#39;: 3.4641016151377557, &#39;N&#39;: 3, &#39;P&#39;: 36, &#39;S&#39;: 12, &#39;R&#39;: 6.92820323027551}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span> <span class="n">degrees</span><span class="p">(</span> <span class="n">x</span><span class="o">.</span><span class="n">A</span> <span class="p">),</span> <span class="mi">6</span> <span class="p">)</span>
+<span class="go">120.0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span> <span class="n">degrees</span><span class="p">(</span> <span class="n">x</span><span class="o">.</span><span class="n">B</span> <span class="p">),</span> <span class="mi">6</span> <span class="p">)</span>
+<span class="go">60.0</span>
+</pre></div>
+</div>
+<dl class="function">
+<dt id="hamcalc.math.polygon.polygon">
+<tt class="descclassname">hamcalc.math.polygon.</tt><tt class="descname">polygon</tt><big>(</big><em>**kw</em><big>)</big><a class="reference internal" href="../../_modules/hamcalc/math/polygon.html#polygon"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.math.polygon.polygon" title="Permalink to this definition">¶</a></dt>
+<dd><p>Solve a polygon.</p>
+<p>The number of sides, N, is required.</p>
+<p>One of these three is also required.</p>
+<ul class="simple">
+<li>H = &#8220;Perpendicular distance from centre to mid point of each side&#8221;</li>
+<li>R = &#8220;Length of radial from centre to end of each side&#8221;</li>
+<li>S = &#8220;Length of each side&#8221;</li>
+</ul>
+<p>This will also compute a number of additional values:</p>
+<ul class="simple">
+<li>P = &#8220;Perimeter&#8221;</li>
+<li>D = &#8220;Circumference of circle running thru mid points of sides&#8221;</li>
+<li>E = &#8220;Circumference of circle running thru end points of sides&#8221;</li>
+<li>A_P = &#8220;Area of polygon&#8221;</li>
+</ul>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">AttrDict with all values computed.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="quirks">
+<h2>Quirks<a class="headerlink" href="#quirks" title="Permalink to this headline">¶</a></h2>
+<p>The GOSUB/GOTO tangle between lines 440 and 480 is hopeless.
+A RETURN or something would be helpful.</p>
+</div>
 </div>
 
 
@@ -66,17 +164,43 @@
         </div>
         <div class="sidebar">
           <h3>Table Of Contents</h3>
-          <ul class="current">
+          <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../background.html">Background</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../legacy.html">The HamCalc Legacy</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../python_architecture.html">Python Architecture</a></li>
+</ul>
+<ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html">Python Modules</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../lib.html">lib &#8211; Supporting Library</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../radio.html">radio &#8211; Radio Design and Engineering</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../ham.html">ham &#8211; Ham Radio Operations</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../electronics/index.html">electronics &#8211; General Electronics</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../construction.html">construction &#8211; Construction and Related Projects</a></li>
-<li class="toctree-l2 current"><a class="reference internal" href="index.html">math &#8211; Math, Physics, Units Conversion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../construction/index.html">construction &#8211; Construction and Related Projects</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">math &#8211; Math, Physics, Units Conversion</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="accelr.html">accelr &#8211; Acceleration Calculator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="baromtr.html">baromtr &#8211; Barometer Reading Equivalents</a></li>
+<li class="toctree-l3"><a class="reference internal" href="binary.html">binary &#8211; Decimal to Binary Converter</a></li>
+<li class="toctree-l3"><a class="reference internal" href="centrif.html">centrif &#8211; Centrifugal/Centripetel Force</a></li>
+<li class="toctree-l3"><a class="reference internal" href="curvefit.html">curvefit &#8211; Curve Fit program</a></li>
+<li class="toctree-l3"><a class="reference internal" href="deciconv.html">deciconv &#8211; Decimal Hour/Degree Converter</a></li>
+<li class="toctree-l3"><a class="reference internal" href="decifrac.html">decifrac &#8211; Decimal/Fraction Converter</a></li>
+<li class="toctree-l3"><a class="reference internal" href="equiv.html">equiv &#8211; Unit Conversions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="fibon.html">fibon &#8211; Fibonacci Series</a></li>
+<li class="toctree-l3"><a class="reference internal" href="formulae.html">formulae &#8211; Formula Library</a></li>
+<li class="toctree-l3"><a class="reference internal" href="graphs.html">graphs &#8211; Graphs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="involute.html">involute &#8211; Involute of a Circle</a></li>
+<li class="toctree-l3"><a class="reference internal" href="numderiv.html">numderiv &#8211; Numbers and Functions</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="">polygon &#8211; Polygon Dimensions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="primenos.html">primenos &#8211; Prime Number Calculator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="propcirc.html">propcirc &#8211; Circle, Properties of</a></li>
+<li class="toctree-l3"><a class="reference internal" href="randnum.html">randnum</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rotaplot.html">rotaplot</a></li>
+<li class="toctree-l3"><a class="reference internal" href="simuleq.html">simuleq</a></li>
+<li class="toctree-l3"><a class="reference internal" href="solutri.html">solutri &#8211; Triangles, solution of</a></li>
+<li class="toctree-l3"><a class="reference internal" href="speedtd.html">speedtd</a></li>
+<li class="toctree-l3"><a class="reference internal" href="trig.html">trig &#8211; Trigonometric Functions</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="../navigation.html">navigation &#8211; Navigation and Astronomy</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../calendar.html">calendar &#8211; Calendrical Calculations</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../audio_photo.html">audio_photo &#8211; Audio, Sound and Photography</a></li>
@@ -88,6 +212,8 @@
 <li class="toctree-l2"><a class="reference internal" href="../gui.html">GUI Interface</a></li>
 </ul>
 </li>
+</ul>
+<ul>
 <li class="toctree-l1"><a class="reference internal" href="../../todo.html">The To Do List</a></li>
 </ul>
 
@@ -109,9 +235,9 @@
     <div class="footer-wrapper">
       <div class="footer">
         <div class="left">
-          <a href="numderiv.html" title="numderiv"
+          <a href="numderiv.html" title="numderiv – Numbers and Functions"
              >previous</a> |
-          <a href="primenos.html" title="primenos"
+          <a href="primenos.html" title="primenos – Prime Number Calculator"
              >next</a> |
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |

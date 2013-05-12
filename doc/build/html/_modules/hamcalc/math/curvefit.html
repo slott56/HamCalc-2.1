@@ -76,13 +76,13 @@
 <span class="sd">There are four transformation functions that can be applied to the X values</span>
 <span class="sd">for the data points.</span>
 
-<span class="sd">-   NUL: X -&gt; X does nothing</span>
+<span class="sd">-   NUL: X_i -&gt; X_i does nothing</span>
 
-<span class="sd">-   POW(K,P): X -&gt; (X+K)**P</span>
+<span class="sd">-   POW(K,P): X_i -&gt; (X_i+K)**P</span>
 
-<span class="sd">-   LOG(K): X -&gt; log(X+K)</span>
+<span class="sd">-   LOG(K): X_i -&gt; log(X_i+K)</span>
 
-<span class="sd">-   EXP(K): X -&gt; exp(K*X)</span>
+<span class="sd">-   EXP(K): X_i -&gt; exp(K*X_i)</span>
 
 <span class="sd">Currently, the function is provided as a string name, to make</span>
 <span class="sd">the interface simpler for RESTful web services and JSON encoding</span>
@@ -95,15 +95,12 @@
 
 <span class="sd">Additionally, there&#39;s a specific function to be minimized.</span>
 
-<span class="sd">-   Absolute Error - Always works.</span>
+<span class="sd">-   Absolute Error.</span>
 
-<span class="sd">-   Relative Error - Undefined if Y is ever zero.</span>
+<span class="sd">-   Relative Error -- undefined if Y is ever zero.</span>
 
 <span class="sd">Gaussian Elimination</span>
 <span class="sd">--------------------</span>
-
-<span class="sd">This includes a Gaussian Elimination implementation which</span>
-<span class="sd">can be replaced by numpy.</span>
 
 <span class="sd">From Wikipedia</span>
 
@@ -127,20 +124,95 @@
 <span class="sd">        #Fill lower triangular matrix with zeros:</span>
 <span class="sd">        A[i, k] := 0</span>
 
-<span class="sd">&gt;&gt;&gt; A = [</span>
-<span class="sd">...     [ 2, 1,-1,  8],</span>
-<span class="sd">...     [-3,-1, 2,-11],</span>
-<span class="sd">...     [-2, 1, 2, -3],</span>
-<span class="sd">... ]</span>
-<span class="sd">&gt;&gt;&gt; argmax( range(1,3), A, column=3 )</span>
-<span class="sd">1</span>
-<span class="sd">&gt;&gt;&gt; B= gauss( A )</span>
-<span class="sd">&gt;&gt;&gt; [ [ round(x) for x in row ] for row in B ]</span>
-<span class="sd">[[1, 0, 0, 2], [0, 1, 0, 3], [0, 0, 1, -1]]</span>
+<span class="sd">Overall Test Cases</span>
+<span class="sd">-------------------</span>
+
+<span class="sd">See http://en.wikipedia.org/wiki/Linear_least_squares_(mathematics)#Motivational_example</span>
+
+<span class="sd">&gt;&gt;&gt; import hamcalc.math.curvefit as curvefit</span>
+<span class="sd">&gt;&gt;&gt; DATA = [ (1,6), (2,5), (3,7), (4,10) ]</span>
+<span class="sd">&gt;&gt;&gt; C = curvefit.fit( DATA )</span>
+<span class="sd">&gt;&gt;&gt; [ round(x,3) for x in C ]</span>
+<span class="sd">[3.5, 1.4]</span>
+<span class="sd">&gt;&gt;&gt; for x,y in DATA:</span>
+<span class="sd">...     y_f= sum( (c*x**i for i, c in enumerate(C)) )</span>
+<span class="sd">...     err = float(&quot;NaN&quot;) if y == 0 else (y-y_f)/y</span>
+<span class="sd">...     print( x, y, round(y_f,3), round(y-y_f,3), round(err,3) )</span>
+<span class="sd">...</span>
+<span class="sd">1 6 4.9 1.1 0.183</span>
+<span class="sd">2 5 6.3 -1.3 -0.26</span>
+<span class="sd">3 7 7.7 -0.7 -0.1</span>
+<span class="sd">4 10 9.1 0.9 0.09</span>
+
+<span class="sd">The output vector has the following interpretation.</span>
+
+<span class="sd">..  math::</span>
+
+<span class="sd">    y= 3.5 + 1.4x</span>
+
+<span class="sd">For higher-order polynomials there will be more terms.</span>
+
+<span class="sd">Sum of absolute error is 0, sum of relative error is -0.142.</span>
+
+<span class="sd">Another test case, using the relative error instead of the default</span>
+<span class="sd">absolute error.</span>
+
+<span class="sd">&gt;&gt;&gt; import hamcalc.math.curvefit as curvefit</span>
+<span class="sd">&gt;&gt;&gt; DATA = [ (1,6), (2,5), (3,7), (4,10) ]</span>
+<span class="sd">&gt;&gt;&gt; D = curvefit.fit( DATA, minimize=&#39;rel&#39; )</span>
+<span class="sd">&gt;&gt;&gt; [ round(x,3) for x in D ]</span>
+<span class="sd">[3.803, 1.13]</span>
+<span class="sd">&gt;&gt;&gt; for x,y in DATA:</span>
+<span class="sd">...     y_f= sum( (c*x**i for i, c in enumerate(D)) )</span>
+<span class="sd">...     err = float(&quot;NaN&quot;) if y == 0 else (y-y_f)/y</span>
+<span class="sd">...     print( x, y, round(y_f,3), round(y-y_f,3), round(err,3) )</span>
+<span class="sd">...</span>
+<span class="sd">1 6 4.933 1.067 0.178</span>
+<span class="sd">2 5 6.063 -1.063 -0.213</span>
+<span class="sd">3 7 7.192 -0.192 -0.027</span>
+<span class="sd">4 10 8.322 1.678 0.168</span>
+
+<span class="sd">Sum of absolute error is 1.49, sum of relative error is .106.</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">math</span>
+
+<span class="n">introduction</span><span class="o">=</span><span class="s">&quot;&quot;&quot;</span><span class="se">\</span>
+<span class="s">This program uses a least squares procedure to find the constants in an</span>
+<span class="s">equation in the form Y=A+B*Z+C*Z^2+D*Z^3+E*Z^4 where Z=f(X) and X and Y</span>
+<span class="s">are data pairs. You are first asked to input the data pairs. A data pair</span>
+<span class="s">number is used so changes and corrections can be made. If an error is made</span>
+<span class="s">when entering the data pair number, enter &lt;D&gt; at the X prompt. After all the</span>
+<span class="s">data is entered, you are asked to select f(X). If, for instance, X covers</span>
+<span class="s">many more decades than Y, you might try Z=log(X). You are next asked what</span>
+<span class="s">degree of equation you want--for instance if you want Y=A+B*Z+C*Z^2, enter</span>
+<span class="s">&lt;2&gt;. Finally, you are asked to choose between procedures that minimize</span>
+<span class="s">relative or absolute error. If the Y data covers many orders of magnitude,</span>
+<span class="s">small errors at large Y will cause large errors at small Y when using the</span>
+<span class="s">absolute routine. If the Y data contains 0, the relative routine cannot</span>
+<span class="s">be used.</span>
+<span class="s">&quot;&quot;&quot;</span>
+<span class="k">def</span> <span class="nf">intro</span><span class="p">():</span>
+    <span class="k">return</span> <span class="n">introduction</span>
 
 <div class="viewcode-block" id="argmax"><a class="viewcode-back" href="../../../python/math/curvefit.html#hamcalc.math.curvefit.argmax">[docs]</a><span class="k">def</span> <span class="nf">argmax</span><span class="p">(</span> <span class="n">indices</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">column</span><span class="p">,</span> <span class="n">f</span><span class="o">=</span><span class="nb">abs</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Locate the argument for which the function of A[i,column]</span>
+<span class="sd">    is maximized for i in indices.</span>
+
+<span class="sd">    &gt;&gt;&gt; import hamcalc.math.curvefit as curvefit</span>
+<span class="sd">    &gt;&gt;&gt; A = [</span>
+<span class="sd">    ...     [ 2, 1,-1,  8],</span>
+<span class="sd">    ...     [-3,-1, 2,-11],</span>
+<span class="sd">    ...     [-2, 1, 2, -3],</span>
+<span class="sd">    ... ]</span>
+<span class="sd">    &gt;&gt;&gt; curvefit.argmax( range(1,3), A, column=3 )</span>
+<span class="sd">    1</span>
+
+<span class="sd">    :param indices: index values for rows to examine</span>
+<span class="sd">    :param A: Matrix</span>
+<span class="sd">    :param column: column to examine.</span>
+<span class="sd">    :param f: Function to use, default is :func:`abs`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">i_max</span><span class="o">=</span> <span class="n">indices</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">indices</span><span class="p">[</span><span class="mi">1</span><span class="p">:]:</span>
         <span class="k">if</span> <span class="n">f</span><span class="p">(</span><span class="n">A</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">column</span><span class="p">])</span> <span class="o">&gt;</span> <span class="n">f</span><span class="p">(</span><span class="n">A</span><span class="p">[</span><span class="n">i_max</span><span class="p">][</span><span class="n">column</span><span class="p">]):</span>
@@ -152,8 +224,34 @@
 <span class="sd">    n is expected to be m+1 when solving simultaneous linear equations.</span>
 
 <span class="sd">    :param A: is a &quot;list-of-lists&quot; matrix with m rows.  Each row</span>
-<span class="sd">    is an n-element list.</span>
+<span class="sd">        is an n-element list.</span>
 <span class="sd">    :returns: New matrix in reduced echelon form.</span>
+
+<span class="sd">    &gt;&gt;&gt; import hamcalc.math.curvefit as curvefit</span>
+<span class="sd">    &gt;&gt;&gt; A = [</span>
+<span class="sd">    ...     [ 2, 1,-1,  8],</span>
+<span class="sd">    ...     [-3,-1, 2,-11],</span>
+<span class="sd">    ...     [-2, 1, 2, -3],</span>
+<span class="sd">    ... ]</span>
+<span class="sd">    &gt;&gt;&gt; B= curvefit.gauss( A )</span>
+<span class="sd">    &gt;&gt;&gt; [ [ round(x) for x in row ] for row in B ]</span>
+<span class="sd">    [[1, 0, 0, 2], [0, 1, 0, 3], [0, 0, 1, -1]]</span>
+
+<span class="sd">    &gt;&gt;&gt; C = [</span>
+<span class="sd">    ...     [ 1, 3, 1, 9],</span>
+<span class="sd">    ...     [ 1, 1,-1, 1],</span>
+<span class="sd">    ...     [ 3,11, 5, 35],</span>
+<span class="sd">    ...     ]</span>
+<span class="sd">    &gt;&gt;&gt; D = curvefit.gauss( C ) #doctest: +IGNORE_EXCEPTION_DETAIL</span>
+<span class="sd">    Traceback (most recent call last):</span>
+<span class="sd">      File &quot;/Library/Frameworks/Python.framework/Versions/3.2/lib/python3.2/doctest.py&quot;, line 1288, in __run</span>
+<span class="sd">        compileflags, 1), test.globs)</span>
+<span class="sd">      File &quot;&lt;doctest default[1]&gt;&quot;, line 1, in &lt;module&gt;</span>
+<span class="sd">        D = curvefit.gauss( C )</span>
+<span class="sd">      File &quot;/Users/slott/github/local/HamCalc-2.1/python/hamcalc/math/curvefit/__init__.py&quot;, line 124, in gauss</span>
+<span class="sd">        raise ValueError( &quot;Matrix is singular!&quot; )</span>
+<span class="sd">    ValueError: Matrix is singular!</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">A</span><span class="o">=</span> <span class="n">A</span><span class="p">[:]</span> <span class="c"># Clone it.</span>
 
@@ -162,7 +260,7 @@
         <span class="c"># Find pivot for column k:</span>
         <span class="n">i_max</span><span class="o">=</span> <span class="n">argmax</span><span class="p">(</span> <span class="nb">range</span><span class="p">(</span><span class="n">k</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">A</span><span class="p">)),</span> <span class="n">A</span><span class="p">,</span> <span class="n">k</span> <span class="p">)</span>
         <span class="k">if</span> <span class="n">A</span><span class="p">[</span><span class="n">i_max</span><span class="p">][</span><span class="n">k</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span> <span class="s">&quot;Matrix is singular!&quot;</span> <span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span> <span class="s">&quot;Matrix is singular!&quot;</span> <span class="p">)</span>
         <span class="n">A</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">A</span><span class="p">[</span><span class="n">i_max</span><span class="p">]</span> <span class="o">=</span> <span class="n">A</span><span class="p">[</span><span class="n">i_max</span><span class="p">],</span> <span class="n">A</span><span class="p">[</span><span class="n">k</span><span class="p">]</span>
         <span class="c"># Do for all rows below pivot:</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">k</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">A</span><span class="p">)):</span>
@@ -176,13 +274,98 @@
     <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">A</span><span class="p">)):</span>
         <span class="n">r</span><span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">A</span><span class="p">)</span><span class="o">-</span><span class="n">k</span><span class="o">-</span><span class="mi">1</span>
         <span class="n">f</span><span class="o">=</span> <span class="mi">1</span><span class="o">/</span><span class="n">A</span><span class="p">[</span><span class="n">r</span><span class="p">][</span><span class="n">r</span><span class="p">]</span>
-        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">A</span><span class="p">[</span><span class="n">i</span><span class="p">])):</span>
-            <span class="n">A</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span><span class="o">=</span> <span class="n">A</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span><span class="o">*</span><span class="n">f</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">r</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">A</span><span class="p">[</span><span class="n">r</span><span class="p">])):</span>
+            <span class="n">A</span><span class="p">[</span><span class="n">r</span><span class="p">][</span><span class="n">j</span><span class="p">]</span><span class="o">=</span> <span class="n">A</span><span class="p">[</span><span class="n">r</span><span class="p">][</span><span class="n">j</span><span class="p">]</span><span class="o">*</span><span class="n">f</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">r</span><span class="p">):</span>
             <span class="n">f</span><span class="o">=</span> <span class="n">A</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">r</span><span class="p">]</span>
             <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">A</span><span class="p">[</span><span class="n">i</span><span class="p">])):</span>
                 <span class="n">A</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span><span class="o">=</span> <span class="n">A</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">-</span> <span class="n">A</span><span class="p">[</span><span class="n">r</span><span class="p">][</span><span class="n">j</span><span class="p">]</span><span class="o">*</span><span class="n">f</span>
-    <span class="k">return</span> <span class="n">A</span></div>
+    <span class="k">return</span> <span class="n">A</span>
+</div>
+<div class="viewcode-block" id="min_relative"><a class="viewcode-back" href="../../../python/math/curvefit.html#hamcalc.math.curvefit.min_relative">[docs]</a><span class="k">def</span> <span class="nf">min_relative</span><span class="p">(</span> <span class="n">points</span><span class="p">,</span> <span class="n">order</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Minimize Relative Error; requires Y != 0.</span>
+
+<span class="sd">    &gt;&gt;&gt; import hamcalc.math.curvefit as curvefit</span>
+<span class="sd">    &gt;&gt;&gt; DATA = [ (1,6), (2,5), (3,7), (4,10) ]</span>
+<span class="sd">    &gt;&gt;&gt; curvefit.min_relative( DATA, 4 )</span>
+<span class="sd">    [[0.09818594104308388, 0.20900226757369614, 0.5314512471655329, 1.538798185941043, 0.6095238095238095], [0.20900226757369614, 0.5314512471655329, 1.538798185941043, 4.8808390022675745, 1.3952380952380952], [0.5314512471655329, 1.538798185941043, 4.8808390022675745, 16.506961451247165, 3.8523809523809525], [1.538798185941043, 4.8808390022675745, 16.506961451247165, 58.425328798185944, 12.023809523809526]]</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">sums_A</span> <span class="o">=</span> <span class="p">[</span> <span class="nb">sum</span><span class="p">(</span> <span class="n">x</span><span class="o">**</span><span class="n">k</span><span class="o">/</span><span class="n">y</span><span class="o">**</span><span class="mi">2</span> <span class="k">for</span> <span class="n">x</span><span class="p">,</span><span class="n">y</span> <span class="ow">in</span> <span class="n">points</span> <span class="p">)</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="o">*</span><span class="n">order</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="p">]</span>
+    <span class="n">sums_W</span> <span class="o">=</span> <span class="p">[</span> <span class="nb">sum</span><span class="p">(</span> <span class="n">x</span><span class="o">**</span><span class="n">k</span><span class="o">/</span><span class="n">y</span> <span class="k">for</span> <span class="n">x</span><span class="p">,</span><span class="n">y</span> <span class="ow">in</span> <span class="n">points</span> <span class="p">)</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">order</span><span class="p">)</span> <span class="p">]</span>
+    <span class="n">matrix</span><span class="o">=</span> <span class="p">[</span> <span class="n">sums_A</span><span class="p">[</span><span class="n">i</span><span class="p">:</span><span class="n">i</span><span class="o">+</span><span class="n">order</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span> <span class="n">sums_W</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">order</span><span class="p">)</span> <span class="p">]</span>
+    <span class="k">return</span> <span class="n">matrix</span>
+</div>
+<div class="viewcode-block" id="min_absolute"><a class="viewcode-back" href="../../../python/math/curvefit.html#hamcalc.math.curvefit.min_absolute">[docs]</a><span class="k">def</span> <span class="nf">min_absolute</span><span class="p">(</span> <span class="n">points</span><span class="p">,</span> <span class="n">order</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Minimize Absolute Error.</span>
+
+<span class="sd">    &gt;&gt;&gt; import hamcalc.math.curvefit as curvefit</span>
+<span class="sd">    &gt;&gt;&gt; DATA = [ (1,6), (2,5), (3,7), (4,10) ]</span>
+<span class="sd">    &gt;&gt;&gt; curvefit.min_absolute( DATA, 4 )</span>
+<span class="sd">    [[4, 10, 30, 100, 28], [10, 30, 100, 354, 77], [30, 100, 354, 1300, 249], [100, 354, 1300, 4890, 875]]</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">sums_A</span> <span class="o">=</span> <span class="p">[</span> <span class="nb">sum</span><span class="p">(</span> <span class="n">x</span><span class="o">**</span><span class="n">k</span> <span class="k">for</span> <span class="n">x</span><span class="p">,</span><span class="n">y</span> <span class="ow">in</span> <span class="n">points</span> <span class="p">)</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="o">*</span><span class="n">order</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="p">]</span>
+    <span class="n">sums_W</span> <span class="o">=</span> <span class="p">[</span> <span class="nb">sum</span><span class="p">(</span> <span class="n">y</span><span class="o">*</span><span class="n">x</span><span class="o">**</span><span class="n">k</span> <span class="k">for</span> <span class="n">x</span><span class="p">,</span><span class="n">y</span> <span class="ow">in</span> <span class="n">points</span> <span class="p">)</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">order</span><span class="p">)</span> <span class="p">]</span>
+    <span class="n">matrix</span><span class="o">=</span> <span class="p">[</span> <span class="n">sums_A</span><span class="p">[</span><span class="n">i</span><span class="p">:</span><span class="n">i</span><span class="o">+</span><span class="n">order</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span> <span class="n">sums_W</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">order</span><span class="p">)</span> <span class="p">]</span>
+    <span class="k">return</span> <span class="n">matrix</span>
+</div>
+<div class="viewcode-block" id="data_transform"><a class="viewcode-back" href="../../../python/math/curvefit.html#hamcalc.math.curvefit.data_transform">[docs]</a><span class="k">def</span> <span class="nf">data_transform</span><span class="p">(</span> <span class="n">points_raw</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="bp">None</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Various transformation functions.</span>
+
+<span class="sd">    :param points_raw: Sequence of (x,y) pairs.</span>
+<span class="sd">    :param name: Name of transformation: NULL, POW, LOG, EXP.</span>
+<span class="sd">    :param args: dictionary of arguments, &#39;k&#39; and &#39;p&#39;.</span>
+<span class="sd">    :returns: Sequence of (f(x),y) pairs.</span>
+
+<span class="sd">    &gt;&gt;&gt; import hamcalc.math.curvefit as curvefit</span>
+<span class="sd">    &gt;&gt;&gt; DATA = [ (1,6), (2,5), (3,7), (4,10) ]</span>
+<span class="sd">    &gt;&gt;&gt; curvefit.data_transform( DATA, &quot;NULL&quot; )</span>
+<span class="sd">    [(1, 6), (2, 5), (3, 7), (4, 10)]</span>
+<span class="sd">    &gt;&gt;&gt; curvefit.data_transform( DATA, &quot;POW&quot;, { &#39;k&#39;: 3, &#39;p&#39;: 2 } )</span>
+<span class="sd">    [(16, 6), (25, 5), (36, 7), (49, 10)]</span>
+<span class="sd">    &gt;&gt;&gt; curvefit.data_transform( DATA, &quot;LOG&quot;, { &#39;k&#39;: 5 } )</span>
+<span class="sd">    [(1.791759469228055, 6), (1.9459101490553132, 5), (2.0794415416798357, 7), (2.1972245773362196, 10)]</span>
+<span class="sd">    &gt;&gt;&gt; curvefit.data_transform( DATA, &quot;EXP&quot;, { &#39;k&#39;: 1 } )</span>
+<span class="sd">    [(2.718281828459045, 6), (7.38905609893065, 5), (20.085536923187668, 7), (54.598150033144236, 10)]</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">functions</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s">&#39;NULL&#39;</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">,</span> <span class="n">args</span><span class="p">:</span> <span class="n">x</span><span class="p">,</span>
+        <span class="s">&#39;POW&#39;</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">,</span> <span class="n">args</span><span class="p">:</span> <span class="p">(</span><span class="n">x</span><span class="o">+</span><span class="n">args</span><span class="p">[</span><span class="s">&#39;k&#39;</span><span class="p">])</span><span class="o">**</span><span class="n">args</span><span class="p">[</span><span class="s">&#39;p&#39;</span><span class="p">],</span>
+        <span class="s">&#39;LOG&#39;</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">,</span> <span class="n">args</span><span class="p">:</span> <span class="n">math</span><span class="o">.</span><span class="n">log</span><span class="p">(</span> <span class="n">x</span><span class="o">+</span><span class="n">args</span><span class="p">[</span><span class="s">&#39;k&#39;</span><span class="p">]</span> <span class="p">),</span>
+        <span class="s">&#39;EXP&#39;</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">,</span> <span class="n">args</span><span class="p">:</span> <span class="n">math</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span> <span class="n">x</span><span class="o">*</span><span class="n">args</span><span class="p">[</span><span class="s">&#39;k&#39;</span><span class="p">]</span> <span class="p">),</span>
+        <span class="p">}</span>
+    <span class="k">if</span> <span class="n">args</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span> <span class="n">args</span><span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+    <span class="n">func</span><span class="o">=</span> <span class="n">functions</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
+    <span class="n">points</span><span class="o">=</span> <span class="p">[</span> <span class="p">(</span><span class="n">func</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">args</span><span class="p">),</span><span class="n">y</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span><span class="p">,</span><span class="n">y</span> <span class="ow">in</span> <span class="n">points_raw</span> <span class="p">]</span>
+    <span class="k">return</span> <span class="n">points</span>
+</div>
+<div class="viewcode-block" id="fit"><a class="viewcode-back" href="../../../python/math/curvefit.html#hamcalc.math.curvefit.fit">[docs]</a><span class="k">def</span> <span class="nf">fit</span><span class="p">(</span> <span class="n">points_raw</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="s">&quot;NULL&quot;</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">minimize</span><span class="o">=</span><span class="s">&#39;absolute&#39;</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Curve Fit.</span>
+
+<span class="sd">    :param points: is a sequence of (x,y) tuples</span>
+<span class="sd">    :param transform: is the name of the transform function.</span>
+<span class="sd">        &quot;NULL&quot;, &quot;POW&quot;, &quot;LOG&quot;, &quot;EXP&quot; are the defined functions.</span>
+<span class="sd">        The &quot;POW&quot; function requires both &quot;k&quot; and &quot;p&quot;.</span>
+<span class="sd">        The &quot;LOG&quot; and &quot;EXP&quot; functions require &quot;k&quot;.</span>
+<span class="sd">    :param args: is a dictionary with values of &quot;k&quot; or &quot;p&quot; or both</span>
+<span class="sd">        for the transformation function.</span>
+<span class="sd">    :param order: Polynomial order (0 to 5).</span>
+<span class="sd">    :param minmize: is either &quot;absolute&quot; or &quot;relative&quot;.</span>
+
+<span class="sd">    :returns: Coefficients for the polynomial that fits the points.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c"># Transform.</span>
+    <span class="n">points</span><span class="o">=</span> <span class="n">data_transform</span><span class="p">(</span> <span class="n">points_raw</span><span class="p">,</span> <span class="n">transform</span><span class="p">,</span> <span class="n">args</span> <span class="p">)</span>
+
+    <span class="c"># Build Vandermonde Matrix.</span>
+    <span class="k">if</span> <span class="n">minimize</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s">&#39;abs&#39;</span><span class="p">):</span>
+        <span class="n">A_W</span><span class="o">=</span> <span class="n">min_absolute</span><span class="p">(</span> <span class="n">points</span><span class="p">,</span> <span class="n">order</span> <span class="p">)</span>
+    <span class="k">elif</span> <span class="n">minimize</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s">&#39;rel&#39;</span><span class="p">):</span>
+        <span class="n">A_W</span><span class="o">=</span> <span class="n">min_relative</span><span class="p">(</span> <span class="n">points</span><span class="p">,</span> <span class="n">order</span> <span class="p">)</span>
+
+    <span class="c"># Solve.</span>
+    <span class="n">C</span> <span class="o">=</span> <span class="n">gauss</span><span class="p">(</span> <span class="n">A_W</span> <span class="p">)</span>
+    <span class="k">return</span> <span class="p">[</span> <span class="n">row</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">C</span> <span class="p">]</span></div>
 </pre></div>
 
           </div>

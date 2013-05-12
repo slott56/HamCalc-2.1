@@ -107,10 +107,11 @@ packages. Pragmatically, this is crazy because we don&#8217;t need to clone or r
 </ul>
 <p><strong>Graphics</strong>.</p>
 <ul>
-<li><p class="first">Python has a <tt class="xref py py-mod docutils literal"><span class="pre">turtle</span></tt> package, built on <tt class="docutils literal"><span class="pre">Tkinter</span></tt>, that may provided
+<li><p class="first">Python has a <tt class="xref py py-mod docutils literal"><span class="pre">turtle</span></tt> package, built on <tt class="docutils literal"><span class="pre">Tkinter</span></tt>, that may provide
 sufficient graphic capabilities.</p>
 </li>
-<li><p class="first">The <tt class="docutils literal"><span class="pre">matplotlib</span></tt> package may be far more suitable for HamCalc.</p>
+<li><p class="first">The <tt class="docutils literal"><span class="pre">matplotlib</span></tt> package may be overkill for HamCalc.
+It depends, BTW, on <tt class="xref py py-mod docutils literal"><span class="pre">numpy</span></tt>.</p>
 <p><a class="reference external" href="http://matplotlib.org">http://matplotlib.org</a></p>
 <p><a class="reference external" href="https://pypi.python.org/pypi/matplotlib/1.2.1">https://pypi.python.org/pypi/matplotlib/1.2.1</a></p>
 <p><a class="reference external" href="http://en.wikipedia.org/wiki/Matplotlib">http://en.wikipedia.org/wiki/Matplotlib</a></p>
@@ -120,10 +121,9 @@ sufficient graphic capabilities.</p>
 <p>HamCalc does at least three complex matrix calculations. Specifically, the programs <strong class="program">curvefit</strong>, <strong class="program">antmatch</strong> and <strong class="program">antsyn2</strong> explicitly create and solve matrices. Other programs may also involve matrix calculations.</p>
 <p>Interestingly, <strong class="program">simuleq</strong> does not use the general Gaussian
 Elimination approach to solving simultaneous equations.</p>
-<p>A Gaussian Elimination algorithm, written from scratch, is far simpler and more
-clear than porting the legacy GW-Basic code.</p>
+<p>A Gaussian Elimination algorithm, written from scratch, is (a) simpler and (b) more clear than porting the legacy GW-Basic code.</p>
 <p>Using <tt class="xref py py-mod docutils literal"><span class="pre">numpy</span></tt> is also an option. HamCalc does not seem to require this
-level of flexibility and sophistication.</p>
+level of sophistication.</p>
 <blockquote>
 <div><p><a class="reference external" href="http://www.numpy.org">http://www.numpy.org</a></p>
 <p><a class="reference external" href="https://pypi.python.org/pypi/numpy">https://pypi.python.org/pypi/numpy</a></p>

@@ -3,15 +3,27 @@
 "FIT CURVE PROGRAM","","","CURVEFIT"
 """
 import hamcalc.math.curvefit as curvefit
+from hamcalc.stdio.graphs import Graph
+from turtle import *
 
 class CurveFit_Problem:
+    """Gather user input to complete the various parts of
+    a curvefit problem:
+
+    1.  Points
+    2.  Transformation Funcion and arguments
+    3.  Order of polynomial
+    4.  Minization.
+    """
     def __init__( self ):
         self.points = []
         self.func_name= None
         self.func_args= {}
         self.order= 0
         self.minimize= None
+
     def good( self ):
+        """Do we have all the parts of the problem?"""
         return all( (
             len(self.points) >= 2,
             self.func_name is not None,
@@ -20,7 +32,9 @@ class CurveFit_Problem:
             self.order <= len(self.points),
             self.minimize in ( 'abs', 'rel' ),
         ) )
+
     def setup( self ):
+        """Problem setup, gather the various bits of information."""
         self.func_name= None
         self.func_args= {}
         self.order= 0
@@ -33,7 +47,9 @@ class CurveFit_Problem:
                 self.get_minimization()
             except Exception as e:
                 print( e )
+
     def get_points( self ):
+        """Get the set of data points."""
         choice= None
         while choice != '0':
             print( "Item: (X, Y)" )
@@ -57,7 +73,9 @@ class CurveFit_Problem:
                 i= int( input( "Delete item? " ))
                 if 0 <= i < len(points):
                     self.points.delete( i )
+
     def get_function( self ):
+        """Get the transformation function and any needed arguments."""
         while self.func_name is None:
             print( "(1) Z=X  (2) Z=(X+K)^P  (3) Z=LOG(X+K)  (4) Z=EXP(X*K)" )
             func_num= input( "Enter number of desired relation " )
@@ -74,11 +92,13 @@ class CurveFit_Problem:
                 print(e)
 
     def get_order( self ):
+        """Get the order of the polynomial. 1 is a line."""
         self.order= int(input( "ENTER order of polynomial (1, 2, 3, or 4) " ))
         if self.order > len(self.points):
             print( "Insufficient data pairs" )
 
     def get_minimization( self ):
+        """Get the minimization goal."""
         while self.minimize not in ( 'abs', 'rel' ):
             min_raw = input( "ENTER 1 to minimize relative error, 2 to minimize absolute error " )
             try:
@@ -105,19 +125,27 @@ while z != '0':
         print( C )
 
         # Phase 4 - display
+        data_xform= curvefit.data_transform( problem.points, problem.func_name, problem.func_args )
+        computed= []
         print( "        X        Y data   Y calculated    Error   % Error" )
-        for x,y in problem.points:
+        for x,y in data_xform:
             y_f= sum( (c*x**i for i, c in enumerate(C)) )
             err = float("NaN") if y == 0 else (y-y_f)/y
             print( "{0:9f}     {1:9f}      {2:9f} {3:8f} {4:9.3%}".format(x, y, y_f, y-y_f, err) )
+            computed.append( (x,y_f) )
 
         C_5= C[:] + [ 0.0 for i in range(len(C),5) ]
         print( "Y=A+B*Z+C*Z^2+D*Z^3+E*Z^4" )
         print( "A = {0:f}, B = {1:f}, C = {2:f}, D = {3:f}, E = {4:f}".format(*C_5) )
 
-        term = [ "{1:.3f}*X**{0:.0f}".format( i, c ) for i, c in enumerate( C ) ]
-        print( "Y = ", " + ".join( term ) )
+        term = [ "{0:.3f}".format(C[0]), "{0:.3f}*X".format(C[1]) ] + [ "{1:.3f}*X**{0:.0f}".format( i+2, c ) for i, c in enumerate( C[2:] ) ]
+        equation= "Y = " + " + ".join( term )
+        print( equation )
         print()
 
         # Phase 5 - graph
-        # TBD
+        g= Graph()
+        g.set_points( data_xform )
+        g.set_line( computed )
+        g.display( equation )
+        print( "Close the '{0}' window when done.".format(equation) )

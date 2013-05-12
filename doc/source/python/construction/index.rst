@@ -7,3 +7,4 @@ Construction, including towers, stairs, plumbing, masonry, etc.
     :maxdepth: 1
 
     conecalc
+    diamfind

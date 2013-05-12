@@ -14,7 +14,6 @@ programs.
     curvefit
     deciconv
     decifrac
-    diamfind
     equiv
     fibon
     formulae
@@ -24,6 +23,7 @@ programs.
     polygon
     primenos
     propcirc
+    quadrat
     randnum
     rotaplot
     simuleq

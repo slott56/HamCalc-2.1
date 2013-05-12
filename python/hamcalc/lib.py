@@ -1,6 +1,6 @@
 """Library of common HamCalc features.
 
--   Attribute Dictionary to support Solvers. This is an extended
+-   Attribute Dictionary to support the **Solver** design. This is an extended
     implementation of :class:`dict` that supports attribute references,
     and requires all keys be proper Python variable names.
 

@@ -127,8 +127,7 @@ Each of these involves some additional processing to create <img class="math" sr
 <li>Minimize Relative Error: lines 1290 - 1470 builds the A and W matrices.</li>
 <li>Minimize Absolute Error: Lines 1480 - 1699 builds the A and W matrices.</li>
 </ul>
-<p>640: Initailize the C vector, <img class="math" src="../../_images/math/f7ba08365411b16f825277f499c0d53b8fa3a861.png" alt="C = \lbrace 0 | 1 \leq n \leq 5 \rbrace"/></p>
-<p>650: Find A,B,&amp; C using Miller&#8217;s prog, p74 in &#8220;Basic Prog for S &amp; E&#8221;. This is lines 820-1210, the &#8220;Gauss-Jordan routine&#8221;. See <a class="reference internal" href="#gaussian-elimination">Gaussian Elimination</a>.</p>
+<p>640-650: Find A,B,&amp; C using Miller&#8217;s prog, p74 in &#8220;Basic Prog for S &amp; E&#8221;. This is lines 820-1210, the &#8220;Gauss-Jordan routine&#8221;. See <a class="reference internal" href="#gaussian-elimination">Gaussian Elimination</a>.</p>
 <p>660-790: Print X, Y, computed Y, error, and the five values in the C vector.</p>
 <p>800: Final option to edit data, or plot the curve. Plotting is lines 1610-1770.
 See <a class="reference internal" href="#graphics-display">Graphics Display</a>.</p>
@@ -179,9 +178,12 @@ See <a class="reference internal" href="#graphics-display">Graphics Display</a>.
 <div class="section" id="solve-matrices">
 <h3>Solve Matrices<a class="headerlink" href="#solve-matrices" title="Permalink to this headline">¶</a></h3>
 <p>This is the Gauss-Jorden, or Gaussian Elimination algorithm.</p>
-<p>Here&#8217;s the <tt class="docutils literal"><span class="pre">numpy</span></tt> solution.</p>
-<p><a class="reference external" href="http://pingswept.org/2009/01/24/least-squares-polynomial-fitting-in-python/">http://pingswept.org/2009/01/24/least-squares-polynomial-fitting-in-python/</a></p>
-<p>Here&#8217;s the Gaussian Elimination algorithm.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>Alternative</p>
+<p>There&#8217;s a clean <tt class="docutils literal"><span class="pre">numpy</span></tt> solution.</p>
+<p class="last"><a class="reference external" href="http://pingswept.org/2009/01/24/least-squares-polynomial-fitting-in-python/">http://pingswept.org/2009/01/24/least-squares-polynomial-fitting-in-python/</a></p>
+</div>
 <p>See <a class="reference external" href="http://en.wikipedia.org/wiki/Gaussian_elimination">http://en.wikipedia.org/wiki/Gaussian_elimination</a></p>
 <p>There are three types of elementary row operations which may be performed on the rows of a matrix:</p>
 <blockquote>
@@ -218,7 +220,15 @@ See <a class="reference internal" href="#graphics-display">Graphics Display</a>.
 </div>
 <div class="section" id="graphics-display">
 <h3>Graphics Display<a class="headerlink" href="#graphics-display" title="Permalink to this headline">¶</a></h3>
-<p>TBD.  This may involve <tt class="docutils literal"><span class="pre">matplotlib</span></tt>.</p>
+<p>This is a simple display of actual points and the calculated
+curve.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>Alternative</p>
+<p class="last">This could involve <tt class="docutils literal"><span class="pre">matplotlib</span></tt>.</p>
+</div>
+<p>Instead, parts of the <a class="reference internal" href="../stdio.html#module-hamcalc.stdio.graphs" title="hamcalc.stdio.graphs"><tt class="xref py py-mod docutils literal"><span class="pre">hamcalc.stdio.graphs</span></tt></a> module is used to provide
+the graphics display.</p>
 </div>
 </div>
 <div class="section" id="implementation">
@@ -291,20 +301,44 @@ the arguments.</p>
 <p>See <a class="reference external" href="http://en.wikipedia.org/wiki/Linear_least_squares_(mathematics">http://en.wikipedia.org/wiki/Linear_least_squares_(mathematics</a>)#Motivational_example</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">hamcalc.math.curvefit</span> <span class="kn">as</span> <span class="nn">curvefit</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">DATA</span> <span class="o">=</span> <span class="p">[</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">6</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">5</span><span class="p">),</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">7</span><span class="p">),</span> <span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="mi">10</span><span class="p">)</span> <span class="p">]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="p">[</span> <span class="nb">round</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">curvefit</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span> <span class="n">DATA</span> <span class="p">)</span> <span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">C</span> <span class="o">=</span> <span class="n">curvefit</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span> <span class="n">DATA</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="p">[</span> <span class="nb">round</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">C</span> <span class="p">]</span>
 <span class="go">[3.5, 1.4]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">x</span><span class="p">,</span><span class="n">y</span> <span class="ow">in</span> <span class="n">DATA</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="n">y_f</span><span class="o">=</span> <span class="nb">sum</span><span class="p">(</span> <span class="p">(</span><span class="n">c</span><span class="o">*</span><span class="n">x</span><span class="o">**</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">c</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">C</span><span class="p">))</span> <span class="p">)</span>
+<span class="gp">... </span>    <span class="n">err</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s">&quot;NaN&quot;</span><span class="p">)</span> <span class="k">if</span> <span class="n">y</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">else</span> <span class="p">(</span><span class="n">y</span><span class="o">-</span><span class="n">y_f</span><span class="p">)</span><span class="o">/</span><span class="n">y</span>
+<span class="gp">... </span>    <span class="k">print</span><span class="p">(</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="nb">round</span><span class="p">(</span><span class="n">y_f</span><span class="p">,</span><span class="mi">3</span><span class="p">),</span> <span class="nb">round</span><span class="p">(</span><span class="n">y</span><span class="o">-</span><span class="n">y_f</span><span class="p">,</span><span class="mi">3</span><span class="p">),</span> <span class="nb">round</span><span class="p">(</span><span class="n">err</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span> <span class="p">)</span>
+<span class="gp">...</span>
+<span class="go">1 6 4.9 1.1 0.183</span>
+<span class="go">2 5 6.3 -1.3 -0.26</span>
+<span class="go">3 7 7.7 -0.7 -0.1</span>
+<span class="go">4 10 9.1 0.9 0.09</span>
 </pre></div>
 </div>
 <p>The output vector has the following interpretation.</p>
 <div class="math">
 <p><img src="../../_images/math/5f19ab0942fc2e0ede2866e398ac454c7d13b437.png" alt="y= 3.5 + 1.4x"/></p>
 </div><p>For higher-order polynomials there will be more terms.</p>
+<p>Sum of absolute error is 0, sum of relative error is -0.142.</p>
+<p>Another test case, using the relative error instead of the default
+absolute error.</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">hamcalc.math.curvefit</span> <span class="kn">as</span> <span class="nn">curvefit</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">DATA</span> <span class="o">=</span> <span class="p">[</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">6</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">5</span><span class="p">),</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">7</span><span class="p">),</span> <span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="mi">10</span><span class="p">)</span> <span class="p">]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="p">[</span> <span class="nb">round</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">curvefit</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span> <span class="n">DATA</span><span class="p">,</span> <span class="n">minimize</span><span class="o">=</span><span class="s">&#39;rel&#39;</span> <span class="p">)</span> <span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">D</span> <span class="o">=</span> <span class="n">curvefit</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span> <span class="n">DATA</span><span class="p">,</span> <span class="n">minimize</span><span class="o">=</span><span class="s">&#39;rel&#39;</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="p">[</span> <span class="nb">round</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">D</span> <span class="p">]</span>
 <span class="go">[3.803, 1.13]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">x</span><span class="p">,</span><span class="n">y</span> <span class="ow">in</span> <span class="n">DATA</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="n">y_f</span><span class="o">=</span> <span class="nb">sum</span><span class="p">(</span> <span class="p">(</span><span class="n">c</span><span class="o">*</span><span class="n">x</span><span class="o">**</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">c</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">D</span><span class="p">))</span> <span class="p">)</span>
+<span class="gp">... </span>    <span class="n">err</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s">&quot;NaN&quot;</span><span class="p">)</span> <span class="k">if</span> <span class="n">y</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">else</span> <span class="p">(</span><span class="n">y</span><span class="o">-</span><span class="n">y_f</span><span class="p">)</span><span class="o">/</span><span class="n">y</span>
+<span class="gp">... </span>    <span class="k">print</span><span class="p">(</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="nb">round</span><span class="p">(</span><span class="n">y_f</span><span class="p">,</span><span class="mi">3</span><span class="p">),</span> <span class="nb">round</span><span class="p">(</span><span class="n">y</span><span class="o">-</span><span class="n">y_f</span><span class="p">,</span><span class="mi">3</span><span class="p">),</span> <span class="nb">round</span><span class="p">(</span><span class="n">err</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span> <span class="p">)</span>
+<span class="gp">...</span>
+<span class="go">1 6 4.933 1.067 0.178</span>
+<span class="go">2 5 6.063 -1.063 -0.213</span>
+<span class="go">3 7 7.192 -0.192 -0.027</span>
+<span class="go">4 10 8.322 1.678 0.168</span>
 </pre></div>
 </div>
+<p>Sum of absolute error is 1.49, sum of relative error is .106.</p>
 <dl class="function">
 <dt id="hamcalc.math.curvefit.argmax">
 <tt class="descclassname">hamcalc.math.curvefit.</tt><tt class="descname">argmax</tt><big>(</big><em>indices</em>, <em>A</em>, <em>column</em>, <em>f=&lt;built-in function abs&gt;</em><big>)</big><a class="reference internal" href="../../_modules/hamcalc/math/curvefit.html#argmax"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.math.curvefit.argmax" title="Permalink to this definition">¶</a></dt>
@@ -338,7 +372,7 @@ is maximized for i in indices.</p>
 
 <dl class="function">
 <dt id="hamcalc.math.curvefit.data_transform">
-<tt class="descclassname">hamcalc.math.curvefit.</tt><tt class="descname">data_transform</tt><big>(</big><em>points_raw</em>, <em>name</em>, <em>args=None</em><big>)</big><a class="headerlink" href="#hamcalc.math.curvefit.data_transform" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">hamcalc.math.curvefit.</tt><tt class="descname">data_transform</tt><big>(</big><em>points_raw</em>, <em>name</em>, <em>args=None</em><big>)</big><a class="reference internal" href="../../_modules/hamcalc/math/curvefit.html#data_transform"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.math.curvefit.data_transform" title="Permalink to this definition">¶</a></dt>
 <dd><p>Various transformation functions.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -372,7 +406,7 @@ is maximized for i in indices.</p>
 
 <dl class="function">
 <dt id="hamcalc.math.curvefit.fit">
-<tt class="descclassname">hamcalc.math.curvefit.</tt><tt class="descname">fit</tt><big>(</big><em>points_raw</em>, <em>transform='NULL'</em>, <em>args=None</em>, <em>order=2</em>, <em>minimize='absolute'</em><big>)</big><a class="headerlink" href="#hamcalc.math.curvefit.fit" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">hamcalc.math.curvefit.</tt><tt class="descname">fit</tt><big>(</big><em>points_raw</em>, <em>transform='NULL'</em>, <em>args=None</em>, <em>order=2</em>, <em>minimize='absolute'</em><big>)</big><a class="reference internal" href="../../_modules/hamcalc/math/curvefit.html#fit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.math.curvefit.fit" title="Permalink to this definition">¶</a></dt>
 <dd><p>Curve Fit.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -445,7 +479,7 @@ is an n-element list.</td>
 
 <dl class="function">
 <dt id="hamcalc.math.curvefit.min_absolute">
-<tt class="descclassname">hamcalc.math.curvefit.</tt><tt class="descname">min_absolute</tt><big>(</big><em>points</em>, <em>order</em><big>)</big><a class="headerlink" href="#hamcalc.math.curvefit.min_absolute" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">hamcalc.math.curvefit.</tt><tt class="descname">min_absolute</tt><big>(</big><em>points</em>, <em>order</em><big>)</big><a class="reference internal" href="../../_modules/hamcalc/math/curvefit.html#min_absolute"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.math.curvefit.min_absolute" title="Permalink to this definition">¶</a></dt>
 <dd><p>Minimize Absolute Error.</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">hamcalc.math.curvefit</span> <span class="kn">as</span> <span class="nn">curvefit</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">DATA</span> <span class="o">=</span> <span class="p">[</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">6</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">5</span><span class="p">),</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">7</span><span class="p">),</span> <span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="mi">10</span><span class="p">)</span> <span class="p">]</span>
@@ -457,7 +491,7 @@ is an n-element list.</td>
 
 <dl class="function">
 <dt id="hamcalc.math.curvefit.min_relative">
-<tt class="descclassname">hamcalc.math.curvefit.</tt><tt class="descname">min_relative</tt><big>(</big><em>points</em>, <em>order</em><big>)</big><a class="headerlink" href="#hamcalc.math.curvefit.min_relative" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">hamcalc.math.curvefit.</tt><tt class="descname">min_relative</tt><big>(</big><em>points</em>, <em>order</em><big>)</big><a class="reference internal" href="../../_modules/hamcalc/math/curvefit.html#min_relative"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.math.curvefit.min_relative" title="Permalink to this definition">¶</a></dt>
 <dd><p>Minimize Relative Error; requires Y != 0.</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">hamcalc.math.curvefit</span> <span class="kn">as</span> <span class="nn">curvefit</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">DATA</span> <span class="o">=</span> <span class="p">[</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">6</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">5</span><span class="p">),</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">7</span><span class="p">),</span> <span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="mi">10</span><span class="p">)</span> <span class="p">]</span>
@@ -504,12 +538,11 @@ In both cases, sums are accumulated assuming an initial value of zero. After the
 <li class="toctree-l3 current"><a class="current reference internal" href="">curvefit &#8211; Curve Fit program</a></li>
 <li class="toctree-l3"><a class="reference internal" href="deciconv.html">deciconv &#8211; Decimal Hour/Degree Converter</a></li>
 <li class="toctree-l3"><a class="reference internal" href="decifrac.html">decifrac &#8211; Decimal/Fraction Converter</a></li>
-<li class="toctree-l3"><a class="reference internal" href="diamfind.html">diamfind</a></li>
 <li class="toctree-l3"><a class="reference internal" href="equiv.html">equiv &#8211; Unit Conversions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="fibon.html">fibon &#8211; Fibonacci Series</a></li>
-<li class="toctree-l3"><a class="reference internal" href="formulae.html">formulae</a></li>
-<li class="toctree-l3"><a class="reference internal" href="graphs.html">graphs</a></li>
-<li class="toctree-l3"><a class="reference internal" href="involute.html">involute</a></li>
+<li class="toctree-l3"><a class="reference internal" href="formulae.html">formulae &#8211; Formula Library</a></li>
+<li class="toctree-l3"><a class="reference internal" href="graphs.html">graphs &#8211; Graphs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="involute.html">involute &#8211; Involute of a Circle</a></li>
 <li class="toctree-l3"><a class="reference internal" href="numderiv.html">numderiv</a></li>
 <li class="toctree-l3"><a class="reference internal" href="polygon.html">polygon</a></li>
 <li class="toctree-l3"><a class="reference internal" href="primenos.html">primenos &#8211; Prime Number Calculator</a></li>

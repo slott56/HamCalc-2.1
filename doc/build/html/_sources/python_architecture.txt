@@ -75,10 +75,11 @@ The difficulty with a tall "tech-stack" is the complexity of installing a large 
 
 **Graphics**.
 
--   Python has a :mod:`turtle` package, built on ``Tkinter``, that may provided
+-   Python has a :mod:`turtle` package, built on ``Tkinter``, that may provide
     sufficient graphic capabilities.
 
--   The ``matplotlib`` package may be far more suitable for HamCalc.
+-   The ``matplotlib`` package may be overkill for HamCalc.
+    It depends, BTW, on :mod:`numpy`.
 
     http://matplotlib.org
 
@@ -93,11 +94,10 @@ HamCalc does at least three complex matrix calculations. Specifically, the progr
 Interestingly, :program:`simuleq` does not use the general Gaussian
 Elimination approach to solving simultaneous equations.
 
-A Gaussian Elimination algorithm, written from scratch, is far simpler and more
-clear than porting the legacy GW-Basic code.
+A Gaussian Elimination algorithm, written from scratch, is (a) simpler and (b) more clear than porting the legacy GW-Basic code.
 
 Using :mod:`numpy` is also an option. HamCalc does not seem to require this
-level of flexibility and sophistication.
+level of sophistication.
 
     http://www.numpy.org
 

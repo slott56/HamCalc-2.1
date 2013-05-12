@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>formulae &mdash; HamCalc 2.1 documentation</title>
+    <title>formulae – Formula Library &mdash; HamCalc 2.1 documentation</title>
     
     <link rel="stylesheet" href="../../_static/agogo.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
@@ -25,7 +25,7 @@
     <script type="text/javascript" src="../../_static/doctools.js"></script>
     <link rel="top" title="HamCalc 2.1 documentation" href="../../index.html" />
     <link rel="up" title="math – Math, Physics, Units Conversion" href="index.html" />
-    <link rel="next" title="graphs" href="graphs.html" />
+    <link rel="next" title="graphs – Graphs" href="graphs.html" />
     <link rel="prev" title="fibon – Fibonacci Series" href="fibon.html" /> 
   </head>
   <body>
@@ -36,7 +36,7 @@
         <div class="rel">
           <a href="fibon.html" title="fibon – Fibonacci Series"
              accesskey="P">previous</a> |
-          <a href="graphs.html" title="graphs"
+          <a href="graphs.html" title="graphs – Graphs"
              accesskey="N">next</a> |
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |
@@ -54,9 +54,285 @@
         <div class="bodywrapper">
           <div class="body">
             
-  <div class="section" id="formulae">
-<h1>formulae<a class="headerlink" href="#formulae" title="Permalink to this headline">¶</a></h1>
-<p>Formula Library</p>
+  <div class="section" id="formulae-formula-library">
+<h1>formulae &#8211; Formula Library<a class="headerlink" href="#formulae-formula-library" title="Permalink to this headline">¶</a></h1>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>Legacy</p>
+<p class="last">This program doesn&#8217;t really <strong>do</strong> anything. It&#8217;s just reference material
+cleverly typeset using available ASCII graphics and containing constants
+for standard (metric) as well as imperial units.</p>
+</div>
+<div class="section" id="antennas">
+<h2>Antennas<a class="headerlink" href="#antennas" title="Permalink to this headline">¶</a></h2>
+<p>HALF-WAVE FLAT-TOP ( 3-30 MHz )</p>
+<blockquote>
+<div><div class="math">
+<p><img src="../../_images/math/7a5b794f6fd12170dec9ed90bff31940c24688a8.png" alt="L_f = \frac{468}{f}"/></p>
+</div><div class="math">
+<p><img src="../../_images/math/f60a81d60091e74175bc98ceede37bdf3ba2def0.png" alt="L_m = \frac{143}{f}"/></p>
+</div><p>L_f = length in feet</p>
+<p>L_m = length in metres</p>
+<p>f = frequency in Mhz</p>
+</div></blockquote>
+<p>FULL-WAVE LOOP (3-30 MHz )</p>
+<blockquote>
+<div><div class="math">
+<p><img src="../../_images/math/cf7c3f4ed73a24e8ea6dbfe6d7930dfc8ac16b3c.png" alt="DRI_f = \frac{1005}{f}"/></p>
+</div><div class="math">
+<p><img src="../../_images/math/c75e2e7c317182203ba00f9ab8ffd9f1b935c180.png" alt="DRI_m = \frac{306.3}{f}"/></p>
+</div><div class="math">
+<p><img src="../../_images/math/216f90a8352470d915bd840428b68afadf5189f4.png" alt="REF = 1.025 \times DRI"/></p>
+</div><div class="math">
+<p><img src="../../_images/math/5c31f5e902bce0c2aa6ac7daf89364edfed637c3.png" alt="DIR = 0.970 \times DRI"/></p>
+</div><p>DRI_f = length of driven element in feet</p>
+<p>DRI_m = length of driven element in metres</p>
+<p>REF = length of reflector</p>
+<p>DIR = length of director</p>
+<p>f = frequency in MHz</p>
+</div></blockquote>
+<p>FULL-SIZE VERTICAL</p>
+<blockquote>
+<div><div class="math">
+<p><img src="../../_images/math/bab7297897d1de7331c70fd0727c38c397fd2caa.png" alt="L_f = \frac{234}{f}"/></p>
+</div><div class="math">
+<p><img src="../../_images/math/adb47854dbac6fecf490f1b6a9b09d4164ad3eac.png" alt="L_m = \frac{71.3}{f}"/></p>
+</div><p>L_f = length in feet</p>
+<p>L_m = length in metres</p>
+<p>f = frequency in Mhz</p>
+</div></blockquote>
+</div>
+<div class="section" id="capacitance">
+<h2>Capacitance<a class="headerlink" href="#capacitance" title="Permalink to this headline">¶</a></h2>
+<p>CAPACITORS</p>
+<blockquote>
+<div><div class="math">
+<p><img src="../../_images/math/1737d5a3e95de5c2139b82b0e22623a95c864845.png" alt="C = \frac{0.2248 KA_i}{d_i}(n-1)
+
+C = \frac{0.0885 KA_m}{d_m}(n-1)"/></p>
+</div><p>C = capacitance in pF</p>
+<p>A_i = area of one side of one plate in square inches</p>
+<p>A_m = area of one side of one plate in square centimetres</p>
+<p>K = dielectric constant of material between plates</p>
+<p>d_i = separation of plates in inches</p>
+<p>d_m = separation of plates in cm.</p>
+<p>n = number of plates</p>
+</div></blockquote>
+<p>COAXIAL CABLE</p>
+<blockquote>
+<div><div class="math">
+<p><img src="../../_images/math/a18e85d8e351d96376e50cf5b466e34332baf747.png" alt="C_f = \frac{7.36 \epsilon}{\log \frac{D}{d}}
+
+C_m = \frac{24.147 \epsilon}{\log \frac{D}{d}}"/></p>
+</div><p>ε = dielectric constant</p>
+<p>C_f = capacitance in pF per foot</p>
+<p>C_m = capacitance in pF per metre</p>
+<p>D = ID of outer conductor</p>
+<p>d = OD of inner conductor</p>
+</div></blockquote>
+<p>CYLINDRICAL VARIABLE CAPACITOR (ε=1 if air-spaced)</p>
+<blockquote>
+<div><div class="math">
+<p><img src="../../_images/math/66cf5ecf90670c483aceaaf8d20f088e9ab910ee.png" alt="C_f = \frac{7.354 \epsilon}{\log \frac{D}{d}}
+
+C_m = \frac{24.127 \epsilon}{\log \frac{D}{d}}"/></p>
+</div><p>ε = dielectric constant</p>
+<p>C_f = capacitance in pF per foot</p>
+<p>C_m = capacitance in pF per metre</p>
+<p>D = ID of outer tube</p>
+<p>d = OD of inner conductor</p>
+</div></blockquote>
+</div>
+<div class="section" id="copper-wire-equations">
+<h2>Copper wire equations<a class="headerlink" href="#copper-wire-equations" title="Permalink to this headline">¶</a></h2>
+<div class="math">
+<p><img src="../../_images/math/459c4cec18d9fc2410f81a92f0e7781ab47ac3cc.png" alt="R_f = \frac{1.67}{(25.4a)^2}
+
+R_k = \frac{1}{.1822a^2}"/></p>
+</div><p>R_f = ohms per 1000 feet</p>
+<p>R_k = ohms per kilometre</p>
+<p>a = radius of wire in decimal inches</p>
+<div class="math">
+<p><img src="../../_images/math/660e74afc14f5a3f0c81edcad59e4f0d51132a14.png" alt="D_i = \frac{0.46}{1.229^(n+3)}
+
+D_m = \frac{11.68}{1.229^(n+3)}"/></p>
+</div><p>D_i = diameter in inches</p>
+<p>D_m = diameter in millimetres</p>
+<p>n = AWG number</p>
+<div class="math">
+<p><img src="../../_images/math/51d83d9b8f762ec4eac17b8b72cd85f07aeb1f30.png" alt="n = \frac{ \log \frac{0.46}{D} }{\log 1.1229}"/></p>
+</div><p>D = diameter in inches</p>
+<p>n = AWG</p>
+</div>
+<div class="section" id="decibels">
+<h2>Decibels<a class="headerlink" href="#decibels" title="Permalink to this headline">¶</a></h2>
+<div class="math">
+<p><img src="../../_images/math/2c46a30f82aef8f21aa308f247be2999bdee34be.png" alt="dB = 10 \log \frac{P2}{P1}"/></p>
+</div><p>P2 = output power</p>
+<p>P1 = input power</p>
+<div class="math">
+<p><img src="../../_images/math/8c814018936112a1320d1a9a199dd020f7b305cb.png" alt="dB = 20 \log \frac{V2}{V1}"/></p>
+</div><p>V2 = output voltage</p>
+<p>V1 = input voltage</p>
+<div class="math">
+<p><img src="../../_images/math/3ddd978819af1a860a74f4865b7d467110efe97f.png" alt="dB = 20 \log \frac{I2}{I1}"/></p>
+</div><p>I2 = output current</p>
+<p>I1 = input current</p>
+</div>
+<div class="section" id="frequency">
+<h2>Frequency<a class="headerlink" href="#frequency" title="Permalink to this headline">¶</a></h2>
+<div class="math">
+<p><img src="../../_images/math/76542a1efdb5e7bda3cb868c84f54efe0d2e5fd4.png" alt="f = \frac{300}{w}"/></p>
+</div><p>f = frequency in MHz</p>
+<p>w = wavelength in metres</p>
+<div class="math">
+<p><img src="../../_images/math/80cfb8cf6c08976caa5603094e223ce9a1d7cf65.png" alt="f = \frac{10^6}{2\pi\sqrt{LC}}"/></p>
+</div><p>f = frequency in kHz</p>
+<p>L = inductance in µH</p>
+<p>C = capacity in pF</p>
+<p>π = 3.141593</p>
+<div class="math">
+<p><img src="../../_images/math/77e63d732b08373c62e17b4384e2067418a31620.png" alt="F_c = \sqrt{F_1F_2}"/></p>
+</div><p>F1 = highest frequency</p>
+<p>Fc = centre frequency</p>
+<p>F2 = lowest frequency</p>
+</div>
+<div class="section" id="impedance-transmission-lines">
+<h2>Impedance (transmission lines)<a class="headerlink" href="#impedance-transmission-lines" title="Permalink to this headline">¶</a></h2>
+<p>AIR-INSULATED PARALLEL CONDUCTOR LINE</p>
+<blockquote>
+<div><div class="math">
+<p><img src="../../_images/math/1fb1785454ac3235f16bc4be17c64a8bea6bfdf4.png" alt="Z_o = 276 \log \frac{2S}{d}"/></p>
+</div><p>Zo = characteristic impedance</p>
+<p>S = c.c distance between conductors</p>
+<p>d = diameter of conductors ( S &amp; d in same units)</p>
+</div></blockquote>
+<p>AIR-INSULATED COAXIAL LINE</p>
+<blockquote>
+<div><div class="math">
+<p><img src="../../_images/math/d9a0f3dd082c7bc2c02d86058fc20eb2db5f6b06.png" alt="Z_o = 138 \log \frac{b}{a}"/></p>
+</div><p>Zo = characteristic impedance</p>
+<p>b = ID of outer conductor</p>
+<p>a = OD of inner conductor ( b &amp; a in same units)</p>
+</div></blockquote>
+<p>ANY TRANSMISSION LINE</p>
+<blockquote>
+<div><div class="math">
+<p><img src="../../_images/math/c4ecb726fbb3e1f3aa6a9c119f188493d4110893.png" alt="Z_o = \sqrt{\frac{10^6L}{C}}"/></p>
+</div><p>Zo = characteristic impedance</p>
+<p>L = inductance (µH) per unit length</p>
+<p>C = capacitance (pF) per unit length</p>
+</div></blockquote>
+</div>
+<div class="section" id="inductance">
+<h2>Inductance<a class="headerlink" href="#inductance" title="Permalink to this headline">¶</a></h2>
+<p>SINGLE-LAYER AIR-CORE COIL</p>
+<div class="math">
+<p><img src="../../_images/math/8b1d1d37080f533c6ca613e72364a3678cb326f2.png" alt="L = \frac{d_i^2n^2}{18d_i+40l_i}
+
+L = \frac{d_m^2n^2}{45.72d_m+101.6l_m}"/></p>
+</div><p>L = inductance in µH</p>
+<p>d_i = coil diameter in inches</p>
+<p>d_m = coil diameter in cm</p>
+<p>l_i = coil length in inches</p>
+<p>l_m = coil length in cm</p>
+<p>n = number of turns</p>
+<div class="math">
+<p><img src="../../_images/math/d8f6a7df3f9118ed46136e73022b2f4a975202fd.png" alt="n = \frac{\sqrt{L(18d_i+40l_i)}}{d_i}
+
+n = \frac{\sqrt{L(45.72d_m + 101.6l_m)}}{d_m}"/></p>
+</div></div>
+<div class="section" id="mathematics">
+<h2>Mathematics<a class="headerlink" href="#mathematics" title="Permalink to this headline">¶</a></h2>
+<p>π = 3.141593</p>
+<p>Circumference of circle = <img class="math" src="../../_images/math/f8127ecd916350b807bee0f83d3d94ef30d3f8d8.png" alt="\pi \times d"/></p>
+<p>d = diameter</p>
+<p>Area of circle = <img class="math" src="../../_images/math/c11df1258d77ebd8bd5c79ba7bdff2eb3e729e85.png" alt="\pi \times r^2"/></p>
+<p>r = radius</p>
+<p>As used in HAMCALC:
+-  a METER is an apparatus for measuring (e.g voltmeter).
+-  a METRE is a unit of measurement in the metric system.</p>
+<div class="highlight-python"><pre>metres = feet x .3048      feet = metres ÷ .3048
+centimetres = in. x 2.54   inches = cm ÷ 2.54
+millimetres = in. x 25.4   inches = mm ÷ 25.4</pre>
+</div>
+</div>
+<div class="section" id="ohm-s-law-power">
+<h2>Ohm&#8217;s Law / Power<a class="headerlink" href="#ohm-s-law-power" title="Permalink to this headline">¶</a></h2>
+<p>OHM&#8217;s LAW</p>
+<blockquote>
+<div><div class="math">
+<p><img src="../../_images/math/46f186e2ab2c8842feb3da4147e6ed5bebb0253f.png" alt="E = I R
+
+I = \frac{E}{R}
+
+E = \frac{E}{I}"/></p>
+</div></div></blockquote>
+<p>POWER</p>
+<blockquote>
+<div><div class="math">
+<p><img src="../../_images/math/8d0ca847e0d9b25ddbda497d8de470a19aa4a29f.png" alt="P = I E
+
+P = \frac{E^2}{R}
+
+P = I^2 R"/></p>
+</div></div></blockquote>
+<p>P = power in watts</p>
+<p>E = EMF in volts</p>
+<p>I = current in amperes</p>
+<p>R = resistance in ohms</p>
+</div>
+<div class="section" id="reactance">
+<h2>Reactance<a class="headerlink" href="#reactance" title="Permalink to this headline">¶</a></h2>
+<div class="math">
+<p><img src="../../_images/math/90a8a367e937a0258fbb13eb43f05474847a054c.png" alt="X_L = 2\pi f L
+
+X_C = \frac{10^6}{2\pi f C}"/></p>
+</div><p>X_L = inductive reactance in ohms</p>
+<p>X_C = capacitive reactance in ohms</p>
+<p>f = frequency in MHz</p>
+<p>L = inductance in µH</p>
+<p>C = capacitance in pF</p>
+<p>π = 3.141593</p>
+</div>
+<div class="section" id="swr-standing-wave-ratio">
+<h2>SWR (STANDING WAVE RATIO)<a class="headerlink" href="#swr-standing-wave-ratio" title="Permalink to this headline">¶</a></h2>
+<div class="math">
+<p><img src="../../_images/math/658e03dde8673a2d74178605d6f3f6aa2774a200.png" alt="p = \sqrt \frac{P_r}{P_f}
+
+p = \frac{SWR-1}{SWR+1}
+
+SWR = \frac{1+p}{1-p}"/></p>
+</div><p>p = reflection coefficient</p>
+<p>Pr = reflected power</p>
+<p>Pf = forward power</p>
+<p>SWR = standing wave ratio</p>
+</div>
+<div class="section" id="transmission-line-physical-vs-electrical-length">
+<h2>Transmission line physical vs. electrical length<a class="headerlink" href="#transmission-line-physical-vs-electrical-length" title="Permalink to this headline">¶</a></h2>
+<div class="math">
+<p><img src="../../_images/math/43a2983a2299eab686d5d08c507b4fe2c9b3f116.png" alt="L_f = \frac{983.56 V}{f}
+
+L_m = \frac{299.79 V}{f}
+
+V = \frac{1}{\sqrt{\epsilon}}"/></p>
+</div><p>L_f = length (feet) of one wavelength</p>
+<p>L_m = length (metres) of one wavelength</p>
+<p>V = velocity factor (decimal value)</p>
+<p>f = frequency in MHz</p>
+<p>ε = dielectric constant</p>
+</div>
+<div class="section" id="shortened-antenna-physical-vs-electrical-length">
+<h2>Shortened antenna physical vs. electrical length<a class="headerlink" href="#shortened-antenna-physical-vs-electrical-length" title="Permalink to this headline">¶</a></h2>
+<div class="math">
+<p><img src="../../_images/math/813dc7de4b79c34d8e78507084c5110b21d7b0bc.png" alt="h_i = \frac{32.8L}{f}
+
+h_m = \frac{83.3L}{f}"/></p>
+</div><p>h_i = length (inches)</p>
+<p>h_m = length (centimetres)</p>
+<p>L = electrical length (degrees)</p>
+<p>f = frequency in MHz</p>
+</div>
 </div>
 
 
@@ -66,17 +342,43 @@
         </div>
         <div class="sidebar">
           <h3>Table Of Contents</h3>
-          <ul class="current">
+          <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../background.html">Background</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../legacy.html">The HamCalc Legacy</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../python_architecture.html">Python Architecture</a></li>
+</ul>
+<ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html">Python Modules</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../lib.html">lib &#8211; Supporting Library</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../radio.html">radio &#8211; Radio Design and Engineering</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../ham.html">ham &#8211; Ham Radio Operations</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../electronics/index.html">electronics &#8211; General Electronics</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../construction.html">construction &#8211; Construction and Related Projects</a></li>
-<li class="toctree-l2 current"><a class="reference internal" href="index.html">math &#8211; Math, Physics, Units Conversion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../construction/index.html">construction &#8211; Construction and Related Projects</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">math &#8211; Math, Physics, Units Conversion</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="accelr.html">accelr &#8211; Acceleration Calculator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="baromtr.html">baromtr &#8211; Barometer Reading Equivalents</a></li>
+<li class="toctree-l3"><a class="reference internal" href="binary.html">binary &#8211; Decimal to Binary Converter</a></li>
+<li class="toctree-l3"><a class="reference internal" href="centrif.html">centrif &#8211; Centrifugal/Centripetel Force</a></li>
+<li class="toctree-l3"><a class="reference internal" href="curvefit.html">curvefit &#8211; Curve Fit program</a></li>
+<li class="toctree-l3"><a class="reference internal" href="deciconv.html">deciconv &#8211; Decimal Hour/Degree Converter</a></li>
+<li class="toctree-l3"><a class="reference internal" href="decifrac.html">decifrac &#8211; Decimal/Fraction Converter</a></li>
+<li class="toctree-l3"><a class="reference internal" href="equiv.html">equiv &#8211; Unit Conversions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="fibon.html">fibon &#8211; Fibonacci Series</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="">formulae &#8211; Formula Library</a></li>
+<li class="toctree-l3"><a class="reference internal" href="graphs.html">graphs &#8211; Graphs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="involute.html">involute &#8211; Involute of a Circle</a></li>
+<li class="toctree-l3"><a class="reference internal" href="numderiv.html">numderiv</a></li>
+<li class="toctree-l3"><a class="reference internal" href="polygon.html">polygon</a></li>
+<li class="toctree-l3"><a class="reference internal" href="primenos.html">primenos &#8211; Prime Number Calculator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="propcirc.html">propcirc &#8211; Circle, Properties of</a></li>
+<li class="toctree-l3"><a class="reference internal" href="randnum.html">randnum</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rotaplot.html">rotaplot</a></li>
+<li class="toctree-l3"><a class="reference internal" href="simuleq.html">simuleq</a></li>
+<li class="toctree-l3"><a class="reference internal" href="solutri.html">solutri &#8211; Triangles, solution of</a></li>
+<li class="toctree-l3"><a class="reference internal" href="speedtd.html">speedtd</a></li>
+<li class="toctree-l3"><a class="reference internal" href="trig.html">trig &#8211; Trigonometric Functions</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="../navigation.html">navigation &#8211; Navigation and Astronomy</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../calendar.html">calendar &#8211; Calendrical Calculations</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../audio_photo.html">audio_photo &#8211; Audio, Sound and Photography</a></li>
@@ -88,6 +390,8 @@
 <li class="toctree-l2"><a class="reference internal" href="../gui.html">GUI Interface</a></li>
 </ul>
 </li>
+</ul>
+<ul>
 <li class="toctree-l1"><a class="reference internal" href="../../todo.html">The To Do List</a></li>
 </ul>
 
@@ -111,7 +415,7 @@
         <div class="left">
           <a href="fibon.html" title="fibon – Fibonacci Series"
              >previous</a> |
-          <a href="graphs.html" title="graphs"
+          <a href="graphs.html" title="graphs – Graphs"
              >next</a> |
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |
