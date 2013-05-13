@@ -63,7 +63,7 @@ This is all in the exiting Python :mod:`math` package.
 
 Which raises a subtle question of what to test and how to test it.
 
-Quirks
-~~~~~~~~
+Legacy Quirks
+~~~~~~~~~~~~~~
 
 None, really.

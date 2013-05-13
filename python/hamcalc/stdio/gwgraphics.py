@@ -38,9 +38,6 @@ import math
 import logging
 import sys
 
-def degrees( radians ):
-    return 180*radians/math.pi
-
 class GWGraphics():
     """Note (0,0) is top-left. (319,199) is below and to the right.
     Because of the 4:3 aspect ratio issue, screens are described
@@ -124,11 +121,11 @@ class GWGraphics():
         else:
             # Draw from top CCW to start with penup
             turtle.penup()
-            turtle.circle( -r, extent=-degrees(start) )
+            turtle.circle( -r, extent=-math.degrees(start) )
             # Draw to start to end with pendown.
             turtle.pendown()
-            turtle.circle( -r, extent=-degrees(end-start) )
-            self.log.debug( "ARC %r %r %r %r %r %r %r", x, y/self.aspect_v+r, r, start, end, degrees(start), degrees(start+end) )
+            turtle.circle( -r, extent=-math.degrees(end-start) )
+            self.log.debug( "ARC %r %r %r %r %r %r %r", x, y/self.aspect_v+r, r, start, end, math.degrees(start), math.degrees(start+end) )
 
     def PSET( self, x, y ):
         """Draw a point."""

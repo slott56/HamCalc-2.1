@@ -11,6 +11,7 @@ programs.
     baromtr
     binary
     centrif
+    chase
     curvefit
     deciconv
     decifrac
@@ -30,3 +31,4 @@ programs.
     solutri
     speedtd
     trig
+    unitvalu

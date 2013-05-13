@@ -14,6 +14,37 @@ Simple Units
 
 Plus, the Frequencies/Wavelengths is both units conversion and a :math:`c=\lambda\nu`  **Solver**.
 
+In addition to the unit definitions, there's a variable,
+:data:`unit_map`.
+This collects units into dimensions.
+
+-       'capacitance': (FARAD, MICROFARAD, NANOFARAD, PICOFARAD),
+
+-       'current': (AMPERE, MILLIAMPERE, MICROAMPERE),
+
+-       'degrees': (DEGREE, RADIAN),
+
+-       'radians': (DEGREE, RADIAN),
+
+-       'inductance': (HENRY, MICROHENRY, MILLIHENRY, NANOHENRY, PICOHENRY),
+
+-       'length':  (METRE, CENTIMETRE, MILLIMETRE, KILOMETRE, INCH, FOOT, MILE),
+
+-       'distance': (METRE, CENTIMETRE, MILLIMETRE, KILOMETRE, INCH, FOOT, MILE),
+
+-       'resistance': (OHM, KILOHM, MEGOHM),
+
+-       'temperature': (CELSIUS, FAHRENHEIT),
+
+-       'time': (SECOND, MINUTE, HOUR, DAY, WEEK, YEAR),
+
+-       'mpg': (MPGI, MPG, KPL, LPK),
+
+-       'kpl': (MPGI, MPG, KPL, LPK),
+
+-       'frequency': (HERTZ, KILOHERTZ, MEGAHERTZ, GIGAHERTZ),
+
+
 Test Cases, Unit-by-Unit
 
 >>> import hamcalc.math.equiv as equiv
@@ -119,6 +150,12 @@ MPG
 4.425
 >>> equiv.LPK.from_std( x )
 35.31073446327684
+
+VOLUME
+
+>>> x = equiv.LITER.to_std( 4 )
+>>> round(equiv.GALLON.from_std( x ),6)
+1.056688
 
 It's possible that the legacy computes this incorrectly.
 The result from the legacy may be 22.6 LPK.
@@ -256,10 +293,16 @@ class FOOT( Unit ):
     factor= 39.370079/12
 
 class MILE( Unit ):
-    """Mile"""
+    """Statute Mile"""
     standard= METRE
     name= "mi"
-    factor= 39.370079/12/5280
+    factor= 39.370079/12/5280 # 1/1609.344
+
+class NAUTICAL_MILE( Unit ):
+    """Nautical Mile"""
+    standard= METRE
+    name= "nm"
+    factor= 1/1852.0
 
 class OHM( Standard_Unit ):
     """Ohm"""
@@ -350,6 +393,16 @@ class LPK( Unit ):
     name= "LPK"
     standard= MPGI
     factor= 1/0.354
+
+class LITER( Standard_Unit ):
+    """liter"""
+    name= "l"
+
+class GALLON( Unit ):
+    """Gallon"""
+    name= "gal"
+    standard= LITER
+    factor= 1/3.7854118
 
 def freq_wavelength( **kw ):
     """Solver for frequency-wavelength problems in Standard units

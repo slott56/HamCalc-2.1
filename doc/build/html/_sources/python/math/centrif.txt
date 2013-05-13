@@ -20,8 +20,8 @@ Implementation
 ..  automodule:: hamcalc.math.centrif
     :members:
 
-Quirks
-~~~~~~~~
+Legacy Quirks
+~~~~~~~~~~~~~~
 
 The units of force and mass are wrong.
 

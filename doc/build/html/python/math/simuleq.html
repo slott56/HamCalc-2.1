@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>simuleq &mdash; HamCalc 2.1 documentation</title>
+    <title>simuleq – Simultaneous Equation Calculator &mdash; HamCalc 2.1 documentation</title>
     
     <link rel="stylesheet" href="../../_static/agogo.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
@@ -26,7 +26,7 @@
     <link rel="top" title="HamCalc 2.1 documentation" href="../../index.html" />
     <link rel="up" title="math – Math, Physics, Units Conversion" href="index.html" />
     <link rel="next" title="solutri – Triangles, solution of" href="solutri.html" />
-    <link rel="prev" title="rotaplot" href="rotaplot.html" /> 
+    <link rel="prev" title="rotaplot – Cartesian/Polar Plot Rotator" href="rotaplot.html" /> 
   </head>
   <body>
     <div class="header-wrapper">
@@ -34,7 +34,7 @@
         <div class="headertitle"><a
           href="../../index.html">HamCalc 2.1 documentation</a></div>
         <div class="rel">
-          <a href="rotaplot.html" title="rotaplot"
+          <a href="rotaplot.html" title="rotaplot – Cartesian/Polar Plot Rotator"
              accesskey="P">previous</a> |
           <a href="solutri.html" title="solutri – Triangles, solution of"
              accesskey="N">next</a> |
@@ -54,9 +54,57 @@
         <div class="bodywrapper">
           <div class="body">
             
-  <div class="section" id="simuleq">
-<h1>simuleq<a class="headerlink" href="#simuleq" title="Permalink to this headline">¶</a></h1>
-<p>Simultaneous Equation Calculator</p>
+  <div class="section" id="simuleq-simultaneous-equation-calculator">
+<span id="math-simuleq"></span><h1>simuleq &#8211; Simultaneous Equation Calculator<a class="headerlink" href="#simuleq-simultaneous-equation-calculator" title="Permalink to this headline">¶</a></h1>
+<p>From the comments:</p>
+<div class="highlight-python"><pre>20 :REM&#x27;ref:&quot;57 Practical Programs &amp; Games in BASIC&quot;, Radio Shack cat. no. 62-2008</pre>
+</div>
+<p>Therefore, the HamCalc program is a rewrite of a program in the Radio Shack book.
+It doesn&#8217;t seem valuable to attempt to preserve this rewrite of a published solution.</p>
+<div class="section" id="analysis">
+<h2>Analysis<a class="headerlink" href="#analysis" title="Permalink to this headline">¶</a></h2>
+<p>Solving <em>n</em> equations in <em>n</em> unknowns is done by using Guassian Elimination
+and Back Substituion.</p>
+<div class="math">
+<p><img src="../../_images/math/753519e045801ccd25356b8a8c1d08993941c27b.png" alt="x -  3y +  z = 4
+
+2x - 8y + 8z = -2
+
+-6x + 3y - 15z = 9"/></p>
+</div><p>This can be represented as a matrix:</p>
+<div class="math">
+<p><img src="../../_images/math/3672c906e6457d4b472ede8425ef62ea315081a5.png" alt="\begin{bmatrix}
+     1&amp; -3&amp;   1&amp; \vert &amp;  4 \\
+     2&amp; -8&amp;   8&amp; \vert &amp; -2 \\
+    -6&amp;  3&amp; -15&amp; \vert &amp;  9 \\
+\end{bmatrix}"/></p>
+</div><p>The Gaussian Elimination leads to this matrix:</p>
+<div class="math">
+<p><img src="../../_images/math/a58d2ca3c1b1b23c7da23cb0beb6b9361d7bf087.png" alt="\begin{bmatrix}
+1&amp; 0&amp; 0&amp; \vert &amp; 3 \\
+0&amp; 1&amp; 0&amp; \vert &amp;-1 \\
+0&amp; 0&amp; 1&amp; \vert &amp;-2 \\
+\end{bmatrix}"/></p>
+</div><p>Which is interpreted as:</p>
+<div class="math">
+<p><img src="../../_images/math/391b5fd34fd51173f4946ef7d5ba5bb38fc499cc.png" alt="x = 3
+
+y = -1
+
+z = -2"/></p>
+</div></div>
+<div class="section" id="implementation">
+<h2>Implementation<a class="headerlink" href="#implementation" title="Permalink to this headline">¶</a></h2>
+<p>See <a class="reference internal" href="curvefit.html#module-hamcalc.math.curvefit" title="hamcalc.math.curvefit"><tt class="xref py py-mod docutils literal"><span class="pre">hamcalc.math.curvefit</span></tt></a> (<a class="reference internal" href="curvefit.html#math-curvefit"><em>curvefit &#8211; Curve Fit program</em></a>) for an implementation of Gaussian Elimination that can also be used to solve <em>n</em> equations in <em>n</em> unknowns.</p>
+<p>In a way, the general Gaussian Elimination is &#8220;overkill&#8221; for two equations
+in two unknowns. But it&#8217;s also a simple, general solution that can easily
+be reused.</p>
+</div>
+<div class="section" id="legacy-quirks">
+<h2>Legacy Quirks<a class="headerlink" href="#legacy-quirks" title="Permalink to this headline">¶</a></h2>
+<p>The legacy HamCalc program could only solve two or three equations
+in two or three unknowns.</p>
+</div>
 </div>
 
 
@@ -83,6 +131,7 @@
 <li class="toctree-l3"><a class="reference internal" href="baromtr.html">baromtr &#8211; Barometer Reading Equivalents</a></li>
 <li class="toctree-l3"><a class="reference internal" href="binary.html">binary &#8211; Decimal to Binary Converter</a></li>
 <li class="toctree-l3"><a class="reference internal" href="centrif.html">centrif &#8211; Centrifugal/Centripetel Force</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chase.html">chase &#8211; Speed Chase</a></li>
 <li class="toctree-l3"><a class="reference internal" href="curvefit.html">curvefit &#8211; Curve Fit program</a></li>
 <li class="toctree-l3"><a class="reference internal" href="deciconv.html">deciconv &#8211; Decimal Hour/Degree Converter</a></li>
 <li class="toctree-l3"><a class="reference internal" href="decifrac.html">decifrac &#8211; Decimal/Fraction Converter</a></li>
@@ -91,16 +140,18 @@
 <li class="toctree-l3"><a class="reference internal" href="formulae.html">formulae &#8211; Formula Library</a></li>
 <li class="toctree-l3"><a class="reference internal" href="graphs.html">graphs &#8211; Graphs</a></li>
 <li class="toctree-l3"><a class="reference internal" href="involute.html">involute &#8211; Involute of a Circle</a></li>
-<li class="toctree-l3"><a class="reference internal" href="numderiv.html">numderiv</a></li>
-<li class="toctree-l3"><a class="reference internal" href="polygon.html">polygon</a></li>
+<li class="toctree-l3"><a class="reference internal" href="numderiv.html">numderiv &#8211; Numbers and Functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="polygon.html">polygon &#8211; Polygon Dimensions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="primenos.html">primenos &#8211; Prime Number Calculator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="propcirc.html">propcirc &#8211; Circle, Properties of</a></li>
-<li class="toctree-l3"><a class="reference internal" href="randnum.html">randnum</a></li>
-<li class="toctree-l3"><a class="reference internal" href="rotaplot.html">rotaplot</a></li>
-<li class="toctree-l3 current"><a class="current reference internal" href="">simuleq</a></li>
+<li class="toctree-l3"><a class="reference internal" href="quadrat.html">quadrat &#8211; Quadratic Equation Calculator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="randnum.html">randnum &#8211; Random Number Generator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rotaplot.html">rotaplot &#8211; Cartesian/Polar Plot Rotator</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="">simuleq &#8211; Simultaneous Equation Calculator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="solutri.html">solutri &#8211; Triangles, solution of</a></li>
-<li class="toctree-l3"><a class="reference internal" href="speedtd.html">speedtd</a></li>
+<li class="toctree-l3"><a class="reference internal" href="speedtd.html">speedtd &#8211; Speed/Time/Distance Calculator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="trig.html">trig &#8211; Trigonometric Functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="unitvalu.html">unitvalu</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../navigation.html">navigation &#8211; Navigation and Astronomy</a></li>
@@ -137,7 +188,7 @@
     <div class="footer-wrapper">
       <div class="footer">
         <div class="left">
-          <a href="rotaplot.html" title="rotaplot"
+          <a href="rotaplot.html" title="rotaplot – Cartesian/Polar Plot Rotator"
              >previous</a> |
           <a href="solutri.html" title="solutri – Triangles, solution of"
              >next</a> |

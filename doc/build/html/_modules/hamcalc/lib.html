@@ -51,7 +51,7 @@
   <h1>Source code for hamcalc.lib</h1><div class="highlight"><pre>
 <span class="sd">&quot;&quot;&quot;Library of common HamCalc features.</span>
 
-<span class="sd">-   Attribute Dictionary to support Solvers. This is an extended</span>
+<span class="sd">-   Attribute Dictionary to support the **Solver** design. This is an extended</span>
 <span class="sd">    implementation of :class:`dict` that supports attribute references,</span>
 <span class="sd">    and requires all keys be proper Python variable names.</span>
 
@@ -63,14 +63,6 @@
 <span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">namedtuple</span>
 <span class="kn">import</span> <span class="nn">math</span>
 
-<div class="viewcode-block" id="radians"><a class="viewcode-back" href="../../python/lib.html#hamcalc.lib.radians">[docs]</a><span class="k">def</span> <span class="nf">radians</span><span class="p">(</span> <span class="n">degrees</span> <span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Convert degrees to radians.&quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span><span class="o">*</span><span class="n">degrees</span><span class="o">/</span><span class="mi">180</span>
-</div>
-<div class="viewcode-block" id="degrees"><a class="viewcode-back" href="../../python/lib.html#hamcalc.lib.degrees">[docs]</a><span class="k">def</span> <span class="nf">degrees</span><span class="p">(</span> <span class="n">radians</span> <span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Convert radians to degrees.&quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="mi">180</span><span class="o">*</span><span class="n">radians</span><span class="o">/</span><span class="n">math</span><span class="o">.</span><span class="n">pi</span>
-</div>
 <div class="viewcode-block" id="Unit"><a class="viewcode-back" href="../../python/lib.html#hamcalc.lib.Unit">[docs]</a><span class="k">class</span> <span class="nc">Unit</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Generic definition of a unit.</span>
 <span class="sd">    This unit is not the &quot;standard&quot; used for conversions.</span>

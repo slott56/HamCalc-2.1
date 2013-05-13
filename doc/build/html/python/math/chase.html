@@ -1,0 +1,209 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>chase – Speed Chase &mdash; HamCalc 2.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/agogo.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '2.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="HamCalc 2.1 documentation" href="../../index.html" />
+    <link rel="up" title="math – Math, Physics, Units Conversion" href="index.html" />
+    <link rel="next" title="curvefit – Curve Fit program" href="curvefit.html" />
+    <link rel="prev" title="centrif – Centrifugal/Centripetel Force" href="centrif.html" /> 
+  </head>
+  <body>
+    <div class="header-wrapper">
+      <div class="header">
+        <div class="headertitle"><a
+          href="../../index.html">HamCalc 2.1 documentation</a></div>
+        <div class="rel">
+          <a href="centrif.html" title="centrif – Centrifugal/Centripetel Force"
+             accesskey="P">previous</a> |
+          <a href="curvefit.html" title="curvefit – Curve Fit program"
+             accesskey="N">next</a> |
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a>
+        </div>
+       </div>
+    </div>
+
+    <div class="content-wrapper">
+      <div class="content">
+        <div class="document">
+            
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="chase-speed-chase">
+<h1>chase &#8211; Speed Chase<a class="headerlink" href="#chase-speed-chase" title="Permalink to this headline">¶</a></h1>
+<p>This is part of the <strong class="program">speedrtd</strong> program. Sort of.</p>
+<p>Here&#8217;s the hamdex index entry, claiming it&#8217;s part of <strong class="program">speedtd</strong>.
+It&#8217;s actually separate, but chained from <strong class="program">speedtd</strong>.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="s">&quot;SPEED CHASE&quot;</span><span class="p">,</span><span class="s">&quot;&quot;</span><span class="p">,</span><span class="s">&quot;&quot;</span><span class="p">,</span><span class="s">&quot;SPEEDTD&quot;</span>
+</pre></div>
+</div>
+<p>Here&#8217;s the intro text:</p>
+<div class="highlight-python"><pre>PROGRAM NAME                                            by George Murphy VE3ERP
+ SPEED CHASE
+
+If two entities are launched along the same path from the same spot at
+different times and speeds they will eventually meet. This program describes
+the meeting. Times, speeds and distances can be in any units.</pre>
+</div>
+<div class="section" id="analysis">
+<h2>Analysis<a class="headerlink" href="#analysis" title="Permalink to this headline">¶</a></h2>
+<p>We&#8217;re solving two related Rate-Time-Distance problems.</p>
+<p>We have two objects with distinct rates, <img class="math" src="../../_images/math/380ae59f118094b84d6b55cdd533b1aef37c6861.png" alt="r_1 &lt; r_2"/>.</p>
+<p>The slow one, speed <img class="math" src="../../_images/math/adc143c3f887fa7e92fd80d91bb22af51b4abd77.png" alt="r_1"/>, starts first.</p>
+<p>The fast one, speed <img class="math" src="../../_images/math/0b4f3f4b698ce35667432041e168f7653533fa7b.png" alt="r_2"/>, starts after a delay of <img class="math" src="../../_images/math/9ee4b825a2e36ae093ed7be5e4851ef453b34914.png" alt="w"/>.</p>
+<p>They&#8217;re on the same trajectory, so the fast one must catch the
+slow one. The questions are where and when?</p>
+<p>Each object&#8217;s position after time <img class="math" src="../../_images/math/9156652412f849856fbd01553c2482623a3ac309.png" alt="t+w"/> is <img class="math" src="../../_images/math/a8ce8f23422a5f6eeb62b6c135129ca01a88f913.png" alt="r_1 \times (t+w) = d"/> and <img class="math" src="../../_images/math/e4598490403bd51f45689f58a9af7af9eda64d38.png" alt="r_2 \times t = d"/>.</p>
+<p>When they meet, the two vales of <em>d</em> are the same.</p>
+<div class="math">
+<p><img src="../../_images/math/41fea6606f643efa1560f8c3099dfac608429ebb.png" alt="r_1 \times (t+w) = r_2 \times t"/></p>
+</div><p>Solving for <em>t</em>, we get</p>
+<div class="math">
+<p><img src="../../_images/math/85e7553d06168ee8e410e0128b5f7a54b2265d5a.png" alt="t = \frac{r_1 w}{r_2 - r_1}"/></p>
+</div><p>Once we know <em>t</em>, we can use this to solve for <em>d</em>.</p>
+</div>
+<div class="section" id="implementation">
+<h2>Implementation<a class="headerlink" href="#implementation" title="Permalink to this headline">¶</a></h2>
+<p>This doesn&#8217;t seem to deserve a proper HamCalc calculation module for one
+formula.</p>
+<p>It&#8217;s a cute little module in <tt class="xref py py-mod docutils literal"><span class="pre">hamcalc.stdio</span></tt>.</p>
+</div>
+<div class="section" id="legacy-quirks">
+<h2>Legacy Quirks<a class="headerlink" href="#legacy-quirks" title="Permalink to this headline">¶</a></h2>
+<p>The legacy program has an interative approximation that
+doesn&#8217;t make much sense at all.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+        </div>
+        <div class="sidebar">
+          <h3>Table Of Contents</h3>
+          <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../background.html">Background</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../legacy.html">The HamCalc Legacy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../python_architecture.html">Python Architecture</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Python Modules</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../lib.html">lib &#8211; Supporting Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../radio.html">radio &#8211; Radio Design and Engineering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ham.html">ham &#8211; Ham Radio Operations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../electronics/index.html">electronics &#8211; General Electronics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../construction/index.html">construction &#8211; Construction and Related Projects</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">math &#8211; Math, Physics, Units Conversion</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="accelr.html">accelr &#8211; Acceleration Calculator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="baromtr.html">baromtr &#8211; Barometer Reading Equivalents</a></li>
+<li class="toctree-l3"><a class="reference internal" href="binary.html">binary &#8211; Decimal to Binary Converter</a></li>
+<li class="toctree-l3"><a class="reference internal" href="centrif.html">centrif &#8211; Centrifugal/Centripetel Force</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="">chase &#8211; Speed Chase</a></li>
+<li class="toctree-l3"><a class="reference internal" href="curvefit.html">curvefit &#8211; Curve Fit program</a></li>
+<li class="toctree-l3"><a class="reference internal" href="deciconv.html">deciconv &#8211; Decimal Hour/Degree Converter</a></li>
+<li class="toctree-l3"><a class="reference internal" href="decifrac.html">decifrac &#8211; Decimal/Fraction Converter</a></li>
+<li class="toctree-l3"><a class="reference internal" href="equiv.html">equiv &#8211; Unit Conversions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="fibon.html">fibon &#8211; Fibonacci Series</a></li>
+<li class="toctree-l3"><a class="reference internal" href="formulae.html">formulae &#8211; Formula Library</a></li>
+<li class="toctree-l3"><a class="reference internal" href="graphs.html">graphs &#8211; Graphs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="involute.html">involute &#8211; Involute of a Circle</a></li>
+<li class="toctree-l3"><a class="reference internal" href="numderiv.html">numderiv &#8211; Numbers and Functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="polygon.html">polygon &#8211; Polygon Dimensions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="primenos.html">primenos &#8211; Prime Number Calculator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="propcirc.html">propcirc &#8211; Circle, Properties of</a></li>
+<li class="toctree-l3"><a class="reference internal" href="quadrat.html">quadrat &#8211; Quadratic Equation Calculator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="randnum.html">randnum &#8211; Random Number Generator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rotaplot.html">rotaplot &#8211; Cartesian/Polar Plot Rotator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="simuleq.html">simuleq &#8211; Simultaneous Equation Calculator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="solutri.html">solutri &#8211; Triangles, solution of</a></li>
+<li class="toctree-l3"><a class="reference internal" href="speedtd.html">speedtd &#8211; Speed/Time/Distance Calculator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="trig.html">trig &#8211; Trigonometric Functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="unitvalu.html">unitvalu</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../navigation.html">navigation &#8211; Navigation and Astronomy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../calendar.html">calendar &#8211; Calendrical Calculations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../audio_photo.html">audio_photo &#8211; Audio, Sound and Photography</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../software.html">software &#8211; Software Engineering, Programming and Computers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../other.html">other &#8211; including Finance and Nutrition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../stdio.html">STDIO Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../rest.html">RESTful Web Services Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../cli.html">Command-Line Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../gui.html">GUI Interface</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../todo.html">The To Do List</a></li>
+</ul>
+
+          <h3 style="margin-top: 1.5em;">Search</h3>
+          <form class="search" action="../../search.html" method="get">
+            <input type="text" name="q" />
+            <input type="submit" value="Go" />
+            <input type="hidden" name="check_keywords" value="yes" />
+            <input type="hidden" name="area" value="default" />
+          </form>
+          <p class="searchtip" style="font-size: 90%">
+            Enter search terms or a module, class or function name.
+          </p>
+        </div>
+        <div class="clearer"></div>
+      </div>
+    </div>
+
+    <div class="footer-wrapper">
+      <div class="footer">
+        <div class="left">
+          <a href="centrif.html" title="centrif – Centrifugal/Centripetel Force"
+             >previous</a> |
+          <a href="curvefit.html" title="curvefit – Curve Fit program"
+             >next</a> |
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |
+          <a href="../../genindex.html" title="General Index"
+             >index</a>
+            <br/>
+            <a href="../../_sources/python/math/chase.txt"
+               rel="nofollow">Show Source</a>
+        </div>
+
+        <div class="right">
+          
+    <div class="footer">
+        &copy; Copyright 2013, S.Lott.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2b1.
+    </div>
+        </div>
+        <div class="clearer"></div>
+      </div>
+    </div>
+
+  </body>
+</html>

@@ -37,8 +37,8 @@ the trignometry definitions from :mod:`hamcalc.math.trig`.
 ..  automodule:: hamcalc.math.trig
     :members:
 
-Quirks
-~~~~~~~~
+Legacy Quirks
+~~~~~~~~~~~~~~
 
 The sexagesimal conversions were copy-and-pasted in at least three locations
 in HamCalc. A ringing indictment of the limitations of GW-Basic and the cleverness of programmers who worked around that limitation.

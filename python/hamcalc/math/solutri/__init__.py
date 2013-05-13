@@ -4,25 +4,25 @@ Some test cases
 
 >>> import hamcalc.math.solutri as solutri
 >>> import math
->>> solutri.triangle( A_f=solutri.radians(60), S_i=3, A_g=solutri.radians(60) )
+>>> solutri.triangle( A_f=math.radians(60), S_i=3, A_g=math.radians(60) )
 {'A_g': 1.0471975511965976, 'A_f': 1.0471975511965976, 'S_i': 3, 'S_k': 3.0000000000000004, 'S_j': 3.000000000000001, 'A_h': 1.047197551196598}
->>> solutri.triangle( A_f=solutri.radians(60), S_j=3, A_g=solutri.radians(60) )
+>>> solutri.triangle( A_f=math.radians(60), S_j=3, A_g=math.radians(60) )
 {'A_g': 1.0471975511965976, 'A_f': 1.0471975511965976, 'S_i': 2.9999999999999996, 'S_k': 2.9999999999999996, 'S_j': 3, 'A_h': 1.047197551196598}
->>> solutri.triangle( A_f=solutri.radians(60), S_k=3, A_g=solutri.radians(60) )
+>>> solutri.triangle( A_f=math.radians(60), S_k=3, A_g=math.radians(60) )
 {'A_g': 1.0471975511965976, 'A_f': 1.0471975511965976, 'S_i': 3.0000000000000004, 'S_k': 3, 'S_j': 3.0, 'A_h': 1.047197551196598}
->>> solutri.degrees( 1.0471975511965976 )
+>>> math.degrees( 1.0471975511965976 )
 59.99999999999999
->>> solutri.triangle( A_f=solutri.radians(45), S_i=3, A_h=solutri.radians(90), S_k=3 )
+>>> solutri.triangle( A_f=math.radians(45), S_i=3, A_h=math.radians(90), S_k=3 )
 {'A_g': 0.7853981633974483, 'A_f': 0.7853981633974483, 'S_i': 3, 'S_k': 3.0, 'S_j': 4.242640687119286, 'A_h': 1.5707963267948966}
 >>> math.sqrt(2)*3
 4.242640687119286
->>> solutri.degrees(0.7853981633974483)
+>>> math.degrees(0.7853981633974483)
 45.0
->>> solutri.triangle( A_f=solutri.radians(30), A_h=solutri.radians(90), )
+>>> solutri.triangle( A_f=math.radians(30), A_h=math.radians(90), )
 {'A_g': 1.0471975511965979, 'A_f': 0.5235987755982988, 'A_h': 1.5707963267948966}
 
 """
-from hamcalc.lib import AttrDict, radians, degrees
+from hamcalc.lib import AttrDict
 import math
 
 def intro():

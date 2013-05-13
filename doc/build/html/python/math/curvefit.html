@@ -26,7 +26,7 @@
     <link rel="top" title="HamCalc 2.1 documentation" href="../../index.html" />
     <link rel="up" title="math – Math, Physics, Units Conversion" href="index.html" />
     <link rel="next" title="deciconv – Decimal Hour/Degree Converter" href="deciconv.html" />
-    <link rel="prev" title="centrif – Centrifugal/Centripetel Force" href="centrif.html" /> 
+    <link rel="prev" title="chase – Speed Chase" href="chase.html" /> 
   </head>
   <body>
     <div class="header-wrapper">
@@ -34,7 +34,7 @@
         <div class="headertitle"><a
           href="../../index.html">HamCalc 2.1 documentation</a></div>
         <div class="rel">
-          <a href="centrif.html" title="centrif – Centrifugal/Centripetel Force"
+          <a href="chase.html" title="chase – Speed Chase"
              accesskey="P">previous</a> |
           <a href="deciconv.html" title="deciconv – Decimal Hour/Degree Converter"
              accesskey="N">next</a> |
@@ -55,7 +55,7 @@
           <div class="body">
             
   <div class="section" id="curvefit-curve-fit-program">
-<h1>curvefit &#8211; Curve Fit program<a class="headerlink" href="#curvefit-curve-fit-program" title="Permalink to this headline">¶</a></h1>
+<span id="math-curvefit"></span><h1>curvefit &#8211; Curve Fit program<a class="headerlink" href="#curvefit-curve-fit-program" title="Permalink to this headline">¶</a></h1>
 <p>From the introduction:</p>
 <blockquote>
 <div>This program uses a least squares procedure to find the constants in an
@@ -434,14 +434,14 @@ for the transformation function.</li>
 
 <dl class="function">
 <dt id="hamcalc.math.curvefit.gauss">
-<tt class="descclassname">hamcalc.math.curvefit.</tt><tt class="descname">gauss</tt><big>(</big><em>A</em><big>)</big><a class="reference internal" href="../../_modules/hamcalc/math/curvefit.html#gauss"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.math.curvefit.gauss" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">hamcalc.math.curvefit.</tt><tt class="descname">gauss</tt><big>(</big><em>M</em><big>)</big><a class="reference internal" href="../../_modules/hamcalc/math/curvefit.html#gauss"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.math.curvefit.gauss" title="Permalink to this definition">¶</a></dt>
 <dd><p>Gaussian Elimination on an m row by n column matrix A.
 n is expected to be m+1 when solving simultaneous linear equations.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>A</strong> &#8211; is a &#8220;list-of-lists&#8221; matrix with m rows.  Each row
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>M</strong> &#8211; is a &#8220;list-of-lists&#8221; matrix with m rows.  Each row
 is an n-element list.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">New matrix in reduced echelon form.</td>
@@ -475,6 +475,12 @@ is an n-element list.</td>
 <span class="gr">ValueError</span>: <span class="n">Matrix is singular!</span>
 </pre></div>
 </div>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">E</span> <span class="o">=</span> <span class="p">[</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">8</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mi">6</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="o">-</span><span class="mi">15</span><span class="p">,</span> <span class="mi">9</span><span class="p">]</span> <span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">F</span> <span class="o">=</span> <span class="n">curvefit</span><span class="o">.</span><span class="n">gauss</span><span class="p">(</span> <span class="n">E</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="p">[</span> <span class="p">[</span><span class="nb">round</span><span class="p">(</span><span class="n">v</span><span class="p">,</span><span class="mi">6</span><span class="p">)</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">row</span><span class="p">]</span> <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">F</span> <span class="p">]</span>
+<span class="go">[[1.0, -0.0, -0.0, 3.0], [0.0, 1.0, -0.0, -1.0], [0.0, 0.0, 1.0, -2.0]]</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="function">
@@ -503,8 +509,8 @@ is an n-element list.</td>
 
 </div>
 </div>
-<div class="section" id="quirks">
-<h2>Quirks<a class="headerlink" href="#quirks" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="legacy-quirks">
+<h2>Legacy Quirks<a class="headerlink" href="#legacy-quirks" title="Permalink to this headline">¶</a></h2>
 <p>Because GW-Basic variables have a default value of zero, sums are reset <strong>after</strong> they&#8217;re used.</p>
 <p>Look, for example at lines 1290 to 1470. Also look at lines 1480 to 1600.
 In both cases, sums are accumulated assuming an initial value of zero. After the sums are used, the variables are reset back to zero.</p>
@@ -535,6 +541,7 @@ In both cases, sums are accumulated assuming an initial value of zero. After the
 <li class="toctree-l3"><a class="reference internal" href="baromtr.html">baromtr &#8211; Barometer Reading Equivalents</a></li>
 <li class="toctree-l3"><a class="reference internal" href="binary.html">binary &#8211; Decimal to Binary Converter</a></li>
 <li class="toctree-l3"><a class="reference internal" href="centrif.html">centrif &#8211; Centrifugal/Centripetel Force</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chase.html">chase &#8211; Speed Chase</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="">curvefit &#8211; Curve Fit program</a></li>
 <li class="toctree-l3"><a class="reference internal" href="deciconv.html">deciconv &#8211; Decimal Hour/Degree Converter</a></li>
 <li class="toctree-l3"><a class="reference internal" href="decifrac.html">decifrac &#8211; Decimal/Fraction Converter</a></li>
@@ -543,16 +550,18 @@ In both cases, sums are accumulated assuming an initial value of zero. After the
 <li class="toctree-l3"><a class="reference internal" href="formulae.html">formulae &#8211; Formula Library</a></li>
 <li class="toctree-l3"><a class="reference internal" href="graphs.html">graphs &#8211; Graphs</a></li>
 <li class="toctree-l3"><a class="reference internal" href="involute.html">involute &#8211; Involute of a Circle</a></li>
-<li class="toctree-l3"><a class="reference internal" href="numderiv.html">numderiv</a></li>
-<li class="toctree-l3"><a class="reference internal" href="polygon.html">polygon</a></li>
+<li class="toctree-l3"><a class="reference internal" href="numderiv.html">numderiv &#8211; Numbers and Functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="polygon.html">polygon &#8211; Polygon Dimensions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="primenos.html">primenos &#8211; Prime Number Calculator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="propcirc.html">propcirc &#8211; Circle, Properties of</a></li>
-<li class="toctree-l3"><a class="reference internal" href="randnum.html">randnum</a></li>
-<li class="toctree-l3"><a class="reference internal" href="rotaplot.html">rotaplot</a></li>
-<li class="toctree-l3"><a class="reference internal" href="simuleq.html">simuleq</a></li>
+<li class="toctree-l3"><a class="reference internal" href="quadrat.html">quadrat &#8211; Quadratic Equation Calculator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="randnum.html">randnum &#8211; Random Number Generator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rotaplot.html">rotaplot &#8211; Cartesian/Polar Plot Rotator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="simuleq.html">simuleq &#8211; Simultaneous Equation Calculator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="solutri.html">solutri &#8211; Triangles, solution of</a></li>
-<li class="toctree-l3"><a class="reference internal" href="speedtd.html">speedtd</a></li>
+<li class="toctree-l3"><a class="reference internal" href="speedtd.html">speedtd &#8211; Speed/Time/Distance Calculator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="trig.html">trig &#8211; Trigonometric Functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="unitvalu.html">unitvalu</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../navigation.html">navigation &#8211; Navigation and Astronomy</a></li>
@@ -589,7 +598,7 @@ In both cases, sums are accumulated assuming an initial value of zero. After the
     <div class="footer-wrapper">
       <div class="footer">
         <div class="left">
-          <a href="centrif.html" title="centrif – Centrifugal/Centripetel Force"
+          <a href="chase.html" title="chase – Speed Chase"
              >previous</a> |
           <a href="deciconv.html" title="deciconv – Decimal Hour/Degree Converter"
              >next</a> |

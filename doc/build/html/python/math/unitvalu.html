@@ -1,0 +1,220 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>unitvalu – Unit Value Comparator &mdash; HamCalc 2.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/agogo.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '2.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="HamCalc 2.1 documentation" href="../../index.html" />
+    <link rel="up" title="math – Math, Physics, Units Conversion" href="index.html" />
+    <link rel="next" title="navigation – Navigation and Astronomy" href="../navigation.html" />
+    <link rel="prev" title="trig – Trigonometric Functions" href="trig.html" /> 
+  </head>
+  <body>
+    <div class="header-wrapper">
+      <div class="header">
+        <div class="headertitle"><a
+          href="../../index.html">HamCalc 2.1 documentation</a></div>
+        <div class="rel">
+          <a href="trig.html" title="trig – Trigonometric Functions"
+             accesskey="P">previous</a> |
+          <a href="../navigation.html" title="navigation – Navigation and Astronomy"
+             accesskey="N">next</a> |
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a>
+        </div>
+       </div>
+    </div>
+
+    <div class="content-wrapper">
+      <div class="content">
+        <div class="document">
+            
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="unitvalu-unit-value-comparator">
+<h1>unitvalu &#8211; Unit Value Comparator<a class="headerlink" href="#unitvalu-unit-value-comparator" title="Permalink to this headline">¶</a></h1>
+<p>This seems to be a simple divide and sort kind of thing.
+Maybe it&#8217;s a shabby spreadsheet? A data visualization aid?</p>
+<p>Introduction:</p>
+<div class="highlight-python"><pre>UNIT VALUE COMPARATOR                                   by George Murphy VE3ERP
+  This program calculates Value per Unit (V/U) of one or more samples of any
+
+ given V/U combination, and sorts them for comparison. Typical V/U combinations
+ are:
+
+                     kw/hr          ohms/ft.       dB/watt
+                     lb./sq.ft.     mi./hr.        cents/kg.
+
+                or any other V/U combination you wish to specify.</pre>
+</div>
+<div class="section" id="analysis">
+<h2>Analysis<a class="headerlink" href="#analysis" title="Permalink to this headline">¶</a></h2>
+<p>The use case appears to be that the user defines two dimensions,
+the &#8220;value&#8221; and the &#8220;unit&#8221;.</p>
+<p>Then the user provides a sequence of value and unit pairs, <img class="math" src="../../_images/math/24f7c2d99a230b2dc7997d153d766acafb532408.png" alt="(v,u)"/>.</p>
+<p>The application computes <img class="math" src="../../_images/math/981326432d021d9895f00f697141e35c18809d0d.png" alt="v/u"/> for each value. It sorts
+the values into <img class="math" src="../../_images/math/981326432d021d9895f00f697141e35c18809d0d.png" alt="v/u"/> order, and identifies the max and min.
+Each value in the report also has two relative
+fractions (as a percent) compared to max
+and min of the pairs.</p>
+</div>
+<div class="section" id="implementation">
+<h2>Implementation<a class="headerlink" href="#implementation" title="Permalink to this headline">¶</a></h2>
+<p>This doesn&#8217;t seem to deserve a proper HamCalc calculation module for one
+formula.</p>
+<p>It&#8217;s a cute little module in <tt class="xref py py-mod docutils literal"><span class="pre">hamcalc.stdio</span></tt>.</p>
+</div>
+<div class="section" id="legacy-output">
+<h2>Legacy Output<a class="headerlink" href="#legacy-output" title="Permalink to this headline">¶</a></h2>
+<p>The calculated results shown below are incorrect.</p>
+<div class="highlight-python"><pre> ENTER: The term (plural) you wish used to express value (V)? nm
+
+ ENTER: The term (singular) you wish used to express units (U)? h
+
+Item   nm           Units (h)       nm per h
+
+Item A
+ ENTER: Number of (h) units? 25
+ ENTER: Value (nm)? 13
+
+  A:   13           25              =    0.5200</pre>
+</div>
+<p>Summary</p>
+<div class="highlight-python"><pre>Item   nm           Units (h)       nm per h              % of A    % of B
+  A:   54           9               =    6.0000             0.0%     0.01%
+  C:   60           10              =    6.0000             0.0%     0.01%
+  B:   40           6               =    6.6667             0.0%     0.01%</pre>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+        </div>
+        <div class="sidebar">
+          <h3>Table Of Contents</h3>
+          <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../background.html">Background</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../legacy.html">The HamCalc Legacy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../python_architecture.html">Python Architecture</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Python Modules</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../lib.html">lib &#8211; Supporting Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../radio.html">radio &#8211; Radio Design and Engineering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ham.html">ham &#8211; Ham Radio Operations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../electronics/index.html">electronics &#8211; General Electronics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../construction/index.html">construction &#8211; Construction and Related Projects</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">math &#8211; Math, Physics, Units Conversion</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="accelr.html">accelr &#8211; Acceleration Calculator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="baromtr.html">baromtr &#8211; Barometer Reading Equivalents</a></li>
+<li class="toctree-l3"><a class="reference internal" href="binary.html">binary &#8211; Decimal to Binary Converter</a></li>
+<li class="toctree-l3"><a class="reference internal" href="centrif.html">centrif &#8211; Centrifugal/Centripetel Force</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chase.html">chase &#8211; Speed Chase</a></li>
+<li class="toctree-l3"><a class="reference internal" href="curvefit.html">curvefit &#8211; Curve Fit program</a></li>
+<li class="toctree-l3"><a class="reference internal" href="deciconv.html">deciconv &#8211; Decimal Hour/Degree Converter</a></li>
+<li class="toctree-l3"><a class="reference internal" href="decifrac.html">decifrac &#8211; Decimal/Fraction Converter</a></li>
+<li class="toctree-l3"><a class="reference internal" href="equiv.html">equiv &#8211; Unit Conversions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="fibon.html">fibon &#8211; Fibonacci Series</a></li>
+<li class="toctree-l3"><a class="reference internal" href="formulae.html">formulae &#8211; Formula Library</a></li>
+<li class="toctree-l3"><a class="reference internal" href="graphs.html">graphs &#8211; Graphs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="involute.html">involute &#8211; Involute of a Circle</a></li>
+<li class="toctree-l3"><a class="reference internal" href="numderiv.html">numderiv &#8211; Numbers and Functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="polygon.html">polygon &#8211; Polygon Dimensions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="primenos.html">primenos &#8211; Prime Number Calculator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="propcirc.html">propcirc &#8211; Circle, Properties of</a></li>
+<li class="toctree-l3"><a class="reference internal" href="quadrat.html">quadrat &#8211; Quadratic Equation Calculator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="randnum.html">randnum &#8211; Random Number Generator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rotaplot.html">rotaplot &#8211; Cartesian/Polar Plot Rotator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="simuleq.html">simuleq &#8211; Simultaneous Equation Calculator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="solutri.html">solutri &#8211; Triangles, solution of</a></li>
+<li class="toctree-l3"><a class="reference internal" href="speedtd.html">speedtd &#8211; Speed/Time/Distance Calculator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="trig.html">trig &#8211; Trigonometric Functions</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="">unitvalu &#8211; Unit Value Comparator</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../navigation.html">navigation &#8211; Navigation and Astronomy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../calendar.html">calendar &#8211; Calendrical Calculations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../audio_photo.html">audio_photo &#8211; Audio, Sound and Photography</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../software.html">software &#8211; Software Engineering, Programming and Computers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../other.html">other &#8211; including Finance and Nutrition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../stdio.html">STDIO Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../rest.html">RESTful Web Services Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../cli.html">Command-Line Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../gui.html">GUI Interface</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../todo.html">The To Do List</a></li>
+</ul>
+
+          <h3 style="margin-top: 1.5em;">Search</h3>
+          <form class="search" action="../../search.html" method="get">
+            <input type="text" name="q" />
+            <input type="submit" value="Go" />
+            <input type="hidden" name="check_keywords" value="yes" />
+            <input type="hidden" name="area" value="default" />
+          </form>
+          <p class="searchtip" style="font-size: 90%">
+            Enter search terms or a module, class or function name.
+          </p>
+        </div>
+        <div class="clearer"></div>
+      </div>
+    </div>
+
+    <div class="footer-wrapper">
+      <div class="footer">
+        <div class="left">
+          <a href="trig.html" title="trig – Trigonometric Functions"
+             >previous</a> |
+          <a href="../navigation.html" title="navigation – Navigation and Astronomy"
+             >next</a> |
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |
+          <a href="../../genindex.html" title="General Index"
+             >index</a>
+            <br/>
+            <a href="../../_sources/python/math/unitvalu.txt"
+               rel="nofollow">Show Source</a>
+        </div>
+
+        <div class="right">
+          
+    <div class="footer">
+        &copy; Copyright 2013, S.Lott.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2b1.
+    </div>
+        </div>
+        <div class="clearer"></div>
+      </div>
+    </div>
+
+  </body>
+</html>

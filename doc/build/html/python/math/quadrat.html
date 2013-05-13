@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>quadrat &mdash; HamCalc 2.1 documentation</title>
+    <title>quadrat – Quadratic Equation Calculator &mdash; HamCalc 2.1 documentation</title>
     
     <link rel="stylesheet" href="../../_static/agogo.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
@@ -54,9 +54,128 @@
         <div class="bodywrapper">
           <div class="body">
             
-  <div class="section" id="quadrat">
-<h1>quadrat<a class="headerlink" href="#quadrat" title="Permalink to this headline">¶</a></h1>
-<p>Quadratic Equation Calculator</p>
+  <div class="section" id="quadrat-quadratic-equation-calculator">
+<h1>quadrat &#8211; Quadratic Equation Calculator<a class="headerlink" href="#quadrat-quadratic-equation-calculator" title="Permalink to this headline">¶</a></h1>
+<p>From the introduction</p>
+<div class="highlight-python"><pre>QUADRATIC EQUATION CALCULATOR                           by George Murphy VE3ERP
+
+This programs solves quadratic equations
+
+Quadratic equation: ax²+bx+c= 0
+
+This program calculates 2 values of x:
+ x1 when b²-4ac &gt;= 0  (if b²-4ac &lt; 0 THEN x1 cannot be calculated)
+ x2 when b²+4ac &gt;= 0  (if b²-4ac &lt; 0 THEN x2 cannot be calculated)
+    (ref. Machinery&#x27;s Handbook, revised 21st edition, page 118)</pre>
+</div>
+<div class="section" id="analysis">
+<h2>Analysis<a class="headerlink" href="#analysis" title="Permalink to this headline">¶</a></h2>
+<p>Solution to this:</p>
+<div class="math">
+<p><img src="../../_images/math/ddb3d507f915cd2442ed804a5b2986dc7b9ae346.png" alt="0 = Ax^2+Bx+C"/></p>
+</div><p>is this:</p>
+<div class="math">
+<p><img src="../../_images/math/5f99d1eac6e6899d3f898f1805c41e079f0df10d.png" alt="x = \frac{-B \pm \sqrt{B^2-4AC}}{2A}"/></p>
+</div><p>This has some numeric stability issues. It&#8217;s less than ideal as
+a general solution.</p>
+<p>Example of badly-behaved quadratic.</p>
+<div class="math">
+<p><img src="../../_images/math/4f9ee1d56de4b283070cc50a83b2b358189cdba9.png" alt="0 = x^2 + 100000 + 1"/></p>
+</div><p>Correct answers are</p>
+<ul class="simple">
+<li>x_1 = -99999.99999</li>
+<li>x_2 = -1.000000000e-05</li>
+</ul>
+<p>The <tt class="docutils literal"><span class="pre">x_2</span></tt> value will show error bits because of the instability
+issue.</p>
+<p>The preferred solution is this.</p>
+<div class="math">
+<p><img src="../../_images/math/ab6681d53d8adf99c79a0718eba3b45aea6ac11f.png" alt="q = -\frac{1}{2} ( B + \operatorname{sgn}(B)\sqrt{B^2-4AC} )
+
+x_1 = \frac{q}{A}
+
+x_2 = \frac{C}{q}"/></p>
+</div><p>Where <tt class="xref py py-func docutils literal"><span class="pre">sgn()</span></tt> is the sign function: <img class="math" src="../../_images/math/91d2df964e65e44919d6fa515a6d0f05a3d010b7.png" alt="1 \text{ if } B \geq 0 \text{ else } -1"/>.</p>
+<p>Here&#8217;s an example of <strong>really</strong> badly-behaved quadratic. This requires
+quad-precision! We don&#8217;t expect to solve this with the built-in
+Python float type.</p>
+<div class="math">
+<p><img src="../../_images/math/9efe2ee94e11b3b0c89f69795d05759416adca51.png" alt="0 = 94906265.625x^2 - 189812534x + 94906268.375"/></p>
+</div><p>Correct answers are</p>
+<ul class="simple">
+<li>x_1 = 1.000000028975958</li>
+<li>x_2 = 1.000000000000000</li>
+</ul>
+<p>Common incorrect answers for modern 80-bit floating-point processors
+are x_1 and x_2 = 1.000000014487979.</p>
+</div>
+<div class="section" id="implementation">
+<h2>Implementation<a class="headerlink" href="#implementation" title="Permalink to this headline">¶</a></h2>
+<p>The <tt class="xref py py-mod docutils literal"><span class="pre">cmath</span></tt> package includes the <tt class="xref py py-func docutils literal"><span class="pre">cmath.sqrt()</span></tt> which properly
+returns complex values instead of raising an exception.</p>
+<span class="target" id="module-hamcalc.math.quadrat"></span><p>hamcalc.math.quadrat &#8211; Quadratic Equation Calculator</p>
+<p>The standard formula has a minor numeric stability issue.</p>
+<p>Instead of using this:</p>
+<div class="math">
+<p><img src="../../_images/math/5f99d1eac6e6899d3f898f1805c41e079f0df10d.png" alt="x = \frac{-B \pm \sqrt{B^2-4AC}}{2A}"/></p>
+</div><p>We&#8217;ll use the following alternative.</p>
+<div class="math">
+<p><img src="../../_images/math/ab6681d53d8adf99c79a0718eba3b45aea6ac11f.png" alt="q = -\frac{1}{2} ( B + \operatorname{sgn}(B)\sqrt{B^2-4AC} )
+
+x_1 = \frac{q}{A}
+
+x_2 = \frac{C}{q}"/></p>
+</div><p>Where <tt class="xref py py-func docutils literal"><span class="pre">sgn()</span></tt> is the sign function: <img class="math" src="../../_images/math/91d2df964e65e44919d6fa515a6d0f05a3d010b7.png" alt="1 \text{ if } B \geq 0 \text{ else } -1"/>.</p>
+<p>Test Cases</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">hamcalc.math.quadrat</span> <span class="kn">as</span> <span class="nn">quadratic</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">math</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">quadratic</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">3</span> <span class="p">)</span>
+<span class="go">(-3.0, -1.0)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">quadratic</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span> <span class="p">)</span>
+<span class="go">((-0-1j), (-0+1j))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">quadratic</span><span class="o">.</span><span class="n">solve_real</span><span class="p">(</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span> <span class="p">)</span> 
+<span class="gt">Traceback (most recent call last):</span>
+  File <span class="nb">&quot;/Library/Frameworks/Python.framework/Versions/3.2/lib/python3.2/doctest.py&quot;</span>, line <span class="m">1288</span>, in <span class="n">__run</span>
+    <span class="n">compileflags</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">test</span><span class="o">.</span><span class="n">globs</span><span class="p">)</span>
+  File <span class="nb">&quot;&lt;doctest default[3]&gt;&quot;</span>, line <span class="m">1</span>, in <span class="n">&lt;module&gt;</span>
+    <span class="n">quadratic</span><span class="o">.</span><span class="n">solve_real</span><span class="p">(</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span> <span class="p">)</span> 
+  File <span class="nb">&quot;/Users/slott/github/local/HamCalc-2.1/python/hamcalc/math/quadrat/__init__.py&quot;</span>, line <span class="m">51</span>, in <span class="n">solve_real</span>
+    <span class="k">raise</span> <span class="n">Error</span><span class="p">(</span> <span class="s">&quot;No Real Roots&quot;</span> <span class="p">)</span>
+<span class="gr">hamcalc.math.quadrat.Error</span>: <span class="n">No real roots</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">quadratic</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.000015</span> <span class="p">)</span>
+<span class="go">(-200.000000075, 7.4999999971875e-08)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">quadratic</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">100000</span><span class="p">,</span> <span class="mi">1</span> <span class="p">)</span>
+<span class="go">(-99999.99999, -1.0000000001000001e-05)</span>
+</pre></div>
+</div>
+<p>The classic formula provides a less accurate value of -1.0000003385357559e-05 instead of
+the closer-to correct -1.0000000001000001e-05.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">100000</span><span class="p">,</span> <span class="mi">1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="p">(</span><span class="o">-</span><span class="n">b</span><span class="o">+</span><span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">b</span><span class="o">*</span><span class="n">b</span><span class="o">-</span><span class="mi">4</span><span class="o">*</span><span class="n">a</span><span class="o">*</span><span class="n">c</span><span class="p">))</span><span class="o">/</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">a</span><span class="p">)</span>
+<span class="go">-1.0000003385357559e-05</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="p">(</span><span class="o">-</span><span class="n">b</span><span class="o">-</span><span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">b</span><span class="o">*</span><span class="n">b</span><span class="o">-</span><span class="mi">4</span><span class="o">*</span><span class="n">a</span><span class="o">*</span><span class="n">c</span><span class="p">))</span><span class="o">/</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">a</span><span class="p">)</span>
+<span class="go">-99999.99999</span>
+</pre></div>
+</div>
+<p>We don&#8217;t expect the folllowing to work correctly at all.
+This will produce known incorrect results of
+<tt class="docutils literal"><span class="pre">(1.0000000144879793,</span> <span class="pre">1.000000014487979)</span></tt>.
+The test code is here, but it&#8217;s skipped as far as unit testing
+for validation.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">quadratic</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span> <span class="mf">94906265.625</span><span class="p">,</span> <span class="o">-</span><span class="mf">189812534.0</span><span class="p">,</span> <span class="mf">94906268.375</span> <span class="p">)</span> 
+<span class="go">(1.000000028975958, 1.0)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="legacy-quirks">
+<h2>Legacy Quirks<a class="headerlink" href="#legacy-quirks" title="Permalink to this headline">¶</a></h2>
+<p>The introduction is wrong. <img class="math" src="../../_images/math/0ba08758cbe8f72d5f591045cb30a5ef054fac00.png" alt="B^2+4AC"/> is irrelevant.</p>
+<p>It should say something like:</p>
+<div class="highlight-python"><pre>When b²-4ac &gt;= 0, computes x1 and x2 as real values
+When b²-4ac &lt; 0, the values of x1 and x2 are complex numbers</pre>
+</div>
+<p>The results <strong>can</strong> be calculated rather simply.</p>
+</div>
 </div>
 
 
@@ -83,6 +202,7 @@
 <li class="toctree-l3"><a class="reference internal" href="baromtr.html">baromtr &#8211; Barometer Reading Equivalents</a></li>
 <li class="toctree-l3"><a class="reference internal" href="binary.html">binary &#8211; Decimal to Binary Converter</a></li>
 <li class="toctree-l3"><a class="reference internal" href="centrif.html">centrif &#8211; Centrifugal/Centripetel Force</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chase.html">chase &#8211; Speed Chase</a></li>
 <li class="toctree-l3"><a class="reference internal" href="curvefit.html">curvefit &#8211; Curve Fit program</a></li>
 <li class="toctree-l3"><a class="reference internal" href="deciconv.html">deciconv &#8211; Decimal Hour/Degree Converter</a></li>
 <li class="toctree-l3"><a class="reference internal" href="decifrac.html">decifrac &#8211; Decimal/Fraction Converter</a></li>
@@ -95,13 +215,14 @@
 <li class="toctree-l3"><a class="reference internal" href="polygon.html">polygon &#8211; Polygon Dimensions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="primenos.html">primenos &#8211; Prime Number Calculator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="propcirc.html">propcirc &#8211; Circle, Properties of</a></li>
-<li class="toctree-l3 current"><a class="current reference internal" href="">quadrat</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="">quadrat &#8211; Quadratic Equation Calculator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="randnum.html">randnum &#8211; Random Number Generator</a></li>
-<li class="toctree-l3"><a class="reference internal" href="rotaplot.html">rotaplot</a></li>
-<li class="toctree-l3"><a class="reference internal" href="simuleq.html">simuleq</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rotaplot.html">rotaplot &#8211; Cartesian/Polar Plot Rotator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="simuleq.html">simuleq &#8211; Simultaneous Equation Calculator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="solutri.html">solutri &#8211; Triangles, solution of</a></li>
-<li class="toctree-l3"><a class="reference internal" href="speedtd.html">speedtd</a></li>
+<li class="toctree-l3"><a class="reference internal" href="speedtd.html">speedtd &#8211; Speed/Time/Distance Calculator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="trig.html">trig &#8211; Trigonometric Functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="unitvalu.html">unitvalu</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../navigation.html">navigation &#8211; Navigation and Astronomy</a></li>

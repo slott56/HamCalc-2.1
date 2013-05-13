@@ -1,4 +1,4 @@
-Results of doctest builder run on 2013-05-11 21:51:50
+Results of doctest builder run on 2013-05-13 08:58:15
 =====================================================
 
 Document: python/math/baromtr
@@ -20,9 +20,17 @@ Test passed.
 Document: python/math/curvefit
 ------------------------------
 1 items passed all tests:
-  31 tests in default
-31 tests in 1 items.
-31 passed and 0 failed.
+  34 tests in default
+34 tests in 1 items.
+34 passed and 0 failed.
+Test passed.
+
+Document: python/math/quadrat
+-----------------------------
+1 items passed all tests:
+  10 tests in default
+10 tests in 1 items.
+10 passed and 0 failed.
 Test passed.
 
 Document: python/electronics/awgexact
@@ -41,20 +49,20 @@ Document: python/math/trig
 7 passed and 0 failed.
 Test passed.
 
-Document: python/math/decifrac
-------------------------------
-1 items passed all tests:
-   7 tests in default
-7 tests in 1 items.
-7 passed and 0 failed.
-Test passed.
-
 Document: python/math/centrif
 -----------------------------
 1 items passed all tests:
   13 tests in default
 13 tests in 1 items.
 13 passed and 0 failed.
+Test passed.
+
+Document: python/math/decifrac
+------------------------------
+1 items passed all tests:
+   7 tests in default
+7 tests in 1 items.
+7 passed and 0 failed.
 Test passed.
 
 Document: python/math/accelr
@@ -68,9 +76,9 @@ Test passed.
 Document: python/math/equiv
 ---------------------------
 1 items passed all tests:
-  43 tests in default
-43 tests in 1 items.
-43 passed and 0 failed.
+  45 tests in default
+45 tests in 1 items.
+45 passed and 0 failed.
 Test passed.
 
 Document: python/math/primenos
@@ -79,6 +87,14 @@ Document: python/math/primenos
    7 tests in default
 7 tests in 1 items.
 7 passed and 0 failed.
+Test passed.
+
+Document: python/math/rotaplot
+------------------------------
+1 items passed all tests:
+  11 tests in default
+11 tests in 1 items.
+11 passed and 0 failed.
 Test passed.
 
 Document: python/math/solutri
@@ -92,9 +108,17 @@ Test passed.
 Document: python/math/involute
 ------------------------------
 1 items passed all tests:
-   6 tests in default
-6 tests in 1 items.
-6 passed and 0 failed.
+   7 tests in default
+7 tests in 1 items.
+7 passed and 0 failed.
+Test passed.
+
+Document: python/math/speedtd
+-----------------------------
+1 items passed all tests:
+   3 tests in default
+3 tests in 1 items.
+3 passed and 0 failed.
 Test passed.
 
 Document: python/math/fibon
@@ -108,9 +132,9 @@ Test passed.
 Document: python/math/propcirc
 ------------------------------
 1 items passed all tests:
-  13 tests in default
-13 tests in 1 items.
-13 passed and 0 failed.
+  14 tests in default
+14 tests in 1 items.
+14 passed and 0 failed.
 Test passed.
 
 Document: python/math/deciconv
@@ -131,7 +155,7 @@ Test passed.
 
 Doctest summary
 ===============
-  203 tests
+  234 tests
     0 failures in tests
     0 failures in setup code
     0 failures in cleanup code

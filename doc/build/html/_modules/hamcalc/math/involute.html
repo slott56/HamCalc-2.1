@@ -56,8 +56,16 @@
 <span class="sd">Test Cases</span>
 
 <span class="sd">&gt;&gt;&gt; import hamcalc.math.involute as involute</span>
+<span class="sd">&gt;&gt;&gt; import math</span>
 <span class="sd">&gt;&gt;&gt; involute.involute( radius=91 )</span>
-<span class="sd">{ radius: 91, diameter: 182, baseline=281.0, involute:4000.0 }</span>
+<span class="sd">{&#39;diameter&#39;: 182, &#39;radius&#39;: 91, &#39;baseline&#39;: 285.88493147667117, &#39;involute&#39;: 449.0670002495658}</span>
+<span class="sd">&gt;&gt;&gt; i= involute.involute( radius=91, phi=math.radians(144) )</span>
+<span class="sd">&gt;&gt;&gt; i</span>
+<span class="sd">{&#39;diameter&#39;: 182, &#39;phi&#39;: 2.5132741228718345, &#39;CO&#39;: 316.5057744165644, &#39;baseline&#39;: 285.88493147667117, &#39;COE&#39;: 1.2791655754811324, &#39;OCE&#39;: 0.2916307513137641, &#39;CE&#39;: 303.1417246751578, &#39;radius&#39;: 91, &#39;C_Y&#39;: -208.05170374782548, &#39;C_X&#39;: 238.51707235889052, &#39;involute&#39;: 449.0670002495658}</span>
+<span class="sd">&gt;&gt;&gt; math.degrees( i.OCE )</span>
+<span class="sd">16.70921122650797</span>
+<span class="sd">&gt;&gt;&gt; math.degrees( i.COE )</span>
+<span class="sd">73.29078877349203</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">from</span> <span class="nn">hamcalc.lib</span> <span class="kn">import</span> <span class="n">AttrDict</span>
@@ -73,9 +81,9 @@
 <span class="sd">        involute.</span>
 
 <span class="sd">        -   radius, given</span>
-<span class="sd">        -   diameter, :math:`2 \times r`</span>
-<span class="sd">        -   baseline, :math:`pi \times r`</span>
-<span class="sd">        -   involute, :math:`\frac{1}{2} \pi^2 r`</span>
+<span class="sd">        -   diameter, :math:`2 \\times r`</span>
+<span class="sd">        -   baseline, :math:`\\pi \\times r`</span>
+<span class="sd">        -   involute circumference</span>
 
 <span class="sd">        If Phi is provided</span>
 
@@ -90,16 +98,16 @@
     <span class="n">args</span><span class="o">.</span><span class="n">radius</span><span class="o">=</span> <span class="n">radius</span>
     <span class="n">args</span><span class="o">.</span><span class="n">diameter</span> <span class="o">=</span> <span class="mi">2</span><span class="o">*</span><span class="n">args</span><span class="o">.</span><span class="n">radius</span>
     <span class="n">args</span><span class="o">.</span><span class="n">baseline</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span><span class="o">*</span><span class="n">args</span><span class="o">.</span><span class="n">radius</span>
-    <span class="n">args</span><span class="o">.</span><span class="n">involute</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">radius</span><span class="o">*</span><span class="n">math</span><span class="o">.</span><span class="n">pi</span><span class="o">^</span><span class="mi">2</span><span class="o">/</span><span class="mi">2</span>
+    <span class="n">args</span><span class="o">.</span><span class="n">involute</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">radius</span><span class="o">*</span><span class="n">math</span><span class="o">.</span><span class="n">pi</span><span class="o">**</span><span class="mi">2</span><span class="o">/</span><span class="mi">2</span>
 
     <span class="k">if</span> <span class="n">phi</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
         <span class="n">args</span><span class="o">.</span><span class="n">phi</span><span class="o">=</span> <span class="n">phi</span>
         <span class="n">args</span><span class="o">.</span><span class="n">C_X</span><span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">radius</span><span class="o">*</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">phi</span><span class="p">)</span><span class="o">-</span><span class="n">phi</span><span class="o">*</span><span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">phi</span><span class="p">))</span>
         <span class="n">args</span><span class="o">.</span><span class="n">C_Y</span><span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">radius</span><span class="o">*</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">phi</span><span class="p">)</span><span class="o">-</span><span class="n">phi</span><span class="o">*</span><span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">phi</span><span class="p">))</span>
-        <span class="n">args</span><span class="o">.</span><span class="n">CO</span><span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span> <span class="n">args</span><span class="o">.</span><span class="n">C_X</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">args</span><span class="o">.</span><span class="n">C__Y</span><span class="o">**</span><span class="mi">2</span> <span class="p">)</span>
+        <span class="n">args</span><span class="o">.</span><span class="n">CO</span><span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span> <span class="n">args</span><span class="o">.</span><span class="n">C_X</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">args</span><span class="o">.</span><span class="n">C_Y</span><span class="o">**</span><span class="mi">2</span> <span class="p">)</span>
         <span class="n">args</span><span class="o">.</span><span class="n">CE</span><span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span> <span class="n">args</span><span class="o">.</span><span class="n">CO</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="n">args</span><span class="o">.</span><span class="n">radius</span><span class="o">**</span><span class="mi">2</span> <span class="p">)</span>
         <span class="n">args</span><span class="o">.</span><span class="n">OCE</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">atan2</span><span class="p">(</span> <span class="n">args</span><span class="o">.</span><span class="n">radius</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">CE</span> <span class="p">)</span>
-        <span class="n">args</span><span class="o">.</span><span class="n">COE</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">4</span><span class="o">-</span><span class="n">args</span><span class="o">.</span><span class="n">OCE</span>
+        <span class="n">args</span><span class="o">.</span><span class="n">COE</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">2</span><span class="o">-</span><span class="n">args</span><span class="o">.</span><span class="n">OCE</span>
 
     <span class="k">return</span> <span class="n">args</span></div>
 </pre></div>

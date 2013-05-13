@@ -378,9 +378,9 @@ class Program_Menu( Menu ):
         else:
             try:
                 program= self.item_list[choice]
-                runpy.run_module( 'hamcalc.stdio.' + program.name )
             except IndexError:
-                pass
+                return
+            runpy.run_module( 'hamcalc.stdio.' + program.name )
 
 class Topic_Index( Menu ):
     """The Hamdex topic index.

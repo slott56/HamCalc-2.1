@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>rotaplot &mdash; HamCalc 2.1 documentation</title>
+    <title>rotaplot – Cartesian/Polar Plot Rotator &mdash; HamCalc 2.1 documentation</title>
     
     <link rel="stylesheet" href="../../_static/agogo.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
@@ -25,7 +25,7 @@
     <script type="text/javascript" src="../../_static/doctools.js"></script>
     <link rel="top" title="HamCalc 2.1 documentation" href="../../index.html" />
     <link rel="up" title="math – Math, Physics, Units Conversion" href="index.html" />
-    <link rel="next" title="simuleq" href="simuleq.html" />
+    <link rel="next" title="simuleq – Simultaneous Equation Calculator" href="simuleq.html" />
     <link rel="prev" title="randnum – Random Number Generator" href="randnum.html" /> 
   </head>
   <body>
@@ -36,7 +36,7 @@
         <div class="rel">
           <a href="randnum.html" title="randnum – Random Number Generator"
              accesskey="P">previous</a> |
-          <a href="simuleq.html" title="simuleq"
+          <a href="simuleq.html" title="simuleq – Simultaneous Equation Calculator"
              accesskey="N">next</a> |
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |
@@ -54,9 +54,8 @@
         <div class="bodywrapper">
           <div class="body">
             
-  <div class="section" id="rotaplot">
-<h1>rotaplot<a class="headerlink" href="#rotaplot" title="Permalink to this headline">¶</a></h1>
-<p>Cartesian/Polar Plot Rotator</p>
+  <div class="section" id="rotaplot-cartesian-polar-plot-rotator">
+<h1>rotaplot &#8211; Cartesian/Polar Plot Rotator<a class="headerlink" href="#rotaplot-cartesian-polar-plot-rotator" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="analysis">
 <h2>Analysis<a class="headerlink" href="#analysis" title="Permalink to this headline">¶</a></h2>
 <p>From the introduction:</p>
@@ -77,6 +76,145 @@
  Coordinates may be entered in any unit of measure. All entries must be in the
  same units.</pre>
 </div>
+<p>This is a set of common transformations.</p>
+<ol class="arabic">
+<li><p class="first">Input conversion.</p>
+<ul>
+<li><p class="first">Polar <img class="math" src="../../_images/math/e31f416f2b44eebe61679d8344cf8bf35feb1f73.png" alt="(r, \theta)"/> to Cartesian <img class="math" src="../../_images/math/e53b1fe25be1c679117fb44a6a886fe1247d189a.png" alt="(x,y)"/></p>
+<div class="math">
+<p><img src="../../_images/math/30c858db24e55e106e87a5f5c7530fac5ee30b58.png" alt="x = r \cos \theta
+
+y = r \sin \theta"/></p>
+</div></li>
+<li><p class="first">Cartesian to Polar</p>
+<div class="math">
+<p><img src="../../_images/math/72431a2ee3b3ed354f1f63459cbda3eb13fa19af.png" alt="\theta = \arctan \frac{y}{x}
+
+r = \sqrt{ x^2 + y^2 }"/></p>
+</div></li>
+</ul>
+</li>
+<li><p class="first">Rotation through angle, <em>a</em>.</p>
+<div class="math">
+<p><img src="../../_images/math/144dd9d05adddf6ad4077b557c78980f0eb91ac8.png" alt="x \prime = r \cos { \theta + a }
+
+y \prime = r \sin { \theta + a }"/></p>
+</div></li>
+<li><p class="first">Display Cartesian and Polar.</p>
+</li>
+</ol>
+<p>Output format:</p>
+<div class="highlight-python"><pre>┌─────────────── Cartesion Plot ───────────────┐│┌──────── Polar Plot ────────┐
+┌───── rotate from ────┐ ┌───── rotate to ─────┐│            ┌─ rotate angle ─┐
+     -x-          -y-        -x-          -y-   │    Vector  ┌ from ┐  ┌─ to ─┐
+───────────────────────────────────────────────────────────────────────────────┼</pre>
+</div>
+<p>The display includes proper <img class="math" src="../../_images/math/d3660f86b5757251242d75f501d279335b43148e.png" alt="(\theta + a) \mod 360"/> of the resulting angle.</p>
+</div>
+<div class="section" id="implementation">
+<h2>Implementation<a class="headerlink" href="#implementation" title="Permalink to this headline">¶</a></h2>
+<p>Note that polar to Cartesian and Cartersian to polar conversions are
+part of <tt class="xref py py-mod docutils literal"><span class="pre">cmath</span></tt>. These apply to the complex plane.</p>
+<span class="target" id="module-hamcalc.math.rotaplot"></span><p>hamcalc.math.rotaplot &#8211; Cartesian/Polar Plot Rotator</p>
+<p>Conversions between Polar and Cartesian.</p>
+<p>Plus rotation of polar coordinates with proper <img class="math" src="../../_images/math/b31cdaf941d6f8bb5354e4574fe83f77ee9abed7.png" alt="( heta + angle) \mod 2\pi"/>.</p>
+<p>Test Cases</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">hamcalc.math.rotaplot</span> <span class="kn">as</span> <span class="nn">rotaplot</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">math</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">rotaplot</span><span class="o">.</span><span class="n">cartesian_to_polar</span><span class="p">(</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">7</span> <span class="p">)</span>
+<span class="go">(8.602325267042627, 0.9505468408120752)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">r</span><span class="p">,</span> <span class="n">theta</span> <span class="o">=</span> <span class="n">_</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">math</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span>
+<span class="go">54.46232220802562</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">rotaplot</span><span class="o">.</span><span class="n">polar_to_cartesian</span><span class="p">(</span> <span class="mf">8.602</span><span class="p">,</span> <span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="mf">54.46</span><span class="p">)</span> <span class="p">)</span>
+<span class="go">(5.000094638769196, 6.999532670353896)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">rotaplot</span><span class="o">.</span><span class="n">rotate</span><span class="p">(</span> <span class="mf">8.602</span><span class="p">,</span> <span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="mf">54.46</span><span class="p">),</span> <span class="o">-</span><span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="mf">54.46</span><span class="p">)</span> <span class="p">)</span>
+<span class="go">(8.602, 0.0)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">rotaplot</span><span class="o">.</span><span class="n">polar_to_cartesian</span><span class="p">(</span> <span class="o">*</span><span class="n">_</span> <span class="p">)</span>
+<span class="go">(8.602, 0.0)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">rotaplot</span><span class="o">.</span><span class="n">rotate</span><span class="p">(</span> <span class="mf">8.602</span><span class="p">,</span> <span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="mf">54.46</span><span class="p">),</span> <span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="mf">35.54</span><span class="p">)</span> <span class="p">)</span>
+<span class="go">(8.602, 1.5707963267948966)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">r</span><span class="p">,</span> <span class="n">theta</span> <span class="o">=</span> <span class="n">_</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">math</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span>
+<span class="go">90.0</span>
+</pre></div>
+</div>
+<dl class="function">
+<dt id="hamcalc.math.rotaplot.cartesian_to_polar">
+<tt class="descclassname">hamcalc.math.rotaplot.</tt><tt class="descname">cartesian_to_polar</tt><big>(</big><em>x</em>, <em>y</em><big>)</big><a class="reference internal" href="../../_modules/hamcalc/math/rotaplot.html#cartesian_to_polar"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.math.rotaplot.cartesian_to_polar" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert Cartesian (x, y) to polar (r, theta)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>x</strong> &#8211; x</li>
+<li><strong>y</strong> &#8211; y</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">r,theta coordinates in radians</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="hamcalc.math.rotaplot.polar_to_cartesian">
+<tt class="descclassname">hamcalc.math.rotaplot.</tt><tt class="descname">polar_to_cartesian</tt><big>(</big><em>r</em>, <em>theta</em><big>)</big><a class="reference internal" href="../../_modules/hamcalc/math/rotaplot.html#polar_to_cartesian"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.math.rotaplot.polar_to_cartesian" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert polar (r, theta) to Cartesian (x, y)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>r</strong> &#8211; radius length</li>
+<li><strong>theta</strong> &#8211; angle in radians</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">x,y coordinates</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="hamcalc.math.rotaplot.rotate">
+<tt class="descclassname">hamcalc.math.rotaplot.</tt><tt class="descname">rotate</tt><big>(</big><em>r</em>, <em>theta</em>, <em>angle</em><big>)</big><a class="reference internal" href="../../_modules/hamcalc/math/rotaplot.html#rotate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.math.rotaplot.rotate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Rotate polar coordinates, (r, theta) through angle
+degrees. This does <img class="math" src="../../_images/math/b31cdaf941d6f8bb5354e4574fe83f77ee9abed7.png" alt="( heta + angle) \mod 2\pi"/>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>r</strong> &#8211; radius length</li>
+<li><strong>theta</strong> &#8211; angle in radians</li>
+<li><strong>angle</strong> &#8211; offset angle in radians</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">r,theta coordinates after rotation.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="legacy-quirks">
+<h2>Legacy Quirks<a class="headerlink" href="#legacy-quirks" title="Permalink to this headline">¶</a></h2>
+<p>Consider this line:</p>
+<div class="highlight-python"><pre>1100 W=ATN(ABS(X)/ABS(Y))</pre>
+</div>
+<p>That appears to be completely incorrect.</p>
+<p>See <a class="reference external" href="http://en.wikipedia.org/wiki/Inverse_trigonometric_functions#Application:_finding_the_angle_of_a_right_triangle">http://en.wikipedia.org/wiki/Inverse_trigonometric_functions#Application:_finding_the_angle_of_a_right_triangle</a></p>
+<p>The general approach is &#8220;opposite&#8221;/&#8221;adjacent&#8221;, <img class="math" src="../../_images/math/57ab75c3d47a92edb9d4d3557c4d316742010cf9.png" alt="y/x"/>.</p>
+<p>Lines 1180 and 1190 recompute the input values X, and Y. Not really necessary, but there it is.</p>
+<p>Finally, there&#8217;s a bunch of clever repositioning of the cursor to fill in the nice tabular display of points. Not easy to do with simple stdio functions.</p>
 </div>
 </div>
 
@@ -104,6 +242,7 @@
 <li class="toctree-l3"><a class="reference internal" href="baromtr.html">baromtr &#8211; Barometer Reading Equivalents</a></li>
 <li class="toctree-l3"><a class="reference internal" href="binary.html">binary &#8211; Decimal to Binary Converter</a></li>
 <li class="toctree-l3"><a class="reference internal" href="centrif.html">centrif &#8211; Centrifugal/Centripetel Force</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chase.html">chase &#8211; Speed Chase</a></li>
 <li class="toctree-l3"><a class="reference internal" href="curvefit.html">curvefit &#8211; Curve Fit program</a></li>
 <li class="toctree-l3"><a class="reference internal" href="deciconv.html">deciconv &#8211; Decimal Hour/Degree Converter</a></li>
 <li class="toctree-l3"><a class="reference internal" href="decifrac.html">decifrac &#8211; Decimal/Fraction Converter</a></li>
@@ -116,13 +255,14 @@
 <li class="toctree-l3"><a class="reference internal" href="polygon.html">polygon &#8211; Polygon Dimensions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="primenos.html">primenos &#8211; Prime Number Calculator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="propcirc.html">propcirc &#8211; Circle, Properties of</a></li>
-<li class="toctree-l3"><a class="reference internal" href="quadrat.html">quadrat</a></li>
+<li class="toctree-l3"><a class="reference internal" href="quadrat.html">quadrat &#8211; Quadratic Equation Calculator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="randnum.html">randnum &#8211; Random Number Generator</a></li>
-<li class="toctree-l3 current"><a class="current reference internal" href="">rotaplot</a></li>
-<li class="toctree-l3"><a class="reference internal" href="simuleq.html">simuleq</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="">rotaplot &#8211; Cartesian/Polar Plot Rotator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="simuleq.html">simuleq &#8211; Simultaneous Equation Calculator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="solutri.html">solutri &#8211; Triangles, solution of</a></li>
-<li class="toctree-l3"><a class="reference internal" href="speedtd.html">speedtd</a></li>
+<li class="toctree-l3"><a class="reference internal" href="speedtd.html">speedtd &#8211; Speed/Time/Distance Calculator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="trig.html">trig &#8211; Trigonometric Functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="unitvalu.html">unitvalu</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../navigation.html">navigation &#8211; Navigation and Astronomy</a></li>
@@ -161,7 +301,7 @@
         <div class="left">
           <a href="randnum.html" title="randnum – Random Number Generator"
              >previous</a> |
-          <a href="simuleq.html" title="simuleq"
+          <a href="simuleq.html" title="simuleq – Simultaneous Equation Calculator"
              >next</a> |
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |

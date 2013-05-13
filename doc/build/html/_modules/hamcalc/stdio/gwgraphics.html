@@ -89,9 +89,6 @@
 <span class="kn">import</span> <span class="nn">logging</span>
 <span class="kn">import</span> <span class="nn">sys</span>
 
-<span class="k">def</span> <span class="nf">degrees</span><span class="p">(</span> <span class="n">radians</span> <span class="p">):</span>
-    <span class="k">return</span> <span class="mi">180</span><span class="o">*</span><span class="n">radians</span><span class="o">/</span><span class="n">math</span><span class="o">.</span><span class="n">pi</span>
-
 <div class="viewcode-block" id="GWGraphics"><a class="viewcode-back" href="../../../python/stdio.html#hamcalc.stdio.gwgraphics.GWGraphics">[docs]</a><span class="k">class</span> <span class="nc">GWGraphics</span><span class="p">():</span>
     <span class="sd">&quot;&quot;&quot;Note (0,0) is top-left. (319,199) is below and to the right.</span>
 <span class="sd">    Because of the 4:3 aspect ratio issue, screens are described</span>
@@ -110,11 +107,17 @@
 <div class="viewcode-block" id="GWGraphics.SCREEN"><a class="viewcode-back" href="../../../python/stdio.html#hamcalc.stdio.gwgraphics.GWGraphics.SCREEN">[docs]</a>    <span class="k">def</span> <span class="nf">SCREEN</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">mode</span> <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        SCREEN 0 ● Text mode only</span>
+
 <span class="sd">        SCREEN 1 ● 320 × 200 pixel medium-resolution graphics ● 80 x 25 text</span>
+
 <span class="sd">        SCREEN 2 ● 640 × 200 pixel high-resolution graphics ● 40 × 25 text</span>
+
 <span class="sd">        SCREEN 7 ● 320 × 200 pixel medium-resolution graphics ● 40 × 25 text</span>
+
 <span class="sd">        SCREEN 8 ● 640 × 200 pixel high-resolution graphics ● 80 × 25 text</span>
+
 <span class="sd">        SCREEN 9 ● 640 × 350 pixel enhanced-resolution graphics ● 80 × 25 text</span>
+
 <span class="sd">        SCREEN 10 ● 640 × 350 enhanced-resolution graphics ● 80 × 25 text</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">mode</span> <span class="o">==</span> <span class="mi">8</span><span class="p">:</span>
@@ -125,7 +128,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span> <span class="s">&quot;PRINT </span><span class="si">%r</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">text</span> <span class="p">)</span>
 <div class="viewcode-block" id="GWGraphics.LOCATE"><a class="viewcode-back" href="../../../python/stdio.html#hamcalc.stdio.gwgraphics.GWGraphics.LOCATE">[docs]</a>    <span class="k">def</span> <span class="nf">LOCATE</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">row</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">col</span><span class="o">=</span><span class="bp">None</span> <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Row and Column are -- strictly speaking -- optional.</span>
-<span class="sd">        If unspecified then we&#39;re moving horizontally or vertially</span>
+<span class="sd">        If unspecified then we&#39;re moving horizontally or vertically</span>
 <span class="sd">        only.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">turtle</span><span class="o">.</span><span class="n">pos</span><span class="p">()</span>
@@ -169,11 +172,11 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="c"># Draw from top CCW to start with penup</span>
             <span class="n">turtle</span><span class="o">.</span><span class="n">penup</span><span class="p">()</span>
-            <span class="n">turtle</span><span class="o">.</span><span class="n">circle</span><span class="p">(</span> <span class="o">-</span><span class="n">r</span><span class="p">,</span> <span class="n">extent</span><span class="o">=-</span><span class="n">degrees</span><span class="p">(</span><span class="n">start</span><span class="p">)</span> <span class="p">)</span>
+            <span class="n">turtle</span><span class="o">.</span><span class="n">circle</span><span class="p">(</span> <span class="o">-</span><span class="n">r</span><span class="p">,</span> <span class="n">extent</span><span class="o">=-</span><span class="n">math</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span><span class="n">start</span><span class="p">)</span> <span class="p">)</span>
             <span class="c"># Draw to start to end with pendown.</span>
             <span class="n">turtle</span><span class="o">.</span><span class="n">pendown</span><span class="p">()</span>
-            <span class="n">turtle</span><span class="o">.</span><span class="n">circle</span><span class="p">(</span> <span class="o">-</span><span class="n">r</span><span class="p">,</span> <span class="n">extent</span><span class="o">=-</span><span class="n">degrees</span><span class="p">(</span><span class="n">end</span><span class="o">-</span><span class="n">start</span><span class="p">)</span> <span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span> <span class="s">&quot;ARC </span><span class="si">%r</span><span class="s"> </span><span class="si">%r</span><span class="s"> </span><span class="si">%r</span><span class="s"> </span><span class="si">%r</span><span class="s"> </span><span class="si">%r</span><span class="s"> </span><span class="si">%r</span><span class="s"> </span><span class="si">%r</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="o">/</span><span class="bp">self</span><span class="o">.</span><span class="n">aspect_v</span><span class="o">+</span><span class="n">r</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">,</span> <span class="n">degrees</span><span class="p">(</span><span class="n">start</span><span class="p">),</span> <span class="n">degrees</span><span class="p">(</span><span class="n">start</span><span class="o">+</span><span class="n">end</span><span class="p">)</span> <span class="p">)</span>
+            <span class="n">turtle</span><span class="o">.</span><span class="n">circle</span><span class="p">(</span> <span class="o">-</span><span class="n">r</span><span class="p">,</span> <span class="n">extent</span><span class="o">=-</span><span class="n">math</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span><span class="n">end</span><span class="o">-</span><span class="n">start</span><span class="p">)</span> <span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span> <span class="s">&quot;ARC </span><span class="si">%r</span><span class="s"> </span><span class="si">%r</span><span class="s"> </span><span class="si">%r</span><span class="s"> </span><span class="si">%r</span><span class="s"> </span><span class="si">%r</span><span class="s"> </span><span class="si">%r</span><span class="s"> </span><span class="si">%r</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="o">/</span><span class="bp">self</span><span class="o">.</span><span class="n">aspect_v</span><span class="o">+</span><span class="n">r</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">,</span> <span class="n">math</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span><span class="n">start</span><span class="p">),</span> <span class="n">math</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span><span class="n">start</span><span class="o">+</span><span class="n">end</span><span class="p">)</span> <span class="p">)</span>
 </div>
 <div class="viewcode-block" id="GWGraphics.PSET"><a class="viewcode-back" href="../../../python/stdio.html#hamcalc.stdio.gwgraphics.GWGraphics.PSET">[docs]</a>    <span class="k">def</span> <span class="nf">PSET</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Draw a point.&quot;&quot;&quot;</span>

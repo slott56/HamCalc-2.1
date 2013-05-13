@@ -5,7 +5,6 @@
 """
 from hamcalc.stdio.gwgraphics import GWGraphics
 from hamcalc.math.involute import involute
-from hamcalc.lib import radians, degrees
 import math
 import sys
 
@@ -70,13 +69,13 @@ while True:
     phi_raw = input( "ENTER: angle φ°? " )
     if len(phi_raw) == 0: break
     phi = float( phi_raw )
-    args= involute( radius=r, phi=radians(phi) )
+    args= involute( radius=r, phi=math.radians(phi) )
     print( "Values for point C are:   " )
     print( "-----------------------   " )
-    print( "Angle φ = {0:.2f}°".format( degrees( args.phi ) ) )
+    print( "Angle φ = {0:.2f}°".format( math.degrees( args.phi ) ) )
     print( "Coordinate X=  {0:11,.3f}".format(args.C_X) )
     print( "Coordinate Y=  {0:11,.3f}".format(args.C_Y) )
-    print( "Angle a = {0:.2f}°".format( degrees(args.OCE) ) )
-    print( "Angle COE = {0:.2f}°".format( degrees(args.COE) ) )
+    print( "Angle a = {0:.2f}°".format( math.degrees(args.OCE) ) )
+    print( "Angle COE = {0:.2f}°".format( math.degrees(args.COE) ) )
     print( "Line CO=       {0:11,.3f}".format(args.CO) )
     print( "Line CE=       {0:11,.3f}".format(args.CE) )

@@ -48,8 +48,8 @@ These are unit conversions.
 ..  automodule:: hamcalc.math.decifrac
     :members:
 
-Legacy
-~~~~~~~~
+Legacy Quirks
+~~~~~~~~~~~~~~
 
 This program isn't really what it appears to be.
 

@@ -168,11 +168,11 @@ def argmax( indices, A, column, f=abs ):
             i_max= i
     return i_max
 
-def gauss( A ):
+def gauss( M ):
     """Gaussian Elimination on an m row by n column matrix A.
     n is expected to be m+1 when solving simultaneous linear equations.
 
-    :param A: is a "list-of-lists" matrix with m rows.  Each row
+    :param M: is a "list-of-lists" matrix with m rows.  Each row
         is an n-element list.
     :returns: New matrix in reduced echelon form.
 
@@ -201,8 +201,12 @@ def gauss( A ):
         raise ValueError( "Matrix is singular!" )
     ValueError: Matrix is singular!
 
+    >>> E = [ [1, -3, 1, 4], [2, -8, 8, -2], [-6, 3, -15, 9] ]
+    >>> F = curvefit.gauss( E )
+    >>> [ [round(v,6) for v in row] for row in F ]
+    [[1.0, -0.0, -0.0, 3.0], [0.0, 1.0, -0.0, -1.0], [0.0, 0.0, 1.0, -2.0]]
     """
-    A= A[:] # Clone it.
+    A= M[:] # Clone it.
 
     # Phase 1: Echelon Form.
     for k in range(len(A)):

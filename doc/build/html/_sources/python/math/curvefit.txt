@@ -1,3 +1,5 @@
+..  _`math.curvefit`:
+
 curvefit -- Curve Fit program
 ------------------------------
 
@@ -233,8 +235,8 @@ It does make a small amount of sense to provide a streamlined Gaussian Eliminati
 ..  automodule:: hamcalc.math.curvefit
     :members:
 
-Quirks
-~~~~~~~~
+Legacy Quirks
+~~~~~~~~~~~~~~
 
 Because GW-Basic variables have a default value of zero, sums are reset **after** they're used.
 

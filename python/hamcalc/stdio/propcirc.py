@@ -5,6 +5,7 @@
 """
 
 import hamcalc.math.propcirc as propcirc
+import math
 
 def solve():
     args = dict()
@@ -14,7 +15,7 @@ def solve():
         ("D", " ENTER: Diameter of circle ", float ),
         ("C", " ENTER: Cicumference of circle ", float),
         ("A", " ENTER: Area of circle ", float),
-        ("angle", " ENTER: Angle between radials ", lambda a: propcirc.radians(float(a)) ),
+        ("angle", " ENTER: Angle between radials ", lambda a: math.radians(float(a)) ),
         ("L_C", " ENTER: Length of chord AB ", float),
         ("L_A", " ENTER: Length of arc AB ", float),
         ("G", " ENTER: Height if segment ", float),
@@ -32,7 +33,7 @@ def solve():
         ("Diameter", "D", " units", float),
         ("Circumference", "C", " units", float),
         ("Area of full circle", "A", " units²", float),
-        ("Angle between radials", "angle", "°", propcirc.degrees ),
+        ("Angle between radials", "angle", "°", math.degrees ),
         ("Length of chord AB", "L_C", " units", float),
         ("Length of arc AB", "L_A", " units", float),
         ("Height of segment", "G", " units", float),

@@ -56,12 +56,32 @@
 <span class="sd">Example Output</span>
 
 <span class="sd">&gt;&gt;&gt; import hamcalc.math.polygon as polygon</span>
+<span class="sd">&gt;&gt;&gt; import math</span>
 <span class="sd">&gt;&gt;&gt; x = polygon.polygon( N=3, S=12 )</span>
 <span class="sd">&gt;&gt;&gt; x</span>
-<span class="sd">{ N=3, H=6.0, R= 12.0, S= 12.0, P=36.0, }</span>
+<span class="sd">{&#39;A&#39;: 2.0943951023931953, &#39;B&#39;: 1.0471975511965976, &#39;E&#39;: 43.53118474162123, &#39;D&#39;: 21.76559237081062, &#39;A_P&#39;: 62.353829072479606, &#39;H&#39;: 3.4641016151377557, &#39;N&#39;: 3, &#39;P&#39;: 36, &#39;S&#39;: 12, &#39;R&#39;: 6.92820323027551}</span>
+<span class="sd">&gt;&gt;&gt; round( math.degrees( x.A ), 6 )</span>
+<span class="sd">120.0</span>
+<span class="sd">&gt;&gt;&gt; round( math.degrees( x.B ), 6 )</span>
+<span class="sd">60.0</span>
+
+<span class="sd">&gt;&gt;&gt; sq= polygon.polygon( N=4, S=10 )</span>
+<span class="sd">&gt;&gt;&gt; sq</span>
+<span class="sd">{&#39;A&#39;: 1.5707963267948966, &#39;B&#39;: 0.7853981633974483, &#39;E&#39;: 44.42882938158366, &#39;D&#39;: 31.41592653589794, &#39;A_P&#39;: 100.00000000000001, &#39;H&#39;: 5.000000000000001, &#39;N&#39;: 4, &#39;P&#39;: 40, &#39;S&#39;: 10, &#39;R&#39;: 7.0710678118654755}</span>
+<span class="sd">&gt;&gt;&gt; round( math.degrees( sq.A ), 6 )</span>
+<span class="sd">90.0</span>
+<span class="sd">&gt;&gt;&gt; round( math.degrees( sq.B ), 6 )</span>
+<span class="sd">45.0</span>
+<span class="sd">&gt;&gt;&gt; round(2*sq.R**2, 6)</span>
+<span class="sd">100.0</span>
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">from</span> <span class="nn">hamcalc.lib</span> <span class="kn">import</span> <span class="n">AttrDict</span>
 <span class="kn">import</span> <span class="nn">math</span>
+
+<span class="k">def</span> <span class="nf">intro</span><span class="p">():</span>
+    <span class="k">return</span> <span class="s">&quot;&quot;&quot;</span><span class="se">\</span>
+<span class="s">POLYGON DIMENSIONS (Regular polygons)                   by George Murphy VE3ERP</span>
+<span class="s">&quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="polygon"><a class="viewcode-back" href="../../../python/math/polygon.html#hamcalc.math.polygon.polygon">[docs]</a><span class="k">def</span> <span class="nf">polygon</span><span class="p">(</span> <span class="o">**</span><span class="n">kw</span> <span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Solve a polygon.</span>
@@ -78,6 +98,8 @@
 
 <span class="sd">    This will also compute a number of additional values:</span>
 
+<span class="sd">    -   A = &quot;Angle between radials&quot;</span>
+
 <span class="sd">    -   P = &quot;Perimeter&quot;</span>
 
 <span class="sd">    -   D = &quot;Circumference of circle running thru mid points of sides&quot;</span>
@@ -90,12 +112,12 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">args</span> <span class="o">=</span> <span class="n">AttrDict</span><span class="p">(</span> <span class="n">kw</span> <span class="p">)</span>
     <span class="k">if</span> <span class="s">&quot;N&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span> <span class="s">&#39;N = &quot;Number of sides/radials&quot; missing&#39;</span> <span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span> <span class="s">&#39;N = &quot;Number of sides/radials&quot; required&#39;</span> <span class="p">)</span>
     <span class="n">args</span><span class="o">.</span><span class="n">A</span> <span class="o">=</span> <span class="mi">2</span><span class="o">*</span><span class="n">math</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="n">args</span><span class="o">.</span><span class="n">N</span>
     <span class="n">args</span><span class="o">.</span><span class="n">B</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">A</span><span class="o">/</span><span class="mi">2</span>
     <span class="k">if</span> <span class="s">&quot;S&quot;</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
-        <span class="n">args</span><span class="o">.</span><span class="n">H</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">S</span><span class="o">/</span><span class="mi">2</span><span class="o">/</span><span class="n">math</span><span class="o">.</span><span class="n">tan</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">B</span><span class="p">)</span>
-        <span class="n">args</span><span class="o">.</span><span class="n">R</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">S</span><span class="o">/</span><span class="mi">2</span><span class="o">/</span><span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">B</span><span class="p">)</span>
+        <span class="n">args</span><span class="o">.</span><span class="n">H</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">S</span><span class="o">/</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">math</span><span class="o">.</span><span class="n">tan</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">B</span><span class="p">))</span>
+        <span class="n">args</span><span class="o">.</span><span class="n">R</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">S</span><span class="o">/</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">B</span><span class="p">))</span>
     <span class="k">elif</span> <span class="s">&quot;H&quot;</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
         <span class="n">args</span><span class="o">.</span><span class="n">R</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">H</span><span class="o">/</span><span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">B</span><span class="p">)</span>
         <span class="n">args</span><span class="o">.</span><span class="n">S</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">tan</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">B</span><span class="p">)</span> <span class="o">*</span> <span class="n">args</span><span class="o">.</span><span class="n">H</span>
@@ -103,7 +125,7 @@
         <span class="n">args</span><span class="o">.</span><span class="n">H</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">R</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">B</span><span class="p">)</span>
         <span class="n">args</span><span class="o">.</span><span class="n">S</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">B</span><span class="p">)</span> <span class="o">*</span> <span class="n">args</span><span class="o">.</span><span class="n">R</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span> <span class="s">&#39;H, R or S missing&#39;</span> <span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span> <span class="s">&#39;One of H, R or S required&#39;</span> <span class="p">)</span>
     <span class="n">args</span><span class="o">.</span><span class="n">P</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">N</span> <span class="o">*</span> <span class="n">args</span><span class="o">.</span><span class="n">S</span>
     <span class="n">args</span><span class="o">.</span><span class="n">A_P</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">S</span> <span class="o">*</span> <span class="n">args</span><span class="o">.</span><span class="n">H</span> <span class="o">*</span> <span class="n">args</span><span class="o">.</span><span class="n">N</span> <span class="o">/</span> <span class="mi">2</span>
     <span class="n">args</span><span class="o">.</span><span class="n">D</span> <span class="o">=</span> <span class="mi">2</span><span class="o">*</span><span class="n">math</span><span class="o">.</span><span class="n">pi</span><span class="o">*</span><span class="n">args</span><span class="o">.</span><span class="n">H</span>

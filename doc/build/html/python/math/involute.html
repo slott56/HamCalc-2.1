@@ -25,7 +25,7 @@
     <script type="text/javascript" src="../../_static/doctools.js"></script>
     <link rel="top" title="HamCalc 2.1 documentation" href="../../index.html" />
     <link rel="up" title="math – Math, Physics, Units Conversion" href="index.html" />
-    <link rel="next" title="numderiv" href="numderiv.html" />
+    <link rel="next" title="numderiv – Numbers and Functions" href="numderiv.html" />
     <link rel="prev" title="graphs – Graphs" href="graphs.html" /> 
   </head>
   <body>
@@ -36,7 +36,7 @@
         <div class="rel">
           <a href="graphs.html" title="graphs – Graphs"
              accesskey="P">previous</a> |
-          <a href="numderiv.html" title="numderiv"
+          <a href="numderiv.html" title="numderiv – Numbers and Functions"
              accesskey="N">next</a> |
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |
@@ -103,14 +103,15 @@ a = \angle OCE = \arctan \frac{\overline{OE}}{\overline{CE}}"/></p>
 <p>Compute various parts of the involute of a circle.</p>
 <p>Test Cases</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">hamcalc.math.involute</span> <span class="kn">as</span> <span class="nn">involute</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">math</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">involute</span><span class="o">.</span><span class="n">involute</span><span class="p">(</span> <span class="n">radius</span><span class="o">=</span><span class="mi">91</span> <span class="p">)</span>
 <span class="go">{&#39;diameter&#39;: 182, &#39;radius&#39;: 91, &#39;baseline&#39;: 285.88493147667117, &#39;involute&#39;: 449.0670002495658}</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">i</span><span class="o">=</span> <span class="n">involute</span><span class="o">.</span><span class="n">involute</span><span class="p">(</span> <span class="n">radius</span><span class="o">=</span><span class="mi">91</span><span class="p">,</span> <span class="n">phi</span><span class="o">=</span><span class="n">involute</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="mi">144</span><span class="p">)</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">i</span><span class="o">=</span> <span class="n">involute</span><span class="o">.</span><span class="n">involute</span><span class="p">(</span> <span class="n">radius</span><span class="o">=</span><span class="mi">91</span><span class="p">,</span> <span class="n">phi</span><span class="o">=</span><span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="mi">144</span><span class="p">)</span> <span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">i</span>
 <span class="go">{&#39;diameter&#39;: 182, &#39;phi&#39;: 2.5132741228718345, &#39;CO&#39;: 316.5057744165644, &#39;baseline&#39;: 285.88493147667117, &#39;COE&#39;: 1.2791655754811324, &#39;OCE&#39;: 0.2916307513137641, &#39;CE&#39;: 303.1417246751578, &#39;radius&#39;: 91, &#39;C_Y&#39;: -208.05170374782548, &#39;C_X&#39;: 238.51707235889052, &#39;involute&#39;: 449.0670002495658}</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">involute</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span> <span class="n">i</span><span class="o">.</span><span class="n">OCE</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">math</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span> <span class="n">i</span><span class="o">.</span><span class="n">OCE</span> <span class="p">)</span>
 <span class="go">16.70921122650797</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">involute</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span> <span class="n">i</span><span class="o">.</span><span class="n">COE</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">math</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span> <span class="n">i</span><span class="o">.</span><span class="n">COE</span> <span class="p">)</span>
 <span class="go">73.29078877349203</span>
 </pre></div>
 </div>
@@ -154,8 +155,8 @@ involute.</p>
 </dd></dl>
 
 </div>
-<div class="section" id="quirks">
-<h2>Quirks<a class="headerlink" href="#quirks" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="legacy-quirks">
+<h2>Legacy Quirks<a class="headerlink" href="#legacy-quirks" title="Permalink to this headline">¶</a></h2>
 <p>Lines 880-900 cannot be executed.</p>
 </div>
 </div>
@@ -184,6 +185,7 @@ involute.</p>
 <li class="toctree-l3"><a class="reference internal" href="baromtr.html">baromtr &#8211; Barometer Reading Equivalents</a></li>
 <li class="toctree-l3"><a class="reference internal" href="binary.html">binary &#8211; Decimal to Binary Converter</a></li>
 <li class="toctree-l3"><a class="reference internal" href="centrif.html">centrif &#8211; Centrifugal/Centripetel Force</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chase.html">chase &#8211; Speed Chase</a></li>
 <li class="toctree-l3"><a class="reference internal" href="curvefit.html">curvefit &#8211; Curve Fit program</a></li>
 <li class="toctree-l3"><a class="reference internal" href="deciconv.html">deciconv &#8211; Decimal Hour/Degree Converter</a></li>
 <li class="toctree-l3"><a class="reference internal" href="decifrac.html">decifrac &#8211; Decimal/Fraction Converter</a></li>
@@ -192,16 +194,18 @@ involute.</p>
 <li class="toctree-l3"><a class="reference internal" href="formulae.html">formulae &#8211; Formula Library</a></li>
 <li class="toctree-l3"><a class="reference internal" href="graphs.html">graphs &#8211; Graphs</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="">involute &#8211; Involute of a Circle</a></li>
-<li class="toctree-l3"><a class="reference internal" href="numderiv.html">numderiv</a></li>
-<li class="toctree-l3"><a class="reference internal" href="polygon.html">polygon</a></li>
+<li class="toctree-l3"><a class="reference internal" href="numderiv.html">numderiv &#8211; Numbers and Functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="polygon.html">polygon &#8211; Polygon Dimensions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="primenos.html">primenos &#8211; Prime Number Calculator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="propcirc.html">propcirc &#8211; Circle, Properties of</a></li>
-<li class="toctree-l3"><a class="reference internal" href="randnum.html">randnum</a></li>
-<li class="toctree-l3"><a class="reference internal" href="rotaplot.html">rotaplot</a></li>
-<li class="toctree-l3"><a class="reference internal" href="simuleq.html">simuleq</a></li>
+<li class="toctree-l3"><a class="reference internal" href="quadrat.html">quadrat &#8211; Quadratic Equation Calculator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="randnum.html">randnum &#8211; Random Number Generator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rotaplot.html">rotaplot &#8211; Cartesian/Polar Plot Rotator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="simuleq.html">simuleq &#8211; Simultaneous Equation Calculator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="solutri.html">solutri &#8211; Triangles, solution of</a></li>
-<li class="toctree-l3"><a class="reference internal" href="speedtd.html">speedtd</a></li>
+<li class="toctree-l3"><a class="reference internal" href="speedtd.html">speedtd &#8211; Speed/Time/Distance Calculator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="trig.html">trig &#8211; Trigonometric Functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="unitvalu.html">unitvalu</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../navigation.html">navigation &#8211; Navigation and Astronomy</a></li>
@@ -240,7 +244,7 @@ involute.</p>
         <div class="left">
           <a href="graphs.html" title="graphs – Graphs"
              >previous</a> |
-          <a href="numderiv.html" title="numderiv"
+          <a href="numderiv.html" title="numderiv – Numbers and Functions"
              >next</a> |
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |

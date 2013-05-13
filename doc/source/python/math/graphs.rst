@@ -14,8 +14,8 @@ It's simply an application.
 
 See :ref:`stdio.graphs`.
 
-Quirks
-~~~~~~~~~~
+Legacy Quirks
+~~~~~~~~~~~~~~
 
 The original program allowed you to edit a few lines
 of the application itself to define the function.

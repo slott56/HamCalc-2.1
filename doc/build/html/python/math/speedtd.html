@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>speedtd &mdash; HamCalc 2.1 documentation</title>
+    <title>speedtd – Speed/Time/Distance Calculator &mdash; HamCalc 2.1 documentation</title>
     
     <link rel="stylesheet" href="../../_static/agogo.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
@@ -54,9 +54,106 @@
         <div class="bodywrapper">
           <div class="body">
             
-  <div class="section" id="speedtd">
-<h1>speedtd<a class="headerlink" href="#speedtd" title="Permalink to this headline">¶</a></h1>
-<p>Speed/Time/Distance Calculator</p>
+  <div class="section" id="speedtd-speed-time-distance-calculator">
+<h1>speedtd &#8211; Speed/Time/Distance Calculator<a class="headerlink" href="#speedtd-speed-time-distance-calculator" title="Permalink to this headline">¶</a></h1>
+<p>The canonical <strong>Solver</strong> plus <strong>Equivalents</strong> example.</p>
+<div class="section" id="analysis">
+<h2>Analysis<a class="headerlink" href="#analysis" title="Permalink to this headline">¶</a></h2>
+<p>This is a <img class="math" src="../../_images/math/d70d69ac0b7a5d952eb3a6436a6b783b7da2d30d.png" alt="r \times t = d"/> <strong>Solver</strong> that works
+in a variety of units for distance and time.</p>
+<p>Distance units are</p>
+<ul class="simple">
+<li>&#8220;&lt; a &gt;  Millimetre&#8221;</li>
+<li>&#8220;&lt; b &gt;  Centimetre&#8221;</li>
+<li>&#8220;&lt; c &gt;  Inch&#8221;</li>
+<li>&#8220;&lt; d &gt;  Foot&#8221;</li>
+<li>&#8220;&lt; e &gt;  Metre&#8221;</li>
+<li>&#8220;&lt; f &gt;  Kilometre&#8221;</li>
+<li>&#8220;&lt; g &gt;  Statute mile&#8221;</li>
+<li>&#8220;&lt; h &gt;  Nautical mile&#8221;</li>
+</ul>
+<p>Time units are</p>
+<ul class="simple">
+<li>&#8220;&lt; h &gt;  Hour&#8221;</li>
+<li>&#8220;&lt; m &gt;  Minute&#8221;</li>
+<li>&#8220;&lt; s &gt;  Second&#8221;</li>
+</ul>
+<p>Once the basic RTD problem has been solved, there&#8217;s a second feature:
+computing Vehicular Fuel Consumption.</p>
+<p>When distance is km, then the fuel consumption rate is measured in litres per 100 km.</p>
+<p>When distance is not km, then fuel consumption rate is measured in miles/gallon.</p>
+<p>With this note: &#8220;Quantities are in U.S. gallons. Divide by 1.2 for Imperial&#8221;</p>
+</div>
+<div class="section" id="implementation">
+<h2>Implementation<a class="headerlink" href="#implementation" title="Permalink to this headline">¶</a></h2>
+<p>The various distance and time units are defined in <a class="reference internal" href="equiv.html#module-hamcalc.math.equiv" title="hamcalc.math.equiv"><tt class="xref py py-mod docutils literal"><span class="pre">hamcalc.math.equiv</span></tt></a> (<a class="reference internal" href="equiv.html#math-equiv"><em>equiv &#8211; Unit Conversions</em></a>).</p>
+<p>There is one <strong>Solver</strong> that creates a standard rate, time and distance value and then displays this value back in the original input units.</p>
+<p>A second <strong>Solver</strong> can use the distance as part of a
+total fuel, fuel consumption rate, distance calculation.</p>
+<span class="target" id="module-hamcalc.math.speedtd"></span><p>hamcalc.math.speedtd &#8211; Speed/Time/Distance Calculator</p>
+<p>A <strong>Solver</strong> for <img class="math" src="../../_images/math/cd33bb3d06257bb2ee0fe271bbc93b1af3372e5d.png" alt="d = s \times t"/> calculations.</p>
+<p>Plus a <strong>Solver</strong> for MPG, gallons, distance (or LPK, liters, kilometers)
+problems.</p>
+<p>Test Cases</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">hamcalc.math.speedtd</span> <span class="kn">as</span> <span class="nn">speedtd</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">speedtd</span><span class="o">.</span><span class="n">speed_time_distance</span><span class="p">(</span> <span class="n">D</span><span class="o">=</span><span class="mi">37</span><span class="p">,</span> <span class="n">T</span><span class="o">=</span><span class="mi">11</span> <span class="p">)</span>
+<span class="go">{&#39;S&#39;: 3.3636363636363638, &#39;D&#39;: 37, &#39;T&#39;: 11}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">speedtd</span><span class="o">.</span><span class="n">fuel_volume_distance</span><span class="p">(</span> <span class="n">D</span><span class="o">=</span><span class="mi">53</span><span class="p">,</span> <span class="n">V</span><span class="o">=</span><span class="mi">17</span> <span class="p">)</span>
+<span class="go">{&#39;R&#39;: 3.1176470588235294, &#39;D&#39;: 53, &#39;V&#39;: 17}</span>
+</pre></div>
+</div>
+<dl class="function">
+<dt id="hamcalc.math.speedtd.fuel_volume_distance">
+<tt class="descclassname">hamcalc.math.speedtd.</tt><tt class="descname">fuel_volume_distance</tt><big>(</big><em>**kw</em><big>)</big><a class="reference internal" href="../../_modules/hamcalc/math/speedtd.html#fuel_volume_distance"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.math.speedtd.fuel_volume_distance" title="Permalink to this definition">¶</a></dt>
+<dd><p>Solver for fuel-rate/volume/distance problems.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>R</strong> &#8211; fuel consumption rate (e.g. miles/gallon)</li>
+<li><strong>V</strong> &#8211; volume (e.g. gallons)</li>
+<li><strong>D</strong> &#8211; distance (e.g. miles)</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Dict with all three values.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="hamcalc.math.speedtd.speed_time_distance">
+<tt class="descclassname">hamcalc.math.speedtd.</tt><tt class="descname">speed_time_distance</tt><big>(</big><em>**kw</em><big>)</big><a class="reference internal" href="../../_modules/hamcalc/math/speedtd.html#speed_time_distance"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.math.speedtd.speed_time_distance" title="Permalink to this definition">¶</a></dt>
+<dd><p>Solver for speed/time/distance problems.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>S</strong> &#8211; speed</li>
+<li><strong>T</strong> &#8211; time</li>
+<li><strong>D</strong> &#8211; distance</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Dict with all three values.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="legacy-quirks">
+<h2>Legacy Quirks<a class="headerlink" href="#legacy-quirks" title="Permalink to this headline">¶</a></h2>
+<p>A common problem is to derive fuel consumption rate from overall fuel and distance values. This is not supported by this application.</p>
+<p>Also, this program can launch the <strong class="program">chase</strong> program. It&#8217;s not clear
+why these two are bundled together like this, except, perhaps, that
+the <strong class="program">chase</strong> program has something to do with rate and time.</p>
+</div>
 </div>
 
 
@@ -83,6 +180,7 @@
 <li class="toctree-l3"><a class="reference internal" href="baromtr.html">baromtr &#8211; Barometer Reading Equivalents</a></li>
 <li class="toctree-l3"><a class="reference internal" href="binary.html">binary &#8211; Decimal to Binary Converter</a></li>
 <li class="toctree-l3"><a class="reference internal" href="centrif.html">centrif &#8211; Centrifugal/Centripetel Force</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chase.html">chase &#8211; Speed Chase</a></li>
 <li class="toctree-l3"><a class="reference internal" href="curvefit.html">curvefit &#8211; Curve Fit program</a></li>
 <li class="toctree-l3"><a class="reference internal" href="deciconv.html">deciconv &#8211; Decimal Hour/Degree Converter</a></li>
 <li class="toctree-l3"><a class="reference internal" href="decifrac.html">decifrac &#8211; Decimal/Fraction Converter</a></li>
@@ -91,16 +189,18 @@
 <li class="toctree-l3"><a class="reference internal" href="formulae.html">formulae &#8211; Formula Library</a></li>
 <li class="toctree-l3"><a class="reference internal" href="graphs.html">graphs &#8211; Graphs</a></li>
 <li class="toctree-l3"><a class="reference internal" href="involute.html">involute &#8211; Involute of a Circle</a></li>
-<li class="toctree-l3"><a class="reference internal" href="numderiv.html">numderiv</a></li>
-<li class="toctree-l3"><a class="reference internal" href="polygon.html">polygon</a></li>
+<li class="toctree-l3"><a class="reference internal" href="numderiv.html">numderiv &#8211; Numbers and Functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="polygon.html">polygon &#8211; Polygon Dimensions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="primenos.html">primenos &#8211; Prime Number Calculator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="propcirc.html">propcirc &#8211; Circle, Properties of</a></li>
-<li class="toctree-l3"><a class="reference internal" href="randnum.html">randnum</a></li>
-<li class="toctree-l3"><a class="reference internal" href="rotaplot.html">rotaplot</a></li>
-<li class="toctree-l3"><a class="reference internal" href="simuleq.html">simuleq</a></li>
+<li class="toctree-l3"><a class="reference internal" href="quadrat.html">quadrat &#8211; Quadratic Equation Calculator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="randnum.html">randnum &#8211; Random Number Generator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rotaplot.html">rotaplot &#8211; Cartesian/Polar Plot Rotator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="simuleq.html">simuleq &#8211; Simultaneous Equation Calculator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="solutri.html">solutri &#8211; Triangles, solution of</a></li>
-<li class="toctree-l3 current"><a class="current reference internal" href="">speedtd</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="">speedtd &#8211; Speed/Time/Distance Calculator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="trig.html">trig &#8211; Trigonometric Functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="unitvalu.html">unitvalu</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../navigation.html">navigation &#8211; Navigation and Astronomy</a></li>

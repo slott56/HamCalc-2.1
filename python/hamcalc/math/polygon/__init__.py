@@ -5,21 +5,21 @@ A **Solver** for properties of a regular N-sided polygon.
 Example Output
 
 >>> import hamcalc.math.polygon as polygon
->>> from hamcalc.lib import degrees
+>>> import math
 >>> x = polygon.polygon( N=3, S=12 )
 >>> x
 {'A': 2.0943951023931953, 'B': 1.0471975511965976, 'E': 43.53118474162123, 'D': 21.76559237081062, 'A_P': 62.353829072479606, 'H': 3.4641016151377557, 'N': 3, 'P': 36, 'S': 12, 'R': 6.92820323027551}
->>> round( degrees( x.A ), 6 )
+>>> round( math.degrees( x.A ), 6 )
 120.0
->>> round( degrees( x.B ), 6 )
+>>> round( math.degrees( x.B ), 6 )
 60.0
 
 >>> sq= polygon.polygon( N=4, S=10 )
 >>> sq
 {'A': 1.5707963267948966, 'B': 0.7853981633974483, 'E': 44.42882938158366, 'D': 31.41592653589794, 'A_P': 100.00000000000001, 'H': 5.000000000000001, 'N': 4, 'P': 40, 'S': 10, 'R': 7.0710678118654755}
->>> round( degrees( sq.A ), 6 )
+>>> round( math.degrees( sq.A ), 6 )
 90.0
->>> round( degrees( sq.B ), 6 )
+>>> round( math.degrees( sq.B ), 6 )
 45.0
 >>> round(2*sq.R**2, 6)
 100.0

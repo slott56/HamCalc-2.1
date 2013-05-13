@@ -11,8 +11,6 @@ gridsq,   Grid Square Locator (Maidenhead)
 
 latlong,  Latitude/Longitude Data Base
 
-metshowr, Meteor Shower Predictor
-
 moontrac, Moon Tracker
 
 satorbit, Satellite Orbit Parameters

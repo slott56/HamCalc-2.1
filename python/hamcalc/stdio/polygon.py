@@ -1,7 +1,7 @@
 """Polygon Dimensions"""
 
 import hamcalc.math.polygon as polygon
-from hamcalc.lib import degrees
+import math
 
 print( polygon.intro() )
 
@@ -43,7 +43,7 @@ while True:
         if var == "N":
             print( "{0:.<64s} {1:9,.0f}".format( arg_names[var], args.get(var) ) )
         elif var == "A":
-            print( "{0:.<64s} {1:9,.3f}°".format( arg_names[var], degrees(args.get(var)) ) )
+            print( "{0:.<64s} {1:9,.3f}°".format( arg_names[var], math.degrees(args.get(var)) ) )
         else:
             print( "{0:.<64s} {1:9,.3f}".format( arg_names[var], args.get(var) ) )
 

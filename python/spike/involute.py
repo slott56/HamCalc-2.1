@@ -125,7 +125,7 @@ for Z in range(1,I+1):
         # 460 CIRCLE (R,H),R/2,,1.8!*PI,PI/2
         # 1.8\pi to .5\pi, measured from where??
         # And why not use L, which is the current angle being used?
-        angle= (L*180/math.pi) # to Degrees
+        angle= math.degrees(L) # to Degrees
         penup(); goto( R, H-R/2 ); pendown(); circle( R/2, angle )
 
         # 470 LOCATE 11,19:PRINT CHR$(237)

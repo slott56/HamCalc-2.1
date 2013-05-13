@@ -70,8 +70,8 @@ Involute uses R and Phi to compute a number of values.
 ..  automodule:: hamcalc.math.involute
     :members:
 
-Quirks
-~~~~~~~~~~
+Legacy Quirks
+~~~~~~~~~~~~~~~~
 
 Lines 880-900 cannot be executed.
 

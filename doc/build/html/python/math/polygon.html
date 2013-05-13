@@ -111,14 +111,25 @@ R = \frac{S}{2 \sin B}"/></p>
 <p>A <strong>Solver</strong> for properties of a regular N-sided polygon.</p>
 <p>Example Output</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">hamcalc.math.polygon</span> <span class="kn">as</span> <span class="nn">polygon</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">hamcalc.lib</span> <span class="kn">import</span> <span class="n">degrees</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">math</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">polygon</span><span class="o">.</span><span class="n">polygon</span><span class="p">(</span> <span class="n">N</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">S</span><span class="o">=</span><span class="mi">12</span> <span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">x</span>
 <span class="go">{&#39;A&#39;: 2.0943951023931953, &#39;B&#39;: 1.0471975511965976, &#39;E&#39;: 43.53118474162123, &#39;D&#39;: 21.76559237081062, &#39;A_P&#39;: 62.353829072479606, &#39;H&#39;: 3.4641016151377557, &#39;N&#39;: 3, &#39;P&#39;: 36, &#39;S&#39;: 12, &#39;R&#39;: 6.92820323027551}</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span> <span class="n">degrees</span><span class="p">(</span> <span class="n">x</span><span class="o">.</span><span class="n">A</span> <span class="p">),</span> <span class="mi">6</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span> <span class="n">math</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span> <span class="n">x</span><span class="o">.</span><span class="n">A</span> <span class="p">),</span> <span class="mi">6</span> <span class="p">)</span>
 <span class="go">120.0</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span> <span class="n">degrees</span><span class="p">(</span> <span class="n">x</span><span class="o">.</span><span class="n">B</span> <span class="p">),</span> <span class="mi">6</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span> <span class="n">math</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span> <span class="n">x</span><span class="o">.</span><span class="n">B</span> <span class="p">),</span> <span class="mi">6</span> <span class="p">)</span>
 <span class="go">60.0</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">sq</span><span class="o">=</span> <span class="n">polygon</span><span class="o">.</span><span class="n">polygon</span><span class="p">(</span> <span class="n">N</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">S</span><span class="o">=</span><span class="mi">10</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sq</span>
+<span class="go">{&#39;A&#39;: 1.5707963267948966, &#39;B&#39;: 0.7853981633974483, &#39;E&#39;: 44.42882938158366, &#39;D&#39;: 31.41592653589794, &#39;A_P&#39;: 100.00000000000001, &#39;H&#39;: 5.000000000000001, &#39;N&#39;: 4, &#39;P&#39;: 40, &#39;S&#39;: 10, &#39;R&#39;: 7.0710678118654755}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span> <span class="n">math</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span> <span class="n">sq</span><span class="o">.</span><span class="n">A</span> <span class="p">),</span> <span class="mi">6</span> <span class="p">)</span>
+<span class="go">90.0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span> <span class="n">math</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span> <span class="n">sq</span><span class="o">.</span><span class="n">B</span> <span class="p">),</span> <span class="mi">6</span> <span class="p">)</span>
+<span class="go">45.0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">sq</span><span class="o">.</span><span class="n">R</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span> <span class="mi">6</span><span class="p">)</span>
+<span class="go">100.0</span>
 </pre></div>
 </div>
 <dl class="function">
@@ -134,6 +145,7 @@ R = \frac{S}{2 \sin B}"/></p>
 </ul>
 <p>This will also compute a number of additional values:</p>
 <ul class="simple">
+<li>A = &#8220;Angle between radials&#8221;</li>
 <li>P = &#8220;Perimeter&#8221;</li>
 <li>D = &#8220;Circumference of circle running thru mid points of sides&#8221;</li>
 <li>E = &#8220;Circumference of circle running thru end points of sides&#8221;</li>
@@ -150,8 +162,8 @@ R = \frac{S}{2 \sin B}"/></p>
 </dd></dl>
 
 </div>
-<div class="section" id="quirks">
-<h2>Quirks<a class="headerlink" href="#quirks" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="legacy-quirks">
+<h2>Legacy Quirks<a class="headerlink" href="#legacy-quirks" title="Permalink to this headline">¶</a></h2>
 <p>The GOSUB/GOTO tangle between lines 440 and 480 is hopeless.
 A RETURN or something would be helpful.</p>
 </div>
@@ -181,6 +193,7 @@ A RETURN or something would be helpful.</p>
 <li class="toctree-l3"><a class="reference internal" href="baromtr.html">baromtr &#8211; Barometer Reading Equivalents</a></li>
 <li class="toctree-l3"><a class="reference internal" href="binary.html">binary &#8211; Decimal to Binary Converter</a></li>
 <li class="toctree-l3"><a class="reference internal" href="centrif.html">centrif &#8211; Centrifugal/Centripetel Force</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chase.html">chase &#8211; Speed Chase</a></li>
 <li class="toctree-l3"><a class="reference internal" href="curvefit.html">curvefit &#8211; Curve Fit program</a></li>
 <li class="toctree-l3"><a class="reference internal" href="deciconv.html">deciconv &#8211; Decimal Hour/Degree Converter</a></li>
 <li class="toctree-l3"><a class="reference internal" href="decifrac.html">decifrac &#8211; Decimal/Fraction Converter</a></li>
@@ -193,12 +206,14 @@ A RETURN or something would be helpful.</p>
 <li class="toctree-l3 current"><a class="current reference internal" href="">polygon &#8211; Polygon Dimensions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="primenos.html">primenos &#8211; Prime Number Calculator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="propcirc.html">propcirc &#8211; Circle, Properties of</a></li>
-<li class="toctree-l3"><a class="reference internal" href="randnum.html">randnum</a></li>
-<li class="toctree-l3"><a class="reference internal" href="rotaplot.html">rotaplot</a></li>
-<li class="toctree-l3"><a class="reference internal" href="simuleq.html">simuleq</a></li>
+<li class="toctree-l3"><a class="reference internal" href="quadrat.html">quadrat &#8211; Quadratic Equation Calculator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="randnum.html">randnum &#8211; Random Number Generator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rotaplot.html">rotaplot &#8211; Cartesian/Polar Plot Rotator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="simuleq.html">simuleq &#8211; Simultaneous Equation Calculator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="solutri.html">solutri &#8211; Triangles, solution of</a></li>
-<li class="toctree-l3"><a class="reference internal" href="speedtd.html">speedtd</a></li>
+<li class="toctree-l3"><a class="reference internal" href="speedtd.html">speedtd &#8211; Speed/Time/Distance Calculator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="trig.html">trig &#8211; Trigonometric Functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="unitvalu.html">unitvalu</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../navigation.html">navigation &#8211; Navigation and Astronomy</a></li>

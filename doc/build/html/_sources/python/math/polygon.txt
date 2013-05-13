@@ -77,8 +77,8 @@ This is a **Solver** that works with B, S and H to derive the missing values.
 ..  automodule:: hamcalc.math.polygon
     :members:
 
-Quirks
-~~~~~~~~~~~
+Legacy Quirks
+~~~~~~~~~~~~~~
 
 The GOSUB/GOTO tangle between lines 440 and 480 is hopeless.
 A RETURN or something would be helpful.

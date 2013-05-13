@@ -3,6 +3,7 @@
 "TRIANGLES",", solution of","","SOLUTRI"
 """
 import hamcalc.math.solutri as solutri
+import math
 
 def format( args, item, convert=lambda a:a, fmt="{0:.3f}", if_none="" ):
     if item not in args: return if_none
@@ -10,11 +11,11 @@ def format( args, item, convert=lambda a:a, fmt="{0:.3f}", if_none="" ):
 
 def right_triangle(z):
     global args
-    args['A_h']= solutri.radians(90)
+    args['A_h']= math.radians(90)
     if z == 'a':
-        args['A_f']= solutri.radians( float( input( "ENTER: Angle (a)? " ) ) )
+        args['A_f']= math.radians( float( input( "ENTER: Angle (a)? " ) ) )
     elif z == 'b':
-        args['A_g']= solutri.radians( float( input( "ENTER: Angle (b)? " ) ) )
+        args['A_g']= math.radians( float( input( "ENTER: Angle (b)? " ) ) )
     elif z == 'c':
         args['S_k']= float( input( "ENTER: Side <c>? " ) )
     elif z == 'd':
@@ -23,8 +24,8 @@ def right_triangle(z):
         args['S_j']= float( input( "ENTER: Side <e>? " ) )
     args= solutri.triangle( **args )
     report= {
-        'a': format(args, 'A_f', convert=solutri.degrees),
-        'b': format(args, 'A_g', convert=solutri.degrees),
+        'a': format(args, 'A_f', convert=math.degrees),
+        'b': format(args, 'A_g', convert=math.degrees),
         'c': format(args, 'S_k'),
         'd': format(args, 'S_i'),
         'e': format(args, 'S_j'),
@@ -43,11 +44,11 @@ def right_triangle(z):
 def general_triangle( z ):
     global args
     if z == 'f':
-        args['A_f']= solutri.radians( float( input( "ENTER: Angle (f)? " ) ) )
+        args['A_f']= math.radians( float( input( "ENTER: Angle (f)? " ) ) )
     elif z == 'g':
-        args['A_g']= solutri.radians( float( input( "ENTER: Angle (g)? " ) ) )
+        args['A_g']= math.radians( float( input( "ENTER: Angle (g)? " ) ) )
     elif z == 'h':
-        args['A_h']= solutri.radians( float( input( "ENTER: Angle (h)? " ) ) )
+        args['A_h']= math.radians( float( input( "ENTER: Angle (h)? " ) ) )
     elif z == 'i':
         args['S_i']= float( input( "ENTER: Side <i>? " ) )
     elif z == 'j':
@@ -56,9 +57,9 @@ def general_triangle( z ):
         args['S_k']= float( input( "ENTER: Side <k>? " ) )
     args= solutri.triangle( **args )
     report= {
-        'f': format(args, 'A_f', convert=solutri.degrees),
-        'g': format(args, 'A_g', convert=solutri.degrees),
-        'h': format(args, 'A_h', convert=solutri.degrees),
+        'f': format(args, 'A_f', convert=math.degrees),
+        'g': format(args, 'A_g', convert=math.degrees),
+        'h': format(args, 'A_h', convert=math.degrees),
         'i': format(args, 'S_k'),
         'j': format(args, 'S_i'),
         'k': format(args, 'S_j'),

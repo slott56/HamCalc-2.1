@@ -21,9 +21,8 @@ Nothing more needs to be done.
 
 Which raises a subtle question of what to test and how to test it.
 
-Quirks
-~~~~~~~~
+Legacy Quirks
+~~~~~~~~~~~~~~
 
-None, really.
-
+The name is misleading, otherwise there's nothing quirky here.
 
