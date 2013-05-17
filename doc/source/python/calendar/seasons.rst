@@ -23,7 +23,7 @@ Predicting the equinox or solstice means we're looking for specific declination 
     \alpha &= \arctan (\cos \epsilon \tan \lambda) \\
     \delta &= \arcsin (\sin \epsilon \sin \lambda)
 
-Where :math:`\lambda` is the sun's ecliptic longtude. The :math:`\epsilon`
+Where :math:`\lambda` is the sun's ecliptic longitude. The :math:`\epsilon`
 value is the earth's ecliptic, about 23.44°.  We're looking
 at four :math:`\delta` values:
 latitude values: :math:`+\epsilon, -\epsilon` and both zero values.
@@ -67,18 +67,24 @@ Approximation
 We can, on the other hand, follow the HamCalc example and do a search
 around the the four times of year to get a good approximation.
 
-Solstices are near June 21 and December 21. Here, we're searching
+Solstices are near June 21 and December 21. We can search
 for maxima or minima of solar declination. Maxima (and minima) require
 some care; the search is really for the zero crossing of the first
 derivative.
 
 Equinoxes are near March 15 and September 15. Here, we're searching
-for the zero crossing of declination. Zero crossing is relatively easy.
+for the zero crossing of declination.
+
+It seems simpler to search for the four values of solar longitude.
 
 Implementation
 ~~~~~~~~~~~~~~~
 
-TBD
+This leverages :mod:`hamcalc.navigation.sunrise`.
+
+It becomes a cute little module in :mod:`hamcalc.stdio` that solves
+for "Sun's Apparent Longitude" (``P``) of 0, 90, 180 and 270 in
+a given year.
 
 Legacy Output
 ~~~~~~~~~~~~~~

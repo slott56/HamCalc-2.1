@@ -86,10 +86,10 @@ def show_table():
         date= start+datetime.timedelta(days=offset)
         rise, transit, set = sunrise.rise_transit_set( latitude, longitude, date )
         az_r, el_r= sunrise.azimuth_elevation( latitude, longitude, rise )
-        az_t, el_t= sunrise.azimuth_elevation( latitude, longitude, transit )
         az_s, el_s= sunrise.azimuth_elevation( latitude, longitude, set )
+        az_t, el_t= sunrise.azimuth_elevation( latitude, longitude, transit )
         daylight_hours= (set-rise).total_seconds()/3600
-        print( "{0:9s}    {1:5.2f}    {2:8s} {3:4.2f}   {4:8s} {5:4.2f}   {6:8s} {7:5.2f} {8:5.2f}".format(
+        print( "{0:10s}   {1:5.2f}    {2:8s} {3:5.2f}  {4:8s} {5:5.2f}  {6:8s} {7:5.2f} {8:5.2f}".format(
             date.strftime("%Y-%m-%d"),
             daylight_hours,
             rise.astimezone(tz).strftime("%H:%H:%S"), az_r,
