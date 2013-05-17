@@ -13,8 +13,8 @@ These are the various HamCalc core calculation packages.
     electronics/index
     construction/index
     math/index
-    navigation
-    calendar
+    navigation/index
+    calendar/index
     audio_photo
     software
     other

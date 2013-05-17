@@ -1,4 +1,0 @@
-conecalc
-----------
-
-Cone Calculator

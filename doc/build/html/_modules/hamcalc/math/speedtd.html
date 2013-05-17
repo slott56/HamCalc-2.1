@@ -60,12 +60,17 @@
 
 <span class="sd">&gt;&gt;&gt; import hamcalc.math.speedtd as speedtd</span>
 <span class="sd">&gt;&gt;&gt; speedtd.speed_time_distance( D=37, T=11 )</span>
-<span class="sd">{ D=37, T=11, S=3.3636363636363638 }</span>
+<span class="sd">{&#39;S&#39;: 3.3636363636363638, &#39;D&#39;: 37, &#39;T&#39;: 11}</span>
 <span class="sd">&gt;&gt;&gt; speedtd.fuel_volume_distance( D=53, V=17 )</span>
-<span class="sd">{ D=53, V=17, R=3.1176470588235294 }</span>
+<span class="sd">{&#39;R&#39;: 3.1176470588235294, &#39;D&#39;: 53, &#39;V&#39;: 17}</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">from</span> <span class="nn">hamcalc.lib</span> <span class="kn">import</span> <span class="n">AttrDict</span>
+
+<span class="k">def</span> <span class="nf">intro</span><span class="p">():</span>
+    <span class="k">return</span> <span class="s">&quot;&quot;&quot;</span><span class="se">\</span>
+<span class="s">SPEED, TIME and DISTANCE Calculator                     by George Murphy VE3ERP</span>
+<span class="s">&quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="speed_time_distance"><a class="viewcode-back" href="../../../python/math/speedtd.html#hamcalc.math.speedtd.speed_time_distance">[docs]</a><span class="k">def</span> <span class="nf">speed_time_distance</span><span class="p">(</span> <span class="o">**</span><span class="n">kw</span> <span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Solver for speed/time/distance problems.</span>

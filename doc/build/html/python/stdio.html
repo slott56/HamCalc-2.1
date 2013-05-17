@@ -76,15 +76,17 @@ class for emulating some aspects of GW-Basic graphics mode output.</li>
 </li>
 <li><p class="first">Simple Programs.</p>
 <p>These programs are so short that they don&#8217;t really need documentation.
-Also, they simply wrap a calculation module, which has
+Most of these wrap a calculation module; the calculation module has
 the relevant documentation.</p>
+<p>A few of these are stand-alone programs that on&#8217;t have a calculation
+module.</p>
 </li>
 </ul>
 <div class="section" id="module-hamcalc.stdio.intro">
 <span id="intro"></span><h2>Intro<a class="headerlink" href="#module-hamcalc.stdio.intro" title="Permalink to this headline">¶</a></h2>
 <p>Intro.</p>
 <p>Displays the introductory &#8220;splash&#8221; page.</p>
-<p>The default behavior is to run the <strong class="program">menu</strong> application.</p>
+<p>The default behavior is to run the <strong class="program">hamcalc.stdio.menu</strong> application.</p>
 <p>If the menu was run from the command line, then it will run this intro
 program with the <tt class="docutils literal"><span class="pre">menu=False</span></tt> parameter to prevent recursively invoking the menu.</p>
 <dl class="function">
@@ -107,7 +109,7 @@ used by the menu when it&#8217;s showing the intro page.</td>
 <span id="menu"></span><h2>Menu<a class="headerlink" href="#module-hamcalc.stdio.menu" title="Permalink to this headline">¶</a></h2>
 <p>Menu.</p>
 <p>Displays menus, accepts choices, and executes programs.</p>
-<p>The default behavior is to be run from the <strong class="program">intro</strong> application.</p>
+<p>The default behavior is to be run from the <strong class="program">hamcalc.stdio.intro</strong> application.</p>
 <p>If the menu was run from the command line, then it will run the intro
 program with the <tt class="docutils literal"><span class="pre">menu=False</span></tt> parameter to prevent recursively invoking the menu.</p>
 <div class="section" id="application-programs">
@@ -427,7 +429,7 @@ in the given number of steps.</p>
 
 </div>
 <div class="section" id="module-hamcalc.stdio.gwgraphics">
-<span id="gw-graphics"></span><h2>GW Graphics<a class="headerlink" href="#module-hamcalc.stdio.gwgraphics" title="Permalink to this headline">¶</a></h2>
+<span id="gw-graphics"></span><span id="stdio-gwgraphics"></span><h2>GW Graphics<a class="headerlink" href="#module-hamcalc.stdio.gwgraphics" title="Permalink to this headline">¶</a></h2>
 <p>gwgraphics module.</p>
 <p>Define a graphics class that allows relatively simple
 transcription from GW-Basic to Python.</p>
@@ -491,7 +493,7 @@ A &#8220;STEP&#8221; option moves incrementally instead of absolutely.</p>
 <dt id="hamcalc.stdio.gwgraphics.GWGraphics.LOCATE">
 <tt class="descname">LOCATE</tt><big>(</big><em>row=None</em>, <em>col=None</em><big>)</big><a class="reference internal" href="../_modules/hamcalc/stdio/gwgraphics.html#GWGraphics.LOCATE"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.stdio.gwgraphics.GWGraphics.LOCATE" title="Permalink to this definition">¶</a></dt>
 <dd><p>Row and Column are &#8211; strictly speaking &#8211; optional.
-If unspecified then we&#8217;re moving horizontally or vertially
+If unspecified then we&#8217;re moving horizontally or vertically
 only.</p>
 </dd></dl>
 
@@ -504,13 +506,13 @@ only.</p>
 <dl class="method">
 <dt id="hamcalc.stdio.gwgraphics.GWGraphics.SCREEN">
 <tt class="descname">SCREEN</tt><big>(</big><em>mode</em><big>)</big><a class="reference internal" href="../_modules/hamcalc/stdio/gwgraphics.html#GWGraphics.SCREEN"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.stdio.gwgraphics.GWGraphics.SCREEN" title="Permalink to this definition">¶</a></dt>
-<dd><p>SCREEN 0 ● Text mode only
-SCREEN 1 ● 320 × 200 pixel medium-resolution graphics ● 80 x 25 text
-SCREEN 2 ● 640 × 200 pixel high-resolution graphics ● 40 × 25 text
-SCREEN 7 ● 320 × 200 pixel medium-resolution graphics ● 40 × 25 text
-SCREEN 8 ● 640 × 200 pixel high-resolution graphics ● 80 × 25 text
-SCREEN 9 ● 640 × 350 pixel enhanced-resolution graphics ● 80 × 25 text
-SCREEN 10 ● 640 × 350 enhanced-resolution graphics ● 80 × 25 text</p>
+<dd><p>SCREEN 0 ● Text mode only</p>
+<p>SCREEN 1 ● 320 × 200 pixel medium-resolution graphics ● 80 x 25 text</p>
+<p>SCREEN 2 ● 640 × 200 pixel high-resolution graphics ● 40 × 25 text</p>
+<p>SCREEN 7 ● 320 × 200 pixel medium-resolution graphics ● 40 × 25 text</p>
+<p>SCREEN 8 ● 640 × 200 pixel high-resolution graphics ● 80 × 25 text</p>
+<p>SCREEN 9 ● 640 × 350 pixel enhanced-resolution graphics ● 80 × 25 text</p>
+<p>SCREEN 10 ● 640 × 350 enhanced-resolution graphics ● 80 × 25 text</p>
 </dd></dl>
 
 <dl class="method">
@@ -545,8 +547,8 @@ SCREEN 10 ● 640 × 350 enhanced-resolution graphics ● 80 × 25 text</p>
 <li class="toctree-l2"><a class="reference internal" href="electronics/index.html">electronics &#8211; General Electronics</a></li>
 <li class="toctree-l2"><a class="reference internal" href="construction/index.html">construction &#8211; Construction and Related Projects</a></li>
 <li class="toctree-l2"><a class="reference internal" href="math/index.html">math &#8211; Math, Physics, Units Conversion</a></li>
-<li class="toctree-l2"><a class="reference internal" href="navigation.html">navigation &#8211; Navigation and Astronomy</a></li>
-<li class="toctree-l2"><a class="reference internal" href="calendar.html">calendar &#8211; Calendrical Calculations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="navigation/index.html">navigation &#8211; Navigation and Astronomy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="calendar/index.html">calendar &#8211; Calendrical Calculations</a></li>
 <li class="toctree-l2"><a class="reference internal" href="audio_photo.html">audio_photo &#8211; Audio, Sound and Photography</a></li>
 <li class="toctree-l2"><a class="reference internal" href="software.html">software &#8211; Software Engineering, Programming and Computers</a></li>
 <li class="toctree-l2"><a class="reference internal" href="other.html">other &#8211; including Finance and Nutrition</a></li>

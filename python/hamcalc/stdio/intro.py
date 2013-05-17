@@ -2,7 +2,7 @@
 
 Displays the introductory "splash" page.
 
-The default behavior is to run the :program:`menu` application.
+The default behavior is to run the :program:`hamcalc.stdio.menu` application.
 
 If the menu was run from the command line, then it will run this intro
 program with the ``menu=False`` parameter to prevent recursively invoking the menu.

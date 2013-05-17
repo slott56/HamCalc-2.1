@@ -243,6 +243,24 @@ They&#8217;re simply links to other programs.</p>
 </ul>
 <p>Plus, the Frequencies/Wavelengths is both units conversion and a <img class="math" src="../../_images/math/3520a52b733a0dc958033dce67ecf4b300364ef0.png" alt="c=\lambda
 u"/>  <strong>Solver</strong>.</p>
+<p>In addition to the unit definitions, there&#8217;s a variable,
+<tt class="xref py py-data docutils literal"><span class="pre">unit_map</span></tt>.
+This collects units into dimensions.</p>
+<ul class="simple">
+<li>&#8216;capacitance&#8217;: (FARAD, MICROFARAD, NANOFARAD, PICOFARAD),</li>
+<li>&#8216;current&#8217;: (AMPERE, MILLIAMPERE, MICROAMPERE),</li>
+<li>&#8216;degrees&#8217;: (DEGREE, RADIAN),</li>
+<li>&#8216;radians&#8217;: (DEGREE, RADIAN),</li>
+<li>&#8216;inductance&#8217;: (HENRY, MICROHENRY, MILLIHENRY, NANOHENRY, PICOHENRY),</li>
+<li>&#8216;length&#8217;:  (METRE, CENTIMETRE, MILLIMETRE, KILOMETRE, INCH, FOOT, MILE),</li>
+<li>&#8216;distance&#8217;: (METRE, CENTIMETRE, MILLIMETRE, KILOMETRE, INCH, FOOT, MILE),</li>
+<li>&#8216;resistance&#8217;: (OHM, KILOHM, MEGOHM),</li>
+<li>&#8216;temperature&#8217;: (CELSIUS, FAHRENHEIT),</li>
+<li>&#8216;time&#8217;: (SECOND, MINUTE, HOUR, DAY, WEEK, YEAR),</li>
+<li>&#8216;mpg&#8217;: (MPGI, MPG, KPL, LPK),</li>
+<li>&#8216;kpl&#8217;: (MPGI, MPG, KPL, LPK),</li>
+<li>&#8216;frequency&#8217;: (HERTZ, KILOHERTZ, MEGAHERTZ, GIGAHERTZ),</li>
+</ul>
 <p>Test Cases, Unit-by-Unit</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">hamcalc.math.equiv</span> <span class="kn">as</span> <span class="nn">equiv</span>
 </pre></div>
@@ -349,6 +367,12 @@ u"/>  <strong>Solver</strong>.</p>
 <span class="go">35.31073446327684</span>
 </pre></div>
 </div>
+<p>VOLUME</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">equiv</span><span class="o">.</span><span class="n">LITER</span><span class="o">.</span><span class="n">to_std</span><span class="p">(</span> <span class="mi">4</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">equiv</span><span class="o">.</span><span class="n">GALLON</span><span class="o">.</span><span class="n">from_std</span><span class="p">(</span> <span class="n">x</span> <span class="p">),</span><span class="mi">6</span><span class="p">)</span>
+<span class="go">1.056688</span>
+</pre></div>
+</div>
 <p>It&#8217;s possible that the legacy computes this incorrectly.
 The result from the legacy may be 22.6 LPK.</p>
 <dl class="class">
@@ -431,6 +455,18 @@ The result from the legacy may be 22.6 LPK.</p>
 <dt id="hamcalc.math.equiv.FOOT.standard">
 <tt class="descname">standard</tt><a class="headerlink" href="#hamcalc.math.equiv.FOOT.standard" title="Permalink to this definition">¶</a></dt>
 <dd><p>alias of <a class="reference internal" href="#hamcalc.math.equiv.METRE" title="hamcalc.math.equiv.METRE"><tt class="xref py py-class docutils literal"><span class="pre">METRE</span></tt></a></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="hamcalc.math.equiv.GALLON">
+<em class="property">class </em><tt class="descclassname">hamcalc.math.equiv.</tt><tt class="descname">GALLON</tt><a class="reference internal" href="../../_modules/hamcalc/math/equiv.html#GALLON"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.math.equiv.GALLON" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gallon</p>
+<dl class="attribute">
+<dt id="hamcalc.math.equiv.GALLON.standard">
+<tt class="descname">standard</tt><a class="headerlink" href="#hamcalc.math.equiv.GALLON.standard" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#hamcalc.math.equiv.LITER" title="hamcalc.math.equiv.LITER"><tt class="xref py py-class docutils literal"><span class="pre">LITER</span></tt></a></p>
 </dd></dl>
 
 </dd></dl>
@@ -544,6 +580,18 @@ The result from the legacy may be 22.6 LPK.</p>
 </dd></dl>
 
 <dl class="class">
+<dt id="hamcalc.math.equiv.LITER">
+<em class="property">class </em><tt class="descclassname">hamcalc.math.equiv.</tt><tt class="descname">LITER</tt><a class="reference internal" href="../../_modules/hamcalc/math/equiv.html#LITER"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.math.equiv.LITER" title="Permalink to this definition">¶</a></dt>
+<dd><p>liter</p>
+<dl class="attribute">
+<dt id="hamcalc.math.equiv.LITER.standard">
+<tt class="descname">standard</tt><a class="headerlink" href="#hamcalc.math.equiv.LITER.standard" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#hamcalc.math.equiv.LITER" title="hamcalc.math.equiv.LITER"><tt class="xref py py-class docutils literal"><span class="pre">LITER</span></tt></a></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
 <dt id="hamcalc.math.equiv.LPK">
 <em class="property">class </em><tt class="descclassname">hamcalc.math.equiv.</tt><tt class="descname">LPK</tt><a class="reference internal" href="../../_modules/hamcalc/math/equiv.html#LPK"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.math.equiv.LPK" title="Permalink to this definition">¶</a></dt>
 <dd><p>Litres per 100 Kilometre</p>
@@ -630,7 +678,7 @@ The result from the legacy may be 22.6 LPK.</p>
 <dl class="class">
 <dt id="hamcalc.math.equiv.MILE">
 <em class="property">class </em><tt class="descclassname">hamcalc.math.equiv.</tt><tt class="descname">MILE</tt><a class="reference internal" href="../../_modules/hamcalc/math/equiv.html#MILE"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.math.equiv.MILE" title="Permalink to this definition">¶</a></dt>
-<dd><p>Mile</p>
+<dd><p>Statute Mile</p>
 <dl class="attribute">
 <dt id="hamcalc.math.equiv.MILE.standard">
 <tt class="descname">standard</tt><a class="headerlink" href="#hamcalc.math.equiv.MILE.standard" title="Permalink to this definition">¶</a></dt>
@@ -731,6 +779,18 @@ The result from the legacy may be 22.6 LPK.</p>
 <dt id="hamcalc.math.equiv.NANOHENRY.standard">
 <tt class="descname">standard</tt><a class="headerlink" href="#hamcalc.math.equiv.NANOHENRY.standard" title="Permalink to this definition">¶</a></dt>
 <dd><p>alias of <a class="reference internal" href="#hamcalc.math.equiv.HENRY" title="hamcalc.math.equiv.HENRY"><tt class="xref py py-class docutils literal"><span class="pre">HENRY</span></tt></a></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="hamcalc.math.equiv.NAUTICAL_MILE">
+<em class="property">class </em><tt class="descclassname">hamcalc.math.equiv.</tt><tt class="descname">NAUTICAL_MILE</tt><a class="reference internal" href="../../_modules/hamcalc/math/equiv.html#NAUTICAL_MILE"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.math.equiv.NAUTICAL_MILE" title="Permalink to this definition">¶</a></dt>
+<dd><p>Nautical Mile</p>
+<dl class="attribute">
+<dt id="hamcalc.math.equiv.NAUTICAL_MILE.standard">
+<tt class="descname">standard</tt><a class="headerlink" href="#hamcalc.math.equiv.NAUTICAL_MILE.standard" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#hamcalc.math.equiv.METRE" title="hamcalc.math.equiv.METRE"><tt class="xref py py-class docutils literal"><span class="pre">METRE</span></tt></a></p>
 </dd></dl>
 
 </dd></dl>
@@ -860,6 +920,7 @@ where people will look for them.</p>
 <li class="toctree-l3"><a class="reference internal" href="baromtr.html">baromtr &#8211; Barometer Reading Equivalents</a></li>
 <li class="toctree-l3"><a class="reference internal" href="binary.html">binary &#8211; Decimal to Binary Converter</a></li>
 <li class="toctree-l3"><a class="reference internal" href="centrif.html">centrif &#8211; Centrifugal/Centripetel Force</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chase.html">chase &#8211; Speed Chase</a></li>
 <li class="toctree-l3"><a class="reference internal" href="curvefit.html">curvefit &#8211; Curve Fit program</a></li>
 <li class="toctree-l3"><a class="reference internal" href="deciconv.html">deciconv &#8211; Decimal Hour/Degree Converter</a></li>
 <li class="toctree-l3"><a class="reference internal" href="decifrac.html">decifrac &#8211; Decimal/Fraction Converter</a></li>
@@ -868,20 +929,22 @@ where people will look for them.</p>
 <li class="toctree-l3"><a class="reference internal" href="formulae.html">formulae &#8211; Formula Library</a></li>
 <li class="toctree-l3"><a class="reference internal" href="graphs.html">graphs &#8211; Graphs</a></li>
 <li class="toctree-l3"><a class="reference internal" href="involute.html">involute &#8211; Involute of a Circle</a></li>
-<li class="toctree-l3"><a class="reference internal" href="numderiv.html">numderiv</a></li>
-<li class="toctree-l3"><a class="reference internal" href="polygon.html">polygon</a></li>
+<li class="toctree-l3"><a class="reference internal" href="numderiv.html">numderiv &#8211; Numbers and Functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="polygon.html">polygon &#8211; Polygon Dimensions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="primenos.html">primenos &#8211; Prime Number Calculator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="propcirc.html">propcirc &#8211; Circle, Properties of</a></li>
-<li class="toctree-l3"><a class="reference internal" href="randnum.html">randnum</a></li>
-<li class="toctree-l3"><a class="reference internal" href="rotaplot.html">rotaplot</a></li>
-<li class="toctree-l3"><a class="reference internal" href="simuleq.html">simuleq</a></li>
+<li class="toctree-l3"><a class="reference internal" href="quadrat.html">quadrat &#8211; Quadratic Equation Calculator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="randnum.html">randnum &#8211; Random Number Generator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rotaplot.html">rotaplot &#8211; Cartesian/Polar Plot Rotator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="simuleq.html">simuleq &#8211; Simultaneous Equation Calculator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="solutri.html">solutri &#8211; Triangles, solution of</a></li>
-<li class="toctree-l3"><a class="reference internal" href="speedtd.html">speedtd</a></li>
+<li class="toctree-l3"><a class="reference internal" href="speedtd.html">speedtd &#8211; Speed/Time/Distance Calculator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="trig.html">trig &#8211; Trigonometric Functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="unitvalu.html">unitvalu &#8211; Unit Value Comparator</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="../navigation.html">navigation &#8211; Navigation and Astronomy</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../calendar.html">calendar &#8211; Calendrical Calculations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../navigation/index.html">navigation &#8211; Navigation and Astronomy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../calendar/index.html">calendar &#8211; Calendrical Calculations</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../audio_photo.html">audio_photo &#8211; Audio, Sound and Photography</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../software.html">software &#8211; Software Engineering, Programming and Computers</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../other.html">other &#8211; including Finance and Nutrition</a></li>

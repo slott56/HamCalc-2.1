@@ -26,7 +26,7 @@
     <link rel="top" title="HamCalc 2.1 documentation" href="../../index.html" />
     <link rel="up" title="math – Math, Physics, Units Conversion" href="index.html" />
     <link rel="next" title="propcirc – Circle, Properties of" href="propcirc.html" />
-    <link rel="prev" title="polygon" href="polygon.html" /> 
+    <link rel="prev" title="polygon – Polygon Dimensions" href="polygon.html" /> 
   </head>
   <body>
     <div class="header-wrapper">
@@ -34,7 +34,7 @@
         <div class="headertitle"><a
           href="../../index.html">HamCalc 2.1 documentation</a></div>
         <div class="rel">
-          <a href="polygon.html" title="polygon"
+          <a href="polygon.html" title="polygon – Polygon Dimensions"
              accesskey="P">previous</a> |
           <a href="propcirc.html" title="propcirc – Circle, Properties of"
              accesskey="N">next</a> |
@@ -89,6 +89,87 @@ numbers.</p>
 <span class="go">[641, 6700417]</span>
 </pre></div>
 </div>
+<dl class="function">
+<dt id="hamcalc.math.primenos.factor">
+<tt class="descclassname">hamcalc.math.primenos.</tt><tt class="descname">factor</tt><big>(</big><em>n</em><big>)</big><a class="reference internal" href="../../_modules/hamcalc/math/primenos.html#factor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.math.primenos.factor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Simple prime factorization of n.</p>
+<p>Factoring small numbers (less than 2**32) is quick because small integer
+values are fast in Python.</p>
+<p>Factoring larger numbers is slower because it uses
+long integers which are slower and tie up more memory.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>n</strong> &#8211; Number of factor</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Yields factors.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="hamcalc.math.primenos.sieve_list_iter">
+<tt class="descclassname">hamcalc.math.primenos.</tt><tt class="descname">sieve_list_iter</tt><big>(</big><em>last</em><big>)</big><a class="reference internal" href="../../_modules/hamcalc/math/primenos.html#sieve_list_iter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.math.primenos.sieve_list_iter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sieve of Eratosthones: generate primes, p, such that <img class="math" src="../../_images/math/6eb15b4e39d4712b74dfddbda05feafc0f73dfff.png" alt="2 \leq p &lt; last"/></p>
+<p>This creates a large <tt class="docutils literal"><span class="pre">list</span></tt> object, which can use a LOT of memory.
+But it&#8217;s simple. The list is a trifle faster than a set because it avoids
+hash collisions.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>last</strong> &#8211; primes will be 2 &lt;= p &lt; last.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Yields prime numbers</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="hamcalc.math.primenos.sieve_range_iter">
+<tt class="descclassname">hamcalc.math.primenos.</tt><tt class="descname">sieve_range_iter</tt><big>(</big><em>low</em>, <em>high</em><big>)</big><a class="reference internal" href="../../_modules/hamcalc/math/primenos.html#sieve_range_iter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.math.primenos.sieve_range_iter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sieve of Eratosthones such that <img class="math" src="../../_images/math/4a446f3c2ae5e87aa3a54b61fb8ebd0aee68063c.png" alt="low \leq p &lt; last"/>.</p>
+<p>This uses the <a class="reference internal" href="#hamcalc.math.primenos.sieve_list_iter" title="hamcalc.math.primenos.sieve_list_iter"><tt class="xref py py-func docutils literal"><span class="pre">sieve_list_iter()</span></tt></a> because it&#8217;s potentially
+faster for factoring.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>low</strong> &#8211; lowest value.</li>
+<li><strong>last</strong> &#8211; primes will be low &lt;= p &lt; last.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Yields prime numbers</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="hamcalc.math.primenos.sieve_set_iter">
+<tt class="descclassname">hamcalc.math.primenos.</tt><tt class="descname">sieve_set_iter</tt><big>(</big><em>last</em><big>)</big><a class="reference internal" href="../../_modules/hamcalc/math/primenos.html#sieve_set_iter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.math.primenos.sieve_set_iter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sieve of Eratosthones: generate primes, p, such that <img class="math" src="../../_images/math/6eb15b4e39d4712b74dfddbda05feafc0f73dfff.png" alt="2 \leq p &lt; last"/></p>
+<p>This creates a potentially large <tt class="docutils literal"><span class="pre">set</span></tt> object, which can use a LOT of memory.</p>
+<p>The downside of a large set is the problem of hash collisions when trying
+to collect a large number of elements. The upside is simplicity.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>last</strong> &#8211; primes will be 2 &lt;= p &lt; last.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Yields prime numbers</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
 </div>
 <div class="section" id="quirks">
 <h2>Quirks<a class="headerlink" href="#quirks" title="Permalink to this headline">¶</a></h2>
@@ -130,6 +211,7 @@ algorithms.</p>
 <li class="toctree-l3"><a class="reference internal" href="baromtr.html">baromtr &#8211; Barometer Reading Equivalents</a></li>
 <li class="toctree-l3"><a class="reference internal" href="binary.html">binary &#8211; Decimal to Binary Converter</a></li>
 <li class="toctree-l3"><a class="reference internal" href="centrif.html">centrif &#8211; Centrifugal/Centripetel Force</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chase.html">chase &#8211; Speed Chase</a></li>
 <li class="toctree-l3"><a class="reference internal" href="curvefit.html">curvefit &#8211; Curve Fit program</a></li>
 <li class="toctree-l3"><a class="reference internal" href="deciconv.html">deciconv &#8211; Decimal Hour/Degree Converter</a></li>
 <li class="toctree-l3"><a class="reference internal" href="decifrac.html">decifrac &#8211; Decimal/Fraction Converter</a></li>
@@ -138,20 +220,22 @@ algorithms.</p>
 <li class="toctree-l3"><a class="reference internal" href="formulae.html">formulae &#8211; Formula Library</a></li>
 <li class="toctree-l3"><a class="reference internal" href="graphs.html">graphs &#8211; Graphs</a></li>
 <li class="toctree-l3"><a class="reference internal" href="involute.html">involute &#8211; Involute of a Circle</a></li>
-<li class="toctree-l3"><a class="reference internal" href="numderiv.html">numderiv</a></li>
-<li class="toctree-l3"><a class="reference internal" href="polygon.html">polygon</a></li>
+<li class="toctree-l3"><a class="reference internal" href="numderiv.html">numderiv &#8211; Numbers and Functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="polygon.html">polygon &#8211; Polygon Dimensions</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="">primenos &#8211; Prime Number Calculator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="propcirc.html">propcirc &#8211; Circle, Properties of</a></li>
-<li class="toctree-l3"><a class="reference internal" href="randnum.html">randnum</a></li>
-<li class="toctree-l3"><a class="reference internal" href="rotaplot.html">rotaplot</a></li>
-<li class="toctree-l3"><a class="reference internal" href="simuleq.html">simuleq</a></li>
+<li class="toctree-l3"><a class="reference internal" href="quadrat.html">quadrat &#8211; Quadratic Equation Calculator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="randnum.html">randnum &#8211; Random Number Generator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rotaplot.html">rotaplot &#8211; Cartesian/Polar Plot Rotator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="simuleq.html">simuleq &#8211; Simultaneous Equation Calculator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="solutri.html">solutri &#8211; Triangles, solution of</a></li>
-<li class="toctree-l3"><a class="reference internal" href="speedtd.html">speedtd</a></li>
+<li class="toctree-l3"><a class="reference internal" href="speedtd.html">speedtd &#8211; Speed/Time/Distance Calculator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="trig.html">trig &#8211; Trigonometric Functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="unitvalu.html">unitvalu &#8211; Unit Value Comparator</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="../navigation.html">navigation &#8211; Navigation and Astronomy</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../calendar.html">calendar &#8211; Calendrical Calculations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../navigation/index.html">navigation &#8211; Navigation and Astronomy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../calendar/index.html">calendar &#8211; Calendrical Calculations</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../audio_photo.html">audio_photo &#8211; Audio, Sound and Photography</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../software.html">software &#8211; Software Engineering, Programming and Computers</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../other.html">other &#8211; including Finance and Nutrition</a></li>
@@ -184,7 +268,7 @@ algorithms.</p>
     <div class="footer-wrapper">
       <div class="footer">
         <div class="left">
-          <a href="polygon.html" title="polygon"
+          <a href="polygon.html" title="polygon – Polygon Dimensions"
              >previous</a> |
           <a href="propcirc.html" title="propcirc – Circle, Properties of"
              >next</a> |

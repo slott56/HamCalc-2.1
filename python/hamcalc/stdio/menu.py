@@ -2,7 +2,7 @@
 
 Displays menus, accepts choices, and executes programs.
 
-The default behavior is to be run from the :program:`intro` application.
+The default behavior is to be run from the :program:`hamcalc.stdio.intro` application.
 
 If the menu was run from the command line, then it will run the intro
 program with the ``menu=False`` parameter to prevent recursively invoking the menu.

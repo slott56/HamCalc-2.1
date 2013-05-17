@@ -1,0 +1,186 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>caltoday – Calendar, Perpetual/Universal &mdash; HamCalc 2.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/agogo.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '2.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="HamCalc 2.1 documentation" href="../../index.html" />
+    <link rel="up" title="calendar – Calendrical Calculations" href="index.html" />
+    <link rel="next" title="metshowr – Meteor Shower Predictor" href="metshowr.html" />
+    <link rel="prev" title="calendar – Calendrical Calculations" href="index.html" /> 
+  </head>
+  <body>
+    <div class="header-wrapper">
+      <div class="header">
+        <div class="headertitle"><a
+          href="../../index.html">HamCalc 2.1 documentation</a></div>
+        <div class="rel">
+          <a href="index.html" title="calendar – Calendrical Calculations"
+             accesskey="P">previous</a> |
+          <a href="metshowr.html" title="metshowr – Meteor Shower Predictor"
+             accesskey="N">next</a> |
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a>
+        </div>
+       </div>
+    </div>
+
+    <div class="content-wrapper">
+      <div class="content">
+        <div class="document">
+            
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="caltoday-calendar-perpetual-universal">
+<h1>caltoday &#8211; Calendar, Perpetual/Universal<a class="headerlink" href="#caltoday-calendar-perpetual-universal" title="Permalink to this headline">¶</a></h1>
+<p>From the comments:</p>
+<div class="highlight-python"><pre>20 :REM&#x27;Adapted from &quot;How to Program Your IBM PC&quot;, by Carl Shipman
+30 :REM&#x27;Published by Knight-Ridder Press        ISBN:0-89586-544-0
+40 :REM&#x27;Library of Congress Catalog No. 83-81692</pre>
+</div>
+<p>Option 1. Rewrite this GW-Basic adaptation of an algorithm from Shipman&#8217;s book.</p>
+<dl class="docutils">
+<dt>Option 2. Use the better algorithms in the book Calendrical Calculations.</dt>
+<dd>Dershowitz, Nachum and Edward M. Reingold. Calendrical Calculations. Cambridge University Press. 1997.</dd>
+</dl>
+<p>Option 3. Use Python&#8217;s built-in packages and move on.</p>
+<div class="section" id="implementation">
+<h2>Implementation<a class="headerlink" href="#implementation" title="Permalink to this headline">¶</a></h2>
+<p>Since most of this is a first-class piece of the Python library, there&#8217;s no calculation module required. This is mostly just flashy output.</p>
+<p>See built-in modules <tt class="xref py py-mod docutils literal"><span class="pre">calendar</span></tt> and <tt class="xref py py-mod docutils literal"><span class="pre">datetime</span></tt>.</p>
+<p>This becomes three cute little modules in <tt class="xref py py-mod docutils literal"><span class="pre">hamcalc.stdio</span></tt>.</p>
+<ul class="simple">
+<li><strong class="program">hamcalc.stdio.caltoday</strong> is the essental calendar features.</li>
+<li><strong class="program">hamcalc.stdio.days</strong> is the days-between-two-dates calculation.</li>
+<li><strong class="program">hamcalc.stdio.sunup</strong> is the sunup/sundown calculation.</li>
+</ul>
+<p>The only part that&#8217;s not built-in is menu item 5, Sunrise/Sunset Calendar.
+But this is really a separate program.  See <em class="xref std std-ref">navigation.sunup</em>.</p>
+</div>
+<div class="section" id="quirks">
+<h2>Quirks<a class="headerlink" href="#quirks" title="Permalink to this headline">¶</a></h2>
+<p>This line starts a massive loop that&#8217;s partially ignored, depending on main menu options.</p>
+<div class="highlight-python"><pre>210  FOR ABC=1 TO 3</pre>
+</div>
+<p>The loop ends at</p>
+<div class="highlight-python"><pre>1400 NEXT ABC</pre>
+</div>
+<p>This does the &#8220;3-month&#8221; calendar. The main menu is <strong>inside</strong> this loop.</p>
+<p>For the &#8220;Any Month&#8221; option, an extra mystery GOTO is wedged in to avoid highlighting today&#8217;s date.</p>
+<div class="highlight-python"><pre>1170 IF Q$=&quot;2&quot;THEN COLOR 15,6:GOTO 1190</pre>
+</div>
+<p>And this extra mystery GOTO is wedged in to only process one month, in spite of being in the middle of a FOR loop.</p>
+<div class="highlight-python"><pre>1330 IF Q$=&quot;2&quot;THEN COLOR 7,0:GOTO 1410      :REM&#x27;single month display</pre>
+</div>
+<p>For whole year, an entirely separate piece of code is used.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+        </div>
+        <div class="sidebar">
+          <h3>Table Of Contents</h3>
+          <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../background.html">Background</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../legacy.html">The HamCalc Legacy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../python_architecture.html">Python Architecture</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Python Modules</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../lib.html">lib &#8211; Supporting Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../radio.html">radio &#8211; Radio Design and Engineering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ham.html">ham &#8211; Ham Radio Operations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../electronics/index.html">electronics &#8211; General Electronics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../construction/index.html">construction &#8211; Construction and Related Projects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../math/index.html">math &#8211; Math, Physics, Units Conversion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../navigation/index.html">navigation &#8211; Navigation and Astronomy</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">calendar &#8211; Calendrical Calculations</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="">caltoday &#8211; Calendar, Perpetual/Universal</a></li>
+<li class="toctree-l3"><a class="reference internal" href="metshowr.html">metshowr &#8211; Meteor Shower Predictor</a></li>
+<li class="toctree-l3"><a class="reference internal" href="seasons.html">seasons &#8211; Equinoxes &amp; Solstices</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../audio_photo.html">audio_photo &#8211; Audio, Sound and Photography</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../software.html">software &#8211; Software Engineering, Programming and Computers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../other.html">other &#8211; including Finance and Nutrition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../stdio.html">STDIO Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../rest.html">RESTful Web Services Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../cli.html">Command-Line Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../gui.html">GUI Interface</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../todo.html">The To Do List</a></li>
+</ul>
+
+          <h3 style="margin-top: 1.5em;">Search</h3>
+          <form class="search" action="../../search.html" method="get">
+            <input type="text" name="q" />
+            <input type="submit" value="Go" />
+            <input type="hidden" name="check_keywords" value="yes" />
+            <input type="hidden" name="area" value="default" />
+          </form>
+          <p class="searchtip" style="font-size: 90%">
+            Enter search terms or a module, class or function name.
+          </p>
+        </div>
+        <div class="clearer"></div>
+      </div>
+    </div>
+
+    <div class="footer-wrapper">
+      <div class="footer">
+        <div class="left">
+          <a href="index.html" title="calendar – Calendrical Calculations"
+             >previous</a> |
+          <a href="metshowr.html" title="metshowr – Meteor Shower Predictor"
+             >next</a> |
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |
+          <a href="../../genindex.html" title="General Index"
+             >index</a>
+            <br/>
+            <a href="../../_sources/python/calendar/caltoday.txt"
+               rel="nofollow">Show Source</a>
+        </div>
+
+        <div class="right">
+          
+    <div class="footer">
+        &copy; Copyright 2013, S.Lott.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2b1.
+    </div>
+        </div>
+        <div class="clearer"></div>
+      </div>
+    </div>
+
+  </body>
+</html>

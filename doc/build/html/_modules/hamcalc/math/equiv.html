@@ -65,6 +65,37 @@
 
 <span class="sd">Plus, the Frequencies/Wavelengths is both units conversion and a :math:`c=\lambda\nu`  **Solver**.</span>
 
+<span class="sd">In addition to the unit definitions, there&#39;s a variable,</span>
+<span class="sd">:data:`unit_map`.</span>
+<span class="sd">This collects units into dimensions.</span>
+
+<span class="sd">-       &#39;capacitance&#39;: (FARAD, MICROFARAD, NANOFARAD, PICOFARAD),</span>
+
+<span class="sd">-       &#39;current&#39;: (AMPERE, MILLIAMPERE, MICROAMPERE),</span>
+
+<span class="sd">-       &#39;degrees&#39;: (DEGREE, RADIAN),</span>
+
+<span class="sd">-       &#39;radians&#39;: (DEGREE, RADIAN),</span>
+
+<span class="sd">-       &#39;inductance&#39;: (HENRY, MICROHENRY, MILLIHENRY, NANOHENRY, PICOHENRY),</span>
+
+<span class="sd">-       &#39;length&#39;:  (METRE, CENTIMETRE, MILLIMETRE, KILOMETRE, INCH, FOOT, MILE),</span>
+
+<span class="sd">-       &#39;distance&#39;: (METRE, CENTIMETRE, MILLIMETRE, KILOMETRE, INCH, FOOT, MILE),</span>
+
+<span class="sd">-       &#39;resistance&#39;: (OHM, KILOHM, MEGOHM),</span>
+
+<span class="sd">-       &#39;temperature&#39;: (CELSIUS, FAHRENHEIT),</span>
+
+<span class="sd">-       &#39;time&#39;: (SECOND, MINUTE, HOUR, DAY, WEEK, YEAR),</span>
+
+<span class="sd">-       &#39;mpg&#39;: (MPGI, MPG, KPL, LPK),</span>
+
+<span class="sd">-       &#39;kpl&#39;: (MPGI, MPG, KPL, LPK),</span>
+
+<span class="sd">-       &#39;frequency&#39;: (HERTZ, KILOHERTZ, MEGAHERTZ, GIGAHERTZ),</span>
+
+
 <span class="sd">Test Cases, Unit-by-Unit</span>
 
 <span class="sd">&gt;&gt;&gt; import hamcalc.math.equiv as equiv</span>
@@ -170,6 +201,12 @@
 <span class="sd">4.425</span>
 <span class="sd">&gt;&gt;&gt; equiv.LPK.from_std( x )</span>
 <span class="sd">35.31073446327684</span>
+
+<span class="sd">VOLUME</span>
+
+<span class="sd">&gt;&gt;&gt; x = equiv.LITER.to_std( 4 )</span>
+<span class="sd">&gt;&gt;&gt; round(equiv.GALLON.from_std( x ),6)</span>
+<span class="sd">1.056688</span>
 
 <span class="sd">It&#39;s possible that the legacy computes this incorrectly.</span>
 <span class="sd">The result from the legacy may be 22.6 LPK.</span>
@@ -307,10 +344,16 @@
     <span class="n">factor</span><span class="o">=</span> <span class="mf">39.370079</span><span class="o">/</span><span class="mi">12</span>
 </div>
 <div class="viewcode-block" id="MILE"><a class="viewcode-back" href="../../../python/math/equiv.html#hamcalc.math.equiv.MILE">[docs]</a><span class="k">class</span> <span class="nc">MILE</span><span class="p">(</span> <span class="n">Unit</span> <span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Mile&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;Statute Mile&quot;&quot;&quot;</span>
     <span class="n">standard</span><span class="o">=</span> <span class="n">METRE</span>
     <span class="n">name</span><span class="o">=</span> <span class="s">&quot;mi&quot;</span>
-    <span class="n">factor</span><span class="o">=</span> <span class="mf">39.370079</span><span class="o">/</span><span class="mi">12</span><span class="o">/</span><span class="mi">5280</span>
+    <span class="n">factor</span><span class="o">=</span> <span class="mf">39.370079</span><span class="o">/</span><span class="mi">12</span><span class="o">/</span><span class="mi">5280</span> <span class="c"># 1/1609.344</span>
+</div>
+<div class="viewcode-block" id="NAUTICAL_MILE"><a class="viewcode-back" href="../../../python/math/equiv.html#hamcalc.math.equiv.NAUTICAL_MILE">[docs]</a><span class="k">class</span> <span class="nc">NAUTICAL_MILE</span><span class="p">(</span> <span class="n">Unit</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Nautical Mile&quot;&quot;&quot;</span>
+    <span class="n">standard</span><span class="o">=</span> <span class="n">METRE</span>
+    <span class="n">name</span><span class="o">=</span> <span class="s">&quot;nm&quot;</span>
+    <span class="n">factor</span><span class="o">=</span> <span class="mi">1</span><span class="o">/</span><span class="mf">1852.0</span>
 </div>
 <div class="viewcode-block" id="OHM"><a class="viewcode-back" href="../../../python/math/equiv.html#hamcalc.math.equiv.OHM">[docs]</a><span class="k">class</span> <span class="nc">OHM</span><span class="p">(</span> <span class="n">Standard_Unit</span> <span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Ohm&quot;&quot;&quot;</span>
@@ -401,6 +444,16 @@
     <span class="n">name</span><span class="o">=</span> <span class="s">&quot;LPK&quot;</span>
     <span class="n">standard</span><span class="o">=</span> <span class="n">MPGI</span>
     <span class="n">factor</span><span class="o">=</span> <span class="mi">1</span><span class="o">/</span><span class="mf">0.354</span>
+</div>
+<div class="viewcode-block" id="LITER"><a class="viewcode-back" href="../../../python/math/equiv.html#hamcalc.math.equiv.LITER">[docs]</a><span class="k">class</span> <span class="nc">LITER</span><span class="p">(</span> <span class="n">Standard_Unit</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;liter&quot;&quot;&quot;</span>
+    <span class="n">name</span><span class="o">=</span> <span class="s">&quot;l&quot;</span>
+</div>
+<div class="viewcode-block" id="GALLON"><a class="viewcode-back" href="../../../python/math/equiv.html#hamcalc.math.equiv.GALLON">[docs]</a><span class="k">class</span> <span class="nc">GALLON</span><span class="p">(</span> <span class="n">Unit</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Gallon&quot;&quot;&quot;</span>
+    <span class="n">name</span><span class="o">=</span> <span class="s">&quot;gal&quot;</span>
+    <span class="n">standard</span><span class="o">=</span> <span class="n">LITER</span>
+    <span class="n">factor</span><span class="o">=</span> <span class="mi">1</span><span class="o">/</span><span class="mf">3.7854118</span>
 </div>
 <div class="viewcode-block" id="freq_wavelength"><a class="viewcode-back" href="../../../python/math/equiv.html#hamcalc.math.equiv.freq_wavelength">[docs]</a><span class="k">def</span> <span class="nf">freq_wavelength</span><span class="p">(</span> <span class="o">**</span><span class="n">kw</span> <span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Solver for frequency-wavelength problems in Standard units</span>

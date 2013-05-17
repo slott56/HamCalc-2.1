@@ -1,0 +1,264 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>hamcalc.navigation.sunrise.timezone &mdash; HamCalc 2.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../../../_static/agogo.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../',
+        VERSION:     '2.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <link rel="top" title="HamCalc 2.1 documentation" href="../../../../index.html" />
+    <link rel="up" title="hamcalc.navigation.sunrise" href="../sunrise.html" /> 
+  </head>
+  <body>
+    <div class="header-wrapper">
+      <div class="header">
+        <div class="headertitle"><a
+          href="../../../../index.html">HamCalc 2.1 documentation</a></div>
+        <div class="rel">
+          <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |
+          <a href="../../../../genindex.html" title="General Index"
+             accesskey="I">index</a>
+        </div>
+       </div>
+    </div>
+
+    <div class="content-wrapper">
+      <div class="content">
+        <div class="document">
+            
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for hamcalc.navigation.sunrise.timezone</h1><div class="highlight"><pre>
+<span class="sd">&quot;&quot;&quot;hamcalc.navigation.sunrise.timezone --  North American Time Zones.</span>
+
+<span class="sd">The sunrise and sunset times are in UTC.  Localtime offsets need to be applied,</span>
+<span class="sd">based on local knowledge of timezones and Daylight Savings Time</span>
+<span class="sd">to get to proper local times.</span>
+
+<span class="sd">This includes many of the North American DST Rules for US and Canada.</span>
+
+<span class="sd">From the Python documentation.</span>
+
+<span class="sd">    # This is a simplified (i.e., wrong for a few cases) set of rules for US</span>
+<span class="sd">    # DST start and end times. For a complete and up-to-date set of DST rules</span>
+<span class="sd">    # and timezone definitions, visit the Olson Database (or try pytz):</span>
+<span class="sd">    # http://www.twinsun.com/tz/tz-link.htm</span>
+<span class="sd">    # http://sourceforge.net/projects/pytz/ (might not be up-to-date)</span>
+
+<span class="sd">See http://pytz.sourceforge.net for a more complete list.</span>
+
+<span class="sd">To convert from UTC to local time, the following kind of thing</span>
+<span class="sd">is done.</span>
+
+<span class="sd">::</span>
+
+<span class="sd">    rise, transit, set = sunrise.rise_transit_set( 38.98, 76.47, today.date() )</span>
+<span class="sd">    rise.astimezone(sunrise.Eastern).isoformat()</span>
+
+<span class="sd">This will display the rise time in North American Eastern Time.</span>
+
+<span class="sd">Since the time zone data has some of the calendar rules back to 1966, the daylight savings time rules are applied as well as possible to historical</span>
+<span class="sd">dates.</span>
+
+<span class="sd">It&#39;s quite easy to add timezones to cover other historical periods or</span>
+<span class="sd">other places on earth.</span>
+
+<span class="sd">This module defines the following timezones:</span>
+
+<span class="sd">-   utc, abbreviated &quot;UTC&quot;</span>
+
+<span class="sd">-   Newfoundland = NATimeZone(-3.5, &quot;Newfoundland&quot;, &quot;NST&quot;, &quot;NDT&quot;)</span>
+
+<span class="sd">-   Atlantic = NATimeZone(-4, &quot;Atlantic&quot;, &quot;AST&quot;, &quot;ADT&quot;)</span>
+
+<span class="sd">-   Eastern  = NATimeZone(-5, &quot;Eastern&quot;,  &quot;EST&quot;, &quot;EDT&quot;)</span>
+
+<span class="sd">-   Central  = NATimeZone(-6, &quot;Central&quot;,  &quot;CST&quot;, &quot;CDT&quot;)</span>
+
+<span class="sd">-   Mountain = NATimeZone(-7, &quot;Mountain&quot;, &quot;MST&quot;, &quot;MDT&quot;)</span>
+
+<span class="sd">-   Pacific  = NATimeZone(-8, &quot;Pacific&quot;,  &quot;PST&quot;, &quot;PDT&quot;)</span>
+
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">datetime</span>
+
+<span class="n">ZERO</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">HOUR</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">hours</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+<div class="viewcode-block" id="UTC"><a class="viewcode-back" href="../../../../python/navigation/sunup.html#hamcalc.navigation.sunrise.timezone.UTC">[docs]</a><span class="k">class</span> <span class="nc">UTC</span><span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">tzinfo</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;UTC Timezone definition&quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">utcoffset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dt</span><span class="p">):</span> <span class="k">return</span> <span class="n">ZERO</span>
+    <span class="k">def</span> <span class="nf">tzname</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dt</span><span class="p">):</span> <span class="k">return</span> <span class="s">&quot;UTC&quot;</span>
+    <span class="k">def</span> <span class="nf">dst</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dt</span><span class="p">):</span> <span class="k">return</span> <span class="n">ZERO</span>
+</div>
+<span class="n">utc</span> <span class="o">=</span> <span class="n">UTC</span><span class="p">()</span>
+
+<div class="viewcode-block" id="FixedOffset"><a class="viewcode-back" href="../../../../python/navigation/sunup.html#hamcalc.navigation.sunrise.timezone.FixedOffset">[docs]</a><span class="k">class</span> <span class="nc">FixedOffset</span><span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">tzinfo</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Fixed offset in minutes east from UTC.&quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__offset</span> <span class="o">=</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">minutes</span> <span class="o">=</span> <span class="n">offset</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">utcoffset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dt</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__offset</span><span class="o">.</span><span class="n">total_seconds</span><span class="p">()</span>
+    <span class="k">def</span> <span class="nf">tzname</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dt</span><span class="p">):</span>
+        <span class="n">hr</span><span class="p">,</span> <span class="nb">min</span> <span class="o">=</span> <span class="nb">divmod</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">__offset</span><span class="o">.</span><span class="n">total_seconds</span><span class="p">()</span><span class="o">/</span><span class="mi">60</span><span class="p">,</span> <span class="mi">60</span> <span class="p">)</span>
+        <span class="k">return</span> <span class="s">&quot;GMT{0:+03.0f}:{1:02.0f}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">hr</span><span class="p">,</span><span class="nb">min</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">dst</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dt</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">ZERO</span>
+
+<span class="c"># A more complete implementation of current DST rules for major US time zones.</span>
+</div>
+<div class="viewcode-block" id="first_sunday_on_or_after"><a class="viewcode-back" href="../../../../python/navigation/sunup.html#hamcalc.navigation.sunrise.timezone.first_sunday_on_or_after">[docs]</a><span class="k">def</span> <span class="nf">first_sunday_on_or_after</span><span class="p">(</span><span class="n">dt</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Determine if a date is within the defined period.&quot;&quot;&quot;</span>
+    <span class="n">days_to_go</span> <span class="o">=</span> <span class="mi">6</span> <span class="o">-</span> <span class="n">dt</span><span class="o">.</span><span class="n">weekday</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">days_to_go</span><span class="p">:</span>
+        <span class="n">dt</span> <span class="o">+=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">days_to_go</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">dt</span>
+
+<span class="c"># In the US, since 2007, DST starts at 2am (standard time) on the second</span>
+<span class="c"># Sunday in March, which is the first Sunday on or after Mar 8.</span></div>
+<span class="n">DSTSTART_2007</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="c"># and ends at 2am (DST time; 1am standard time) on the first Sunday of Nov.</span>
+<span class="n">DSTEND_2007</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="c"># From 1987 to 2006, DST used to start at 2am (standard time) on the first</span>
+<span class="c"># Sunday in April and to end at 2am (DST time; 1am standard time) on the last</span>
+<span class="c"># Sunday of October, which is the first Sunday on or after Oct 25.</span>
+<span class="n">DSTSTART_1987_2006</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">DSTEND_1987_2006</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="c"># From 1967 to 1986, DST used to start at 2am (standard time) on the last</span>
+<span class="c"># Sunday in April (the one on or after April 24) and to end at 2am (DST time;</span>
+<span class="c"># 1am standard time) on the last Sunday of October, which is the first Sunday</span>
+<span class="c"># on or after Oct 25.</span>
+<span class="n">DSTSTART_1967_1986</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">24</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">DSTEND_1967_1986</span> <span class="o">=</span> <span class="n">DSTEND_1987_2006</span>
+
+<span class="c"># For Canada, starting in 2007, clocks following the new North American standard</span>
+<span class="c"># for Daylight Saving Time are to be turned forward by one hour on the second</span>
+<span class="c"># Sunday of March and turned back on the first Sunday of November.</span>
+
+<div class="viewcode-block" id="NATimeZone"><a class="viewcode-back" href="../../../../python/navigation/sunup.html#hamcalc.navigation.sunrise.timezone.NATimeZone">[docs]</a><span class="k">class</span> <span class="nc">NATimeZone</span><span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">tzinfo</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Superclass for North American timezone definitions.&quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hours</span><span class="p">,</span> <span class="n">reprname</span><span class="p">,</span> <span class="n">stdname</span><span class="p">,</span> <span class="n">dstname</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">stdoffset</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">hours</span><span class="o">=</span><span class="n">hours</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">reprname</span> <span class="o">=</span> <span class="n">reprname</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">stdname</span> <span class="o">=</span> <span class="n">stdname</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dstname</span> <span class="o">=</span> <span class="n">dstname</span>
+    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">reprname</span>
+    <span class="k">def</span> <span class="nf">tzname</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dt</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">dst</span><span class="p">(</span><span class="n">dt</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">dstname</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">stdname</span>
+    <span class="k">def</span> <span class="nf">utcoffset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dt</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">stdoffset</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">dst</span><span class="p">(</span><span class="n">dt</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">dst</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dt</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">dt</span> <span class="ow">is</span> <span class="bp">None</span> <span class="ow">or</span> <span class="n">dt</span><span class="o">.</span><span class="n">tzinfo</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="c"># An exception may be sensible here, in one or both cases.</span>
+            <span class="c"># It depends on how you want to treat them. The default</span>
+            <span class="c"># fromutc() implementation (called by the default astimezone()</span>
+            <span class="c"># implementation) passes a datetime with dt.tzinfo is self.</span>
+            <span class="k">return</span> <span class="n">ZERO</span>
+        <span class="k">assert</span> <span class="n">dt</span><span class="o">.</span><span class="n">tzinfo</span> <span class="ow">is</span> <span class="bp">self</span>
+        <span class="c"># Find start and end times for US DST. For years before 1967, return</span>
+        <span class="c"># ZERO for no DST.</span>
+        <span class="k">if</span> <span class="mi">2006</span> <span class="o">&lt;</span> <span class="n">dt</span><span class="o">.</span><span class="n">year</span><span class="p">:</span>
+            <span class="n">dststart</span><span class="p">,</span> <span class="n">dstend</span> <span class="o">=</span> <span class="n">DSTSTART_2007</span><span class="p">,</span> <span class="n">DSTEND_2007</span>
+        <span class="k">elif</span> <span class="mi">1986</span> <span class="o">&lt;</span> <span class="n">dt</span><span class="o">.</span><span class="n">year</span> <span class="o">&lt;</span> <span class="mi">2007</span><span class="p">:</span>
+            <span class="n">dststart</span><span class="p">,</span> <span class="n">dstend</span> <span class="o">=</span> <span class="n">DSTSTART_1987_2006</span><span class="p">,</span> <span class="n">DSTEND_1987_2006</span>
+        <span class="k">elif</span> <span class="mi">1966</span> <span class="o">&lt;</span> <span class="n">dt</span><span class="o">.</span><span class="n">year</span> <span class="o">&lt;</span> <span class="mi">1987</span><span class="p">:</span>
+            <span class="n">dststart</span><span class="p">,</span> <span class="n">dstend</span> <span class="o">=</span> <span class="n">DSTSTART_1967_1986</span><span class="p">,</span> <span class="n">DSTEND_1967_1986</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">ZERO</span>
+        <span class="n">start</span> <span class="o">=</span> <span class="n">first_sunday_on_or_after</span><span class="p">(</span><span class="n">dststart</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">year</span><span class="o">=</span><span class="n">dt</span><span class="o">.</span><span class="n">year</span><span class="p">))</span>
+        <span class="n">end</span> <span class="o">=</span> <span class="n">first_sunday_on_or_after</span><span class="p">(</span><span class="n">dstend</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">year</span><span class="o">=</span><span class="n">dt</span><span class="o">.</span><span class="n">year</span><span class="p">))</span>
+        <span class="c"># Can’t compare naive to aware objects, so strip the timezone from</span>
+        <span class="c"># dt first.</span>
+        <span class="k">if</span> <span class="n">start</span> <span class="o">&lt;=</span> <span class="n">dt</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">tzinfo</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">end</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">HOUR</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">ZERO</span>
+</div>
+<span class="n">Newfoundland</span> <span class="o">=</span> <span class="n">NATimeZone</span><span class="p">(</span><span class="o">-</span><span class="mf">3.5</span><span class="p">,</span> <span class="s">&quot;Newfoundland&quot;</span><span class="p">,</span> <span class="s">&quot;NST&quot;</span><span class="p">,</span> <span class="s">&quot;NDT&quot;</span><span class="p">)</span>
+<span class="n">Atlantic</span> <span class="o">=</span> <span class="n">NATimeZone</span><span class="p">(</span><span class="o">-</span><span class="mi">4</span><span class="p">,</span> <span class="s">&quot;Atlantic&quot;</span><span class="p">,</span> <span class="s">&quot;AST&quot;</span><span class="p">,</span> <span class="s">&quot;ADT&quot;</span><span class="p">)</span>
+<span class="n">Eastern</span>  <span class="o">=</span> <span class="n">NATimeZone</span><span class="p">(</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="s">&quot;Eastern&quot;</span><span class="p">,</span>  <span class="s">&quot;EST&quot;</span><span class="p">,</span> <span class="s">&quot;EDT&quot;</span><span class="p">)</span>
+<span class="n">Central</span>  <span class="o">=</span> <span class="n">NATimeZone</span><span class="p">(</span><span class="o">-</span><span class="mi">6</span><span class="p">,</span> <span class="s">&quot;Central&quot;</span><span class="p">,</span>  <span class="s">&quot;CST&quot;</span><span class="p">,</span> <span class="s">&quot;CDT&quot;</span><span class="p">)</span>
+<span class="n">Mountain</span> <span class="o">=</span> <span class="n">NATimeZone</span><span class="p">(</span><span class="o">-</span><span class="mi">7</span><span class="p">,</span> <span class="s">&quot;Mountain&quot;</span><span class="p">,</span> <span class="s">&quot;MST&quot;</span><span class="p">,</span> <span class="s">&quot;MDT&quot;</span><span class="p">)</span>
+<span class="n">Pacific</span>  <span class="o">=</span> <span class="n">NATimeZone</span><span class="p">(</span><span class="o">-</span><span class="mi">8</span><span class="p">,</span> <span class="s">&quot;Pacific&quot;</span><span class="p">,</span>  <span class="s">&quot;PST&quot;</span><span class="p">,</span> <span class="s">&quot;PDT&quot;</span><span class="p">)</span>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+        </div>
+        <div class="sidebar">
+          <h3>Table Of Contents</h3>
+          <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../background.html">Background</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../legacy.html">The HamCalc Legacy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../python_architecture.html">Python Architecture</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../python/index.html">Python Modules</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../todo.html">The To Do List</a></li>
+</ul>
+
+          <h3 style="margin-top: 1.5em;">Search</h3>
+          <form class="search" action="../../../../search.html" method="get">
+            <input type="text" name="q" />
+            <input type="submit" value="Go" />
+            <input type="hidden" name="check_keywords" value="yes" />
+            <input type="hidden" name="area" value="default" />
+          </form>
+          <p class="searchtip" style="font-size: 90%">
+            Enter search terms or a module, class or function name.
+          </p>
+        </div>
+        <div class="clearer"></div>
+      </div>
+    </div>
+
+    <div class="footer-wrapper">
+      <div class="footer">
+        <div class="left">
+          <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |
+          <a href="../../../../genindex.html" title="General Index"
+             >index</a>
+        </div>
+
+        <div class="right">
+          
+    <div class="footer">
+        &copy; Copyright 2013, S.Lott.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2b1.
+    </div>
+        </div>
+        <div class="clearer"></div>
+      </div>
+    </div>
+
+  </body>
+</html>

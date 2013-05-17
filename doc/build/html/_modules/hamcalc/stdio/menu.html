@@ -53,7 +53,7 @@
 
 <span class="sd">Displays menus, accepts choices, and executes programs.</span>
 
-<span class="sd">The default behavior is to be run from the :program:`intro` application.</span>
+<span class="sd">The default behavior is to be run from the :program:`hamcalc.stdio.intro` application.</span>
 
 <span class="sd">If the menu was run from the command line, then it will run the intro</span>
 <span class="sd">program with the ``menu=False`` parameter to prevent recursively invoking the menu.</span>
@@ -429,9 +429,9 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="k">try</span><span class="p">:</span>
                 <span class="n">program</span><span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">item_list</span><span class="p">[</span><span class="n">choice</span><span class="p">]</span>
-                <span class="n">runpy</span><span class="o">.</span><span class="n">run_module</span><span class="p">(</span> <span class="s">&#39;hamcalc.stdio.&#39;</span> <span class="o">+</span> <span class="n">program</span><span class="o">.</span><span class="n">name</span> <span class="p">)</span>
             <span class="k">except</span> <span class="ne">IndexError</span><span class="p">:</span>
-                <span class="k">pass</span>
+                <span class="k">return</span>
+            <span class="n">runpy</span><span class="o">.</span><span class="n">run_module</span><span class="p">(</span> <span class="s">&#39;hamcalc.stdio.&#39;</span> <span class="o">+</span> <span class="n">program</span><span class="o">.</span><span class="n">name</span> <span class="p">)</span>
 </div></div>
 <div class="viewcode-block" id="Topic_Index"><a class="viewcode-back" href="../../../python/stdio.html#hamcalc.stdio.menu.Topic_Index">[docs]</a><span class="k">class</span> <span class="nc">Topic_Index</span><span class="p">(</span> <span class="n">Menu</span> <span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;The Hamdex topic index.</span>

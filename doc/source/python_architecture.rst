@@ -59,6 +59,12 @@ packages. Pragmatically, this is crazy because we don't need to clone or reinven
 
 The difficulty with a tall "tech-stack" is the complexity of installing a large number of dependencies before HamCalc becomes useful. The difficulty with a short or non-existent tech stack is all the wheels which have to be reinvented.
 
+**Time Zones**.
+
+-   For a good set of world time zone definitions.
+
+    http://pytz.sourceforge.net
+
 **Audio**.
 
 -   For general audio output:

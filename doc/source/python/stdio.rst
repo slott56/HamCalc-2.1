@@ -26,8 +26,11 @@ There are two subgroups of stdio programs.
 -   Simple Programs.
 
     These programs are so short that they don't really need documentation.
-    Also, they simply wrap a calculation module, which has
+    Most of these wrap a calculation module; the calculation module has
     the relevant documentation.
+
+    A few of these are stand-alone programs that on't have a calculation
+    module.
 
 Intro
 ----------------
@@ -48,6 +51,8 @@ Graphs
 
 ..  automodule:: hamcalc.stdio.graphs
     :members:
+
+..  _`stdio.gwgraphics`:
 
 GW Graphics
 ------------

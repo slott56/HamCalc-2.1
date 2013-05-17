@@ -18,6 +18,7 @@ Implementation
 ~~~~~~~~~~~~~~~~
 
 ..  automodule:: hamcalc.math.primenos
+    :members:
 
 Quirks
 ~~~~~~~~~

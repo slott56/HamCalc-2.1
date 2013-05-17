@@ -1,0 +1,522 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>hamcalc.navigation.sunrise &mdash; HamCalc 2.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../../_static/agogo.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '2.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="top" title="HamCalc 2.1 documentation" href="../../../index.html" />
+    <link rel="up" title="Module code" href="../../index.html" /> 
+  </head>
+  <body>
+    <div class="header-wrapper">
+      <div class="header">
+        <div class="headertitle"><a
+          href="../../../index.html">HamCalc 2.1 documentation</a></div>
+        <div class="rel">
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a>
+        </div>
+       </div>
+    </div>
+
+    <div class="content-wrapper">
+      <div class="content">
+        <div class="document">
+            
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for hamcalc.navigation.sunrise</h1><div class="highlight"><pre>
+<span class="sd">&quot;&quot;&quot;hamcalc.navigation.sunrise -- Sunrise, Transit and Sunset.</span>
+
+<span class="sd">See &quot;Sunrise Equation&quot; in Wikipedia. http://en.wikipedia.org/wiki/Sunrise_equation</span>
+
+<span class="sd">This is the calculation of the Julian Astronomical Dates</span>
+<span class="sd">of the transit, rise and set of the sun at a given latitude</span>
+<span class="sd">and longitude near a given date.</span>
+
+<span class="sd">Julian Astronomical Dates</span>
+<span class="sd">--------------------------</span>
+
+<span class="sd">Julian astronomical day calculations from Dershowitz and Reingold.</span>
+<span class="sd">This is Herschel and Scaliger julian astronomical day calendar.</span>
+
+<span class="sd">See http://en.wikipedia.org/wiki/Julian_day</span>
+
+<span class="sd">See Dershowitz, Nachum and Edward M. Reingold.  *Calendrical Calculations*. Cambridge University Press. 1997.</span>
+
+<span class="sd">http://emr.cs.uiuc.edu/home/reingold/calendar-book/index.html</span>
+
+<span class="sd">Python&#39;s :mod:`datetime` module uses The Reingold-Dershowitz *rata die*</span>
+<span class="sd">system.</span>
+
+<span class="sd">http://en.wikipedia.org/wiki/Rata_Die</span>
+
+<span class="sd">The conversion to Julian Astronomical Dates is ``-1721424.5``,</span>
+<span class="sd">the :data:`JAD_epoch` defined in this module.</span>
+
+<span class="sd">Local Time and North American TimeZones</span>
+<span class="sd">-----------------------------------------</span>
+
+<span class="sd">The sunrise and sunset times are in UTC.  Localtime offsets need to be applied,</span>
+<span class="sd">based on local knowledge of timezones and Daylight Savings Time</span>
+<span class="sd">to get to proper local times.</span>
+
+<span class="sd">For this, timezones are imported from the</span>
+<span class="sd">:mod:`hamcalc.navigation.sunrise.timezone` module.</span>
+
+<span class="sd">It&#39;s quite easy to add timezones to cover other historical periods or</span>
+<span class="sd">other places on earth.</span>
+
+<span class="sd">Test Case</span>
+<span class="sd">----------</span>
+
+<span class="sd">&gt;&gt;&gt; import hamcalc.navigation.sunrise as sunrise</span>
+<span class="sd">&gt;&gt;&gt; from hamcalc.navigation.sunrise.timezone import Eastern</span>
+<span class="sd">&gt;&gt;&gt; import datetime</span>
+<span class="sd">&gt;&gt;&gt; now= datetime.datetime( 2013, 5, 13, tzinfo=Eastern )</span>
+<span class="sd">&gt;&gt;&gt; rise, transit, set = sunrise.rise_transit_set( 38.98, -76.47, now )</span>
+<span class="sd">&gt;&gt;&gt; rise.isoformat()</span>
+<span class="sd">&#39;2013-05-13T05:55:00-04:00&#39;</span>
+<span class="sd">&gt;&gt;&gt; transit.isoformat()</span>
+<span class="sd">&#39;2013-05-13T13:02:13-04:00&#39;</span>
+<span class="sd">&gt;&gt;&gt; set.isoformat()</span>
+<span class="sd">&#39;2013-05-13T20:09:26-04:00&#39;</span>
+<span class="sd">&gt;&gt;&gt; rise.astimezone(sunrise.Eastern).isoformat()</span>
+<span class="sd">&#39;2013-05-13T05:55:00-04:00&#39;</span>
+<span class="sd">&gt;&gt;&gt; set.astimezone(sunrise.Eastern).isoformat()</span>
+<span class="sd">&#39;2013-05-13T20:09:26-04:00&#39;</span>
+
+<span class="sd">&gt;&gt;&gt; sunrise.azimuth_elevation( 38.98, -76.47, transit )</span>
+<span class="sd">(179.99635135849053, 69.56582340941506)</span>
+<span class="sd">&gt;&gt;&gt; sunrise.azimuth_elevation( 38.98, -76.47, rise )</span>
+<span class="sd">(65.23706511941509, -0.7937072477381264)</span>
+<span class="sd">&gt;&gt;&gt; sunrise.azimuth_elevation( 38.98, -76.47, set )</span>
+<span class="sd">(294.86842169825667, -0.6953559721037266)</span>
+
+<span class="sd">From other apps and web sites:</span>
+
+<span class="sd">    At 13:00, Azimuth is 178.4, Elevation is 69.6</span>
+
+<span class="sd">    Sunrise azimuth is 65.06, when measured from N.</span>
+
+<span class="sd">    Sunset azimuth is 294.62, when measured from N.</span>
+
+<span class="sd">    The center is 179.84 when measured from N (-0.16 from S).</span>
+
+<span class="sd">Calculation Details</span>
+<span class="sd">---------------------</span>
+
+<span class="sd">http://www.esrl.noaa.gov/gmd/grad/solcalc/calcdetails.html</span>
+
+<span class="sd">Inputs::</span>
+
+<span class="sd">    phi_o=38.98 # Latitude</span>
+<span class="sd">    lambda_o=-76.47 # Longitude</span>
+<span class="sd">    z_o=-4 # Timezone offset</span>
+<span class="sd">    date = datetime.datetime( 2013, 5, 1, 0, 6, 0)</span>
+
+<span class="sd">Row from the spreadsheet. Columns A through AH (skipping H).</span>
+
+<span class="sd">::</span>
+
+<span class="sd">    D           E       F           G               I       J       K</span>
+<span class="sd">    5/1/2013	0:06:00	2456413.67	0.13329694		39.26	5156.09	0.02</span>
+
+<span class="sd">    L   M       N       O       P       Q       R       S       T</span>
+<span class="sd">    1.7	40.96	5157.8	1.01	40.96	23.44	23.44	38.54	15.11</span>
+
+<span class="sd">    U       V       W       X           Y       Z           AA      AB</span>
+<span class="sd">    0.04	2.88	103.76	13:03:00	6:07:57	19:58:03	830.1	1383</span>
+
+<span class="sd">    AC      AD      AE      AF      AG      AH</span>
+<span class="sd">    165.75	124.29	-34.29	0.01	-34.28	343.29</span>
+
+<span class="sd">Output from this function; it includes columns F to AH, plus</span>
+<span class="sd">a few other values.</span>
+
+<span class="sd">::</span>
+
+<span class="sd">    {&#39;AA&#39;: 830.1189163955589,</span>
+<span class="sd">     &#39;AB&#39;: 1383.0077155592248,</span>
+<span class="sd">     &#39;AC&#39;: 165.7519288898062,</span>
+<span class="sd">     &#39;AC_r&#39;: 2.8929169006586277,</span>
+<span class="sd">     &#39;AD&#39;: 124.28846181320384,</span>
+<span class="sd">     &#39;AD_r&#39;: 2.1692428808796484,</span>
+<span class="sd">     &#39;AE&#39;: -34.28846181320384,</span>
+<span class="sd">     &#39;AE_r&#39;: -0.5984465540847519,</span>
+<span class="sd">     &#39;AF&#39;: 0.008462163764385251,</span>
+<span class="sd">     &#39;AG&#39;: -34.27999964943945,</span>
+<span class="sd">     &#39;AH&#39;: 343.2865712316368,</span>
+<span class="sd">     &#39;AH_rstar&#39;: 2.8498882922843145,</span>
+<span class="sd">     &#39;E&#39;: 0.004166666666666667,</span>
+<span class="sd">     &#39;F&#39;: 2456413.6708333334,</span>
+<span class="sd">     &#39;G&#39;: 0.1332969427332894,</span>
+<span class="sd">     &#39;I&#39;: 39.25901977112244,</span>
+<span class="sd">     &#39;I_r&#39;: 0.6851991561116372,</span>
+<span class="sd">     &#39;J&#39;: 5156.092452227982,</span>
+<span class="sd">     &#39;JAD_epoch&#39;: -1721424.5,</span>
+<span class="sd">     &#39;J_r&#39;: 89.99078982860672,</span>
+<span class="sd">     &#39;K&#39;: 0.016703028345203225,</span>
+<span class="sd">     &#39;L&#39;: 1.7030570397145302,</span>
+<span class="sd">     &#39;M&#39;: 40.96207681083697,</span>
+<span class="sd">     &#39;M_r&#39;: 0.7149231088039236,</span>
+<span class="sd">     &#39;N&#39;: 5157.795509267697,</span>
+<span class="sd">     &#39;N_r&#39;: 90.02051378129902,</span>
+<span class="sd">     &#39;O&#39;: 1.007569899030823,</span>
+<span class="sd">     &#39;P&#39;: 40.95990612522424,</span>
+<span class="sd">     &#39;P_r&#39;: 0.7148852231929558,</span>
+<span class="sd">     &#39;Q&#39;: 23.43755769373243,</span>
+<span class="sd">     &#39;R&#39;: 23.43929004746131,</span>
+<span class="sd">     &#39;R_r&#39;: 0.4090927856581378,</span>
+<span class="sd">     &#39;S&#39;: 38.534815164640406,</span>
+<span class="sd">     &#39;S_r&#39;: 0.6725594012704159,</span>
+<span class="sd">     &#39;T&#39;: 15.11487444281024,</span>
+<span class="sd">     &#39;T_r&#39;: 0.26380432505258206,</span>
+<span class="sd">     &#39;U&#39;: 0.043034525256302164,</span>
+<span class="sd">     &#39;V&#39;: 2.8877155592249477,</span>
+<span class="sd">     &#39;V_r&#39;: 0.05040014436954465,</span>
+<span class="sd">     &#39;W&#39;: 103.76486454944487,</span>
+<span class="sd">     &#39;W_r&#39;: 1.8110385342737552,</span>
+<span class="sd">     &#39;X&#39;: 0.5437446419727605,</span>
+<span class="sd">     &#39;X_h&#39;: 13,</span>
+<span class="sd">     &#39;X_hms&#39;: &#39;13:02:59.0&#39;,</span>
+<span class="sd">     &#39;X_m&#39;: 2,</span>
+<span class="sd">     &#39;X_s&#39;: 59,</span>
+<span class="sd">     &#39;Y&#39;: 0.25550890711319146,</span>
+<span class="sd">     &#39;Y_h&#39;: 6,</span>
+<span class="sd">     &#39;Y_hms&#39;: &#39;06:07:55.0&#39;,</span>
+<span class="sd">     &#39;Y_m&#39;: 7,</span>
+<span class="sd">     &#39;Y_s&#39;: 55,</span>
+<span class="sd">     &#39;Z&#39;: 0.8319803768323295,</span>
+<span class="sd">     &#39;Z_h&#39;: 19,</span>
+<span class="sd">     &#39;Z_hms&#39;: &#39;19:58:03.0&#39;,</span>
+<span class="sd">     &#39;Z_m&#39;: 58,</span>
+<span class="sd">     &#39;Z_s&#39;: 3,</span>
+<span class="sd">     &#39;date&#39;: datetime.datetime(2013, 5, 1, 0, 6),</span>
+<span class="sd">     &#39;lambda_o&#39;: -76.47,</span>
+<span class="sd">     &#39;phi_o&#39;: 38.98,</span>
+<span class="sd">     &#39;phi_or&#39;: 0.6803293424273896,</span>
+<span class="sd">     &#39;t&#39;: datetime.time(0, 6),</span>
+<span class="sd">     &#39;z_o&#39;: -4}</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">datetime</span>
+<span class="kn">from</span> <span class="nn">hamcalc.lib</span> <span class="kn">import</span> <span class="n">AttrDict</span>
+<span class="kn">from</span> <span class="nn">hamcalc.navigation.sunrise.timezone</span> <span class="kn">import</span> <span class="n">utc</span><span class="p">,</span> <span class="n">Newfoundland</span><span class="p">,</span> <span class="n">Atlantic</span><span class="p">,</span> \
+    <span class="n">Eastern</span><span class="p">,</span> <span class="n">Central</span><span class="p">,</span> <span class="n">Mountain</span><span class="p">,</span> <span class="n">Pacific</span>
+<span class="kn">import</span> <span class="nn">math</span>
+
+<span class="n">JAD_epoch</span><span class="o">=</span> <span class="o">-</span><span class="mf">1721424.5</span> <span class="c"># Julian Astronomical Date epoch.</span>
+
+<div class="viewcode-block" id="jad_to_datetime"><a class="viewcode-back" href="../../../python/navigation/sunup.html#hamcalc.navigation.sunrise.jad_to_datetime">[docs]</a><span class="k">def</span> <span class="nf">jad_to_datetime</span><span class="p">(</span> <span class="n">jad</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Convert a Julian Astronomical Date into a datetime</span>
+<span class="sd">    object.</span>
+
+<span class="sd">    :param jad: floating point JAD.</span>
+<span class="sd">    :returns: :class:`datetime.datetime` object with</span>
+<span class="sd">        date, time and UTC timezone.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">ordinal</span><span class="o">=</span> <span class="n">jad</span><span class="o">+</span><span class="n">JAD_epoch</span>
+    <span class="n">date</span><span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="o">.</span><span class="n">fromordinal</span><span class="p">(</span> <span class="nb">int</span><span class="p">(</span><span class="n">ordinal</span><span class="p">)</span> <span class="p">)</span>
+    <span class="n">tm</span><span class="o">=</span> <span class="p">(</span><span class="n">ordinal</span><span class="o">-</span><span class="nb">int</span><span class="p">(</span><span class="n">ordinal</span><span class="p">))</span><span class="o">*</span><span class="mi">24</span><span class="o">*</span><span class="mi">60</span><span class="o">*</span><span class="mi">60</span> <span class="c"># in seconds</span>
+    <span class="n">micro</span><span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="n">tm</span><span class="o">-</span><span class="nb">int</span><span class="p">(</span><span class="n">tm</span><span class="p">))</span><span class="o">*</span><span class="mi">1000000</span><span class="p">)</span>
+    <span class="n">sec</span><span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">tm</span> <span class="o">%</span> <span class="mi">60</span><span class="p">)</span>
+    <span class="nb">min</span><span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="n">tm</span> <span class="o">//</span> <span class="mi">60</span><span class="p">)</span> <span class="o">%</span> <span class="mi">60</span><span class="p">)</span>
+    <span class="n">hr</span><span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">tm</span> <span class="o">//</span> <span class="mi">3600</span><span class="p">)</span>
+    <span class="n">time</span><span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">time</span><span class="p">(</span> <span class="n">hr</span><span class="p">,</span> <span class="nb">min</span><span class="p">,</span> <span class="n">sec</span><span class="p">,</span> <span class="n">micro</span><span class="p">,</span> <span class="n">utc</span> <span class="p">)</span>
+    <span class="k">return</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">combine</span><span class="p">(</span> <span class="n">date</span><span class="p">,</span> <span class="n">time</span> <span class="p">)</span>
+</div>
+<div class="viewcode-block" id="datetime_to_jad"><a class="viewcode-back" href="../../../python/navigation/sunup.html#hamcalc.navigation.sunrise.datetime_to_jad">[docs]</a><span class="k">def</span> <span class="nf">datetime_to_jad</span><span class="p">(</span> <span class="n">dt</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Convert a datetime into a Julian Astronomical Date.</span>
+
+<span class="sd">    :param dt: :class:`datetime.datetime` object with</span>
+<span class="sd">        date, time and UTC timezone.</span>
+<span class="sd">    :returns: floating point JAD</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c"># Fractions of a day after midnight</span>
+    <span class="n">t</span> <span class="o">=</span> <span class="n">dt</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+    <span class="n">E</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">hour</span><span class="o">/</span><span class="mi">24</span> <span class="o">+</span> <span class="n">t</span><span class="o">.</span><span class="n">minute</span><span class="o">/</span><span class="mi">24</span><span class="o">/</span><span class="mi">60</span> <span class="o">+</span> <span class="n">t</span><span class="o">.</span><span class="n">second</span><span class="o">/</span><span class="mi">24</span><span class="o">/</span><span class="mi">60</span><span class="o">/</span><span class="mi">60</span>
+
+    <span class="c"># Julian Date for date + time - UTC offset (if defined)</span>
+    <span class="n">utc</span><span class="o">=</span> <span class="mi">0</span> <span class="k">if</span> <span class="n">dt</span><span class="o">.</span><span class="n">utcoffset</span><span class="p">()</span> <span class="ow">is</span> <span class="bp">None</span> <span class="k">else</span> <span class="n">dt</span><span class="o">.</span><span class="n">utcoffset</span><span class="p">()</span><span class="o">/</span><span class="mi">24</span>
+    <span class="n">jad</span><span class="o">=</span> <span class="n">dt</span><span class="o">.</span><span class="n">toordinal</span><span class="p">()</span><span class="o">-</span><span class="n">JAD_epoch</span><span class="o">+</span><span class="n">E</span><span class="o">-</span><span class="n">utc</span>
+    <span class="k">return</span> <span class="n">jad</span>
+</div>
+<div class="viewcode-block" id="solar"><a class="viewcode-back" href="../../../python/navigation/sunup.html#hamcalc.navigation.sunrise.solar">[docs]</a><span class="k">def</span> <span class="nf">solar</span><span class="p">(</span> <span class="n">phi_o</span><span class="p">,</span> <span class="n">lambda_o</span><span class="p">,</span> <span class="n">date_time_tz</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Compute position of the sun.</span>
+
+<span class="sd">    :param phi_o:</span>
+<span class="sd">        Latitude of observer in degrees.</span>
+
+<span class="sd">    :param lambda_o:</span>
+<span class="sd">        Longitude of the observer in degrees.</span>
+
+<span class="sd">    :param date_time_tz:</span>
+<span class="sd">        :class:`datetime.datetime` for which the sun&#39;s position is requested.</span>
+<span class="sd">        This must include tzinfo for the observer&#39;s timezone.</span>
+
+<span class="sd">    :return: A dictionary with **all** the intermediate results.</span>
+<span class="sd">        Of all these results, a few are more interesting than</span>
+<span class="sd">        others.</span>
+
+<span class="sd">        Here&#39;s the mapping from cryptical spreadsheet names to real names.</span>
+
+<span class="sd">        :F: Julian Day</span>
+<span class="sd">        :G: Julian Century</span>
+<span class="sd">        :I:	Geom Mean Long Sun (deg)</span>
+<span class="sd">        :J:	Geom Mean Anom Sun (deg)</span>
+<span class="sd">        :K:	Eccent Earth Orbit</span>
+<span class="sd">        :L:	Sun Eq of Ctr</span>
+<span class="sd">        :M:	Sun True Long (deg)</span>
+<span class="sd">        :N:	Sun True Anom (deg)</span>
+<span class="sd">        :O:	Sun Rad Vector (AUs)</span>
+<span class="sd">        :P:	Sun App Long (deg)</span>
+<span class="sd">        :Q:	Mean Obliq Ecliptic (deg)</span>
+<span class="sd">        :R:	Obliq Corr (deg)</span>
+<span class="sd">        :S:	Sun Rt Ascen (deg)</span>
+<span class="sd">        :T:	Sun Declin (deg)</span>
+<span class="sd">        :U:	var y</span>
+<span class="sd">        :V:	Eq of Time (minutes)</span>
+<span class="sd">        :W:	HA Sunrise (deg)</span>
+<span class="sd">        :X:	Solar Noon (LST)</span>
+<span class="sd">        :Y:	Sunrise Time (LST)</span>
+<span class="sd">        :Z:	Sunset Time (LST)</span>
+<span class="sd">        :AA:	Sunlight Duration (minutes)</span>
+<span class="sd">        :AB:	True Solar Time (min)</span>
+<span class="sd">        :AC:	Hour Angle (deg)</span>
+<span class="sd">        :AD:	Solar Zenith Angle (deg)</span>
+<span class="sd">        :AE:	Solar Elevation Angle (deg)</span>
+<span class="sd">        :AF:	Approx Atmospheric Refraction (deg)</span>
+<span class="sd">        :AG:	Solar Elevation corrected for atm refraction (deg)</span>
+<span class="sd">        :AH:	Solar Azimuth Angle (deg cw from N)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">JAD_epoch</span><span class="o">=</span> <span class="o">-</span><span class="mf">1721424.5</span> <span class="c"># Julian Astronomical Date epoch.</span>
+
+    <span class="c"># GMT offset of the observer in hours.</span>
+    <span class="n">z_o</span><span class="o">=</span> <span class="n">date_time_tz</span><span class="o">.</span><span class="n">utcoffset</span><span class="p">()</span><span class="o">.</span><span class="n">total_seconds</span><span class="p">()</span><span class="o">/</span><span class="mi">3600</span>
+
+    <span class="c"># Fractions of a day after midnight</span>
+    <span class="n">t</span> <span class="o">=</span> <span class="n">date_time_tz</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+    <span class="n">E</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">hour</span><span class="o">/</span><span class="mi">24</span> <span class="o">+</span> <span class="n">t</span><span class="o">.</span><span class="n">minute</span><span class="o">/</span><span class="mi">24</span><span class="o">/</span><span class="mi">60</span> <span class="o">+</span> <span class="n">t</span><span class="o">.</span><span class="n">second</span><span class="o">/</span><span class="mi">24</span><span class="o">/</span><span class="mi">60</span><span class="o">/</span><span class="mi">60</span>
+
+    <span class="c"># Julian Date for date + time - UTC offset</span>
+    <span class="n">F</span> <span class="o">=</span> <span class="n">date_time_tz</span><span class="o">.</span><span class="n">toordinal</span><span class="p">()</span><span class="o">-</span><span class="n">JAD_epoch</span><span class="o">+</span><span class="n">E</span><span class="o">-</span><span class="n">z_o</span><span class="o">/</span><span class="mi">24</span>
+
+    <span class="c"># Julian Century</span>
+    <span class="n">G</span> <span class="o">=</span> <span class="p">(</span><span class="n">F</span><span class="o">-</span><span class="mi">2451545</span><span class="p">)</span><span class="o">/</span><span class="mi">36525</span>
+
+    <span class="c"># Geom Mean Long Sun (deg)</span>
+    <span class="n">I</span> <span class="o">=</span> <span class="p">(</span><span class="mf">280.46646</span><span class="o">+</span><span class="n">G</span><span class="o">*</span><span class="p">(</span><span class="mf">36000.76983</span><span class="o">+</span><span class="mf">0.0003032</span><span class="o">*</span><span class="n">G</span><span class="p">))</span> <span class="o">%</span> <span class="mi">360</span>
+    <span class="n">I_r</span><span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">I</span><span class="p">)</span>
+
+    <span class="c"># Geom Mean Anom Sun (deg)</span>
+    <span class="n">J</span> <span class="o">=</span> <span class="mf">357.52911</span><span class="o">+</span><span class="n">G</span><span class="o">*</span><span class="p">(</span><span class="mf">35999.05029</span><span class="o">-</span><span class="mf">0.0001537</span><span class="o">*</span><span class="n">G</span><span class="p">)</span>
+    <span class="n">J_r</span><span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">J</span><span class="p">)</span>
+
+    <span class="c"># Eccent Earth Orbit</span>
+    <span class="n">K</span> <span class="o">=</span> <span class="mf">0.016708634</span><span class="o">-</span><span class="n">G</span><span class="o">*</span><span class="p">(</span><span class="mf">0.000042037</span><span class="o">+</span><span class="mf">0.0000001267</span><span class="o">*</span><span class="n">G</span><span class="p">)</span>
+
+    <span class="c"># Sun Eq of Ctr</span>
+    <span class="n">L</span> <span class="o">=</span> <span class="p">(</span> <span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">J_r</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="mf">1.914602</span><span class="o">-</span><span class="n">G</span><span class="o">*</span><span class="p">(</span><span class="mf">0.004817</span><span class="o">+</span><span class="mf">0.000014</span><span class="o">*</span><span class="n">G</span><span class="p">))</span>
+     <span class="o">+</span> <span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">J_r</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="mf">0.019993</span><span class="o">-</span><span class="mf">0.000101</span><span class="o">*</span><span class="n">G</span><span class="p">)</span>
+     <span class="o">+</span> <span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="mi">3</span><span class="o">*</span><span class="n">J_r</span><span class="p">)</span><span class="o">*</span><span class="mf">0.000289</span> <span class="p">)</span>
+
+    <span class="c"># Sun True Long (deg)</span>
+    <span class="n">M</span> <span class="o">=</span> <span class="n">I</span> <span class="o">+</span> <span class="n">L</span>
+    <span class="n">M_r</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span> <span class="n">M</span> <span class="p">)</span>
+
+    <span class="c"># Sun True Anom (deg).</span>
+    <span class="n">N</span> <span class="o">=</span> <span class="n">J</span> <span class="o">+</span> <span class="n">L</span>
+    <span class="n">N_r</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span> <span class="n">N</span> <span class="p">)</span>
+
+    <span class="c"># Sun Rad Vector (AUs)</span>
+    <span class="n">O</span> <span class="o">=</span> <span class="p">(</span><span class="mf">1.000001018</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">K</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span><span class="o">/</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="n">K</span><span class="o">*</span><span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">N_r</span><span class="p">))</span>
+
+    <span class="c"># Sun App Long (deg)</span>
+    <span class="n">P</span> <span class="o">=</span> <span class="n">M</span><span class="o">-</span><span class="mf">0.00569</span><span class="o">-</span><span class="mf">0.00478</span><span class="o">*</span><span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="mf">125.04</span><span class="o">-</span><span class="mf">1934.136</span><span class="o">*</span><span class="n">G</span><span class="p">)</span>
+    <span class="n">P_r</span><span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span> <span class="n">P</span> <span class="p">)</span>
+
+    <span class="c"># Mean Obliq Ecliptic (deg)</span>
+    <span class="n">Q</span> <span class="o">=</span> <span class="mi">23</span><span class="o">+</span><span class="p">(</span><span class="mi">26</span><span class="o">+</span><span class="p">((</span><span class="mf">21.448</span><span class="o">-</span><span class="n">G</span><span class="o">*</span><span class="p">(</span><span class="mf">46.815</span><span class="o">+</span><span class="n">G</span><span class="o">*</span><span class="p">(</span><span class="mf">0.00059</span><span class="o">-</span><span class="n">G</span><span class="o">*</span><span class="mf">0.001813</span><span class="p">))))</span><span class="o">/</span><span class="mi">60</span><span class="p">)</span><span class="o">/</span><span class="mi">60</span>
+
+    <span class="c"># Obliq Corr (deg)</span>
+    <span class="n">R</span> <span class="o">=</span> <span class="n">Q</span><span class="o">+</span><span class="mf">0.00256</span><span class="o">*</span><span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="mf">125.04</span><span class="o">-</span><span class="mf">1934.136</span><span class="o">*</span><span class="n">G</span><span class="p">)</span>
+    <span class="n">R_r</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span> <span class="n">R</span> <span class="p">)</span>
+
+    <span class="c"># Sun Rt Ascen (deg)</span>
+    <span class="n">S_r</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">atan2</span><span class="p">(</span> <span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">R_r</span><span class="p">)</span><span class="o">*</span><span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">P_r</span><span class="p">),</span> <span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">P_r</span><span class="p">)</span> <span class="p">)</span>
+    <span class="n">S</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span> <span class="n">S_r</span> <span class="p">)</span>
+
+    <span class="c"># Sun Declin (deg)</span>
+    <span class="n">T_r</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">asin</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">R_r</span><span class="p">)</span><span class="o">*</span><span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">P_r</span><span class="p">))</span>
+    <span class="n">T</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span> <span class="n">T_r</span> <span class="p">)</span>
+
+    <span class="c"># var y</span>
+    <span class="n">U</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">tan</span><span class="p">(</span> <span class="n">R_r</span><span class="o">/</span><span class="mi">2</span> <span class="p">)</span><span class="o">**</span><span class="mi">2</span>
+
+    <span class="c"># Eq of Time (minutes)</span>
+    <span class="n">V_r</span> <span class="o">=</span> <span class="mi">4</span><span class="o">*</span><span class="p">(</span>
+        <span class="n">U</span><span class="o">*</span><span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">I_r</span><span class="p">)</span> <span class="o">-</span> <span class="mi">2</span><span class="o">*</span><span class="n">K</span><span class="o">*</span><span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">J_r</span><span class="p">)</span>
+        <span class="o">+</span> <span class="mi">4</span><span class="o">*</span><span class="n">K</span><span class="o">*</span><span class="n">U</span><span class="o">*</span><span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">J_r</span><span class="p">)</span><span class="o">*</span><span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">I_r</span><span class="p">)</span>
+        <span class="o">-</span> <span class="mf">0.5</span><span class="o">*</span><span class="n">U</span><span class="o">**</span><span class="mi">2</span><span class="o">*</span><span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="mi">4</span><span class="o">*</span><span class="n">I_r</span><span class="p">)</span>
+        <span class="o">-</span> <span class="mf">1.25</span><span class="o">*</span><span class="n">K</span><span class="o">**</span><span class="mi">2</span><span class="o">*</span><span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">J_r</span><span class="p">)</span>
+        <span class="p">)</span>
+    <span class="n">V</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span> <span class="n">V_r</span> <span class="p">)</span>
+
+    <span class="c"># HA Sunrise (deg)</span>
+    <span class="n">phi_or</span><span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">phi_o</span><span class="p">)</span>
+    <span class="n">W_r</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">acos</span><span class="p">(</span> <span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="mf">90.833</span><span class="p">))</span><span class="o">/</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">phi_or</span><span class="p">)</span><span class="o">*</span><span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">T_r</span><span class="p">))</span><span class="o">-</span><span class="n">math</span><span class="o">.</span><span class="n">tan</span><span class="p">(</span><span class="n">phi_or</span><span class="p">)</span><span class="o">*</span><span class="n">math</span><span class="o">.</span><span class="n">tan</span><span class="p">(</span><span class="n">T_r</span><span class="p">))</span>
+    <span class="n">W</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span> <span class="n">W_r</span> <span class="p">)</span>
+
+    <span class="c"># Solar Noon (LST)</span>
+    <span class="n">X</span> <span class="o">=</span> <span class="p">(</span><span class="mi">720</span> <span class="o">-</span> <span class="mi">4</span><span class="o">*</span><span class="n">lambda_o</span> <span class="o">-</span> <span class="n">V</span> <span class="o">+</span> <span class="mi">60</span><span class="o">*</span><span class="n">z_o</span><span class="p">)</span><span class="o">/</span><span class="mi">1440</span>
+    <span class="n">X_h</span><span class="p">,</span> <span class="n">X_m</span><span class="p">,</span> <span class="n">X_s</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">X</span><span class="o">*</span><span class="mi">24</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">X</span><span class="o">*</span><span class="mi">24</span><span class="o">*</span><span class="mi">60</span><span class="p">)</span><span class="o">%</span><span class="mi">60</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">X</span><span class="o">*</span><span class="mi">24</span><span class="o">*</span><span class="mi">60</span><span class="o">*</span><span class="mi">60</span><span class="p">)</span><span class="o">%</span><span class="mi">60</span>
+    <span class="n">X_hms</span><span class="o">=</span> <span class="s">&quot;{0:02.0f}:{1:02.0f}:{2:04.1f}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">X_h</span><span class="p">,</span> <span class="n">X_m</span><span class="p">,</span> <span class="n">X_s</span><span class="p">)</span>
+
+    <span class="c"># Sunrise Time (LST)</span>
+    <span class="n">Y</span> <span class="o">=</span> <span class="n">X</span><span class="o">-</span><span class="mi">4</span><span class="o">*</span><span class="n">W</span><span class="o">/</span><span class="mi">1440</span>
+    <span class="n">Y_h</span><span class="p">,</span> <span class="n">Y_m</span><span class="p">,</span> <span class="n">Y_s</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">Y</span><span class="o">*</span><span class="mi">24</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">Y</span><span class="o">*</span><span class="mi">24</span><span class="o">*</span><span class="mi">60</span><span class="p">)</span><span class="o">%</span><span class="mi">60</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">Y</span><span class="o">*</span><span class="mi">24</span><span class="o">*</span><span class="mi">60</span><span class="o">*</span><span class="mi">60</span><span class="p">)</span><span class="o">%</span><span class="mi">60</span>
+    <span class="n">Y_hms</span><span class="o">=</span> <span class="s">&quot;{0:02.0f}:{1:02.0f}:{2:04.1f}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">Y_h</span><span class="p">,</span> <span class="n">Y_m</span><span class="p">,</span> <span class="n">Y_s</span><span class="p">)</span>
+
+    <span class="c"># Sunset Time (LST)</span>
+    <span class="n">Z</span> <span class="o">=</span> <span class="n">X</span><span class="o">+</span><span class="mi">4</span><span class="o">*</span><span class="n">W</span><span class="o">/</span><span class="mi">1440</span>
+    <span class="n">Z_h</span><span class="p">,</span> <span class="n">Z_m</span><span class="p">,</span> <span class="n">Z_s</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">Z</span><span class="o">*</span><span class="mi">24</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">Z</span><span class="o">*</span><span class="mi">24</span><span class="o">*</span><span class="mi">60</span><span class="p">)</span><span class="o">%</span><span class="mi">60</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">Z</span><span class="o">*</span><span class="mi">24</span><span class="o">*</span><span class="mi">60</span><span class="o">*</span><span class="mi">60</span><span class="p">)</span><span class="o">%</span><span class="mi">60</span>
+    <span class="n">Z_hms</span><span class="o">=</span> <span class="s">&quot;{0:02.0f}:{1:02.0f}:{2:04.1f}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">Z_h</span><span class="p">,</span> <span class="n">Z_m</span><span class="p">,</span> <span class="n">Z_s</span><span class="p">)</span>
+
+    <span class="c"># Sunlight Duration (minutes)</span>
+    <span class="n">AA</span> <span class="o">=</span> <span class="mi">8</span><span class="o">*</span><span class="n">W</span>
+
+    <span class="c"># True Solar Time (min).</span>
+    <span class="c"># Requires the time-of-day offset from the Julian date.</span>
+    <span class="n">AB</span><span class="o">=</span> <span class="p">(</span><span class="mi">1440</span><span class="o">*</span><span class="n">E</span> <span class="o">+</span> <span class="n">V</span> <span class="o">+</span> <span class="mi">4</span><span class="o">*</span><span class="n">lambda_o</span> <span class="o">-</span> <span class="mi">60</span><span class="o">*</span><span class="n">z_o</span><span class="p">)</span> <span class="o">%</span> <span class="mi">1440</span>
+
+    <span class="c"># Hour Angle (deg).</span>
+    <span class="k">if</span> <span class="n">AB</span><span class="o">/</span><span class="mi">4</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">AC</span> <span class="o">=</span> <span class="n">AB</span><span class="o">/</span><span class="mi">4</span> <span class="o">+</span> <span class="mi">180</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">AC</span> <span class="o">=</span> <span class="n">AB</span><span class="o">/</span><span class="mi">4</span> <span class="o">-</span> <span class="mi">180</span>
+    <span class="n">AC_r</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">AC</span><span class="p">)</span>
+
+    <span class="c"># Solar Zenith Angle (deg).</span>
+    <span class="n">AD_r</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">acos</span><span class="p">(</span> <span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">phi_or</span><span class="p">)</span><span class="o">*</span><span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">T_r</span><span class="p">)</span> <span class="o">+</span> <span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">phi_or</span><span class="p">)</span><span class="o">*</span><span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">T_r</span><span class="p">)</span><span class="o">*</span><span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">AC_r</span><span class="p">)</span> <span class="p">)</span>
+    <span class="n">AD</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span> <span class="n">AD_r</span> <span class="p">)</span>
+
+    <span class="c"># Solar Elevation Angle (deg).</span>
+    <span class="n">AE</span> <span class="o">=</span> <span class="mi">90</span><span class="o">-</span><span class="n">AD</span>
+    <span class="n">AE_r</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">AE</span><span class="p">)</span>
+
+    <span class="c"># Approx Atmospheric Refraction (deg)</span>
+    <span class="k">if</span> <span class="mi">85</span> <span class="o">&lt;</span> <span class="n">AE</span><span class="p">:</span>
+        <span class="n">AF</span><span class="o">=</span> <span class="mi">0</span>
+    <span class="k">elif</span> <span class="mi">5</span> <span class="o">&lt;</span> <span class="n">AE</span> <span class="o">&lt;=</span> <span class="mi">85</span><span class="p">:</span>
+        <span class="n">AF</span> <span class="o">=</span> <span class="p">(</span><span class="mf">58.1</span><span class="o">/</span><span class="n">math</span><span class="o">.</span><span class="n">tan</span><span class="p">(</span><span class="n">AE_r</span><span class="p">)</span> <span class="o">-</span> <span class="mf">0.07</span><span class="o">/</span><span class="n">math</span><span class="o">.</span><span class="n">tan</span><span class="p">(</span><span class="n">AE_r</span><span class="p">)</span><span class="o">**</span><span class="mi">3</span> <span class="o">+</span> <span class="mf">0.000086</span><span class="o">/</span><span class="n">math</span><span class="o">.</span><span class="n">tan</span><span class="p">(</span><span class="n">AE_r</span><span class="p">)</span><span class="o">**</span><span class="mi">5</span><span class="p">)</span> <span class="o">/</span> <span class="mi">3600</span>
+    <span class="k">elif</span> <span class="o">-</span><span class="mf">0.575</span> <span class="o">&lt;</span> <span class="n">AE</span> <span class="o">&lt;=</span><span class="mi">5</span> <span class="p">:</span>
+        <span class="n">AF</span> <span class="o">=</span> <span class="mi">1735</span><span class="o">+</span><span class="n">AE</span><span class="o">*</span><span class="p">(</span><span class="o">-</span><span class="mf">518.2</span><span class="o">+</span><span class="n">AE</span><span class="o">*</span><span class="p">(</span><span class="mf">103.4</span><span class="o">+</span><span class="n">AE</span><span class="o">*</span><span class="p">(</span><span class="o">-</span><span class="mf">12.79</span><span class="o">+</span><span class="n">AE</span><span class="o">*</span><span class="mf">0.711</span><span class="p">)))</span> <span class="o">/</span> <span class="mi">3600</span>
+    <span class="k">else</span><span class="p">:</span> <span class="c"># AE &lt; -0.575, i.e., just below the horizon.</span>
+        <span class="n">AF</span> <span class="o">=</span> <span class="o">-</span><span class="mf">20.772</span><span class="o">/</span><span class="n">math</span><span class="o">.</span><span class="n">tan</span><span class="p">(</span><span class="n">AE_r</span><span class="p">)</span> <span class="o">/</span> <span class="mi">3600</span>
+
+    <span class="c"># Solar Elevation corrected for atm refraction (deg).</span>
+    <span class="n">AG</span> <span class="o">=</span> <span class="n">AE</span><span class="o">+</span><span class="n">AF</span>
+
+    <span class="c"># Solar Azimuth Angle (deg cw from N)</span>
+    <span class="n">AH_rstar</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">acos</span><span class="p">(</span>
+        <span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">phi_or</span><span class="p">)</span><span class="o">*</span><span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">AD_r</span><span class="p">)</span><span class="o">-</span><span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">T_r</span><span class="p">))</span> <span class="o">/</span> <span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">phi_or</span><span class="p">)</span><span class="o">*</span><span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">AD_r</span><span class="p">))</span>
+    <span class="p">)</span>
+    <span class="k">if</span> <span class="n">AC</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">AH</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span><span class="n">AH_rstar</span><span class="p">)</span> <span class="o">+</span> <span class="mi">180</span> <span class="o">%</span> <span class="mi">360</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">AH</span> <span class="o">=</span> <span class="p">(</span><span class="mi">540</span><span class="o">-</span><span class="n">math</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span><span class="n">AH_rstar</span><span class="p">))</span> <span class="o">%</span> <span class="mi">360</span>
+
+    <span class="k">return</span> <span class="nb">locals</span><span class="p">()</span>
+</div>
+<span class="k">def</span> <span class="nf">rise_transit_set</span><span class="p">(</span> <span class="n">lat</span><span class="p">,</span> <span class="n">lon</span><span class="p">,</span> <span class="n">date_time</span> <span class="p">):</span>
+    <span class="n">s</span><span class="o">=</span> <span class="n">AttrDict</span><span class="p">(</span> <span class="n">solar</span><span class="p">(</span> <span class="n">lat</span><span class="p">,</span> <span class="n">lon</span><span class="p">,</span> <span class="n">date_time</span> <span class="p">)</span> <span class="p">)</span>
+    <span class="n">transit</span><span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">combine</span><span class="p">(</span> <span class="n">date_time</span><span class="o">.</span><span class="n">date</span><span class="p">(),</span> <span class="n">datetime</span><span class="o">.</span><span class="n">time</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">X_h</span><span class="p">,</span> <span class="n">s</span><span class="o">.</span><span class="n">X_m</span><span class="p">,</span> <span class="n">s</span><span class="o">.</span><span class="n">X_s</span><span class="p">,</span> <span class="n">tzinfo</span><span class="o">=</span><span class="n">date_time</span><span class="o">.</span><span class="n">tzinfo</span> <span class="p">)</span> <span class="p">)</span>
+    <span class="n">rise</span><span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">combine</span><span class="p">(</span> <span class="n">date_time</span><span class="o">.</span><span class="n">date</span><span class="p">(),</span> <span class="n">datetime</span><span class="o">.</span><span class="n">time</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">Y_h</span><span class="p">,</span> <span class="n">s</span><span class="o">.</span><span class="n">Y_m</span><span class="p">,</span> <span class="n">s</span><span class="o">.</span><span class="n">Y_s</span><span class="p">,</span> <span class="n">tzinfo</span><span class="o">=</span><span class="n">date_time</span><span class="o">.</span><span class="n">tzinfo</span><span class="p">)</span> <span class="p">)</span>
+    <span class="nb">set</span><span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">combine</span><span class="p">(</span> <span class="n">date_time</span><span class="o">.</span><span class="n">date</span><span class="p">(),</span> <span class="n">datetime</span><span class="o">.</span><span class="n">time</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">Z_h</span><span class="p">,</span> <span class="n">s</span><span class="o">.</span><span class="n">Z_m</span><span class="p">,</span> <span class="n">s</span><span class="o">.</span><span class="n">Z_s</span><span class="p">,</span> <span class="n">tzinfo</span><span class="o">=</span><span class="n">date_time</span><span class="o">.</span><span class="n">tzinfo</span><span class="p">)</span> <span class="p">)</span>
+    <span class="k">return</span> <span class="n">rise</span><span class="p">,</span> <span class="n">transit</span><span class="p">,</span> <span class="nb">set</span>
+
+<span class="k">def</span> <span class="nf">azimuth_elevation</span><span class="p">(</span> <span class="n">lat</span><span class="p">,</span> <span class="n">lon</span><span class="p">,</span> <span class="n">date_time</span> <span class="p">):</span>
+    <span class="n">s</span><span class="o">=</span> <span class="n">AttrDict</span><span class="p">(</span> <span class="n">solar</span><span class="p">(</span> <span class="n">lat</span><span class="p">,</span> <span class="n">lon</span><span class="p">,</span> <span class="n">date_time</span> <span class="p">)</span> <span class="p">)</span>
+    <span class="k">return</span> <span class="n">s</span><span class="o">.</span><span class="n">AH</span><span class="p">,</span> <span class="n">s</span><span class="o">.</span><span class="n">AE</span>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+        </div>
+        <div class="sidebar">
+          <h3>Table Of Contents</h3>
+          <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../background.html">Background</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../legacy.html">The HamCalc Legacy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../python_architecture.html">Python Architecture</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../python/index.html">Python Modules</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../todo.html">The To Do List</a></li>
+</ul>
+
+          <h3 style="margin-top: 1.5em;">Search</h3>
+          <form class="search" action="../../../search.html" method="get">
+            <input type="text" name="q" />
+            <input type="submit" value="Go" />
+            <input type="hidden" name="check_keywords" value="yes" />
+            <input type="hidden" name="area" value="default" />
+          </form>
+          <p class="searchtip" style="font-size: 90%">
+            Enter search terms or a module, class or function name.
+          </p>
+        </div>
+        <div class="clearer"></div>
+      </div>
+    </div>
+
+    <div class="footer-wrapper">
+      <div class="footer">
+        <div class="left">
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |
+          <a href="../../../genindex.html" title="General Index"
+             >index</a>
+        </div>
+
+        <div class="right">
+          
+    <div class="footer">
+        &copy; Copyright 2013, S.Lott.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2b1.
+    </div>
+        </div>
+        <div class="clearer"></div>
+      </div>
+    </div>
+
+  </body>
+</html>
