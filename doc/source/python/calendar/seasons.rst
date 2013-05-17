@@ -61,6 +61,9 @@ Inserting the definition of *C* and *M*, this becomes,
 Therefore, we're solving for :math:`J^{*}` values: the dates on which
 :math:`\lambda  \in \lbrace 0, 90, 180, 270 \rbrace`.
 
+The complexity of this equation seems to indicate that an approximation
+is more appropriate.
+
 Approximation
 ^^^^^^^^^^^^^^
 
@@ -75,7 +78,7 @@ derivative.
 Equinoxes are near March 15 and September 15. Here, we're searching
 for the zero crossing of declination.
 
-It seems simpler to search for the four values of solar longitude.
+We can use simple bisection to find times with the appropriate properties.
 
 Implementation
 ~~~~~~~~~~~~~~~

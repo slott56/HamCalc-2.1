@@ -70,7 +70,7 @@ pesky adjustments and estimations.</p>
 <p><img src="../../_images/math/98a1d9f91aad07d71958b3ce6bcf55041644c075.png" alt="\epsilon &amp;= 23.439^{\circ} - 0.0000004^{\circ} \times n \\
 \alpha &amp;= \arctan (\cos \epsilon \tan \lambda) \\
 \delta &amp;= \arcsin (\sin \epsilon \sin \lambda)"/></p>
-</div><p>Where <img class="math" src="../../_images/math/ce4588fd900d02afcbd260bc07f54cce49a7dc4a.png" alt="\lambda"/> is the sun&#8217;s ecliptic longtude. The <img class="math" src="../../_images/math/eaf4418fbe935c15a606516d8f55dc380cd8e822.png" alt="\epsilon"/>
+</div><p>Where <img class="math" src="../../_images/math/ce4588fd900d02afcbd260bc07f54cce49a7dc4a.png" alt="\lambda"/> is the sun&#8217;s ecliptic longitude. The <img class="math" src="../../_images/math/eaf4418fbe935c15a606516d8f55dc380cd8e822.png" alt="\epsilon"/>
 value is the earth&#8217;s ecliptic, about 23.44°.  We&#8217;re looking
 at four <img class="math" src="../../_images/math/0a42a8b725c200085e5253db2d2fbf8dab898a8f.png" alt="\delta"/> values:
 latitude values: <img class="math" src="../../_images/math/b41b9f670c1816e3c8aab4d8346ac0f1b10c5f09.png" alt="+\epsilon, -\epsilon"/> and both zero values.
@@ -94,22 +94,28 @@ This means that <img class="math" src="../../_images/math/f96bdeca96d56dc4d95228
 M &amp;=  [ 357.5291 + 0.98560028 \times ( J^{*} - 2451545)] \mod 360"/></p>
 </div><p>Therefore, we&#8217;re solving for <img class="math" src="../../_images/math/0ba5a837e74951e5ba478bfb475ca5eea8165785.png" alt="J^{*}"/> values: the dates on which
 <img class="math" src="../../_images/math/7c71c49c2d4aee1f6444880d36bc7eeadfc7099e.png" alt="\lambda  \in \lbrace 0, 90, 180, 270 \rbrace"/>.</p>
+<p>The complexity of this equation seems to indicate that an approximation
+is more appropriate.</p>
 </div>
 <div class="section" id="approximation">
 <h3>Approximation<a class="headerlink" href="#approximation" title="Permalink to this headline">¶</a></h3>
 <p>We can, on the other hand, follow the HamCalc example and do a search
 around the the four times of year to get a good approximation.</p>
-<p>Solstices are near June 21 and December 21. Here, we&#8217;re searching
+<p>Solstices are near June 21 and December 21. We can search
 for maxima or minima of solar declination. Maxima (and minima) require
 some care; the search is really for the zero crossing of the first
 derivative.</p>
 <p>Equinoxes are near March 15 and September 15. Here, we&#8217;re searching
-for the zero crossing of declination. Zero crossing is relatively easy.</p>
+for the zero crossing of declination.</p>
+<p>We can use simple bisection to find times with the appropriate properties.</p>
 </div>
 </div>
 <div class="section" id="implementation">
 <h2>Implementation<a class="headerlink" href="#implementation" title="Permalink to this headline">¶</a></h2>
-<p>TBD</p>
+<p>This leverages <a class="reference internal" href="../navigation/sunup.html#module-hamcalc.navigation.sunrise" title="hamcalc.navigation.sunrise"><tt class="xref py py-mod docutils literal"><span class="pre">hamcalc.navigation.sunrise</span></tt></a>.</p>
+<p>It becomes a cute little module in <tt class="xref py py-mod docutils literal"><span class="pre">hamcalc.stdio</span></tt> that solves
+for &#8220;Sun&#8217;s Apparent Longitude&#8221; (<tt class="docutils literal"><span class="pre">P</span></tt>) of 0, 90, 180 and 270 in
+a given year.</p>
 </div>
 <div class="section" id="legacy-output">
 <h2>Legacy Output<a class="headerlink" href="#legacy-output" title="Permalink to this headline">¶</a></h2>
