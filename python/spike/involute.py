@@ -1,3 +1,4 @@
+#!/Library/Frameworks/Python.framework/Versions/3.2/bin/python3.2
 """A literal "transcription" from GW-Basic to Python.
 
 This serves as the jumping-off point for a GW-Basic Graphics

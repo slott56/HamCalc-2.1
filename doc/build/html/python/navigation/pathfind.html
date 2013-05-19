@@ -56,6 +56,56 @@
             
   <div class="section" id="pathfind-great-circle-paths-distances">
 <h1>pathfind &#8211; Great Circle Paths &amp; Distances<a class="headerlink" href="#pathfind-great-circle-paths-distances" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="implementation">
+<h2>Implementation<a class="headerlink" href="#implementation" title="Permalink to this headline">¶</a></h2>
+<p>Yes. The name of the calculation module differs from the legacy application,
+<strong class="program">pathfind</strong> and <strong class="program">gridsq</strong>.</p>
+<span class="target" id="module-hamcalc.navigation.distance"></span><p>hamcalc.navigation.distance &#8211; Great Circle Distance Calculation.</p>
+<p>Test Case</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">hamcalc.math.trig</span> <span class="kn">as</span> <span class="nn">trig</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">hamcalc.navigation.distance</span> <span class="kn">as</span> <span class="nn">distance</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">deg</span> <span class="o">=</span> <span class="n">distance</span><span class="o">.</span><span class="n">dms_2_deg</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lat_1</span><span class="p">,</span> <span class="n">lon_1</span> <span class="o">=</span> <span class="n">deg</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="mi">21</span><span class="p">,</span> <span class="mi">50</span><span class="p">),</span> <span class="o">-</span><span class="n">deg</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">25</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lat_2</span><span class="p">,</span> <span class="n">lon_2</span> <span class="o">=</span> <span class="n">deg</span><span class="p">(</span><span class="mi">42</span><span class="p">,</span> <span class="mi">21</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="o">-</span><span class="n">deg</span><span class="p">(</span><span class="mi">71</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">27</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lat_1</span><span class="p">,</span> <span class="n">lon_1</span>
+<span class="go">(50.36388888888889, -4.156944444444444)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lat_2</span><span class="p">,</span> <span class="n">lon_2</span>
+<span class="go">(42.3511111111111, -71.04083333333335)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">r</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="n">distance</span><span class="o">.</span><span class="n">range_bearing</span><span class="p">(</span> <span class="n">lat_1</span><span class="p">,</span> <span class="n">lon_1</span><span class="p">,</span> <span class="n">lat_2</span><span class="p">,</span> <span class="n">lon_2</span><span class="p">,</span> <span class="n">R</span><span class="o">=</span><span class="n">distance</span><span class="o">.</span><span class="n">KM</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">r</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+<span class="go">5196.0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">tuple</span><span class="p">(</span> <span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="mi">0</span><span class="p">))</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">distance</span><span class="o">.</span><span class="n">deg_2_dms</span><span class="p">(</span> <span class="n">b</span> <span class="p">)</span> <span class="p">)</span>
+<span class="go">(260, 7, 38)</span>
+</pre></div>
+</div>
+<dl class="function">
+<dt id="hamcalc.navigation.distance.range_bearing">
+<tt class="descclassname">hamcalc.navigation.distance.</tt><tt class="descname">range_bearing</tt><big>(</big><em>lat_1</em>, <em>lon_1</em>, <em>lat_2</em>, <em>lon_2</em>, <em>R=3440.069</em><big>)</big><a class="reference internal" href="../../_modules/hamcalc/navigation/distance.html#range_bearing"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.navigation.distance.range_bearing" title="Permalink to this definition">¶</a></dt>
+<dd><p>Rhumb-line course from <tt class="docutils literal"><span class="pre">(lat_1,</span> <span class="pre">lon_1)</span></tt> to <tt class="docutils literal"><span class="pre">(lat_2,</span> <span class="pre">lon_2)</span></tt>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>lat_1</strong> &#8211; latitude, postive N</li>
+<li><strong>lon_1</strong> &#8211; longitude, positive E</li>
+<li><strong>lat_2</strong> &#8211; latitude, postive N</li>
+<li><strong>lon_2</strong> &#8211; longitude, positive E</li>
+<li><strong>R</strong> &#8211; radius of the earth in appropriate units;
+default is nautical miles.
+Values include <tt class="xref py py-data docutils literal"><span class="pre">KM</span></tt> for kilometers,
+<tt class="xref py py-data docutils literal"><span class="pre">MI</span></tt> for statute miles and <tt class="xref py py-data docutils literal"><span class="pre">NM</span></tt> for nautical miles.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">2-tuple of range and bearing from from <tt class="docutils literal"><span class="pre">(lat_1,</span> <span class="pre">lon_1)</span></tt> to <tt class="docutils literal"><span class="pre">(lat_2,</span> <span class="pre">lon_2)</span></tt>.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
 </div>
 
 
@@ -82,7 +132,7 @@
 <li class="toctree-l3"><a class="reference internal" href="daydusk.html">daydusk &#8211;  Daylight Dusk and Dawn Calculator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="gridsq.html">gridsq &#8211; Grid Square Locator (Maidenhead)</a></li>
 <li class="toctree-l3"><a class="reference internal" href="latlong.html">latlong &#8211; Latitude/Longitude Data Base</a></li>
-<li class="toctree-l3"><a class="reference internal" href="sunup.html">Sunup &#8211; Sunrise, Sunset, Transit</a></li>
+<li class="toctree-l3"><a class="reference internal" href="sunup.html">sunup &#8211; Sunrise, Sunset, Transit</a></li>
 <li class="toctree-l3"><a class="reference internal" href="moontrac.html">moontrac &#8211; Moon Tracker</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="">pathfind &#8211; Great Circle Paths &amp; Distances</a></li>
 <li class="toctree-l3"><a class="reference internal" href="riseset.html">riseset &#8211; Sunrise/Sunset Calculator</a></li>

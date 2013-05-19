@@ -1,3 +1,4 @@
+#!/Library/Frameworks/Python.framework/Versions/3.2/bin/python3.2
 """Gaussian Elimination.
 
 From Wikipedia

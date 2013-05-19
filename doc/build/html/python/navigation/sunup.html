@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Sunup – Sunrise, Sunset, Transit &mdash; HamCalc 2.1 documentation</title>
+    <title>sunup – Sunrise, Sunset, Transit &mdash; HamCalc 2.1 documentation</title>
     
     <link rel="stylesheet" href="../../_static/agogo.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
@@ -25,8 +25,8 @@
     <script type="text/javascript" src="../../_static/doctools.js"></script>
     <link rel="top" title="HamCalc 2.1 documentation" href="../../index.html" />
     <link rel="up" title="navigation – Navigation and Astronomy" href="index.html" />
-    <link rel="next" title="calendar – Calendrical Calculations" href="../calendar/index.html" />
-    <link rel="prev" title="navigation – Navigation and Astronomy" href="index.html" /> 
+    <link rel="next" title="moontrac – Moon Tracker" href="moontrac.html" />
+    <link rel="prev" title="latlong – Latitude/Longitude Data Base" href="latlong.html" /> 
   </head>
   <body>
     <div class="header-wrapper">
@@ -34,9 +34,9 @@
         <div class="headertitle"><a
           href="../../index.html">HamCalc 2.1 documentation</a></div>
         <div class="rel">
-          <a href="index.html" title="navigation – Navigation and Astronomy"
+          <a href="latlong.html" title="latlong – Latitude/Longitude Data Base"
              accesskey="P">previous</a> |
-          <a href="../calendar/index.html" title="calendar – Calendrical Calculations"
+          <a href="moontrac.html" title="moontrac – Moon Tracker"
              accesskey="N">next</a> |
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |
@@ -55,7 +55,8 @@
           <div class="body">
             
   <div class="section" id="sunup-sunrise-sunset-transit">
-<span id="navigation-sunup"></span><h1>Sunup &#8211; Sunrise, Sunset, Transit<a class="headerlink" href="#sunup-sunrise-sunset-transit" title="Permalink to this headline">¶</a></h1>
+<span id="navigation-sunup"></span><h1>sunup &#8211; Sunrise, Sunset, Transit<a class="headerlink" href="#sunup-sunrise-sunset-transit" title="Permalink to this headline">¶</a></h1>
+<p>This shares a lot of code with <strong class="program">seasons</strong>.</p>
 <p>This may have a lot to do with <strong class="program">riseset</strong>, also.</p>
 <div class="section" id="analysis">
 <h2>Analysis<a class="headerlink" href="#analysis" title="Permalink to this headline">¶</a></h2>
@@ -342,7 +343,13 @@ and <img class="math" src="../../_images/math/e8c615c0bcf030a0d2bfe9cd1ceacf491b
 <div><div class="math">
 <p><img src="../../_images/math/e860dcdc2028aed56f06d65337237083cd43096e.png" alt="\arccos (\frac{\cos 90.833^{\circ}}{\cos \phi_o \cos T} - \tan \phi_o \tan T )"/></p>
 </div><p>Latitude of observer is <img class="math" src="../../_images/math/092305802f8a8cd4debabfc2539af7037867123f.png" alt="\phi_o"/>.</p>
-</div></blockquote>
+<p>Alternate form? This is used in the hour angle above, as well
+as the Stargazing version below, as well as the legacy HamCalc.</p>
+<div class="math">
+<p><img src="../../_images/math/9935405b3ea99576cad63e1e35875a262fb617f3.png" alt="\delta = T
+
+\arccos (\frac{\sin -0.833^{\circ} - \sin \phi_o \sin \delta}{\cos \phi_o \cos \delta })"/></p>
+</div></div></blockquote>
 <p><strong>X</strong>.  Solar Noon (LST).</p>
 <blockquote>
 <div><div class="math">
@@ -392,10 +399,15 @@ In hours. <img class="math" src="../../_images/math/fa2fa899f0afb05d683788552350
 \end{cases}"/></p>
 </div></div></blockquote>
 </div>
+<div class="section" id="the-stargazing-model">
+<h2>The Stargazing Model<a class="headerlink" href="#the-stargazing-model" title="Permalink to this headline">¶</a></h2>
+<p><a class="reference external" href="http://www.stargazing.net/kepler/sunrise.html">http://www.stargazing.net/kepler/sunrise.html</a></p>
+</div>
 <div class="section" id="implementation">
 <h2>Implementation<a class="headerlink" href="#implementation" title="Permalink to this headline">¶</a></h2>
-<p>Yes. The name of the calculation module differs from the legacy application.
-This computes more than sunrise, and includes timezones for local time
+<p>Yes. The name of the calculation module differs from the legacy applications,
+<strong class="program">sunup</strong>, <strong class="program">seasons</strong> and <strong class="program">riseset</strong>.</p>
+<p>This computes more than sunrise, and includes timezones for local time
 conversion.</p>
 <div class="section" id="module-hamcalc.navigation.sunrise">
 <span id="sunrise"></span><h3>Sunrise<a class="headerlink" href="#module-hamcalc.navigation.sunrise" title="Permalink to this headline">¶</a></h3>
@@ -432,18 +444,18 @@ other places on earth.</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">hamcalc.navigation.sunrise</span> <span class="kn">as</span> <span class="nn">sunrise</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">hamcalc.navigation.sunrise.timezone</span> <span class="kn">import</span> <span class="n">Eastern</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">datetime</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">now</span><span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span> <span class="mi">2013</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">13</span><span class="p">,</span> <span class="n">tzinfo</span><span class="o">=</span><span class="n">Eastern</span> <span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">rise</span><span class="p">,</span> <span class="n">transit</span><span class="p">,</span> <span class="nb">set</span> <span class="o">=</span> <span class="n">sunrise</span><span class="o">.</span><span class="n">rise_transit_set</span><span class="p">(</span> <span class="mf">38.98</span><span class="p">,</span> <span class="o">-</span><span class="mf">76.47</span><span class="p">,</span> <span class="n">now</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">today</span><span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span> <span class="mi">2013</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">13</span><span class="p">,</span> <span class="n">tzinfo</span><span class="o">=</span><span class="n">Eastern</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">rise</span><span class="p">,</span> <span class="n">transit</span><span class="p">,</span> <span class="nb">set</span> <span class="o">=</span> <span class="n">sunrise</span><span class="o">.</span><span class="n">rise_transit_set</span><span class="p">(</span> <span class="mf">38.98</span><span class="p">,</span> <span class="o">-</span><span class="mf">76.47</span><span class="p">,</span> <span class="n">today</span> <span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">rise</span><span class="o">.</span><span class="n">isoformat</span><span class="p">()</span>
-<span class="go">&#39;2013-05-13T05:55:00-04:00&#39;</span>
+<span class="go">&#39;2013-05-13T05:55:00.457654-04:00&#39;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">transit</span><span class="o">.</span><span class="n">isoformat</span><span class="p">()</span>
-<span class="go">&#39;2013-05-13T13:02:13-04:00&#39;</span>
+<span class="go">&#39;2013-05-13T13:02:13.475578-04:00&#39;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">set</span><span class="o">.</span><span class="n">isoformat</span><span class="p">()</span>
-<span class="go">&#39;2013-05-13T20:09:26-04:00&#39;</span>
+<span class="go">&#39;2013-05-13T20:09:26.493502-04:00&#39;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">rise</span><span class="o">.</span><span class="n">astimezone</span><span class="p">(</span><span class="n">sunrise</span><span class="o">.</span><span class="n">Eastern</span><span class="p">)</span><span class="o">.</span><span class="n">isoformat</span><span class="p">()</span>
-<span class="go">&#39;2013-05-13T05:55:00-04:00&#39;</span>
+<span class="go">&#39;2013-05-13T05:55:00.457654-04:00&#39;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">set</span><span class="o">.</span><span class="n">astimezone</span><span class="p">(</span><span class="n">sunrise</span><span class="o">.</span><span class="n">Eastern</span><span class="p">)</span><span class="o">.</span><span class="n">isoformat</span><span class="p">()</span>
-<span class="go">&#39;2013-05-13T20:09:26-04:00&#39;</span>
+<span class="go">&#39;2013-05-13T20:09:26.493502-04:00&#39;</span>
 </pre></div>
 </div>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">sunrise</span><span class="o">.</span><span class="n">azimuth_elevation</span><span class="p">(</span> <span class="mf">38.98</span><span class="p">,</span> <span class="o">-</span><span class="mf">76.47</span><span class="p">,</span> <span class="n">transit</span> <span class="p">)</span>
@@ -461,6 +473,16 @@ other places on earth.</p>
 <p>Sunset azimuth is 294.62, when measured from N.</p>
 <p>The center is 179.84 when measured from N (-0.16 from S).</p>
 </div></blockquote>
+<p>Other Horizons; e.g., Nautical Twilight or Astronomical Twilight.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">rise</span><span class="p">,</span> <span class="n">transit</span><span class="p">,</span> <span class="nb">set</span> <span class="o">=</span> <span class="n">sunrise</span><span class="o">.</span><span class="n">rise_transit_set</span><span class="p">(</span> <span class="mf">38.98</span><span class="p">,</span> <span class="o">-</span><span class="mf">76.47</span><span class="p">,</span> <span class="n">today</span><span class="p">,</span> <span class="n">horizon</span><span class="o">=</span><span class="mi">90</span><span class="o">+</span><span class="mi">12</span> <span class="p">)</span> <span class="c"># Nautical</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">rise</span><span class="o">.</span><span class="n">isoformat</span><span class="p">()</span>
+<span class="go">&#39;2013-05-13T04:48:24.304646-04:00&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">set</span><span class="o">.</span><span class="n">isoformat</span><span class="p">()</span>
+<span class="go">&#39;2013-05-13T21:16:02.646510-04:00&#39;</span>
+</pre></div>
+</div>
+<p>From the USNO web page, the following two official times are given
+for nautical twilight on May 13, 2013: 03:48 20:17</p>
 </div>
 <div class="section" id="calculation-details">
 <h4>Calculation Details<a class="headerlink" href="#calculation-details" title="Permalink to this headline">¶</a></h4>
@@ -588,7 +610,7 @@ date, time and UTC timezone.</td>
 
 <dl class="function">
 <dt id="hamcalc.navigation.sunrise.solar">
-<tt class="descclassname">hamcalc.navigation.sunrise.</tt><tt class="descname">solar</tt><big>(</big><em>phi_o</em>, <em>lambda_o</em>, <em>date_time_tz</em><big>)</big><a class="reference internal" href="../../_modules/hamcalc/navigation/sunrise.html#solar"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.navigation.sunrise.solar" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">hamcalc.navigation.sunrise.</tt><tt class="descname">solar</tt><big>(</big><em>phi_o</em>, <em>lambda_o</em>, <em>date_time_tz</em>, <em>horizon=None</em><big>)</big><a class="reference internal" href="../../_modules/hamcalc/navigation/sunrise.html#solar"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.navigation.sunrise.solar" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute position of the sun.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -599,6 +621,11 @@ date, time and UTC timezone.</td>
 <li><strong>lambda_o</strong> &#8211; Longitude of the observer in degrees.</li>
 <li><strong>date_time_tz</strong> &#8211; <tt class="xref py py-class docutils literal"><span class="pre">datetime.datetime</span></tt> for which the sun&#8217;s position is requested.
 This must include tzinfo for the observer&#8217;s timezone.</li>
+<li><strong>horizon</strong> &#8211; The horizon angle from the zenith. Default is 90.833.
+Can other values be used?
+-   Astronomical: 108°; 18° below horizon
+-   Nautical: 102°; 12° below horizon
+-   Civil: 96°; 6° below horizon</li>
 </ul>
 </td>
 </tr>
@@ -715,7 +742,7 @@ other places on earth.</p>
 </ul>
 <dl class="class">
 <dt id="hamcalc.navigation.sunrise.timezone.FixedOffset">
-<em class="property">class </em><tt class="descclassname">hamcalc.navigation.sunrise.timezone.</tt><tt class="descname">FixedOffset</tt><big>(</big><em>name</em><big>)</big><a class="reference internal" href="../../_modules/hamcalc/navigation/sunrise/timezone.html#FixedOffset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.navigation.sunrise.timezone.FixedOffset" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><tt class="descclassname">hamcalc.navigation.sunrise.timezone.</tt><tt class="descname">FixedOffset</tt><big>(</big><em>offset</em><big>)</big><a class="reference internal" href="../../_modules/hamcalc/navigation/sunrise/timezone.html#FixedOffset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.navigation.sunrise.timezone.FixedOffset" title="Permalink to this definition">¶</a></dt>
 <dd><p>Fixed offset in minutes east from UTC.</p>
 </dd></dl>
 
@@ -790,7 +817,18 @@ Date       Daylight   (degrees)            (degrees)            (degrees)</pre>
 <li class="toctree-l2"><a class="reference internal" href="../construction/index.html">construction &#8211; Construction and Related Projects</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../math/index.html">math &#8211; Math, Physics, Units Conversion</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="index.html">navigation &#8211; Navigation and Astronomy</a><ul class="current">
-<li class="toctree-l3 current"><a class="current reference internal" href="">Sunup &#8211; Sunrise, Sunset, Transit</a></li>
+<li class="toctree-l3"><a class="reference internal" href="daydusk.html">daydusk &#8211;  Daylight Dusk and Dawn Calculator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gridsq.html">gridsq &#8211; Grid Square Locator (Maidenhead)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="latlong.html">latlong &#8211; Latitude/Longitude Data Base</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="">sunup &#8211; Sunrise, Sunset, Transit</a></li>
+<li class="toctree-l3"><a class="reference internal" href="moontrac.html">moontrac &#8211; Moon Tracker</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pathfind.html">pathfind &#8211; Great Circle Paths &amp; Distances</a></li>
+<li class="toctree-l3"><a class="reference internal" href="riseset.html">riseset &#8211; Sunrise/Sunset Calculator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="satorbit.html">satorbit &#8211; Satellite Orbit Parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="survey.html">survey &#8211; Surveyor&#8217;s Calculator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="timeq.html">timeq &#8211; Time Quiz</a></li>
+<li class="toctree-l3"><a class="reference internal" href="timezone.html">timezone &#8211; Time Zones (UTC)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="trunorth.html">trunorth &#8211; True North via the Sun</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../calendar/index.html">calendar &#8211; Calendrical Calculations</a></li>
@@ -826,9 +864,9 @@ Date       Daylight   (degrees)            (degrees)            (degrees)</pre>
     <div class="footer-wrapper">
       <div class="footer">
         <div class="left">
-          <a href="index.html" title="navigation – Navigation and Astronomy"
+          <a href="latlong.html" title="latlong – Latitude/Longitude Data Base"
              >previous</a> |
-          <a href="../calendar/index.html" title="calendar – Calendrical Calculations"
+          <a href="moontrac.html" title="moontrac – Moon Tracker"
              >next</a> |
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |

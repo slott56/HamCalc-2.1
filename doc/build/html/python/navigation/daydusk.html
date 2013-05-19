@@ -56,6 +56,123 @@
             
   <div class="section" id="daydusk-daylight-dusk-and-dawn-calculator">
 <h1>daydusk &#8211;  Daylight Dusk and Dawn Calculator<a class="headerlink" href="#daydusk-daylight-dusk-and-dawn-calculator" title="Permalink to this headline">¶</a></h1>
+<p>This is essentially the same calculations in <strong class="program">sunup</strong>, <strong class="program">seasons</strong>, and <strong class="program">riseset</strong>.</p>
+<p><strong class="program">sunup</strong> and <strong class="program">seasons</strong> appear to be copy-and-paste
+clones of each other. These programs use positive west longitude.</p>
+<p>The <strong class="program">daydusk</strong> and <strong class="program">riseset</strong> programs, however, are considerably easier to understand.
+They have lavish comments. They also use positive east longitude, consistent
+with many astronomical calculations.</p>
+<p>Also the <strong class="program">gridsq</strong> includes the same astronomical calculations
+as <strong class="program">daydusk</strong> and <strong class="program">riseset</strong>.</p>
+<div class="section" id="analysis">
+<h2>Analysis<a class="headerlink" href="#analysis" title="Permalink to this headline">¶</a></h2>
+<p>This program introduces two new things:</p>
+<ul class="simple">
+<li><a class="reference internal" href="#alternate-horizons">Alternate Horizons</a></li>
+<li><a class="reference internal" href="#sidereal-time">Sidereal Time</a></li>
+</ul>
+<div class="section" id="alternate-horizons">
+<h3>Alternate Horizons<a class="headerlink" href="#alternate-horizons" title="Permalink to this headline">¶</a></h3>
+<p>An angle below the zenith defines which dawn we&#8217;re talking about.
+We&#8217;ll call it <em>R</em>. The standard &#8220;visible&#8221; horizon, correcting for
+refraction and diameter of the sun is 90.833° from the zenith.</p>
+<ul class="simple">
+<li>Astronomical: 108° from the zenith; 18° below horizon</li>
+<li>Nautical: 102° from the zenith; 12° below horizon</li>
+<li>Civil: 96° from the zenith; 6° below horizon</li>
+<li>Dawn/Dusk (including sun&#8217;s diameter and refraction) is 90.833° from the zenith; .833° below the horizon.</li>
+</ul>
+<p>It seems to figure in this way when computing the Hour Angle in lines 2030-2040
+based on the declination, <img class="math" src="../../_images/math/0a42a8b725c200085e5253db2d2fbf8dab898a8f.png" alt="\delta"/>, and the latitude of the observer, <img class="math" src="../../_images/math/092305802f8a8cd4debabfc2539af7037867123f.png" alt="\phi_o"/>.</p>
+<div class="math">
+<p><img src="../../_images/math/d96e311aee087d51d2aa76fe3deb4aff11f9e0f1.png" alt="S = \frac{R - \sin \delta \sin \phi_o}{\cos \delta \cos \phi_o}"/></p>
+</div><p>This is not the full hour angle calculation; it goes on to line 2180.
+This, however, is the place where the offset, <em>R</em>, is used.</p>
+<p>When we look at the <a class="reference internal" href="sunup.html#module-hamcalc.navigation.sunrise" title="hamcalc.navigation.sunrise"><tt class="xref py py-mod docutils literal"><span class="pre">hamcalc.navigation.sunrise</span></tt></a> (<a class="reference internal" href="sunup.html#navigation-sunup"><em>sunup &#8211; Sunrise, Sunset, Transit</em></a>)
+we see this calculation of the Hour Angle, <em>W</em>, based on declination, <em>T</em>.</p>
+<div class="math">
+<p><img src="../../_images/math/e860dcdc2028aed56f06d65337237083cd43096e.png" alt="\arccos (\frac{\cos 90.833^{\circ}}{\cos \phi_o \cos T} - \tan \phi_o \tan T )"/></p>
+</div><p>It appears that we can replace 90.833° with another angle of our choosing.</p>
+</div>
+<div class="section" id="sidereal-time">
+<h3>Sidereal Time<a class="headerlink" href="#sidereal-time" title="Permalink to this headline">¶</a></h3>
+<p>Sidereal Time is defined as follows: &#8220;The right ascension of any object crossing the meridian is equal to the current local (apparent) sidereal time, ...&#8221;</p>
+<p>See <a class="reference external" href="http://en.wikipedia.org/wiki/Sidereal_time">http://en.wikipedia.org/wiki/Sidereal_time</a></p>
+<p><a class="reference external" href="http://en.wikipedia.org/wiki/Celestial_coordinate_system">http://en.wikipedia.org/wiki/Celestial_coordinate_system</a></p>
+<div class="math">
+<p><img src="../../_images/math/0bb78ce5fe0df3674dc9d4ce860163d889fc2364.png" alt="\theta_L = \alpha + h"/></p>
+</div><p>Where <img class="math" src="../../_images/math/de83cd17cb1f8cd98da872b86fdefa6fb5f2334e.png" alt="\theta_L"/> is local sidereal time, <img class="math" src="../../_images/math/10f32377ac67d94f764f12a15ea987e88c85d3e1.png" alt="\alpha"/> is right ascension and <em>h</em> is hour angle.</p>
+<div class="math">
+<p><img src="../../_images/math/894aadc0ad4e88bbab8d5464a33f6822d6e7a089.png" alt="\theta_G = \alpha + h + \lambda_o"/></p>
+</div><p>Where <img class="math" src="../../_images/math/ed4ddfbc63842f9489b40b97326818642e5ab216.png" alt="\theta_G"/> is Greenish sidereal time, <img class="math" src="../../_images/math/10f32377ac67d94f764f12a15ea987e88c85d3e1.png" alt="\alpha"/> is right ascension and <em>h</em> is hour angle and <img class="math" src="../../_images/math/677c31220b5ec055dbf442826f556f0ecffbda1d.png" alt="\lambda_o"/> is the observer&#8217;s longitude.</p>
+</div>
+</div>
+<div class="section" id="implementation">
+<h2>Implementation<a class="headerlink" href="#implementation" title="Permalink to this headline">¶</a></h2>
+<p>We can easily parameterize the <a class="reference internal" href="sunup.html#module-hamcalc.navigation.sunrise" title="hamcalc.navigation.sunrise"><tt class="xref py py-mod docutils literal"><span class="pre">hamcalc.navigation.sunrise</span></tt></a> calculations to define an alternate horizon.</p>
+<p>It becomes a cute little module in <tt class="xref py py-mod docutils literal"><span class="pre">hamcalc.stdio</span></tt> that solves
+for &#8220;HA Sunrise&#8221; (<tt class="docutils literal"><span class="pre">W</span></tt>) of 90+18, 90+12, 90+6 and the default
+of 90.833 for a given date.</p>
+</div>
+<div class="section" id="legacy-output">
+<h2>Legacy Output<a class="headerlink" href="#legacy-output" title="Permalink to this headline">¶</a></h2>
+<p>Introduction:</p>
+<div class="highlight-python"><pre>DAYLIGHT DUSK &amp; DAWN CALCULATOR                                  Author Unknown
+Edited for HAMCALC by George Murphy, VE3ERP
+
+This program computes times of sunrise, sunset, dawn and dusk at any location.
+
+Enter the latitude and longitude of the location in decimal degrees. If the
+latitude is south of the equator enter the latitude as a minus (-) value or as
+a positive value if north of the equator. If the longitude is west of the
+prime meridian (0° - Greenwich) enter the longitude as a minus (-) value or as
+a positive value if west of the prime meridian.
+
+Times calculated are local sidereal (SOLAR) times. Forget about Standard Time,
+Daylight Saving Time, local political time, UTC, or any other man-made time
+system. Sidereal time is time referenced to the stars. It is the time shown
+for millenia on properly installed sun dials.
+
+Related data can also be calculated using Hamcalc&#x27;s `Sunrise/Sunset&#x27; program.</pre>
+</div>
+<p>Input:</p>
+<div class="highlight-python"><pre>ENTER: Latitude, in decimal degrees (minus if south)...? 38
+ENTER: Longitude, in decimal degrees (minus if west)...? -76
+Location..............  38.0°N  76.0°W.   Local UTC Zone: UTC -5 hours
+
+ENTER: Year...........? 2013
+ENTER: Month no. .....? 5
+ENTER: Day no. .......? 17
+Date (y/m/d).......... 2013/ 5/17</pre>
+</div>
+<p>(Yes, the output values are all zero, that does not reflect a bug in HamCalc.)</p>
+<p>Output:</p>
+<div class="highlight-python"><pre>                     local solar
+                        time
+Astronomical Dawn..... .0:.0 = .0.0 UTC   Sun 18° below horizon
+Nautical Dawn......... .0:00 = .000 UTC   Sun 12° below horizon
+Civil Dawn............ .0:.0 = .0.0 UTC   Sun  6° below horizon
+Sunrise............... .0:00 = .000 UTC   Top of sun at the horizon
+────────────────────────────────────────
+Sunset................ 00:.0 = .0.0 UTC   Top of sun at the horizon
+Civil Dusk............ 00:.0 = .0.0 UTC   Sun  6° below horizon
+Nautical Dusk......... 00:.0 = .0.0 UTC   Sun 12° below horizon
+Astronomical Dusk..... .0:.0 = .0.0 UTC   Sun 18° below horizon
+
+UTC zone local SOLAR times shown. Times vary with longitude across the UTC
+time zone at the rate of 4 minutes per degree of longitude.</pre>
+</div>
+</div>
+<div class="section" id="legacy-quirks">
+<h2>Legacy Quirks<a class="headerlink" href="#legacy-quirks" title="Permalink to this headline">¶</a></h2>
+<p>This:</p>
+<div class="highlight-python"><pre>If the longitude is west of the
+prime meridian (0° - Greenwich) enter the longitude as a minus (-) value or as a positive value if west of the prime meridian.</pre>
+</div>
+<p>Okay, which is it? negative for west or positive for west?</p>
+<p>The &#8220;Local UTC Zone: UTC -5 hours&#8221; is simply longitude/15 which doesn&#8217;t properly
+reflect local time. The label is confusing, and should be changed.</p>
+</div>
 </div>
 
 
@@ -82,7 +199,7 @@
 <li class="toctree-l3 current"><a class="current reference internal" href="">daydusk &#8211;  Daylight Dusk and Dawn Calculator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="gridsq.html">gridsq &#8211; Grid Square Locator (Maidenhead)</a></li>
 <li class="toctree-l3"><a class="reference internal" href="latlong.html">latlong &#8211; Latitude/Longitude Data Base</a></li>
-<li class="toctree-l3"><a class="reference internal" href="sunup.html">Sunup &#8211; Sunrise, Sunset, Transit</a></li>
+<li class="toctree-l3"><a class="reference internal" href="sunup.html">sunup &#8211; Sunrise, Sunset, Transit</a></li>
 <li class="toctree-l3"><a class="reference internal" href="moontrac.html">moontrac &#8211; Moon Tracker</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pathfind.html">pathfind &#8211; Great Circle Paths &amp; Distances</a></li>
 <li class="toctree-l3"><a class="reference internal" href="riseset.html">riseset &#8211; Sunrise/Sunset Calculator</a></li>

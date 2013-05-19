@@ -1,7 +1,9 @@
 ..  _`navigation.sunup`:
 
-Sunup -- Sunrise, Sunset, Transit
+sunup -- Sunrise, Sunset, Transit
 ------------------------------------
+
+This shares a lot of code with :program:`seasons`.
 
 This may have a lot to do with :program:`riseset`, also.
 
@@ -378,6 +380,15 @@ The calculation works like this:
 
     Latitude of observer is :math:`\phi_o`.
 
+    Alternate form? This is used in the hour angle above, as well
+    as the Stargazing version below, as well as the legacy HamCalc.
+
+    ..  math::
+
+        \delta = T
+
+        \arccos (\frac{\sin -0.833^{\circ} - \sin \phi_o \sin \delta}{\cos \phi_o \cos \delta })
+
 **X**.  Solar Noon (LST).
 
     ..  math::
@@ -439,10 +450,18 @@ The calculation works like this:
         [540 - \arccos (\dfrac{\sin \phi_o \cos AD - \sin T}{\cos \phi_o \sin AD})] \mod 360& \text{otherwise}
         \end{cases}
 
+The Stargazing Model
+~~~~~~~~~~~~~~~~~~~~~~~
+
+http://www.stargazing.net/kepler/sunrise.html
+
+
 Implementation
 ~~~~~~~~~~~~~~~~~
 
-Yes. The name of the calculation module differs from the legacy application.
+Yes. The name of the calculation module differs from the legacy applications,
+:program:`sunup`, :program:`seasons` and :program:`riseset`.
+
 This computes more than sunrise, and includes timezones for local time
 conversion.
 

@@ -65,13 +65,14 @@ utc = UTC()
 
 class FixedOffset(datetime.tzinfo):
     """Fixed offset in minutes east from UTC."""
-    def __init__(self, name):
-        self.__offset = timedelta(minutes = offset)
+    def __init__(self, offset):
+        self.__offset = datetime.timedelta(minutes = offset)
+        hr, min = divmod( offset, 60 )
+        self.__name= "GMT{0:+03.0f}:{1:02.0f}".format(hr,min)
     def utcoffset(self, dt):
-        return self.__offset.total_seconds()
+        return self.__offset
     def tzname(self, dt):
-        hr, min = divmod( self.__offset.total_seconds()/60, 60 )
-        return "GMT{0:+03.0f}:{1:02.0f}".format(hr,min)
+        return self.__name
     def dst(self, dt):
         return ZERO
 

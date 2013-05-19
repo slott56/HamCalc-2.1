@@ -45,18 +45,18 @@ Test Case
 >>> import hamcalc.navigation.sunrise as sunrise
 >>> from hamcalc.navigation.sunrise.timezone import Eastern
 >>> import datetime
->>> now= datetime.datetime( 2013, 5, 13, tzinfo=Eastern )
->>> rise, transit, set = sunrise.rise_transit_set( 38.98, -76.47, now )
+>>> today= datetime.datetime( 2013, 5, 13, tzinfo=Eastern )
+>>> rise, transit, set = sunrise.rise_transit_set( 38.98, -76.47, today )
 >>> rise.isoformat()
-'2013-05-13T05:55:00-04:00'
+'2013-05-13T05:55:00.457654-04:00'
 >>> transit.isoformat()
-'2013-05-13T13:02:13-04:00'
+'2013-05-13T13:02:13.475578-04:00'
 >>> set.isoformat()
-'2013-05-13T20:09:26-04:00'
+'2013-05-13T20:09:26.493502-04:00'
 >>> rise.astimezone(sunrise.Eastern).isoformat()
-'2013-05-13T05:55:00-04:00'
+'2013-05-13T05:55:00.457654-04:00'
 >>> set.astimezone(sunrise.Eastern).isoformat()
-'2013-05-13T20:09:26-04:00'
+'2013-05-13T20:09:26.493502-04:00'
 
 >>> sunrise.azimuth_elevation( 38.98, -76.47, transit )
 (179.99635135849053, 69.56582340941506)
@@ -74,6 +74,17 @@ From other apps and web sites:
     Sunset azimuth is 294.62, when measured from N.
 
     The center is 179.84 when measured from N (-0.16 from S).
+
+Other Horizons; e.g., Nautical Twilight or Astronomical Twilight.
+
+>>> rise, transit, set = sunrise.rise_transit_set( 38.98, -76.47, today, horizon=90+12 ) # Nautical
+>>> rise.isoformat()
+'2013-05-13T04:48:24.304646-04:00'
+>>> set.isoformat()
+'2013-05-13T21:16:02.646510-04:00'
+
+From the USNO web page, the following two official times are given
+for nautical twilight on May 13, 2013: 03:48 20:17
 
 Calculation Details
 ---------------------
@@ -207,14 +218,17 @@ def datetime_to_jad( dt ):
     """
     # Fractions of a day after midnight
     t = dt.time()
-    E = t.hour/24 + t.minute/24/60 + t.second/24/60/60
+    E = (t.hour + (t.minute + (t.second+t.micro/1000000)/60)/60)/24
 
     # Julian Date for date + time - UTC offset (if defined)
     utc= 0 if dt.utcoffset() is None else dt.utcoffset()/24
     jad= dt.toordinal()-JAD_epoch+E-utc
     return jad
 
-def solar( phi_o, lambda_o, date_time_tz ):
+def hours_to_h_m_s( h ):
+    return int(h*24), int(h*24*60) % 60, int(h*24*60*60) % 60
+
+def solar( phi_o, lambda_o, date_time_tz, horizon=None, mean_solar=True ):
     """Compute position of the sun.
 
     :param phi_o:
@@ -226,6 +240,19 @@ def solar( phi_o, lambda_o, date_time_tz ):
     :param date_time_tz:
         :class:`datetime.datetime` for which the sun's position is requested.
         This must include tzinfo for the observer's timezone.
+
+    :param horizon:
+        The horizon angle from the zenith. Default is 90.833.
+        Other values can be used.
+        -   Astronomical: 108°; 18° below horizon
+        -   Nautical: 102°; 12° below horizon
+        -   Civil: 96°; 6° below horizon
+
+    :param mean_solar:
+        The Equation of Time offset from sidereal time to
+        mean solar time. If "False", this will compute
+        sidereal time. If "True", this will calculate
+        mean solar time.
 
     :return: A dictionary with **all** the intermediate results.
         Of all these results, a few are more interesting than
@@ -264,6 +291,8 @@ def solar( phi_o, lambda_o, date_time_tz ):
 
     """
     JAD_epoch= -1721424.5 # Julian Astronomical Date epoch.
+
+    if horizon is None: horizon=90.833
 
     # GMT offset of the observer in hours.
     z_o= date_time_tz.utcoffset().total_seconds()/3600
@@ -328,33 +357,55 @@ def solar( phi_o, lambda_o, date_time_tz ):
     U = math.tan( R_r/2 )**2
 
     # Eq of Time (minutes)
-    V_r = 4*(
-        U*math.sin(2*I_r) - 2*K*math.sin(J_r)
-        + 4*K*U*math.sin(J_r)*math.cos(2*I_r)
-        - 0.5*U**2*math.sin(4*I_r)
-        - 1.25*K**2*math.sin(2*J_r)
-        )
-    V = math.degrees( V_r )
+    if mean_solar:
+        V_r = 4*(
+            U*math.sin(2*I_r) - 2*K*math.sin(J_r)
+            + 4*K*U*math.sin(J_r)*math.cos(2*I_r)
+            - 0.5*U**2*math.sin(4*I_r)
+            - 1.25*K**2*math.sin(2*J_r)
+            )
+        V = math.degrees( V_r )
+    else:
+        # Sidereal Time -- no mean solar adjustment
+        V_r= 0
+        V= 0
 
     # HA Sunrise (deg)
+    # 90.833 is sun just below the horizon.
+    # Can other values can be used for various definitions of twilight?
     phi_or= math.radians(phi_o)
-    W_r = math.acos( math.cos(math.radians(90.833))/(math.cos(phi_or)*math.cos(T_r))-math.tan(phi_or)*math.tan(T_r))
+
+    # Original.
+    W_r = math.acos(
+        math.cos(math.radians(horizon)) / (math.cos(phi_or)*math.cos(T_r))
+        - math.tan(phi_or)*math.tan(T_r)
+            )
     W = math.degrees( W_r )
+
+    # Alternate.
+#     W_a= (math.sin(math.radians(90-horizon)) - math.sin(phi_or)*math.sin(T_r)) / (math.cos(phi_or)*math.cos(T_r))
+#     if W_a > 1:
+#         W_r_alt = 0
+#     elif W_a < -1:
+#         W_r_alt = math.pi
+#     else:
+#         W_r_alt = math.acos( W_a )
+#     W = math.degrees( W_r_alt )
 
     # Solar Noon (LST)
     X = (720 - 4*lambda_o - V + 60*z_o)/1440
-    X_h, X_m, X_s = int(X*24), int(X*24*60)%60, int(X*24*60*60)%60
-    X_hms= "{0:02.0f}:{1:02.0f}:{2:04.1f}".format(X_h, X_m, X_s)
+    X_h, X_m, X_s = hours_to_h_m_s(X)
+    X_hms= "{0:02.0f}:{1:02.0f}:{2:04.1f}".format(*hours_to_h_m_s(X))
 
     # Sunrise Time (LST)
     Y = X-4*W/1440
-    Y_h, Y_m, Y_s = int(Y*24), int(Y*24*60)%60, int(Y*24*60*60)%60
-    Y_hms= "{0:02.0f}:{1:02.0f}:{2:04.1f}".format(Y_h, Y_m, Y_s)
+    Y_h, Y_m, Y_s = hours_to_h_m_s(Y)
+    Y_hms= "{0:02.0f}:{1:02.0f}:{2:04.1f}".format(*hours_to_h_m_s(Y))
 
     # Sunset Time (LST)
     Z = X+4*W/1440
-    Z_h, Z_m, Z_s = int(Z*24), int(Z*24*60)%60, int(Z*24*60*60)%60
-    Z_hms= "{0:02.0f}:{1:02.0f}:{2:04.1f}".format(Z_h, Z_m, Z_s)
+    Z_h, Z_m, Z_s = hours_to_h_m_s(Z)
+    Z_hms= "{0:02.0f}:{1:02.0f}:{2:04.1f}".format(*hours_to_h_m_s(Z))
 
     # Sunlight Duration (minutes)
     AA = 8*W
@@ -392,9 +443,12 @@ def solar( phi_o, lambda_o, date_time_tz ):
     AG = AE+AF
 
     # Solar Azimuth Angle (deg cw from N)
-    AH_rstar = math.acos(
+    AH_a= (
         (math.sin(phi_or)*math.cos(AD_r)-math.sin(T_r)) / (math.cos(phi_or)*math.sin(AD_r))
     )
+    if AH_a > 1: AH_rstar= 0
+    elif AH_a < -1: AH_rstar= math.pi
+    else: AH_rstar = math.acos( AH_a )
     if AC > 0:
         AH = math.degrees(AH_rstar) + 180 % 360
     else:
@@ -402,13 +456,66 @@ def solar( phi_o, lambda_o, date_time_tz ):
 
     return locals()
 
-def rise_transit_set( lat, lon, date_time ):
-    s= AttrDict( solar( lat, lon, date_time ) )
-    transit= datetime.datetime.combine( date_time.date(), datetime.time(s.X_h, s.X_m, s.X_s, tzinfo=date_time.tzinfo ) )
-    rise= datetime.datetime.combine( date_time.date(), datetime.time(s.Y_h, s.Y_m, s.Y_s, tzinfo=date_time.tzinfo) )
-    set= datetime.datetime.combine( date_time.date(), datetime.time(s.Z_h, s.Z_m, s.Z_s, tzinfo=date_time.tzinfo) )
+def rise_transit_set( lat, lon, date_time_tz, horizon=None, mean_solar=True ):
+    """Compute rise time, noon transit time and set time for the sun.
+
+    :param lat:
+        Latitude of observer in degrees.
+
+    :param lon:
+        Longitude of the observer in degrees.
+
+    :param date_time_tz:
+        :class:`datetime.datetime` for which the sun's position is requested.
+        This must include tzinfo for the observer's timezone.
+
+    :param horizon:
+        The horizon angle from the zenith. Default is 90.833.
+        Other values can be used.
+        -   Astronomical: 108°; 18° below horizon
+        -   Nautical: 102°; 12° below horizon
+        -   Civil: 96°; 6° below horizon
+
+    :param mean_solar:
+        The Equation of Time offset from sidereal time to
+        mean solar time. If "False", this will compute
+        sidereal time. If "True", this will calculate
+        mean solar time. The default is True.
+
+    :returns: Tuple of :class:`datetime.datetime` objects for rise, noon transit and set. These are timezone aware and will have the same timezone as
+    the input datetime.
+    """
+    date= date_time_tz.replace( hour=0, minute=0, second=0, microsecond=0 )
+    s= AttrDict( solar( lat, lon, date, horizon, mean_solar ) )
+
+    transit= date + datetime.timedelta( days=s.X )
+    rise= date + datetime.timedelta( days=s.Y )
+    set= date + datetime.timedelta( days=s.Z )
+
     return rise, transit, set
 
-def azimuth_elevation( lat, lon, date_time ):
-    s= AttrDict( solar( lat, lon, date_time ) )
+def azimuth_elevation( lat, lon, date_time, mean_solar=True ):
+    """Compute azimuth and elevation of the sun at a given point in time.
+
+    :param lat:
+        Latitude of observer in degrees.
+
+    :param lon:
+        Longitude of the observer in degrees.
+
+    :param date_time_tz:
+        :class:`datetime.datetime` for which the sun's position is requested.
+        This must include tzinfo for the observer's timezone.
+
+    :param mean_solar:
+        The Equation of Time offset from sidereal time to
+        mean solar time. If "False", this will compute the elevation
+        at local apparent noon,
+        sidereal time. If "True", this will calculate the elevation
+        at mean solar time noon. The default is True.
+
+    :returns: Tuple of :class:`datetime.datetime` objects for rise, noon transit and set. These are timezone aware and will have the same timezone as
+    the input datetime.
+    """
+    s= AttrDict( solar( lat, lon, date_time, mean_solar=mean_solar ) )
     return s.AH, s.AE

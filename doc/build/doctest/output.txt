@@ -1,4 +1,4 @@
-Results of doctest builder run on 2013-05-17 09:45:28
+Results of doctest builder run on 2013-05-19 09:20:15
 =====================================================
 
 Document: python/math/baromtr
@@ -28,9 +28,9 @@ Test passed.
 Document: python/navigation/sunup
 ---------------------------------
 1 items passed all tests:
-  13 tests in default
-13 tests in 1 items.
-13 passed and 0 failed.
+  16 tests in default
+16 tests in 1 items.
+16 passed and 0 failed.
 Test passed.
 
 Document: python/math/quadrat
@@ -49,8 +49,24 @@ Document: python/electronics/awgexact
 8 passed and 0 failed.
 Test passed.
 
+Document: python/math/speedtd
+-----------------------------
+1 items passed all tests:
+   3 tests in default
+3 tests in 1 items.
+3 passed and 0 failed.
+Test passed.
+
 Document: python/math/trig
 --------------------------
+1 items passed all tests:
+   7 tests in default
+7 tests in 1 items.
+7 passed and 0 failed.
+Test passed.
+
+Document: python/math/involute
+------------------------------
 1 items passed all tests:
    7 tests in default
 7 tests in 1 items.
@@ -63,6 +79,14 @@ Document: python/math/centrif
   13 tests in default
 13 tests in 1 items.
 13 passed and 0 failed.
+Test passed.
+
+Document: python/navigation/pathfind
+------------------------------------
+1 items passed all tests:
+  10 tests in default
+10 tests in 1 items.
+10 passed and 0 failed.
 Test passed.
 
 Document: python/math/accelr
@@ -113,20 +137,12 @@ Document: python/math/solutri
 10 passed and 0 failed.
 Test passed.
 
-Document: python/math/involute
-------------------------------
+Document: python/navigation/gridsq
+----------------------------------
 1 items passed all tests:
-   7 tests in default
-7 tests in 1 items.
-7 passed and 0 failed.
-Test passed.
-
-Document: python/math/speedtd
------------------------------
-1 items passed all tests:
-   3 tests in default
-3 tests in 1 items.
-3 passed and 0 failed.
+  14 tests in default
+14 tests in 1 items.
+14 passed and 0 failed.
 Test passed.
 
 Document: python/math/fibon
@@ -163,7 +179,7 @@ Test passed.
 
 Doctest summary
 ===============
-  247 tests
+  274 tests
     0 failures in tests
     0 failures in setup code
     0 failures in cleanup code

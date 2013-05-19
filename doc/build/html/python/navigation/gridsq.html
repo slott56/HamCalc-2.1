@@ -56,6 +56,288 @@
             
   <div class="section" id="gridsq-grid-square-locator-maidenhead">
 <h1>gridsq &#8211; Grid Square Locator (Maidenhead)<a class="headerlink" href="#gridsq-grid-square-locator-maidenhead" title="Permalink to this headline">¶</a></h1>
+<p>The <strong class="program">gridsq</strong> includes the same astronomical calculations
+as <strong class="program">daydusk</strong> and <strong class="program">riseset</strong>.</p>
+<p>These all seem to be based on the following:</p>
+<div class="highlight-python"><pre>2880 :REM&#x27;..... UTC times - based on DAYLIGHT program, HAM-SOFT disk# 1247</pre>
+</div>
+<p>Since this is biased toward ham radio, it uses the Morse code
+abbreviation &#8220;QTH&#8221; for location.</p>
+<div class="section" id="analysis">
+<h2>Analysis<a class="headerlink" href="#analysis" title="Permalink to this headline">¶</a></h2>
+<p>This is a coordinate transformation from Grid Squares to
+Latitude and Longitude.</p>
+<p>It will also compute the distance between two grid squares in
+kilometers, statute miles or nautical miles.</p>
+<p>As a bonus, it <strong>also</strong> computes sunrise and sunset in UTC times.</p>
+<div class="section" id="grid-squares">
+<h3>Grid Squares<a class="headerlink" href="#grid-squares" title="Permalink to this headline">¶</a></h3>
+<p>The Grid Squares work like this.</p>
+<p>Here&#8217;s a Grid Locator:</p>
+<div class="highlight-python"><pre>B L 1 1 b h 1 6</pre>
+</div>
+<p>Here&#8217;s the decode.</p>
+<blockquote>
+<div><dl class="docutils">
+<dt>BL  Field longitude and latitude. 18 letters used (A-R).</dt>
+<dd>E-W is 20°, N-S is 10° per letter.</dd>
+<dt>11  Square longitude and latitude. 10 digits used (0-9).</dt>
+<dd>E-W is 2°, N-S is 1° per digit.</dd>
+<dt>bh  Subsquare longitude and latitude. 24 letters used (a-x).</dt>
+<dd>E-W is 5&#8217;, N-S is 2.5&#8217; per letter. The assumed center is &#8220;ll&#8221;.</dd>
+</dl>
+<p>16  Extended square. 10 digits used.</p>
+</div></blockquote>
+<p>Coordinates use longitude from E to W starting at the prime antimeridian (180°) and latitude from S to N starting at the south pole.</p>
+<p>We can label the positions of the string as follows:</p>
+<div class="math">
+<p><img src="../../_images/math/bd55927a1782d436b5b6de45a40ce45e851dd366.png" alt="W_1 L_1 W_2 L_2 \centerdot W_3 L_3 \text{ optionally } W_4 L_4"/></p>
+</div><p>Longitude is <img class="math" src="../../_images/math/bc4119b85ec71258f1a32fe860d940e9f055134b.png" alt="\phi \leftrightarrows (W_1 W_2 \centerdot W_3)"/>; latitude is <img class="math" src="../../_images/math/7b4f0ce17b9ae48a0657300fab7be90d93b8160b.png" alt="\lambda \leftrightarrows (L_1 L_2 \centerdot L_3)"/>.</p>
+<p>Given E-W longitude, <img class="math" src="../../_images/math/ce4588fd900d02afcbd260bc07f54cce49a7dc4a.png" alt="\lambda"/>, and N-S latitude, <img class="math" src="../../_images/math/2c175f60eecef1de7560c3bdea495d69f26f719d.png" alt="\phi"/>, it looks like this.</p>
+<div class="math">
+<p><img src="../../_images/math/f6c2ae3f59673f5c7cb4bf1e355c51daba134277.png" alt="\frac{\lambda+180}{2} = 10W_1 + W_2 + \frac{1}{24}W_3
+
+\phi+90 = 10L_1 + L_2 + \frac{1}{24}L_3"/></p>
+</div><p>Since Python has <tt class="xref py py-func docutils literal"><span class="pre">divmod()</span></tt>, this calculation is pretty simple.</p>
+</div>
+<div class="section" id="distance-between-grid-squares">
+<h3>Distance Between Grid Squares<a class="headerlink" href="#distance-between-grid-squares" title="Permalink to this headline">¶</a></h3>
+<p>The legacy program also computes the distance between two grid squares in
+kilometers, statute miles or nautical miles.</p>
+<p>From Chris Veness we have an implementation of the Rhumb Line equation.</p>
+<p>See <a class="reference external" href="http://www.movable-type.co.uk/scripts/latlong.html">http://www.movable-type.co.uk/scripts/latlong.html</a>, <a href="#id3"><span class="problematic" id="id4">|copy|</span></a> 2002-2010 Chris Veness</p>
+<div class="math">
+<p><img src="../../_images/math/606a07864231ef8c9e03b5ba6b1fbc63f2dc566a.png" alt="\Delta\varphi = \ln \left[ \frac{\tan( lat_2 / 2 + \pi / 4 )}{\tan( lat_1 / 2 + \pi / 4 )} \right]"/></p>
+</div><p>If this is an E:W line (i.e., <img class="math" src="../../_images/math/1a310b139bff1b62f49a5b40bbd9370e511ed9d7.png" alt="\Delta \varphi \approx 0"/>):</p>
+<div class="math">
+<p><img src="../../_images/math/c6b799fff1e701bd539d8f4ea159154bf6c26efa.png" alt="q = \cos lat_1"/></p>
+</div><p>Otherwise:</p>
+<div class="math">
+<p><img src="../../_images/math/cf929681a31c5761ba96bbab8022cf2ffcb8689c.png" alt="q = {\Delta lat} / {\Delta \varphi}"/></p>
+</div><p>Distance, <img class="math" src="../../_images/math/96ab646de7704969b91c76a214126b45f2b07b25.png" alt="d"/>, and bearing, <img class="math" src="../../_images/math/52e8ed7a3ba22130ad3984eb2cd413406475a689.png" alt="\theta"/>, are</p>
+<div class="math">
+<p><img src="../../_images/math/33efedb0f3313be111a931232863ad5618d2ffd1.png" alt="d = R \times \sqrt{ {\Delta lat}^2 + q^2 \times {\Delta lon}^2 }"/></p>
+</div><div class="math">
+<p><img src="../../_images/math/86eb91a06877144ad5353fdf154b04fe24939f83.png" alt="\theta = \arctan{ \frac{\Delta lon}{\Delta\varphi}}"/></p>
+</div><p>where <img class="math" src="../../_images/math/30d938049e2d8bdbff5c53527041fc1dac96cb49.png" alt="\ln"/> is natural log,
+<img class="math" src="../../_images/math/97ca23d19ccdd7f3d2d6cfd13f3440bb0bee0b9b.png" alt="\Delta lon"/> is taking shortest route (<img class="math" src="../../_images/math/b78d8a3e44b482dc8eb1c9d797d84504ed243909.png" alt="&lt; 180 \textdegree"/>).</p>
+<p><img class="math" src="../../_images/math/eff43e84f8a3bcf7b6965f0a3248bc4d3a9d0cd4.png" alt="R"/> is the earth&#8217;s mean radius: 6,371.009 km (3,958.761 mi; 3,440.069 nm).</p>
+</div>
+<div class="section" id="sunset-and-sunrise-times">
+<h3>Sunset and Sunrise Times<a class="headerlink" href="#sunset-and-sunrise-times" title="Permalink to this headline">¶</a></h3>
+<p>As a bonus, it <strong>also</strong> computes sunrise and sunset in UTC times.</p>
+<p>This is yet another application for <a class="reference internal" href="sunup.html#module-hamcalc.navigation.sunrise" title="hamcalc.navigation.sunrise"><tt class="xref py py-mod docutils literal"><span class="pre">hamcalc.navigation.sunrise</span></tt></a>,
+<a class="reference internal" href="sunup.html#navigation-sunup"><em>sunup &#8211; Sunrise, Sunset, Transit</em></a>.</p>
+</div>
+</div>
+<div class="section" id="implementation">
+<h2>Implementation<a class="headerlink" href="#implementation" title="Permalink to this headline">¶</a></h2>
+<p>We have three parts:</p>
+<div class="section" id="id1">
+<h3>Grid Squares<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<span class="target" id="module-hamcalc.navigation.gridsq"></span><p>hamcalc.navigation.gridsq &#8211; Grid Squares.</p>
+<p>Test Case</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">hamcalc.navigation.gridsq</span> <span class="kn">as</span> <span class="nn">gridsq</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">gridsq</span><span class="o">.</span><span class="n">latlon_2_grid</span><span class="p">(</span> <span class="mf">38.98</span><span class="p">,</span> <span class="o">-</span><span class="mf">76.47</span> <span class="p">)</span>
+<span class="go">&#39;FM18sx&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lat</span><span class="p">,</span> <span class="n">lon</span> <span class="o">=</span> <span class="n">gridsq</span><span class="o">.</span><span class="n">grid_2_latlon</span><span class="p">(</span> <span class="s">&quot;FM18sx&quot;</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">lat</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="nb">round</span><span class="p">(</span><span class="n">lon</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+<span class="go">(38.9792, -76.4583)</span>
+</pre></div>
+</div>
+<dl class="function">
+<dt id="hamcalc.navigation.gridsq.grid_2_latlon">
+<tt class="descclassname">hamcalc.navigation.gridsq.</tt><tt class="descname">grid_2_latlon</tt><big>(</big><em>grid</em><big>)</big><a class="reference internal" href="../../_modules/hamcalc/navigation/gridsq.html#grid_2_latlon"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.navigation.gridsq.grid_2_latlon" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert Grid Square Code to lat and lon pair.</p>
+<p>Note that default center-of-square values are provided for missing
+positions.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>grid</strong> &#8211; 2, 4 or 6-position grid-square code.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">latitude and longitude</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="hamcalc.navigation.gridsq.latlon_2_grid">
+<tt class="descclassname">hamcalc.navigation.gridsq.</tt><tt class="descname">latlon_2_grid</tt><big>(</big><em>lat</em>, <em>lon</em>, <em>level=3</em><big>)</big><a class="reference internal" href="../../_modules/hamcalc/navigation/gridsq.html#latlon_2_grid"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.navigation.gridsq.latlon_2_grid" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert lat/lon as decimal values to Grid Square Code.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>lat</strong> &#8211; Decimal latitude, positive north</li>
+<li><strong>lon</strong> &#8211; Decimal longitude, positive east, negative west.</li>
+<li><strong>level</strong> &#8211; level of deatil: 1 to 4. 1 gives a two-position
+code. 4 gives an 8-position code.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">grid square code (6-position by default.)</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-hamcalc.navigation.distance">
+<span id="great-circle-distance"></span><h3>Great Circle Distance<a class="headerlink" href="#module-hamcalc.navigation.distance" title="Permalink to this headline">¶</a></h3>
+<p>hamcalc.navigation.distance &#8211; Great Circle Distance Calculation.</p>
+<p>Test Case</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">hamcalc.math.trig</span> <span class="kn">as</span> <span class="nn">trig</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">hamcalc.navigation.distance</span> <span class="kn">as</span> <span class="nn">distance</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">deg</span> <span class="o">=</span> <span class="n">distance</span><span class="o">.</span><span class="n">dms_2_deg</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lat_1</span><span class="p">,</span> <span class="n">lon_1</span> <span class="o">=</span> <span class="n">deg</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="mi">21</span><span class="p">,</span> <span class="mi">50</span><span class="p">),</span> <span class="o">-</span><span class="n">deg</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">25</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lat_2</span><span class="p">,</span> <span class="n">lon_2</span> <span class="o">=</span> <span class="n">deg</span><span class="p">(</span><span class="mi">42</span><span class="p">,</span> <span class="mi">21</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="o">-</span><span class="n">deg</span><span class="p">(</span><span class="mi">71</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">27</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lat_1</span><span class="p">,</span> <span class="n">lon_1</span>
+<span class="go">(50.36388888888889, -4.156944444444444)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lat_2</span><span class="p">,</span> <span class="n">lon_2</span>
+<span class="go">(42.3511111111111, -71.04083333333335)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">r</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="n">distance</span><span class="o">.</span><span class="n">range_bearing</span><span class="p">(</span> <span class="n">lat_1</span><span class="p">,</span> <span class="n">lon_1</span><span class="p">,</span> <span class="n">lat_2</span><span class="p">,</span> <span class="n">lon_2</span><span class="p">,</span> <span class="n">R</span><span class="o">=</span><span class="n">distance</span><span class="o">.</span><span class="n">KM</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">r</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+<span class="go">5196.0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">tuple</span><span class="p">(</span> <span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="mi">0</span><span class="p">))</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">distance</span><span class="o">.</span><span class="n">deg_2_dms</span><span class="p">(</span> <span class="n">b</span> <span class="p">)</span> <span class="p">)</span>
+<span class="go">(260, 7, 38)</span>
+</pre></div>
+</div>
+<dl class="function">
+<dt id="hamcalc.navigation.distance.range_bearing">
+<tt class="descclassname">hamcalc.navigation.distance.</tt><tt class="descname">range_bearing</tt><big>(</big><em>lat_1</em>, <em>lon_1</em>, <em>lat_2</em>, <em>lon_2</em>, <em>R=3440.069</em><big>)</big><a class="reference internal" href="../../_modules/hamcalc/navigation/distance.html#range_bearing"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.navigation.distance.range_bearing" title="Permalink to this definition">¶</a></dt>
+<dd><p>Rhumb-line course from <tt class="docutils literal"><span class="pre">(lat_1,</span> <span class="pre">lon_1)</span></tt> to <tt class="docutils literal"><span class="pre">(lat_2,</span> <span class="pre">lon_2)</span></tt>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>lat_1</strong> &#8211; latitude, postive N</li>
+<li><strong>lon_1</strong> &#8211; longitude, positive E</li>
+<li><strong>lat_2</strong> &#8211; latitude, postive N</li>
+<li><strong>lon_2</strong> &#8211; longitude, positive E</li>
+<li><strong>R</strong> &#8211; radius of the earth in appropriate units;
+default is nautical miles.
+Values include <tt class="xref py py-data docutils literal"><span class="pre">KM</span></tt> for kilometers,
+<tt class="xref py py-data docutils literal"><span class="pre">MI</span></tt> for statute miles and <tt class="xref py py-data docutils literal"><span class="pre">NM</span></tt> for nautical miles.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">2-tuple of range and bearing from from <tt class="docutils literal"><span class="pre">(lat_1,</span> <span class="pre">lon_1)</span></tt> to <tt class="docutils literal"><span class="pre">(lat_2,</span> <span class="pre">lon_2)</span></tt>.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="id2">
+<h3>Sunset and Sunrise Times<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
+<p>See <a class="reference internal" href="sunup.html#module-hamcalc.navigation.sunrise" title="hamcalc.navigation.sunrise"><tt class="xref py py-mod docutils literal"><span class="pre">hamcalc.navigation.sunrise</span></tt></a>.</p>
+</div>
+</div>
+<div class="section" id="legacy-introduction">
+<h2>Legacy Introduction<a class="headerlink" href="#legacy-introduction" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><pre>GRID SQUARE LOCATOR (Maidenhead)                       by Dr.Thomas Clark W3IWI
+
+  edited and enhanced for HAMCALC by George Murphy VE3ERP
+
+         Grid squares were developed by an international group at a
+       conference in Maidenhead, England, hence the name &quot;Maidenhead&quot;grid squares.
+         Grid squares are based on latitude and longitude. Each square is
+       1° high x 2° wide, further divided into sub-squares only a few
+       kilometres wide. Grid squares are coded with a 2-letter/2-number/
+       2-letter code (such as FN04HO). Most people just use the first four
+       characters (such as FN04), which is the grid square. The last two
+       letters are generally used only when it is desired to pinpoint a
+       a location within a sub-square.
+         This program computes the grid square code for any latitude/
+       longitude in the world, or the coordinates of the approximate
+       centre of any grid square or sub-square. It also computes distances
+       and beam headings between specified grid squares or sub-squares.
+         Coordinates need only be known within an accuracy of 0.1° which
+       is about 11 km north-south, and east-west about 11 km at the
+       equator, 8 km at 45° latitude, and 1 km at 85° latitude.
+         All computations are in decimal degrees. To convert deg/min/sec
+       coordinates to decimal degrees, run the EQIVALENT VALUES program.
+         (ref. The ARRL OPERATING MANUAL, 5th Edition, pp.12-4 to 12-6)</pre>
+</div>
+<p>The &#8220;World Chart&#8221;, page 1.</p>
+<div class="highlight-python"><pre>            M A I D E N H E A D   G R I D   S Q U A R E   F I E L D S
+                  with First Two Characters of Grid Square Code
+                       Degrees West             Degrees East
+               160°  120°  80°   40°    0°   40°   80°   120°  160°
+80°N -90.0°N │AR│BR│CR│DR│ER│FR│GR│HR│IR║JR│KR│LR│MR│NR│OR│PR│QR│RR│
+70°N -80.0°N │AQ│BQ│CQ│DQ│EQ│FQ│GQ│HQ│IQ║JQ│KQ│LQ│MQ│NQ│OQ│PQ│QQ│RQ│
+60°N -70.0°N │AP│BP│CP│DP│EP│FP│GP│HP│IP║JP│KP│LP│MP│NP│OP│PP│QP│RP│ Each Field
+50°N -60.0°N │AO│BO│CO│DO│EO│FO│GO│HO│IO║JO│KO│LO│MO│NO│OO│PO│QO│RO│ contains
+40°N -50.0°N │AN│BN│CN│DN│EN│FN│GN│HN│IN║JN│KN│LN│MN│NN│ON│PN│QN│RN│ 100 grid
+30°N -40.0°N │AM│BM│CM│DM│EM│FM│GM│HM│IM║JM│KM│LM│MM│NM│OM│PM│QM│RM│ squares,
+20°N -30.0°N │AL│BL│CL│DL│EL│FL│GL│HL│IL║JL│KL│LL│ML│NL│OL│PL│QL│RL│ each being
+10°N -20.0°N │AK│BK│CK│DK│EK│FK│GK│HK│IK║JK│KK│LK│MK│NK│OK│PK│QK│RK│ 2° wide x
+ 0°N -10.0°N │AJ│BJ│CJ│DJ│EJ│FJ│GJ│HJ│IJ║JJ│KJ│LJ│MJ│NJ│OJ│PJ│QJ│RJ│ 1° high.
+                                     «EQUATOR»
+ 0°S -10.0°S │AI│BI│CI│DI│EI│FI│GI│HI│II║JI│KI│LI│MI│NI│OI│PI│QI│RI│
+10°S -20.0°S │AH│BH│CH│DH│EH│FH│GH│HH│IH║JH│KH│LH│MH│NH│OH│PH│QH│RH│
+20°S -30.0°S │AG│BG│CG│DG│EG│FG│GG│HG│IG║JG│KG│LG│MG│NG│OG│PG│QG│RG│
+30°S -40.0°S │AF│BF│CF│DF│EF│FF│GF│HF│IF║JF│KF│LF│MF│NF│OF│PF│QF│RF│
+40°S -50.0°S │AE│BE│CE│DE│EE│FE│GE│HE│IE║JE│KE│LE│ME│NE│OE│PE│QE│RE│
+50°S -60.0°S │AD│BD│CD│DD│ED│FD│GD│HD│ID║JD│KD│LD│MD│ND│OD│PD│QD│RD│
+60°S -70.0°S │AC│BC│CC│DC│EC│FC│GC│HC│IC║JC│KC│LC│MC│NC│OC│PC│QC│RC│
+70°S -80.0°S │AB│BB│CB│DB│EB│FB│GB│HB│IB║JB│KB│LB│MB│NB│OB│PB│QB│RB│
+80°S -90.0°S │AA│BA│CA│DA│EA│FA│GA│HA│IA║JA│KA│LA│MA│NA│OA│PA│QA│RA│
+            180°  140°  100°  60°   20°   20°   60°   100°  140°  180°</pre>
+</div>
+<p>The &#8220;World Chart&#8221;, page 2.</p>
+<div class="highlight-python"><pre>  4-CHARACTER CODES FOR 1°x 2° GRID SQUARES WITHIN EACH 10°x 20° FIELD
+              (xx = FIRST TWO letters of Grid Square Code)
+
+┌──────┬──────┬──────┬──────┬──────┬──────┬──────┬──────┬──────┬──────┐
+│ xx09 │ xx19 │ xx29 │ xx39 │ xx49 │ xx59 │ xx69 │ xx79 │ xx89 │ xx99 │
+├──────┼──────┼──────┼──────┼──────┼──────┼──────┼──────┼──────┼──────┤
+│ xx08 │ xx18 │ xx28 │ xx38 │ xx48 │ xx58 │ xx68 │ xx78 │ xx88 │ xx98 │
+├──────┼──────┼──────┼──────┼──────┼──────┼──────┼──────┼──────┼──────┤
+│ xx07 │ xx17 │ xx27 │ xx37 │ xx47 │ xx57 │ xx67 │ xx77 │ xx87 │ xx97 │
+├──────┼──────┼──────┼──────┼──────┼──────┼──────┼──────┼──────┼──────┤
+│ xx06 │ xx16 │ xx26 │ xx36 │ xx46 │ xx56 │ xx66 │ xx76 │ xx86 │ xx96 │
+├──────┼──────┼──────┼──────┼──────┼──────┼──────┼──────┼──────┼──────┤
+│ xx05 │ xx15 │ xx25 │ xx35 │ xx45 │ xx55 │ xx65 │ xx75 │ xx85 │ xx95 │
+├──────┼──────┼──────┼──────┼──────┼──────┼──────┼──────┼──────┼──────┤
+│ xx04 │ xx14 │ xx24 │ xx34 │ xx44 │ xx54 │ xx64 │ xx74 │ xx84 │ xx94 │
+├──────┼──────┼──────┼──────┼──────┼──────┼──────┼──────┼──────┼──────┤
+│ xx03 │ xx13 │ xx23 │ xx33 │ xx43 │ xx53 │ xx63 │ xx73 │ xx83 │ xx93 │
+├──────┼──────┼──────┼──────┼──────┼──────┼──────┼──────┼──────┼──────┤
+│ xx02 │ xx12 │ xx22 │ xx32 │ xx42 │ xx52 │ xx62 │ xx72 │ xx82 │ xx92 │
+├──────┼──────┼──────┼──────┼──────┼──────┼──────┼──────┼──────┼──────┤
+│ xx01 │ xx11 │ xx21 │ xx31 │ xx41 │ xx51 │ xx61 │ xx71 │ xx81 │ xx91 │
+├──────┼──────┼──────┼──────┼──────┼──────┼──────┼──────┼──────┼──────┤
+│ xx00 │ xx10 │ xx20 │ xx30 │ xx40 │ xx50 │ xx60 │ xx70 │ xx80 │ xx90 │
+└──────┴──────┴──────┴──────┴──────┴──────┴──────┴──────┴──────┴──────┘</pre>
+</div>
+</div>
+<div class="section" id="legacy-quirks">
+<h2>Legacy Quirks<a class="headerlink" href="#legacy-quirks" title="Permalink to this headline">¶</a></h2>
+<p>Here&#8217;s the legacy calculation with it&#8217;s own pair of quirky ways of handling
+the fractional part of latitude and longitude.</p>
+<div class="math">
+<p><img src="../../_images/math/adcc60d873160302f34a70d49fe0d2c508feeb38.png" alt="W_1 = \lfloor (180+lon)/20+10^{-6} \rfloor \mapsto \text{A-R}
+
+L_1 = \lfloor (lat+90)/10+10^{-6} \rfloor \mapsto \text{A-R}
+
+W_2 = \lfloor (180+lon-20 W_1)/2+10^{-6} \rfloor
+
+L_2 = \lfloor lat+90-10 L_1 + 10^{-6} \rfloor
+
+W_3 = 24 \lfloor  (180+lon)/2-\lfloor(180+lon)/2\rfloor+10^{-6} \rfloor \mapsto \text{a-r}
+
+L_3 = 24 \lfloor lat+90-10 L1-L2 \rfloor \mapsto \text{a-r}"/></p>
+</div><p>Compare <em>W_3</em> and <em>L_3</em>. One uses simple <tt class="docutils literal"><span class="pre">LON-int(LON)</span></tt>; the other
+uses <tt class="docutils literal"><span class="pre">LAT-10*L1-L2</span></tt> to get the fractional part.</p>
+</div>
 </div>
 
 
@@ -82,7 +364,7 @@
 <li class="toctree-l3"><a class="reference internal" href="daydusk.html">daydusk &#8211;  Daylight Dusk and Dawn Calculator</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="">gridsq &#8211; Grid Square Locator (Maidenhead)</a></li>
 <li class="toctree-l3"><a class="reference internal" href="latlong.html">latlong &#8211; Latitude/Longitude Data Base</a></li>
-<li class="toctree-l3"><a class="reference internal" href="sunup.html">Sunup &#8211; Sunrise, Sunset, Transit</a></li>
+<li class="toctree-l3"><a class="reference internal" href="sunup.html">sunup &#8211; Sunrise, Sunset, Transit</a></li>
 <li class="toctree-l3"><a class="reference internal" href="moontrac.html">moontrac &#8211; Moon Tracker</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pathfind.html">pathfind &#8211; Great Circle Paths &amp; Distances</a></li>
 <li class="toctree-l3"><a class="reference internal" href="riseset.html">riseset &#8211; Sunrise/Sunset Calculator</a></li>

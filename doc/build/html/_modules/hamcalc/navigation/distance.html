@@ -1,0 +1,174 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>hamcalc.navigation.distance &mdash; HamCalc 2.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../../_static/agogo.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '2.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="top" title="HamCalc 2.1 documentation" href="../../../index.html" />
+    <link rel="up" title="Module code" href="../../index.html" /> 
+  </head>
+  <body>
+    <div class="header-wrapper">
+      <div class="header">
+        <div class="headertitle"><a
+          href="../../../index.html">HamCalc 2.1 documentation</a></div>
+        <div class="rel">
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a>
+        </div>
+       </div>
+    </div>
+
+    <div class="content-wrapper">
+      <div class="content">
+        <div class="document">
+            
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for hamcalc.navigation.distance</h1><div class="highlight"><pre>
+<span class="sd">&quot;&quot;&quot;hamcalc.navigation.distance -- Great Circle Distance Calculation.</span>
+
+<span class="sd">Test Case</span>
+
+<span class="sd">&gt;&gt;&gt; import hamcalc.math.trig as trig</span>
+<span class="sd">&gt;&gt;&gt; import hamcalc.navigation.distance as distance</span>
+<span class="sd">&gt;&gt;&gt; deg = distance.dms_2_deg</span>
+<span class="sd">&gt;&gt;&gt; lat_1, lon_1 = deg(50, 21, 50), deg(4, 9, 25)</span>
+<span class="sd">&gt;&gt;&gt; lat_2, lon_2 = deg(42, 21, 4), deg(71, 2, 27)</span>
+<span class="sd">&gt;&gt;&gt; lat_1, lon_1</span>
+<span class="sd">&gt;&gt;&gt; lat_2, lon_2</span>
+<span class="sd">&gt;&gt;&gt; r, b = distance.range_bearing( lat_1, lon_1, lat_2, lon_2, R=distance.KM )</span>
+<span class="sd">&gt;&gt;&gt; r</span>
+<span class="sd">5196</span>
+<span class="sd">&gt;&gt;&gt; distance.deg_2_dms( b )</span>
+<span class="sd">(260, 7, 38)</span>
+
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">math</span>
+
+<span class="k">def</span> <span class="nf">dms_2_deg</span><span class="p">(</span> <span class="n">d</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">s</span> <span class="p">):</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">trig</span><span class="o">.</span><span class="n">DMS_TUPLE</span><span class="o">.</span><span class="n">to_std</span><span class="p">(</span> <span class="p">(</span><span class="n">d</span><span class="p">,</span><span class="n">m</span><span class="p">,</span><span class="n">s</span><span class="p">)</span> <span class="p">)</span>
+    <span class="k">return</span> <span class="n">trig</span><span class="o">.</span><span class="n">DEGREE</span><span class="o">.</span><span class="n">from_std</span><span class="p">(</span> <span class="n">x</span> <span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">deg_2_dms</span><span class="p">(</span> <span class="n">d</span> <span class="p">):</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">trig</span><span class="o">.</span><span class="n">DEGREE</span><span class="o">.</span><span class="n">to_std</span><span class="p">(</span> <span class="p">(</span><span class="n">d</span><span class="p">,</span><span class="n">m</span><span class="p">,</span><span class="n">s</span><span class="p">)</span> <span class="p">)</span>
+    <span class="k">return</span> <span class="n">trig</span><span class="o">.</span><span class="n">DMS_TUPLE</span><span class="o">.</span><span class="n">from_std</span><span class="p">(</span> <span class="n">x</span> <span class="p">)</span>
+
+<span class="c"># The International Union of Geodesy and Geophysics (IUGG) defined mean radius values</span>
+<span class="n">KM</span><span class="o">=</span> <span class="mf">6371.009</span> <span class="c"># R_1 in km</span>
+<span class="n">MI</span><span class="o">=</span> <span class="mf">3958.761</span> <span class="c"># R_1 in mi</span>
+<span class="n">NM</span><span class="o">=</span> <span class="mf">3440.069</span> <span class="c"># R_1 in nm</span>
+
+<div class="viewcode-block" id="range_bearing"><a class="viewcode-back" href="../../../python/navigation/pathfind.html#hamcalc.navigation.distance.range_bearing">[docs]</a><span class="k">def</span> <span class="nf">range_bearing</span><span class="p">(</span> <span class="n">lat_1</span><span class="p">,</span> <span class="n">lon_1</span><span class="p">,</span> <span class="n">lat_2</span><span class="p">,</span> <span class="n">lon_2</span><span class="p">,</span> <span class="n">R</span><span class="o">=</span><span class="n">NM</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Rhumb-line course from ``(lat_1, lon_1)`` to ``(lat_2, lon_2)``.</span>
+
+<span class="sd">    :param lat_1: latitude, postive N</span>
+<span class="sd">    :param lon_1: longitude, positive E</span>
+<span class="sd">    :param lat_2: latitude, postive N</span>
+<span class="sd">    :param lon_2: longitude, positive E</span>
+<span class="sd">    :param R: radius of the earth in appropriate units;</span>
+<span class="sd">        default is nautical miles.</span>
+<span class="sd">        Values include :py:data:`KM` for kilometers,</span>
+<span class="sd">        :py:data:`MI` for statute miles and :py:data:`NM` for nautical miles.</span>
+
+<span class="sd">    :returns: 2-tuple of range and bearing from from ``(lat_1, lon_1)`` to ``(lat_2, lon_2)``.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">lat1</span><span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">lat_1</span><span class="p">)</span>
+    <span class="n">lat2</span><span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">lat_2</span><span class="p">)</span>
+    <span class="n">dLat</span><span class="o">=</span> <span class="n">lat2</span> <span class="o">-</span> <span class="n">lat1</span>
+    <span class="n">dPhi</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">tan</span><span class="p">(</span><span class="n">lat2</span><span class="o">/</span><span class="mi">2</span><span class="o">+</span><span class="n">math</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">4</span><span class="p">)</span><span class="o">/</span><span class="n">math</span><span class="o">.</span><span class="n">tan</span><span class="p">(</span><span class="n">lat1</span><span class="o">/</span><span class="mi">2</span><span class="o">+</span><span class="n">math</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">4</span><span class="p">))</span>
+    <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">dPhi</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mf">1.0E-6</span><span class="p">:</span>
+        <span class="n">q</span><span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">lat1</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">q</span><span class="o">=</span> <span class="n">dLat</span><span class="o">/</span><span class="n">dPhi</span>
+    <span class="n">lon1</span><span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">lon_1</span><span class="p">)</span>
+    <span class="n">lon2</span><span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">lon_2</span><span class="p">)</span>
+    <span class="n">dLon</span> <span class="o">=</span> <span class="n">lon2</span> <span class="o">-</span> <span class="n">lon1</span>
+    <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">dLon</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span><span class="p">:</span>
+        <span class="n">dLon</span> <span class="o">=</span> <span class="o">-</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">math</span><span class="o">.</span><span class="n">pi</span><span class="o">-</span><span class="n">dLon</span><span class="p">)</span> <span class="k">if</span> <span class="n">dLon</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">math</span><span class="o">.</span><span class="n">pi</span><span class="o">+</span><span class="n">dLon</span><span class="p">)</span>
+    <span class="n">d</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">dLat</span><span class="o">*</span><span class="n">dLat</span> <span class="o">+</span> <span class="n">q</span><span class="o">*</span><span class="n">q</span><span class="o">*</span><span class="n">dLon</span><span class="o">*</span><span class="n">dLon</span><span class="p">)</span> <span class="o">*</span> <span class="n">R</span>
+    <span class="n">brng</span><span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">atan2</span><span class="p">(</span><span class="n">dLon</span><span class="p">,</span> <span class="n">dPhi</span><span class="p">)</span>
+    <span class="n">theta</span><span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span> <span class="n">brng</span> <span class="p">)</span> <span class="o">%</span> <span class="mi">360</span>
+    <span class="k">return</span> <span class="n">d</span><span class="p">,</span> <span class="n">theta</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+        </div>
+        <div class="sidebar">
+          <h3>Table Of Contents</h3>
+          <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../background.html">Background</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../legacy.html">The HamCalc Legacy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../python_architecture.html">Python Architecture</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../python/index.html">Python Modules</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../todo.html">The To Do List</a></li>
+</ul>
+
+          <h3 style="margin-top: 1.5em;">Search</h3>
+          <form class="search" action="../../../search.html" method="get">
+            <input type="text" name="q" />
+            <input type="submit" value="Go" />
+            <input type="hidden" name="check_keywords" value="yes" />
+            <input type="hidden" name="area" value="default" />
+          </form>
+          <p class="searchtip" style="font-size: 90%">
+            Enter search terms or a module, class or function name.
+          </p>
+        </div>
+        <div class="clearer"></div>
+      </div>
+    </div>
+
+    <div class="footer-wrapper">
+      <div class="footer">
+        <div class="left">
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |
+          <a href="../../../genindex.html" title="General Index"
+             >index</a>
+        </div>
+
+        <div class="right">
+          
+    <div class="footer">
+        &copy; Copyright 2013, S.Lott.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2b1.
+    </div>
+        </div>
+        <div class="clearer"></div>
+      </div>
+    </div>
+
+  </body>
+</html>

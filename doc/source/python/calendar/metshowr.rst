@@ -16,6 +16,11 @@ From the output:
 2.  More importantly, this is available on the WWW in a form that's
     always kept current.
 
+    Examples:
+
+    http://stardate.org/nightsky/meteors
+
+    http://earthsky.org/astronomy-essentials/earthskys-meteor-shower-guide
 
 This has the following data::
 

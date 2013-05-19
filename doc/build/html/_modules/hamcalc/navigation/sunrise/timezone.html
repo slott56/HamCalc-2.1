@@ -116,13 +116,14 @@
 
 <div class="viewcode-block" id="FixedOffset"><a class="viewcode-back" href="../../../../python/navigation/sunup.html#hamcalc.navigation.sunrise.timezone.FixedOffset">[docs]</a><span class="k">class</span> <span class="nc">FixedOffset</span><span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">tzinfo</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Fixed offset in minutes east from UTC.&quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__offset</span> <span class="o">=</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">minutes</span> <span class="o">=</span> <span class="n">offset</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">offset</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__offset</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">minutes</span> <span class="o">=</span> <span class="n">offset</span><span class="p">)</span>
+        <span class="n">hr</span><span class="p">,</span> <span class="nb">min</span> <span class="o">=</span> <span class="nb">divmod</span><span class="p">(</span> <span class="n">offset</span><span class="p">,</span> <span class="mi">60</span> <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__name</span><span class="o">=</span> <span class="s">&quot;GMT{0:+03.0f}:{1:02.0f}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">hr</span><span class="p">,</span><span class="nb">min</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">utcoffset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dt</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__offset</span><span class="o">.</span><span class="n">total_seconds</span><span class="p">()</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__offset</span>
     <span class="k">def</span> <span class="nf">tzname</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dt</span><span class="p">):</span>
-        <span class="n">hr</span><span class="p">,</span> <span class="nb">min</span> <span class="o">=</span> <span class="nb">divmod</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">__offset</span><span class="o">.</span><span class="n">total_seconds</span><span class="p">()</span><span class="o">/</span><span class="mi">60</span><span class="p">,</span> <span class="mi">60</span> <span class="p">)</span>
-        <span class="k">return</span> <span class="s">&quot;GMT{0:+03.0f}:{1:02.0f}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">hr</span><span class="p">,</span><span class="nb">min</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__name</span>
     <span class="k">def</span> <span class="nf">dst</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dt</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">ZERO</span>
 
