@@ -1,5 +1,5 @@
 daydusk --  Daylight Dusk and Dawn Calculator
-================================================
+-----------------------------------------------
 
 This is essentially the same calculations in :program:`sunup`, :program:`seasons`, and :program:`riseset`.
 
@@ -47,7 +47,7 @@ based on the declination, :math:`\delta`, and the latitude of the observer, :mat
 This is not the full hour angle calculation; it goes on to line 2180.
 This, however, is the place where the offset, *R*, is used.
 
-When we look at the :mod:`hamcalc.navigation.sunrise` (:ref:`navigation.sunup`)
+When we look at the :mod:`hamcalc.navigation.solar` (:ref:`navigation.sunup`)
 we see this calculation of the Hour Angle, *W*, based on declination, *T*.
 
 ..  math::
@@ -81,7 +81,7 @@ Where :math:`\theta_G` is Greenish sidereal time, :math:`\alpha` is right ascens
 Implementation
 ~~~~~~~~~~~~~~~~
 
-We can easily parameterize the :mod:`hamcalc.navigation.sunrise` calculations to define an alternate horizon.
+We can easily parameterize the :mod:`hamcalc.navigation.solar` calculations to define an alternate horizon.
 
 It becomes a cute little module in :mod:`hamcalc.stdio` that solves
 for "HA Sunrise" (``W``) of 90+18, 90+12, 90+6 and the default

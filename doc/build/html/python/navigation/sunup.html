@@ -409,9 +409,9 @@ In hours. <img class="math" src="../../_images/math/fa2fa899f0afb05d683788552350
 <strong class="program">sunup</strong>, <strong class="program">seasons</strong> and <strong class="program">riseset</strong>.</p>
 <p>This computes more than sunrise, and includes timezones for local time
 conversion.</p>
-<div class="section" id="module-hamcalc.navigation.sunrise">
-<span id="sunrise"></span><h3>Sunrise<a class="headerlink" href="#module-hamcalc.navigation.sunrise" title="Permalink to this headline">¶</a></h3>
-<p>hamcalc.navigation.sunrise &#8211; Sunrise, Transit and Sunset.</p>
+<div class="section" id="module-hamcalc.navigation.solar">
+<span id="solar"></span><h3>Solar<a class="headerlink" href="#module-hamcalc.navigation.solar" title="Permalink to this headline">¶</a></h3>
+<p>hamcalc.navigation.solar &#8211; Sunrise, Transit and Sunset.</p>
 <p>See &#8220;Sunrise Equation&#8221; in Wikipedia. <a class="reference external" href="http://en.wikipedia.org/wiki/Sunrise_equation">http://en.wikipedia.org/wiki/Sunrise_equation</a></p>
 <p>This is the calculation of the Julian Astronomical Dates
 of the transit, rise and set of the sun at a given latitude
@@ -435,34 +435,33 @@ the <tt class="xref py py-data docutils literal"><span class="pre">JAD_epoch</sp
 based on local knowledge of timezones and Daylight Savings Time
 to get to proper local times.</p>
 <p>For this, timezones are imported from the
-<a class="reference internal" href="#module-hamcalc.navigation.sunrise.timezone" title="hamcalc.navigation.sunrise.timezone"><tt class="xref py py-mod docutils literal"><span class="pre">hamcalc.navigation.sunrise.timezone</span></tt></a> module.</p>
+<a class="reference internal" href="#module-hamcalc.navigation.solar.timezone" title="hamcalc.navigation.solar.timezone"><tt class="xref py py-mod docutils literal"><span class="pre">hamcalc.navigation.solar.timezone</span></tt></a> module.</p>
 <p>It&#8217;s quite easy to add timezones to cover other historical periods or
 other places on earth.</p>
 </div>
 <div class="section" id="test-case">
 <h4>Test Case<a class="headerlink" href="#test-case" title="Permalink to this headline">¶</a></h4>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">hamcalc.navigation.sunrise</span> <span class="kn">as</span> <span class="nn">sunrise</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">hamcalc.navigation.sunrise.timezone</span> <span class="kn">import</span> <span class="n">Eastern</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">hamcalc.navigation.solar</span> <span class="kn">as</span> <span class="nn">solar</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">datetime</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">today</span><span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span> <span class="mi">2013</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">13</span><span class="p">,</span> <span class="n">tzinfo</span><span class="o">=</span><span class="n">Eastern</span> <span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">rise</span><span class="p">,</span> <span class="n">transit</span><span class="p">,</span> <span class="nb">set</span> <span class="o">=</span> <span class="n">sunrise</span><span class="o">.</span><span class="n">rise_transit_set</span><span class="p">(</span> <span class="mf">38.98</span><span class="p">,</span> <span class="o">-</span><span class="mf">76.47</span><span class="p">,</span> <span class="n">today</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">today</span><span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span> <span class="mi">2013</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">13</span><span class="p">,</span> <span class="n">tzinfo</span><span class="o">=</span><span class="n">solar</span><span class="o">.</span><span class="n">Eastern</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">rise</span><span class="p">,</span> <span class="n">transit</span><span class="p">,</span> <span class="nb">set</span> <span class="o">=</span> <span class="n">solar</span><span class="o">.</span><span class="n">rise_transit_set</span><span class="p">(</span> <span class="mf">38.98</span><span class="p">,</span> <span class="o">-</span><span class="mf">76.47</span><span class="p">,</span> <span class="n">today</span> <span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">rise</span><span class="o">.</span><span class="n">isoformat</span><span class="p">()</span>
 <span class="go">&#39;2013-05-13T05:55:00.457654-04:00&#39;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">transit</span><span class="o">.</span><span class="n">isoformat</span><span class="p">()</span>
 <span class="go">&#39;2013-05-13T13:02:13.475578-04:00&#39;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">set</span><span class="o">.</span><span class="n">isoformat</span><span class="p">()</span>
 <span class="go">&#39;2013-05-13T20:09:26.493502-04:00&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">rise</span><span class="o">.</span><span class="n">astimezone</span><span class="p">(</span><span class="n">sunrise</span><span class="o">.</span><span class="n">Eastern</span><span class="p">)</span><span class="o">.</span><span class="n">isoformat</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">rise</span><span class="o">.</span><span class="n">astimezone</span><span class="p">(</span><span class="n">solar</span><span class="o">.</span><span class="n">Eastern</span><span class="p">)</span><span class="o">.</span><span class="n">isoformat</span><span class="p">()</span>
 <span class="go">&#39;2013-05-13T05:55:00.457654-04:00&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">set</span><span class="o">.</span><span class="n">astimezone</span><span class="p">(</span><span class="n">sunrise</span><span class="o">.</span><span class="n">Eastern</span><span class="p">)</span><span class="o">.</span><span class="n">isoformat</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">set</span><span class="o">.</span><span class="n">astimezone</span><span class="p">(</span><span class="n">solar</span><span class="o">.</span><span class="n">Eastern</span><span class="p">)</span><span class="o">.</span><span class="n">isoformat</span><span class="p">()</span>
 <span class="go">&#39;2013-05-13T20:09:26.493502-04:00&#39;</span>
 </pre></div>
 </div>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">sunrise</span><span class="o">.</span><span class="n">azimuth_elevation</span><span class="p">(</span> <span class="mf">38.98</span><span class="p">,</span> <span class="o">-</span><span class="mf">76.47</span><span class="p">,</span> <span class="n">transit</span> <span class="p">)</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">solar</span><span class="o">.</span><span class="n">azimuth_elevation</span><span class="p">(</span> <span class="mf">38.98</span><span class="p">,</span> <span class="o">-</span><span class="mf">76.47</span><span class="p">,</span> <span class="n">transit</span> <span class="p">)</span>
 <span class="go">(179.99635135849053, 69.56582340941506)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">sunrise</span><span class="o">.</span><span class="n">azimuth_elevation</span><span class="p">(</span> <span class="mf">38.98</span><span class="p">,</span> <span class="o">-</span><span class="mf">76.47</span><span class="p">,</span> <span class="n">rise</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">solar</span><span class="o">.</span><span class="n">azimuth_elevation</span><span class="p">(</span> <span class="mf">38.98</span><span class="p">,</span> <span class="o">-</span><span class="mf">76.47</span><span class="p">,</span> <span class="n">rise</span> <span class="p">)</span>
 <span class="go">(65.23706511941509, -0.7937072477381264)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">sunrise</span><span class="o">.</span><span class="n">azimuth_elevation</span><span class="p">(</span> <span class="mf">38.98</span><span class="p">,</span> <span class="o">-</span><span class="mf">76.47</span><span class="p">,</span> <span class="nb">set</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">solar</span><span class="o">.</span><span class="n">azimuth_elevation</span><span class="p">(</span> <span class="mf">38.98</span><span class="p">,</span> <span class="o">-</span><span class="mf">76.47</span><span class="p">,</span> <span class="nb">set</span> <span class="p">)</span>
 <span class="go">(294.86842169825667, -0.6953559721037266)</span>
 </pre></div>
 </div>
@@ -474,7 +473,7 @@ other places on earth.</p>
 <p>The center is 179.84 when measured from N (-0.16 from S).</p>
 </div></blockquote>
 <p>Other Horizons; e.g., Nautical Twilight or Astronomical Twilight.</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">rise</span><span class="p">,</span> <span class="n">transit</span><span class="p">,</span> <span class="nb">set</span> <span class="o">=</span> <span class="n">sunrise</span><span class="o">.</span><span class="n">rise_transit_set</span><span class="p">(</span> <span class="mf">38.98</span><span class="p">,</span> <span class="o">-</span><span class="mf">76.47</span><span class="p">,</span> <span class="n">today</span><span class="p">,</span> <span class="n">horizon</span><span class="o">=</span><span class="mi">90</span><span class="o">+</span><span class="mi">12</span> <span class="p">)</span> <span class="c"># Nautical</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">rise</span><span class="p">,</span> <span class="n">transit</span><span class="p">,</span> <span class="nb">set</span> <span class="o">=</span> <span class="n">solar</span><span class="o">.</span><span class="n">rise_transit_set</span><span class="p">(</span> <span class="mf">38.98</span><span class="p">,</span> <span class="o">-</span><span class="mf">76.47</span><span class="p">,</span> <span class="n">today</span><span class="p">,</span> <span class="n">horizon</span><span class="o">=</span><span class="mi">90</span><span class="o">+</span><span class="mi">12</span> <span class="p">)</span> <span class="c"># Nautical</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">rise</span><span class="o">.</span><span class="n">isoformat</span><span class="p">()</span>
 <span class="go">&#39;2013-05-13T04:48:24.304646-04:00&#39;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">set</span><span class="o">.</span><span class="n">isoformat</span><span class="p">()</span>
@@ -574,8 +573,32 @@ a few other values.</p>
 </pre></div>
 </div>
 <dl class="function">
-<dt id="hamcalc.navigation.sunrise.datetime_to_jad">
-<tt class="descclassname">hamcalc.navigation.sunrise.</tt><tt class="descname">datetime_to_jad</tt><big>(</big><em>dt</em><big>)</big><a class="reference internal" href="../../_modules/hamcalc/navigation/sunrise.html#datetime_to_jad"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.navigation.sunrise.datetime_to_jad" title="Permalink to this definition">¶</a></dt>
+<dt id="hamcalc.navigation.solar.azimuth_elevation">
+<tt class="descclassname">hamcalc.navigation.solar.</tt><tt class="descname">azimuth_elevation</tt><big>(</big><em>lat</em>, <em>lon</em>, <em>date_time</em><big>)</big><a class="reference internal" href="../../_modules/hamcalc/navigation/solar.html#azimuth_elevation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.navigation.solar.azimuth_elevation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute azimuth and elevation of the sun at a given point in time.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>lat</strong> &#8211; Latitude of observer in degrees.</li>
+<li><strong>lon</strong> &#8211; Longitude of the observer in degrees.</li>
+<li><strong>date_time_tz</strong> &#8211; <tt class="xref py py-class docutils literal"><span class="pre">datetime.datetime</span></tt> for which the sun&#8217;s position is requested.
+This must include tzinfo for the observer&#8217;s timezone.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Tuple of <tt class="xref py py-class docutils literal"><span class="pre">datetime.datetime</span></tt> objects for rise, noon transit and set. These are timezone aware and will have the same timezone as</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p>the input datetime.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="hamcalc.navigation.solar.datetime_to_jad">
+<tt class="descclassname">hamcalc.navigation.solar.</tt><tt class="descname">datetime_to_jad</tt><big>(</big><em>dt</em><big>)</big><a class="reference internal" href="../../_modules/hamcalc/navigation/solar.html#datetime_to_jad"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.navigation.solar.datetime_to_jad" title="Permalink to this definition">¶</a></dt>
 <dd><p>Convert a datetime into a Julian Astronomical Date.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -591,8 +614,8 @@ date, time and UTC timezone.</td>
 </dd></dl>
 
 <dl class="function">
-<dt id="hamcalc.navigation.sunrise.jad_to_datetime">
-<tt class="descclassname">hamcalc.navigation.sunrise.</tt><tt class="descname">jad_to_datetime</tt><big>(</big><em>jad</em><big>)</big><a class="reference internal" href="../../_modules/hamcalc/navigation/sunrise.html#jad_to_datetime"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.navigation.sunrise.jad_to_datetime" title="Permalink to this definition">¶</a></dt>
+<dt id="hamcalc.navigation.solar.jad_to_datetime">
+<tt class="descclassname">hamcalc.navigation.solar.</tt><tt class="descname">jad_to_datetime</tt><big>(</big><em>jad</em><big>)</big><a class="reference internal" href="../../_modules/hamcalc/navigation/solar.html#jad_to_datetime"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.navigation.solar.jad_to_datetime" title="Permalink to this definition">¶</a></dt>
 <dd><p>Convert a Julian Astronomical Date into a datetime
 object.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -609,8 +632,37 @@ date, time and UTC timezone.</td>
 </dd></dl>
 
 <dl class="function">
-<dt id="hamcalc.navigation.sunrise.solar">
-<tt class="descclassname">hamcalc.navigation.sunrise.</tt><tt class="descname">solar</tt><big>(</big><em>phi_o</em>, <em>lambda_o</em>, <em>date_time_tz</em>, <em>horizon=None</em><big>)</big><a class="reference internal" href="../../_modules/hamcalc/navigation/sunrise.html#solar"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.navigation.sunrise.solar" title="Permalink to this definition">¶</a></dt>
+<dt id="hamcalc.navigation.solar.rise_transit_set">
+<tt class="descclassname">hamcalc.navigation.solar.</tt><tt class="descname">rise_transit_set</tt><big>(</big><em>lat</em>, <em>lon</em>, <em>date_time_tz</em>, <em>horizon=None</em><big>)</big><a class="reference internal" href="../../_modules/hamcalc/navigation/solar.html#rise_transit_set"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.navigation.solar.rise_transit_set" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute rise time, noon transit time and set time for the sun.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>lat</strong> &#8211; Latitude of observer in degrees.</li>
+<li><strong>lon</strong> &#8211; Longitude of the observer in degrees.</li>
+<li><strong>date_time_tz</strong> &#8211; <tt class="xref py py-class docutils literal"><span class="pre">datetime.datetime</span></tt> for which the sun&#8217;s position is requested.
+This must include tzinfo for the observer&#8217;s timezone.</li>
+<li><strong>horizon</strong> &#8211; The horizon angle from the zenith. Default is 90.833.
+Other values can be used.
+-   Astronomical: 108°; 18° below horizon
+-   Nautical: 102°; 12° below horizon
+-   Civil: 96°; 6° below horizon</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Tuple of <tt class="xref py py-class docutils literal"><span class="pre">datetime.datetime</span></tt> objects for rise, noon transit and set. These are timezone aware and will have the same timezone as</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p>the input datetime.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="hamcalc.navigation.solar.solar">
+<tt class="descclassname">hamcalc.navigation.solar.</tt><tt class="descname">solar</tt><big>(</big><em>phi_o</em>, <em>lambda_o</em>, <em>date_time_tz</em>, <em>horizon=None</em><big>)</big><a class="reference internal" href="../../_modules/hamcalc/navigation/solar.html#solar"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.navigation.solar.solar" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute position of the sun.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -622,7 +674,7 @@ date, time and UTC timezone.</td>
 <li><strong>date_time_tz</strong> &#8211; <tt class="xref py py-class docutils literal"><span class="pre">datetime.datetime</span></tt> for which the sun&#8217;s position is requested.
 This must include tzinfo for the observer&#8217;s timezone.</li>
 <li><strong>horizon</strong> &#8211; The horizon angle from the zenith. Default is 90.833.
-Can other values be used?
+Other values can be used.
 -   Astronomical: 108°; 18° below horizon
 -   Nautical: 102°; 12° below horizon
 -   Civil: 96°; 6° below horizon</li>
@@ -704,9 +756,9 @@ others.</p>
 
 </div>
 </div>
-<div class="section" id="module-hamcalc.navigation.sunrise.timezone">
-<span id="sunrise-timezone"></span><h3>sunrise.timezone<a class="headerlink" href="#module-hamcalc.navigation.sunrise.timezone" title="Permalink to this headline">¶</a></h3>
-<p>hamcalc.navigation.sunrise.timezone &#8211;  North American Time Zones.</p>
+<div class="section" id="module-hamcalc.navigation.solar.timezone">
+<span id="solar-timezone"></span><h3>solar.timezone<a class="headerlink" href="#module-hamcalc.navigation.solar.timezone" title="Permalink to this headline">¶</a></h3>
+<p>hamcalc.navigation.solar.timezone &#8211;  North American Time Zones.</p>
 <p>The sunrise and sunset times are in UTC.  Localtime offsets need to be applied,
 based on local knowledge of timezones and Daylight Savings Time
 to get to proper local times.</p>
@@ -721,8 +773,8 @@ to get to proper local times.</p>
 <p>See <a class="reference external" href="http://pytz.sourceforge.net">http://pytz.sourceforge.net</a> for a more complete list.</p>
 <p>To convert from UTC to local time, the following kind of thing
 is done.</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="n">rise</span><span class="p">,</span> <span class="n">transit</span><span class="p">,</span> <span class="nb">set</span> <span class="o">=</span> <span class="n">sunrise</span><span class="o">.</span><span class="n">rise_transit_set</span><span class="p">(</span> <span class="mf">38.98</span><span class="p">,</span> <span class="mf">76.47</span><span class="p">,</span> <span class="n">today</span><span class="o">.</span><span class="n">date</span><span class="p">()</span> <span class="p">)</span>
-<span class="n">rise</span><span class="o">.</span><span class="n">astimezone</span><span class="p">(</span><span class="n">sunrise</span><span class="o">.</span><span class="n">Eastern</span><span class="p">)</span><span class="o">.</span><span class="n">isoformat</span><span class="p">()</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">rise</span><span class="p">,</span> <span class="n">transit</span><span class="p">,</span> <span class="nb">set</span> <span class="o">=</span> <span class="n">solar</span><span class="o">.</span><span class="n">rise_transit_set</span><span class="p">(</span> <span class="mf">38.98</span><span class="p">,</span> <span class="mf">76.47</span><span class="p">,</span> <span class="n">today</span><span class="o">.</span><span class="n">date</span><span class="p">()</span> <span class="p">)</span>
+<span class="n">rise</span><span class="o">.</span><span class="n">astimezone</span><span class="p">(</span><span class="n">solar</span><span class="o">.</span><span class="n">Eastern</span><span class="p">)</span><span class="o">.</span><span class="n">isoformat</span><span class="p">()</span>
 </pre></div>
 </div>
 <p>This will display the rise time in North American Eastern Time.</p>
@@ -741,26 +793,26 @@ other places on earth.</p>
 <li>Pacific  = NATimeZone(-8, &#8220;Pacific&#8221;,  &#8220;PST&#8221;, &#8220;PDT&#8221;)</li>
 </ul>
 <dl class="class">
-<dt id="hamcalc.navigation.sunrise.timezone.FixedOffset">
-<em class="property">class </em><tt class="descclassname">hamcalc.navigation.sunrise.timezone.</tt><tt class="descname">FixedOffset</tt><big>(</big><em>offset</em><big>)</big><a class="reference internal" href="../../_modules/hamcalc/navigation/sunrise/timezone.html#FixedOffset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.navigation.sunrise.timezone.FixedOffset" title="Permalink to this definition">¶</a></dt>
+<dt id="hamcalc.navigation.solar.timezone.FixedOffset">
+<em class="property">class </em><tt class="descclassname">hamcalc.navigation.solar.timezone.</tt><tt class="descname">FixedOffset</tt><big>(</big><em>offset</em><big>)</big><a class="reference internal" href="../../_modules/hamcalc/navigation/solar/timezone.html#FixedOffset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.navigation.solar.timezone.FixedOffset" title="Permalink to this definition">¶</a></dt>
 <dd><p>Fixed offset in minutes east from UTC.</p>
 </dd></dl>
 
 <dl class="class">
-<dt id="hamcalc.navigation.sunrise.timezone.NATimeZone">
-<em class="property">class </em><tt class="descclassname">hamcalc.navigation.sunrise.timezone.</tt><tt class="descname">NATimeZone</tt><big>(</big><em>hours</em>, <em>reprname</em>, <em>stdname</em>, <em>dstname</em><big>)</big><a class="reference internal" href="../../_modules/hamcalc/navigation/sunrise/timezone.html#NATimeZone"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.navigation.sunrise.timezone.NATimeZone" title="Permalink to this definition">¶</a></dt>
+<dt id="hamcalc.navigation.solar.timezone.NATimeZone">
+<em class="property">class </em><tt class="descclassname">hamcalc.navigation.solar.timezone.</tt><tt class="descname">NATimeZone</tt><big>(</big><em>hours</em>, <em>reprname</em>, <em>stdname</em>, <em>dstname</em><big>)</big><a class="reference internal" href="../../_modules/hamcalc/navigation/solar/timezone.html#NATimeZone"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.navigation.solar.timezone.NATimeZone" title="Permalink to this definition">¶</a></dt>
 <dd><p>Superclass for North American timezone definitions.</p>
 </dd></dl>
 
 <dl class="class">
-<dt id="hamcalc.navigation.sunrise.timezone.UTC">
-<em class="property">class </em><tt class="descclassname">hamcalc.navigation.sunrise.timezone.</tt><tt class="descname">UTC</tt><a class="reference internal" href="../../_modules/hamcalc/navigation/sunrise/timezone.html#UTC"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.navigation.sunrise.timezone.UTC" title="Permalink to this definition">¶</a></dt>
+<dt id="hamcalc.navigation.solar.timezone.UTC">
+<em class="property">class </em><tt class="descclassname">hamcalc.navigation.solar.timezone.</tt><tt class="descname">UTC</tt><a class="reference internal" href="../../_modules/hamcalc/navigation/solar/timezone.html#UTC"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.navigation.solar.timezone.UTC" title="Permalink to this definition">¶</a></dt>
 <dd><p>UTC Timezone definition</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="hamcalc.navigation.sunrise.timezone.first_sunday_on_or_after">
-<tt class="descclassname">hamcalc.navigation.sunrise.timezone.</tt><tt class="descname">first_sunday_on_or_after</tt><big>(</big><em>dt</em><big>)</big><a class="reference internal" href="../../_modules/hamcalc/navigation/sunrise/timezone.html#first_sunday_on_or_after"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.navigation.sunrise.timezone.first_sunday_on_or_after" title="Permalink to this definition">¶</a></dt>
+<dt id="hamcalc.navigation.solar.timezone.first_sunday_on_or_after">
+<tt class="descclassname">hamcalc.navigation.solar.timezone.</tt><tt class="descname">first_sunday_on_or_after</tt><big>(</big><em>dt</em><big>)</big><a class="reference internal" href="../../_modules/hamcalc/navigation/solar/timezone.html#first_sunday_on_or_after"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.navigation.solar.timezone.first_sunday_on_or_after" title="Permalink to this definition">¶</a></dt>
 <dd><p>Determine if a date is within the defined period.</p>
 </dd></dl>
 

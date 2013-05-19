@@ -88,7 +88,7 @@ based on the declination, <img class="math" src="../../_images/math/0a42a8b725c2
 <p><img src="../../_images/math/d96e311aee087d51d2aa76fe3deb4aff11f9e0f1.png" alt="S = \frac{R - \sin \delta \sin \phi_o}{\cos \delta \cos \phi_o}"/></p>
 </div><p>This is not the full hour angle calculation; it goes on to line 2180.
 This, however, is the place where the offset, <em>R</em>, is used.</p>
-<p>When we look at the <a class="reference internal" href="sunup.html#module-hamcalc.navigation.sunrise" title="hamcalc.navigation.sunrise"><tt class="xref py py-mod docutils literal"><span class="pre">hamcalc.navigation.sunrise</span></tt></a> (<a class="reference internal" href="sunup.html#navigation-sunup"><em>sunup &#8211; Sunrise, Sunset, Transit</em></a>)
+<p>When we look at the <a class="reference internal" href="sunup.html#module-hamcalc.navigation.solar" title="hamcalc.navigation.solar"><tt class="xref py py-mod docutils literal"><span class="pre">hamcalc.navigation.solar</span></tt></a> (<a class="reference internal" href="sunup.html#navigation-sunup"><em>sunup &#8211; Sunrise, Sunset, Transit</em></a>)
 we see this calculation of the Hour Angle, <em>W</em>, based on declination, <em>T</em>.</p>
 <div class="math">
 <p><img src="../../_images/math/e860dcdc2028aed56f06d65337237083cd43096e.png" alt="\arccos (\frac{\cos 90.833^{\circ}}{\cos \phi_o \cos T} - \tan \phi_o \tan T )"/></p>
@@ -109,7 +109,7 @@ we see this calculation of the Hour Angle, <em>W</em>, based on declination, <em
 </div>
 <div class="section" id="implementation">
 <h2>Implementation<a class="headerlink" href="#implementation" title="Permalink to this headline">¶</a></h2>
-<p>We can easily parameterize the <a class="reference internal" href="sunup.html#module-hamcalc.navigation.sunrise" title="hamcalc.navigation.sunrise"><tt class="xref py py-mod docutils literal"><span class="pre">hamcalc.navigation.sunrise</span></tt></a> calculations to define an alternate horizon.</p>
+<p>We can easily parameterize the <a class="reference internal" href="sunup.html#module-hamcalc.navigation.solar" title="hamcalc.navigation.solar"><tt class="xref py py-mod docutils literal"><span class="pre">hamcalc.navigation.solar</span></tt></a> calculations to define an alternate horizon.</p>
 <p>It becomes a cute little module in <tt class="xref py py-mod docutils literal"><span class="pre">hamcalc.stdio</span></tt> that solves
 for &#8220;HA Sunrise&#8221; (<tt class="docutils literal"><span class="pre">W</span></tt>) of 90+18, 90+12, 90+6 and the default
 of 90.833 for a given date.</p>

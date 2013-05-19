@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>hamcalc.navigation.sunrise.timezone &mdash; HamCalc 2.1 documentation</title>
+    <title>hamcalc.navigation.solar.timezone &mdash; HamCalc 2.1 documentation</title>
     
     <link rel="stylesheet" href="../../../../_static/agogo.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
@@ -24,7 +24,7 @@
     <script type="text/javascript" src="../../../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../../../_static/doctools.js"></script>
     <link rel="top" title="HamCalc 2.1 documentation" href="../../../../index.html" />
-    <link rel="up" title="hamcalc.navigation.sunrise" href="../sunrise.html" /> 
+    <link rel="up" title="hamcalc.navigation.solar" href="../solar.html" /> 
   </head>
   <body>
     <div class="header-wrapper">
@@ -48,8 +48,8 @@
         <div class="bodywrapper">
           <div class="body">
             
-  <h1>Source code for hamcalc.navigation.sunrise.timezone</h1><div class="highlight"><pre>
-<span class="sd">&quot;&quot;&quot;hamcalc.navigation.sunrise.timezone --  North American Time Zones.</span>
+  <h1>Source code for hamcalc.navigation.solar.timezone</h1><div class="highlight"><pre>
+<span class="sd">&quot;&quot;&quot;hamcalc.navigation.solar.timezone --  North American Time Zones.</span>
 
 <span class="sd">The sunrise and sunset times are in UTC.  Localtime offsets need to be applied,</span>
 <span class="sd">based on local knowledge of timezones and Daylight Savings Time</span>
@@ -72,8 +72,8 @@
 
 <span class="sd">::</span>
 
-<span class="sd">    rise, transit, set = sunrise.rise_transit_set( 38.98, 76.47, today.date() )</span>
-<span class="sd">    rise.astimezone(sunrise.Eastern).isoformat()</span>
+<span class="sd">    rise, transit, set = solar.rise_transit_set( 38.98, 76.47, today.date() )</span>
+<span class="sd">    rise.astimezone(solar.Eastern).isoformat()</span>
 
 <span class="sd">This will display the rise time in North American Eastern Time.</span>
 
@@ -106,7 +106,7 @@
 <span class="n">ZERO</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
 <span class="n">HOUR</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">hours</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 
-<div class="viewcode-block" id="UTC"><a class="viewcode-back" href="../../../../python/navigation/sunup.html#hamcalc.navigation.sunrise.timezone.UTC">[docs]</a><span class="k">class</span> <span class="nc">UTC</span><span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">tzinfo</span><span class="p">):</span>
+<div class="viewcode-block" id="UTC"><a class="viewcode-back" href="../../../../python/navigation/sunup.html#hamcalc.navigation.solar.timezone.UTC">[docs]</a><span class="k">class</span> <span class="nc">UTC</span><span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">tzinfo</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;UTC Timezone definition&quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="nf">utcoffset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dt</span><span class="p">):</span> <span class="k">return</span> <span class="n">ZERO</span>
     <span class="k">def</span> <span class="nf">tzname</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dt</span><span class="p">):</span> <span class="k">return</span> <span class="s">&quot;UTC&quot;</span>
@@ -114,7 +114,7 @@
 </div>
 <span class="n">utc</span> <span class="o">=</span> <span class="n">UTC</span><span class="p">()</span>
 
-<div class="viewcode-block" id="FixedOffset"><a class="viewcode-back" href="../../../../python/navigation/sunup.html#hamcalc.navigation.sunrise.timezone.FixedOffset">[docs]</a><span class="k">class</span> <span class="nc">FixedOffset</span><span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">tzinfo</span><span class="p">):</span>
+<div class="viewcode-block" id="FixedOffset"><a class="viewcode-back" href="../../../../python/navigation/sunup.html#hamcalc.navigation.solar.timezone.FixedOffset">[docs]</a><span class="k">class</span> <span class="nc">FixedOffset</span><span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">tzinfo</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Fixed offset in minutes east from UTC.&quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">offset</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__offset</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">minutes</span> <span class="o">=</span> <span class="n">offset</span><span class="p">)</span>
@@ -129,7 +129,7 @@
 
 <span class="c"># A more complete implementation of current DST rules for major US time zones.</span>
 </div>
-<div class="viewcode-block" id="first_sunday_on_or_after"><a class="viewcode-back" href="../../../../python/navigation/sunup.html#hamcalc.navigation.sunrise.timezone.first_sunday_on_or_after">[docs]</a><span class="k">def</span> <span class="nf">first_sunday_on_or_after</span><span class="p">(</span><span class="n">dt</span><span class="p">):</span>
+<div class="viewcode-block" id="first_sunday_on_or_after"><a class="viewcode-back" href="../../../../python/navigation/sunup.html#hamcalc.navigation.solar.timezone.first_sunday_on_or_after">[docs]</a><span class="k">def</span> <span class="nf">first_sunday_on_or_after</span><span class="p">(</span><span class="n">dt</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Determine if a date is within the defined period.&quot;&quot;&quot;</span>
     <span class="n">days_to_go</span> <span class="o">=</span> <span class="mi">6</span> <span class="o">-</span> <span class="n">dt</span><span class="o">.</span><span class="n">weekday</span><span class="p">()</span>
     <span class="k">if</span> <span class="n">days_to_go</span><span class="p">:</span>
@@ -157,7 +157,7 @@
 <span class="c"># for Daylight Saving Time are to be turned forward by one hour on the second</span>
 <span class="c"># Sunday of March and turned back on the first Sunday of November.</span>
 
-<div class="viewcode-block" id="NATimeZone"><a class="viewcode-back" href="../../../../python/navigation/sunup.html#hamcalc.navigation.sunrise.timezone.NATimeZone">[docs]</a><span class="k">class</span> <span class="nc">NATimeZone</span><span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">tzinfo</span><span class="p">):</span>
+<div class="viewcode-block" id="NATimeZone"><a class="viewcode-back" href="../../../../python/navigation/sunup.html#hamcalc.navigation.solar.timezone.NATimeZone">[docs]</a><span class="k">class</span> <span class="nc">NATimeZone</span><span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">tzinfo</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Superclass for North American timezone definitions.&quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hours</span><span class="p">,</span> <span class="n">reprname</span><span class="p">,</span> <span class="n">stdname</span><span class="p">,</span> <span class="n">dstname</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">stdoffset</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">hours</span><span class="o">=</span><span class="n">hours</span><span class="p">)</span>

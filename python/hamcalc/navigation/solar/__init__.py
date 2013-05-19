@@ -1,4 +1,4 @@
-"""hamcalc.navigation.sunrise -- Sunrise, Transit and Sunset.
+"""hamcalc.navigation.solar -- Sunrise, Transit and Sunset.
 
 See "Sunrise Equation" in Wikipedia. http://en.wikipedia.org/wiki/Sunrise_equation
 
@@ -34,7 +34,7 @@ based on local knowledge of timezones and Daylight Savings Time
 to get to proper local times.
 
 For this, timezones are imported from the
-:mod:`hamcalc.navigation.sunrise.timezone` module.
+:mod:`hamcalc.navigation.solar.timezone` module.
 
 It's quite easy to add timezones to cover other historical periods or
 other places on earth.
@@ -42,27 +42,26 @@ other places on earth.
 Test Case
 ----------
 
->>> import hamcalc.navigation.sunrise as sunrise
->>> from hamcalc.navigation.sunrise.timezone import Eastern
+>>> import hamcalc.navigation.solar as solar
 >>> import datetime
->>> today= datetime.datetime( 2013, 5, 13, tzinfo=Eastern )
->>> rise, transit, set = sunrise.rise_transit_set( 38.98, -76.47, today )
+>>> today= datetime.datetime( 2013, 5, 13, tzinfo=solar.Eastern )
+>>> rise, transit, set = solar.rise_transit_set( 38.98, -76.47, today )
 >>> rise.isoformat()
 '2013-05-13T05:55:00.457654-04:00'
 >>> transit.isoformat()
 '2013-05-13T13:02:13.475578-04:00'
 >>> set.isoformat()
 '2013-05-13T20:09:26.493502-04:00'
->>> rise.astimezone(sunrise.Eastern).isoformat()
+>>> rise.astimezone(solar.Eastern).isoformat()
 '2013-05-13T05:55:00.457654-04:00'
->>> set.astimezone(sunrise.Eastern).isoformat()
+>>> set.astimezone(solar.Eastern).isoformat()
 '2013-05-13T20:09:26.493502-04:00'
 
->>> sunrise.azimuth_elevation( 38.98, -76.47, transit )
+>>> solar.azimuth_elevation( 38.98, -76.47, transit )
 (179.99635135849053, 69.56582340941506)
->>> sunrise.azimuth_elevation( 38.98, -76.47, rise )
+>>> solar.azimuth_elevation( 38.98, -76.47, rise )
 (65.23706511941509, -0.7937072477381264)
->>> sunrise.azimuth_elevation( 38.98, -76.47, set )
+>>> solar.azimuth_elevation( 38.98, -76.47, set )
 (294.86842169825667, -0.6953559721037266)
 
 From other apps and web sites:
@@ -77,7 +76,7 @@ From other apps and web sites:
 
 Other Horizons; e.g., Nautical Twilight or Astronomical Twilight.
 
->>> rise, transit, set = sunrise.rise_transit_set( 38.98, -76.47, today, horizon=90+12 ) # Nautical
+>>> rise, transit, set = solar.rise_transit_set( 38.98, -76.47, today, horizon=90+12 ) # Nautical
 >>> rise.isoformat()
 '2013-05-13T04:48:24.304646-04:00'
 >>> set.isoformat()
@@ -185,7 +184,7 @@ a few other values.
 """
 import datetime
 from hamcalc.lib import AttrDict
-from hamcalc.navigation.sunrise.timezone import utc, Newfoundland, Atlantic, \
+from hamcalc.navigation.solar.timezone import utc, Newfoundland, Atlantic, \
     Eastern, Central, Mountain, Pacific
 import math
 
@@ -228,7 +227,7 @@ def datetime_to_jad( dt ):
 def hours_to_h_m_s( h ):
     return int(h*24), int(h*24*60) % 60, int(h*24*60*60) % 60
 
-def solar( phi_o, lambda_o, date_time_tz, horizon=None, mean_solar=True ):
+def solar( phi_o, lambda_o, date_time_tz, horizon=None ):
     """Compute position of the sun.
 
     :param phi_o:
@@ -247,12 +246,6 @@ def solar( phi_o, lambda_o, date_time_tz, horizon=None, mean_solar=True ):
         -   Astronomical: 108°; 18° below horizon
         -   Nautical: 102°; 12° below horizon
         -   Civil: 96°; 6° below horizon
-
-    :param mean_solar:
-        The Equation of Time offset from sidereal time to
-        mean solar time. If "False", this will compute
-        sidereal time. If "True", this will calculate
-        mean solar time.
 
     :return: A dictionary with **all** the intermediate results.
         Of all these results, a few are more interesting than
@@ -357,18 +350,13 @@ def solar( phi_o, lambda_o, date_time_tz, horizon=None, mean_solar=True ):
     U = math.tan( R_r/2 )**2
 
     # Eq of Time (minutes)
-    if mean_solar:
-        V_r = 4*(
-            U*math.sin(2*I_r) - 2*K*math.sin(J_r)
-            + 4*K*U*math.sin(J_r)*math.cos(2*I_r)
-            - 0.5*U**2*math.sin(4*I_r)
-            - 1.25*K**2*math.sin(2*J_r)
-            )
-        V = math.degrees( V_r )
-    else:
-        # Sidereal Time -- no mean solar adjustment
-        V_r= 0
-        V= 0
+    V_r = 4*(
+        U*math.sin(2*I_r) - 2*K*math.sin(J_r)
+        + 4*K*U*math.sin(J_r)*math.cos(2*I_r)
+        - 0.5*U**2*math.sin(4*I_r)
+        - 1.25*K**2*math.sin(2*J_r)
+        )
+    V = math.degrees( V_r )
 
     # HA Sunrise (deg)
     # 90.833 is sun just below the horizon.
@@ -456,7 +444,7 @@ def solar( phi_o, lambda_o, date_time_tz, horizon=None, mean_solar=True ):
 
     return locals()
 
-def rise_transit_set( lat, lon, date_time_tz, horizon=None, mean_solar=True ):
+def rise_transit_set( lat, lon, date_time_tz, horizon=None ):
     """Compute rise time, noon transit time and set time for the sun.
 
     :param lat:
@@ -476,17 +464,11 @@ def rise_transit_set( lat, lon, date_time_tz, horizon=None, mean_solar=True ):
         -   Nautical: 102°; 12° below horizon
         -   Civil: 96°; 6° below horizon
 
-    :param mean_solar:
-        The Equation of Time offset from sidereal time to
-        mean solar time. If "False", this will compute
-        sidereal time. If "True", this will calculate
-        mean solar time. The default is True.
-
     :returns: Tuple of :class:`datetime.datetime` objects for rise, noon transit and set. These are timezone aware and will have the same timezone as
     the input datetime.
     """
     date= date_time_tz.replace( hour=0, minute=0, second=0, microsecond=0 )
-    s= AttrDict( solar( lat, lon, date, horizon, mean_solar ) )
+    s= AttrDict( solar( lat, lon, date, horizon ) )
 
     transit= date + datetime.timedelta( days=s.X )
     rise= date + datetime.timedelta( days=s.Y )
@@ -494,7 +476,7 @@ def rise_transit_set( lat, lon, date_time_tz, horizon=None, mean_solar=True ):
 
     return rise, transit, set
 
-def azimuth_elevation( lat, lon, date_time, mean_solar=True ):
+def azimuth_elevation( lat, lon, date_time ):
     """Compute azimuth and elevation of the sun at a given point in time.
 
     :param lat:
@@ -507,15 +489,8 @@ def azimuth_elevation( lat, lon, date_time, mean_solar=True ):
         :class:`datetime.datetime` for which the sun's position is requested.
         This must include tzinfo for the observer's timezone.
 
-    :param mean_solar:
-        The Equation of Time offset from sidereal time to
-        mean solar time. If "False", this will compute the elevation
-        at local apparent noon,
-        sidereal time. If "True", this will calculate the elevation
-        at mean solar time noon. The default is True.
-
     :returns: Tuple of :class:`datetime.datetime` objects for rise, noon transit and set. These are timezone aware and will have the same timezone as
     the input datetime.
     """
-    s= AttrDict( solar( lat, lon, date_time, mean_solar=mean_solar ) )
+    s= AttrDict( solar( lat, lon, date_time ) )
     return s.AH, s.AE

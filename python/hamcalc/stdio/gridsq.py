@@ -6,11 +6,11 @@
 import hamcalc.math.trig as trig
 import hamcalc.navigation.gridsq as gridsq
 import hamcalc.navigation.distance as distance
-import hamcalc.navigation.sunrise as sunrise
+import hamcalc.navigation.solar as solar
 import datetime
 
 def grid_square():
-    today = datetime.datetime.now(tz=sunrise.utc)
+    today = datetime.datetime.now(tz=solar.utc)
 
     home= None
     while home is None:
@@ -34,7 +34,7 @@ def grid_square():
             home= grid_raw
             lat_home, lon_home= lat, lon
 
-    rise, _, set = sunrise.rise_transit_set( lat, lon, today )
+    rise, _, set = solar.rise_transit_set( lat, lon, today )
     print( "Home", home, gridsq.grid_2_latlon(home), rise, set )
 
     R= None
@@ -67,7 +67,7 @@ def grid_square():
         count += 1
 
         dx_range, rx_bearing = distance.range_bearing( lat_home, lon_home, lat, lon )
-        rise, _, set = sunrise.rise_transit_set( lat, lon, today )
+        rise, _, set = solar.rise_transit_set( lat, lon, today )
         print( count, grid, lat, lon, dx_range, rx_bearing, rise, set )
 
 print( gridsq.intro )

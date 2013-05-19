@@ -4,7 +4,7 @@
 "SEASONS","","","SEASONS"
 "SOLSTICES","","","SEASONS"
 """
-import hamcalc.navigation.sunrise as sunrise
+import hamcalc.navigation.solar as solar
 from hamcalc.lib import AttrDict
 import datetime
 
@@ -29,12 +29,12 @@ def bisection( lat, lon, low, high, G ):
     eps= 1/24/60/60 # 1 second
     def f_non_zero( lat, lon, date_time ):
         """The normal, non-zero case, avoids the discontinuity."""
-        sun = AttrDict( sunrise.solar( lat, lon, date_time ) )
+        sun = AttrDict( solar.solar( lat, lon, date_time ) )
         #print( date_time, sun.F, sun.P, sun.T )
         return sun.P
     def f_zero( lat, lon, date_time ):
         """The near-zero case, where we apply an offset around the discontinuity."""
-        sun = AttrDict( sunrise.solar( lat, lon, date_time ) )
+        sun = AttrDict( solar.solar( lat, lon, date_time ) )
         if sun.P > 270:
             P= sun.P-360
         else:
@@ -56,10 +56,10 @@ def bisection( lat, lon, low, high, G ):
     return mid
 
 def report( latitude, longitude, date_time, tz ):
-    details = AttrDict( sunrise.solar( latitude, longitude, date_time ) )
-    rise, transit, set = sunrise.rise_transit_set( latitude, longitude, date_time )
-    az_r, el_r= sunrise.azimuth_elevation( latitude, longitude, rise )
-    az_s, el_s= sunrise.azimuth_elevation( latitude, longitude, set )
+    details = AttrDict( solar.solar( latitude, longitude, date_time ) )
+    rise, transit, set = solar.rise_transit_set( latitude, longitude, date_time )
+    az_r, el_r= solar.azimuth_elevation( latitude, longitude, rise )
+    az_s, el_s= solar.azimuth_elevation( latitude, longitude, set )
 
     print( "{0:10s}   {1:5.2f}     {2:8s} {3:6.2f}      {4:8s} {5:4.2f}     {6:6.2f} {7:6.2f}".format(
         date_time.strftime("%Y-%m-%d"),
@@ -100,9 +100,9 @@ def find_dates():
             print( "Using {0} based on Longitude {1:f}°".format(tz.tzname(),longitude) )
         else:
             try:
-                tz= { '1': sunrise.Atlantic, '2': sunrise.Eastern,
-                '3': sunrise.Central, '4': sunrise.Mountain,
-                '5': sunrise.Pacific }[tz_choice]
+                tz= { '1': solar.Atlantic, '2': solar.Eastern,
+                '3': solar.Central, '4': solar.Mountain,
+                '5': solar.Pacific }[tz_choice]
             except KeyError:
                 pass
     year = None

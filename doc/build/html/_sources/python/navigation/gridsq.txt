@@ -1,5 +1,5 @@
 gridsq -- Grid Square Locator (Maidenhead)
-===========================================
+--------------------------------------------
 
 The :program:`gridsq` includes the same astronomical calculations
 as :program:`daydusk` and :program:`riseset`.
@@ -110,7 +110,7 @@ Sunset and Sunrise Times
 
 As a bonus, it **also** computes sunrise and sunset in UTC times.
 
-This is yet another application for :mod:`hamcalc.navigation.sunrise`,
+This is yet another application for :mod:`hamcalc.navigation.solar`,
 :ref:`navigation.sunup`.
 
 Implementation
@@ -133,7 +133,7 @@ Great Circle Distance
 Sunset and Sunrise Times
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-See :mod:`hamcalc.navigation.sunrise`.
+See :mod:`hamcalc.navigation.solar`.
 
 Legacy Introduction
 ~~~~~~~~~~~~~~~~~~~~~

@@ -465,16 +465,16 @@ Yes. The name of the calculation module differs from the legacy applications,
 This computes more than sunrise, and includes timezones for local time
 conversion.
 
-Sunrise
+Solar
 ^^^^^^^^^^^
 
-..  automodule:: hamcalc.navigation.sunrise
+..  automodule:: hamcalc.navigation.solar
     :members:
 
-sunrise.timezone
+solar.timezone
 ^^^^^^^^^^^^^^^^^^^
 
-..  automodule:: hamcalc.navigation.sunrise.timezone
+..  automodule:: hamcalc.navigation.solar.timezone
     :members:
 
 Legacy Output

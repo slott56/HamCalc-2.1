@@ -1,6 +1,7 @@
 pathfind -- Great Circle Paths & Distances
-============================================
+-------------------------------------------
 
+Plus, apparently, a database of lat/lon coordinates.
 
 Implementation
 ~~~~~~~~~~~~~~~~~~~~~

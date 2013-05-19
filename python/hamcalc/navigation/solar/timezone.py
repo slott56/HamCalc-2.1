@@ -1,4 +1,4 @@
-"""hamcalc.navigation.sunrise.timezone --  North American Time Zones.
+"""hamcalc.navigation.solar.timezone --  North American Time Zones.
 
 The sunrise and sunset times are in UTC.  Localtime offsets need to be applied,
 based on local knowledge of timezones and Daylight Savings Time
@@ -21,8 +21,8 @@ is done.
 
 ::
 
-    rise, transit, set = sunrise.rise_transit_set( 38.98, 76.47, today.date() )
-    rise.astimezone(sunrise.Eastern).isoformat()
+    rise, transit, set = solar.rise_transit_set( 38.98, 76.47, today.date() )
+    rise.astimezone(solar.Eastern).isoformat()
 
 This will display the rise time in North American Eastern Time.
 

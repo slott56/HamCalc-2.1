@@ -2,8 +2,8 @@
 
 "DAYLIGHT DUSK & DAWN","","","DAYDUSK"
 """
-import hamcalc.navigation.sunrise as sunrise
-from hamcalc.navigation.sunrise.timezone import FixedOffset, utc
+import hamcalc.navigation.solar as solar
+from hamcalc.navigation.solar.timezone import FixedOffset, utc
 from hamcalc.lib import AttrDict
 import datetime
 import runpy
@@ -66,10 +66,10 @@ def dusk_dawn():
             pass
     print( "Date (y/m/d).......... {0}".format(date_time.date()) )
 
-    rise_a, _, set_a = sunrise.rise_transit_set( latitude, longitude, date_time, horizon=90+18, mean_solar=False )
-    rise_n, _, set_n = sunrise.rise_transit_set( latitude, longitude, date_time, horizon=90+12, mean_solar=False )
-    rise_c, _, set_c = sunrise.rise_transit_set( latitude, longitude, date_time, horizon=90+6, mean_solar=False )
-    rise_v, _, set_v = sunrise.rise_transit_set( latitude, longitude, date_time, mean_solar=False )
+    rise_a, _, set_a = solar.rise_transit_set( latitude, longitude, date_time, horizon=90+18 )
+    rise_n, _, set_n = solar.rise_transit_set( latitude, longitude, date_time, horizon=90+12 )
+    rise_c, _, set_c = solar.rise_transit_set( latitude, longitude, date_time, horizon=90+6 )
+    rise_v, _, set_v = solar.rise_transit_set( latitude, longitude, date_time )
 
     line= "{0:.<22s} {1:8s} = {2:8s} UTC   {3:s}"
     print( line.format( "Astronomical Dawn", rise_a.strftime( "%H:%M:%S" ), rise_a.astimezone(utc).strftime( "%H:%M:%S" ), "Sun 18° below horizon" ) )

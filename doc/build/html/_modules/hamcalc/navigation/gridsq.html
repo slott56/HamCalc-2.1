@@ -51,8 +51,101 @@
   <h1>Source code for hamcalc.navigation.gridsq</h1><div class="highlight"><pre>
 <span class="sd">&quot;&quot;&quot;hamcalc.navigation.gridsq -- Grid Squares.</span>
 
+<span class="sd">Test Case</span>
+
+<span class="sd">&gt;&gt;&gt; import hamcalc.navigation.gridsq as gridsq</span>
+<span class="sd">&gt;&gt;&gt; gridsq.latlon_2_grid( 38.98, -76.47 )</span>
+<span class="sd">&#39;FM18sx&#39;</span>
+<span class="sd">&gt;&gt;&gt; lat, lon = gridsq.grid_2_latlon( &quot;FM18sx&quot; )</span>
+<span class="sd">&gt;&gt;&gt; round(lat, 4), round(lon, 4)</span>
+<span class="sd">(38.9792, -76.4583)</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">string</span>
+
+<span class="n">introduction</span><span class="o">=</span><span class="s">&quot;&quot;&quot;</span><span class="se">\</span>
+<span class="s">GRID SQUARE LOCATOR (Maidenhead)                       by Dr.Thomas Clark W3IWI</span>
+
+<span class="s">  edited and enhanced for HAMCALC by George Murphy VE3ERP</span>
+
+<span class="s">         Grid squares were developed by an international group at a</span>
+<span class="s">       conference in Maidenhead, England, hence the name &quot;Maidenhead&quot;grid squares.</span>
+<span class="s">         Grid squares are based on latitude and longitude. Each square is</span>
+<span class="s">       1° high x 2° wide, further divided into sub-squares only a few</span>
+<span class="s">       kilometres wide. Grid squares are coded with a 2-letter/2-number/</span>
+<span class="s">       2-letter code (such as FN04HO). Most people just use the first four</span>
+<span class="s">       characters (such as FN04), which is the grid square. The last two</span>
+<span class="s">       letters are generally used only when it is desired to pinpoint a</span>
+<span class="s">       a location within a sub-square.</span>
+<span class="s">         This program computes the grid square code for any latitude/</span>
+<span class="s">       longitude in the world, or the coordinates of the approximate</span>
+<span class="s">       centre of any grid square or sub-square. It also computes distances</span>
+<span class="s">       and beam headings between specified grid squares or sub-squares.</span>
+<span class="s">         Coordinates need only be known within an accuracy of 0.1° which</span>
+<span class="s">       is about 11 km north-south, and east-west about 11 km at the</span>
+<span class="s">       equator, 8 km at 45° latitude, and 1 km at 85° latitude.</span>
+<span class="s">         All computations are in decimal degrees. To convert deg/min/sec</span>
+<span class="s">       coordinates to decimal degrees, run the EQIVALENT VALUES program.</span>
+<span class="s">         (ref. The ARRL OPERATING MANUAL, 5th Edition, pp.12-4 to 12-6)</span>
+<span class="s">&quot;&quot;&quot;</span>
+
+<span class="n">field_map</span><span class="o">=</span><span class="s">&quot;&quot;&quot;</span><span class="se">\</span>
+<span class="s">            M A I D E N H E A D   G R I D   S Q U A R E   F I E L D S</span>
+<span class="s">                  with First Two Characters of Grid Square Code</span>
+<span class="s">                       Degrees West             Degrees East</span>
+<span class="s">               160°  120°  80°   40°    0°   40°   80°   120°  160°</span>
+<span class="s">80°N -90.0°N │AR│BR│CR│DR│ER│FR│GR│HR│IR║JR│KR│LR│MR│NR│OR│PR│QR│RR│</span>
+<span class="s">70°N -80.0°N │AQ│BQ│CQ│DQ│EQ│FQ│GQ│HQ│IQ║JQ│KQ│LQ│MQ│NQ│OQ│PQ│QQ│RQ│</span>
+<span class="s">60°N -70.0°N │AP│BP│CP│DP│EP│FP│GP│HP│IP║JP│KP│LP│MP│NP│OP│PP│QP│RP│ Each Field</span>
+<span class="s">50°N -60.0°N │AO│BO│CO│DO│EO│FO│GO│HO│IO║JO│KO│LO│MO│NO│OO│PO│QO│RO│ contains</span>
+<span class="s">40°N -50.0°N │AN│BN│CN│DN│EN│FN│GN│HN│IN║JN│KN│LN│MN│NN│ON│PN│QN│RN│ 100 grid</span>
+<span class="s">30°N -40.0°N │AM│BM│CM│DM│EM│FM│GM│HM│IM║JM│KM│LM│MM│NM│OM│PM│QM│RM│ squares,</span>
+<span class="s">20°N -30.0°N │AL│BL│CL│DL│EL│FL│GL│HL│IL║JL│KL│LL│ML│NL│OL│PL│QL│RL│ each being</span>
+<span class="s">10°N -20.0°N │AK│BK│CK│DK│EK│FK│GK│HK│IK║JK│KK│LK│MK│NK│OK│PK│QK│RK│ 2° wide x</span>
+<span class="s"> 0°N -10.0°N │AJ│BJ│CJ│DJ│EJ│FJ│GJ│HJ│IJ║JJ│KJ│LJ│MJ│NJ│OJ│PJ│QJ│RJ│ 1° high.</span>
+<span class="s">                                     «EQUATOR»</span>
+<span class="s"> 0°S -10.0°S │AI│BI│CI│DI│EI│FI│GI│HI│II║JI│KI│LI│MI│NI│OI│PI│QI│RI│</span>
+<span class="s">10°S -20.0°S │AH│BH│CH│DH│EH│FH│GH│HH│IH║JH│KH│LH│MH│NH│OH│PH│QH│RH│</span>
+<span class="s">20°S -30.0°S │AG│BG│CG│DG│EG│FG│GG│HG│IG║JG│KG│LG│MG│NG│OG│PG│QG│RG│</span>
+<span class="s">30°S -40.0°S │AF│BF│CF│DF│EF│FF│GF│HF│IF║JF│KF│LF│MF│NF│OF│PF│QF│RF│</span>
+<span class="s">40°S -50.0°S │AE│BE│CE│DE│EE│FE│GE│HE│IE║JE│KE│LE│ME│NE│OE│PE│QE│RE│</span>
+<span class="s">50°S -60.0°S │AD│BD│CD│DD│ED│FD│GD│HD│ID║JD│KD│LD│MD│ND│OD│PD│QD│RD│</span>
+<span class="s">60°S -70.0°S │AC│BC│CC│DC│EC│FC│GC│HC│IC║JC│KC│LC│MC│NC│OC│PC│QC│RC│</span>
+<span class="s">70°S -80.0°S │AB│BB│CB│DB│EB│FB│GB│HB│IB║JB│KB│LB│MB│NB│OB│PB│QB│RB│</span>
+<span class="s">80°S -90.0°S │AA│BA│CA│DA│EA│FA│GA│HA│IA║JA│KA│LA│MA│NA│OA│PA│QA│RA│</span>
+<span class="s">            180°  140°  100°  60°   20°   20°   60°   100°  140°  180°</span>
+<span class="s">&quot;&quot;&quot;</span>
+
+<span class="n">square_map</span><span class="o">=</span><span class="s">&quot;&quot;&quot;</span><span class="se">\</span>
+<span class="s">  4-CHARACTER CODES FOR 1°x 2° GRID SQUARES WITHIN EACH 10°x 20° FIELD</span>
+<span class="s">              (xx = FIRST TWO letters of Grid Square Code)</span>
+
+<span class="s">┌──────┬──────┬──────┬──────┬──────┬──────┬──────┬──────┬──────┬──────┐</span>
+<span class="s">│ xx09 │ xx19 │ xx29 │ xx39 │ xx49 │ xx59 │ xx69 │ xx79 │ xx89 │ xx99 │</span>
+<span class="s">├──────┼──────┼──────┼──────┼──────┼──────┼──────┼──────┼──────┼──────┤</span>
+<span class="s">│ xx08 │ xx18 │ xx28 │ xx38 │ xx48 │ xx58 │ xx68 │ xx78 │ xx88 │ xx98 │</span>
+<span class="s">├──────┼──────┼──────┼──────┼──────┼──────┼──────┼──────┼──────┼──────┤</span>
+<span class="s">│ xx07 │ xx17 │ xx27 │ xx37 │ xx47 │ xx57 │ xx67 │ xx77 │ xx87 │ xx97 │</span>
+<span class="s">├──────┼──────┼──────┼──────┼──────┼──────┼──────┼──────┼──────┼──────┤</span>
+<span class="s">│ xx06 │ xx16 │ xx26 │ xx36 │ xx46 │ xx56 │ xx66 │ xx76 │ xx86 │ xx96 │</span>
+<span class="s">├──────┼──────┼──────┼──────┼──────┼──────┼──────┼──────┼──────┼──────┤</span>
+<span class="s">│ xx05 │ xx15 │ xx25 │ xx35 │ xx45 │ xx55 │ xx65 │ xx75 │ xx85 │ xx95 │</span>
+<span class="s">├──────┼──────┼──────┼──────┼──────┼──────┼──────┼──────┼──────┼──────┤</span>
+<span class="s">│ xx04 │ xx14 │ xx24 │ xx34 │ xx44 │ xx54 │ xx64 │ xx74 │ xx84 │ xx94 │</span>
+<span class="s">├──────┼──────┼──────┼──────┼──────┼──────┼──────┼──────┼──────┼──────┤</span>
+<span class="s">│ xx03 │ xx13 │ xx23 │ xx33 │ xx43 │ xx53 │ xx63 │ xx73 │ xx83 │ xx93 │</span>
+<span class="s">├──────┼──────┼──────┼──────┼──────┼──────┼──────┼──────┼──────┼──────┤</span>
+<span class="s">│ xx02 │ xx12 │ xx22 │ xx32 │ xx42 │ xx52 │ xx62 │ xx72 │ xx82 │ xx92 │</span>
+<span class="s">├──────┼──────┼──────┼──────┼──────┼──────┼──────┼──────┼──────┼──────┤</span>
+<span class="s">│ xx01 │ xx11 │ xx21 │ xx31 │ xx41 │ xx51 │ xx61 │ xx71 │ xx81 │ xx91 │</span>
+<span class="s">├──────┼──────┼──────┼──────┼──────┼──────┼──────┼──────┼──────┼──────┤</span>
+<span class="s">│ xx00 │ xx10 │ xx20 │ xx30 │ xx40 │ xx50 │ xx60 │ xx70 │ xx80 │ xx90 │</span>
+<span class="s">└──────┴──────┴──────┴──────┴──────┴──────┴──────┴──────┴──────┴──────┘</span>
+<span class="s">&quot;&quot;&quot;</span>
+
+<span class="k">def</span> <span class="nf">intro</span><span class="p">():</span>
+    <span class="k">return</span> <span class="n">introduction</span>
+
 
 <div class="viewcode-block" id="latlon_2_grid"><a class="viewcode-back" href="../../../python/navigation/gridsq.html#hamcalc.navigation.gridsq.latlon_2_grid">[docs]</a><span class="k">def</span> <span class="nf">latlon_2_grid</span><span class="p">(</span> <span class="n">lat</span><span class="p">,</span> <span class="n">lon</span><span class="p">,</span> <span class="n">level</span><span class="o">=</span><span class="mi">3</span> <span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Convert lat/lon as decimal values to Grid Square Code.</span>
@@ -61,22 +154,51 @@
 <span class="sd">    :param lon: Decimal longitude, positive east, negative west.</span>
 <span class="sd">    :param level: level of deatil: 1 to 4. 1 gives a two-position</span>
 <span class="sd">        code. 4 gives an 8-position code.</span>
-<span class="sd">    :returns: 6-position grid square code.</span>
+<span class="sd">    :returns: grid square code (6-position by default.)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">lon</span><span class="o">=</span> <span class="p">(</span><span class="n">lon</span><span class="o">+</span><span class="mi">180</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span>
     <span class="n">lat</span><span class="o">=</span> <span class="n">lat</span><span class="o">+</span><span class="mi">90</span>
-    <span class="n">lon</span><span class="o">=</span> <span class="n">lon</span><span class="o">+</span><span class="mi">180</span>
-
-    <span class="n">w_1</span><span class="p">,</span> <span class="n">w_2</span> <span class="o">=</span> <span class="nb">divmod</span><span class="p">(</span> <span class="nb">int</span><span class="p">(</span><span class="n">lat</span><span class="p">),</span> <span class="mi">20</span> <span class="p">)</span>
-    <span class="n">l_1</span><span class="p">,</span> <span class="n">l_2</span> <span class="o">=</span> <span class="nb">divmod</span><span class="p">(</span> <span class="nb">int</span><span class="p">(</span><span class="n">lon</span><span class="p">),</span> <span class="mi">10</span> <span class="p">)</span>
-    <span class="n">w_3</span><span class="p">,</span> <span class="n">w_4</span> <span class="o">=</span> <span class="nb">divmod</span><span class="p">(</span> <span class="n">lat</span><span class="o">-</span><span class="nb">int</span><span class="p">(</span><span class="n">lat</span><span class="p">)</span><span class="o">*</span><span class="mi">240</span><span class="p">,</span> <span class="mi">24</span> <span class="p">)</span>
-    <span class="n">l_3</span><span class="p">,</span> <span class="n">l_4</span> <span class="o">=</span> <span class="nb">divmod</span><span class="p">(</span> <span class="n">lon</span><span class="o">-</span><span class="nb">int</span><span class="p">(</span><span class="n">lon</span><span class="p">)</span><span class="o">*</span><span class="mi">240</span><span class="p">,</span> <span class="mi">24</span> <span class="p">)</span>
+    <span class="n">w_1</span><span class="p">,</span> <span class="n">w_2</span> <span class="o">=</span> <span class="nb">divmod</span><span class="p">(</span> <span class="nb">int</span><span class="p">(</span><span class="n">lon</span><span class="p">),</span> <span class="mi">10</span> <span class="p">)</span>
+    <span class="n">l_1</span><span class="p">,</span> <span class="n">l_2</span> <span class="o">=</span> <span class="nb">divmod</span><span class="p">(</span> <span class="nb">int</span><span class="p">(</span><span class="n">lat</span><span class="p">),</span> <span class="mi">10</span> <span class="p">)</span>
+    <span class="n">w_3</span><span class="p">,</span> <span class="n">w_4</span> <span class="o">=</span> <span class="nb">divmod</span><span class="p">(</span> <span class="nb">int</span><span class="p">((</span><span class="n">lon</span><span class="o">-</span><span class="nb">int</span><span class="p">(</span><span class="n">lon</span><span class="p">))</span><span class="o">*</span><span class="mi">240</span><span class="p">),</span> <span class="mi">10</span> <span class="p">)</span>
+    <span class="n">l_3</span><span class="p">,</span> <span class="n">l_4</span> <span class="o">=</span> <span class="nb">divmod</span><span class="p">(</span> <span class="nb">int</span><span class="p">((</span><span class="n">lat</span><span class="o">-</span><span class="nb">int</span><span class="p">(</span><span class="n">lat</span><span class="p">))</span><span class="o">*</span><span class="mi">240</span><span class="p">),</span> <span class="mi">10</span> <span class="p">)</span>
+    <span class="n">grid</span><span class="o">=</span> <span class="p">[</span> <span class="n">string</span><span class="o">.</span><span class="n">ascii_uppercase</span><span class="p">[</span><span class="n">w_1</span><span class="p">],</span> <span class="n">string</span><span class="o">.</span><span class="n">ascii_uppercase</span><span class="p">[</span><span class="n">l_1</span><span class="p">],</span>
+        <span class="nb">str</span><span class="p">(</span><span class="n">w_2</span><span class="p">),</span> <span class="nb">str</span><span class="p">(</span><span class="n">l_2</span><span class="p">),</span>
+        <span class="n">string</span><span class="o">.</span><span class="n">ascii_lowercase</span><span class="p">[</span><span class="n">w_3</span><span class="p">],</span> <span class="n">string</span><span class="o">.</span><span class="n">ascii_lowercase</span><span class="p">[</span><span class="n">l_3</span><span class="p">],</span>
+        <span class="nb">str</span><span class="p">(</span><span class="n">w_4</span><span class="p">),</span> <span class="nb">str</span><span class="p">(</span><span class="n">l_4</span><span class="p">)</span> <span class="p">]</span>
+    <span class="n">grid_str</span><span class="o">=</span> <span class="s">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span> <span class="n">grid</span><span class="p">[:</span><span class="n">level</span><span class="o">*</span><span class="mi">2</span><span class="p">]</span> <span class="p">)</span>
+    <span class="k">return</span> <span class="n">grid_str</span>
 </div>
 <div class="viewcode-block" id="grid_2_latlon"><a class="viewcode-back" href="../../../python/navigation/gridsq.html#hamcalc.navigation.gridsq.grid_2_latlon">[docs]</a><span class="k">def</span> <span class="nf">grid_2_latlon</span><span class="p">(</span> <span class="n">grid</span> <span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Convert Grid Square Code to lat and lon pair.</span>
 
+<span class="sd">    Note that default center-of-square values are provided for missing</span>
+<span class="sd">    positions.</span>
+
 <span class="sd">    :param grid: 2, 4 or 6-position grid-square code.</span>
 <span class="sd">    :returns: latitude and longitude</span>
-<span class="sd">    &quot;&quot;&quot;</span></div>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">lon</span><span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">grid</span><span class="p">[</span><span class="mi">0</span><span class="p">::</span><span class="mi">2</span><span class="p">])</span>
+    <span class="n">lat</span><span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">grid</span><span class="p">[</span><span class="mi">1</span><span class="p">::</span><span class="mi">2</span><span class="p">])</span>
+    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">lon</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">lat</span><span class="p">)</span> <span class="ow">and</span> <span class="mi">1</span> <span class="o">&lt;=</span> <span class="nb">len</span><span class="p">(</span><span class="n">lon</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">4</span>
+    <span class="c"># Default values include centers of squares and subsquares.</span>
+    <span class="n">w</span> <span class="o">=</span> <span class="p">[</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">5</span> <span class="p">]</span>
+    <span class="n">l</span> <span class="o">=</span> <span class="p">[</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">5</span> <span class="p">]</span>
+    <span class="n">w</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">=</span> <span class="n">string</span><span class="o">.</span><span class="n">ascii_uppercase</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">lon</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">upper</span><span class="p">())</span>
+    <span class="n">l</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">=</span> <span class="n">string</span><span class="o">.</span><span class="n">ascii_uppercase</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">lat</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">upper</span><span class="p">())</span>
+    <span class="k">if</span> <span class="n">lon</span><span class="p">:</span>
+        <span class="n">w</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">lon</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
+        <span class="n">l</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">lat</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">lon</span><span class="p">:</span>
+        <span class="n">w</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">=</span> <span class="n">string</span><span class="o">.</span><span class="n">ascii_uppercase</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">lon</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">upper</span><span class="p">())</span>
+        <span class="n">l</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">=</span> <span class="n">string</span><span class="o">.</span><span class="n">ascii_uppercase</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">lat</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">upper</span><span class="p">())</span>
+    <span class="k">if</span> <span class="n">lon</span><span class="p">:</span>
+        <span class="n">w</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">lon</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
+        <span class="n">l</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">lat</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
+    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">lon</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">lat</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span>
+    <span class="n">lon</span> <span class="o">=</span> <span class="n">w</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="mi">10</span> <span class="o">+</span> <span class="n">w</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">w</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">/</span><span class="mi">24</span> <span class="o">+</span> <span class="n">w</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">/</span><span class="mi">240</span>
+    <span class="n">lat</span> <span class="o">=</span> <span class="n">l</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="mi">10</span> <span class="o">+</span> <span class="n">l</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">l</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">/</span><span class="mi">24</span> <span class="o">+</span> <span class="n">l</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">/</span><span class="mi">240</span>
+    <span class="k">return</span> <span class="n">lat</span><span class="o">-</span><span class="mi">90</span><span class="p">,</span> <span class="mi">2</span><span class="o">*</span><span class="n">lon</span><span class="o">-</span><span class="mi">180</span></div>
 </pre></div>
 
           </div>

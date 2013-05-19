@@ -1,7 +1,7 @@
 """Sunup/Sundown
 
 """
-import hamcalc.navigation.sunrise as sunrise
+import hamcalc.navigation.solar as solar
 import datetime
 
 introduction= "SUNUP/SUNDOWN                                            by George Murphy VE3ERP"
@@ -38,9 +38,9 @@ def show_table():
             print( "Using {0} based on Longitude {1:f}°".format(tz.tzname(),longitude) )
         else:
             try:
-                tz= { '1': sunrise.Atlantic, '2': sunrise.Eastern,
-                '3': sunrise.Central, '4': sunrise.Mountain,
-                '5': sunrise.Pacific }[tz_choice]
+                tz= { '1': solar.Atlantic, '2': solar.Eastern,
+                '3': solar.Central, '4': solar.Mountain,
+                '5': solar.Pacific }[tz_choice]
             except KeyError:
                 pass
     year = None
@@ -84,10 +84,10 @@ def show_table():
         start, end = end, start
     for offset in range( 0, (end-start).days+increment, increment ):
         date= start+datetime.timedelta(days=offset)
-        rise, transit, set = sunrise.rise_transit_set( latitude, longitude, date )
-        az_r, el_r= sunrise.azimuth_elevation( latitude, longitude, rise )
-        az_s, el_s= sunrise.azimuth_elevation( latitude, longitude, set )
-        az_t, el_t= sunrise.azimuth_elevation( latitude, longitude, transit )
+        rise, transit, set = solar.rise_transit_set( latitude, longitude, date )
+        az_r, el_r= solar.azimuth_elevation( latitude, longitude, rise )
+        az_s, el_s= solar.azimuth_elevation( latitude, longitude, set )
+        az_t, el_t= solar.azimuth_elevation( latitude, longitude, transit )
         daylight_hours= (set-rise).total_seconds()/3600
         print( "{0:10s}   {1:5.2f}    {2:8s} {3:5.2f}  {4:8s} {5:5.2f}  {6:8s} {7:5.2f} {8:5.2f}".format(
             date.strftime("%Y-%m-%d"),
