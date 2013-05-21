@@ -29,12 +29,12 @@ def bisection( lat, lon, low, high, G ):
     eps= 1/24/60/60 # 1 second
     def f_non_zero( lat, lon, date_time ):
         """The normal, non-zero case, avoids the discontinuity."""
-        sun = AttrDict( solar.solar( lat, lon, date_time ) )
+        sun = solar.Position_Sun( lat, lon, date_time )
         #print( date_time, sun.F, sun.P, sun.T )
         return sun.P
     def f_zero( lat, lon, date_time ):
         """The near-zero case, where we apply an offset around the discontinuity."""
-        sun = AttrDict( solar.solar( lat, lon, date_time ) )
+        sun = solar.Position_Sun( lat, lon, date_time )
         if sun.P > 270:
             P= sun.P-360
         else:
@@ -56,7 +56,7 @@ def bisection( lat, lon, low, high, G ):
     return mid
 
 def report( latitude, longitude, date_time, tz ):
-    details = AttrDict( solar.solar( latitude, longitude, date_time ) )
+    details = solar.Position_Sun( lat, lon, date_time )
     rise, transit, set = solar.rise_transit_set( latitude, longitude, date_time )
     az_r, el_r= solar.azimuth_elevation( latitude, longitude, rise )
     az_s, el_s= solar.azimuth_elevation( latitude, longitude, set )

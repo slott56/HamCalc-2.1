@@ -66,6 +66,9 @@ def dusk_dawn():
             pass
     print( "Date (y/m/d).......... {0}".format(date_time.date()) )
 
+    display( latitude, longitude, tz, date_time )
+
+def display( latitude, longitude, tz, date_time ):
     rise_a, _, set_a = solar.rise_transit_set( latitude, longitude, date_time, horizon=90+18 )
     rise_n, _, set_n = solar.rise_transit_set( latitude, longitude, date_time, horizon=90+12 )
     rise_c, _, set_c = solar.rise_transit_set( latitude, longitude, date_time, horizon=90+6 )

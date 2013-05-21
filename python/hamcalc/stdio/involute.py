@@ -1,4 +1,4 @@
-"""Involute of a Circle.
+"""Involute of a Circle
 
 "CIRCLE",", involute of","","INVOLUTE"
 "INVOLUTE OF A CIRCLE","","","INVOLUTE"

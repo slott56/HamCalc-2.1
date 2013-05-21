@@ -29,14 +29,13 @@ def table():
 """ )
 
 def inch_to_awg():
-    raw= input( "ENTER: Wire diameter (inches) or 0 to quit....? " )
-    if len(raw) == 0: return
     try:
+        raw= input( "ENTER: Wire diameter (inches) or 0 to quit....? " )
         d= float(raw)
+        if d == 0.0: return
     except ValueError as e:
         print( e )
         return
-    if d == 0.0: return
     inch= d
     diameter= awgexact.INCH.to_std( inch )
     awg= awgexact.AWG.from_std( diameter )
@@ -44,14 +43,13 @@ def inch_to_awg():
     print( "{0:8.7f} in. ({1:3.2f}mm) diameter = AWG {2}".format( inch, mm, awg ) )
 
 def mm_to_awg():
-    raw= input( "ENTER: Wire diameter (mm) or 0 to quit....? " )
-    if len(raw) == 0: return
     try:
+        raw= input( "ENTER: Wire diameter (mm) or 0 to quit....? " )
         d= float(raw)
+        if d == 0.0: return
     except ValueError as e:
         print( e )
         return
-    if d == 0.0: return
     mm= d
     diameter= awgexact.MM.to_std( mm )
     awg= awgexact.AWG.from_std( diameter )

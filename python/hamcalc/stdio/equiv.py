@@ -1,4 +1,4 @@
-"""Equivalent Values.
+"""Equivalent Values
 
 "Degrees to radians","","","equiv"
 "Equivalent values","","","equiv"

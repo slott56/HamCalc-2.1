@@ -58,6 +58,13 @@
 <h1>moontrac &#8211; Moon Tracker<a class="headerlink" href="#moontrac-moon-tracker" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="analysis">
 <h2>Analysis<a class="headerlink" href="#analysis" title="Permalink to this headline">¶</a></h2>
+<p>There are two feature sets.</p>
+<ol class="arabic simple">
+<li>Tracking the moon.</li>
+<li>Tracking the moon&#8217;s visibility in various zones</li>
+</ol>
+<div class="section" id="tracking-the-moon">
+<h3>Tracking the Moon<a class="headerlink" href="#tracking-the-moon" title="Permalink to this headline">¶</a></h3>
 <p><strong>650-850</strong>.  The Julian Astronommical Day number is T1.</p>
 <dl class="docutils">
 <dt><strong>880-950</strong>.  GMT time of day in T5?</dt>
@@ -77,26 +84,91 @@ K_2 = (x_2+y_2 T_5 - \lfloor x_2+y_2 T_5 \rfloor) \pi
 
 K_5 = (x_5+y_5 T_5 - \lfloor x_5+y_5 T_5 \rfloor) \pi"/></p>
 </div><p>Why is the integer part discarded in calculations of K_1 to K_5?</p>
-<div class="highlight-python"><pre>980 K1=((0.751213014125824!+0.036601100116968155!*T5)-INT(0.751213014125824!+0.036601100116968155!*T5))*P5
-990 K2=((0.8225129842758179!+0.03629159927368164!*T5)-INT(0.8225129842758179!+0.03629159927368164!*T5))*P5
-1000 K3=((0.9957659840583801!+0.002737780101597309!*T5)-INT(0.9957659840583801!+0.002737780101597309!*T5))*P5
-1010 K4=((0.9742709994316101!+0.03386320173740387!*T5)-INT(0.9742709994316101!+0.03386320173740387!*T5))*P5
-1020 K5=((0.03125249966979027!+0.03674820065498352!*T5)-INT(0.03125249966979027!+0.03674820065498352!*T5))*P5
+<p>Here&#8217;s the whole thing. It looks like perturbation calculations.
+The double-precision values are uselessly long: the original source
+text may have shorter, more readable constants.</p>
+<div class="highlight-python"><pre>980 K1=((0.751213014125824!+0.036601100116968155!*T5)
+    -INT(0.751213014125824!+0.036601100116968155!*T5))*P5
+990 K2=((0.8225129842758179!+0.03629159927368164!*T5)
+    -INT(0.8225129842758179!+0.03629159927368164!*T5))*P5
+1000 K3=((0.9957659840583801!+0.002737780101597309!*T5)
+     -INT(0.9957659840583801!+0.002737780101597309!*T5))*P5
+1010 K4=((0.9742709994316101!+0.03386320173740387!*T5)
+     -INT(0.9742709994316101!+0.03386320173740387!*T5))*P5
+1020 K5=((0.03125249966979027!+0.03674820065498352!*T5)
+     -INT(0.03125249966979027!+0.03674820065498352!*T5))*P5
 1030 L8=K1+0.658000111579895!*R5*SIN(2*K4)+6.289000988006592!*R5*SIN(K2)
-1040 L8=L8-1.2740000486373901!*R5*SIN(K2-2*K4)-0.1860000044107437!*R5*SIN(K3)
-1050 L8=L8+0.21400000154972076!*R5*SIN(2*K2)-0.11400000005960464!*R5*SIN(2*K5)
-1060 L8=L8-0.059000011533498764!*R5*SIN(2*K2-2*K4)-0.05700001120567322!*R5*SIN(K2+K3-2*K4)
-1070 K6=K5+0.6593000292778015!*R5*SIN(2*K4)+6.230299949645996!*R5*SIN(K2)-1.2719999551773071!*R5*SIN(K2-2*K4)
-1080 L7=5.144000053405762!*R5*SIN(K6)-0.1459999978542328!*R5*SIN(K5-2*K4)</pre>
+1040 L8=L8-1.2740000486373901!*R5*SIN(K2-2*K4)
+     -0.1860000044107437!*R5*SIN(K3)
+1050 L8=L8+0.21400000154972076!*R5*SIN(2*K2)
+     -0.11400000005960464!*R5*SIN(2*K5)
+1060 L8=L8-0.059000011533498764!*R5*SIN(2*K2-2*K4)
+     -0.05700001120567322!*R5*SIN(K2+K3-2*K4)
+1070 K6=K5+0.6593000292778015!*R5*SIN(2*K4)
+     +6.230299949645996!*R5*SIN(K2)
+     -1.2719999551773071!*R5*SIN(K2-2*K4)
+1080 L7=5.144000053405762!*R5*SIN(K6)
+     -0.1459999978542328!*R5*SIN(K5-2*K4)</pre>
 </div>
 </div></blockquote>
 <p><strong>1090-1230</strong>. Right Ascension and Declination.</p>
 <p><strong>1240-1300</strong>.  Greenwich Hour Angle.</p>
 <p><strong>1310</strong>. Local Hour Angle.</p>
-<p><strong>1320-1370</strong>.  Elevation</p>
-<p><strong>1380-1420</strong>.  Azimuth</p>
-<p><strong>1600-1950</strong>.  Output</p>
+<p><strong>1320-1370</strong>.  Elevation.</p>
+<p><strong>1380-1420</strong>.  Azimuth.</p>
+<dl class="docutils">
+<dt><strong>1600-1950</strong>.  Output, including comparison with various fixed locations</dt>
+<dd>around the world.</dd>
+</dl>
 <p><strong>1970-2030</strong>.  End-of-loop updates of B.</p>
+</div>
+<div class="section" id="moon-visibility">
+<h3>Moon Visibility<a class="headerlink" href="#moon-visibility" title="Permalink to this headline">¶</a></h3>
+<p>The moon visibility is divided into four sectors:</p>
+<blockquote>
+<div><ul class="simple">
+<li>European</li>
+<li>Americas</li>
+<li>Far East</li>
+<li>Other</li>
+</ul>
+</div></blockquote>
+<p>Here&#8217;s the calculations which include the moon&#8217;s declination, D1, and the convertion to degrees, D5. The starting of the zone is offset by a fraction
+of declination converted to degrees.</p>
+<p>It might be more obvious to compare fixed locations against LHA (LST-RA).</p>
+<div class="highlight-python"><pre>1120 G1=50.5!+((D1/0.7289999723434448!))*D5          :REM&#x27;Test for start of EUROPEAN window
+1130 G2=80+((D1)/(0.8080000281333923!))*D5          :REM&#x27;Test for start AMERICAS end EUROPEAN
+1140 G3=141.5!-((D1)*(0.7379999756813049!)*D5)       :REM&#x27;Test for start FAR EASTERN end AMERICAS
+1150 G4=170.5!-((D1)*(0.8570001125335693!)*D5)   :REM&#x27;Test for end of FAR EASTERN window</pre>
+</div>
+<p>G is the Greenwich Hour Angle. It&#8217;s converted to degrees and then rounded
+to the nearest 10 degrees in Z3.</p>
+<div class="highlight-python"><pre>1660 Z3=CINT(G*D5*10)/10         :REM&#x27;GHA</pre>
+</div>
+<div class="highlight-python"><pre>1690 IF Z3&lt;G1 THEN 1810
+1700 IF Z3&gt;G2 THEN 1720
+1710 GOTO 1750
+1720 IF Z3&lt;G3 THEN 1770
+1730 IF Z3&gt;G4 THEN 1810
+1740 GOTO 1790
+1750 Y$=&quot;European&quot;            :REM&#x27;European to Americas window, EU-W
+1760 GOTO 1820
+1770 Y$=&quot;Americas&quot;            :REM&#x27;Americas universal window, W-W
+1780 GOTO 1820
+1790 Y$=&quot;Far East&quot;            :REM&#x27;Far Eastern to Americas window, JA-VK-ZL
+1800 GOTO 1820
+1810 Y$=&quot; &quot;
+1820 ES=CINT(B)-LTN           :REM&#x27;Local time adjustment</pre>
+</div>
+<p>The rules flattened out.</p>
+<ul class="simple">
+<li>Z3 &lt; G1 - no window</li>
+<li>G1 &lt;= Z3 &lt; G2 - European</li>
+<li>G2 &lt;= Z3 &lt; G3 - Americas</li>
+<li>G3 &lt;= Z3 &lt; G4 - Far East</li>
+<li>G4 &lt; Z3 - no window</li>
+</ul>
+</div>
 </div>
 <div class="section" id="alternative-approximation">
 <h2>Alternative Approximation<a class="headerlink" href="#alternative-approximation" title="Permalink to this headline">¶</a></h2>
@@ -134,12 +206,27 @@ often good enough for most purposes.</p>
 <p><em>ecl</em>, the obliquity of the ecliptic, i.e. the &#8220;tilt&#8221; of the Earth&#8217;s axis of rotation (currently 23.4 degrees and slowly decreasing). First, compute the &#8220;d&#8221; of the moment of interest (section 3). Then, compute the obliquity of the ecliptic:</p>
 <blockquote>
 <div>ecl = 23.4393 - 3.563E-7 * d</div></blockquote>
+<p>Local Standard Time</p>
+<blockquote>
+<div><p>GMST0 is the GMST at Greenwich Midnight.</p>
+<p>Sun&#8217;s mean longitude, Ls, which can be computed from the Sun&#8217;s v and w as follows:</p>
+<div class="math">
+<p><img src="../../_images/math/8993cff9f4682a8e81e56ef62cc756a62ddd0258.png" alt="L_s = v + w
+
+GMST0 = L_s + 180^{\circ}"/></p>
+</div><p>Greenwich Mean Sideral Time (GMST) is the LST at Greenwich</p>
+<div class="math">
+<p><img src="../../_images/math/bcd4446c599001e3cb4b1a902f2aa8ea5db82e32.png" alt="GMST = GMST0 + UT"/></p>
+</div><p>LST computed by adding your local longitude (east longitude is positive, west negative) to GMST.</p>
+<div class="math">
+<p><img src="../../_images/math/c4c591284931d5c2c851f0a82f67516e4a218433.png" alt="LST  = GMST + \text{ local longitude}"/></p>
+</div></div></blockquote>
 <p>Position of the Moon</p>
 <blockquote>
 <div><p>Compute the eccentric anomaly, <em>E</em>, from <em>M</em>, the mean anomaly, and <em>e</em>, the eccentricity.</p>
 <p>As a first approximation, do (<em>E</em> and <em>M</em> in radians):</p>
 <div class="math">
-<p><img src="../../_images/math/5cf8b3362a62e201c263a82a61a383014aab01f9.png" alt="E = M + e \sin M ( 1.0 + e \cos M )"/></p>
+<p><img src="../../_images/math/898997198866ce9742e0e75e14762ca332c6cdbd.png" alt="E = M + e \sin M ( 1 + e \cos M )"/></p>
 </div><p>If <em>e</em>, the eccentricity, is less than about 0.05-0.06, this approximation is sufficiently accurate.</p>
 <p>If the eccentricity is larger, set <img class="math" src="../../_images/math/a5de92f21b4e02339beae2d6c3f56c0d1f686782.png" alt="E_0 \gets E"/> and then use this iteration formula (<em>E</em> and <em>M</em> in radians):</p>
 <div class="math">
@@ -148,29 +235,23 @@ often good enough for most purposes.</p>
 <p>If this iteration formula won&#8217;t converge, the eccentricity is probably too close to one. Then you should instead use the formulae for near-parabolic or parabolic orbits.</p>
 <p>Now compute the moon&#8217;s distance, <em>r</em>, and true anomaly, <em>v</em>:</p>
 <div class="math">
-<p><img src="../../_images/math/ac6e37809fb5a20299fc79f42f82e9e173c2190e.png" alt="xv = r \cos(v) = a ( \cos(E) - e )
-
-yv = r \sin(v) = a ( \sqrt{1.0 - e^2} \sin(E) )
-
-v = \arctan \frac{ yv }{ xv }
-
-r = \sqrt{ xv^2 + yv^2 }"/></p>
+<p><img src="../../_images/math/174b04c47afc8ed0b796cd1161798d6e7bf50183.png" alt="xv &amp;= r \cos(v) = a ( \cos(E) - e ) \\
+yv &amp;= r \sin(v) = a ( \sqrt{1 - e^2} \sin(E) ) \\
+v &amp;= \arctan \frac{ yv }{ xv } \\
+r &amp;= \sqrt{ xv^2 + yv^2 }"/></p>
 </div></div></blockquote>
 <p>Position of the Sun</p>
 <blockquote>
 <div><p>Compute the eccentric anomaly <em>E</em> from the mean anomaly <em>M</em> and from the eccentricity <em>e</em> (<em>E</em> and <em>M</em> in radians):</p>
 <div class="math">
-<p><img src="../../_images/math/5cf8b3362a62e201c263a82a61a383014aab01f9.png" alt="E = M + e \sin M ( 1.0 + e \cos M )"/></p>
+<p><img src="../../_images/math/898997198866ce9742e0e75e14762ca332c6cdbd.png" alt="E = M + e \sin M ( 1 + e \cos M )"/></p>
 </div><p>Note that the formulae for computing E are not exact; however they&#8217;re accurate enough here.</p>
 <p>Then compute the Sun&#8217;s distance, <em>r</em>, and its true anomaly, <em>v</em>, from:</p>
 <div class="math">
-<p><img src="../../_images/math/c907815972513f4f1a4c45f74c22e4561c3e4a71.png" alt="xv = r \cos(v) = \cos(E) - e
-
-yv = r \sin(v) = \sqrt{1.0 - e^2} \sin(E)
-
-v = \arctan \frac{ yv }{ xv }
-
- r = \sqrt{ xv^2 + yv^2 }"/></p>
+<p><img src="../../_images/math/df2d427ac4bc5bac00a4ba780b3a4d99fa1bd213.png" alt="xv &amp;= r \cos(v) = \cos(E) - e \\
+yv &amp;= r \sin(v) = \sqrt{1 - e^2} \sin(E) \\
+v &amp;= \arctan \frac{ yv }{ xv } \\
+r &amp;= \sqrt{ xv^2 + yv^2 }"/></p>
 </div><p>(note that the <em>r</em> computed here is later used as <em>r_s</em>)</p>
 <p><tt class="xref py py-func docutils literal"><span class="pre">atan2()</span></tt> must be used to convert an x,y coordinate pair to the correct angle in all four quadrants.</p>
 <p>The Sun&#8217;s true longitude:</p>
@@ -178,21 +259,18 @@ v = \arctan \frac{ yv }{ xv }
 <p><img src="../../_images/math/c7bc6d6fd1b1d5e17b9a7eb59a6e8b7ee69df028.png" alt="lonsun = v + w"/></p>
 </div><p>Convert <em>(lonsun,r)</em> to ecliptic rectangular geocentric coordinates <em>(xs,ys)</em>:</p>
 <div class="math">
-<p><img src="../../_images/math/0a3914f6fc3dfeb52d49e22526935e5a208e7d87.png" alt="xs = r \cos(lonsun)
-
-ys = r \sin(lonsun)"/></p>
-</div><p>(since the Sun always is in the ecliptic plane, <em>zs</em> is of course zero). <em>(xs,ys)</em> is the Sun&#8217;s position in a coordinate system in the plane of the ecliptic. To convert this to equatorial, rectangular, geocentric coordinates, compute:</p>
+<p><img src="../../_images/math/1a335164b46f4858fb8d3b2637fcb2a99d791bfc.png" alt="xs &amp;= r \cos(lonsun) \\
+ys &amp;= r \sin(lonsun) \\
+zs &amp;= 0"/></p>
+</div><p>(since the Sun always is in the ecliptic plane, <em>zs</em> is zero). <em>(xs,ys)</em> is the Sun&#8217;s position in a coordinate system in the plane of the ecliptic. To convert this to equatorial, rectangular, geocentric coordinates, compute:</p>
 <div class="math">
-<p><img src="../../_images/math/46bcd6de45a44b898f041ffe8415533ba7e713cb.png" alt="xe = xs
-
-ye = ys \cos(ecl)
-
-ze = ys \sin(ecl)"/></p>
-</div><p>Finally, compute the Sun&#8217;s Right Ascension (RA) and Declination (Dec):</p>
+<p><img src="../../_images/math/9aba27419a2e9255f594e091e22db85bbd8ce36d.png" alt="xe &amp;= xs \\
+ye &amp;= ys \cos(ecl) \\
+ze &amp;= ys \sin(ecl)"/></p>
+</div><p>Finally, compute the Sun&#8217;s Right Ascension (RA) and Declination (Decl):</p>
 <div class="math">
-<p><img src="../../_images/math/7ae904b843440a535058173ee6cf9fdb4a333bf8.png" alt="RA  = \arctan\frac{ye}{xe}
-
-Dec = \arctan\frac{ ze }{ \sqrt{xe^2+ye^2} }"/></p>
+<p><img src="../../_images/math/c6d7e54c7176e749070c1c5653698786fad92ba7.png" alt="RA   &amp;= \arctan\frac{ye}{xe} \\
+Decl &amp;= \arctan\frac{ ze }{ \sqrt{xe^2+ye^2} }"/></p>
 </div></div></blockquote>
 <p>Perturbations</p>
 <blockquote>
@@ -247,43 +325,33 @@ zg &amp;= r              \sin(latecl)"/></p>
 <blockquote>
 <div><p>Let&#8217;s convert our rectangular, ecliptic coordinates to rectangular, equatorial coordinates: simply rotate the y-z-plane by ecl, the angle of the obliquity of the ecliptic:</p>
 <div class="math">
-<p><img src="../../_images/math/13e90441016f78c39254facf98e5add44f2b0fcd.png" alt="xe = xg
-
-ye = yg \cos(ecl) - zg \sin(ecl)
-
+<p><img src="../../_images/math/2b86bf38fcd3947eae231088769df181922e0200.png" alt="xe &amp;= xg \\
+ye &amp;= yg \cos(ecl) - zg \sin(ecl) \\
 ze = yg \sin(ecl) + zg \cos(ecl)"/></p>
-</div><p>Finally, compute the moon&#8217;s Right Ascension (RA) and Declination (Dec):</p>
+</div><p>Finally, compute the moon&#8217;s Right Ascension (RA) and Declination (Decl):</p>
 <div class="math">
-<p><img src="../../_images/math/7ae904b843440a535058173ee6cf9fdb4a333bf8.png" alt="RA  = \arctan\frac{ye}{xe}
-
-Dec = \arctan\frac{ ze }{ \sqrt{xe^2+ye^2} }"/></p>
+<p><img src="../../_images/math/c6d7e54c7176e749070c1c5653698786fad92ba7.png" alt="RA   &amp;= \arctan\frac{ye}{xe} \\
+Decl &amp;= \arctan\frac{ ze }{ \sqrt{xe^2+ye^2} }"/></p>
 </div><p>Compute the geocentric distance:</p>
 <div class="math">
 <p><img src="../../_images/math/acc20ed8f318290eec0a04f7d901194d6fa67bcf.png" alt="rg = \sqrt{xg^2+yg^2+zg^2} = \sqrt{xe^2+ye^2+ze^2}"/></p>
 </div></div></blockquote>
 <p>Azimuthal coordinates</p>
 <blockquote>
-<div><p>To find the azimuthal coordinates (azimuth and altitude) we proceed by computing the HA (Hour Angle) of the object. But first we must compute the LST (Local Sidereal Time), which we do as described in 5b above. When we know LST, we can easily compute HA from:</p>
+<div><p>To find the azimuthal coordinates (azimuth and altitude) we proceed by computing the HA (Hour Angle) of the object. But first we must compute the LST (Local Sidereal Time), which we do as described in <strong>Local Standard Time</strong>  above. When we know LST, we can easily compute HA from:</p>
 <div class="math">
 <p><img src="../../_images/math/d002f9e5b9211665f61cbc8c12e3fd16ae3321a1.png" alt="HA = LST - RA"/></p>
-</div><p>HA is usually given in the interval -12 to +12 hours, or -180 to +180 degrees. If HA is zero, the object can be seen directly to the south. If HA is negative, the object is to the east of south, and if HA is positive, the object is to the west of south. IF your computed HA should fall outside this interval, add or subtract 24 hours (or 360 degrees) until HA falls within this interval.</p>
+</div><p>HA is usually given in the interval -12 to +12 hours, or -180 to +180 degrees. If HA is zero, the object can be seen directly to the south. If HA is negative, the object is to the east of south, and if HA is positive, the object is to the west of south.</p>
 <p>Now it&#8217;s time to convert our objects HA and Decl to local azimuth and altitude. To do that, we also must know lat, our local latitude. Then we proceed as follows:</p>
 <div class="math">
-<p><img src="../../_images/math/7966ecf1fabd88c3597a2ce42f2b49fbde0bf7f9.png" alt="x = \cos(HA) \cos(Decl)
-
-y = \sin(HA) \cos(Decl)
-
-z = \sin(Decl)
-
-xhor = x \sin(lat) - z \cos(lat)
-
-yhor = y
-
-zhor = x \cos(lat) + z \sin(lat)
-
-az  = \arctan \frac{yhor}{xhor} + 180_degrees
-
-alt = \arcsin( zhor ) = \arctan \frac{ zhor }{ \sqrt{xhor^2+yhor^2} }"/></p>
+<p><img src="../../_images/math/675f26cf30267417b696a7d659637278a1118773.png" alt="x &amp;= \cos(HA) \cos(Decl) \\
+y &amp;= \sin(HA) \cos(Decl) \\
+z &amp;= \sin(Decl) \\
+xhor &amp;= x \sin(lat) - z \cos(lat) \\
+yhor &amp;= y \\
+zhor &amp;= x \cos(lat) + z \sin(lat) \\
+az  &amp;= \arctan \frac{yhor}{xhor} + 180^{\circ} \\
+alt &amp;= \arcsin( zhor ) = \arctan \frac{ zhor }{ \sqrt{xhor^2+yhor^2} }"/></p>
 </div></div></blockquote>
 <p>The Moon&#8217;s topocentric position</p>
 <blockquote>
@@ -296,11 +364,275 @@ alt = \arcsin( zhor ) = \arctan \frac{ zhor }{ \sqrt{xhor^2+yhor^2} }"/></p>
 <p><img src="../../_images/math/f8f8ad6ecab0dc781c396d9e7366b796bf4fb61f.png" alt="alt_topoc = alt_geoc - mpar \cos(alt_geoc)"/></p>
 </div></div></blockquote>
 </div>
-<div class="section" id="alternative-accurate">
-<h2>Alternative Accurate<a class="headerlink" href="#alternative-accurate" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="alternative-calculation">
+<h2>Alternative Calculation<a class="headerlink" href="#alternative-calculation" title="Permalink to this headline">¶</a></h2>
 <p><a class="reference external" href="http://www.stargazing.net/kepler/moon3.html">http://www.stargazing.net/kepler/moon3.html</a></p>
 <p>This spreadsheet contains a very detailed calculation
 for the moon&#8217;s position.</p>
+</div>
+<div class="section" id="implementation">
+<h2>Implementation<a class="headerlink" href="#implementation" title="Permalink to this headline">¶</a></h2>
+<p>Yes. The name of the calculation module differs from the legacy application name
+<strong class="program">moontrac</strong> (and perhaps others).</p>
+<p>This computes lunar positions. It is based on a general algorithm that
+will work for the sun and the planets.</p>
+<div class="admonition-todo admonition" id="index-0">
+<p class="first admonition-title">Todo</p>
+<p class="last">Finish the moon visibility calculation.</p>
+</div>
+<div class="section" id="module-hamcalc.navigation.lunar">
+<span id="lunar"></span><h3>lunar<a class="headerlink" href="#module-hamcalc.navigation.lunar" title="Permalink to this headline">¶</a></h3>
+<p>hamcalc.navigation.lunar &#8211; Position of the moon.</p>
+<p>We have several implementation choices for this.</p>
+<p>See <a class="reference external" href="http://www.stjarnhimlen.se/comp/ppcomp.html">http://www.stjarnhimlen.se/comp/ppcomp.html</a></p>
+<p>See <a class="reference external" href="http://www.stargazing.net/kepler/moon3.html">http://www.stargazing.net/kepler/moon3.html</a></p>
+</div>
+<div class="section" id="module-hamcalc.navigation.lunar.schlyter">
+<span id="lunar-schlyter"></span><h3>lunar.schlyter<a class="headerlink" href="#module-hamcalc.navigation.lunar.schlyter" title="Permalink to this headline">¶</a></h3>
+<p>hamcalc.navigation.lunar &#8211; Position of the moon.</p>
+<p>See <a class="reference external" href="http://www.stjarnhimlen.se/comp/ppcomp.html">http://www.stjarnhimlen.se/comp/ppcomp.html</a></p>
+<p><a class="reference external" href="http://www.stjarnhimlen.se/comp/tutorial.html">http://www.stjarnhimlen.se/comp/tutorial.html</a></p>
+<p>This is an implementation based on the outstandingly detailed pair of
+web pages. One has the complete theoretical explanation, the other
+has a detailed calculation.</p>
+<p>Test Cases</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">datetime</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">hamcalc.navigation.lunar.schlyter</span> <span class="kn">as</span> <span class="nn">lunar</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">today</span><span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span> <span class="mi">1990</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">19</span><span class="p">,</span> <span class="n">tzinfo</span><span class="o">=</span><span class="n">lunar</span><span class="o">.</span><span class="n">utc</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">jad</span><span class="o">=</span> <span class="n">lunar</span><span class="o">.</span><span class="n">datetime_to_jad</span><span class="p">(</span> <span class="n">today</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">jad</span>
+<span class="go">2448000.5</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">jad</span> <span class="o">-</span> <span class="mf">2451543.5</span>
+<span class="go">-3543.0</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">s</span><span class="o">=</span> <span class="n">lunar</span><span class="o">.</span><span class="n">Position_Sun</span><span class="p">(</span> <span class="n">jad</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">w</span><span class="p">,</span><span class="mi">4</span><span class="p">)</span>
+<span class="go">282.7735</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">e</span><span class="p">,</span><span class="mi">6</span><span class="p">)</span>
+<span class="go">0.016713</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">M</span><span class="p">,</span><span class="mi">4</span><span class="p">)</span>
+<span class="go">104.0653</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">L</span><span class="p">,</span><span class="mi">4</span><span class="p">)</span>
+<span class="go">26.8388</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span> <span class="n">lunar</span><span class="o">.</span><span class="n">Orbital_Elements</span><span class="o">.</span><span class="n">ecl</span><span class="p">(</span> <span class="n">jad</span> <span class="p">),</span> <span class="mi">4</span> <span class="p">)</span>
+<span class="go">23.4406</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span> <span class="n">s</span><span class="o">.</span><span class="n">E</span><span class="p">,</span> <span class="mi">4</span> <span class="p">)</span>
+<span class="go">104.9904</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span> <span class="n">s</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="mi">6</span> <span class="p">)</span>
+<span class="go">-0.27537</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span> <span class="n">s</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="mi">6</span> <span class="p">)</span>
+<span class="go">0.965834</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span> <span class="n">s</span><span class="o">.</span><span class="n">r</span><span class="p">,</span> <span class="mi">6</span> <span class="p">)</span>
+<span class="go">1.004323</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span> <span class="n">s</span><span class="o">.</span><span class="n">v</span><span class="p">,</span> <span class="mi">4</span> <span class="p">)</span>
+<span class="go">105.9134</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span> <span class="n">s</span><span class="o">.</span><span class="n">x_s</span><span class="p">,</span> <span class="mi">6</span> <span class="p">)</span>
+<span class="go">0.881048</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span> <span class="n">s</span><span class="o">.</span><span class="n">y_s</span><span class="p">,</span> <span class="mi">6</span> <span class="p">)</span>
+<span class="go">0.482099</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span> <span class="n">s</span><span class="o">.</span><span class="n">z_s</span><span class="p">,</span> <span class="mi">6</span> <span class="p">)</span>
+<span class="go">0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span> <span class="n">s</span><span class="o">.</span><span class="n">x_e</span><span class="p">,</span> <span class="mi">6</span> <span class="p">)</span>
+<span class="go">0.881048</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span> <span class="n">s</span><span class="o">.</span><span class="n">y_e</span><span class="p">,</span> <span class="mi">6</span> <span class="p">)</span>
+<span class="go">0.442313</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span> <span class="n">s</span><span class="o">.</span><span class="n">z_e</span><span class="p">,</span> <span class="mi">6</span> <span class="p">)</span>
+<span class="go">0.191778</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">az</span><span class="p">,</span> <span class="n">alt</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">local_az_alt</span><span class="p">(</span> <span class="mi">60</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">0</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">LST</span><span class="p">,</span><span class="mi">5</span><span class="p">)</span>
+<span class="go">14.78926</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">HA</span><span class="p">,</span><span class="mi">4</span><span class="p">)</span>
+<span class="go">195.1808</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">az</span><span class="p">,</span><span class="mi">4</span><span class="p">)</span>
+<span class="go">15.6767</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">alt</span><span class="p">,</span><span class="mi">4</span><span class="p">)</span>
+<span class="go">-17.957</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">RA</span><span class="p">,</span> <span class="n">Decl</span><span class="o">=</span> <span class="n">lunar</span><span class="o">.</span><span class="n">RA_Decl_sun</span><span class="p">(</span> <span class="n">jad</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span> <span class="n">RA</span><span class="p">,</span> <span class="mi">4</span> <span class="p">)</span>
+<span class="go">26.6581</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span> <span class="n">Decl</span><span class="p">,</span> <span class="mi">4</span> <span class="p">)</span>
+<span class="go">11.0084</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">m</span><span class="o">=</span> <span class="n">lunar</span><span class="o">.</span><span class="n">Position_Moon</span><span class="p">(</span> <span class="n">jad</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">N</span><span class="p">,</span><span class="mi">4</span><span class="p">)</span>
+<span class="go">312.7381</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">i</span><span class="p">,</span><span class="mi">4</span><span class="p">)</span>
+<span class="go">5.1454</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">w</span><span class="p">,</span><span class="mi">4</span><span class="p">)</span>
+<span class="go">95.7454</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">a</span><span class="p">,</span><span class="mi">4</span><span class="p">)</span>
+<span class="go">60.2666</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">e</span><span class="p">,</span><span class="mi">6</span><span class="p">)</span>
+<span class="go">0.0549</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">M</span><span class="p">,</span><span class="mi">4</span><span class="p">)</span>
+<span class="go">266.0954</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">E</span><span class="p">,</span><span class="mi">4</span><span class="p">)</span>
+<span class="go">262.9735</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">x</span><span class="p">,</span><span class="mi">5</span><span class="p">)</span>
+<span class="go">-10.68099</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">y</span><span class="p">,</span><span class="mi">5</span><span class="p">)</span>
+<span class="go">-59.72377</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">r</span><span class="p">,</span><span class="mi">5</span><span class="p">)</span>
+<span class="go">60.67134</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">v</span><span class="p">,</span><span class="mi">4</span><span class="p">)</span>
+<span class="go">259.8604</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">M_s</span><span class="p">,</span><span class="mi">4</span><span class="p">)</span>
+<span class="go">104.0653</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">M_m</span><span class="p">,</span><span class="mi">4</span><span class="p">)</span>
+<span class="go">266.0954</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">L_s</span><span class="p">,</span><span class="mi">4</span><span class="p">)</span>
+<span class="go">26.8388</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">L_m</span><span class="p">,</span><span class="mi">4</span><span class="p">)</span>
+<span class="go">314.5789</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">D</span><span class="p">,</span><span class="mi">4</span><span class="p">)</span>
+<span class="go">287.7401</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">F</span><span class="p">,</span><span class="mi">4</span><span class="p">)</span>
+<span class="go">1.8408</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">P_long</span><span class="p">,</span><span class="mi">4</span><span class="p">)</span>
+<span class="go">-1.4132</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">P_lat</span><span class="p">,</span><span class="mi">4</span><span class="p">)</span>
+<span class="go">-0.1919</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">P_r</span><span class="p">,</span><span class="mi">4</span><span class="p">)</span>
+<span class="go">0.0066</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">x_m</span><span class="p">,</span><span class="mi">5</span><span class="p">)</span>
+<span class="go">37.65311</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">y_m</span><span class="p">,</span><span class="mi">5</span><span class="p">)</span>
+<span class="go">-47.57185</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">z_m</span><span class="p">,</span><span class="mi">5</span><span class="p">)</span>
+<span class="go">-0.41689</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">lon_ecl</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+<span class="go">306.9484</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">lat_ecl</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+<span class="go">-0.5856</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">r_ecl</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+<span class="go">60.6779</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">RA</span><span class="p">,</span> <span class="mi">4</span> <span class="p">)</span>
+<span class="go">309.5011</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">Decl</span><span class="p">,</span> <span class="mi">4</span> <span class="p">)</span>
+<span class="go">-19.1032</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">az</span><span class="p">,</span> <span class="n">alt</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">local_az_alt</span><span class="p">(</span> <span class="mi">60</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">0</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">LST</span><span class="p">,</span><span class="mi">5</span><span class="p">)</span>
+<span class="go">14.78926</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">HA</span><span class="p">,</span><span class="mi">4</span><span class="p">)</span>
+<span class="go">272.3377</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">az</span><span class="p">,</span><span class="mi">4</span><span class="p">)</span>
+<span class="go">101.7868</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">alt</span><span class="p">,</span><span class="mi">4</span><span class="p">)</span>
+<span class="go">-16.2275</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">alt_geoc</span><span class="p">,</span><span class="mi">4</span><span class="p">)</span>
+<span class="go">-15.3167</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">alt_topoc</span><span class="p">,</span><span class="mi">4</span><span class="p">)</span>
+<span class="go">-16.2275</span>
+</pre></div>
+</div>
+<dl class="class">
+<dt id="hamcalc.navigation.lunar.schlyter.Orbital_Elements">
+<em class="property">class </em><tt class="descclassname">hamcalc.navigation.lunar.schlyter.</tt><tt class="descname">Orbital_Elements</tt><big>(</big><em>jad</em><big>)</big><a class="headerlink" href="#hamcalc.navigation.lunar.schlyter.Orbital_Elements" title="Permalink to this definition">¶</a></dt>
+<dd><p>Abstract base class for Sun and Moon positions.</p>
+<dl class="staticmethod">
+<dt id="hamcalc.navigation.lunar.schlyter.Orbital_Elements.ecl">
+<em class="property">static </em><tt class="descname">ecl</tt><big>(</big><em>jad</em><big>)</big><a class="headerlink" href="#hamcalc.navigation.lunar.schlyter.Orbital_Elements.ecl" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the obliquity of the ecliptic.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="hamcalc.navigation.lunar.schlyter.Orbital_Elements.related">
+<tt class="descname">related</tt><big>(</big><big>)</big><a class="headerlink" href="#hamcalc.navigation.lunar.schlyter.Orbital_Elements.related" title="Permalink to this definition">¶</a></dt>
+<dd><p>Derive additional orbital elements.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">W1 :</th><td class="field-body">longitude of perihelion</td>
+</tr>
+<tr class="field-even field"><th class="field-name">L :</th><td class="field-body">mean longitude</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Q :</th><td class="field-body">perihelion distance</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Q :</th><td class="field-body">aphelion distance</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">P :</th><td class="field-body">orbital period (years if a is in AU, astronomical units)</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="hamcalc.navigation.lunar.schlyter.Position_Moon">
+<em class="property">class </em><tt class="descclassname">hamcalc.navigation.lunar.schlyter.</tt><tt class="descname">Position_Moon</tt><big>(</big><em>jad</em><big>)</big><a class="headerlink" href="#hamcalc.navigation.lunar.schlyter.Position_Moon" title="Permalink to this definition">¶</a></dt>
+<dd><p>Position of the Moon on a given date.</p>
+<dl class="method">
+<dt id="hamcalc.navigation.lunar.schlyter.Position_Moon.local_az_alt">
+<tt class="descname">local_az_alt</tt><big>(</big><em>lat</em>, <em>lon</em>, <em>utc_offset</em><big>)</big><a class="headerlink" href="#hamcalc.navigation.lunar.schlyter.Position_Moon.local_az_alt" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute a localized azimuth and altitude, applying
+the topocentric correction to altitude.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>lat</strong> &#8211; latitude of observer</li>
+<li><strong>lon</strong> &#8211; longiude of observer</li>
+<li><strong>utc_offset</strong> &#8211; UTC time-of-day offset of observer</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">azimuth and altitude pair.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="hamcalc.navigation.lunar.schlyter.Position_Sun">
+<em class="property">class </em><tt class="descclassname">hamcalc.navigation.lunar.schlyter.</tt><tt class="descname">Position_Sun</tt><big>(</big><em>jad</em><big>)</big><a class="headerlink" href="#hamcalc.navigation.lunar.schlyter.Position_Sun" title="Permalink to this definition">¶</a></dt>
+<dd><p>Position of the Sun on a given date.</p>
+<dl class="method">
+<dt id="hamcalc.navigation.lunar.schlyter.Position_Sun.local_az_alt">
+<tt class="descname">local_az_alt</tt><big>(</big><em>lat</em>, <em>lon</em>, <em>utc_offset</em><big>)</big><a class="headerlink" href="#hamcalc.navigation.lunar.schlyter.Position_Sun.local_az_alt" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute a localized azimuth and altitude.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>lat</strong> &#8211; latitude of observer</li>
+<li><strong>lon</strong> &#8211; longiude of observer</li>
+<li><strong>utc_offset</strong> &#8211; UTC time-of-day offset of observer</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">azimuth and altitude pair.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="hamcalc.navigation.lunar.schlyter.RA_Decl_sun">
+<tt class="descclassname">hamcalc.navigation.lunar.schlyter.</tt><tt class="descname">RA_Decl_sun</tt><big>(</big><em>d</em><big>)</big><a class="reference internal" href="../../_modules/hamcalc/navigation/lunar/schlyter.html#RA_Decl_sun"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.navigation.lunar.schlyter.RA_Decl_sun" title="Permalink to this definition">¶</a></dt>
+<dd><p>Right Ascension and Declination of the Sun.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="lunar-burnett">
+<h3>lunar.burnett<a class="headerlink" href="#lunar-burnett" title="Permalink to this headline">¶</a></h3>
+<p>TBD</p>
+</div>
 </div>
 <div class="section" id="legacy-introduction">
 <h2>Legacy Introduction<a class="headerlink" href="#legacy-introduction" title="Permalink to this headline">¶</a></h2>

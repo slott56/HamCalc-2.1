@@ -465,7 +465,7 @@ Yes. The name of the calculation module differs from the legacy applications,
 This computes more than sunrise, and includes timezones for local time
 conversion.
 
-Solar
+solar
 ^^^^^^^^^^^
 
 ..  automodule:: hamcalc.navigation.solar

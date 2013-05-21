@@ -4,6 +4,15 @@ moontrac -- Moon Tracker
 Analysis
 ~~~~~~~~~~
 
+There are two feature sets.
+
+1.  Tracking the moon.
+
+2.  Tracking the moon's visibility in various zones
+
+Tracking the Moon
+^^^^^^^^^^^^^^^^^^^
+
 **650-850**.  The Julian Astronommical Day number is T1.
 
 **880-950**.  GMT time of day in T5?
@@ -27,19 +36,34 @@ Analysis
 
     Why is the integer part discarded in calculations of K_1 to K_5?
 
+    Here's the whole thing. It looks like perturbation calculations.
+    The double-precision values are uselessly long: the original source
+    text may have shorter, more readable constants.
+
     ::
 
-        980 K1=((0.751213014125824!+0.036601100116968155!*T5)-INT(0.751213014125824!+0.036601100116968155!*T5))*P5
-        990 K2=((0.8225129842758179!+0.03629159927368164!*T5)-INT(0.8225129842758179!+0.03629159927368164!*T5))*P5
-        1000 K3=((0.9957659840583801!+0.002737780101597309!*T5)-INT(0.9957659840583801!+0.002737780101597309!*T5))*P5
-        1010 K4=((0.9742709994316101!+0.03386320173740387!*T5)-INT(0.9742709994316101!+0.03386320173740387!*T5))*P5
-        1020 K5=((0.03125249966979027!+0.03674820065498352!*T5)-INT(0.03125249966979027!+0.03674820065498352!*T5))*P5
+        980 K1=((0.751213014125824!+0.036601100116968155!*T5)
+            -INT(0.751213014125824!+0.036601100116968155!*T5))*P5
+        990 K2=((0.8225129842758179!+0.03629159927368164!*T5)
+            -INT(0.8225129842758179!+0.03629159927368164!*T5))*P5
+        1000 K3=((0.9957659840583801!+0.002737780101597309!*T5)
+             -INT(0.9957659840583801!+0.002737780101597309!*T5))*P5
+        1010 K4=((0.9742709994316101!+0.03386320173740387!*T5)
+             -INT(0.9742709994316101!+0.03386320173740387!*T5))*P5
+        1020 K5=((0.03125249966979027!+0.03674820065498352!*T5)
+             -INT(0.03125249966979027!+0.03674820065498352!*T5))*P5
         1030 L8=K1+0.658000111579895!*R5*SIN(2*K4)+6.289000988006592!*R5*SIN(K2)
-        1040 L8=L8-1.2740000486373901!*R5*SIN(K2-2*K4)-0.1860000044107437!*R5*SIN(K3)
-        1050 L8=L8+0.21400000154972076!*R5*SIN(2*K2)-0.11400000005960464!*R5*SIN(2*K5)
-        1060 L8=L8-0.059000011533498764!*R5*SIN(2*K2-2*K4)-0.05700001120567322!*R5*SIN(K2+K3-2*K4)
-        1070 K6=K5+0.6593000292778015!*R5*SIN(2*K4)+6.230299949645996!*R5*SIN(K2)-1.2719999551773071!*R5*SIN(K2-2*K4)
-        1080 L7=5.144000053405762!*R5*SIN(K6)-0.1459999978542328!*R5*SIN(K5-2*K4)
+        1040 L8=L8-1.2740000486373901!*R5*SIN(K2-2*K4)
+             -0.1860000044107437!*R5*SIN(K3)
+        1050 L8=L8+0.21400000154972076!*R5*SIN(2*K2)
+             -0.11400000005960464!*R5*SIN(2*K5)
+        1060 L8=L8-0.059000011533498764!*R5*SIN(2*K2-2*K4)
+             -0.05700001120567322!*R5*SIN(K2+K3-2*K4)
+        1070 K6=K5+0.6593000292778015!*R5*SIN(2*K4)
+             +6.230299949645996!*R5*SIN(K2)
+             -1.2719999551773071!*R5*SIN(K2-2*K4)
+        1080 L7=5.144000053405762!*R5*SIN(K6)
+             -0.1459999978542328!*R5*SIN(K5-2*K4)
 
 
 **1090-1230**. Right Ascension and Declination.
@@ -48,13 +72,75 @@ Analysis
 
 **1310**. Local Hour Angle.
 
-**1320-1370**.  Elevation
+**1320-1370**.  Elevation.
 
-**1380-1420**.  Azimuth
+**1380-1420**.  Azimuth.
 
-**1600-1950**.  Output
+**1600-1950**.  Output, including comparison with various fixed locations
+    around the world.
 
 **1970-2030**.  End-of-loop updates of B.
+
+Moon Visibility
+^^^^^^^^^^^^^^^^^
+
+The moon visibility is divided into four sectors:
+
+    -   European
+
+    -   Americas
+
+    -   Far East
+
+    -   Other
+
+Here's the calculations which include the moon's declination, D1, and the convertion to degrees, D5. The starting of the zone is offset by a fraction
+of declination converted to degrees.
+
+It might be more obvious to compare fixed locations against LHA (LST-RA).
+
+::
+
+    1120 G1=50.5!+((D1/0.7289999723434448!))*D5          :REM'Test for start of EUROPEAN window
+    1130 G2=80+((D1)/(0.8080000281333923!))*D5          :REM'Test for start AMERICAS end EUROPEAN
+    1140 G3=141.5!-((D1)*(0.7379999756813049!)*D5)       :REM'Test for start FAR EASTERN end AMERICAS
+    1150 G4=170.5!-((D1)*(0.8570001125335693!)*D5)   :REM'Test for end of FAR EASTERN window
+
+G is the Greenwich Hour Angle. It's converted to degrees and then rounded
+to the nearest 10 degrees in Z3.
+
+::
+
+    1660 Z3=CINT(G*D5*10)/10         :REM'GHA
+
+::
+
+    1690 IF Z3<G1 THEN 1810
+    1700 IF Z3>G2 THEN 1720
+    1710 GOTO 1750
+    1720 IF Z3<G3 THEN 1770
+    1730 IF Z3>G4 THEN 1810
+    1740 GOTO 1790
+    1750 Y$="European"            :REM'European to Americas window, EU-W
+    1760 GOTO 1820
+    1770 Y$="Americas"            :REM'Americas universal window, W-W
+    1780 GOTO 1820
+    1790 Y$="Far East"            :REM'Far Eastern to Americas window, JA-VK-ZL
+    1800 GOTO 1820
+    1810 Y$=" "
+    1820 ES=CINT(B)-LTN           :REM'Local time adjustment
+
+The rules flattened out.
+
+-   Z3 < G1 - no window
+
+-   G1 <= Z3 < G2 - European
+
+-   G2 <= Z3 < G3 - Americas
+
+-   G3 <= Z3 < G4 - Far East
+
+-   G4 < Z3 - no window
 
 Alternative Approximation
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -112,6 +198,30 @@ Orbital Elements for the Sun
 
     ecl = 23.4393 - 3.563E-7 * d
 
+Local Standard Time
+
+    GMST0 is the GMST at Greenwich Midnight.
+
+    Sun's mean longitude, Ls, which can be computed from the Sun's v and w as follows:
+
+    ..  math::
+
+        L_s = v + w
+
+        GMST0 = L_s + 180^{\circ}
+
+    Greenwich Mean Sideral Time (GMST) is the LST at Greenwich
+
+    ..  math::
+
+        GMST = GMST0 + UT
+
+    LST computed by adding your local longitude (east longitude is positive, west negative) to GMST.
+
+    ..  math::
+
+        LST  = GMST + \text{ local longitude}
+
 Position of the Moon
 
     Compute the eccentric anomaly, *E*, from *M*, the mean anomaly, and *e*, the eccentricity.
@@ -120,7 +230,7 @@ Position of the Moon
 
     ..  math::
 
-        E = M + e \sin M ( 1.0 + e \cos M )
+        E = M + e \sin M ( 1 + e \cos M )
 
     If *e*, the eccentricity, is less than about 0.05-0.06, this approximation is sufficiently accurate.
 
@@ -138,13 +248,10 @@ Position of the Moon
 
     ..  math::
 
-        xv = r \cos(v) = a ( \cos(E) - e )
-
-        yv = r \sin(v) = a ( \sqrt{1.0 - e^2} \sin(E) )
-
-        v = \arctan \frac{ yv }{ xv }
-
-        r = \sqrt{ xv^2 + yv^2 }
+        xv &= r \cos(v) = a ( \cos(E) - e ) \\
+        yv &= r \sin(v) = a ( \sqrt{1 - e^2} \sin(E) ) \\
+        v &= \arctan \frac{ yv }{ xv } \\
+        r &= \sqrt{ xv^2 + yv^2 }
 
 Position of the Sun
 
@@ -152,7 +259,7 @@ Position of the Sun
 
     ..  math::
 
-        E = M + e \sin M ( 1.0 + e \cos M )
+        E = M + e \sin M ( 1 + e \cos M )
 
     Note that the formulae for computing E are not exact; however they're accurate enough here.
 
@@ -160,13 +267,10 @@ Position of the Sun
 
     ..  math::
 
-        xv = r \cos(v) = \cos(E) - e
-
-        yv = r \sin(v) = \sqrt{1.0 - e^2} \sin(E)
-
-        v = \arctan \frac{ yv }{ xv }
-
-         r = \sqrt{ xv^2 + yv^2 }
+        xv &= r \cos(v) = \cos(E) - e \\
+        yv &= r \sin(v) = \sqrt{1 - e^2} \sin(E) \\
+        v &= \arctan \frac{ yv }{ xv } \\
+        r &= \sqrt{ xv^2 + yv^2 }
 
     (note that the *r* computed here is later used as *r_s*)
 
@@ -182,27 +286,24 @@ Position of the Sun
 
     ..  math::
 
-        xs = r \cos(lonsun)
+        xs &= r \cos(lonsun) \\
+        ys &= r \sin(lonsun) \\
+        zs &= 0
 
-        ys = r \sin(lonsun)
-
-    (since the Sun always is in the ecliptic plane, *zs* is of course zero). *(xs,ys)* is the Sun's position in a coordinate system in the plane of the ecliptic. To convert this to equatorial, rectangular, geocentric coordinates, compute:
-
-    ..  math::
-
-        xe = xs
-
-        ye = ys \cos(ecl)
-
-        ze = ys \sin(ecl)
-
-    Finally, compute the Sun's Right Ascension (RA) and Declination (Dec):
+    (since the Sun always is in the ecliptic plane, *zs* is zero). *(xs,ys)* is the Sun's position in a coordinate system in the plane of the ecliptic. To convert this to equatorial, rectangular, geocentric coordinates, compute:
 
     ..  math::
 
-        RA  = \arctan\frac{ye}{xe}
+        xe &= xs \\
+        ye &= ys \cos(ecl) \\
+        ze &= ys \sin(ecl)
 
-        Dec = \arctan\frac{ ze }{ \sqrt{xe^2+ye^2} }
+    Finally, compute the Sun's Right Ascension (RA) and Declination (Decl):
+
+    ..  math::
+
+        RA   &= \arctan\frac{ye}{xe} \\
+        Decl &= \arctan\frac{ ze }{ \sqrt{xe^2+ye^2} }
 
 Perturbations
 
@@ -282,19 +383,16 @@ Equatorial Coordinates
 
     ..  math::
 
-        xe = xg
-
-        ye = yg \cos(ecl) - zg \sin(ecl)
-
+        xe &= xg \\
+        ye &= yg \cos(ecl) - zg \sin(ecl) \\
         ze = yg \sin(ecl) + zg \cos(ecl)
 
-    Finally, compute the moon's Right Ascension (RA) and Declination (Dec):
+    Finally, compute the moon's Right Ascension (RA) and Declination (Decl):
 
     ..  math::
 
-        RA  = \arctan\frac{ye}{xe}
-
-        Dec = \arctan\frac{ ze }{ \sqrt{xe^2+ye^2} }
+        RA   &= \arctan\frac{ye}{xe} \\
+        Decl &= \arctan\frac{ ze }{ \sqrt{xe^2+ye^2} }
 
     Compute the geocentric distance:
 
@@ -304,33 +402,26 @@ Equatorial Coordinates
 
 Azimuthal coordinates
 
-    To find the azimuthal coordinates (azimuth and altitude) we proceed by computing the HA (Hour Angle) of the object. But first we must compute the LST (Local Sidereal Time), which we do as described in 5b above. When we know LST, we can easily compute HA from:
+    To find the azimuthal coordinates (azimuth and altitude) we proceed by computing the HA (Hour Angle) of the object. But first we must compute the LST (Local Sidereal Time), which we do as described in **Local Standard Time**  above. When we know LST, we can easily compute HA from:
 
     ..  math::
 
         HA = LST - RA
 
-    HA is usually given in the interval -12 to +12 hours, or -180 to +180 degrees. If HA is zero, the object can be seen directly to the south. If HA is negative, the object is to the east of south, and if HA is positive, the object is to the west of south. IF your computed HA should fall outside this interval, add or subtract 24 hours (or 360 degrees) until HA falls within this interval.
+    HA is usually given in the interval -12 to +12 hours, or -180 to +180 degrees. If HA is zero, the object can be seen directly to the south. If HA is negative, the object is to the east of south, and if HA is positive, the object is to the west of south.
 
     Now it's time to convert our objects HA and Decl to local azimuth and altitude. To do that, we also must know lat, our local latitude. Then we proceed as follows:
 
     ..  math::
 
-        x = \cos(HA) \cos(Decl)
-
-        y = \sin(HA) \cos(Decl)
-
-        z = \sin(Decl)
-
-        xhor = x \sin(lat) - z \cos(lat)
-
-        yhor = y
-
-        zhor = x \cos(lat) + z \sin(lat)
-
-        az  = \arctan \frac{yhor}{xhor} + 180_degrees
-
-        alt = \arcsin( zhor ) = \arctan \frac{ zhor }{ \sqrt{xhor^2+yhor^2} }
+        x &= \cos(HA) \cos(Decl) \\
+        y &= \sin(HA) \cos(Decl) \\
+        z &= \sin(Decl) \\
+        xhor &= x \sin(lat) - z \cos(lat) \\
+        yhor &= y \\
+        zhor &= x \cos(lat) + z \sin(lat) \\
+        az  &= \arctan \frac{yhor}{xhor} + 180^{\circ} \\
+        alt &= \arcsin( zhor ) = \arctan \frac{ zhor }{ \sqrt{xhor^2+yhor^2} }
 
 The Moon's topocentric position
 
@@ -348,14 +439,40 @@ The Moon's topocentric position
 
         alt_topoc = alt_geoc - mpar \cos(alt_geoc)
 
-
-Alternative Accurate
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Alternative Calculation
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 http://www.stargazing.net/kepler/moon3.html
 
 This spreadsheet contains a very detailed calculation
 for the moon's position.
+
+Implementation
+~~~~~~~~~~~~~~~~~
+
+Yes. The name of the calculation module differs from the legacy application name
+:program:`moontrac` (and perhaps others).
+
+This computes lunar positions. It is based on a general algorithm that
+will work for the sun and the planets.
+
+..  todo:: Finish the moon visibility calculation.
+
+lunar
+^^^^^^^^^^^
+
+..  automodule:: hamcalc.navigation.lunar
+
+lunar.schlyter
+^^^^^^^^^^^^^^^
+
+..  automodule:: hamcalc.navigation.lunar.schlyter
+    :members:
+
+lunar.burnett
+^^^^^^^^^^^^^^^
+
+TBD
 
 Legacy Introduction
 ~~~~~~~~~~~~~~~~~~~~

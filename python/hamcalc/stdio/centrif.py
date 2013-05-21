@@ -5,7 +5,7 @@
 
 import hamcalc.math.centrif as centrif
 
-def solver():
+def solve():
     args= dict()
     force_raw= input(" ENTER: Force in newtons? ")
     if len(force_raw) != 0:
@@ -19,6 +19,10 @@ def solver():
     radius_raw= input(" Radius of orbit in metres? ")
     if len(radius_raw) != 0:
         args['R']= float( radius_raw )
+
+    display( **args )
+
+def display( **args ):
     args= centrif.centrif( **args )
 
     f_n= centrif.NEWTON.to_std( args.F )
@@ -40,4 +44,4 @@ z=None
 while z != '0':
     z= input( "ENTER 1 to continue, 0 to EXIT? " )
     if z == '1':
-        solver()
+        solve()

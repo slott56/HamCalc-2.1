@@ -113,73 +113,73 @@ Row from the spreadsheet. Columns A through AH (skipping H).
     AC      AD      AE      AF      AG      AH
     165.75	124.29	-34.29	0.01	-34.28	343.29
 
-Output from this function; it includes columns F to AH, plus
-a few other values.
+Output from this test case.
 
-::
-
-    {'AA': 830.1189163955589,
-     'AB': 1383.0077155592248,
-     'AC': 165.7519288898062,
-     'AC_r': 2.8929169006586277,
-     'AD': 124.28846181320384,
-     'AD_r': 2.1692428808796484,
-     'AE': -34.28846181320384,
-     'AE_r': -0.5984465540847519,
-     'AF': 0.008462163764385251,
-     'AG': -34.27999964943945,
-     'AH': 343.2865712316368,
-     'AH_rstar': 2.8498882922843145,
-     'E': 0.004166666666666667,
-     'F': 2456413.6708333334,
-     'G': 0.1332969427332894,
-     'I': 39.25901977112244,
-     'I_r': 0.6851991561116372,
-     'J': 5156.092452227982,
-     'JAD_epoch': -1721424.5,
-     'J_r': 89.99078982860672,
-     'K': 0.016703028345203225,
-     'L': 1.7030570397145302,
-     'M': 40.96207681083697,
-     'M_r': 0.7149231088039236,
-     'N': 5157.795509267697,
-     'N_r': 90.02051378129902,
-     'O': 1.007569899030823,
-     'P': 40.95990612522424,
-     'P_r': 0.7148852231929558,
-     'Q': 23.43755769373243,
-     'R': 23.43929004746131,
-     'R_r': 0.4090927856581378,
-     'S': 38.534815164640406,
-     'S_r': 0.6725594012704159,
-     'T': 15.11487444281024,
-     'T_r': 0.26380432505258206,
-     'U': 0.043034525256302164,
-     'V': 2.8877155592249477,
-     'V_r': 0.05040014436954465,
-     'W': 103.76486454944487,
-     'W_r': 1.8110385342737552,
-     'X': 0.5437446419727605,
-     'X_h': 13,
-     'X_hms': '13:02:59.0',
-     'X_m': 2,
-     'X_s': 59,
-     'Y': 0.25550890711319146,
-     'Y_h': 6,
-     'Y_hms': '06:07:55.0',
-     'Y_m': 7,
-     'Y_s': 55,
-     'Z': 0.8319803768323295,
-     'Z_h': 19,
-     'Z_hms': '19:58:03.0',
-     'Z_m': 58,
-     'Z_s': 3,
-     'date': datetime.datetime(2013, 5, 1, 0, 6),
-     'lambda_o': -76.47,
-     'phi_o': 38.98,
-     'phi_or': 0.6803293424273896,
-     't': datetime.time(0, 6),
-     'z_o': -4}
+>>> from hamcalc.navigation.solar import Position_Sun, Eastern
+>>> import datetime
+>>> phi_o=38.98 # Latitude
+>>> lambda_o=-76.47 # Longitude
+>>> z_o=-4 # Timezone offset
+>>> date = datetime.datetime( 2013, 5, 1, 0, 6, 0, tzinfo=Eastern )
+>>> s= Position_Sun( phi_o, lambda_o, date )
+>>> round(s.E,6)
+0.004167
+>>> round(s.F,2)
+2456413.67
+>>> round(s.G,8)
+0.13329694
+>>> round(s.I,2)
+39.26
+>>> round(s.J,2)
+5156.09
+>>> round(s.K,2)
+0.02
+>>> round(s.L,1)
+1.7
+>>> round(s.M,2)
+40.96
+>>> round(s.N,1)
+5157.8
+>>> round(s.O,2)
+1.01
+>>> round(s.P,2)
+40.96
+>>> round(s.Q,2)
+23.44
+>>> round(s.R,2)
+23.44
+>>> round(s.S,2)
+38.53
+>>> round(s.T,2)
+15.11
+>>> round(s.U,2)
+0.04
+>>> round(s.V,2)
+2.89
+>>> round(s.W,2)
+103.76
+>>> s.X_hms
+'13:02:59.0'
+>>> s.Y_hms
+'06:07:55.0'
+>>> s.Z_hms
+'19:58:03.0'
+>>> round(s.AA,1)
+830.1
+>>> round(s.AB,1)
+1383.0
+>>> round(s.AC,2)
+165.75
+>>> round(s.AD,2)
+124.29
+>>> round(s.AE,2)
+-34.29
+>>> round(s.AF,2)
+0.01
+>>> round(s.AG,2)
+-34.28
+>>> round(s.AH,2)
+343.29
 
 """
 import datetime
@@ -217,232 +217,226 @@ def datetime_to_jad( dt ):
     """
     # Fractions of a day after midnight
     t = dt.time()
-    E = (t.hour + (t.minute + (t.second+t.micro/1000000)/60)/60)/24
+    E = (t.hour + (t.minute + (t.second+t.microsecond/1000000)/60)/60)/24
 
     # Julian Date for date + time - UTC offset (if defined)
     utc= 0 if dt.utcoffset() is None else dt.utcoffset()/24
-    jad= dt.toordinal()-JAD_epoch+E-utc
+    jad= dt.toordinal()-JAD_epoch+E-utc.total_seconds()/24/60/60
     return jad
 
 def hours_to_h_m_s( h ):
     return int(h*24), int(h*24*60) % 60, int(h*24*60*60) % 60
 
-def solar( phi_o, lambda_o, date_time_tz, horizon=None ):
-    """Compute position of the sun.
+class Position_Sun:
+    """Here's the mapping from cryptical spreadsheet names to real names.
 
-    :param phi_o:
-        Latitude of observer in degrees.
-
-    :param lambda_o:
-        Longitude of the observer in degrees.
-
-    :param date_time_tz:
-        :class:`datetime.datetime` for which the sun's position is requested.
-        This must include tzinfo for the observer's timezone.
-
-    :param horizon:
-        The horizon angle from the zenith. Default is 90.833.
-        Other values can be used.
-        -   Astronomical: 108°; 18° below horizon
-        -   Nautical: 102°; 12° below horizon
-        -   Civil: 96°; 6° below horizon
-
-    :return: A dictionary with **all** the intermediate results.
-        Of all these results, a few are more interesting than
-        others.
-
-        Here's the mapping from cryptical spreadsheet names to real names.
-
-        :F: Julian Day
-        :G: Julian Century
-        :I:	Geom Mean Long Sun (deg)
-        :J:	Geom Mean Anom Sun (deg)
-        :K:	Eccent Earth Orbit
-        :L:	Sun Eq of Ctr
-        :M:	Sun True Long (deg)
-        :N:	Sun True Anom (deg)
-        :O:	Sun Rad Vector (AUs)
-        :P:	Sun App Long (deg)
-        :Q:	Mean Obliq Ecliptic (deg)
-        :R:	Obliq Corr (deg)
-        :S:	Sun Rt Ascen (deg)
-        :T:	Sun Declin (deg)
-        :U:	var y
-        :V:	Eq of Time (minutes)
-        :W:	HA Sunrise (deg)
-        :X:	Solar Noon (LST)
-        :Y:	Sunrise Time (LST)
-        :Z:	Sunset Time (LST)
-        :AA:	Sunlight Duration (minutes)
-        :AB:	True Solar Time (min)
-        :AC:	Hour Angle (deg)
-        :AD:	Solar Zenith Angle (deg)
-        :AE:	Solar Elevation Angle (deg)
-        :AF:	Approx Atmospheric Refraction (deg)
-        :AG:	Solar Elevation corrected for atm refraction (deg)
-        :AH:	Solar Azimuth Angle (deg cw from N)
-
+    :E: Time (past local midnight)
+    :F: Julian Day
+    :G: Julian Century
+    :I:	Geom Mean Long Sun (deg)
+    :J:	Geom Mean Anom Sun (deg)
+    :K:	Eccent Earth Orbit
+    :L:	Sun Eq of Ctr
+    :M:	Sun True Long (deg)
+    :N:	Sun True Anom (deg)
+    :O:	Sun Rad Vector (AUs)
+    :P:	Sun App Long (deg)
+    :Q:	Mean Obliq Ecliptic (deg)
+    :R:	Obliq Corr (deg)
+    :S:	Sun Rt Ascen (deg)
+    :T:	Sun Declin (deg)
+    :U:	var y
+    :V:	Eq of Time (minutes)
+    :W:	HA Sunrise (deg)
+    :X:	Solar Noon (LST)
+    :Y:	Sunrise Time (LST)
+    :Z:	Sunset Time (LST)
+    :AA:	Sunlight Duration (minutes)
+    :AB:	True Solar Time (min)
+    :AC:	Hour Angle (deg)
+    :AD:	Solar Zenith Angle (deg)
+    :AE:	Solar Elevation Angle (deg)
+    :AF:	Approx Atmospheric Refraction (deg)
+    :AG:	Solar Elevation corrected for atm refraction (deg)
+    :AH:	Solar Azimuth Angle (deg cw from N)
     """
     JAD_epoch= -1721424.5 # Julian Astronomical Date epoch.
+    def __init__( self, phi_o, lambda_o, date_time_tz, horizon=None ):
+        """Compute position of the sun.
 
-    if horizon is None: horizon=90.833
+        :param phi_o:
+            Latitude of observer in degrees.
 
-    # GMT offset of the observer in hours.
-    z_o= date_time_tz.utcoffset().total_seconds()/3600
+        :param lambda_o:
+            Longitude of the observer in degrees.
 
-    # Fractions of a day after midnight
-    t = date_time_tz.time()
-    E = t.hour/24 + t.minute/24/60 + t.second/24/60/60
+        :param date_time_tz:
+            :class:`datetime.datetime` for which the sun's position is requested.
+            This must include tzinfo for the observer's timezone.
 
-    # Julian Date for date + time - UTC offset
-    F = date_time_tz.toordinal()-JAD_epoch+E-z_o/24
+        :param horizon:
+            The horizon angle from the zenith. Default is 90.833.
+            Other values can be used.
+            -   Astronomical: 108°; 18° below horizon
+            -   Nautical: 102°; 12° below horizon
+            -   Civil: 96°; 6° below horizon
+        """
+        if horizon is None: horizon=90.833
 
-    # Julian Century
-    G = (F-2451545)/36525
+        # GMT offset of the observer in hours.
+        z_o= date_time_tz.utcoffset().total_seconds()/3600
 
-    # Geom Mean Long Sun (deg)
-    I = (280.46646+G*(36000.76983+0.0003032*G)) % 360
-    I_r= math.radians(I)
+        # Fractions of a day after midnight
+        t = date_time_tz.time()
+        self.E = t.hour/24 + t.minute/24/60 + t.second/24/60/60
 
-    # Geom Mean Anom Sun (deg)
-    J = 357.52911+G*(35999.05029-0.0001537*G)
-    J_r= math.radians(J)
+        # Julian Date for date + time - UTC offset
+        self.F = date_time_tz.toordinal()-self.JAD_epoch+self.E-z_o/24
 
-    # Eccent Earth Orbit
-    K = 0.016708634-G*(0.000042037+0.0000001267*G)
+        # Julian Century
+        self.G = (self.F-2451545)/36525
 
-    # Sun Eq of Ctr
-    L = ( math.sin(J_r)*(1.914602-G*(0.004817+0.000014*G))
-     + math.sin(2*J_r)*(0.019993-0.000101*G)
-     + math.sin(3*J_r)*0.000289 )
+        # Geom Mean Long Sun (deg)
+        self.I = (280.46646+self.G*(36000.76983+0.0003032*self.G)) % 360
+        I_r= math.radians(self.I)
 
-    # Sun True Long (deg)
-    M = I + L
-    M_r = math.radians( M )
+        # Geom Mean Anom Sun (deg)
+        self.J = 357.52911+self.G*(35999.05029-0.0001537*self.G)
+        J_r= math.radians(self.J)
 
-    # Sun True Anom (deg).
-    N = J + L
-    N_r = math.radians( N )
+        # Eccent Earth Orbit
+        self.K = 0.016708634-self.G*(0.000042037+0.0000001267*self.G)
 
-    # Sun Rad Vector (AUs)
-    O = (1.000001018*(1-K**2))/(1+K*math.cos(N_r))
+        # Sun Eq of Ctr
+        self.L = ( math.sin(J_r)*(1.914602-self.G*(0.004817+0.000014*self.G))
+         + math.sin(2*J_r)*(0.019993-0.000101*self.G)
+         + math.sin(3*J_r)*0.000289 )
 
-    # Sun App Long (deg)
-    P = M-0.00569-0.00478*math.sin(125.04-1934.136*G)
-    P_r= math.radians( P )
+        # Sun True Long (deg)
+        self.M = self.I + self.L
+        M_r = math.radians( self.M )
 
-    # Mean Obliq Ecliptic (deg)
-    Q = 23+(26+((21.448-G*(46.815+G*(0.00059-G*0.001813))))/60)/60
+        # Sun True Anom (deg).
+        self.N = self.J + self.L
+        N_r = math.radians( self.N )
 
-    # Obliq Corr (deg)
-    R = Q+0.00256*math.cos(125.04-1934.136*G)
-    R_r = math.radians( R )
+        # Sun Rad Vector (AUs)
+        self.O = (1.000001018*(1-self.K**2))/(1+self.K*math.cos(N_r))
 
-    # Sun Rt Ascen (deg)
-    S_r = math.atan2( math.cos(R_r)*math.sin(P_r), math.cos(P_r) )
-    S = math.degrees( S_r )
+        # Sun App Long (deg)
+        self.P = self.M-0.00569-0.00478*math.sin(125.04-1934.136*self.G)
+        P_r= math.radians( self.P )
 
-    # Sun Declin (deg)
-    T_r = math.asin(math.sin(R_r)*math.sin(P_r))
-    T = math.degrees( T_r )
+        # Mean Obliq Ecliptic (deg)
+        self.Q = 23+(26+((21.448-self.G*(46.815+self.G*(0.00059-self.G*0.001813))))/60)/60
 
-    # var y
-    U = math.tan( R_r/2 )**2
+        # Obliq Corr (deg)
+        self.R = self.Q+0.00256*math.cos(125.04-1934.136*self.G)
+        R_r = math.radians( self.R )
 
-    # Eq of Time (minutes)
-    V_r = 4*(
-        U*math.sin(2*I_r) - 2*K*math.sin(J_r)
-        + 4*K*U*math.sin(J_r)*math.cos(2*I_r)
-        - 0.5*U**2*math.sin(4*I_r)
-        - 1.25*K**2*math.sin(2*J_r)
-        )
-    V = math.degrees( V_r )
+        # Sun Rt Ascen (deg)
+        S_r = math.atan2( math.cos(R_r)*math.sin(P_r), math.cos(P_r) )
+        self.S = math.degrees( S_r )
 
-    # HA Sunrise (deg)
-    # 90.833 is sun just below the horizon.
-    # Can other values can be used for various definitions of twilight?
-    phi_or= math.radians(phi_o)
+        # Sun Declin (deg)
+        T_r = math.asin(math.sin(R_r)*math.sin(P_r))
+        self.T = math.degrees( T_r )
 
-    # Original.
-    W_r = math.acos(
-        math.cos(math.radians(horizon)) / (math.cos(phi_or)*math.cos(T_r))
-        - math.tan(phi_or)*math.tan(T_r)
+        # var y
+        self.U = math.tan( R_r/2 )**2
+
+        # Eq of Time (minutes)
+        V_r = 4*(
+            self.U*math.sin(2*I_r) - 2*self.K*math.sin(J_r)
+            + 4*self.K*self.U*math.sin(J_r)*math.cos(2*I_r)
+            - 0.5*self.U**2*math.sin(4*I_r)
+            - 1.25*self.K**2*math.sin(2*J_r)
             )
-    W = math.degrees( W_r )
+        self.V = math.degrees( V_r )
 
-    # Alternate.
-#     W_a= (math.sin(math.radians(90-horizon)) - math.sin(phi_or)*math.sin(T_r)) / (math.cos(phi_or)*math.cos(T_r))
-#     if W_a > 1:
-#         W_r_alt = 0
-#     elif W_a < -1:
-#         W_r_alt = math.pi
-#     else:
-#         W_r_alt = math.acos( W_a )
-#     W = math.degrees( W_r_alt )
+        # HA Sunrise (deg)
+        # 90.833 is sun just below the horizon.
+        # Can other values can be used for various definitions of twilight?
+        phi_or= math.radians(phi_o)
 
-    # Solar Noon (LST)
-    X = (720 - 4*lambda_o - V + 60*z_o)/1440
-    X_h, X_m, X_s = hours_to_h_m_s(X)
-    X_hms= "{0:02.0f}:{1:02.0f}:{2:04.1f}".format(*hours_to_h_m_s(X))
+        # Original.
+        W_r = math.acos(
+            math.cos(math.radians(horizon)) / (math.cos(phi_or)*math.cos(T_r))
+            - math.tan(phi_or)*math.tan(T_r)
+                )
+        self.W = math.degrees( W_r )
 
-    # Sunrise Time (LST)
-    Y = X-4*W/1440
-    Y_h, Y_m, Y_s = hours_to_h_m_s(Y)
-    Y_hms= "{0:02.0f}:{1:02.0f}:{2:04.1f}".format(*hours_to_h_m_s(Y))
+        # Alternate.
+    #     W_a= (math.sin(math.radians(90-horizon)) - math.sin(phi_or)*math.sin(T_r)) / (math.cos(phi_or)*math.cos(T_r))
+    #     if W_a > 1:
+    #         W_r_alt = 0
+    #     elif W_a < -1:
+    #         W_r_alt = math.pi
+    #     else:
+    #         W_r_alt = math.acos( W_a )
+    #     W = math.degrees( W_r_alt )
 
-    # Sunset Time (LST)
-    Z = X+4*W/1440
-    Z_h, Z_m, Z_s = hours_to_h_m_s(Z)
-    Z_hms= "{0:02.0f}:{1:02.0f}:{2:04.1f}".format(*hours_to_h_m_s(Z))
+        # Solar Noon (LST)
+        self.X = (720 - 4*lambda_o - self.V + 60*z_o)/1440
+        self.X_h, self.X_m, self.X_s = hours_to_h_m_s(self.X)
+        self.X_hms= "{0:02.0f}:{1:02.0f}:{2:04.1f}".format(*hours_to_h_m_s(self.X))
 
-    # Sunlight Duration (minutes)
-    AA = 8*W
+        # Sunrise Time (LST)
+        self.Y = self.X-4*self.W/1440
+        self.Y_h, self.Y_m, self.Y_s = hours_to_h_m_s(self.Y)
+        self.Y_hms= "{0:02.0f}:{1:02.0f}:{2:04.1f}".format(*hours_to_h_m_s(self.Y))
 
-    # True Solar Time (min).
-    # Requires the time-of-day offset from the Julian date.
-    AB= (1440*E + V + 4*lambda_o - 60*z_o) % 1440
+        # Sunset Time (LST)
+        self.Z = self.X+4*self.W/1440
+        self.Z_h, self.Z_m, self.Z_s = hours_to_h_m_s(self.Z)
+        self.Z_hms= "{0:02.0f}:{1:02.0f}:{2:04.1f}".format(*hours_to_h_m_s(self.Z))
 
-    # Hour Angle (deg).
-    if AB/4 < 0:
-        AC = AB/4 + 180
-    else:
-        AC = AB/4 - 180
-    AC_r = math.radians(AC)
+        # Sunlight Duration (minutes)
+        self.AA = 8*self.W
 
-    # Solar Zenith Angle (deg).
-    AD_r = math.acos( math.sin(phi_or)*math.sin(T_r) + math.cos(phi_or)*math.cos(T_r)*math.cos(AC_r) )
-    AD = math.degrees( AD_r )
+        # True Solar Time (min).
+        # Requires the time-of-day offset from the Julian date.
+        self.AB= (1440*self.E + self.V + 4*lambda_o - 60*z_o) % 1440
 
-    # Solar Elevation Angle (deg).
-    AE = 90-AD
-    AE_r = math.radians(AE)
+        # Hour Angle (deg).
+        if self.AB/4 < 0:
+            self.AC = self.AB/4 + 180
+        else:
+            self.AC = self.AB/4 - 180
+        AC_r = math.radians(self.AC)
 
-    # Approx Atmospheric Refraction (deg)
-    if 85 < AE:
-        AF= 0
-    elif 5 < AE <= 85:
-        AF = (58.1/math.tan(AE_r) - 0.07/math.tan(AE_r)**3 + 0.000086/math.tan(AE_r)**5) / 3600
-    elif -0.575 < AE <=5 :
-        AF = 1735+AE*(-518.2+AE*(103.4+AE*(-12.79+AE*0.711))) / 3600
-    else: # AE < -0.575, i.e., just below the horizon.
-        AF = -20.772/math.tan(AE_r) / 3600
+        # Solar Zenith Angle (deg).
+        AD_r = math.acos( math.sin(phi_or)*math.sin(T_r) + math.cos(phi_or)*math.cos(T_r)*math.cos(AC_r) )
+        self.AD = math.degrees( AD_r )
 
-    # Solar Elevation corrected for atm refraction (deg).
-    AG = AE+AF
+        # Solar Elevation Angle (deg).
+        self.AE = 90-self.AD
+        AE_r = math.radians(self.AE)
 
-    # Solar Azimuth Angle (deg cw from N)
-    AH_a= (
-        (math.sin(phi_or)*math.cos(AD_r)-math.sin(T_r)) / (math.cos(phi_or)*math.sin(AD_r))
-    )
-    if AH_a > 1: AH_rstar= 0
-    elif AH_a < -1: AH_rstar= math.pi
-    else: AH_rstar = math.acos( AH_a )
-    if AC > 0:
-        AH = math.degrees(AH_rstar) + 180 % 360
-    else:
-        AH = (540-math.degrees(AH_rstar)) % 360
+        # Approx Atmospheric Refraction (deg)
+        if 85 < self.AE:
+            self.AF= 0
+        elif 5 < self.AE <= 85:
+            self.AF = (58.1/math.tan(AE_r) - 0.07/math.tan(AE_r)**3 + 0.000086/math.tan(AE_r)**5) / 3600
+        elif -0.575 < self.AE <=5 :
+            self.AF = 1735+self.AE*(-518.2+self.AE*(103.4+self.AE*(-12.79+self.AE*0.711))) / 3600
+        else: # AE < -0.575, i.e., just below the horizon.
+            self.AF = -20.772/math.tan(AE_r) / 3600
 
-    return locals()
+        # Solar Elevation corrected for atm refraction (deg).
+        self.AG = self.AE+self.AF
+
+        # Solar Azimuth Angle (deg cw from N)
+        AH_a= (
+            (math.sin(phi_or)*math.cos(AD_r)-math.sin(T_r)) / (math.cos(phi_or)*math.sin(AD_r))
+        )
+        if AH_a > 1: AH_rstar= 0
+        elif AH_a < -1: AH_rstar= math.pi
+        else: AH_rstar = math.acos( AH_a )
+        if self.AC > 0:
+            self.AH = math.degrees(AH_rstar) + 180 % 360
+        else:
+            self.AH = (540-math.degrees(AH_rstar)) % 360
 
 def rise_transit_set( lat, lon, date_time_tz, horizon=None ):
     """Compute rise time, noon transit time and set time for the sun.
@@ -464,15 +458,16 @@ def rise_transit_set( lat, lon, date_time_tz, horizon=None ):
         -   Nautical: 102°; 12° below horizon
         -   Civil: 96°; 6° below horizon
 
-    :returns: Tuple of :class:`datetime.datetime` objects for rise, noon transit and set. These are timezone aware and will have the same timezone as
-    the input datetime.
+    :returns: Tuple of :class:`datetime.datetime` objects for rise, noon transit
+        and set. These are timezone aware and will have the same timezone as
+        the input datetime.
     """
     date= date_time_tz.replace( hour=0, minute=0, second=0, microsecond=0 )
-    s= AttrDict( solar( lat, lon, date, horizon ) )
+    sun= Position_Sun( lat, lon, date, horizon )
 
-    transit= date + datetime.timedelta( days=s.X )
-    rise= date + datetime.timedelta( days=s.Y )
-    set= date + datetime.timedelta( days=s.Z )
+    transit= date + datetime.timedelta( days=sun.X )
+    rise= date + datetime.timedelta( days=sun.Y )
+    set= date + datetime.timedelta( days=sun.Z )
 
     return rise, transit, set
 
@@ -489,8 +484,9 @@ def azimuth_elevation( lat, lon, date_time ):
         :class:`datetime.datetime` for which the sun's position is requested.
         This must include tzinfo for the observer's timezone.
 
-    :returns: Tuple of :class:`datetime.datetime` objects for rise, noon transit and set. These are timezone aware and will have the same timezone as
-    the input datetime.
+    :returns: Tuple of :class:`datetime.datetime` objects for rise, noon transit
+        and set. These are timezone aware and will have the same timezone as
+        the input datetime.
     """
-    s= AttrDict( solar( lat, lon, date_time ) )
-    return s.AH, s.AE
+    sun= Position_Sun( lat, lon, date_time )
+    return sun.AH, sun.AE
