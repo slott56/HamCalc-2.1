@@ -58,7 +58,7 @@
 <h1>latlong &#8211; Latitude/Longitude Data Base<a class="headerlink" href="#latlong-latitude-longitude-data-base" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="analysis">
 <h2>Analysis<a class="headerlink" href="#analysis" title="Permalink to this headline">¶</a></h2>
-<p>This is a tiny &#8220;wrapper&#8221; that chooses between <strong class="program">pathfind</strong> and
+<p>This program is a tiny &#8220;wrapper&#8221; that chooses between <strong class="program">pathfind</strong> and
 <strong class="program">equiv</strong>. It presents an introduction and a menu.</p>
 <div class="highlight-python"><pre>    LATITUDE and LONGITUDE DATA BASE
 
@@ -82,8 +82,8 @@ the database, you need only enter the first few letters of a city,
 state or country and the program will display a list from which you
 may select the location of your choice.</pre>
 </div>
-<p>However.</p>
-<p>Inside <strong class="program">pathfind</strong>, we find this comment:</p>
+<p><strong>However</strong>.</p>
+<p>Inside the program <strong class="program">pathfind</strong>, we find this comment:</p>
 <div class="highlight-python"><pre>10 :REM&#x27;PATHFIND - Combined GRCIRCL &amp; LATLONG programs - 02 APR 92 rev. 17 APR 2010</pre>
 </div>
 <p>And this code, too:</p>
@@ -99,9 +99,9 @@ we now find in <strong class="program">pathfind</strong>.</p>
 </div>
 <div class="section" id="implementation">
 <h2>Implementation<a class="headerlink" href="#implementation" title="Permalink to this headline">¶</a></h2>
-<p>Perhaps the right thing to do is to uncombine the <strong class="program">latlong</strong> program from the <strong class="program">grcircl</strong> program.</p>
-<p>Perhaps we should make the lat-lon database update a stand-alone program.</p>
-<p>We can easily import it into <strong class="program">pathfind</strong> or use it separately.</p>
+<p>What we&#8217;ve done is to uncombine the <strong class="program">latlong</strong> program from the <strong class="program">grcircl</strong> program.</p>
+<p>The lat-lon database update is one, separate stand-alone program, <strong class="program">latlong</strong>.</p>
+<p>We can easily import the search function into <strong class="program">pathfind</strong>.</p>
 </div>
 </div>
 

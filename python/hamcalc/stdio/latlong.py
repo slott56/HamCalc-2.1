@@ -99,6 +99,7 @@ def remove_data( target, data ):
 
 def search_place( data ):
     """Search the database for a Place."""
+    target= None
     print( " < 1 > City, Town, Province, State or Country" )
     print( " < 2 > Latitude and Longitude" )
     z= input( "CHOICE? " )
@@ -172,7 +173,8 @@ def search_lat_lon( data ):
     except ValueError:
         return
     # Sort into order by distance between lat, lon and item in database.
-    by_distance= list( sorted( data, key=lambda i: distance.range_bearing(i.latitude, i.longitude, lat, lon) ) )
+    by_distance= list( sorted( data, key=lambda i:
+    distance.great_circle_distance(i.latitude, i.longitude, lat, lon) ) )
     return pick_from( by_distance )
 
 def pairs( iterable ):
@@ -205,9 +207,9 @@ def list_data( data ):
             column2= ''
         print( "{0:38s} {1:38s}".format( column1, column2 ) )
 
+DB_file= "./LATLONG.DAT"
 def run():
-    db_file= "./LATLONG.DAT"
-    data = load_data( db_file )
+    data = load_data( DB_file )
     z=None
     while z != '0':
         print("  < 1 >  ADD a listing")
@@ -227,8 +229,8 @@ def run():
     while option not in ('s', 'x'):
         option= input( "  < s > Save Changes, < x > Exit? " )
     if option == "s":
-        print( "Writing", db_file )
-        save_data( data, db_file )
+        print( "Writing", DB_file )
+        save_data( data, DB_file )
 
 if __name__ == "__main__":
     run()

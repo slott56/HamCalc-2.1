@@ -354,9 +354,9 @@ class Program_Menu( Menu ):
         """Display the two-column program menu."""
         print( " H A M C A L C  Program Menu {0}                           by George Murphy VE3ERP".format( self.name ) )
         for i in range( min(20, len(self.item_list) ) ):
-            print( "{0:02d} {1.title:32s}".format(i, self.item_list[i]), end='' )
+            print( "{0:02d} {1.title:36s}".format(i, self.item_list[i]), end='' )
             if i+20 < len(self.item_list):
-                print( "{0:02d} {1.title:32s}".format(i+20, self.item_list[i+20]), end='' )
+                print( "{0:02d} {1.title:36s}".format(i+20, self.item_list[i+20]), end='' )
             print()
         print( "41:MENU   42:INDEX   43:EXIT" )
     def get_choice( self ):
@@ -502,6 +502,7 @@ def run( intro=True ):
 
     # Find all programs
     all_programs= list( mod_docstring_iter() )
+    all_programs.sort( key=lambda item: item.title )
     # Group into 40-program subsets.
     page_group_iter= ( all_programs[i:i+40] for i in range(0, len(all_programs), 40 ) )
     # Build Program_Menu instances for each subset.

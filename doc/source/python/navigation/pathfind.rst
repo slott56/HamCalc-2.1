@@ -1,3 +1,5 @@
+..  _`navigation.pathfind`:
+
 pathfind -- Great Circle Paths & Distances
 -------------------------------------------
 
@@ -32,25 +34,111 @@ Also there's an add-change-delete functionality, too.
 This includes some clever search capability for locating
 a place by name or by location coordinates.
 
-Range and Bearing
-^^^^^^^^^^^^^^^^^^
+Great Circle Distance
+^^^^^^^^^^^^^^^^^^^^^^
 
-This seems like the essential equations from :ref:`navigation.gridsq`
-for range and bearing from latitude and longitude.
+From Chris Veness we have an implementation of the Haversine equations
+for great circle distance.
+
+See http://www.movable-type.co.uk/scripts/latlong.html, © 2002-2010 Chris Veness
+
+..  math::
+
+    a &= \sin^2 \frac{\Delta\phi}{2} + \cos \phi_1 \cos \phi_2 \sin^2 \frac{\Delta \lambda}{2} \\
+    c &= 2 \arctan \frac { \sqrt{a} } { \sqrt{1-a} } \\
+    d &= R \times c
+
+Generally, :math:`\phi` is Latitude, and :math:`\Delta\phi` is difference
+in latitude. :math:`\lambda` is Longitude, and :math:`\Delta\lambda` is
+difference in longitude.
+
+Example
+
+50° 03' 59" N 005° 42' 53" W to 58° 38' 38"N 003° 04' 12"W
+
+Distance = 968.9 Km
 
 Great Circle Route
 ^^^^^^^^^^^^^^^^^^^
 
-This seems like a matter of dividing the range into 12 segments,
-each with the same bearing, and computing tese 11 intermediate positions
-using :math:`r\times\frac{s}{12}`.
+This is the "Orthodrome" route calculation problem.
 
-This requires the inverse calculation of end-point latitude
-and longitude from starting point, range and bearing.
+The idea is to divide the great circle (orthodrome) into several
+sections and compute the loxodrome (rhumb line) between the
+points.
+
+Too many points means lots of steering with only tiny changes in
+direction.  Too few points means deviating from the ideal orthodromic
+course.
+
+It appears that one follows this initial course until it "makes sense" to turn.
+One rule could be to locate a place where the next orthodromic bearing
+is a "significant" turn (e.g., 5°) away from the current bearing.
+Another rule could be to divide the trip into a fixed number of segments.
+Or divide the trip into segments of a fixed distance.
+
+HamCalc divides the trip (arbitrarily) into 10 segments.
+
+From Chris Veness we have this algorithm for computing the initial bearing,
+:math:`\theta`.
+
+See http://www.movable-type.co.uk/scripts/latlong.html, © 2002-2010 Chris Veness
+
+
+..  math::
+
+    \theta = \arctan \frac{ \sin \Delta\lambda \cos \phi_2}
+        { \cos \phi_1 \sin \phi_2 - \sin \phi_1 \cos \phi_2 \cos \Delta\lambda }
+
+Example
+
+35°N 45°E (Baghdad) to 35°N 135°E (Osaka) the initial bearing is 60°.
+The final bearing is the reciprocal, 120°.
+
+Example
+
+50° 03' 59" N 005° 42' 53" W to 58° 38' 38"N 003° 04' 12"W
+
+Distance = 968.9 Km
+
+Initial Bearing = 009° 07' 11"
+
+Final Bearing = 011° 16' 31"
+
+
+Great Circle Destination
+^^^^^^^^^^^^^^^^^^^^^^^^^
+
+From Chris Veness we have a calculation of a destination point on the
+create circle.
+
+See http://www.movable-type.co.uk/scripts/latlong.html, © 2002-2010 Chris Veness
+
+..  math::
+
+    \phi_2 = \arcsin \sin \phi_1 \cos \frac{d}{R} + \cos \phi_1 \sin \frac{d}{R} \cos \theta
+
+    \lambda_2 = \lambda_1 + \arctan \dfrac{ \sin \theta \sin \frac{d}{R} \cos \phi_1} {\cos \frac{d}{R} - \sin \phi_1 \sin \phi_2 }
+
+This gives us two coordinates, :math:`(\phi_2, \lambda_2)` from a starting
+point, :math:`(\phi_2, \lambda_2)`, and a bearing, :math:`\theta` and a
+distance, :math:`d`.
+
+53° 19' 14"N 001° 43' 47"W bearing 096° 01' 18" distance 124.8 km
+
+Final destination = 53° 11' 18"N 000° 08' 00"E
+
+Rhumb Line Destination Point
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+For "Plane Sailing" (i.e., shorter distances) the "loxodrome" or
+Rhumb Line is approimately the same distance as the proper great circle
+route. Here's Rhumb Line destination from a point given a range
+and bearing.
 
 From Chris Veness we have this algorithm.
 
-See http://www.movable-type.co.uk/scripts/latlong.html, |copy| 2002-2010 Chris Veness
+See http://www.movable-type.co.uk/scripts/latlong.html, © 2002-2010 Chris Veness
 
 Angular Distance, :math:`\alpha`.
 
@@ -96,6 +184,47 @@ where ln is natural log
 
 :math:`R` is the earth's mean radius: 6,371.009 km (3,958.761 mi; 3,440.069 nm).
 
+
+Rhumb Line Range and Bearing
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+For "Plane Sailing" (i.e., shorter distances) the "loxodrome" or
+Rhumb Line is approimately the same distance as the proper great circle
+route. Here's Rhumb Line range and bearing.
+
+See http://www.movable-type.co.uk/scripts/latlong.html, © 2002-2010 Chris Veness
+
+..  math::
+
+    \Delta\varphi = \ln \left[ \frac{\tan( lat_2 / 2 + \pi / 4 )}{\tan( lat_1 / 2 + \pi / 4 )} \right]
+
+If this is an E:W line (i.e., :math:`\Delta \varphi \approx 0`):
+
+..  math::
+
+    q = \cos lat_1
+
+Otherwise:
+
+..  math::
+
+    q = {\Delta lat} / {\Delta \varphi}
+
+Distance, :math:`d`, and bearing, :math:`\theta`, are
+
+..  math::
+
+    d = R \times \sqrt{ {\Delta lat}^2 + q^2 \times {\Delta lon}^2 }
+
+..  math::
+
+    \theta = \arctan{ \frac{\Delta lon}{\Delta\varphi}}
+
+where :math:`\ln` is natural log,
+:math:`\Delta lon` is taking shortest route (:math:`< 180 \textdegree`).
+
+:math:`R` is the earth's mean radius: 6,371.009 km (3,958.761 mi; 3,440.069 nm).
+
 Implementation
 ~~~~~~~~~~~~~~~~~~~~~
 
@@ -107,7 +236,7 @@ The lot-long database management seems like it should be broken into two parts:
 -   Search by regular expression, soundex or coordinate.
     This is a proper part of :program:`pathfind`.
 
--   Add-Change-Delete maintenance. This is a separate program.
+-   Add-Change-Delete maintenance. This is a separate program, :program:`latlong`.
 
 The distinction, however, is not crystal clear. For example,
 we can easily see a use case for adding a new location to the database
@@ -118,7 +247,6 @@ navigation.distance
 
 ..  automodule:: hamcalc.navigation.distance
     :members:
-    :noindex:
 
 
 Legacy Introduction
@@ -190,5 +318,15 @@ Quirks
 Lines 4100-6890 is a :program:`latlon` program entirely embedded within
 this great circle path-finding program.
 
-This :program:`latlon` program is nothing like the version that's
+This :program:`latlon` program is nothing like the stand-alone program that's
 available in HamCalc.
+
+This program is so popular that it's in the master menu twice.
+
+::
+
+    920 DATA pathfind, Beam Heading Calculator
+
+    1800 DATA pathfind, Great Circle Paths & Distances
+
+There aren't many programs that are in the main menu twice.

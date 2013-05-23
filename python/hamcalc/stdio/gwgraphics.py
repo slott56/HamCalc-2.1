@@ -1,4 +1,4 @@
-"""gwgraphics module
+"""GW Graphics Demo
 
 Define a graphics class that allows relatively simple
 transcription from GW-Basic to Python.

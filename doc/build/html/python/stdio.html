@@ -82,11 +82,287 @@ the relevant documentation.</p>
 module.</p>
 </li>
 </ul>
-<div class="section" id="intro">
-<h2>Intro<a class="headerlink" href="#intro" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="module-hamcalc.stdio.intro">
+<span id="intro"></span><h2>Intro<a class="headerlink" href="#module-hamcalc.stdio.intro" title="Permalink to this headline">¶</a></h2>
+<p>Intro.</p>
+<p>Displays the introductory &#8220;splash&#8221; page.</p>
+<p>The default behavior is to run the <strong class="program">hamcalc.stdio.menu</strong> application.</p>
+<p>If the menu was run from the command line, then it will run this intro
+program with the <tt class="docutils literal"><span class="pre">menu=False</span></tt> parameter to prevent recursively invoking the menu.</p>
+<dl class="function">
+<dt id="hamcalc.stdio.intro.run">
+<tt class="descclassname">hamcalc.stdio.intro.</tt><tt class="descname">run</tt><big>(</big><em>menu=True</em><big>)</big><a class="reference internal" href="../_modules/hamcalc/stdio/intro.html#run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.stdio.intro.run" title="Permalink to this definition">¶</a></dt>
+<dd><p>Show the splash page and (optionally) launch the menu.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>menu</strong> &#8211; If False, suppress the menu. Generally this is only
+used by the menu when it&#8217;s showing the intro page.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
 </div>
-<div class="section" id="menu">
-<h2>Menu<a class="headerlink" href="#menu" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="module-hamcalc.stdio.menu">
+<span id="menu"></span><h2>Menu<a class="headerlink" href="#module-hamcalc.stdio.menu" title="Permalink to this headline">¶</a></h2>
+<p>Menu.</p>
+<p>Displays menus, accepts choices, and executes programs.</p>
+<p>The default behavior is to be run from the <strong class="program">hamcalc.stdio.intro</strong> application.</p>
+<p>If the menu was run from the command line, then it will run the intro
+program with the <tt class="docutils literal"><span class="pre">menu=False</span></tt> parameter to prevent recursively invoking the menu.</p>
+<div class="section" id="application-programs">
+<h3>Application Programs<a class="headerlink" href="#application-programs" title="Permalink to this headline">¶</a></h3>
+<p>Note that we don&#8217;t trivially import the modules because we&#8217;ve adopted a
+scripting style for &#8220;main programs&#8221; that doesn&#8217;t work well with <tt class="docutils literal"><span class="pre">import</span></tt>.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>We Could But We Don&#8217;t</p>
+<p>We could demand that each application use a main program hook.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">run</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>It&#8217;s only two lines of code.</p>
+<p class="last">But. The point is to encourage recreational programming, and this
+is sometimes too much fussy overhead.</p>
+</div>
+<p>Instead, we parse each omdule to extract the docstring comment. From this
+comment we determine two things.</p>
+<ul>
+<li><p class="first">The program name is the first line.</p>
+</li>
+<li><p class="first">The Hamdex indexing information is the rest of the docstring.
+This is expected to be in the same CSV format as the legacy
+<tt class="file docutils literal"><span class="pre">INDEX/HAMDEX.FIL</span></tt> file.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="s">&quot;Heading&quot;</span><span class="p">,</span><span class="s">&quot;, Subheading&quot;</span><span class="p">,</span><span class="s">&quot;, note&quot;</span>
+</pre></div>
+</div>
+<p>Yes, the extra commas were part of the legacy. They&#8217;re optional.</p>
+</li>
+</ul>
+<p>All of the programs in the stdio directory except <strong class="program">menu</strong> and <strong class="program">intro</strong> are examined. These two programs are treated specially.</p>
+</div>
+<div class="section" id="other-programs">
+<h3>Other Programs<a class="headerlink" href="#other-programs" title="Permalink to this headline">¶</a></h3>
+<p>This program imports and runs the <strong class="program">intro</strong> program.</p>
+<p>The following other programs are simply incorporated into this one.</p>
+<div class="highlight-python"><pre>720 DATA /hamcalc/prog/quiktabl,QuikTables
+830 DATA /hamcalc/prog/helphint,READ ME
+850 DATA /hamcalc/prog/newsince,Recent program additions &amp; upgrades
+870 DATA /hamcalc/prog/zexit,EXIT</pre>
+</div>
+<p>The following program is explicitly referenced.</p>
+<div class="highlight-python"><pre>840 DATA /hamcalc/prog/logoclok,Clock Screen Saver</pre>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>Why Are These Special?</p>
+<p>These &#8220;other&#8221; programs are like <strong class="program">intro</strong>: they&#8217;re not proper calculations. They&#8217;re just overhead.</p>
+<p>However.</p>
+<p><strong class="program">intro</strong> is special in that it&#8217;s called out by the external .BAT file as being the &#8220;entry point&#8221;.</p>
+<p>Therefore, <strong class="program">intro</strong> needs to be left around as a visible artifact.</p>
+<p class="last">The other programs, (<tt class="docutils literal"><span class="pre">helphint</span></tt>, <tt class="docutils literal"><span class="pre">newsince</span></tt> and <tt class="docutils literal"><span class="pre">zexit</span></tt>) seem to have
+no stand-alone life.</p>
+</div>
+</div>
+<div class="section" id="quick-tables">
+<h3>Quick Tables<a class="headerlink" href="#quick-tables" title="Permalink to this headline">¶</a></h3>
+<p>The &#8220;QuikTables&#8221; program, <tt class="file docutils literal"><span class="pre">quiktabl</span></tt>, specifically lists a few other
+programs that bypass the ordinary menu structure. Here&#8217;s the list.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">Item</span><span class="p">(</span> <span class="s">&quot;&quot;</span><span class="p">,</span> <span class="s">&quot;awgexact&quot;</span><span class="p">,</span> <span class="s">&quot;A.W.G. wire sizes&quot;</span> <span class="p">),</span>
+<span class="n">Item</span><span class="p">(</span> <span class="s">&quot;&quot;</span><span class="p">,</span> <span class="s">&quot;propcirc&quot;</span><span class="p">,</span> <span class="s">&quot;Circles - properties of&quot;</span> <span class="p">),</span>
+<span class="n">Item</span><span class="p">(</span> <span class="s">&quot;&quot;</span><span class="p">,</span> <span class="s">&quot;decibel&quot;</span><span class="p">,</span> <span class="s">&quot;Decibels&quot;</span> <span class="p">),</span>
+<span class="n">Item</span><span class="p">(</span> <span class="s">&quot;&quot;</span><span class="p">,</span> <span class="s">&quot;deciconv&quot;</span><span class="p">,</span> <span class="s">&quot;Decimal numbers to degrees/minutes/seconds&quot;</span> <span class="p">),</span>
+<span class="n">Item</span><span class="p">(</span> <span class="s">&quot;&quot;</span><span class="p">,</span> <span class="s">&quot;decifrac&quot;</span><span class="p">,</span> <span class="s">&quot;Decimals to fractions&quot;</span> <span class="p">),</span>
+<span class="n">Item</span><span class="p">(</span> <span class="s">&quot;&quot;</span><span class="p">,</span> <span class="s">&quot;equiv&quot;</span><span class="p">,</span> <span class="s">&quot;Degrees to radians&quot;</span> <span class="p">),</span>
+<span class="n">Item</span><span class="p">(</span> <span class="s">&quot;&quot;</span><span class="p">,</span> <span class="s">&quot;deciconv&quot;</span><span class="p">,</span> <span class="s">&quot;Degrees/minutes/seconds to decimal&quot;</span> <span class="p">),</span>
+<span class="n">Item</span><span class="p">(</span> <span class="s">&quot;&quot;</span><span class="p">,</span> <span class="s">&quot;equiv&quot;</span><span class="p">,</span> <span class="s">&quot;Equivalent values&quot;</span> <span class="p">),</span>
+<span class="n">Item</span><span class="p">(</span> <span class="s">&quot;&quot;</span><span class="p">,</span> <span class="s">&quot;decifrac&quot;</span><span class="p">,</span> <span class="s">&quot;Fractions to decimals&quot;</span> <span class="p">),</span>
+<span class="n">Item</span><span class="p">(</span> <span class="s">&quot;&quot;</span><span class="p">,</span> <span class="s">&quot;numderiv&quot;</span><span class="p">,</span> <span class="s">&quot;Logarithms&quot;</span> <span class="p">),</span>
+<span class="n">Item</span><span class="p">(</span> <span class="s">&quot;&quot;</span><span class="p">,</span> <span class="s">&quot;numderiv&quot;</span><span class="p">,</span> <span class="s">&quot;Numbers - functions of&quot;</span> <span class="p">),</span>
+<span class="n">Item</span><span class="p">(</span> <span class="s">&quot;&quot;</span><span class="p">,</span> <span class="s">&quot;numderiv&quot;</span><span class="p">,</span> <span class="s">&quot;Powers of numbers&quot;</span> <span class="p">),</span>
+<span class="n">Item</span><span class="p">(</span> <span class="s">&quot;&quot;</span><span class="p">,</span> <span class="s">&quot;primenos&quot;</span><span class="p">,</span> <span class="s">&quot;Prime numbers&quot;</span> <span class="p">),</span>
+<span class="n">Item</span><span class="p">(</span> <span class="s">&quot;&quot;</span><span class="p">,</span> <span class="s">&quot;equiv&quot;</span><span class="p">,</span> <span class="s">&quot;Radians to degrees&quot;</span> <span class="p">),</span>
+<span class="n">Item</span><span class="p">(</span> <span class="s">&quot;&quot;</span><span class="p">,</span> <span class="s">&quot;numderiv&quot;</span><span class="p">,</span> <span class="s">&quot;Reciprocals of numbers&quot;</span> <span class="p">),</span>
+<span class="n">Item</span><span class="p">(</span> <span class="s">&quot;&quot;</span><span class="p">,</span> <span class="s">&quot;numderiv&quot;</span><span class="p">,</span> <span class="s">&quot;Roots of numbers&quot;</span> <span class="p">),</span>
+<span class="n">Item</span><span class="p">(</span> <span class="s">&quot;&quot;</span><span class="p">,</span> <span class="s">&quot;equiv&quot;</span><span class="p">,</span> <span class="s">&quot;Temperature&quot;</span> <span class="p">),</span>
+<span class="n">Item</span><span class="p">(</span> <span class="s">&quot;&quot;</span><span class="p">,</span> <span class="s">&quot;solutri&quot;</span><span class="p">,</span> <span class="s">&quot;Triangles - solution of&quot;</span> <span class="p">),</span>
+<span class="n">Item</span><span class="p">(</span> <span class="s">&quot;&quot;</span><span class="p">,</span> <span class="s">&quot;trig&quot;</span><span class="p">,</span> <span class="s">&quot;Trigonometric functions&quot;</span> <span class="p">),</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="data-files">
+<h3>Data Files<a class="headerlink" href="#data-files" title="Permalink to this headline">¶</a></h3>
+<p>This program reads and displays two documentation files.</p>
+<ul class="simple">
+<li>The change log file.  <tt class="file docutils literal"><span class="pre">/hamcalc/docfiles/newsince.rtf</span></tt></li>
+<li>The ackowledgements file.  <tt class="file docutils literal"><span class="pre">/hamcalc/docfiles/acknow.fil</span></tt></li>
+</ul>
+<dl class="class">
+<dt id="hamcalc.stdio.menu.Item">
+<em class="property">class </em><tt class="descclassname">hamcalc.stdio.menu.</tt><tt class="descname">Item</tt><big>(</big><em>path</em>, <em>name</em>, <em>docstring</em><big>)</big><a class="reference internal" href="../_modules/hamcalc/stdio/menu.html#Item"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.stdio.menu.Item" title="Permalink to this definition">¶</a></dt>
+<dd><p>A menu Item is a runnable program.
+This will have a path, a name, and a docstring.</p>
+<p>The docstring is further parsed into the title and the hamdex indexing phrases.</p>
+<dl class="staticmethod">
+<dt id="hamcalc.stdio.menu.Item.parse_docstring">
+<em class="property">static </em><tt class="descname">parse_docstring</tt><big>(</big><em>docstring</em><big>)</big><a class="reference internal" href="../_modules/hamcalc/stdio/menu.html#Item.parse_docstring"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.stdio.menu.Item.parse_docstring" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parse a docstring.</p>
+<p>Line 1 is the title.</p>
+<p>All other lines are CSV lines with Hamdex index information.
+Generally, in the form &#8220;Heading&#8221;, &#8220;Subheading&#8221;, &#8220;Notes&#8221;, &#8220;Program&#8221;
+We discard the fourth column, if present.</p>
+<p>Also, old-style Hamdex had commas in the data:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="s">&quot;BAROMETER&quot;</span><span class="p">,</span><span class="s">&quot;, equivalent readings&quot;</span><span class="p">,</span><span class="s">&quot;&quot;</span><span class="p">,</span><span class="s">&quot;BAROMTR&quot;</span>
+</pre></div>
+</div>
+<p>This is silly; we don&#8217;t need the comma.</p>
+<p>We collapse the Hamdex index items into a single string.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="hamcalc.stdio.menu.Menu">
+<em class="property">class </em><tt class="descclassname">hamcalc.stdio.menu.</tt><tt class="descname">Menu</tt><big>(</big><em>name</em><big>)</big><a class="reference internal" href="../_modules/hamcalc/stdio/menu.html#Menu"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.stdio.menu.Menu" title="Permalink to this definition">¶</a></dt>
+<dd><p>Show a menu, pick an item.</p>
+<p>For a top-level menu, that reveals a sub-menu.
+For a sub-menu, that executes a program.</p>
+<dl class="method">
+<dt id="hamcalc.stdio.menu.Menu.handle_choice">
+<tt class="descname">handle_choice</tt><big>(</big><em>choice</em><big>)</big><a class="reference internal" href="../_modules/hamcalc/stdio/menu.html#Menu.handle_choice"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.stdio.menu.Menu.handle_choice" title="Permalink to this definition">¶</a></dt>
+<dd><p>May set self.quit or self.finished.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="hamcalc.stdio.menu.Program_Menu">
+<em class="property">class </em><tt class="descclassname">hamcalc.stdio.menu.</tt><tt class="descname">Program_Menu</tt><big>(</big><em>name</em>, <em>item_list</em><big>)</big><a class="reference internal" href="../_modules/hamcalc/stdio/menu.html#Program_Menu"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.stdio.menu.Program_Menu" title="Permalink to this definition">¶</a></dt>
+<dd><p>The program menu.</p>
+<p>Picking an item runs a program.</p>
+<dl class="method">
+<dt id="hamcalc.stdio.menu.Program_Menu.display">
+<tt class="descname">display</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/hamcalc/stdio/menu.html#Program_Menu.display"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.stdio.menu.Program_Menu.display" title="Permalink to this definition">¶</a></dt>
+<dd><p>Display the two-column program menu.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="hamcalc.stdio.menu.Program_Menu.get_choice">
+<tt class="descname">get_choice</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/hamcalc/stdio/menu.html#Program_Menu.get_choice"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.stdio.menu.Program_Menu.get_choice" title="Permalink to this definition">¶</a></dt>
+<dd><p>Prompt and get the user&#8217;s choice.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="hamcalc.stdio.menu.Program_Menu.handle_choice">
+<tt class="descname">handle_choice</tt><big>(</big><em>choice</em><big>)</big><a class="reference internal" href="../_modules/hamcalc/stdio/menu.html#Program_Menu.handle_choice"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.stdio.menu.Program_Menu.handle_choice" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handle the user&#8217;s choice.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="hamcalc.stdio.menu.QT_Menu">
+<em class="property">class </em><tt class="descclassname">hamcalc.stdio.menu.</tt><tt class="descname">QT_Menu</tt><a class="reference internal" href="../_modules/hamcalc/stdio/menu.html#QT_Menu"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.stdio.menu.QT_Menu" title="Permalink to this definition">¶</a></dt>
+<dd><p>The QuikTabl menu.</p>
+<dl class="method">
+<dt id="hamcalc.stdio.menu.QT_Menu.display">
+<tt class="descname">display</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/hamcalc/stdio/menu.html#QT_Menu.display"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.stdio.menu.QT_Menu.display" title="Permalink to this definition">¶</a></dt>
+<dd><p>Display the QuickTable menu.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="hamcalc.stdio.menu.QT_Menu.get_choice">
+<tt class="descname">get_choice</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/hamcalc/stdio/menu.html#QT_Menu.get_choice"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.stdio.menu.QT_Menu.get_choice" title="Permalink to this definition">¶</a></dt>
+<dd><p>Prompt and get the user&#8217;s choice.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="hamcalc.stdio.menu.Top_Menu">
+<em class="property">class </em><tt class="descclassname">hamcalc.stdio.menu.</tt><tt class="descname">Top_Menu</tt><big>(</big><em>quicktables</em>, <em>item_list</em><big>)</big><a class="reference internal" href="../_modules/hamcalc/stdio/menu.html#Top_Menu"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.stdio.menu.Top_Menu" title="Permalink to this definition">¶</a></dt>
+<dd><p>The top-level menu.</p>
+<p>Picking an item here shows a sub-menu.</p>
+<dl class="method">
+<dt id="hamcalc.stdio.menu.Top_Menu.display">
+<tt class="descname">display</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/hamcalc/stdio/menu.html#Top_Menu.display"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.stdio.menu.Top_Menu.display" title="Permalink to this definition">¶</a></dt>
+<dd><p>Display the top-level menu.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="hamcalc.stdio.menu.Top_Menu.get_choice">
+<tt class="descname">get_choice</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/hamcalc/stdio/menu.html#Top_Menu.get_choice"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.stdio.menu.Top_Menu.get_choice" title="Permalink to this definition">¶</a></dt>
+<dd><p>Prompt and get the user&#8217;s choice.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="hamcalc.stdio.menu.Top_Menu.handle_choice">
+<tt class="descname">handle_choice</tt><big>(</big><em>choice</em><big>)</big><a class="reference internal" href="../_modules/hamcalc/stdio/menu.html#Top_Menu.handle_choice"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.stdio.menu.Top_Menu.handle_choice" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handle the user&#8217;s choice.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="hamcalc.stdio.menu.Topic_Index">
+<em class="property">class </em><tt class="descclassname">hamcalc.stdio.menu.</tt><tt class="descname">Topic_Index</tt><big>(</big><em>item_list</em><big>)</big><a class="reference internal" href="../_modules/hamcalc/stdio/menu.html#Topic_Index"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.stdio.menu.Topic_Index" title="Permalink to this definition">¶</a></dt>
+<dd><p>The Hamdex topic index.</p>
+<p>Picking an item runs a program.</p>
+<p>Each page is 24 rows of one-letter codes: <tt class="docutils literal"><span class="pre">&lt;a&gt;-&lt;x&gt;</span></tt> plus
+a additional menu items for navigation</p>
+<p><tt class="docutils literal"><span class="pre">1-NEXT</span> <span class="pre">PAGE</span> <span class="pre">│2-PREVIOUS</span> <span class="pre">PAGE</span> <span class="pre">│3-ANOTHER</span> <span class="pre">PAGE</span> <span class="pre">│4-EXIT</span></tt></p>
+<p>The &#8220;ANOTHER PAGE&#8221; prompt gets a starting letter to be
+used to filter the programs in the index.</p>
+<p>Note that programs are listed multiple times if they
+have multiple Hamdex index lines in their docstring.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="hamcalc.stdio.menu.mod_docstring_iter">
+<tt class="descclassname">hamcalc.stdio.menu.</tt><tt class="descname">mod_docstring_iter</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/hamcalc/stdio/menu.html#mod_docstring_iter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.stdio.menu.mod_docstring_iter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Iterator over the module names and docstrings; to create menu Items.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="hamcalc.stdio.menu.module_iter">
+<tt class="descclassname">hamcalc.stdio.menu.</tt><tt class="descname">module_iter</tt><big>(</big><em>omit=('intro'</em>, <em>'menu')</em><big>)</big><a class="reference internal" href="../_modules/hamcalc/stdio/menu.html#module_iter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.stdio.menu.module_iter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Iterator over the module files, excluding certain names.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="hamcalc.stdio.menu.newsince">
+<tt class="descclassname">hamcalc.stdio.menu.</tt><tt class="descname">newsince</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/hamcalc/stdio/menu.html#newsince"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.stdio.menu.newsince" title="Permalink to this definition">¶</a></dt>
+<dd><p>The change log.</p>
+<div class="admonition-todo admonition" id="index-0">
+<p class="first admonition-title">Todo</p>
+<p class="last">Display the change log file.
+<tt class="file docutils literal"><span class="pre">/hamcalc/docfiles/newsince.rtf</span></tt></p>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="hamcalc.stdio.menu.run">
+<tt class="descclassname">hamcalc.stdio.menu.</tt><tt class="descname">run</tt><big>(</big><em>intro=True</em><big>)</big><a class="reference internal" href="../_modules/hamcalc/stdio/menu.html#run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.stdio.menu.run" title="Permalink to this definition">¶</a></dt>
+<dd><p>Examine the STDIO path to locate all programs, build a two-tier index
+and a &#8220;flat&#8221; Hamdex index.</p>
+<p>Present a menu of available programs, get the user&#8217;s choice, run the requested program.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="hamcalc.stdio.menu.zexit">
+<tt class="descclassname">hamcalc.stdio.menu.</tt><tt class="descname">zexit</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/hamcalc/stdio/menu.html#zexit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.stdio.menu.zexit" title="Permalink to this definition">¶</a></dt>
+<dd><p>The exit message.</p>
+<div class="admonition-todo admonition" id="index-1">
+<p class="first admonition-title">Todo</p>
+<p class="last">Build this from the ackowledgements file.
+<tt class="file docutils literal"><span class="pre">/hamcalc/docfiles/acknow.fil</span></tt></p>
+</div>
+</dd></dl>
+
+</div>
 </div>
 <div class="section" id="module-hamcalc.stdio.graphs">
 <span id="graphs"></span><span id="stdio-graphs"></span><h2>Graphs<a class="headerlink" href="#module-hamcalc.stdio.graphs" title="Permalink to this headline">¶</a></h2>
@@ -154,7 +430,7 @@ in the given number of steps.</p>
 </div>
 <div class="section" id="module-hamcalc.stdio.gwgraphics">
 <span id="gw-graphics"></span><span id="stdio-gwgraphics"></span><h2>GW Graphics<a class="headerlink" href="#module-hamcalc.stdio.gwgraphics" title="Permalink to this headline">¶</a></h2>
-<p>gwgraphics module</p>
+<p>GW Graphics Demo</p>
 <p>Define a graphics class that allows relatively simple
 transcription from GW-Basic to Python.</p>
 <div class="highlight-python"><pre>g= GWGraphics()
@@ -207,7 +483,7 @@ GW Basic.</p>
 <tt class="descname">LINE</tt><big>(</big><em>x1</em>, <em>y1</em>, <em>x2</em>, <em>y2</em>, <em>box=False</em>, <em>fill=False</em>, <em>pattern=65535</em><big>)</big><a class="reference internal" href="../_modules/hamcalc/stdio/gwgraphics.html#GWGraphics.LINE"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.stdio.gwgraphics.GWGraphics.LINE" title="Permalink to this definition">¶</a></dt>
 <dd><p>Numerous variants. The first coordinates can be omitted.
 A &#8220;STEP&#8221; option moves incrementally instead of absolutely.</p>
-<div class="admonition-todo admonition" id="index-0">
+<div class="admonition-todo admonition" id="index-2">
 <p class="first admonition-title">Todo</p>
 <p class="last">Support all variants of LINE</p>
 </div>
@@ -277,8 +553,8 @@ only.</p>
 <li class="toctree-l2"><a class="reference internal" href="software.html">software &#8211; Software Engineering, Programming and Computers</a></li>
 <li class="toctree-l2"><a class="reference internal" href="other.html">other &#8211; including Finance and Nutrition</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="">STDIO Interface</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#intro">Intro</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#menu">Menu</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-hamcalc.stdio.intro">Intro</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-hamcalc.stdio.menu">Menu</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#module-hamcalc.stdio.graphs">Graphs</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#module-hamcalc.stdio.gwgraphics">GW Graphics</a></li>
 </ul>

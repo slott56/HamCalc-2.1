@@ -66,7 +66,9 @@ def grid_square():
             lat, lon = gridsq.grid_2_latlon( grid )
         count += 1
 
-        dx_range, rx_bearing = distance.range_bearing( lat_home, lon_home, lat, lon )
+        dx_range = distance.great_circle_distance( lat_home, lon_home, lat, lon, R )
+        rx_bearing = distance.great_circle_bearing( lat_home, lon_home, lat, lon )
+
         rise, _, set = solar.rise_transit_set( lat, lon, today )
         print( count, grid, lat, lon, dx_range, rx_bearing, rise, set )
 

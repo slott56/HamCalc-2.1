@@ -4,7 +4,7 @@ latlong -- Latitude/Longitude Data Base
 Analysis
 ~~~~~~~~~~~
 
-This is a tiny "wrapper" that chooses between :program:`pathfind` and
+This program is a tiny "wrapper" that chooses between :program:`pathfind` and
 :program:`equiv`. It presents an introduction and a menu.
 
 ::
@@ -31,9 +31,9 @@ This is a tiny "wrapper" that chooses between :program:`pathfind` and
        state or country and the program will display a list from which you
        may select the location of your choice.
 
-However.
+**However**.
 
-Inside :program:`pathfind`, we find this comment:
+Inside the program :program:`pathfind`, we find this comment:
 
 ::
 
@@ -56,8 +56,8 @@ we now find in :program:`pathfind`.
 Implementation
 ~~~~~~~~~~~~~~~~
 
-Perhaps the right thing to do is to uncombine the :program:`latlong` program from the :program:`grcircl` program.
+What we've done is to uncombine the :program:`latlong` program from the :program:`grcircl` program.
 
-Perhaps we should make the lat-lon database update a stand-alone program.
+The lat-lon database update is one, separate stand-alone program, :program:`latlong`.
 
-We can easily import it into :program:`pathfind` or use it separately.
+We can easily import the search function into :program:`pathfind`.

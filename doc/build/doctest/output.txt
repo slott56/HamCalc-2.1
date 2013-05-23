@@ -1,4 +1,4 @@
-Results of doctest builder run on 2013-05-22 21:02:56
+Results of doctest builder run on 2013-05-23 19:59:25
 =====================================================
 
 Document: python/math/baromtr
@@ -92,9 +92,9 @@ Test passed.
 Document: python/navigation/pathfind
 ------------------------------------
 1 items passed all tests:
-  16 tests in default
-16 tests in 1 items.
-16 passed and 0 failed.
+  31 tests in default
+31 tests in 1 items.
+31 passed and 0 failed.
 Test passed.
 
 Document: python/math/accelr
@@ -148,9 +148,9 @@ Test passed.
 Document: python/navigation/gridsq
 ----------------------------------
 1 items passed all tests:
-  20 tests in default
-20 tests in 1 items.
-20 passed and 0 failed.
+  35 tests in default
+35 tests in 1 items.
+35 passed and 0 failed.
 Test passed.
 
 Document: python/math/fibon
@@ -187,7 +187,7 @@ Test passed.
 
 Doctest summary
 ===============
-  388 tests
+  418 tests
     0 failures in tests
     0 failures in setup code
     0 failures in cleanup code

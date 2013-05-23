@@ -72,47 +72,15 @@ Distance Between Grid Squares
 The legacy program also computes the distance between two grid squares in
 kilometers, statute miles or nautical miles.
 
-From Chris Veness we have an implementation of the Rhumb Line equation.
-
-See http://www.movable-type.co.uk/scripts/latlong.html, |copy| 2002-2010 Chris Veness
-
-..  math::
-
-    \Delta\varphi = \ln \left[ \frac{\tan( lat_2 / 2 + \pi / 4 )}{\tan( lat_1 / 2 + \pi / 4 )} \right]
-
-If this is an E:W line (i.e., :math:`\Delta \varphi \approx 0`):
-
-..  math::
-
-    q = \cos lat_1
-
-Otherwise:
-
-..  math::
-
-    q = {\Delta lat} / {\Delta \varphi}
-
-Distance, :math:`d`, and bearing, :math:`\theta`, are
-
-..  math::
-
-    d = R \times \sqrt{ {\Delta lat}^2 + q^2 \times {\Delta lon}^2 }
-
-..  math::
-
-    \theta = \arctan{ \frac{\Delta lon}{\Delta\varphi}}
-
-where :math:`\ln` is natural log,
-:math:`\Delta lon` is taking shortest route (:math:`< 180 \textdegree`).
-
-:math:`R` is the earth's mean radius: 6,371.009 km (3,958.761 mi; 3,440.069 nm).
+This is part of the :mod:`hamcalc.navigation.distance` module.
+See :ref:`navigation.pathfind`.
 
 Sunset and Sunrise Times
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 As a bonus, it **also** computes sunrise and sunset in UTC times.
 
-This is yet another application for :mod:`hamcalc.navigation.solar`,
+This is yet another application for the :mod:`hamcalc.navigation.solar` module,
 :ref:`navigation.sunup`.
 
 Implementation
@@ -131,6 +99,7 @@ Great Circle Distance
 
 ..  automodule:: hamcalc.navigation.distance
     :members:
+    :noindex:
 
 Sunset and Sunrise Times
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
