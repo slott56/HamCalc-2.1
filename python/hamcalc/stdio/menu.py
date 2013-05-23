@@ -184,14 +184,17 @@ def mod_docstring_iter( ):
         path, full_name = os.path.split( module_name )
         name, ext = os.path.splitext( full_name )
         with open(module_name) as source:
-            module= ast.parse( source.read() )
-            # get docstring, assuming it's the first String in the module
-            docstring, title, hamdex= "", "", ""
-            for stmt in module.body:
-                if isinstance( stmt, ast.Expr ) and isinstance( stmt.value, ast.Str ):
-                    docstring= stmt.value.s
-                    break
-            yield Item( module_name, name, docstring )
+            try:
+                module= ast.parse( source.read() )
+                # get docstring, assuming it's the first String in the module
+                docstring, title, hamdex= "", "", ""
+                for stmt in module.body:
+                    if isinstance( stmt, ast.Expr ) and isinstance( stmt.value, ast.Str ):
+                        docstring= stmt.value.s
+                        break
+                yield Item( module_name, name, docstring )
+            except SyntaxError as e:
+                print( module_name, e )
 
 def helphint():
     text="""\
@@ -260,7 +263,7 @@ def zexit():
     print( text )
 
 def logoclok():
-    runpy.run_module( 'hamcalc.stdio.logoclok' )
+    runpy.run_module( 'hamcalc.stdio.logoclok', run_name="__main__" )
 
 class Menu:
     """Show a menu, pick an item.
@@ -380,7 +383,7 @@ class Program_Menu( Menu ):
                 program= self.item_list[choice]
             except IndexError:
                 return
-            runpy.run_module( 'hamcalc.stdio.' + program.name )
+            runpy.run_module( 'hamcalc.stdio.' + program.name, run_name="__main__" )
 
 class Topic_Index( Menu ):
     """The Hamdex topic index.
@@ -434,7 +437,7 @@ class Topic_Index( Menu ):
             if choice_num == -1: return
             index= self.count + choice_num
             program= self.item_dict[self.item_list[index]]
-            runpy.run_module( 'hamcalc.stdio.' + program.name )
+            runpy.run_module( 'hamcalc.stdio.' + program.name, run_name="__main__" )
     def process( self ):
         self.count= 0
         super().process()
@@ -482,7 +485,7 @@ class QT_Menu( Menu ):
             choice_num= string.ascii_lowercase.find( choice )
             if choice_num == -1: return
             program= self.item_list[choice_num]
-            runpy.run_module( 'hamcalc.stdio.' + program.name )
+            runpy.run_module( 'hamcalc.stdio.' + program.name, run_name="__main__" )
     def process( self ):
         self.quit= False
         super().process()

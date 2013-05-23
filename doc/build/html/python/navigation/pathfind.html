@@ -56,13 +56,83 @@
             
   <div class="section" id="pathfind-great-circle-paths-distances">
 <h1>pathfind &#8211; Great Circle Paths &amp; Distances<a class="headerlink" href="#pathfind-great-circle-paths-distances" title="Permalink to this headline">¶</a></h1>
-<p>Plus, apparently, a database of lat/lon coordinates.</p>
+<p>And &#8220;Beam Heading&#8221;.</p>
+<p>Plus, apparently, a database of 535 international lat/lon coordinates in
+<tt class="file docutils literal"><span class="pre">&quot;/hamcalc/latlong/LATLONG.DAT&quot;</span></tt></p>
+<p>Bonus. The original <strong class="program">latlong</strong> program that maintained a database
+of latitude and longitude information</p>
+<div class="section" id="analysis">
+<h2>Analysis<a class="headerlink" href="#analysis" title="Permalink to this headline">¶</a></h2>
+<p>There are several feature sets here.</p>
+<ol class="arabic simple">
+<li>A database of international locations.</li>
+<li>A simple great-circle range-and-bearing calculation.</li>
+<li>A tabular display showing 11 intermediate points along
+the creat circle route.</li>
+</ol>
+<div class="section" id="international-locations">
+<h3>International Locations<a class="headerlink" href="#international-locations" title="Permalink to this headline">¶</a></h3>
+<p>This is seeded with 535 locations. There&#8217;s a kind of text filter, as
+well as a distance filter.</p>
+<p>Also there&#8217;s an add-change-delete functionality, too.</p>
+<p>This includes some clever search capability for locating
+a place by name or by location coordinates.</p>
+</div>
+<div class="section" id="range-and-bearing">
+<h3>Range and Bearing<a class="headerlink" href="#range-and-bearing" title="Permalink to this headline">¶</a></h3>
+<p>This seems like the essential equations from <a class="reference internal" href="gridsq.html#navigation-gridsq"><em>gridsq &#8211; Grid Square Locator (Maidenhead)</em></a>
+for range and bearing from latitude and longitude.</p>
+</div>
+<div class="section" id="great-circle-route">
+<h3>Great Circle Route<a class="headerlink" href="#great-circle-route" title="Permalink to this headline">¶</a></h3>
+<p>This seems like a matter of dividing the range into 12 segments,
+each with the same bearing, and computing tese 11 intermediate positions
+using <img class="math" src="../../_images/math/166b01be648aef0f3ef0b866884a080043f9c01f.png" alt="r\times\frac{s}{12}"/>.</p>
+<p>This requires the inverse calculation of end-point latitude
+and longitude from starting point, range and bearing.</p>
+<p>From Chris Veness we have this algorithm.</p>
+<p>See <a class="reference external" href="http://www.movable-type.co.uk/scripts/latlong.html">http://www.movable-type.co.uk/scripts/latlong.html</a>, <a href="#id1"><span class="problematic" id="id2">|copy|</span></a> 2002-2010 Chris Veness</p>
+<p>Angular Distance, <img class="math" src="../../_images/math/10f32377ac67d94f764f12a15ea987e88c85d3e1.png" alt="\alpha"/>.</p>
+<div class="math">
+<p><img src="../../_images/math/a2c0576fd980053138f3f06eb1817bf8d43be964.png" alt="\alpha = d / R"/></p>
+</div><p>Latitude</p>
+<div class="math">
+<p><img src="../../_images/math/b3316bf86259f82741197a445d505024b10ad777.png" alt="lat_2 = lat_1 + \alpha \times cos(\theta)"/></p>
+</div><div class="math">
+<p><img src="../../_images/math/606a07864231ef8c9e03b5ba6b1fbc63f2dc566a.png" alt="\Delta\varphi = \ln \left[ \frac{\tan( lat_2 / 2 + \pi / 4 )}{\tan( lat_1 / 2 + \pi / 4 )} \right]"/></p>
+</div><p>If this is an E:W line (i.e., <img class="math" src="../../_images/math/1a310b139bff1b62f49a5b40bbd9370e511ed9d7.png" alt="\Delta \varphi \approx 0"/>):</p>
+<div class="math">
+<p><img src="../../_images/math/c6b799fff1e701bd539d8f4ea159154bf6c26efa.png" alt="q = \cos lat_1"/></p>
+</div><p>Otherwise:</p>
+<div class="math">
+<p><img src="../../_images/math/cf929681a31c5761ba96bbab8022cf2ffcb8689c.png" alt="q = {\Delta lat} / {\Delta \varphi}"/></p>
+</div><p>Longitude</p>
+<div class="math">
+<p><img src="../../_images/math/c2990c2b45d49591f35a10d113b718175f0db9ce.png" alt="\Delta lon = \alpha \times \frac{\sin{\theta}}{q}"/></p>
+</div><div class="math">
+<p><img src="../../_images/math/31cce4224c042bf642ba2f65b3b259995c37baaa.png" alt="lon_2 = [lon_1+\Delta lon+\pi \pmod {2 \pi} ] - \pi"/></p>
+</div><p>where ln is natural log
+<img class="math" src="../../_images/math/97ca23d19ccdd7f3d2d6cfd13f3440bb0bee0b9b.png" alt="\Delta lon"/> is taking shortest route (<img class="math" src="../../_images/math/b78d8a3e44b482dc8eb1c9d797d84504ed243909.png" alt="&lt; 180 \textdegree"/>).</p>
+<p><img class="math" src="../../_images/math/eff43e84f8a3bcf7b6965f0a3248bc4d3a9d0cd4.png" alt="R"/> is the earth&#8217;s mean radius: 6,371.009 km (3,958.761 mi; 3,440.069 nm).</p>
+</div>
+</div>
 <div class="section" id="implementation">
 <h2>Implementation<a class="headerlink" href="#implementation" title="Permalink to this headline">¶</a></h2>
 <p>Yes. The name of the calculation module differs from the legacy application,
 <strong class="program">pathfind</strong> and <strong class="program">gridsq</strong>.</p>
-<span class="target" id="module-hamcalc.navigation.distance"></span><p>hamcalc.navigation.distance &#8211; Great Circle Distance Calculation.</p>
-<p>Test Case</p>
+<p>The lot-long database management seems like it should be broken into two parts:</p>
+<ul class="simple">
+<li>Search by regular expression, soundex or coordinate.
+This is a proper part of <strong class="program">pathfind</strong>.</li>
+<li>Add-Change-Delete maintenance. This is a separate program.</li>
+</ul>
+<p>The distinction, however, is not crystal clear. For example,
+we can easily see a use case for adding a new location to the database
+while  doing navigation calculations.</p>
+<div class="section" id="navigation-distance">
+<h3>navigation.distance<a class="headerlink" href="#navigation-distance" title="Permalink to this headline">¶</a></h3>
+<p>hamcalc.navigation.distance &#8211; Great Circle Distance Calculation.</p>
+<p>Test Cases</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">hamcalc.math.trig</span> <span class="kn">as</span> <span class="nn">trig</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">hamcalc.navigation.distance</span> <span class="kn">as</span> <span class="nn">distance</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">deg</span> <span class="o">=</span> <span class="n">distance</span><span class="o">.</span><span class="n">dms_2_deg</span>
@@ -79,9 +149,47 @@
 <span class="go">(260, 7, 38)</span>
 </pre></div>
 </div>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">lat_1</span><span class="p">,</span> <span class="n">lon_1</span> <span class="o">=</span> <span class="n">deg</span><span class="p">(</span><span class="mi">51</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">32</span><span class="p">),</span> <span class="n">deg</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">20</span><span class="p">,</span><span class="mi">17</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">bearing</span> <span class="o">=</span> <span class="n">deg</span><span class="p">(</span><span class="mi">116</span><span class="p">,</span><span class="mi">38</span><span class="p">,</span><span class="mi">10</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">bearing</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+<span class="go">116.6</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lat_2</span><span class="p">,</span> <span class="n">lon_2</span> <span class="o">=</span> <span class="n">distance</span><span class="o">.</span><span class="n">destination</span><span class="p">(</span> <span class="n">lat_1</span><span class="p">,</span> <span class="n">lon_1</span><span class="p">,</span> <span class="mf">40.23</span><span class="p">,</span> <span class="n">bearing</span><span class="p">,</span> <span class="n">distance</span><span class="o">.</span><span class="n">KM</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">tuple</span><span class="p">(</span> <span class="nb">map</span><span class="p">(</span> <span class="nb">int</span><span class="p">,</span> <span class="n">distance</span><span class="o">.</span><span class="n">deg_2_dms</span><span class="p">(</span> <span class="n">lat_2</span> <span class="p">)</span> <span class="p">)</span> <span class="p">)</span>
+<span class="go">(50, 57, 48)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">tuple</span><span class="p">(</span> <span class="nb">map</span><span class="p">(</span> <span class="nb">int</span><span class="p">,</span> <span class="n">distance</span><span class="o">.</span><span class="n">deg_2_dms</span><span class="p">(</span> <span class="n">lon_2</span> <span class="p">)</span> <span class="p">)</span> <span class="p">)</span>
+<span class="go">(1, 51, 8)</span>
+</pre></div>
+</div>
 <dl class="function">
-<dt id="hamcalc.navigation.distance.range_bearing">
-<tt class="descclassname">hamcalc.navigation.distance.</tt><tt class="descname">range_bearing</tt><big>(</big><em>lat_1</em>, <em>lon_1</em>, <em>lat_2</em>, <em>lon_2</em>, <em>R=3440.069</em><big>)</big><a class="reference internal" href="../../_modules/hamcalc/navigation/distance.html#range_bearing"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.navigation.distance.range_bearing" title="Permalink to this definition">¶</a></dt>
+<dt>
+<tt class="descclassname">hamcalc.navigation.distance.</tt><tt class="descname">destination</tt><big>(</big><em>lat_1</em>, <em>lon_1</em>, <em>range</em>, <em>bearing</em>, <em>R=3440.069</em><big>)</big></dt>
+<dd><p>Rhumb line destination given point, range and bearing.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>lat_1</strong> &#8211; latitude, postive N</li>
+<li><strong>lon_1</strong> &#8211; longitude, positive E</li>
+<li><strong>range</strong> &#8211; the distiance to travel.</li>
+<li><strong>bearing</strong> &#8211; the direction of travel.</li>
+<li><strong>R</strong> &#8211; radius of the earth in appropriate units;
+default is nautical miles.
+Values include <tt class="xref py py-data docutils literal"><span class="pre">KM</span></tt> for kilometers,
+<tt class="xref py py-data docutils literal"><span class="pre">MI</span></tt> for statute miles and <tt class="xref py py-data docutils literal"><span class="pre">NM</span></tt> for nautical miles.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">lat and lon of the ending point.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt>
+<tt class="descclassname">hamcalc.navigation.distance.</tt><tt class="descname">range_bearing</tt><big>(</big><em>lat_1</em>, <em>lon_1</em>, <em>lat_2</em>, <em>lon_2</em>, <em>R=3440.069</em><big>)</big><a class="reference internal" href="../../_modules/hamcalc/navigation/distance.html#range_bearing"><span class="viewcode-link">[source]</span></a></dt>
 <dd><p>Rhumb-line course from <tt class="docutils literal"><span class="pre">(lat_1,</span> <span class="pre">lon_1)</span></tt> to <tt class="docutils literal"><span class="pre">(lat_2,</span> <span class="pre">lon_2)</span></tt>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -106,6 +214,69 @@ Values include <tt class="xref py py-data docutils literal"><span class="pre">KM
 </table>
 </dd></dl>
 
+</div>
+</div>
+<div class="section" id="legacy-introduction">
+<h2>Legacy Introduction<a class="headerlink" href="#legacy-introduction" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><pre>GREAT CIRCLE PATHS, BEARINGS and DISTANCES              by George Murphy VE3ERP
+      This program calculates Great Circle paths, bearings and distances
+      between any two points on earth, including those on or very close
+      to the same meridian, the equator, or the earth&#x27;s poles. Several
+      intermediate points are also calculated as an aid in plotting the
+      path on a flat chart or map drawn in any projection. Solar time
+      difference between the two end points is also shown.
+
+      Also included is a data base of over 500 locations that can be
+      inserted into the program, and which can be edited by the user.</pre>
+</div>
+<div class="highlight-python"><pre>NOTE:
+
+Enter latitude and longitude as decimal degrees, to the nearest 1/10th of a
+degree, e.g. 47.3 for 48°20&#x27;. If you enter data with more than one place of
+decimals the data entered will be used in all calculations, even though all
+data displayed will be rounded-off to the nearest 1/10th degree.
+
+1/10th of a degree longitude is equal to about 11 kilometres at the equator,
+less than 6 Km. at 60° latitude.</pre>
+</div>
+</div>
+<div class="section" id="legacy-output">
+<h2>Legacy Output<a class="headerlink" href="#legacy-output" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><pre>        Path between A  .....................................   38.0°N    76.0°W  Solar zone UTC-5
+                  andB  .....................................   39.0°N    76.0°W
+        Solar zone UTC-5
+        Great Circle distance ( Naut.Miles )....     60.0
+        Solar Time difference (hr:min)..........      0: 0
+                     Bearing from A .........................      0.00°
+                     Bearing from B .........................    180.00°
+
+ To A                         INTERMEDIATE  PLOTS                        To B
+   └─« Naut.Miles«─ Bearing«─ ┌── From Plot ──┐ ─»Bearing ─» Naut.Miles  »─┘
+════════════════════════════════════════════════════════════════════════════════
+ -1           0.0    180.0°  «─  38.9°N   76.0°W  ─»    0.0°        60.0
+ 0            0.0    180.0°  «─  38.8°N   76.0°W  ─»    0.0°        60.0
+ 1            0.0    180.0°  «─  38.8°N   76.0°W  ─»    0.0°        60.0 1/4 way
+
+ 2            0.0    180.0°  «─  38.7°N   76.0°W  ─»    0.0°        60.0 1/3 way
+
+ 3            0.0    180.0°  «─  38.6°N   76.0°W  ─»    0.0°        60.0
+ 4            0.0    180.0°  «─  38.5°N   76.0°W  ─»    0.0°        60.0 1/2 way
+
+ 5            0.0    180.0°  «─  38.4°N   76.0°W  ─»    0.0°        60.0
+ 6            0.0    180.0°  «─  38.3°N   76.0°W  ─»    0.0°        60.0 1/3 way
+
+ 7            0.0    180.0°  «─  38.3°N   76.0°W  ─»    0.0°        60.0 1/4 way
+
+ 8            0.0    180.0°  «─  38.2°N   76.0°W  ─»    0.0°        60.0
+ 9            0.0    180.0°  «─  38.1°N   76.0°W  ─»    0.0°        60.0</pre>
+</div>
+</div>
+<div class="section" id="quirks">
+<h2>Quirks<a class="headerlink" href="#quirks" title="Permalink to this headline">¶</a></h2>
+<p>Lines 4100-6890 is a <strong class="program">latlon</strong> program entirely embedded within
+this great circle path-finding program.</p>
+<p>This <strong class="program">latlon</strong> program is nothing like the version that&#8217;s
+available in HamCalc.</p>
 </div>
 </div>
 

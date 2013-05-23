@@ -1,6 +1,6 @@
 """hamcalc.navigation.distance -- Great Circle Distance Calculation.
 
-Test Case
+Test Cases
 
 >>> import hamcalc.math.trig as trig
 >>> import hamcalc.navigation.distance as distance
@@ -17,6 +17,15 @@ Test Case
 >>> tuple( int(round(x,0)) for x in distance.deg_2_dms( b ) )
 (260, 7, 38)
 
+>>> lat_1, lon_1 = deg(51,7,32), deg(1,20,17)
+>>> bearing = deg(116,38,10)
+>>> round(bearing,1)
+116.6
+>>> lat_2, lon_2 = distance.destination( lat_1, lon_1, 40.23, bearing, distance.KM )
+>>> tuple( map( int, distance.deg_2_dms( lat_2 ) ) )
+(50, 57, 48)
+>>> tuple( map( int, distance.deg_2_dms( lon_2 ) ) )
+(1, 51, 8)
 """
 import math
 import hamcalc.math.trig as trig
@@ -62,7 +71,41 @@ def range_bearing( lat_1, lon_1, lat_2, lon_2, R=NM ):
     dLon = lon2 - lon1
     if abs(dLon) > math.pi:
         dLon = -(2*math.pi-dLon) if dLon > 0 else (2*math.pi+dLon)
-    d = math.sqrt(dLat*dLat + q*q*dLon*dLon) * R
+    d = math.sqrt(dLat**2 + q**2*dLon**2) * R
     brng= math.atan2(dLon, dPhi)
     theta= math.degrees( brng ) % 360
     return d, theta
+
+def destination( lat_1, lon_1, range, bearing, R=NM):
+    """Rhumb line destination given point, range and bearing.
+
+    :param lat_1: latitude, postive N
+    :param lon_1: longitude, positive E
+    :param range: the distiance to travel.
+    :param bearing: the direction of travel.
+    :param R: radius of the earth in appropriate units;
+        default is nautical miles.
+        Values include :py:data:`KM` for kilometers,
+        :py:data:`MI` for statute miles and :py:data:`NM` for nautical miles.
+
+    :returns: lat and lon of the ending point.
+    """
+    d= range/R
+    theta= math.radians(bearing)
+    lat1=  math.radians(lat_1)
+    lon1=  math.radians(lon_1)
+    lat2 = lat1 + d*math.cos(theta)
+    dLat= lat2 - lat1
+    dPhi = math.log(math.tan(lat2/2+math.pi/4)/math.tan(lat1/2+math.pi/4))
+    if abs(dPhi) < 1.0E-6:
+        q= math.cos(lat1)
+    else:
+        q= dLat/dPhi
+
+    dLon = d*math.sin(theta)/q
+    # check for some daft bugger going past the pole, normalize latitude if so
+    if abs(lat2) > math.pi/2:
+        lat2 = math.pi-lat2 if lat2>0 else -(math.pi-lat2)
+    lon2 = ( (lon1+dLon+math.pi) % (2*math.pi) ) - math.pi
+
+    return math.degrees(lat2), math.degrees(lon2)

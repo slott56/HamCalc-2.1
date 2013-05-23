@@ -1,3 +1,5 @@
+..  _`navigation.gridsq`:
+
 gridsq -- Grid Square Locator (Maidenhead)
 --------------------------------------------
 
