@@ -6,7 +6,7 @@ import datetime
 
 introduction= "SUNUP/SUNDOWN                                            by George Murphy VE3ERP"
 
-def show_table():
+def create_table():
     location= input( "Name of your location.......? " )
     if len(location) == 0: return
     latitude= None
@@ -43,6 +43,7 @@ def show_table():
                 '5': solar.Pacific }[tz_choice]
             except KeyError:
                 pass
+
     year = None
     while year is None:
         year_raw = input( "ENTER: Year to be used in calculations (yyyy)............? " )
@@ -72,16 +73,27 @@ def show_table():
         increment= int(increment_raw)
     except ValueError:
         increment= 1
+    if end < start:
+        start, end = end, start
 
+    display( latitude, longitude, tz, start, end, increment )
+
+def display( latitude, longitude, tz, start, end, increment ):
+    """Display sunup table.
+
+    :param latitude: Latitude of observer
+    :param longitude: longitude of observer
+    :param tz: timezone of observer
+    :param start: starting date for table
+    :param end: ending date for table
+    :param increment: day increment for table
+    """
     heading= """\
               Hours     Sunrise (EST)        Sunset (EST)        Elev.& Azimuth
               of        and Azimuth          and Azimuth          of Noon Sun
    Date       Daylight   (degrees)            (degrees)            (degrees)
     """
-
     print( heading )
-    if end < start:
-        start, end = end, start
     for offset in range( 0, (end-start).days+increment, increment ):
         date= start+datetime.timedelta(days=offset)
         rise, transit, set = solar.rise_transit_set( latitude, longitude, date )
@@ -104,4 +116,4 @@ while z != '0':
     print(" < 0 >  EXIT" )
     z= input( "CHOICE? " )
     if z == '1':
-        show_table()
+        create_table()

@@ -506,72 +506,144 @@ U       V       W       X           Y       Z           AA      AB
 AC      AD      AE      AF      AG      AH
 165.75      124.29  -34.29  0.01    -34.28  343.29</pre>
 </div>
-<p>Output from this function; it includes columns F to AH, plus
-a few other values.</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="p">{</span><span class="s">&#39;AA&#39;</span><span class="p">:</span> <span class="mf">830.1189163955589</span><span class="p">,</span>
- <span class="s">&#39;AB&#39;</span><span class="p">:</span> <span class="mf">1383.0077155592248</span><span class="p">,</span>
- <span class="s">&#39;AC&#39;</span><span class="p">:</span> <span class="mf">165.7519288898062</span><span class="p">,</span>
- <span class="s">&#39;AC_r&#39;</span><span class="p">:</span> <span class="mf">2.8929169006586277</span><span class="p">,</span>
- <span class="s">&#39;AD&#39;</span><span class="p">:</span> <span class="mf">124.28846181320384</span><span class="p">,</span>
- <span class="s">&#39;AD_r&#39;</span><span class="p">:</span> <span class="mf">2.1692428808796484</span><span class="p">,</span>
- <span class="s">&#39;AE&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">34.28846181320384</span><span class="p">,</span>
- <span class="s">&#39;AE_r&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">0.5984465540847519</span><span class="p">,</span>
- <span class="s">&#39;AF&#39;</span><span class="p">:</span> <span class="mf">0.008462163764385251</span><span class="p">,</span>
- <span class="s">&#39;AG&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">34.27999964943945</span><span class="p">,</span>
- <span class="s">&#39;AH&#39;</span><span class="p">:</span> <span class="mf">343.2865712316368</span><span class="p">,</span>
- <span class="s">&#39;AH_rstar&#39;</span><span class="p">:</span> <span class="mf">2.8498882922843145</span><span class="p">,</span>
- <span class="s">&#39;E&#39;</span><span class="p">:</span> <span class="mf">0.004166666666666667</span><span class="p">,</span>
- <span class="s">&#39;F&#39;</span><span class="p">:</span> <span class="mf">2456413.6708333334</span><span class="p">,</span>
- <span class="s">&#39;G&#39;</span><span class="p">:</span> <span class="mf">0.1332969427332894</span><span class="p">,</span>
- <span class="s">&#39;I&#39;</span><span class="p">:</span> <span class="mf">39.25901977112244</span><span class="p">,</span>
- <span class="s">&#39;I_r&#39;</span><span class="p">:</span> <span class="mf">0.6851991561116372</span><span class="p">,</span>
- <span class="s">&#39;J&#39;</span><span class="p">:</span> <span class="mf">5156.092452227982</span><span class="p">,</span>
- <span class="s">&#39;JAD_epoch&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">1721424.5</span><span class="p">,</span>
- <span class="s">&#39;J_r&#39;</span><span class="p">:</span> <span class="mf">89.99078982860672</span><span class="p">,</span>
- <span class="s">&#39;K&#39;</span><span class="p">:</span> <span class="mf">0.016703028345203225</span><span class="p">,</span>
- <span class="s">&#39;L&#39;</span><span class="p">:</span> <span class="mf">1.7030570397145302</span><span class="p">,</span>
- <span class="s">&#39;M&#39;</span><span class="p">:</span> <span class="mf">40.96207681083697</span><span class="p">,</span>
- <span class="s">&#39;M_r&#39;</span><span class="p">:</span> <span class="mf">0.7149231088039236</span><span class="p">,</span>
- <span class="s">&#39;N&#39;</span><span class="p">:</span> <span class="mf">5157.795509267697</span><span class="p">,</span>
- <span class="s">&#39;N_r&#39;</span><span class="p">:</span> <span class="mf">90.02051378129902</span><span class="p">,</span>
- <span class="s">&#39;O&#39;</span><span class="p">:</span> <span class="mf">1.007569899030823</span><span class="p">,</span>
- <span class="s">&#39;P&#39;</span><span class="p">:</span> <span class="mf">40.95990612522424</span><span class="p">,</span>
- <span class="s">&#39;P_r&#39;</span><span class="p">:</span> <span class="mf">0.7148852231929558</span><span class="p">,</span>
- <span class="s">&#39;Q&#39;</span><span class="p">:</span> <span class="mf">23.43755769373243</span><span class="p">,</span>
- <span class="s">&#39;R&#39;</span><span class="p">:</span> <span class="mf">23.43929004746131</span><span class="p">,</span>
- <span class="s">&#39;R_r&#39;</span><span class="p">:</span> <span class="mf">0.4090927856581378</span><span class="p">,</span>
- <span class="s">&#39;S&#39;</span><span class="p">:</span> <span class="mf">38.534815164640406</span><span class="p">,</span>
- <span class="s">&#39;S_r&#39;</span><span class="p">:</span> <span class="mf">0.6725594012704159</span><span class="p">,</span>
- <span class="s">&#39;T&#39;</span><span class="p">:</span> <span class="mf">15.11487444281024</span><span class="p">,</span>
- <span class="s">&#39;T_r&#39;</span><span class="p">:</span> <span class="mf">0.26380432505258206</span><span class="p">,</span>
- <span class="s">&#39;U&#39;</span><span class="p">:</span> <span class="mf">0.043034525256302164</span><span class="p">,</span>
- <span class="s">&#39;V&#39;</span><span class="p">:</span> <span class="mf">2.8877155592249477</span><span class="p">,</span>
- <span class="s">&#39;V_r&#39;</span><span class="p">:</span> <span class="mf">0.05040014436954465</span><span class="p">,</span>
- <span class="s">&#39;W&#39;</span><span class="p">:</span> <span class="mf">103.76486454944487</span><span class="p">,</span>
- <span class="s">&#39;W_r&#39;</span><span class="p">:</span> <span class="mf">1.8110385342737552</span><span class="p">,</span>
- <span class="s">&#39;X&#39;</span><span class="p">:</span> <span class="mf">0.5437446419727605</span><span class="p">,</span>
- <span class="s">&#39;X_h&#39;</span><span class="p">:</span> <span class="mi">13</span><span class="p">,</span>
- <span class="s">&#39;X_hms&#39;</span><span class="p">:</span> <span class="s">&#39;13:02:59.0&#39;</span><span class="p">,</span>
- <span class="s">&#39;X_m&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
- <span class="s">&#39;X_s&#39;</span><span class="p">:</span> <span class="mi">59</span><span class="p">,</span>
- <span class="s">&#39;Y&#39;</span><span class="p">:</span> <span class="mf">0.25550890711319146</span><span class="p">,</span>
- <span class="s">&#39;Y_h&#39;</span><span class="p">:</span> <span class="mi">6</span><span class="p">,</span>
- <span class="s">&#39;Y_hms&#39;</span><span class="p">:</span> <span class="s">&#39;06:07:55.0&#39;</span><span class="p">,</span>
- <span class="s">&#39;Y_m&#39;</span><span class="p">:</span> <span class="mi">7</span><span class="p">,</span>
- <span class="s">&#39;Y_s&#39;</span><span class="p">:</span> <span class="mi">55</span><span class="p">,</span>
- <span class="s">&#39;Z&#39;</span><span class="p">:</span> <span class="mf">0.8319803768323295</span><span class="p">,</span>
- <span class="s">&#39;Z_h&#39;</span><span class="p">:</span> <span class="mi">19</span><span class="p">,</span>
- <span class="s">&#39;Z_hms&#39;</span><span class="p">:</span> <span class="s">&#39;19:58:03.0&#39;</span><span class="p">,</span>
- <span class="s">&#39;Z_m&#39;</span><span class="p">:</span> <span class="mi">58</span><span class="p">,</span>
- <span class="s">&#39;Z_s&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
- <span class="s">&#39;date&#39;</span><span class="p">:</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2013</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">6</span><span class="p">),</span>
- <span class="s">&#39;lambda_o&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">76.47</span><span class="p">,</span>
- <span class="s">&#39;phi_o&#39;</span><span class="p">:</span> <span class="mf">38.98</span><span class="p">,</span>
- <span class="s">&#39;phi_or&#39;</span><span class="p">:</span> <span class="mf">0.6803293424273896</span><span class="p">,</span>
- <span class="s">&#39;t&#39;</span><span class="p">:</span> <span class="n">datetime</span><span class="o">.</span><span class="n">time</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">6</span><span class="p">),</span>
- <span class="s">&#39;z_o&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mi">4</span><span class="p">}</span>
+<p>Output from this test case.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">hamcalc.navigation.solar</span> <span class="kn">import</span> <span class="n">Position_Sun</span><span class="p">,</span> <span class="n">Eastern</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">datetime</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">phi_o</span><span class="o">=</span><span class="mf">38.98</span> <span class="c"># Latitude</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lambda_o</span><span class="o">=-</span><span class="mf">76.47</span> <span class="c"># Longitude</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">z_o</span><span class="o">=-</span><span class="mi">4</span> <span class="c"># Timezone offset</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">date</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span> <span class="mi">2013</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">tzinfo</span><span class="o">=</span><span class="n">Eastern</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span><span class="o">=</span> <span class="n">Position_Sun</span><span class="p">(</span> <span class="n">phi_o</span><span class="p">,</span> <span class="n">lambda_o</span><span class="p">,</span> <span class="n">date</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">E</span><span class="p">,</span><span class="mi">6</span><span class="p">)</span>
+<span class="go">0.004167</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">F</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+<span class="go">2456413.67</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">G</span><span class="p">,</span><span class="mi">8</span><span class="p">)</span>
+<span class="go">0.13329694</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">I</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+<span class="go">39.26</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">J</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+<span class="go">5156.09</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">K</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+<span class="go">0.02</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">L</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+<span class="go">1.7</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">M</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+<span class="go">40.96</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">N</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+<span class="go">5157.8</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">O</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+<span class="go">1.01</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">P</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+<span class="go">40.96</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">Q</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+<span class="go">23.44</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">R</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+<span class="go">23.44</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">S</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+<span class="go">38.53</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">T</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+<span class="go">15.11</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">U</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+<span class="go">0.04</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">V</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+<span class="go">2.89</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">W</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+<span class="go">103.76</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span><span class="o">.</span><span class="n">X_hms</span>
+<span class="go">&#39;13:02:59.0&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span><span class="o">.</span><span class="n">Y_hms</span>
+<span class="go">&#39;06:07:55.0&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span><span class="o">.</span><span class="n">Z_hms</span>
+<span class="go">&#39;19:58:03.0&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">AA</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+<span class="go">830.1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">AB</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+<span class="go">1383.0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">AC</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+<span class="go">165.75</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">AD</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+<span class="go">124.29</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">AE</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+<span class="go">-34.29</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">AF</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+<span class="go">0.01</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">AG</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+<span class="go">-34.28</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">AH</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+<span class="go">343.29</span>
 </pre></div>
 </div>
+<dl class="class">
+<dt id="hamcalc.navigation.solar.Position_Sun">
+<em class="property">class </em><tt class="descclassname">hamcalc.navigation.solar.</tt><tt class="descname">Position_Sun</tt><big>(</big><em>phi_o</em>, <em>lambda_o</em>, <em>date_time_tz</em>, <em>horizon=None</em><big>)</big><a class="headerlink" href="#hamcalc.navigation.solar.Position_Sun" title="Permalink to this definition">¶</a></dt>
+<dd><p>Here&#8217;s the mapping from cryptical spreadsheet names to real names.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">E :</th><td class="field-body">Time (past local midnight)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">F :</th><td class="field-body">Julian Day</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">G :</th><td class="field-body">Julian Century</td>
+</tr>
+<tr class="field-even field"><th class="field-name">I :</th><td class="field-body">Geom Mean Long Sun (deg)</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">J :</th><td class="field-body">Geom Mean Anom Sun (deg)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">K :</th><td class="field-body">Eccent Earth Orbit</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">L :</th><td class="field-body">Sun Eq of Ctr</td>
+</tr>
+<tr class="field-even field"><th class="field-name">M :</th><td class="field-body">Sun True Long (deg)</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">N :</th><td class="field-body">Sun True Anom (deg)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">O :</th><td class="field-body">Sun Rad Vector (AUs)</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">P :</th><td class="field-body">Sun App Long (deg)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Q :</th><td class="field-body">Mean Obliq Ecliptic (deg)</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">R :</th><td class="field-body">Obliq Corr (deg)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">S :</th><td class="field-body">Sun Rt Ascen (deg)</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">T :</th><td class="field-body">Sun Declin (deg)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">U :</th><td class="field-body">var y</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">V :</th><td class="field-body">Eq of Time (minutes)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">W :</th><td class="field-body">HA Sunrise (deg)</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">X :</th><td class="field-body">Solar Noon (LST)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Y :</th><td class="field-body">Sunrise Time (LST)</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Z :</th><td class="field-body">Sunset Time (LST)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Aa :</th><td class="field-body">Sunlight Duration (minutes)</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Ab :</th><td class="field-body">True Solar Time (min)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Ac :</th><td class="field-body">Hour Angle (deg)</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Ad :</th><td class="field-body">Solar Zenith Angle (deg)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Ae :</th><td class="field-body">Solar Elevation Angle (deg)</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Af :</th><td class="field-body">Approx Atmospheric Refraction (deg)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Ag :</th><td class="field-body">Solar Elevation corrected for atm refraction (deg)</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Ah :</th><td class="field-body">Solar Azimuth Angle (deg cw from N)</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
 <dl class="function">
 <dt id="hamcalc.navigation.solar.azimuth_elevation">
 <tt class="descclassname">hamcalc.navigation.solar.</tt><tt class="descname">azimuth_elevation</tt><big>(</big><em>lat</em>, <em>lon</em>, <em>date_time</em><big>)</big><a class="reference internal" href="../../_modules/hamcalc/navigation/solar.html#azimuth_elevation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.navigation.solar.azimuth_elevation" title="Permalink to this definition">¶</a></dt>
@@ -588,12 +660,13 @@ This must include tzinfo for the observer&#8217;s timezone.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Tuple of <tt class="xref py py-class docutils literal"><span class="pre">datetime.datetime</span></tt> objects for rise, noon transit and set. These are timezone aware and will have the same timezone as</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Tuple of <tt class="xref py py-class docutils literal"><span class="pre">datetime.datetime</span></tt> objects for rise, noon transit
+and set. These are timezone aware and will have the same timezone as
+the input datetime.</p>
 </td>
 </tr>
 </tbody>
 </table>
-<p>the input datetime.</p>
 </dd></dl>
 
 <dl class="function">
@@ -652,102 +725,9 @@ Other values can be used.
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Tuple of <tt class="xref py py-class docutils literal"><span class="pre">datetime.datetime</span></tt> objects for rise, noon transit and set. These are timezone aware and will have the same timezone as</p>
-</td>
-</tr>
-</tbody>
-</table>
-<p>the input datetime.</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="hamcalc.navigation.solar.solar">
-<tt class="descclassname">hamcalc.navigation.solar.</tt><tt class="descname">solar</tt><big>(</big><em>phi_o</em>, <em>lambda_o</em>, <em>date_time_tz</em>, <em>horizon=None</em><big>)</big><a class="reference internal" href="../../_modules/hamcalc/navigation/solar.html#solar"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.navigation.solar.solar" title="Permalink to this definition">¶</a></dt>
-<dd><p>Compute position of the sun.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>phi_o</strong> &#8211; Latitude of observer in degrees.</li>
-<li><strong>lambda_o</strong> &#8211; Longitude of the observer in degrees.</li>
-<li><strong>date_time_tz</strong> &#8211; <tt class="xref py py-class docutils literal"><span class="pre">datetime.datetime</span></tt> for which the sun&#8217;s position is requested.
-This must include tzinfo for the observer&#8217;s timezone.</li>
-<li><strong>horizon</strong> &#8211; The horizon angle from the zenith. Default is 90.833.
-Other values can be used.
--   Astronomical: 108°; 18° below horizon
--   Nautical: 102°; 12° below horizon
--   Civil: 96°; 6° below horizon</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><p>A dictionary with <strong>all</strong> the intermediate results.
-Of all these results, a few are more interesting than
-others.</p>
-<p>Here&#8217;s the mapping from cryptical spreadsheet names to real names.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">F:</th><td class="field-body">Julian Day</td>
-</tr>
-<tr class="field-even field"><th class="field-name">G:</th><td class="field-body">Julian Century</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">I:</th><td class="field-body">Geom Mean Long Sun (deg)</td>
-</tr>
-<tr class="field-even field"><th class="field-name">J:</th><td class="field-body">Geom Mean Anom Sun (deg)</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">K:</th><td class="field-body">Eccent Earth Orbit</td>
-</tr>
-<tr class="field-even field"><th class="field-name">L:</th><td class="field-body">Sun Eq of Ctr</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">M:</th><td class="field-body">Sun True Long (deg)</td>
-</tr>
-<tr class="field-even field"><th class="field-name">N:</th><td class="field-body">Sun True Anom (deg)</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">O:</th><td class="field-body">Sun Rad Vector (AUs)</td>
-</tr>
-<tr class="field-even field"><th class="field-name">P:</th><td class="field-body">Sun App Long (deg)</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Q:</th><td class="field-body">Mean Obliq Ecliptic (deg)</td>
-</tr>
-<tr class="field-even field"><th class="field-name">R:</th><td class="field-body">Obliq Corr (deg)</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">S:</th><td class="field-body">Sun Rt Ascen (deg)</td>
-</tr>
-<tr class="field-even field"><th class="field-name">T:</th><td class="field-body">Sun Declin (deg)</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">U:</th><td class="field-body">var y</td>
-</tr>
-<tr class="field-even field"><th class="field-name">V:</th><td class="field-body">Eq of Time (minutes)</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">W:</th><td class="field-body">HA Sunrise (deg)</td>
-</tr>
-<tr class="field-even field"><th class="field-name">X:</th><td class="field-body">Solar Noon (LST)</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Y:</th><td class="field-body">Sunrise Time (LST)</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Z:</th><td class="field-body">Sunset Time (LST)</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">AA:</th><td class="field-body">Sunlight Duration (minutes)</td>
-</tr>
-<tr class="field-even field"><th class="field-name">AB:</th><td class="field-body">True Solar Time (min)</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">AC:</th><td class="field-body">Hour Angle (deg)</td>
-</tr>
-<tr class="field-even field"><th class="field-name">AD:</th><td class="field-body">Solar Zenith Angle (deg)</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">AE:</th><td class="field-body">Solar Elevation Angle (deg)</td>
-</tr>
-<tr class="field-even field"><th class="field-name">AF:</th><td class="field-body">Approx Atmospheric Refraction (deg)</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">AG:</th><td class="field-body">Solar Elevation corrected for atm refraction (deg)</td>
-</tr>
-<tr class="field-even field"><th class="field-name">AH:</th><td class="field-body">Solar Azimuth Angle (deg cw from N)</td>
-</tr>
-</tbody>
-</table>
-</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Tuple of <tt class="xref py py-class docutils literal"><span class="pre">datetime.datetime</span></tt> objects for rise, noon transit
+and set. These are timezone aware and will have the same timezone as
+the input datetime.</p>
 </td>
 </tr>
 </tbody>

@@ -82,6 +82,7 @@ Implementation
 ~~~~~~~~~~~~~~~~
 
 We can easily parameterize the :mod:`hamcalc.navigation.solar` calculations to define an alternate horizon.
+See :ref:`navigation.sunup`.
 
 It becomes a cute little module in :mod:`hamcalc.stdio` that solves
 for "HA Sunrise" (``W``) of 90+18, 90+12, 90+6 and the default

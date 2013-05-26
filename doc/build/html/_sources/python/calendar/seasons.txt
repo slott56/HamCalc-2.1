@@ -84,6 +84,7 @@ Implementation
 ~~~~~~~~~~~~~~~
 
 This leverages :mod:`hamcalc.navigation.solar`.
+See :ref:`navigation.sunup`.
 
 It becomes a cute little module in :mod:`hamcalc.stdio` that solves
 for "Sun's Apparent Longitude" (``P``) of 0, 90, 180 and 270 in

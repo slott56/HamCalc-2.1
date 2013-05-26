@@ -356,7 +356,7 @@ class Position_Sun:
 
         # HA Sunrise (deg)
         # 90.833 is sun just below the horizon.
-        # Can other values can be used for various definitions of twilight?
+        # Other values can be used for various definitions of twilight.
         phi_or= math.radians(phi_o)
 
         # Original.

@@ -28,9 +28,9 @@ for millenia on properly installed sun dials.
 Related data can also be calculated using Hamcalc's `Sunrise/Sunset' program.
 """
 
-def dusk_dawn():
+def get_lat_lon_tz_date():
     """
-    ..  todo:: Confirm the output.
+    Get latitude, longitude, timezone and date.
     """
 
     latitude= None
@@ -48,9 +48,27 @@ def dusk_dawn():
         except ValueError:
             pass
 
-    tz_offset_hr= longitude/15
-    tz= FixedOffset( tz_offset_hr*60 )
-    print( "Location..............  {0:5.1f}°N {1:5.1f}°W.   UTC {2:.2f} hours".format( latitude, longitude, tz_offset_hr ) )
+    print(" (1) Atlantic" )
+    print(" (2) Eastern" )
+    print(" (3) Central" )
+    print(" (4) Mountain" )
+    print(" (5) Pacific" )
+    print(" (6) Other" )
+    tz= None
+    while tz is None:
+        tz_choice = input( "ENTER: Your timezone? " )
+        if tz_choice == "6":
+            gmt= -int(longitude/15)
+            tz= FixedOffset( gmt*60 )
+            print( "Using {0} based on Longitude {1:f}°".format(tz.tzname(),longitude) )
+        else:
+            try:
+                tz= { '1': solar.Atlantic, '2': solar.Eastern,
+                '3': solar.Central, '4': solar.Mountain,
+                '5': solar.Pacific }[tz_choice]
+            except KeyError:
+                pass
+    print( "Location..............  {0:5.1f}°N {1:5.1f}°W.   UTC {2:.2f} hours".format( latitude, longitude, tz.stdoffset.total_seconds()/3600 ) )
 
     date_time= None
     while date_time is None:
@@ -65,10 +83,18 @@ def dusk_dawn():
         except ValueError:
             pass
     print( "Date (y/m/d).......... {0}".format(date_time.date()) )
-
-    display( latitude, longitude, tz, date_time )
+    return  latitude, longitude, tz, date_time
 
 def display( latitude, longitude, tz, date_time ):
+    """Display various sunrise, sunset details.
+
+    ..  todo:: Confirm this output.
+
+    :param latitude: Latitude of observer
+    :param longitude: longitude of observer
+    :param tz: timezone of observer
+    :param date_time: datetime object with date to display
+    """
     rise_a, _, set_a = solar.rise_transit_set( latitude, longitude, date_time, horizon=90+18 )
     rise_n, _, set_n = solar.rise_transit_set( latitude, longitude, date_time, horizon=90+12 )
     rise_c, _, set_c = solar.rise_transit_set( latitude, longitude, date_time, horizon=90+6 )
@@ -85,14 +111,19 @@ def display( latitude, longitude, tz, date_time ):
     print( line.format("Nautical Dusk", set_n.strftime( "%H:%M:%S" ), set_n.astimezone(utc).strftime( "%H:%M:%S" ), "Sun 12° below horizon" ) )
     print( line.format("Astronomical Dusk", set_a.strftime( "%H:%M:%S" ), set_a.astimezone(utc).strftime( "%H:%M:%S" ), "Sun 18° below horizon" ) )
 
-print( introduction )
-z= ''
-while z != '0':
-    print("   < 1 > run this program" )
-    print("   < 2 > run Sunrise/Sunset program")
-    print("   < 0 >  EXIT" )
-    z= input( "CHOICE? " )
-    if z == '1':
-        dusk_dawn()
-    elif z == '2':
-        runpy.run_module( 'hamcalc.stdio.riseset' )
+def run():
+    print( introduction )
+    z= ''
+    while z != '0':
+        print("   < 1 > run this program" )
+        print("   < 2 > run Sunrise/Sunset program")
+        print("   < 0 >  EXIT" )
+        z= input( "CHOICE? " )
+        if z == '1':
+            lat, lon, tz, date = get_lat_lon_tz_date()
+            display( latitude, longitude, tz, date_time )
+        elif z == '2':
+            runpy.run_module( 'hamcalc.stdio.riseset' )
+
+if __name__ == "__main__":
+    run()
