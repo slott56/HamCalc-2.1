@@ -58,11 +58,183 @@
 <h1>satorbit &#8211; Satellite Orbit Parameters<a class="headerlink" href="#satorbit-satellite-orbit-parameters" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="analysis">
 <h2>Analysis<a class="headerlink" href="#analysis" title="Permalink to this headline">¶</a></h2>
-<p>This computes several parameters based on the orbital period of
-a satellite.</p>
+<p>The core issue here is to map orbital minutes to altitude.
+Given minutes, <em>m</em>, we can compute a <em>z</em> factor and the
+altitude, <em>h</em>.</p>
+<div class="math">
+<p><img src="../../_images/math/302d023b66336e75753fab4cfae532a786f9edb1.png" alt="Y = (\frac{144}{88})^{1/16}
+
+z = \frac{\log m - \log 88}{\log Y} + 1"/></p>
+</div><p>Where R is the radius of the earth, 3963.34 miles.</p>
+<ul>
+<li><p class="first">Altitude.  <img class="math" src="../../_images/math/ec1ed3f3e615365087a50c5be46f6a4be5c7c814.png" alt="h = 100z"/></p>
+</li>
+<li><p class="first">radio horizon.</p>
+<div class="math">
+<p><img src="../../_images/math/30233a6eed4f63a99d69a9dc09bd9fd05bcdd817.png" alt="C = 2 \pi R
+
+X = \frac{R}{R+h}
+
+MR = \frac{\arccos X}{2 \pi} \times C"/></p>
+</div></li>
+<li><p class="first">Apex angle of signal cone. <img class="math" src="../../_images/math/5ff699f63d7f887ac7c47274d631ec18c3d2a3ef.png" alt="2(90-\arccos X)"/>.</p>
+</li>
+<li><p class="first">Diameter of area covered by signal cone. <img class="math" src="../../_images/math/816cab7f570f324ae62e2c7c997e64a34a9e3149.png" alt="2 \times MR"/>.</p>
+</li>
+<li><p class="first">Period. Input value, <img class="math" src="../../_images/math/5d1e4485dc90c450e8c76826516c1b2ccb8fce16.png" alt="M"/>.</p>
+</li>
+<li><p class="first">orbital speed. <img class="math" src="../../_images/math/fee7ffc0ccc718217652ab5f41c587edcfbc0669.png" alt="\frac{2 \pi (R+h)}{M}"/> miles per minute.</p>
+</li>
+<li><p class="first">signal time. <img class="math" src="../../_images/math/a748b1831df3b8be5d629d77c87c21acae8bdc88.png" alt="\frac{2h}{c}"/> where <img class="math" src="../../_images/math/3372c1cb6d68cf97c2d231acc0b47b95a9ed04cc.png" alt="c"/> is the speed
+of light, here given as <img class="math" src="../../_images/math/3f6cf9390e2002c07d998e50ba782e7b663a1cc7.png" alt="186 \times 10^3"/> miles per second.</p>
+</li>
+<li><p class="first">Doppler shift. <img class="math" src="../../_images/math/3990ec6e07c4a748b5c21ce828e42155f06432b5.png" alt="\frac{\lvert u-d \rvert}{20}"/>.</p>
+</li>
+</ul>
+</div>
+<div class="section" id="module-hamcalc.navigation.satorbit">
+<span id="implementation"></span><h2>Implementation<a class="headerlink" href="#module-hamcalc.navigation.satorbit" title="Permalink to this headline">¶</a></h2>
+<p>hamcalc.navigation.satorbit &#8211; satellite orbit</p>
+<p>Some satellite orbit information.</p>
+<p>Test Cases for Orbital Details</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">hamcalc.navigation.satorbit</span> <span class="kn">as</span> <span class="nn">satorbit</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">satorbit</span><span class="o">.</span><span class="n">orbit</span><span class="p">(</span> <span class="mi">88</span><span class="p">,</span> <span class="mf">10.1</span><span class="p">,</span> <span class="mf">10.2</span> <span class="p">)</span>
+<span class="go">{&#39;cone_diameter&#39;: 1762.2173168121756, &#39;fq_up&#39;: 10.1, &#39;speed_mph&#39;: 17407.307854142113, &#39;fq_down&#39;: 10.2, &#39;altitude&#39;: 100.0, &#39;doppler_shift&#39;: 0.004999999999999982, &#39;speed_mpm&#39;: 290.1217975690352, &#39;period&#39;: 88, &#39;radio_horizon&#39;: 881.1086584060878, &#39;signal_time&#39;: 0.001075268817204301, &#39;radius&#39;: 4063.34, &#39;apex_angle&#39;: 154.5246143812527}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">satorbit</span><span class="o">.</span><span class="n">orbit</span><span class="p">(</span> <span class="mi">144</span><span class="p">,</span> <span class="mf">10.1</span><span class="p">,</span> <span class="mf">10.2</span> <span class="p">)</span>
+<span class="go">{&#39;cone_diameter&#39;: 6306.827741575378, &#39;fq_up&#39;: 10.1, &#39;speed_mph&#39;: 14826.58944898434, &#39;fq_down&#39;: 10.2, &#39;altitude&#39;: 1699.9999999999957, &#39;doppler_shift&#39;: 0.004999999999999982, &#39;speed_mpm&#39;: 247.10982414973898, &#39;period&#39;: 144, &#39;radio_horizon&#39;: 3153.413870787689, &#39;signal_time&#39;: 0.01827956989247307, &#39;radius&#39;: 5663.339999999996, &#39;apex_angle&#39;: 88.82573493359294}</span>
+</pre></div>
+</div>
+<p>Test Cases for Units</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">hamcalc.navigation.satorbit</span> <span class="kn">as</span> <span class="nn">satorbit</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">speed</span><span class="o">=</span> <span class="n">satorbit</span><span class="o">.</span><span class="n">MPM</span><span class="o">.</span><span class="n">to_std</span><span class="p">(</span> <span class="mi">7</span> <span class="p">)</span> <span class="c"># 7 miles per minute</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">satorbit</span><span class="o">.</span><span class="n">MPM</span><span class="o">.</span><span class="n">from_std</span><span class="p">(</span> <span class="n">speed</span> <span class="p">)</span>
+<span class="go">7</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">satorbit</span><span class="o">.</span><span class="n">MPH</span><span class="o">.</span><span class="n">from_std</span><span class="p">(</span> <span class="n">speed</span> <span class="p">)</span>
+<span class="go">420</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">satorbit</span><span class="o">.</span><span class="n">FPS</span><span class="o">.</span><span class="n">from_std</span><span class="p">(</span> <span class="n">speed</span> <span class="p">),</span><span class="mi">4</span><span class="p">)</span>
+<span class="go">616.0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">satorbit</span><span class="o">.</span><span class="n">KPH</span><span class="o">.</span><span class="n">from_std</span><span class="p">(</span> <span class="n">speed</span> <span class="p">)</span>
+<span class="go">675.92448</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">satorbit</span><span class="o">.</span><span class="n">KPM</span><span class="o">.</span><span class="n">from_std</span><span class="p">(</span> <span class="n">speed</span> <span class="p">)</span>
+<span class="go">11.265408</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">satorbit</span><span class="o">.</span><span class="n">MPS</span><span class="o">.</span><span class="n">from_std</span><span class="p">(</span> <span class="n">speed</span> <span class="p">)</span>
+<span class="go">187.7568</span>
+</pre></div>
+</div>
+<dl class="class">
+<dt id="hamcalc.navigation.satorbit.FPS">
+<em class="property">class </em><tt class="descclassname">hamcalc.navigation.satorbit.</tt><tt class="descname">FPS</tt><a class="headerlink" href="#hamcalc.navigation.satorbit.FPS" title="Permalink to this definition">¶</a></dt>
+<dd><p>feet per second</p>
+<dl class="attribute">
+<dt id="hamcalc.navigation.satorbit.FPS.standard">
+<tt class="descname">standard</tt><a class="headerlink" href="#hamcalc.navigation.satorbit.FPS.standard" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#hamcalc.navigation.satorbit.MPM" title="hamcalc.navigation.satorbit.MPM"><tt class="xref py py-class docutils literal"><span class="pre">MPM</span></tt></a></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="hamcalc.navigation.satorbit.KPH">
+<em class="property">class </em><tt class="descclassname">hamcalc.navigation.satorbit.</tt><tt class="descname">KPH</tt><a class="headerlink" href="#hamcalc.navigation.satorbit.KPH" title="Permalink to this definition">¶</a></dt>
+<dd><p>kilometres per hour</p>
+<dl class="attribute">
+<dt id="hamcalc.navigation.satorbit.KPH.standard">
+<tt class="descname">standard</tt><a class="headerlink" href="#hamcalc.navigation.satorbit.KPH.standard" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#hamcalc.navigation.satorbit.MPM" title="hamcalc.navigation.satorbit.MPM"><tt class="xref py py-class docutils literal"><span class="pre">MPM</span></tt></a></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="hamcalc.navigation.satorbit.KPM">
+<em class="property">class </em><tt class="descclassname">hamcalc.navigation.satorbit.</tt><tt class="descname">KPM</tt><a class="headerlink" href="#hamcalc.navigation.satorbit.KPM" title="Permalink to this definition">¶</a></dt>
+<dd><p>kilometres per minute</p>
+<dl class="attribute">
+<dt id="hamcalc.navigation.satorbit.KPM.standard">
+<tt class="descname">standard</tt><a class="headerlink" href="#hamcalc.navigation.satorbit.KPM.standard" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#hamcalc.navigation.satorbit.MPM" title="hamcalc.navigation.satorbit.MPM"><tt class="xref py py-class docutils literal"><span class="pre">MPM</span></tt></a></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="hamcalc.navigation.satorbit.MPH">
+<em class="property">class </em><tt class="descclassname">hamcalc.navigation.satorbit.</tt><tt class="descname">MPH</tt><a class="headerlink" href="#hamcalc.navigation.satorbit.MPH" title="Permalink to this definition">¶</a></dt>
+<dd><p>miles per hour</p>
+<dl class="attribute">
+<dt id="hamcalc.navigation.satorbit.MPH.standard">
+<tt class="descname">standard</tt><a class="headerlink" href="#hamcalc.navigation.satorbit.MPH.standard" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#hamcalc.navigation.satorbit.MPM" title="hamcalc.navigation.satorbit.MPM"><tt class="xref py py-class docutils literal"><span class="pre">MPM</span></tt></a></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="hamcalc.navigation.satorbit.MPM">
+<em class="property">class </em><tt class="descclassname">hamcalc.navigation.satorbit.</tt><tt class="descname">MPM</tt><a class="headerlink" href="#hamcalc.navigation.satorbit.MPM" title="Permalink to this definition">¶</a></dt>
+<dd><p>miles per minute</p>
+<dl class="attribute">
+<dt id="hamcalc.navigation.satorbit.MPM.standard">
+<tt class="descname">standard</tt><a class="headerlink" href="#hamcalc.navigation.satorbit.MPM.standard" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#hamcalc.navigation.satorbit.MPM" title="hamcalc.navigation.satorbit.MPM"><tt class="xref py py-class docutils literal"><span class="pre">MPM</span></tt></a></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="hamcalc.navigation.satorbit.MPS">
+<em class="property">class </em><tt class="descclassname">hamcalc.navigation.satorbit.</tt><tt class="descname">MPS</tt><a class="headerlink" href="#hamcalc.navigation.satorbit.MPS" title="Permalink to this definition">¶</a></dt>
+<dd><p>metres per second</p>
+<dl class="attribute">
+<dt id="hamcalc.navigation.satorbit.MPS.standard">
+<tt class="descname">standard</tt><a class="headerlink" href="#hamcalc.navigation.satorbit.MPS.standard" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#hamcalc.navigation.satorbit.MPM" title="hamcalc.navigation.satorbit.MPM"><tt class="xref py py-class docutils literal"><span class="pre">MPM</span></tt></a></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="hamcalc.navigation.satorbit.orbit">
+<tt class="descclassname">hamcalc.navigation.satorbit.</tt><tt class="descname">orbit</tt><big>(</big><em>minutes</em>, <em>fq_up</em>, <em>fq_down</em><big>)</big><a class="reference internal" href="../../_modules/hamcalc/navigation/satorbit.html#orbit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.navigation.satorbit.orbit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given an orbital period in minutes, return the calculated
+values as a dict-like object.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>minutes</strong> &#8211; orbit time in minutes 88 &lt;= time &lt;= 157</li>
+<li><strong>fq_up</strong> &#8211; uplink frequency</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Parma fq_down:</th><td class="field-body"><p class="first">downlink frequency</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><p><a class="reference internal" href="../lib.html#hamcalc.lib.AttrDict" title="hamcalc.lib.AttrDict"><tt class="xref py py-class docutils literal"><span class="pre">hamcalc.lib.AttrDict</span></tt></a> with the following
+attributes</p>
+<ul class="simple">
+<li>altitude</li>
+<li>period</li>
+<li>radius</li>
+<li>radio_horizon</li>
+<li>cone_diameter</li>
+<li>apex_angle</li>
+<li>speed_mpm</li>
+<li>speed_mph</li>
+<li>signal_time</li>
+</ul>
+</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
 </div>
 <div class="section" id="legacy-output">
 <h2>Legacy Output<a class="headerlink" href="#legacy-output" title="Permalink to this headline">¶</a></h2>
+<p>Some of these outputs are not correct; what&#8217;s relevant is the format.</p>
 <div class="highlight-python"><pre>ENTER: Period (time for single orbit) (87-157 min.) ? 94
     Satellite altitude...........................    314 miles
     Satellite signal map range (radio horizon)...      0 miles
@@ -75,15 +247,40 @@ a satellite.</p>
 
     UPLINK frequency.............................     10.000 MHz
     DOWNLINK frequency...........................     11.000 MHz
-    Approximate maximum Doppler shift............      0 KHz
-
-
-     The calculations used in this program were interpolated from
-     graphs appearing on page 111 of the Electronics Data Book
-     publication No. 27 of the ARRL. The results of these calculations
-     are sufficiently accurate for fast reference purposes but may not
-     be suitable for very accurate satellite tracking.</pre>
+    Approximate maximum Doppler shift............      0 KHz</pre>
 </div>
+</div>
+<div class="section" id="legacy-notes">
+<h2>Legacy Notes<a class="headerlink" href="#legacy-notes" title="Permalink to this headline">¶</a></h2>
+<p>Different from the introduction seen in so many HamCalc programs,
+this program has &#8220;notes&#8221; at the end.</p>
+<div class="highlight-python"><pre>The calculations used in this program were interpolated from
+graphs appearing on page 111 of the Electronics Data Book
+publication No. 27 of the ARRL. The results of these calculations
+are sufficiently accurate for fast reference purposes but may not
+be suitable for very accurate satellite tracking.</pre>
+</div>
+</div>
+<div class="section" id="legacy-quirks">
+<h2>Legacy Quirks<a class="headerlink" href="#legacy-quirks" title="Permalink to this headline">¶</a></h2>
+<p>The calculation involves a set of approximations in a <tt class="docutils literal"><span class="pre">B</span></tt> array.</p>
+<div class="math">
+<p><img src="../../_images/math/2c67ef869c5c8159a6a01b14bb60254a3b579da9.png" alt="H = 144, L = 88, R_i = 100
+
+Y = (\frac{H}{L})^{1/16}"/></p>
+</div><p>For Y, the comment is &#8220;HI &amp; LO 1600 miles apart on 100 mi.increment graph&#8221;.</p>
+<div class="math">
+<p><img src="../../_images/math/4dce664620b69a84f202f2e0ab8b658769631aa1.png" alt="B_{z,1} = h_z = \lbrace R + R_i \times z \vert 1 \leq z &lt; 21 \rbrace
+
+B_{z,2} = t_z = \lbrace (\frac{L}{Y})Y^z \vert 1 \leq z &lt; 21 \rbrace
+
+(\frac{L}{Y})Y^z = LY^{z-1}
+
+B_{z,3} =  \lbrace h_z/t_z  \vert 1 \leq z &lt; 21  \rbrace"/></p>
+</div><p>The calculation of the altitude is <img class="math" src="../../_images/math/de9567187999d7998a48045f8b1e211f16a55824.png" alt="h = J_6 \times M - R"/>, where <img class="math" src="../../_images/math/78e229862f699fb03293dbcb1fbbaf46cc1fbf88.png" alt="J_6"/> is an interpolated value between <img class="math" src="../../_images/math/4c34e990e1fd7b2d00f523a676ee9d71f32cf44b.png" alt="B_{z,3} = h_z/t_z"/> and
+<img class="math" src="../../_images/math/189e0cc992642e191b6667e5fbfb0b0104e6ce37.png" alt="B_{z-1,3} = h_{z-1}/t_{z-1}"/>.</p>
+<p>It&#8217;s not clear why the <tt class="docutils literal"><span class="pre">B</span></tt> array of values are computed in advance at
+discrete intervals and then interpolated.</p>
 </div>
 </div>
 

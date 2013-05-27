@@ -53,103 +53,413 @@
 
 <span class="sd">See http://www.stjarnhimlen.se/comp/ppcomp.html</span>
 
+<span class="sd">http://www.stjarnhimlen.se/comp/tutorial.html</span>
+
+<span class="sd">This is an implementation based on the outstandingly detailed pair of</span>
+<span class="sd">web pages. One has the complete theoretical explanation, the other</span>
+<span class="sd">has a detailed calculation.</span>
+
 <span class="sd">Test Cases</span>
 
 <span class="sd">&gt;&gt;&gt; import datetime</span>
 <span class="sd">&gt;&gt;&gt; import hamcalc.navigation.lunar.schlyter as lunar</span>
-<span class="sd">&gt;&gt;&gt; today= datetime.datetime( 1990, 4, 19, tz=lunar.utc )</span>
-<span class="sd">&gt;&gt;&gt; lunar.datetime_to_jad( today )</span>
+<span class="sd">&gt;&gt;&gt; today= datetime.datetime( 1990, 4, 19, tzinfo=lunar.utc )</span>
+<span class="sd">&gt;&gt;&gt; jad= lunar.datetime_to_jad( today )</span>
+<span class="sd">&gt;&gt;&gt; jad</span>
 <span class="sd">2448000.5</span>
-<span class="sd">&gt;&gt;&gt; _ - 2451543.5</span>
+<span class="sd">&gt;&gt;&gt; jad - 2451543.5</span>
 <span class="sd">-3543.0</span>
+
+<span class="sd">&gt;&gt;&gt; s= lunar.Position_Sun( jad )</span>
+<span class="sd">&gt;&gt;&gt; round(s.w,4)</span>
+<span class="sd">282.7735</span>
+<span class="sd">&gt;&gt;&gt; round(s.e,6)</span>
+<span class="sd">0.016713</span>
+<span class="sd">&gt;&gt;&gt; round(s.M,4)</span>
+<span class="sd">104.0653</span>
+<span class="sd">&gt;&gt;&gt; round(s.L,4)</span>
+<span class="sd">26.8388</span>
+<span class="sd">&gt;&gt;&gt; round( lunar.Orbital_Elements.ecl( jad ), 4 )</span>
+<span class="sd">23.4406</span>
+<span class="sd">&gt;&gt;&gt; round( s.E, 4 )</span>
+<span class="sd">104.9904</span>
+<span class="sd">&gt;&gt;&gt; round( s.x, 6 )</span>
+<span class="sd">-0.27537</span>
+<span class="sd">&gt;&gt;&gt; round( s.y, 6 )</span>
+<span class="sd">0.965834</span>
+<span class="sd">&gt;&gt;&gt; round( s.r, 6 )</span>
+<span class="sd">1.004323</span>
+<span class="sd">&gt;&gt;&gt; round( s.v, 4 )</span>
+<span class="sd">105.9134</span>
+<span class="sd">&gt;&gt;&gt; round( s.x_s, 6 )</span>
+<span class="sd">0.881048</span>
+<span class="sd">&gt;&gt;&gt; round( s.y_s, 6 )</span>
+<span class="sd">0.482099</span>
+<span class="sd">&gt;&gt;&gt; round( s.z_s, 6 )</span>
+<span class="sd">0</span>
+<span class="sd">&gt;&gt;&gt; round( s.x_e, 6 )</span>
+<span class="sd">0.881048</span>
+<span class="sd">&gt;&gt;&gt; round( s.y_e, 6 )</span>
+<span class="sd">0.442313</span>
+<span class="sd">&gt;&gt;&gt; round( s.z_e, 6 )</span>
+<span class="sd">0.191778</span>
+<span class="sd">&gt;&gt;&gt; az, alt = s.local_az_alt( 60, 15, 0 )</span>
+<span class="sd">&gt;&gt;&gt; round(s.LST,5)</span>
+<span class="sd">14.78926</span>
+<span class="sd">&gt;&gt;&gt; round(s.HA,4)</span>
+<span class="sd">195.1808</span>
+<span class="sd">&gt;&gt;&gt; round(az,4)</span>
+<span class="sd">15.6767</span>
+<span class="sd">&gt;&gt;&gt; round(alt,4)</span>
+<span class="sd">-17.957</span>
+
+<span class="sd">&gt;&gt;&gt; RA, Decl= lunar.RA_Decl_sun( jad )</span>
+<span class="sd">&gt;&gt;&gt; round( RA, 4 )</span>
+<span class="sd">26.6581</span>
+<span class="sd">&gt;&gt;&gt; round( Decl, 4 )</span>
+<span class="sd">11.0084</span>
+
+<span class="sd">&gt;&gt;&gt; m= lunar.Position_Moon( jad )</span>
+<span class="sd">&gt;&gt;&gt; round(m.N,4)</span>
+<span class="sd">312.7381</span>
+<span class="sd">&gt;&gt;&gt; round(m.i,4)</span>
+<span class="sd">5.1454</span>
+<span class="sd">&gt;&gt;&gt; round(m.w,4)</span>
+<span class="sd">95.7454</span>
+<span class="sd">&gt;&gt;&gt; round(m.a,4)</span>
+<span class="sd">60.2666</span>
+<span class="sd">&gt;&gt;&gt; round(m.e,6)</span>
+<span class="sd">0.0549</span>
+<span class="sd">&gt;&gt;&gt; round(m.M,4)</span>
+<span class="sd">266.0954</span>
+<span class="sd">&gt;&gt;&gt; round(m.E,4)</span>
+<span class="sd">262.9735</span>
+<span class="sd">&gt;&gt;&gt; round(m.x,5)</span>
+<span class="sd">-10.68099</span>
+<span class="sd">&gt;&gt;&gt; round(m.y,5)</span>
+<span class="sd">-59.72377</span>
+<span class="sd">&gt;&gt;&gt; round(m.r,5)</span>
+<span class="sd">60.67134</span>
+<span class="sd">&gt;&gt;&gt; round(m.v,4)</span>
+<span class="sd">259.8604</span>
+<span class="sd">&gt;&gt;&gt; round(m.M_s,4)</span>
+<span class="sd">104.0653</span>
+<span class="sd">&gt;&gt;&gt; round(m.M_m,4)</span>
+<span class="sd">266.0954</span>
+<span class="sd">&gt;&gt;&gt; round(m.L_s,4)</span>
+<span class="sd">26.8388</span>
+<span class="sd">&gt;&gt;&gt; round(m.L_m,4)</span>
+<span class="sd">314.5789</span>
+<span class="sd">&gt;&gt;&gt; round(m.D,4)</span>
+<span class="sd">287.7401</span>
+<span class="sd">&gt;&gt;&gt; round(m.F,4)</span>
+<span class="sd">1.8408</span>
+<span class="sd">&gt;&gt;&gt; round(m.P_long,4)</span>
+<span class="sd">-1.4132</span>
+<span class="sd">&gt;&gt;&gt; round(m.P_lat,4)</span>
+<span class="sd">-0.1919</span>
+<span class="sd">&gt;&gt;&gt; round(m.P_r,4)</span>
+<span class="sd">0.0066</span>
+<span class="sd">&gt;&gt;&gt; round(m.x_m,5)</span>
+<span class="sd">37.65311</span>
+<span class="sd">&gt;&gt;&gt; round(m.y_m,5)</span>
+<span class="sd">-47.57185</span>
+<span class="sd">&gt;&gt;&gt; round(m.z_m,5)</span>
+<span class="sd">-0.41689</span>
+<span class="sd">&gt;&gt;&gt; round(m.lon_ecl, 4)</span>
+<span class="sd">306.9484</span>
+<span class="sd">&gt;&gt;&gt; round(m.lat_ecl, 4)</span>
+<span class="sd">-0.5856</span>
+<span class="sd">&gt;&gt;&gt; round(m.r_ecl, 4)</span>
+<span class="sd">60.6779</span>
+<span class="sd">&gt;&gt;&gt; round(m.RA, 4 )</span>
+<span class="sd">309.5011</span>
+<span class="sd">&gt;&gt;&gt; round(m.Decl, 4 )</span>
+<span class="sd">-19.1032</span>
+
+<span class="sd">&gt;&gt;&gt; az, alt = m.local_az_alt( 60, 15, 0 )</span>
+<span class="sd">&gt;&gt;&gt; round(m.LST,5)</span>
+<span class="sd">14.78926</span>
+<span class="sd">&gt;&gt;&gt; round(m.HA,4)</span>
+<span class="sd">272.3377</span>
+<span class="sd">&gt;&gt;&gt; round(az,4)</span>
+<span class="sd">101.7868</span>
+<span class="sd">&gt;&gt;&gt; round(alt,4)</span>
+<span class="sd">-16.2275</span>
+<span class="sd">&gt;&gt;&gt; round(m.alt_geoc,4)</span>
+<span class="sd">-15.3167</span>
+<span class="sd">&gt;&gt;&gt; round(m.alt_topoc,4)</span>
+<span class="sd">-16.2275</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">from</span> <span class="nn">hamcalc.navigation.solar</span> <span class="kn">import</span> <span class="n">jad_to_datetime</span><span class="p">,</span> <span class="n">datetime_to_jad</span><span class="p">,</span> <span class="n">utc</span>
 <span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">namedtuple</span>
+<span class="kn">import</span> <span class="nn">math</span>
 
-<span class="n">Elements</span><span class="o">=</span> <span class="n">namedtuple</span><span class="p">(</span> <span class="s">&quot;Elements&quot;</span><span class="p">,</span> <span class="s">&quot;N, i, w, a, e, M&quot;</span> <span class="p">)</span>
+<div class="viewcode-block" id="Orbital_Elements"><a class="viewcode-back" href="../../../../python/navigation/moontrac.html#hamcalc.navigation.lunar.schlyter.Orbital_Elements">[docs]</a><span class="k">class</span> <span class="nc">Orbital_Elements</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Abstract base class for Sun and Moon positions.&quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">jad</span> <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create orbital elements.</span>
 
-<div class="viewcode-block" id="moon_elements"><a class="viewcode-back" href="../../../../python/navigation/moontrac.html#hamcalc.navigation.lunar.schlyter.moon_elements">[docs]</a><span class="k">def</span> <span class="nf">moon_elements</span><span class="p">(</span> <span class="n">jad</span> <span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Orbital Elements for the moon.</span>
+<span class="sd">        A subclass will extend this as follows::</span>
 
-<span class="sd">    :param d: Julian Astonomical Day.</span>
-<span class="sd">    :returns: Elements instance.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">d</span><span class="o">=</span> <span class="n">jad</span> <span class="o">-</span> <span class="mf">2451543.5</span>
-    <span class="n">N</span> <span class="o">=</span> <span class="mf">125.1228</span> <span class="o">-</span> <span class="mf">0.0529538083</span> <span class="o">*</span> <span class="n">d</span>
-    <span class="n">i</span> <span class="o">=</span> <span class="mf">5.1454</span>
-    <span class="n">w</span> <span class="o">=</span> <span class="mf">318.0634</span> <span class="o">+</span> <span class="mf">0.1643573223</span> <span class="o">*</span> <span class="n">d</span>
-    <span class="n">a</span> <span class="o">=</span> <span class="mf">60.2666</span> <span class="c"># Earth radii</span>
-    <span class="n">e</span> <span class="o">=</span> <span class="mf">0.054900</span>
-    <span class="n">M</span> <span class="o">=</span> <span class="mf">115.3654</span> <span class="o">+</span> <span class="mf">13.0649929509</span> <span class="o">*</span> <span class="n">d</span>
-    <span class="k">return</span> <span class="n">Elements</span><span class="p">(</span> <span class="n">N</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="n">M</span> <span class="p">)</span>
+<span class="sd">            super().__init__( self, jad )</span>
+<span class="sd">            self.N = longitude of the ascending node</span>
+<span class="sd">            self.i = inclination to the ecliptic</span>
+<span class="sd">            self.w = argument of perihelion</span>
+<span class="sd">            self.a = semi-major axis, or mean distance from Sun</span>
+<span class="sd">            self.e = eccentricity</span>
+<span class="sd">            self.M = mean anomaly</span>
+<span class="sd">            self.related()</span>
+
+<span class="sd">        :param jad: Julian Astronomical Day.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">d</span><span class="o">=</span> <span class="n">jad</span> <span class="o">-</span> <span class="mf">2451543.5</span>
+<div class="viewcode-block" id="Orbital_Elements.related"><a class="viewcode-back" href="../../../../python/navigation/moontrac.html#hamcalc.navigation.lunar.schlyter.Orbital_Elements.related">[docs]</a>    <span class="k">def</span> <span class="nf">related</span><span class="p">(</span> <span class="bp">self</span> <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Derive additional orbital elements.</span>
+
+<span class="sd">        :w1: longitude of perihelion</span>
+<span class="sd">        :L:  mean longitude</span>
+<span class="sd">        :q:  perihelion distance</span>
+<span class="sd">        :Q:  aphelion distance</span>
+<span class="sd">        :P:  orbital period (years if a is in AU, astronomical units)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">w1</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">N</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">w</span><span class="p">)</span> <span class="o">%</span> <span class="mi">360</span>   <span class="c"># longitude of perihelion</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">L</span>  <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">M</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">w1</span><span class="p">)</span> <span class="o">%</span> <span class="mi">360</span>  <span class="c"># mean longitude</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">q</span>  <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">e</span><span class="p">)</span> <span class="c"># perihelion distance</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Q</span>  <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">e</span><span class="p">)</span> <span class="c"># aphelion distance</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">P</span>  <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="o">**</span><span class="mf">1.5</span> <span class="c"># orbital period (years if a is in AU, astronomical units)</span>
+        <span class="c"># self.T  = Epoch_of_M - (M(deg)/360_deg) / P  = time of perihelion</span>
 </div>
-<div class="viewcode-block" id="sun_elements"><a class="viewcode-back" href="../../../../python/navigation/moontrac.html#hamcalc.navigation.lunar.schlyter.sun_elements">[docs]</a><span class="k">def</span> <span class="nf">sun_elements</span><span class="p">(</span> <span class="n">jad</span> <span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Orbital Elements for the sun.</span>
+    <span class="k">def</span> <span class="nf">_az_alt</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">lat</span><span class="p">,</span> <span class="n">lon</span><span class="p">,</span> <span class="n">utc_offset</span><span class="p">,</span> <span class="n">sun</span> <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Azimuth and Elevation come from Hour Angle which comes from LST.</span>
+<span class="sd">        Starts with RA and Decl. Computes az and alt.</span>
 
-<span class="sd">    :param d: Julian Astonomical Day.</span>
-<span class="sd">    :returns: Elements instance.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">d</span> <span class="o">=</span> <span class="n">jad</span> <span class="o">-</span> <span class="mf">2451543.5</span>
-    <span class="n">N</span> <span class="o">=</span> <span class="mf">0.0</span>
-    <span class="n">i</span> <span class="o">=</span> <span class="mf">0.0</span>
-    <span class="n">w</span> <span class="o">=</span> <span class="mf">282.9404</span> <span class="o">+</span> <span class="mf">4.70935E-5</span> <span class="o">*</span> <span class="n">d</span>
-    <span class="n">a</span> <span class="o">=</span> <span class="mf">1.000000</span> <span class="c"># AU</span>
-    <span class="n">e</span> <span class="o">=</span> <span class="mf">0.016709</span> <span class="o">-</span> <span class="mf">1.151E-9</span> <span class="o">*</span> <span class="n">d</span>
-    <span class="n">M</span> <span class="o">=</span> <span class="mf">356.0470</span> <span class="o">+</span> <span class="mf">0.9856002585</span> <span class="o">*</span> <span class="n">d</span>
-    <span class="k">return</span> <span class="n">Elements</span><span class="p">(</span> <span class="n">N</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="n">M</span> <span class="p">)</span>
-</div>
-<span class="k">def</span> <span class="nf">ecl</span><span class="p">(</span> <span class="n">jad</span> <span class="p">):</span>
-    <span class="n">d</span> <span class="o">=</span> <span class="n">jad</span> <span class="o">-</span> <span class="mf">2451543.5</span>
-    <span class="k">return</span> <span class="mf">23.4393</span> <span class="o">-</span> <span class="mf">3.563E-7</span> <span class="o">*</span> <span class="n">d</span>
+<span class="sd">        ::</span>
 
-<div class="viewcode-block" id="pos_moon"><a class="viewcode-back" href="../../../../python/navigation/moontrac.html#hamcalc.navigation.lunar.schlyter.pos_moon">[docs]</a><span class="k">def</span> <span class="nf">pos_moon</span><span class="p">(</span> <span class="n">d</span> <span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Position of the moon, as distance and anomaly.</span>
-<span class="sd">    Needs to be corrected by perturbations to be useful.</span>
+<span class="sd">            HA = LST - RA</span>
+<span class="sd">            x = cos(HA) * cos(Decl)</span>
+<span class="sd">            y = sin(HA) * cos(Decl)</span>
+<span class="sd">            z = sin(Decl)</span>
 
-<span class="sd">    :returns: r, v</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">m</span> <span class="o">=</span> <span class="n">moon_elements</span><span class="p">(</span> <span class="n">d</span> <span class="p">)</span>
-    <span class="c"># Eccentric Anomaly</span>
-    <span class="n">E</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">M</span> <span class="o">+</span> <span class="n">m</span><span class="o">.</span><span class="n">e</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span> <span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span> <span class="n">m</span><span class="o">.</span><span class="n">M</span> <span class="p">)</span> <span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">m</span><span class="o">.</span><span class="n">e</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span> <span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span> <span class="n">m</span><span class="o">.</span><span class="n">M</span> <span class="p">)</span> <span class="p">)</span> <span class="p">)</span>
-    <span class="c"># for the moon, the eccentricity is small enough that iteration isn&#39;t required.</span>
-    <span class="n">x_v</span><span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">a</span><span class="o">*</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span> <span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span> <span class="n">E</span> <span class="p">)</span> <span class="p">)</span> <span class="o">-</span> <span class="n">m</span><span class="o">.</span><span class="n">e</span><span class="p">)</span>
-    <span class="n">y_v</span><span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">a</span><span class="o">*</span><span class="p">(</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span> <span class="mi">1</span><span class="o">-</span><span class="n">m</span><span class="o">.</span><span class="n">e</span><span class="o">**</span><span class="mi">2</span> <span class="p">)</span><span class="o">*</span><span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span> <span class="n">E</span> <span class="p">)</span> <span class="p">)</span>
-    <span class="n">v</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span> <span class="n">math</span><span class="o">.</span><span class="n">atan2</span><span class="p">(</span> <span class="n">y_v</span><span class="p">,</span> <span class="n">x_v</span> <span class="p">)</span> <span class="p">)</span> <span class="o">%</span> <span class="mi">360</span>
-    <span class="n">r</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span> <span class="n">x_v</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">y_v</span><span class="o">**</span><span class="mi">2</span> <span class="p">)</span>
-    <span class="k">return</span> <span class="n">r</span><span class="p">,</span> <span class="n">v</span>
-</div>
-<div class="viewcode-block" id="pos_sun"><a class="viewcode-back" href="../../../../python/navigation/moontrac.html#hamcalc.navigation.lunar.schlyter.pos_sun">[docs]</a><span class="k">def</span> <span class="nf">pos_sun</span><span class="p">(</span> <span class="n">d</span> <span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Position of the sun, as distance and anomaly.</span>
-<span class="sd">    :returns: r, v</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">s</span> <span class="o">=</span> <span class="n">sun_elements</span><span class="p">(</span> <span class="n">d</span> <span class="p">)</span>
-    <span class="c"># Eccentric Anomaly</span>
-    <span class="n">E</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">M</span> <span class="o">+</span> <span class="n">m</span><span class="o">.</span><span class="n">e</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span> <span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span> <span class="n">m</span><span class="o">.</span><span class="n">M</span> <span class="p">)</span> <span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">m</span><span class="o">.</span><span class="n">e</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span> <span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span> <span class="n">m</span><span class="o">.</span><span class="n">M</span> <span class="p">)</span> <span class="p">)</span> <span class="p">)</span>
-    <span class="n">x_v</span><span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span> <span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span> <span class="n">E</span> <span class="p">)</span> <span class="p">)</span> <span class="o">-</span> <span class="n">m</span><span class="o">.</span><span class="n">e</span>
-    <span class="n">y_v</span><span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span> <span class="mi">1</span><span class="o">-</span><span class="n">m</span><span class="o">.</span><span class="n">e</span><span class="o">**</span><span class="mi">2</span> <span class="p">)</span><span class="o">*</span><span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span> <span class="n">E</span> <span class="p">)</span>
-    <span class="n">v</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span> <span class="n">math</span><span class="o">.</span><span class="n">atan2</span><span class="p">(</span> <span class="n">y_v</span><span class="p">,</span> <span class="n">x_v</span> <span class="p">)</span> <span class="p">)</span> <span class="o">%</span> <span class="mi">360</span>
-    <span class="n">r</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span> <span class="n">x_v</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">y_v</span><span class="o">**</span><span class="mi">2</span> <span class="p">)</span>
-    <span class="k">return</span> <span class="n">r</span><span class="p">,</span> <span class="n">v</span>
-</div>
+<span class="sd">            xhor = x * sin(lat) - z * cos(lat)</span>
+<span class="sd">            yhor = y</span>
+<span class="sd">            zhor = x * cos(lat) + z * sin(lat)</span>
+
+<span class="sd">            az  = atan2( yhor, xhor ) + 180_degrees</span>
+<span class="sd">            alt = asin( zhor ) = atan2( zhor, sqrt(xhor*xhor+yhor*yhor) )</span>
+
+<span class="sd">        :param lat: latitude of observer</span>
+<span class="sd">        :param lon: longiude of observer</span>
+<span class="sd">        :param utc_offset: UTC time-of-day offset of observer, in hours.</span>
+<span class="sd">        :param sun: An instance of :class:`Position_Sun` or ``self``,</span>
+<span class="sd">            if this is the :class:`Position_Sun`  subclass itself.</span>
+<span class="sd">            This provides the local solar longitude for LST offset.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c"># Sun&#39;s Mean Longitude, L, gives us GMT at midnight.</span>
+        <span class="c"># GMST0 = (L + 180)/15</span>
+        <span class="n">GMST0</span> <span class="o">=</span> <span class="p">((</span><span class="n">sun</span><span class="o">.</span><span class="n">L</span><span class="o">+</span><span class="mi">180</span><span class="p">)</span><span class="o">/</span><span class="mi">15</span><span class="p">)</span> <span class="o">%</span> <span class="mi">24</span>
+
+        <span class="c"># Local Sidereal Time = GMST0 + UT + LON/15</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">LST</span> <span class="o">=</span> <span class="n">GMST0</span> <span class="o">+</span> <span class="n">utc_offset</span> <span class="o">+</span> <span class="n">lon</span><span class="o">/</span><span class="mi">15</span>
+
+        <span class="c"># Hour Angle (in degrees) = 15*(LST - RA (in hours))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">HA</span> <span class="o">=</span> <span class="p">(</span><span class="mi">15</span><span class="o">*</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">LST</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">RA</span><span class="o">/</span><span class="mi">15</span><span class="p">))</span> <span class="o">%</span> <span class="mi">360</span>
+
+        <span class="c"># celestial rectangular (x,y,z) coordinate</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">HA</span><span class="p">))</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Decl</span><span class="p">))</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">HA</span><span class="p">))</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Decl</span><span class="p">))</span>
+        <span class="n">z</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Decl</span><span class="p">))</span>
+
+        <span class="c"># rotate this x,y,z system along the Y axis</span>
+        <span class="n">xhor</span> <span class="o">=</span> <span class="n">x</span><span class="o">*</span><span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">lat</span><span class="p">))</span> <span class="o">-</span> <span class="n">z</span><span class="o">*</span><span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">lat</span><span class="p">))</span>
+        <span class="n">yhor</span> <span class="o">=</span> <span class="n">y</span>
+        <span class="n">zhor</span> <span class="o">=</span> <span class="n">x</span><span class="o">*</span><span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">lat</span><span class="p">))</span> <span class="o">+</span> <span class="n">z</span><span class="o">*</span><span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">lat</span><span class="p">))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">azimuth</span>  <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span> <span class="n">math</span><span class="o">.</span><span class="n">atan2</span><span class="p">(</span> <span class="n">yhor</span><span class="p">,</span> <span class="n">xhor</span> <span class="p">)</span> <span class="p">)</span> <span class="o">+</span> <span class="mi">180</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">altitude</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span> <span class="n">math</span><span class="o">.</span><span class="n">atan2</span><span class="p">(</span> <span class="n">zhor</span><span class="p">,</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">xhor</span><span class="o">**</span><span class="mi">2</span><span class="o">+</span><span class="n">yhor</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="p">)</span> <span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">azimuth</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">altitude</span>
+    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="Orbital_Elements.ecl"><a class="viewcode-back" href="../../../../python/navigation/moontrac.html#hamcalc.navigation.lunar.schlyter.Orbital_Elements.ecl">[docs]</a>    <span class="k">def</span> <span class="nf">ecl</span><span class="p">(</span> <span class="n">jad</span> <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Compute the obliquity of the ecliptic.&quot;&quot;&quot;</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="n">jad</span> <span class="o">-</span> <span class="mf">2451543.5</span>
+        <span class="k">return</span> <span class="mf">23.4393</span> <span class="o">-</span> <span class="mf">3.563E-7</span><span class="o">*</span><span class="n">d</span>
+</div></div>
+<div class="viewcode-block" id="Position_Moon"><a class="viewcode-back" href="../../../../python/navigation/moontrac.html#hamcalc.navigation.lunar.schlyter.Position_Moon">[docs]</a><span class="k">class</span> <span class="nc">Position_Moon</span><span class="p">(</span> <span class="n">Orbital_Elements</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Position of the Moon on a given date.&quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">jad</span> <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create orbital elements and compute position of the</span>
+<span class="sd">        moon. This includes the largest perturbations.</span>
+
+<span class="sd">        :param jad: Julian Astronomical Day.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span> <span class="n">jad</span> <span class="p">)</span>
+        <span class="n">d</span><span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">d</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">N</span> <span class="o">=</span> <span class="p">(</span><span class="mf">125.1228</span> <span class="o">-</span> <span class="mf">0.0529538083</span><span class="o">*</span><span class="n">d</span><span class="p">)</span> <span class="o">%</span> <span class="mi">360</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">i</span> <span class="o">=</span> <span class="mf">5.1454</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">w</span> <span class="o">=</span> <span class="p">(</span><span class="mf">318.0634</span> <span class="o">+</span> <span class="mf">0.1643573223</span><span class="o">*</span><span class="n">d</span><span class="p">)</span> <span class="o">%</span> <span class="mi">360</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">a</span> <span class="o">=</span> <span class="mf">60.2666</span> <span class="c"># Earth radii</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">e</span> <span class="o">=</span> <span class="mf">0.054900</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">M</span> <span class="o">=</span> <span class="p">(</span><span class="mf">115.3654</span> <span class="o">+</span> <span class="mf">13.0649929509</span><span class="o">*</span><span class="n">d</span><span class="p">)</span> <span class="o">%</span> <span class="mi">360</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">related</span><span class="p">()</span>
+        <span class="c"># Eccentric Anomaly</span>
+        <span class="n">E_0</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">M</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">e</span><span class="o">*</span><span class="mi">180</span><span class="o">/</span><span class="n">math</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span> <span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">M</span> <span class="p">)</span> <span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">e</span><span class="o">*</span><span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span> <span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">M</span><span class="p">)</span> <span class="p">)</span> <span class="p">)</span>
+        <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">16</span><span class="p">):</span>
+            <span class="n">E_1</span><span class="o">=</span> <span class="n">E_0</span> <span class="o">-</span> <span class="p">(</span><span class="n">E_0</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">e</span><span class="o">*</span><span class="mi">180</span><span class="o">/</span><span class="n">math</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">sin</span> <span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">E_0</span><span class="p">)</span> <span class="p">)</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">M</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">e</span><span class="o">*</span><span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span> <span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">E_0</span><span class="p">))</span> <span class="p">)</span>
+            <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">E_0</span><span class="o">-</span><span class="n">E_1</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mf">0.005</span><span class="p">:</span> <span class="k">break</span>
+            <span class="n">E_0</span><span class="o">=</span> <span class="n">E_1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">E</span><span class="o">=</span> <span class="n">E_1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="o">*</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span> <span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">E</span> <span class="p">)</span> <span class="p">)</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">e</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="o">*</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span> <span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">E</span> <span class="p">)</span> <span class="p">)</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span> <span class="mi">1</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">e</span><span class="o">**</span><span class="mi">2</span> <span class="p">)</span> <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">v</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span> <span class="n">math</span><span class="o">.</span><span class="n">atan2</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">x</span> <span class="p">)</span> <span class="p">)</span> <span class="o">%</span> <span class="mi">360</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">r</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="o">**</span><span class="mi">2</span> <span class="p">)</span>
+
+        <span class="c"># Perturbation Base Values</span>
+        <span class="c"># Sun&#39;s  mean longitude:        Ls     (already computed)</span>
+        <span class="c"># Moon&#39;s mean longitude:        Lm  =  N + w + M (for the Moon)</span>
+        <span class="c"># Sun&#39;s  mean anomaly:          Ms     (already computed)</span>
+        <span class="c"># Moon&#39;s mean anomaly:          Mm     (already computed)</span>
+        <span class="c"># Moon&#39;s mean elongation:       D   =  Lm - Ls</span>
+        <span class="c"># Moon&#39;s argument of latitude:  F   =  Lm - N</span>
+        <span class="n">sun</span><span class="o">=</span> <span class="n">Position_Sun</span><span class="p">(</span> <span class="n">jad</span> <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sun</span><span class="o">=</span> <span class="n">sun</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">L_s</span> <span class="o">=</span> <span class="n">sun</span><span class="o">.</span><span class="n">L</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">L_m</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">N</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">w</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">M</span><span class="p">)</span> <span class="o">%</span> <span class="mi">360</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">M_s</span> <span class="o">=</span> <span class="n">sun</span><span class="o">.</span><span class="n">M</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">M_m</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">M</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">D</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">L_m</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">L_s</span><span class="p">)</span> <span class="o">%</span> <span class="mi">360</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">F</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">L_m</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">N</span><span class="p">)</span> <span class="o">%</span> <span class="mi">360</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">P_longitude</span><span class="o">=</span> <span class="p">(</span>
+            <span class="o">-</span><span class="mf">1.274</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span> <span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">M_m</span> <span class="o">-</span> <span class="mi">2</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">D</span><span class="p">)</span> <span class="p">),</span>    <span class="c">#(Evection)</span>
+            <span class="o">+</span><span class="mf">0.658</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span> <span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">D</span><span class="p">)</span> <span class="p">),</span>         <span class="c">#(Variation)</span>
+            <span class="o">-</span><span class="mf">0.186</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span> <span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">M_s</span><span class="p">)</span> <span class="p">),</span>          <span class="c">#(Yearly equation)</span>
+            <span class="o">-</span><span class="mf">0.059</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span> <span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">M_m</span> <span class="o">-</span> <span class="mi">2</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">D</span><span class="p">)</span> <span class="p">),</span>
+            <span class="o">-</span><span class="mf">0.057</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span> <span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">M_m</span> <span class="o">-</span> <span class="mi">2</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">D</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">M_s</span><span class="p">)</span> <span class="p">),</span>
+            <span class="o">+</span><span class="mf">0.053</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span> <span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">M_m</span> <span class="o">+</span> <span class="mi">2</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">D</span><span class="p">)</span> <span class="p">),</span>
+            <span class="o">+</span><span class="mf">0.046</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span> <span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">D</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">M_s</span><span class="p">)</span> <span class="p">),</span>
+            <span class="o">+</span><span class="mf">0.041</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span> <span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">M_m</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">M_s</span><span class="p">)</span> <span class="p">),</span>
+            <span class="o">-</span><span class="mf">0.035</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span> <span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">D</span><span class="p">)</span> <span class="p">),</span>            <span class="c">#(Parallactic equation)</span>
+            <span class="o">-</span><span class="mf">0.031</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span> <span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">M_m</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">M_s</span><span class="p">)</span> <span class="p">),</span>
+            <span class="o">-</span><span class="mf">0.015</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span> <span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">F</span> <span class="o">-</span> <span class="mi">2</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">D</span><span class="p">)</span> <span class="p">),</span>
+            <span class="o">+</span><span class="mf">0.011</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span> <span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">M_m</span> <span class="o">-</span> <span class="mi">4</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">D</span><span class="p">)</span> <span class="p">),</span>
+            <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">P_long</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">P_longitude</span> <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">P_latitude</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="o">-</span><span class="mf">0.173</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span> <span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">F</span> <span class="o">-</span> <span class="mi">2</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">D</span><span class="p">)</span> <span class="p">),</span>
+            <span class="o">-</span><span class="mf">0.055</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span> <span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">M_m</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">F</span> <span class="o">-</span> <span class="mi">2</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">D</span><span class="p">)</span> <span class="p">),</span>
+            <span class="o">-</span><span class="mf">0.046</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span> <span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">M_m</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">F</span> <span class="o">-</span> <span class="mi">2</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">D</span><span class="p">)</span> <span class="p">),</span>
+            <span class="o">+</span><span class="mf">0.033</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span> <span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">F</span> <span class="o">+</span> <span class="mi">2</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">D</span><span class="p">)</span> <span class="p">),</span>
+            <span class="o">+</span><span class="mf">0.017</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span> <span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">M_m</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">F</span><span class="p">)</span> <span class="p">),</span>
+            <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">P_lat</span><span class="o">=</span> <span class="nb">sum</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">P_latitude</span> <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">P_distance</span><span class="o">=</span> <span class="p">(</span>
+            <span class="o">-</span><span class="mf">0.58</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span> <span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">M_m</span> <span class="o">-</span> <span class="mi">2</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">D</span><span class="p">)</span> <span class="p">),</span>
+            <span class="o">-</span><span class="mf">0.46</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span> <span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">D</span><span class="p">)</span> <span class="p">),</span>
+            <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">P_r</span><span class="o">=</span> <span class="nb">sum</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">P_distance</span> <span class="p">)</span>
+
+        <span class="c"># Ecliptic Coordinates</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">x_m</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">r</span> <span class="o">*</span> <span class="p">(</span> <span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">N</span><span class="p">))</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">v</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">w</span><span class="p">))</span> <span class="o">-</span> <span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">N</span><span class="p">))</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">v</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">w</span><span class="p">))</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">i</span><span class="p">))</span> <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">y_m</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">r</span> <span class="o">*</span> <span class="p">(</span> <span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">N</span><span class="p">))</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">v</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">w</span><span class="p">))</span> <span class="o">+</span> <span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">N</span><span class="p">))</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">v</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">w</span><span class="p">))</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">i</span><span class="p">))</span> <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">z_m</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">r</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">v</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">w</span><span class="p">))</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">i</span><span class="p">))</span>
+
+        <span class="c"># Longitude and Latitude corrected with perturbation.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lon_ecl</span> <span class="o">=</span> <span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span> <span class="n">math</span><span class="o">.</span><span class="n">atan2</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">y_m</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">x_m</span> <span class="p">)</span> <span class="p">)</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">P_long</span><span class="p">)</span> <span class="o">%</span> <span class="mi">360</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lat_ecl</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span> <span class="n">math</span><span class="o">.</span><span class="n">atan2</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">z_m</span><span class="p">,</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">x_m</span><span class="o">**</span><span class="mi">2</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">y_m</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="p">)</span> <span class="p">)</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">P_lat</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">r_ecl</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">r</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">P_r</span>
+
+        <span class="c"># Convert perturbed lon and lat back to geocentric coordinates</span>
+        <span class="n">xg</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">r_ecl</span><span class="o">*</span><span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lon_ecl</span><span class="p">))</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lat_ecl</span><span class="p">))</span>
+        <span class="n">yg</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">r_ecl</span><span class="o">*</span><span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lon_ecl</span><span class="p">))</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lat_ecl</span><span class="p">))</span>
+        <span class="n">zg</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">r_ecl</span><span class="o">*</span><span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lat_ecl</span><span class="p">))</span>
+
+        <span class="c"># Rotate the y-z-plane by ecl, the angle of the obliquity of the ecliptic to get equatorial coordinates</span>
+        <span class="n">xe</span> <span class="o">=</span> <span class="n">xg</span>
+        <span class="n">ye</span> <span class="o">=</span> <span class="n">yg</span><span class="o">*</span><span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">ecl</span><span class="p">(</span><span class="n">jad</span><span class="p">)</span> <span class="p">))</span> <span class="o">-</span> <span class="n">zg</span><span class="o">*</span><span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">ecl</span><span class="p">(</span><span class="n">jad</span><span class="p">)</span> <span class="p">))</span>
+        <span class="n">ze</span> <span class="o">=</span> <span class="n">yg</span><span class="o">*</span><span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">ecl</span><span class="p">(</span><span class="n">jad</span><span class="p">)</span> <span class="p">))</span> <span class="o">+</span> <span class="n">zg</span><span class="o">*</span><span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">ecl</span><span class="p">(</span><span class="n">jad</span><span class="p">)</span> <span class="p">))</span>
+
+        <span class="c"># Compute Right Ascension (RA) and Declination (Dec):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">RA</span>  <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span> <span class="n">math</span><span class="o">.</span><span class="n">atan2</span><span class="p">(</span> <span class="n">ye</span><span class="p">,</span> <span class="n">xe</span> <span class="p">)</span> <span class="p">)</span> <span class="o">%</span> <span class="mi">360</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Decl</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span> <span class="n">math</span><span class="o">.</span><span class="n">atan2</span><span class="p">(</span> <span class="n">ze</span><span class="p">,</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">xe</span><span class="o">**</span><span class="mi">2</span><span class="o">+</span><span class="n">ye</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="p">)</span> <span class="p">)</span>
+
+<div class="viewcode-block" id="Position_Moon.local_az_alt"><a class="viewcode-back" href="../../../../python/navigation/moontrac.html#hamcalc.navigation.lunar.schlyter.Position_Moon.local_az_alt">[docs]</a>    <span class="k">def</span> <span class="nf">local_az_alt</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">lat</span><span class="p">,</span> <span class="n">lon</span><span class="p">,</span> <span class="n">utc_offset</span> <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Compute a localized azimuth and altitude, applying</span>
+<span class="sd">        the topocentric correction to altitude.</span>
+
+<span class="sd">        :param lat: latitude of observer</span>
+<span class="sd">        :param lon: longiude of observer</span>
+<span class="sd">        :param utc_offset: UTC time-of-day offset of observer</span>
+<span class="sd">        :return: azimuth and altitude pair.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">az</span><span class="p">,</span> <span class="n">alt</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_az_alt</span><span class="p">(</span> <span class="n">lat</span><span class="p">,</span> <span class="n">lon</span><span class="p">,</span> <span class="n">utc_offset</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">sun</span> <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">az</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">alt_geoc</span> <span class="o">=</span> <span class="n">az</span><span class="p">,</span> <span class="n">alt</span>
+        <span class="c"># Compute azimuthal coordinates by applying LST.</span>
+        <span class="c"># Topocentric vs. geocentric altitude adjustment</span>
+        <span class="n">mpar</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span> <span class="n">math</span><span class="o">.</span><span class="n">asin</span><span class="p">(</span> <span class="mi">1</span><span class="o">/</span><span class="bp">self</span><span class="o">.</span><span class="n">r</span> <span class="p">)</span> <span class="p">)</span>
+        <span class="n">alt_topoc</span> <span class="o">=</span> <span class="n">alt</span> <span class="o">-</span> <span class="n">mpar</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">alt</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">alt_topoc</span> <span class="o">=</span> <span class="n">alt_topoc</span>
+        <span class="k">return</span> <span class="n">az</span><span class="p">,</span> <span class="n">alt_topoc</span>
+</div></div>
+<div class="viewcode-block" id="Position_Sun"><a class="viewcode-back" href="../../../../python/navigation/moontrac.html#hamcalc.navigation.lunar.schlyter.Position_Sun">[docs]</a><span class="k">class</span> <span class="nc">Position_Sun</span><span class="p">(</span> <span class="n">Orbital_Elements</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Position of the Sun on a given date.&quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">jad</span> <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create orbital elements and compute position of the</span>
+<span class="sd">        moon. This includes the largest perturbations.</span>
+
+<span class="sd">        :param jad: Julian Astronomical Day.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span> <span class="n">jad</span> <span class="p">)</span>
+        <span class="n">d</span><span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">d</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">N</span> <span class="o">=</span> <span class="mf">0.0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">i</span> <span class="o">=</span> <span class="mf">0.0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">w</span> <span class="o">=</span> <span class="mf">282.9404</span> <span class="o">+</span> <span class="mf">4.70935E-5</span><span class="o">*</span><span class="n">d</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">a</span> <span class="o">=</span> <span class="mf">1.000000</span> <span class="c"># AU</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">e</span> <span class="o">=</span> <span class="mf">0.016709</span> <span class="o">-</span> <span class="mf">1.151E-9</span><span class="o">*</span><span class="n">d</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">M</span> <span class="o">=</span> <span class="p">(</span><span class="mf">356.0470</span> <span class="o">+</span> <span class="mf">0.9856002585</span><span class="o">*</span><span class="n">d</span><span class="p">)</span> <span class="o">%</span> <span class="mi">360</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">related</span><span class="p">()</span>
+        <span class="c"># Eccentric Anomaly</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">E</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">M</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">e</span><span class="o">*</span><span class="mi">180</span><span class="o">/</span><span class="n">math</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span> <span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">M</span> <span class="p">)</span> <span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">e</span><span class="o">*</span><span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span> <span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">M</span> <span class="p">)</span> <span class="p">)</span> <span class="p">)</span>
+        <span class="n">x_v</span><span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span> <span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">E</span> <span class="p">)</span> <span class="p">)</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">e</span>
+        <span class="n">y_v</span><span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span> <span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">E</span> <span class="p">)</span> <span class="p">)</span><span class="o">*</span><span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span> <span class="mi">1</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">e</span><span class="o">**</span><span class="mi">2</span> <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">x_v</span><span class="p">,</span> <span class="n">y_v</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">v</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span> <span class="n">math</span><span class="o">.</span><span class="n">atan2</span><span class="p">(</span> <span class="n">y_v</span><span class="p">,</span> <span class="n">x_v</span> <span class="p">)</span> <span class="p">)</span> <span class="o">%</span> <span class="mi">360</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">r</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span> <span class="n">x_v</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">y_v</span><span class="o">**</span><span class="mi">2</span> <span class="p">)</span>
+        <span class="c"># True Longitude</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lon</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">v</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">w</span>
+
+        <span class="c"># Ecliptic Rectangular Coordinates</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">x_s</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">r</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span> <span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lon</span><span class="p">)</span> <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">y_s</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">r</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span> <span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lon</span><span class="p">)</span> <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">z_s</span> <span class="o">=</span> <span class="mi">0</span> <span class="c"># By definition</span>
+
+        <span class="c"># Equatorial Coordinates</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">x_e</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">x_s</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">y_e</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">y_s</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span> <span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">ecl</span><span class="p">(</span><span class="n">jad</span><span class="p">)</span> <span class="p">)</span> <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">z_e</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">y_s</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span> <span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">ecl</span><span class="p">(</span><span class="n">jad</span><span class="p">)</span> <span class="p">)</span> <span class="p">)</span>
+
+        <span class="c"># Right Ascension and Declination</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">RA</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span> <span class="n">math</span><span class="o">.</span><span class="n">atan2</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">y_e</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">x_e</span> <span class="p">)</span> <span class="p">)</span> <span class="o">%</span> <span class="mi">360</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Decl</span><span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span> <span class="n">math</span><span class="o">.</span><span class="n">atan2</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">z_e</span><span class="p">,</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">x_e</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">y_e</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="p">)</span> <span class="p">)</span> <span class="o">%</span> <span class="mi">360</span>
+
+<div class="viewcode-block" id="Position_Sun.local_az_alt"><a class="viewcode-back" href="../../../../python/navigation/moontrac.html#hamcalc.navigation.lunar.schlyter.Position_Sun.local_az_alt">[docs]</a>    <span class="k">def</span> <span class="nf">local_az_alt</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">lat</span><span class="p">,</span> <span class="n">lon</span><span class="p">,</span> <span class="n">utc_offset</span> <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Compute a localized azimuth and altitude.</span>
+
+<span class="sd">        :param lat: latitude of observer</span>
+<span class="sd">        :param lon: longiude of observer</span>
+<span class="sd">        :param utc_offset: UTC time-of-day offset of observer</span>
+<span class="sd">        :return: azimuth and altitude pair.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_az_alt</span><span class="p">(</span> <span class="n">lat</span><span class="p">,</span> <span class="n">lon</span><span class="p">,</span> <span class="n">utc_offset</span><span class="p">,</span> <span class="bp">self</span> <span class="p">)</span>
+</div></div>
 <div class="viewcode-block" id="RA_Decl_sun"><a class="viewcode-back" href="../../../../python/navigation/moontrac.html#hamcalc.navigation.lunar.schlyter.RA_Decl_sun">[docs]</a><span class="k">def</span> <span class="nf">RA_Decl_sun</span><span class="p">(</span> <span class="n">d</span> <span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Right Ascension and Declination of the Sun.&quot;&quot;&quot;</span>
-    <span class="n">s</span> <span class="o">=</span> <span class="n">sun_elements</span><span class="p">(</span> <span class="n">d</span> <span class="p">)</span>
-    <span class="n">r</span><span class="p">,</span> <span class="n">v</span> <span class="o">=</span> <span class="n">pos_sun</span><span class="p">(</span> <span class="n">d</span> <span class="p">)</span>
-    <span class="c"># True Longitude</span>
-    <span class="n">lon_sun</span> <span class="o">=</span> <span class="n">v</span> <span class="o">+</span> <span class="n">s</span><span class="o">.</span><span class="n">w</span>
-    <span class="c"># Ecliptic Rectangular Coordinates</span>
-    <span class="n">x_s</span> <span class="o">=</span> <span class="n">r</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span> <span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">lon_sun</span><span class="p">)</span> <span class="p">)</span>
-    <span class="n">y_s</span> <span class="o">=</span> <span class="n">r</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span> <span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">lon_sun</span><span class="p">)</span> <span class="p">)</span>
-    <span class="n">z_s</span> <span class="o">=</span> <span class="mi">0</span> <span class="c"># By definition</span>
-    <span class="c"># Equatorial Coordinates</span>
-    <span class="n">x_e</span> <span class="o">=</span> <span class="n">x_s</span>
-    <span class="n">y_e</span> <span class="o">=</span> <span class="n">y_s</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span> <span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span> <span class="n">ecl</span><span class="p">(</span><span class="n">d</span><span class="p">)</span> <span class="p">)</span> <span class="p">)</span>
-    <span class="n">z_e</span> <span class="o">=</span> <span class="n">y_s</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span> <span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span> <span class="n">ecl</span><span class="p">(</span><span class="n">d</span><span class="p">)</span> <span class="p">)</span> <span class="p">)</span>
-    <span class="c"># Right Ascension and Declination</span>
-    <span class="n">RA</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span> <span class="n">math</span><span class="o">.</span><span class="n">atan2</span><span class="p">(</span> <span class="n">y_e</span><span class="p">,</span> <span class="n">x_e</span> <span class="p">)</span> <span class="p">)</span> <span class="o">%</span> <span class="mi">360</span>
-    <span class="n">Dec</span><span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span> <span class="n">math</span><span class="o">.</span><span class="n">atan2</span><span class="p">(</span> <span class="n">z_e</span><span class="p">,</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">x_e</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span> <span class="n">y_e</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="p">)</span> <span class="p">)</span> <span class="o">%</span> <span class="mi">360</span>
-</pre></div></div>
+    <span class="n">s</span> <span class="o">=</span> <span class="n">Position_Sun</span><span class="p">(</span> <span class="n">d</span> <span class="p">)</span>
+    <span class="k">return</span> <span class="n">s</span><span class="o">.</span><span class="n">RA</span><span class="p">,</span> <span class="n">s</span><span class="o">.</span><span class="n">Decl</span></div>
+</pre></div>
 
           </div>
         </div>

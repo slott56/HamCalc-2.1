@@ -51,7 +51,7 @@
   <h1>Source code for hamcalc.navigation.distance</h1><div class="highlight"><pre>
 <span class="sd">&quot;&quot;&quot;hamcalc.navigation.distance -- Great Circle Distance Calculation.</span>
 
-<span class="sd">Test Case</span>
+<span class="sd">Test Cases</span>
 
 <span class="sd">&gt;&gt;&gt; import hamcalc.math.trig as trig</span>
 <span class="sd">&gt;&gt;&gt; import hamcalc.navigation.distance as distance</span>
@@ -62,11 +62,44 @@
 <span class="sd">(50.36388888888889, -4.156944444444444)</span>
 <span class="sd">&gt;&gt;&gt; lat_2, lon_2</span>
 <span class="sd">(42.3511111111111, -71.04083333333335)</span>
-<span class="sd">&gt;&gt;&gt; r, b = distance.range_bearing( lat_1, lon_1, lat_2, lon_2, R=distance.KM )</span>
+<span class="sd">&gt;&gt;&gt; r, b = distance.rhumb_range_bearing( lat_1, lon_1, lat_2, lon_2, R=distance.KM )</span>
 <span class="sd">&gt;&gt;&gt; round(r,0)</span>
 <span class="sd">5196.0</span>
 <span class="sd">&gt;&gt;&gt; tuple( int(round(x,0)) for x in distance.deg_2_dms( b ) )</span>
 <span class="sd">(260, 7, 38)</span>
+
+<span class="sd">&gt;&gt;&gt; lat_1, lon_1 = deg(51,7,32), deg(1,20,17)</span>
+<span class="sd">&gt;&gt;&gt; bearing = deg(116,38,10)</span>
+<span class="sd">&gt;&gt;&gt; round(bearing,1)</span>
+<span class="sd">116.6</span>
+<span class="sd">&gt;&gt;&gt; lat_2, lon_2 = distance.rhumb_destination( lat_1, lon_1, 40.23, bearing, distance.KM )</span>
+<span class="sd">&gt;&gt;&gt; tuple( map( int, distance.deg_2_dms( lat_2 ) ) )</span>
+<span class="sd">(50, 57, 48)</span>
+<span class="sd">&gt;&gt;&gt; tuple( map( int, distance.deg_2_dms( lon_2 ) ) )</span>
+<span class="sd">(1, 51, 8)</span>
+
+<span class="sd">&gt;&gt;&gt; lat_1, lon_1 = deg(50, 3, 59), -deg(5, 42, 53)</span>
+<span class="sd">&gt;&gt;&gt; lat_2, lon_2 = deg(58, 38, 38), -deg(3, 4, 12)</span>
+<span class="sd">&gt;&gt;&gt; d= distance.great_circle_distance( lat_1, lon_1, lat_2, lon_2, R=distance.KM )</span>
+<span class="sd">&gt;&gt;&gt; round(d,1)</span>
+<span class="sd">968.9</span>
+<span class="sd">&gt;&gt;&gt; theta= distance.great_circle_bearing( lat_1, lon_1, lat_2, lon_2 )</span>
+<span class="sd">&gt;&gt;&gt; tuple( map( int, distance.deg_2_dms(theta) ) )</span>
+<span class="sd">(9, 7, 11)</span>
+
+<span class="sd">&gt;&gt;&gt; lat_1, lon_1 = deg(53, 19, 14), -deg(1, 43, 47)</span>
+<span class="sd">&gt;&gt;&gt; bearing= deg(96, 1, 18)</span>
+<span class="sd">&gt;&gt;&gt; lat_2, lon_2= distance.great_circle_destination( lat_1, lon_1, 124.8, bearing, R=distance.KM )</span>
+<span class="sd">&gt;&gt;&gt; tuple( map( round, distance.deg_2_dms(lat_2) ) )</span>
+<span class="sd">(53, 11, 18)</span>
+<span class="sd">&gt;&gt;&gt; tuple( map( round, distance.deg_2_dms(lon_2) ) )</span>
+<span class="sd">(0, 7, 60)</span>
+
+<span class="sd">&gt;&gt;&gt; lat_1, lon_1 = deg(35, 0, 0), deg(45, 0, 0)</span>
+<span class="sd">&gt;&gt;&gt; lat_2, lon_2 = deg(35, 0, 0), deg(135, 0, 0)</span>
+<span class="sd">&gt;&gt;&gt; theta= distance.great_circle_bearing( lat_1, lon_1, lat_2, lon_2 )</span>
+<span class="sd">&gt;&gt;&gt; tuple( map( int, distance.deg_2_dms(theta) ) )</span>
+<span class="sd">(60, 9, 44)</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">import</span> <span class="nn">math</span>
@@ -85,7 +118,7 @@
 <span class="n">MI</span><span class="o">=</span> <span class="mf">3958.761</span> <span class="c"># R_1 in mi</span>
 <span class="n">NM</span><span class="o">=</span> <span class="mf">3440.069</span> <span class="c"># R_1 in nm</span>
 
-<div class="viewcode-block" id="range_bearing"><a class="viewcode-back" href="../../../python/navigation/pathfind.html#hamcalc.navigation.distance.range_bearing">[docs]</a><span class="k">def</span> <span class="nf">range_bearing</span><span class="p">(</span> <span class="n">lat_1</span><span class="p">,</span> <span class="n">lon_1</span><span class="p">,</span> <span class="n">lat_2</span><span class="p">,</span> <span class="n">lon_2</span><span class="p">,</span> <span class="n">R</span><span class="o">=</span><span class="n">NM</span> <span class="p">):</span>
+<div class="viewcode-block" id="rhumb_range_bearing"><a class="viewcode-back" href="../../../python/navigation/pathfind.html#hamcalc.navigation.distance.rhumb_range_bearing">[docs]</a><span class="k">def</span> <span class="nf">rhumb_range_bearing</span><span class="p">(</span> <span class="n">lat_1</span><span class="p">,</span> <span class="n">lon_1</span><span class="p">,</span> <span class="n">lat_2</span><span class="p">,</span> <span class="n">lon_2</span><span class="p">,</span> <span class="n">R</span><span class="o">=</span><span class="n">NM</span> <span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Rhumb-line course from ``(lat_1, lon_1)`` to ``(lat_2, lon_2)``.</span>
 
 <span class="sd">    :param lat_1: latitude, postive N</span>
@@ -113,10 +146,107 @@
     <span class="n">dLon</span> <span class="o">=</span> <span class="n">lon2</span> <span class="o">-</span> <span class="n">lon1</span>
     <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">dLon</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span><span class="p">:</span>
         <span class="n">dLon</span> <span class="o">=</span> <span class="o">-</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">math</span><span class="o">.</span><span class="n">pi</span><span class="o">-</span><span class="n">dLon</span><span class="p">)</span> <span class="k">if</span> <span class="n">dLon</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">math</span><span class="o">.</span><span class="n">pi</span><span class="o">+</span><span class="n">dLon</span><span class="p">)</span>
-    <span class="n">d</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">dLat</span><span class="o">*</span><span class="n">dLat</span> <span class="o">+</span> <span class="n">q</span><span class="o">*</span><span class="n">q</span><span class="o">*</span><span class="n">dLon</span><span class="o">*</span><span class="n">dLon</span><span class="p">)</span> <span class="o">*</span> <span class="n">R</span>
+    <span class="n">d</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">dLat</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">q</span><span class="o">**</span><span class="mi">2</span><span class="o">*</span><span class="n">dLon</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">R</span>
     <span class="n">brng</span><span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">atan2</span><span class="p">(</span><span class="n">dLon</span><span class="p">,</span> <span class="n">dPhi</span><span class="p">)</span>
     <span class="n">theta</span><span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span> <span class="n">brng</span> <span class="p">)</span> <span class="o">%</span> <span class="mi">360</span>
-    <span class="k">return</span> <span class="n">d</span><span class="p">,</span> <span class="n">theta</span></div>
+    <span class="k">return</span> <span class="n">d</span><span class="p">,</span> <span class="n">theta</span>
+</div>
+<div class="viewcode-block" id="rhumb_destination"><a class="viewcode-back" href="../../../python/navigation/pathfind.html#hamcalc.navigation.distance.rhumb_destination">[docs]</a><span class="k">def</span> <span class="nf">rhumb_destination</span><span class="p">(</span> <span class="n">lat_1</span><span class="p">,</span> <span class="n">lon_1</span><span class="p">,</span> <span class="nb">range</span><span class="p">,</span> <span class="n">bearing</span><span class="p">,</span> <span class="n">R</span><span class="o">=</span><span class="n">NM</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Rhumb line destination given point, range and bearing.</span>
+
+<span class="sd">    :param lat_1: latitude, postive N</span>
+<span class="sd">    :param lon_1: longitude, positive E</span>
+<span class="sd">    :param range: the distance to travel.</span>
+<span class="sd">    :param bearing: the direction of travel in degrees.</span>
+<span class="sd">    :param R: radius of the earth in appropriate units;</span>
+<span class="sd">        default is nautical miles.</span>
+<span class="sd">        Values include :py:data:`KM` for kilometers,</span>
+<span class="sd">        :py:data:`MI` for statute miles and :py:data:`NM` for nautical miles.</span>
+
+<span class="sd">    :returns: lat and lon of the ending point.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">d</span><span class="o">=</span> <span class="nb">range</span><span class="o">/</span><span class="n">R</span>
+    <span class="n">theta</span><span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">bearing</span><span class="p">)</span>
+    <span class="n">lat1</span><span class="o">=</span>  <span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">lat_1</span><span class="p">)</span>
+    <span class="n">lon1</span><span class="o">=</span>  <span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">lon_1</span><span class="p">)</span>
+    <span class="n">lat2</span> <span class="o">=</span> <span class="n">lat1</span> <span class="o">+</span> <span class="n">d</span><span class="o">*</span><span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span>
+    <span class="n">dLat</span><span class="o">=</span> <span class="n">lat2</span> <span class="o">-</span> <span class="n">lat1</span>
+    <span class="n">dPhi</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">tan</span><span class="p">(</span><span class="n">lat2</span><span class="o">/</span><span class="mi">2</span><span class="o">+</span><span class="n">math</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">4</span><span class="p">)</span><span class="o">/</span><span class="n">math</span><span class="o">.</span><span class="n">tan</span><span class="p">(</span><span class="n">lat1</span><span class="o">/</span><span class="mi">2</span><span class="o">+</span><span class="n">math</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">4</span><span class="p">))</span>
+    <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">dPhi</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mf">1.0E-6</span><span class="p">:</span>
+        <span class="n">q</span><span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">lat1</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">q</span><span class="o">=</span> <span class="n">dLat</span><span class="o">/</span><span class="n">dPhi</span>
+
+    <span class="n">dLon</span> <span class="o">=</span> <span class="n">d</span><span class="o">*</span><span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span><span class="o">/</span><span class="n">q</span>
+    <span class="c"># check for some daft bugger going past the pole, normalize latitude if so</span>
+    <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">lat2</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">2</span><span class="p">:</span>
+        <span class="n">lat2</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span><span class="o">-</span><span class="n">lat2</span> <span class="k">if</span> <span class="n">lat2</span><span class="o">&gt;</span><span class="mi">0</span> <span class="k">else</span> <span class="o">-</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">pi</span><span class="o">-</span><span class="n">lat2</span><span class="p">)</span>
+    <span class="n">lon2</span> <span class="o">=</span> <span class="p">(</span> <span class="p">(</span><span class="n">lon1</span><span class="o">+</span><span class="n">dLon</span><span class="o">+</span><span class="n">math</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span> <span class="o">%</span> <span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">math</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span> <span class="p">)</span> <span class="o">-</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span>
+
+    <span class="k">return</span> <span class="n">math</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span><span class="n">lat2</span><span class="p">),</span> <span class="n">math</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span><span class="n">lon2</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="great_circle_bearing"><a class="viewcode-back" href="../../../python/navigation/pathfind.html#hamcalc.navigation.distance.great_circle_bearing">[docs]</a><span class="k">def</span> <span class="nf">great_circle_bearing</span><span class="p">(</span> <span class="n">lat_1</span><span class="p">,</span> <span class="n">lon_1</span><span class="p">,</span> <span class="n">lat_2</span><span class="p">,</span> <span class="n">lon_2</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Initial bearing from ``(lat_1, lon_1)`` to ``(lat_2, lon_2)``.</span>
+
+<span class="sd">    :param lat_1: latitude, postive N</span>
+<span class="sd">    :param lon_1: longitude, positive E</span>
+<span class="sd">    :param lat_2: latitude, postive N</span>
+<span class="sd">    :param lon_2: longitude, positive E</span>
+
+<span class="sd">    :returns: bearing from from ``(lat_1, lon_1)`` to ``(lat_2, lon_2)``.</span>
+<span class="sd">        In degrees.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">delta_lambda</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">lon_2</span><span class="o">-</span><span class="n">lon_1</span><span class="p">)</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span> <span class="n">delta_lambda</span> <span class="p">)</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span> <span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">lat_2</span><span class="p">)</span> <span class="p">)</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span> <span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">lat_1</span><span class="p">)</span> <span class="p">)</span><span class="o">*</span><span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span> <span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">lat_2</span><span class="p">)</span> <span class="p">)</span> <span class="o">-</span> <span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span> <span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">lat_1</span><span class="p">)</span> <span class="p">)</span><span class="o">*</span><span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span> <span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">lat_2</span><span class="p">)</span> <span class="p">)</span><span class="o">*</span><span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span> <span class="n">delta_lambda</span> <span class="p">)</span>
+    <span class="n">theta_r</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">atan2</span><span class="p">(</span> <span class="n">y</span><span class="p">,</span> <span class="n">x</span> <span class="p">)</span>
+    <span class="n">theta</span> <span class="o">=</span> <span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span> <span class="n">theta_r</span> <span class="p">)</span><span class="o">+</span><span class="mi">360</span><span class="p">)</span> <span class="o">%</span> <span class="mi">360</span>
+    <span class="k">return</span> <span class="n">theta</span>
+</div>
+<div class="viewcode-block" id="great_circle_distance"><a class="viewcode-back" href="../../../python/navigation/pathfind.html#hamcalc.navigation.distance.great_circle_distance">[docs]</a><span class="k">def</span> <span class="nf">great_circle_distance</span><span class="p">(</span> <span class="n">lat_1</span><span class="p">,</span> <span class="n">lon_1</span><span class="p">,</span> <span class="n">lat_2</span><span class="p">,</span> <span class="n">lon_2</span><span class="p">,</span> <span class="n">R</span><span class="o">=</span><span class="n">NM</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Great Circle Distance from ``(lat_1, lon_1)`` to ``(lat_2, lon_2)``.</span>
+
+<span class="sd">    :param lat_1: latitude, postive N</span>
+<span class="sd">    :param lon_1: longitude, positive E</span>
+<span class="sd">    :param lat_2: latitude, postive N</span>
+<span class="sd">    :param lon_2: longitude, positive E</span>
+<span class="sd">    :param R: radius of the earth in appropriate units;</span>
+<span class="sd">        default is nautical miles.</span>
+<span class="sd">        Values include :py:data:`KM` for kilometers,</span>
+<span class="sd">        :py:data:`MI` for statute miles and :py:data:`NM` for nautical miles.</span>
+
+<span class="sd">    :returns: distance from from ``(lat_1, lon_1)`` to ``(lat_2, lon_2)``.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">delta_phi</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">lat_2</span><span class="o">-</span><span class="n">lat_1</span><span class="p">)</span>
+    <span class="n">delta_lambda</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">lon_2</span><span class="o">-</span><span class="n">lon_1</span><span class="p">)</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">delta_phi</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span> <span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">lat_1</span><span class="p">)</span> <span class="p">)</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span> <span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">lat_2</span><span class="p">)</span> <span class="p">)</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">delta_lambda</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span>
+    <span class="n">c</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">atan2</span><span class="p">(</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">a</span><span class="p">),</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">a</span><span class="p">)</span> <span class="p">)</span>
+    <span class="n">d</span> <span class="o">=</span> <span class="n">R</span> <span class="o">*</span> <span class="n">c</span>
+    <span class="k">return</span> <span class="n">d</span>
+</div>
+<div class="viewcode-block" id="great_circle_destination"><a class="viewcode-back" href="../../../python/navigation/pathfind.html#hamcalc.navigation.distance.great_circle_destination">[docs]</a><span class="k">def</span> <span class="nf">great_circle_destination</span><span class="p">(</span> <span class="n">lat_1</span><span class="p">,</span> <span class="n">lon_1</span><span class="p">,</span> <span class="nb">range</span><span class="p">,</span> <span class="n">bearing</span><span class="p">,</span> <span class="n">R</span><span class="o">=</span><span class="n">NM</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Great Circle destination given point, range and bearing.</span>
+
+<span class="sd">    :param lat_1: latitude, postive N</span>
+<span class="sd">    :param lon_1: longitude, positive E</span>
+<span class="sd">    :param range: the distance to travel.</span>
+<span class="sd">    :param bearing: the direction of travel, in degrees.</span>
+<span class="sd">    :param R: radius of the earth in appropriate units;</span>
+<span class="sd">        default is nautical miles.</span>
+<span class="sd">        Values include :py:data:`KM` for kilometers,</span>
+<span class="sd">        :py:data:`MI` for statute miles and :py:data:`NM` for nautical miles.</span>
+
+<span class="sd">    :returns: lat and lon of the ending point.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">phi_1</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">lat_1</span><span class="p">)</span>
+    <span class="n">lambda_1</span><span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">lon_1</span><span class="p">)</span>
+    <span class="n">theta</span><span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span> <span class="n">bearing</span> <span class="p">)</span>
+    <span class="n">phi_2</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">asin</span><span class="p">(</span> <span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">phi_1</span><span class="p">)</span><span class="o">*</span><span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="nb">range</span><span class="o">/</span><span class="n">R</span><span class="p">)</span><span class="o">+</span>
+        <span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">phi_1</span><span class="p">)</span><span class="o">*</span><span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="nb">range</span><span class="o">/</span><span class="n">R</span><span class="p">)</span><span class="o">*</span><span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span> <span class="p">)</span>
+    <span class="n">y</span><span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span><span class="o">*</span><span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="nb">range</span><span class="o">/</span><span class="n">R</span><span class="p">)</span><span class="o">*</span><span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">phi_1</span><span class="p">)</span>
+    <span class="n">x</span><span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="nb">range</span><span class="o">/</span><span class="n">R</span><span class="p">)</span><span class="o">-</span><span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">phi_1</span><span class="p">)</span><span class="o">*</span><span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">phi_2</span><span class="p">)</span>
+    <span class="n">lambda_2</span> <span class="o">=</span> <span class="n">lambda_1</span> <span class="o">+</span> <span class="n">math</span><span class="o">.</span><span class="n">atan2</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">math</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span> <span class="n">phi_2</span> <span class="p">),</span> <span class="n">math</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span> <span class="n">lambda_2</span> <span class="p">)</span></div>
 </pre></div>
 
           </div>
