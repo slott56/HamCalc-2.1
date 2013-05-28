@@ -26,7 +26,7 @@
     <link rel="top" title="HamCalc 2.1 documentation" href="../../index.html" />
     <link rel="up" title="navigation – Navigation and Astronomy" href="index.html" />
     <link rel="next" title="trunorth – True North via the Sun" href="trunorth.html" />
-    <link rel="prev" title="timeq – Time Quiz" href="timeq.html" /> 
+    <link rel="prev" title="satorbit – Satellite Orbit Parameters" href="satorbit.html" /> 
   </head>
   <body>
     <div class="header-wrapper">
@@ -34,7 +34,7 @@
         <div class="headertitle"><a
           href="../../index.html">HamCalc 2.1 documentation</a></div>
         <div class="rel">
-          <a href="timeq.html" title="timeq – Time Quiz"
+          <a href="satorbit.html" title="satorbit – Satellite Orbit Parameters"
              accesskey="P">previous</a> |
           <a href="trunorth.html" title="trunorth – True North via the Sun"
              accesskey="N">next</a> |
@@ -56,6 +56,64 @@
             
   <div class="section" id="timezone-time-zones-utc">
 <h1>timezone &#8211; Time Zones (UTC)<a class="headerlink" href="#timezone-time-zones-utc" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="analysis">
+<h2>Analysis<a class="headerlink" href="#analysis" title="Permalink to this headline">¶</a></h2>
+<p>This appears to calculate a few things.</p>
+<ol class="arabic simple">
+<li>The center of a 15°-wide hypothetical time zone.</li>
+<li>The UTC offset for this timezone.</li>
+<li>A reference time which is offset for each timezone.</li>
+</ol>
+<p>It has a small database of 24 locations, one per timezone.</p>
+</div>
+<div class="section" id="implementation">
+<h2>Implementation<a class="headerlink" href="#implementation" title="Permalink to this headline">¶</a></h2>
+<p>There&#8217;s no core calculation of real interest.</p>
+<p>This is just a small program in the <tt class="xref py py-mod docutils literal"><span class="pre">hamcalc.stdio</span></tt> package.</p>
+</div>
+<div class="section" id="legacy-output">
+<h2>Legacy Output<a class="headerlink" href="#legacy-output" title="Permalink to this headline">¶</a></h2>
+<p>Introduction</p>
+<div class="highlight-python"><pre>TIME ZONES (Universal Co-Ordinated Time)                by George Murphy VE3ERP
+
+   TIMES SHOWN ARE LOCAL SIDEREAL (SOLAR) TIMES. Not all countries or
+   areas follow the International Time Zone System, but will use the
+   time of some principal city as a standard or will have no standard
+   time at all. In some areas or on groups of islands the system is
+   applied with certain local deviations made necessary by frontiers
+   to permit an entire island group to have the same time zone.
+     The actual time used in each area, whether it is the time of the
+   corresponding zone or modified time, is fixed by law and is called
+   legal time, or more generally, standard time. Another deviation is
+   that certain areas, for economic reasons, modify their legal time
+   for part of the year (especially in summer) by advancing it an hour
+   or another fraction of time (e.g., Daylight Saving Time).
+     Cities and countries displayed are located within the geographic
+   limits indicated by the meridians shown, but may observe a LEGAL
+   time different from the sidereal (solar) time shown for that zone.
+     The times 0000 &amp; 2400 (midnight) are interchangeable. 0000 refers
+   to the day just begun, 2400 to the day just ended. Local times
+   shown are SIDEREAL times, and may differ from the LEGAL times
+   decreed in individual communities or areas within that zone.</pre>
+</div>
+<p>The 24 timezones, in (a quirky) reverse order.</p>
+<div class="highlight-python"><pre>70 DATA ADAK (ALASKA) &amp; AUCKLAND,NEW CALEDONIA,PAPUA &amp; SAIPAN
+80 DATA VLADIVOSTOK &amp; ADELAIDE,SHANGHAI &amp; MAYLASIA,CHRISTMAS ISLAND &amp; CHUNKING
+90 DATA BANGLADESH &amp; RANGOON,PAKISTAN &amp; MUMBAI,OMAN &amp; KANDAHAR
+100 DATA KUWAIT &amp; MADAGASCAR,CAIRO &amp; ISTANBUL,PRAGUE &amp; STOCKHLOM
+110 DATA &quot;GREENWICH, ENGLAND&quot;,CANARY ISLANDS &amp; CHAD,THE AZORES &amp; SCORESBYSUND
+120 DATA RIO de JANEIRO &amp; NEWFOUNDLAND,BERMUDA &amp; GOOSE BAY,OTTAWA &amp; NASSAU
+130 DATA NEW ORLEANS &amp; GUATEMALA,WYOMING &amp; CHIHUAHUA,LOS ANGELES &amp; VANCOUVER
+140 DATA PITCAIRN ISAND &amp; WHITEHORSE,HAWAII &amp; FAIRBANKS,RARATONGA &amp; NOME</pre>
+</div>
+<p>Each output line looks something like the following. They display the
+a reference time (in this case 03:00 UTC) offset into each of the
+24 timezones.</p>
+<div class="highlight-python"><pre>157.5°W to 172.5°W = UTC -11 = 0000 today     in RARATONGA &amp; NOME
+7.5°W   to   7.5°E = UTC       0300 TODAY     in GREENWICH, ENGLAND
+172.5°E to 172.5°W = UTC +12 = 0000 tomorrow  in ADAK (ALASKA) &amp; AUCKLAND</pre>
+</div>
+</div>
 </div>
 
 
@@ -87,8 +145,6 @@
 <li class="toctree-l3"><a class="reference internal" href="pathfind.html">pathfind &#8211; Great Circle Paths &amp; Distances</a></li>
 <li class="toctree-l3"><a class="reference internal" href="riseset.html">riseset &#8211; Sunrise/Sunset Calculator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="satorbit.html">satorbit &#8211; Satellite Orbit Parameters</a></li>
-<li class="toctree-l3"><a class="reference internal" href="survey.html">survey &#8211; Surveyor&#8217;s Calculator</a></li>
-<li class="toctree-l3"><a class="reference internal" href="timeq.html">timeq &#8211; Time Quiz</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="">timezone &#8211; Time Zones (UTC)</a></li>
 <li class="toctree-l3"><a class="reference internal" href="trunorth.html">trunorth &#8211; True North via the Sun</a></li>
 </ul>
@@ -96,7 +152,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../calendar/index.html">calendar &#8211; Calendrical Calculations</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../audio_photo.html">audio_photo &#8211; Audio, Sound and Photography</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../software.html">software &#8211; Software Engineering, Programming and Computers</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../other.html">other &#8211; including Finance and Nutrition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../other/index.html">other &#8211; including Finance and Nutrition</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../stdio.html">STDIO Interface</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../rest.html">RESTful Web Services Interface</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../cli.html">Command-Line Interface</a></li>
@@ -126,7 +182,7 @@
     <div class="footer-wrapper">
       <div class="footer">
         <div class="left">
-          <a href="timeq.html" title="timeq – Time Quiz"
+          <a href="satorbit.html" title="satorbit – Satellite Orbit Parameters"
              >previous</a> |
           <a href="trunorth.html" title="trunorth – True North via the Sun"
              >next</a> |

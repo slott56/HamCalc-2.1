@@ -1,2 +1,64 @@
 trunorth -- True North via the Sun
 ----------------------------------------
+
+Analysis
+~~~~~~~~~~
+
+This program appears to evaluate a version of the Equation of Time.
+
+
+
+Legacy Output
+~~~~~~~~~~~~~~~~
+
+Introduction
+
+::
+
+    TRUE NORTH via the Sun                                  by George Murphy VE3ERP
+
+         The shadow of a vertically plumb stake cast by the sun at High
+       Noon runs exactly north and south. This ancient axiom can be used to
+       aim your antenna, orient a sundial, or calibrate your car compass.
+         If the stake is north of lat. 23.5°N the shadow points north, if
+       south of lat. 23.5°S, it points south. If the stake is between
+       these latitudes and above the Equator the shadow points north in
+       the winter and south in the summer. If south of the Equator it
+       points north in the summer and south in the winter.
+         To determine just when High Noon is, you must know your longitude.
+       This will tell you when High Noon is SUPPOSED to occur but doesn't,
+       due to the somewhat complex wobbling of the earth about its axis as
+       it circles the sun. Ancient mathematicians didn't know much about
+       the wobble but we do, so we have to take it into account, which the
+       program does.
+         The program refers to High Noon as SOLAR NOON (it sounds more
+       High Tech). Local SOLAR (geophysical) TIMES shown may not be the
+       same as STANDARD (political) TIMES in some political jurisdictions,
+       and are dependent on your distance east or west of longitude 0.00°
+       or the nearest multiple of 15 degrees of longitude.
+
+Results Table
+
+::
+
+         At longitude  76.5°W SOLAR NOON times throughout the year are:
+         (UTC = Universal Co-ordinated Time)   (LST = Local SOLAR Time)
+
+      Jan  1 @ 0710 UTC ( 1210 LST )           Jul  1 @ 0710 UTC ( 1210 LST )
+      Jan 11 @ 0714 UTC ( 1214 LST )           Jul 11 @ 0711 UTC ( 1211 LST )
+      Jan 21 @ 0717 UTC ( 1217 LST )           Jul 21 @ 0712 UTC ( 1212 LST )
+      Feb  1 @ 0719 UTC ( 1219 LST )           Aug  1 @ 0712 UTC ( 1212 LST )
+      Feb 11 @ 0720 UTC ( 1220 LST )           Aug 11 @ 0711 UTC ( 1211 LST )
+      Feb 21 @ 0720 UTC ( 1220 LST )           Aug 21 @ 0709 UTC ( 1209 LST )
+      Mar  1 @ 0719 UTC ( 1219 LST )           Sep  1 @ 0707 UTC ( 1207 LST )
+      Mar 11 @ 0716 UTC ( 1216 LST )           Sep 11 @ 0703 UTC ( 1203 LST )
+      Mar 21 @ 0714 UTC ( 1214 LST )           Sep 21 @ 0659 UTC ( 1159 LST )
+      Apr  1 @ 0710 UTC ( 1210 LST )           Oct  1 @ 0656 UTC ( 1156 LST )
+      Apr 11 @ 0707 UTC ( 1207 LST )           Oct 11 @ 0653 UTC ( 1153 LST )
+      Apr 21 @ 0705 UTC ( 1205 LST )           Oct 21 @ 0651 UTC ( 1151 LST )
+      May  1 @ 0703 UTC ( 1203 LST )           Nov  1 @ 0650 UTC ( 1150 LST )
+      May 11 @ 0702 UTC ( 1202 LST )           Nov 11 @ 0650 UTC ( 1150 LST )
+      May 21 @ 0702 UTC ( 1202 LST )           Nov 21 @ 0652 UTC ( 1152 LST )
+      Jun  1 @ 0703 UTC ( 1203 LST )           Dec  1 @ 0655 UTC ( 1155 LST )
+      Jun 11 @ 0705 UTC ( 1205 LST )           Dec 11 @ 0659 UTC ( 1159 LST )
+      Jun 21 @ 0707 UTC ( 1207 LST )           Dec 21 @ 0704 UTC ( 1204 LST )

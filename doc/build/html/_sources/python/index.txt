@@ -17,7 +17,7 @@ These are the various HamCalc core calculation packages.
     calendar/index
     audio_photo
     software
-    other
+    other/index
 
 The various UI/UX layers are in separate packages.
 

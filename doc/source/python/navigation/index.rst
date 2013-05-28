@@ -15,7 +15,5 @@ programs.
     pathfind
     riseset
     satorbit
-    survey
-    timeq
     timezone
     trunorth

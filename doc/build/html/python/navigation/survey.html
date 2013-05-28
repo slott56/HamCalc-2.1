@@ -56,6 +56,58 @@
             
   <div class="section" id="survey-surveyor-s-calculator">
 <h1>survey &#8211; Surveyor&#8217;s Calculator<a class="headerlink" href="#survey-surveyor-s-calculator" title="Permalink to this headline">¶</a></h1>
+<p>Introduction</p>
+<div class="highlight-python"><pre>SURVEYOR&#x27;S CALCULATOR                                   by George Murphy VE3ERP
+
+Ref. Thomas L. Glover, Pocket Ref, 2nd edition, Sequoia Publishing, pp.373-382</pre>
+</div>
+<div class="section" id="analysis">
+<h2>Analysis<a class="headerlink" href="#analysis" title="Permalink to this headline">¶</a></h2>
+<p>There are three <strong>Solver</strong> classes here.</p>
+<ol class="arabic simple">
+<li>Slope/Gradient/Grade Calculator</li>
+<li>Stadia Calculator</li>
+<li>Apparent Dip Calculator</li>
+</ol>
+<p>The Slope/Gradient/Grade Calculator is a <strong>Solver</strong> that
+works in Horizontal distance, <em>H</em>, Vertical rise, <em>V</em>,
+Slope in degrees, <em>D</em>, Grade in %, <em>G</em>, or Gradient as a ratio, <em>X</em>.</p>
+<p>Compute <em>D</em>, given <em>V</em> and <em>H</em>, <img class="math" src="../../_images/math/685532549dd1d2ade9895ac815d8709078b3f7e6.png" alt="D = \arctan \dfrac{V}{H}"/>.</p>
+<p>Compute <em>V</em>, given <em>D</em> and <em>H</em>, <img class="math" src="../../_images/math/159f13931ca50042de5c4865f2f81179ca3efa8b.png" alt="V = H \tan D"/>.</p>
+<p>Compute <em>H</em>, given <em>D</em> and <em>V</em>, <img class="math" src="../../_images/math/1b6a4f814b5be00446ab3a09f0afea9f306bdb77.png" alt="H = \dfrac{V}{\tan D}"/>.</p>
+<p>Compute <em>G</em>, given <em>D</em>, <img class="math" src="../../_images/math/4c6e7bb3a3e59a7dbcbf28e2c2a64865262089a7.png" alt="G = 100 \tan D"/>.</p>
+<p>Compute <em>D</em>, given <em>G</em>, <img class="math" src="../../_images/math/b95a515ce5c2eb0a213719e6229feb03783a3930.png" alt="D = \arctan \dfrac{G}{100}"/>.</p>
+<p>Compute <em>X</em>, given <em>V</em> and <em>H</em>, <img class="math" src="../../_images/math/74dbc74f43914dd544c6afed20289874c284da6d.png" alt="X = \dfrac{H}{V}"/>.</p>
+<p>Compute <em>H</em>, given <em>X</em> and <em>V</em>, <img class="math" src="../../_images/math/0618d15f3b3eae66878e60c01ebf9648a276caaf.png" alt="H = X \times V"/>.</p>
+<p>Compute <em>V</em>, given <em>H</em> and <em>X</em>, <img class="math" src="../../_images/math/c1eafb7b0bc1ec7ea12f018ded1baeddf650dd47.png" alt="V = \dfrac{H}{X}"/>.</p>
+<p>The Stadia Calculator is a <strong>Solver</strong> that works in
+Slope angle (degrees), <em>A</em>, Slope distance, <em>S</em>,
+Vertical distance, <em>V</em>, and Horizontal distance, <em>H</em>.</p>
+<p>Compute <em>V</em> and <em>H</em>, given <em>R</em> and <em>S</em>, <img class="math" src="../../_images/math/21da5164c3d2c7743961cefa1e8f88d3543c1998.png" alt="V = S \sin R, H = \sqrt{S^2-V^2}"/></p>
+<p>Compute <em>S</em> and <em>H</em>, given <em>R</em> and <em>V</em>, <img class="math" src="../../_images/math/d1a80f41b0108f14824d95a219d19cf8c53a8d5e.png" alt="S = \dfrac{V}{\sin R}, H = \sqrt{S^2-V^2}"/></p>
+<p>Compute <em>S</em> and <em>V</em>, given <em>R</em> and <em>H</em>, <img class="math" src="../../_images/math/84158c004e5d13689a4f52805806256d11840dca.png" alt="S = \dfrac{H}{\cos R}, V = \sqrt{S^2-H^2}"/></p>
+<p>Compute <em>R</em> and <em>H</em>, given <em>S</em> and <em>V</em>, <img class="math" src="../../_images/math/087a995077cbba6800a041b7332282741400d588.png" alt="R = \arcsin \dfrac{V}{S}, H = \sqrt{S^2-V^2}"/></p>
+<p>Compute <em>R</em> and <em>V</em>, given <em>S</em> and <em>H</em>, <img class="math" src="../../_images/math/b8ddf9dedbdf91f47c93ca0b4cd661a66c57f645.png" alt="R = \arccos \dfrac{H}{S}, V = \sqrt{S^2-H^2}"/></p>
+<p>Compute <em>R</em> and <em>S</em>, given <em>V</em> and <em>H</em>, <img class="math" src="../../_images/math/4327041a2cd4bb6e25fa703674590c4db6f95b08.png" alt="R = \arctan \dfrac{V}{H}, S = \sqrt{V^2+H^2}"/></p>
+<p>The Apparent Dip Calculator is a <strong>Solver</strong>
+that works in Apparent Dip, <em>D_A</em>, True dip, <em>D_T</em> and
+&#8220;Angle between&#8221;, <em>A</em>, which refers to angle between Strike and direction of Cross Section.</p>
+<p>Compute <em>A</em> from <em>D_A</em> and <em>D_T</em>, <img class="math" src="../../_images/math/20c4007622af644046af9dbba91b9083bbb94d1e.png" alt="A= \arcsin \dfrac{\tan D_A}{\tan D_T}"/>.</p>
+<p>Compute <em>D_T</em> from <em>D_A</em> and <em>A</em>, <img class="math" src="../../_images/math/3356aabcf26d85fd09297864166a682d699778ef.png" alt="D_T = \arctan \dfrac{\tan D_A}{\sin A}"/>.</p>
+<p>Compute <em>D_A</em> from <em>D_T</em> and <em>A</em>, <img class="math" src="../../_images/math/a27c769db6761dbf305b4f685b0d67cf3a2233ab.png" alt="D_A = \arctan (\tan{D_T} \sin A)"/>.</p>
+</div>
+<div class="section" id="legacy-quirks">
+<h2>Legacy Quirks<a class="headerlink" href="#legacy-quirks" title="Permalink to this headline">¶</a></h2>
+<p>Here&#8217;s one definition of arcsine. This has a slightly less quirky API <tt class="docutils literal"><span class="pre">X=V/S:AB=FNASN</span></tt>.</p>
+<div class="highlight-python"><pre>1510 DEF FNASN=ATN(X/SQR(-X^2+1))  :REM&#x27;arcsine</pre>
+</div>
+<p>Here&#8217;s another definition of arcsine. In the same program.  This has a quirky API. <tt class="docutils literal"><span class="pre">X=V/S:GOSUB</span> <span class="pre">1050:R=ASN</span></tt>.</p>
+<div class="highlight-python"><pre>1050 :REM&#x27;.....inverse sin and cos
+1060 ASN=ATN(X/SQR(-X^2+1))       :REM&#x27;arcsin
+1070 ACS=-ASN+PI/2                :REM&#x27;arcsin
+1080 RETURN</pre>
+</div>
+</div>
 </div>
 
 

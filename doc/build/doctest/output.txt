@@ -1,4 +1,4 @@
-Results of doctest builder run on 2013-05-27 09:18:38
+Results of doctest builder run on 2013-05-28 08:49:29
 =====================================================
 
 Document: python/math/baromtr
@@ -49,14 +49,6 @@ Document: python/electronics/awgexact
 8 passed and 0 failed.
 Test passed.
 
-Document: python/math/speedtd
------------------------------
-1 items passed all tests:
-   3 tests in default
-3 tests in 1 items.
-3 passed and 0 failed.
-Test passed.
-
 Document: python/math/trig
 --------------------------
 1 items passed all tests:
@@ -65,12 +57,12 @@ Document: python/math/trig
 7 passed and 0 failed.
 Test passed.
 
-Document: python/math/involute
-------------------------------
+Document: python/navigation/gridsq
+----------------------------------
 1 items passed all tests:
-   7 tests in default
-7 tests in 1 items.
-7 passed and 0 failed.
+  35 tests in default
+35 tests in 1 items.
+35 passed and 0 failed.
 Test passed.
 
 Document: python/navigation/moontrac
@@ -113,6 +105,14 @@ Document: python/math/equiv
 45 passed and 0 failed.
 Test passed.
 
+Document: python/math/involute
+------------------------------
+1 items passed all tests:
+   7 tests in default
+7 tests in 1 items.
+7 passed and 0 failed.
+Test passed.
+
 Document: python/math/primenos
 ------------------------------
 1 items passed all tests:
@@ -145,12 +145,12 @@ Document: python/math/solutri
 10 passed and 0 failed.
 Test passed.
 
-Document: python/navigation/gridsq
-----------------------------------
+Document: python/math/speedtd
+-----------------------------
 1 items passed all tests:
-  35 tests in default
-35 tests in 1 items.
-35 passed and 0 failed.
+   3 tests in default
+3 tests in 1 items.
+3 passed and 0 failed.
 Test passed.
 
 Document: python/math/fibon
