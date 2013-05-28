@@ -439,8 +439,8 @@ to get to proper local times.</p>
 <p>It&#8217;s quite easy to add timezones to cover other historical periods or
 other places on earth.</p>
 </div>
-<div class="section" id="test-case">
-<h4>Test Case<a class="headerlink" href="#test-case" title="Permalink to this headline">¶</a></h4>
+<div class="section" id="solar-position-test-cases">
+<h4>Solar Position Test Cases<a class="headerlink" href="#solar-position-test-cases" title="Permalink to this headline">¶</a></h4>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">hamcalc.navigation.solar</span> <span class="kn">as</span> <span class="nn">solar</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">datetime</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">today</span><span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span> <span class="mi">2013</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">13</span><span class="p">,</span> <span class="n">tzinfo</span><span class="o">=</span><span class="n">solar</span><span class="o">.</span><span class="n">Eastern</span> <span class="p">)</span>
@@ -574,6 +574,29 @@ AC      AD      AE      AF      AG      AH
 <span class="go">343.29</span>
 </pre></div>
 </div>
+</div>
+<div class="section" id="equation-of-time-test-cases">
+<h4>Equation of Time Test Cases<a class="headerlink" href="#equation-of-time-test-cases" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">solar</span><span class="o">.</span><span class="n">eot</span><span class="p">(</span> <span class="mi">73</span> <span class="p">)</span>
+<span class="go">-9.288136257894735</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">solar</span><span class="o">.</span><span class="n">eot</span><span class="p">(</span> <span class="mi">171</span> <span class="p">)</span>
+<span class="go">-1.3629763831233621</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">solar</span><span class="o">.</span><span class="n">eot</span><span class="p">(</span> <span class="mi">257</span> <span class="p">)</span>
+<span class="go">4.438308798331203</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">solar</span><span class="o">.</span><span class="n">eot</span><span class="p">(</span> <span class="mi">354</span> <span class="p">)</span>
+<span class="go">2.3235852575988147</span>
+</pre></div>
+</div>
+<p>Compared with HamCalc &#8220;wobble correction factors&#8221;
+of 4,8,11 for Jan 1, Jan 10 and Jan 21.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">solar</span><span class="o">.</span><span class="n">eot</span><span class="p">(</span> <span class="mi">0</span> <span class="p">))</span>
+<span class="go">-3</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">solar</span><span class="o">.</span><span class="n">eot</span><span class="p">(</span> <span class="mi">9</span> <span class="p">))</span>
+<span class="go">-7</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">solar</span><span class="o">.</span><span class="n">eot</span><span class="p">(</span> <span class="mi">20</span> <span class="p">))</span>
+<span class="go">-11</span>
+</pre></div>
+</div>
 <dl class="class">
 <dt id="hamcalc.navigation.solar.Position_Sun">
 <em class="property">class </em><tt class="descclassname">hamcalc.navigation.solar.</tt><tt class="descname">Position_Sun</tt><big>(</big><em>phi_o</em>, <em>lambda_o</em>, <em>date_time_tz</em>, <em>horizon=None</em><big>)</big><a class="reference internal" href="../../_modules/hamcalc/navigation/solar.html#Position_Sun"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.navigation.solar.Position_Sun" title="Permalink to this definition">¶</a></dt>
@@ -681,6 +704,26 @@ the input datetime.</p>
 date, time and UTC timezone.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">floating point JAD</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="hamcalc.navigation.solar.eot">
+<tt class="descclassname">hamcalc.navigation.solar.</tt><tt class="descname">eot</tt><big>(</big><em>d</em><big>)</big><a class="headerlink" href="#hamcalc.navigation.solar.eot" title="Permalink to this definition">¶</a></dt>
+<dd><p>An approximation for the Equation of Time.</p>
+<p>See <a class="reference external" href="http://en.wikipedia.org/wiki/Equation_of_time">http://en.wikipedia.org/wiki/Equation_of_time</a></p>
+<blockquote>
+<div>A positive value of the equation of time implies that a sundial is ahead of a clock.</div></blockquote>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>d</strong> &#8211; Day of the year, zero is  January 1.
+Use <tt class="docutils literal"><span class="pre">some_date.toordinal()-some_date.replace(month=1,day=1).toordinal()</span></tt></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Equation of Time offset for this date.</td>
 </tr>
 </tbody>
 </table>
@@ -857,8 +900,6 @@ Date       Daylight   (degrees)            (degrees)            (degrees)</pre>
 <li class="toctree-l3"><a class="reference internal" href="pathfind.html">pathfind &#8211; Great Circle Paths &amp; Distances</a></li>
 <li class="toctree-l3"><a class="reference internal" href="riseset.html">riseset &#8211; Sunrise/Sunset Calculator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="satorbit.html">satorbit &#8211; Satellite Orbit Parameters</a></li>
-<li class="toctree-l3"><a class="reference internal" href="survey.html">survey &#8211; Surveyor&#8217;s Calculator</a></li>
-<li class="toctree-l3"><a class="reference internal" href="timeq.html">timeq &#8211; Time Quiz</a></li>
 <li class="toctree-l3"><a class="reference internal" href="timezone.html">timezone &#8211; Time Zones (UTC)</a></li>
 <li class="toctree-l3"><a class="reference internal" href="trunorth.html">trunorth &#8211; True North via the Sun</a></li>
 </ul>
@@ -866,7 +907,7 @@ Date       Daylight   (degrees)            (degrees)            (degrees)</pre>
 <li class="toctree-l2"><a class="reference internal" href="../calendar/index.html">calendar &#8211; Calendrical Calculations</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../audio_photo.html">audio_photo &#8211; Audio, Sound and Photography</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../software.html">software &#8211; Software Engineering, Programming and Computers</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../other.html">other &#8211; including Finance and Nutrition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../other/index.html">other &#8211; including Finance and Nutrition</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../stdio.html">STDIO Interface</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../rest.html">RESTful Web Services Interface</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../cli.html">Command-Line Interface</a></li>

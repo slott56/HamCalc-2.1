@@ -76,7 +76,7 @@ while ref_raw != '':
         hr, min = divmod( ref_int, 100 )
         ref_time= datetime.time( hour=hr, minute=min, tzinfo=utc )
     except ValueError:
-        pass
+        continue
     ref_date_time= datetime.datetime.combine( datetime.datetime.now().date(), ref_time )
     day_num = ref_date_time.toordinal()
     for i, tz_name in enumerate( reversed( zones ) ):

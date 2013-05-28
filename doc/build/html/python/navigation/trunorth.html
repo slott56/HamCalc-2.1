@@ -58,7 +58,81 @@
 <h1>trunorth &#8211; True North via the Sun<a class="headerlink" href="#trunorth-true-north-via-the-sun" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="analysis">
 <h2>Analysis<a class="headerlink" href="#analysis" title="Permalink to this headline">¶</a></h2>
-<p>This program appears to evaluate a version of the Equation of Time.</p>
+<p>This program appears to evaluate a version of the Equation of Time.
+See <a class="reference external" href="http://en.wikipedia.org/wiki/Equation_of_time">http://en.wikipedia.org/wiki/Equation_of_time</a></p>
+<div class="highlight-python"><pre>20 :REM&#x27;Ref. ARRL ANTENNA BOOK, 14th Edition, page 16-2</pre>
+</div>
+<p>We have 36 &#8220;wobble correction factors&#8221; that apply throughout the year.
+Each factor belongs to the 1st, 11th or 21st of each month.</p>
+<div class="highlight-python"><pre>160 :REM&#x27;.....wobble correction factors
+170 DATA  4,8,11,  13,14,14,  13,10,8,  4,1,-1,       -3,-4,-4,     -3,-1,1
+180 DATA  4,5,6,   6,5,3,     1,-3,-7,  -10,-13,-15,  -16,-16,-14,  -11,-7,-2</pre>
+</div>
+<p>These are loaded into array, <em>C</em>, with three related fields.</p>
+<ul class="simple">
+<li><em>C</em> (<em>Z</em>, 1) is month: 1-12.</li>
+<li><em>C</em> (<em>Z</em>, 2) is day of month: 1, 11 or 21.</li>
+<li><em>C</em> (<em>Z</em>, 3) is the wobble correction factor for this month and day.
+This appears to be in minutes.</li>
+</ul>
+<p>The following approximations are used for time offsets.</p>
+<div class="highlight-python"><pre>600 TIM=DEG/15          :REM&#x27;time in hours to centre of time zone
+610 SN=TIM+12</pre>
+</div>
+<p>Here&#8217;s the code to compute the LST of noon on a given date using the
+&#8220;wobble correction factors&#8221;.</p>
+<div class="highlight-python"><pre>720 N=SN+C(Z,3)/60:IF N&gt;=1160 THEN N=N+40
+730 IF N&lt;0 THEN N=N+24
+740 T=INT(N)*100+(N-INT(N))*60
+750 T=INT(T+0.5!):T$=RIGHT$(STR$(T),LEN(STR$(T))-1)
+760 IF LEN (T$)&lt;4 THEN T$=&quot;0&quot;+T$:GOTO 760
+770 LST=T+UTC*100:IF LST&gt;=2400 THEN LST=T-1200
+780 PRINT TAB(6)M$(C(Z,1));USING &quot;###&quot;;C(Z,2);
+790 PRINT &quot; @ &quot;;T$;&quot; UTC (&quot;;LST;&quot;LST )&quot;;</pre>
+</div>
+<ul>
+<li><p class="first"><strong>720</strong>.  <em>N</em> is UTC offset + 12 + wobble correction factor/60. Presumably in hours.</p>
+<p>If N &gt;= 1160 clause doesn&#8217;t make a lot of sense: SN is in the range 0 to 24.
+the correction factors are plus or minus 0.26</p>
+</li>
+<li><p class="first"><strong>730</strong>.  <em>N</em> = <em>N</em> mod 24.</p>
+</li>
+<li><p class="first"><strong>740-760</strong>.  Convert to <em>N</em> to <em>T</em>, an HH:MM number and <em>T$</em> the string
+version of <em>T</em>.</p>
+</li>
+<li><p class="first"><strong>770</strong>.  LST is T+UTC offset converted to an HH:MM number.</p>
+</li>
+</ul>
+</div>
+<div class="section" id="alternative">
+<h2>Alternative<a class="headerlink" href="#alternative" title="Permalink to this headline">¶</a></h2>
+<p>In the following, <em>D</em> is the date, in days starting at zero on January 1.</p>
+<div class="math">
+<p><img src="../../_images/math/a1367922fa0688474043df602a0f39388daff990.png" alt="W &amp;= 360/365.24 \\
+A &amp;= W \times (D+10) \\
+B &amp;= A+(360/\pi) \times 0.0167 \times \sin(W \times (D-2)) = A + 1.914 \times \sin( W \times (D-2) ) \\
+C &amp;= ( A - \arctan \frac{\tan B}{\cos 23.44} ) /180 \\
+EoT &amp;= 720 \times (C - \lfloor C + \frac{1}{2} \rfloor)"/></p>
+</div><p>Here&#8217;s the note on the sign.</p>
+<blockquote>
+<div>In this article, and others in English Wikipedia, a positive value of the equation of time implies that a sundial is ahead of a clock.</div></blockquote>
+<p>This works for any day of the year.  The tabulated values above belong to 36
+dates spaced about <tt class="docutils literal"><span class="pre">365.24/36=10.1455</span></tt> days apart.</p>
+</div>
+<div class="section" id="implementation">
+<h2>Implementation<a class="headerlink" href="#implementation" title="Permalink to this headline">¶</a></h2>
+<p>The Equation of Time function can be added to the solar module.</p>
+<p>See <a class="reference internal" href="sunup.html#module-hamcalc.navigation.solar" title="hamcalc.navigation.solar"><tt class="xref py py-mod docutils literal"><span class="pre">hamcalc.navigation.solar</span></tt></a>.</p>
+<p>Here&#8217;s the Python code to reconstruct the &#8220;Wobble Correction Factors&#8221; with
+the more conventional sign.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">eot</span><span class="p">(</span><span class="n">d</span><span class="p">):</span>
+    <span class="n">W</span> <span class="o">=</span> <span class="mi">360</span><span class="o">/</span><span class="mf">365.24</span>
+    <span class="n">A</span> <span class="o">=</span> <span class="n">W</span><span class="o">*</span><span class="p">(</span><span class="n">d</span><span class="o">+</span><span class="mi">10</span><span class="p">)</span>
+    <span class="n">B</span> <span class="o">=</span> <span class="n">A</span> <span class="o">+</span><span class="mf">1.914</span><span class="o">*</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">W</span><span class="o">*</span><span class="p">(</span><span class="n">d</span><span class="o">-</span><span class="mi">2</span><span class="p">))))</span>
+    <span class="n">C</span> <span class="o">=</span> <span class="p">(</span><span class="n">A</span><span class="o">-</span><span class="n">math</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">atan2</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">tan</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">B</span><span class="p">)),</span><span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="mf">23.44</span><span class="p">)))))</span><span class="o">/</span><span class="mi">180</span>
+    <span class="k">return</span> <span class="mi">720</span><span class="o">*</span><span class="p">(</span><span class="n">C</span><span class="o">-</span><span class="nb">int</span><span class="p">(</span><span class="n">C</span><span class="o">+.</span><span class="mi">5</span><span class="p">))</span>
+</pre></div>
+</div>
 </div>
 <div class="section" id="legacy-output">
 <h2>Legacy Output<a class="headerlink" href="#legacy-output" title="Permalink to this headline">¶</a></h2>
@@ -108,6 +182,11 @@ Jun  1 @ 0703 UTC ( 1203 LST )           Dec  1 @ 0655 UTC ( 1155 LST )
 Jun 11 @ 0705 UTC ( 1205 LST )           Dec 11 @ 0659 UTC ( 1159 LST )
 Jun 21 @ 0707 UTC ( 1207 LST )           Dec 21 @ 0704 UTC ( 1204 LST )</pre>
 </div>
+</div>
+<div class="section" id="legacy-quirks">
+<h2>Legacy Quirks<a class="headerlink" href="#legacy-quirks" title="Permalink to this headline">¶</a></h2>
+<p>Look closely at lines 720-790 and 810-880. With the addition of a &#8220;+18&#8221;, they
+are othwerise idental copy-and-paste clones of each other.</p>
 </div>
 </div>
 

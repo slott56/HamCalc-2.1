@@ -39,8 +39,8 @@ For this, timezones are imported from the
 It's quite easy to add timezones to cover other historical periods or
 other places on earth.
 
-Test Case
-----------
+Solar Position Test Cases
+---------------------------
 
 >>> import hamcalc.navigation.solar as solar
 >>> import datetime
@@ -180,6 +180,28 @@ Output from this test case.
 -34.28
 >>> round(s.AH,2)
 343.29
+
+Equation of Time Test Cases
+----------------------------
+
+>>> solar.eot( 73 )
+-9.288136257894735
+>>> solar.eot( 171 )
+-1.3629763831233621
+>>> solar.eot( 257 )
+4.438308798331203
+>>> solar.eot( 354 )
+2.3235852575988147
+
+Compared with HamCalc "wobble correction factors"
+of 4,8,11 for Jan 1, Jan 10 and Jan 21.
+
+>>> round(solar.eot( 0 ))
+-3
+>>> round(solar.eot( 9 ))
+-7
+>>> round(solar.eot( 20 ))
+-11
 
 """
 import datetime
@@ -490,3 +512,20 @@ def azimuth_elevation( lat, lon, date_time ):
     """
     sun= Position_Sun( lat, lon, date_time )
     return sun.AH, sun.AE
+
+def eot(d):
+    """An approximation for the Equation of Time.
+
+    See http://en.wikipedia.org/wiki/Equation_of_time
+
+     A positive value of the equation of time implies that a sundial is ahead of a clock.
+
+    :param d: Day of the year, zero is  January 1.
+        Use ``some_date.toordinal()-some_date.replace(month=1,day=1).toordinal()``
+    :returns: Equation of Time offset for this date.
+    """
+    W = 360/365.24
+    A = W*(d+10)
+    B = A +1.914*(math.sin(math.radians(W*(d-2))))
+    C = (A-math.degrees(math.atan2(math.tan(math.radians(B)),math.cos(math.radians(23.44)))))/180
+    return 720*(C-int(C+.5))

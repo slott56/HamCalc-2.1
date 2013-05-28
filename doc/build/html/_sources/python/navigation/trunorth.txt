@@ -5,8 +5,101 @@ Analysis
 ~~~~~~~~~~
 
 This program appears to evaluate a version of the Equation of Time.
+See http://en.wikipedia.org/wiki/Equation_of_time
 
+::
 
+    20 :REM'Ref. ARRL ANTENNA BOOK, 14th Edition, page 16-2
+
+We have 36 "wobble correction factors" that apply throughout the year.
+Each factor belongs to the 1st, 11th or 21st of each month.
+
+::
+
+    160 :REM'.....wobble correction factors
+    170 DATA  4,8,11,  13,14,14,  13,10,8,  4,1,-1,       -3,-4,-4,     -3,-1,1
+    180 DATA  4,5,6,   6,5,3,     1,-3,-7,  -10,-13,-15,  -16,-16,-14,  -11,-7,-2
+
+These are loaded into array, *C*, with three related fields.
+
+-   *C* (*Z*, 1) is month: 1-12.
+
+-   *C* (*Z*, 2) is day of month: 1, 11 or 21.
+
+-   *C* (*Z*, 3) is the wobble correction factor for this month and day.
+    This appears to be in minutes.
+
+The following approximations are used for time offsets.
+
+::
+
+    600 TIM=DEG/15          :REM'time in hours to centre of time zone
+    610 SN=TIM+12
+
+Here's the code to compute the LST of noon on a given date using the
+"wobble correction factors".
+
+::
+
+    720 N=SN+C(Z,3)/60:IF N>=1160 THEN N=N+40
+    730 IF N<0 THEN N=N+24
+    740 T=INT(N)*100+(N-INT(N))*60
+    750 T=INT(T+0.5!):T$=RIGHT$(STR$(T),LEN(STR$(T))-1)
+    760 IF LEN (T$)<4 THEN T$="0"+T$:GOTO 760
+    770 LST=T+UTC*100:IF LST>=2400 THEN LST=T-1200
+    780 PRINT TAB(6)M$(C(Z,1));USING "###";C(Z,2);
+    790 PRINT " @ ";T$;" UTC (";LST;"LST )";
+
+-   **720**.  *N* is UTC offset + 12 + wobble correction factor/60. Presumably in hours.
+
+    If N >= 1160 clause doesn't make a lot of sense: SN is in the range 0 to 24.
+    the correction factors are plus or minus 0.26
+
+-   **730**.  *N* = *N* mod 24.
+
+-   **740-760**.  Convert to *N* to *T*, an HH:MM number and *T$* the string
+    version of *T*.
+
+-   **770**.  LST is T+UTC offset converted to an HH:MM number.
+
+Alternative
+~~~~~~~~~~~~~~
+
+In the following, *D* is the date, in days starting at zero on January 1.
+
+..  math::
+
+    W &= 360/365.24 \\
+    A &= W \times (D+10) \\
+    B &= A+(360/\pi) \times 0.0167 \times \sin(W \times (D-2)) = A + 1.914 \times \sin( W \times (D-2) ) \\
+    C &= ( A - \arctan \frac{\tan B}{\cos 23.44} ) /180 \\
+    EoT &= 720 \times (C - \lfloor C + \frac{1}{2} \rfloor)
+
+Here's the note on the sign.
+
+    In this article, and others in English Wikipedia, a positive value of the equation of time implies that a sundial is ahead of a clock.
+
+This works for any day of the year.  The tabulated values above belong to 36
+dates spaced about ``365.24/36=10.1455`` days apart.
+
+Implementation
+~~~~~~~~~~~~~~~~
+
+The Equation of Time function can be added to the solar module.
+
+See :mod:`hamcalc.navigation.solar`.
+
+Here's the Python code to reconstruct the "Wobble Correction Factors" with
+the more conventional sign.
+
+::
+
+    def eot(d):
+        W = 360/365.24
+        A = W*(d+10)
+        B = A +1.914*(math.sin(math.radians(W*(d-2))))
+        C = (A-math.degrees(math.atan2(math.tan(math.radians(B)),math.cos(math.radians(23.44)))))/180
+        return 720*(C-int(C+.5))
 
 Legacy Output
 ~~~~~~~~~~~~~~~~
@@ -62,3 +155,9 @@ Results Table
       Jun  1 @ 0703 UTC ( 1203 LST )           Dec  1 @ 0655 UTC ( 1155 LST )
       Jun 11 @ 0705 UTC ( 1205 LST )           Dec 11 @ 0659 UTC ( 1159 LST )
       Jun 21 @ 0707 UTC ( 1207 LST )           Dec 21 @ 0704 UTC ( 1204 LST )
+
+Legacy Quirks
+~~~~~~~~~~~~~~~
+
+Look closely at lines 720-790 and 810-880. With the addition of a "+18", they
+are othwerise idental copy-and-paste clones of each other.

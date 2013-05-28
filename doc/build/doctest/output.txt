@@ -1,4 +1,4 @@
-Results of doctest builder run on 2013-05-28 08:49:29
+Results of doctest builder run on 2013-05-28 10:58:05
 =====================================================
 
 Document: python/math/baromtr
@@ -28,9 +28,9 @@ Test passed.
 Document: python/navigation/sunup
 ---------------------------------
 1 items passed all tests:
-  51 tests in default
-51 tests in 1 items.
-51 passed and 0 failed.
+  58 tests in default
+58 tests in 1 items.
+58 passed and 0 failed.
 Test passed.
 
 Document: python/math/quadrat
@@ -195,7 +195,7 @@ Test passed.
 
 Doctest summary
 ===============
-  429 tests
+  436 tests
     0 failures in tests
     0 failures in setup code
     0 failures in cleanup code
