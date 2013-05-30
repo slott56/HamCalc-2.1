@@ -1,4 +1,4 @@
-Results of doctest builder run on 2013-05-30 08:30:52
+Results of doctest builder run on 2013-05-30 18:55:43
 =====================================================
 
 Document: python/math/baromtr
@@ -71,6 +71,14 @@ Document: python/navigation/moontrac
   67 tests in default
 67 tests in 1 items.
 67 passed and 0 failed.
+Test passed.
+
+Document: python/construction/conecalc
+--------------------------------------
+1 items passed all tests:
+  65 tests in default
+65 tests in 1 items.
+65 passed and 0 failed.
 Test passed.
 
 Document: python/math/centrif
@@ -169,6 +177,14 @@ Document: python/navigation/satorbit
 11 passed and 0 failed.
 Test passed.
 
+Document: python/lib
+--------------------
+1 items passed all tests:
+   9 tests in default
+9 tests in 1 items.
+9 passed and 0 failed.
+Test passed.
+
 Document: python/math/propcirc
 ------------------------------
 1 items passed all tests:
@@ -195,7 +211,7 @@ Test passed.
 
 Doctest summary
 ===============
-  436 tests
+  510 tests
     0 failures in tests
     0 failures in setup code
     0 failures in cleanup code

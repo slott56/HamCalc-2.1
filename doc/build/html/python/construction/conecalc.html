@@ -76,6 +76,52 @@ and height between ends, compute the pattern layout.</li>
 </ul>
 <div class="section" id="analysis">
 <h2>Analysis<a class="headerlink" href="#analysis" title="Permalink to this headline">¶</a></h2>
+<p>Is this a proper <strong>Solver</strong>?  We can think of this as a Calculation
+where one possible unknown is the description of the cone and the other
+possible unknown is the description of the sheet.</p>
+<p>There appear to be two <strong>Solver</strong> instances.</p>
+<p>In the case where the cone is known and the sheet unknown, this is the
+relatively simple <a class="reference internal" href="#cone-pattern-layout">Cone pattern layout</a>.  Given Diameter and Height,
+the sheet size and some layout parameters are computed.</p>
+<p>In the case where the sheet size is known, there are several candidate cone
+solutions, this is the <a class="reference internal" href="#cone-size-to-fit-a-sheet">Cone size to fit a sheet</a> case.</p>
+<p>This becomes a bit of a stretch for the <strong>Solver</strong> interface.
+What do we do when we have from two to five
+solutions?</p>
+<ul>
+<li><p class="first">We could compute all five. How do we represent
+that in the <a class="reference internal" href="../lib.html#hamcalc.lib.AttrDict" title="hamcalc.lib.AttrDict"><tt class="xref py py-class docutils literal"><span class="pre">hamcalc.lib.AttrDict</span></tt></a>?</p>
+</li>
+<li><p class="first">Do we return a tuple
+of <a class="reference internal" href="../lib.html#hamcalc.lib.AttrDict" title="hamcalc.lib.AttrDict"><tt class="xref py py-class docutils literal"><span class="pre">hamcalc.lib.AttrDict</span></tt></a> instances? That&#8217;s
+highly unusual when compared with other <strong>Solvers</strong>.</p>
+</li>
+<li><p class="first">We could require an &#8220;index&#8221; with a value from 0 to 4
+to select which alternative we&#8217;re computing. We could
+compute just one of the available options.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">):</span>
+    <span class="n">params</span><span class="o">.</span><span class="n">selector</span><span class="o">=</span> <span class="n">i</span>
+    <span class="n">result</span><span class="o">=</span> <span class="n">conecalc</span><span class="o">.</span><span class="n">cone</span><span class="p">(</span> <span class="o">**</span><span class="n">params</span> <span class="p">)</span>
+</pre></div>
+</div>
+<p>This might not be too ungainly.</p>
+<p>But. What about cases where there are only two solutions,
+not five? Exception?</p>
+</li>
+<li><p class="first">We could maintain an &#8220;next&#8221; indicator to show which alternative
+we just computed and whether or more there are more.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">result</span><span class="o">=</span> <span class="n">conecalc</span><span class="o">.</span><span class="n">cone</span><span class="p">(</span> <span class="o">**</span><span class="n">params</span> <span class="p">)</span>
+<span class="k">while</span> <span class="n">params</span><span class="o">.</span><span class="n">next</span><span class="p">:</span>
+    <span class="n">result</span><span class="o">=</span> <span class="n">conecalc</span><span class="o">.</span><span class="n">cone</span><span class="p">(</span> <span class="o">**</span><span class="n">params</span> <span class="p">)</span>
+</pre></div>
+</div>
+</li>
+</ul>
+<p>There&#8217;s a separate <strong>Solver</strong> for
+the case of fitting a trucated code to a sheet.
+This is the <a class="reference internal" href="#truncated-cone-pattern-layout">Truncated cone pattern layout</a>. Given three values,
+a number of missing values are computed. This isn&#8217;t a fully symmetric
+solver, since it only handles missing sheet information.</p>
 <div class="section" id="cone-pattern-layout">
 <h3>Cone pattern layout<a class="headerlink" href="#cone-pattern-layout" title="Permalink to this headline">¶</a></h3>
 <p>Lines 1110 to 1310.</p>
@@ -165,10 +211,10 @@ If <img class="math" src="../../_images/math/591a6ff55e14d18eed92102a313e3f757ba
 </div><p>In all cases, the Circumference, Diameter, Radius and Height are
 calculated from <img class="math" src="../../_images/math/859ccf4cd60c7bc6b8fa1afc9a42dc811a826d6f.png" alt="L"/> and <img class="math" src="../../_images/math/52e8ed7a3ba22130ad3984eb2cd413406475a689.png" alt="\theta"/>.</p>
 <div class="math">
-<p><img src="../../_images/math/e9d52bd81357687c2b926a56c30bd3df5df1e255.png" alt="C_n &amp;= L_n \theta_n \\
+<p><img src="../../_images/math/6d3d0d03b5c685b54287ab400f12cbe60678e9a6.png" alt="C_n &amp;= L_n \theta_n \\
 D_n &amp;= \dfrac{C_n}{\pi} \\
 R_n &amp;= \dfrac{1}{2}D_n \\
-H_n &amp;= \sqrt{ L_n^s - R_n^2 }"/></p>
+H_n &amp;= \sqrt{ L_n^2 - R_n^2 }"/></p>
 </div><p>Sample Output</p>
 <div class="highlight-python"><pre>Pattern sheet:  (A) ###.## in. x  (B) ###.## in.
 
@@ -197,8 +243,8 @@ y│         │A
 Note that types 1, 2, and 3 do not apply when B&gt;2A</pre>
 </div>
 </div>
-<div class="section" id="truncated-cone-pattern">
-<h3>Truncated cone pattern<a class="headerlink" href="#truncated-cone-pattern" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="truncated-cone-pattern-layout">
+<h3>Truncated cone pattern layout<a class="headerlink" href="#truncated-cone-pattern-layout" title="Permalink to this headline">¶</a></h3>
 <p>Lines 1560-1950.</p>
 <p>Input is Diameter at the large end, <em>D1T</em>, small end <em>D1B</em> and the height, <em>H1</em>.</p>
 <p>Calculations:</p>
@@ -218,15 +264,22 @@ Note that types 1, 2, and 3 do not apply when B&gt;2A</pre>
 </div>
 <p>Explanation...</p>
 <div class="math">
-<p><img src="../../_images/math/8248cbef0b2b7924565c10ba4c32c4f7b164e9fe.png" alt="R_t &amp;= D_t / 2; R_b = D_b / 2 \\
+<p><img src="../../_images/math/b69bb3e62a69843f006210811617f6c5dc41ed41.png" alt="R_t &amp;= D_t / 2; R_b = D_b / 2 \\
 H_x &amp;= R_b \frac{H}{R_t-R_b} \\
 L &amp;=\sqrt{R_t^2+(H+H_x)^2} \\
 L_x &amp;= R_b \frac{L}{R_t} \\
 \theta &amp;= 2\pi \frac{R_t}{L} \\
-A, B, X, Y &amp; \begin{cases}
-B=2L; A=L+L\sin(\theta-\pi)/2; X=B/2; Y=A-B/2 &amp;\text{if $\theta \geq \pi$} \\
-B=2L\sin(\theta/2); A=L-LX\cos(\theta/2); X=B/2; Y=0 &amp;\text{if $\theta &lt; \pi$}\\
-\end{cases}"/></p>
+A, B, X, Y^\prime &amp; \begin{cases}
+B=2L; A=L+L\sin(\theta-\pi)/2; X=B/2; Y^\prime=A-B/2 &amp;\text{if $\theta \geq \pi$} \\
+B=2L\sin(\theta/2); A=L-LX\cos(\theta/2); X=B/2; Y^\prime=0 &amp;\text{if $\theta &lt; \pi$}
+\end{cases} \\
+T &amp;= A\\
+B &amp;= 0\\
+Y &amp;= \begin{cases}
+    A-L &amp;\text{if $\theta &gt; \pi$} \\
+    L-A &amp;\text{if $\theta &lt; \pi$} \\
+    Y^\prime &amp;\text{if $\theta = \pi$}
+\end{cases} \\"/></p>
 </div><p>Sample Output:</p>
 <div class="highlight-python"><pre>TRUNCATED CONE PATTERN
 
@@ -249,6 +302,206 @@ Location of bottom of sheet....y=   0.000
    ────x</pre>
 </div>
 </div>
+</div>
+<div class="section" id="module-hamcalc.construction.conecalc">
+<span id="implementation"></span><h2>Implementation<a class="headerlink" href="#module-hamcalc.construction.conecalc" title="Permalink to this headline">¶</a></h2>
+<p>hamcalc.construction.conecalc</p>
+<p>Two solvers for laying out cones (or truncated cones)
+on rectangular sheets.</p>
+<p>A Cone is defined by diameter (&#8220;D&#8221;) and height (&#8220;H&#8221;).</p>
+<p>A Sheet is defined by an width (&#8220;A&#8221;) and length (&#8220;B&#8221;).</p>
+<p>A Cone has some additional attributes whch must be computed
+to properly lay out the cone pattern.</p>
+<ul class="simple">
+<li>Arc Angle (&#8220;theta_r&#8221; and &#8220;theta_d&#8221;).</li>
+<li>Arc Radius (&#8220;L&#8221;).</li>
+<li>Arc Center Coordinates (&#8220;X&#8221;, &#8220;Y&#8221;).
+&#8220;X&#8221; is measured along the &#8220;B&#8221; (length) axis.
+&#8220;Y&#8221; is measured along the &#8220;A&#8221; (width) axis.</li>
+</ul>
+<p>Test Cases</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">hamcalc.construction.conecalc</span> <span class="kn">as</span> <span class="nn">conecalc</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">c</span><span class="o">=</span> <span class="n">conecalc</span><span class="o">.</span><span class="n">cone</span><span class="p">(</span> <span class="n">D</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">H</span><span class="o">=</span><span class="mi">4</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">c</span><span class="o">.</span><span class="n">D</span>
+<span class="go">8</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">c</span><span class="o">.</span><span class="n">H</span>
+<span class="go">4</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">C</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">25.133</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">theta_d</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">254.558</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">L</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">5.657</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">X</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">5.657</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">Y</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">3.426</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">A</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">9.083</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">B</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">11.314</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">s</span><span class="o">=</span> <span class="n">conecalc</span><span class="o">.</span><span class="n">cone</span><span class="p">(</span> <span class="n">A</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">B</span><span class="o">=</span><span class="mf">11.3</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span><span class="o">.</span><span class="n">next</span>
+<span class="go">1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">D</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">6.791</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">H</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">4.516</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">C</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">21.336</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">theta_d</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">216.365</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">L</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">5.65</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">X</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">5.65</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">Y</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">3.35</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">s</span><span class="o">=</span> <span class="n">conecalc</span><span class="o">.</span><span class="n">cone</span><span class="p">(</span> <span class="o">**</span><span class="n">s</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span><span class="o">.</span><span class="n">next</span>
+<span class="go">2</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">D</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">3.889</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">H</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">8.787</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">C</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">12.217</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">theta_d</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">77.773</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">L</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">9</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">X</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">5.65</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">Y</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">0</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">s</span><span class="o">=</span> <span class="n">conecalc</span><span class="o">.</span><span class="n">cone</span><span class="p">(</span> <span class="o">**</span><span class="n">s</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span><span class="o">.</span><span class="n">next</span>
+<span class="go">3</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">D</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">5.24</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">H</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">8.61</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">C</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">16.463</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">theta_d</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">104.807</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">L</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">9</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">X</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">2.3</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">Y</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">0</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">s</span><span class="o">=</span> <span class="n">conecalc</span><span class="o">.</span><span class="n">cone</span><span class="p">(</span> <span class="o">**</span><span class="n">s</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span><span class="o">.</span><span class="n">next</span>
+<span class="go">4</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">D</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">3.314</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">H</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">11.178</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">C</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">10.412</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">theta_d</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">52.793</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">L</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">11.3</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">X</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">Y</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">0</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">s</span><span class="o">=</span> <span class="n">conecalc</span><span class="o">.</span><span class="n">cone</span><span class="p">(</span> <span class="o">**</span><span class="n">s</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span><span class="o">.</span><span class="n">next</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">D</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">2.946</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">H</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">11.204</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">C</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">9.257</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">theta_d</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">46.935</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">L</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">11.3</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">X</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">Y</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">4.5</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">t</span> <span class="o">=</span> <span class="n">conecalc</span><span class="o">.</span><span class="n">truncated_cone</span><span class="p">(</span> <span class="n">D_B</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">D_T</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">H</span><span class="o">=</span><span class="mi">2</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">L</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">4.472</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">L_X</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">2.236</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">theta_d</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">160.997</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">B</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">8.822</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">A</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">4.103</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">t</span><span class="o">.</span><span class="n">relative</span>
+<span class="go">&#39;below&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">X</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">4.411</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">Y</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">0.369</span>
+</pre></div>
+</div>
+<dl class="function">
+<dt id="hamcalc.construction.conecalc.cone">
+<tt class="descclassname">hamcalc.construction.conecalc.</tt><tt class="descname">cone</tt><big>(</big><em>**kw</em><big>)</big><a class="reference internal" href="../../_modules/hamcalc/construction/conecalc.html#cone"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.construction.conecalc.cone" title="Permalink to this definition">¶</a></dt>
+<dd><p>This solves Cone and Sheet Size problems.</p>
+<ul>
+<li><p class="first">Given the Cone base diameter and height (&#8220;D&#8221;, &#8220;H&#8221;),
+Compute the sheet size and other helpful measures.</p>
+</li>
+<li><p class="first">Given sheet size (&#8220;A&#8221;, &#8220;B&#8221;) maximize the cone
+that can be cut. There are as many as five alternatives.</p>
+<p>A &#8220;next&#8221; indicator is used. If omitted to set to <tt class="docutils literal"><span class="pre">None</span></tt>, a solution
+is picked, and the value of &#8220;next&#8221; is added to the
+attr dict with state information to compute the next value.</p>
+<p>When &#8220;next&#8221; is returned as <tt class="docutils literal"><span class="pre">None</span></tt>, there are no more
+values.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">result</span><span class="o">=</span> <span class="n">conecalc</span><span class="o">.</span><span class="n">cone</span><span class="p">(</span> <span class="o">**</span><span class="n">params</span> <span class="p">)</span>
+<span class="n">format</span><span class="p">(</span> <span class="n">result</span> <span class="p">)</span>
+<span class="k">while</span> <span class="n">params</span><span class="o">.</span><span class="n">next</span><span class="p">:</span>
+    <span class="n">result</span><span class="o">=</span> <span class="n">conecalc</span><span class="o">.</span><span class="n">cone</span><span class="p">(</span> <span class="o">**</span><span class="n">params</span> <span class="p">)</span>
+    <span class="n">format</span><span class="p">(</span> <span class="n">result</span> <span class="p">)</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</dd></dl>
+
+<dl class="function">
+<dt id="hamcalc.construction.conecalc.truncated_cone">
+<tt class="descclassname">hamcalc.construction.conecalc.</tt><tt class="descname">truncated_cone</tt><big>(</big><em>**kw</em><big>)</big><a class="headerlink" href="#hamcalc.construction.conecalc.truncated_cone" title="Permalink to this definition">¶</a></dt>
+<dd><p>This solves Truncated Cone and Sheet Size problems.</p>
+<p>Given the Cone base diameter, top diameter and height
+(&#8220;D_B&#8221;, &#8220;D_T&#8221;, &#8220;H&#8221;),
+Compute the sheet size and other helpful measures.</p>
+<p>This is not complete solver, because it can&#8217;t resolve
+a cone design given a sheet size.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="quirks">
+<h2>Quirks<a class="headerlink" href="#quirks" title="Permalink to this headline">¶</a></h2>
+<p>There&#8217;s a <tt class="docutils literal"><span class="pre">Y=O</span></tt> that should have been <tt class="docutils literal"><span class="pre">Y=0</span></tt>.</p>
+<div class="highlight-python"><pre>1210 B=L:A=L*SIN(THETA) :X=0 :Y=O</pre>
+</div>
+<p>Also, this</p>
+<div class="highlight-python"><pre>1890 IF DEG&lt;180 THEN S$=&quot; below&quot; :ELSE S$= &quot; above&quot;::ELSE S$=&quot; below&quot;</pre>
+</div>
+<p>Also, the menu is different from most other menus.</p>
 </div>
 </div>
 

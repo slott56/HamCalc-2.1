@@ -117,16 +117,15 @@ def stop(x,y):
     running= False
     turtle.bye()
 
-turtle.speed("fastest")
+#turtle.speed("fastest") # Doesn't much matter
 turtle.hideturtle()
-# Essential in order to speed up animation.
-turtle.tracer(False)
+turtle.tracer(False) # Essential in order to eliminate animation.
+face(tick_circles)
 
 turtle.onclick(stop)
 now= datetime.datetime.now()
 wait= 1000-(now.time().microsecond//1000)
 turtle.ontimer( hands, wait )
 print( "Initial wait", wait, "ms after", now.strftime("%H:%M:%S" ) )
-face(tick_circles)
 turtle.mainloop()
 

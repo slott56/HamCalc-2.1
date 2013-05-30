@@ -8,7 +8,6 @@ from hamcalc.stdio.daydusk import get_lat_lon_tz_date
 from hamcalc.lib import AttrDict
 import datetime
 import runpy
-import string
 import math
 
 introduction = """\
@@ -87,14 +86,14 @@ def display( latitude, longitude, tz, date_time ):
     detl_rise= solar.Position_Sun( latitude, longitude, rise )
     detl_set= solar.Position_Sun( latitude, longitude, set )
 
-    template= string.Template("""\
+    template= """\
 ======================================== SUNRISE ====== SUNSET ====== DAYLIGHT
- Local SOLAR Time....................... ${lst_rise}   ${lst_set}  ${daylight} hrs.
- Local ${std} Time......................... ${std_rise}     ${std_set}
- UNIVERSAL COORDINATED Time (UTC/GMT)... ${utc_rise}     ${utc_set}
- Declination of Earth's axis............ ${decl_rise}° ${decl_set}°
+ Local SOLAR Time....................... {lst_rise}     {lst_set}  {daylight:4.2f} hrs.
+ Local ${std} Time......................... {std_rise}      {std_set}
+ UNIVERSAL COORDINATED Time (UTC/GMT)... {utc_rise}     {utc_set}
+ Declination of Earth's axis............ {decl_rise}°  {decl_set}°
 ===============================================================================
-""" )
+"""
 
     dst_offset= date_time.dst()
     data = dict(
@@ -109,10 +108,10 @@ def display( latitude, longitude, tz, date_time ):
         std = tz.tzname(date_time),
         decl_rise= "",
         decl_set= "",
-        daylight= "{0:4.2f}".format(detl_rise.AA/60),
+        daylight= detl_rise.AA/60,
     )
 
-    print( template.substitute( data ) )
+    print( template.format( **data ) )
 
     r = Polar(r=7)
     r.point( "*", 7, detl_rise.AH )
@@ -126,15 +125,21 @@ def run():
     print( introduction )
     z= ''
     while z != '0':
-        print("   < 1 > run this program" )
-        print("   < 2 > run Sunrise/Sunset program")
-        print("   < 0 >  EXIT" )
+        print("   < 1 > run this program")
+        print("   < 2 > run Daylight, Dusk and Dawn Calculator")
+        print("   < 3 > run Sunup/Sundown calendar")
+        print("   < 4 > run Equinoxes/Solstices program")
+        print("   < 0 > EXIT" )
         z= input( "CHOICE? " )
         if z == '1':
             latitude, longitude, tz, date_time = get_lat_lon_tz_date()
             display( latitude, longitude, tz, date_time )
         elif z == '2':
-            runpy.run_module( 'hamcalc.stdio.riseset' )
+            runpy.run_module( 'hamcalc.stdio.daydusk' )
+        elif z == '3':
+            runpy.run_module( 'hamcalc.stdio.sunup' )
+        elif z == '3':
+            runpy.run_module( 'hamcalc.stdio.seasons' )
 
 if __name__ == "__main__":
     run()

@@ -86,6 +86,23 @@ trivially met when this is used for <tt class="docutils literal"><span class="pr
     <span class="k">return</span> <span class="n">args</span>
 </pre></div>
 </div>
+<p>Examples:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">hamcalc.lib</span> <span class="kn">import</span> <span class="n">AttrDict</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">args</span><span class="o">=</span> <span class="nb">dict</span><span class="p">(</span> <span class="n">arg1</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">arg2</span><span class="o">=</span><span class="mi">5</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">args</span><span class="o">=</span> <span class="n">AttrDict</span><span class="p">(</span> <span class="n">args</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="s">&#39;arg1&#39;</span> <span class="ow">in</span> <span class="n">args</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">args</span><span class="o">.</span><span class="n">arg1</span>
+<span class="go">3</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="s">&#39;sum&#39;</span> <span class="ow">in</span> <span class="n">args</span>
+<span class="go">False</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">args</span><span class="o">.</span><span class="n">sum</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">arg1</span> <span class="o">+</span> <span class="n">args</span><span class="o">.</span><span class="n">arg2</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">args</span><span class="o">.</span><span class="n">sum</span>
+<span class="go">8</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">args</span><span class="p">[</span><span class="s">&#39;sum&#39;</span><span class="p">]</span>
+<span class="go">8</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="class">

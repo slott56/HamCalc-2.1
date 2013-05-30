@@ -56,10 +56,10 @@
             
   <div class="section" id="diamfind-diameter-finder">
 <h1>diamfind &#8211; Diameter Finder<a class="headerlink" href="#diamfind-diameter-finder" title="Permalink to this headline">¶</a></h1>
-<p>Introduction</p>
+<p>Introduction:</p>
 <div class="highlight-python"><pre>Diameter Finder                                         by George Murphy VE3ERP
 
-            ║
+             ║
   ┌───╥╥╥╥╥╥╫───┐
   │   ║║║║║║║   │«─ object being measured.
   │  ─╫╫╫╫╫╫╫─ «┼ draw a line across turns.
@@ -72,6 +72,25 @@
  cables of bunched wires, etc. with micrometer accuracy when a micrometer is
  not available.</pre>
 </div>
+<p>Prompt:</p>
+<div class="highlight-python"><pre>Close-wind several turns of fishing line or thread around the object and with
+a marking pen draw a line across the turns. Unwind the turns, count the dots,
+straighten the line and measure the distance between the first and last dots.
+
+Any unit of measure can be used. Results will be in the same units.</pre>
+</div>
+<div class="section" id="analysis">
+<h2>Analysis<a class="headerlink" href="#analysis" title="Permalink to this headline">¶</a></h2>
+<p>The essence:</p>
+<div class="highlight-python"><pre>520 INPUT &quot; ENTER: number of dots............................&quot;;N
+530 INPUT &quot; ENTER: distance between first and last dot.......&quot;;L
+540 D=L/(PI*(N-1))
+550 PRINT:COLOR 0,7:LOCATE ,25
+560 PRINT USING &quot; Diameter of object = ###.### &quot;;D:COLOR 7,0</pre>
+</div>
+<div class="math">
+<p><img src="../../_images/math/80b0d9d49057a9875455f8599a92c82b0173ae7f.png" alt="D = \dfrac{L}{\pi(N-1)}"/></p>
+</div></div>
 </div>
 
 

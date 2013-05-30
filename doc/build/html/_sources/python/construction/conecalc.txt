@@ -25,6 +25,60 @@ There are three use cases:
 Analysis
 ~~~~~~~~~
 
+Is this a proper **Solver**?  We can think of this as a Calculation
+where one possible unknown is the description of the cone and the other
+possible unknown is the description of the sheet.
+
+There appear to be two **Solver** instances.
+
+In the case where the cone is known and the sheet unknown, this is the
+relatively simple `Cone pattern layout`_.  Given Diameter and Height,
+the sheet size and some layout parameters are computed.
+
+In the case where the sheet size is known, there are several candidate cone
+solutions, this is the `Cone size to fit a sheet`_ case.
+
+This becomes a bit of a stretch for the **Solver** interface.
+What do we do when we have from two to five
+solutions?
+
+-   We could compute all five. How do we represent
+    that in the :class:`hamcalc.lib.AttrDict`?
+
+-   Do we return a tuple
+    of :class:`hamcalc.lib.AttrDict` instances? That's
+    highly unusual when compared with other **Solvers**.
+
+-   We could require an "index" with a value from 0 to 4
+    to select which alternative we're computing. We could
+    compute just one of the available options.
+
+    ::
+
+        for i in range(5):
+            params.selector= i
+            result= conecalc.cone( **params )
+
+    This might not be too ungainly.
+
+    But. What about cases where there are only two solutions,
+    not five? Exception?
+
+-   We could maintain an "next" indicator to show which alternative
+    we just computed and whether or more there are more.
+
+    ::
+
+        result= conecalc.cone( **params )
+        while params.next:
+            result= conecalc.cone( **params )
+
+There's a separate **Solver** for
+the case of fitting a trucated code to a sheet.
+This is the `Truncated cone pattern layout`_. Given three values,
+a number of missing values are computed. This isn't a fully symmetric
+solver, since it only handles missing sheet information.
+
 Cone pattern layout
 ^^^^^^^^^^^^^^^^^^^
 
@@ -147,7 +201,7 @@ calculated from :math:`L` and :math:`\theta`.
     C_n &= L_n \theta_n \\
     D_n &= \dfrac{C_n}{\pi} \\
     R_n &= \dfrac{1}{2}D_n \\
-    H_n &= \sqrt{ L_n^s - R_n^2 }
+    H_n &= \sqrt{ L_n^2 - R_n^2 }
 
 
 Sample Output
@@ -181,8 +235,8 @@ Sample Output
     Note that types 1, 2, and 3 do not apply when B>2A
 
 
-Truncated cone pattern
-^^^^^^^^^^^^^^^^^^^^^^^
+Truncated cone pattern layout
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Lines 1560-1950.
 
@@ -214,10 +268,17 @@ Explanation...
     L &=\sqrt{R_t^2+(H+H_x)^2} \\
     L_x &= R_b \frac{L}{R_t} \\
     \theta &= 2\pi \frac{R_t}{L} \\
-    A, B, X, Y & \begin{cases}
-    B=2L; A=L+L\sin(\theta-\pi)/2; X=B/2; Y=A-B/2 &\text{if $\theta \geq \pi$} \\
-    B=2L\sin(\theta/2); A=L-LX\cos(\theta/2); X=B/2; Y=0 &\text{if $\theta < \pi$}\\
-    \end{cases}
+    A, B, X, Y^\prime & \begin{cases}
+    B=2L; A=L+L\sin(\theta-\pi)/2; X=B/2; Y^\prime=A-B/2 &\text{if $\theta \geq \pi$} \\
+    B=2L\sin(\theta/2); A=L-LX\cos(\theta/2); X=B/2; Y^\prime=0 &\text{if $\theta < \pi$}
+    \end{cases} \\
+    T &= A\\
+    B &= 0\\
+    Y &= \begin{cases}
+        A-L &\text{if $\theta > \pi$} \\
+        L-A &\text{if $\theta < \pi$} \\
+        Y^\prime &\text{if $\theta = \pi$}
+    \end{cases} \\
 
 
 Sample Output::
@@ -241,3 +302,26 @@ Sample Output::
       ││         │
        └─────────┘
         ────x
+
+Implementation
+~~~~~~~~~~~~~~~~
+
+..  automodule:: hamcalc.construction.conecalc
+    :members:
+
+Quirks
+~~~~~~~~
+
+There's a ``Y=O`` that should have been ``Y=0``.
+
+::
+
+    1210 B=L:A=L*SIN(THETA) :X=0 :Y=O
+
+Also, this
+
+::
+
+    1890 IF DEG<180 THEN S$=" below" :ELSE S$= " above"::ELSE S$=" below"
+
+Also, the menu is different from most other menus.

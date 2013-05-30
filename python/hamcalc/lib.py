@@ -123,6 +123,23 @@ class AttrDict( dict ):
                 args.d = args.r * args.t
             return args
 
+    Examples:
+
+    >>> from hamcalc.lib import AttrDict
+    >>> args= dict( arg1=3, arg2=5 )
+    >>> args= AttrDict( args )
+    >>> 'arg1' in args
+    True
+    >>> args.arg1
+    3
+    >>> 'sum' in args
+    False
+    >>> args.sum = args.arg1 + args.arg2
+    >>> args.sum
+    8
+    >>> args['sum']
+    8
+
     """
     def __getattr__( self, name ):
         return self.get(name,None)
