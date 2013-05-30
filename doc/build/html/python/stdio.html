@@ -26,7 +26,7 @@
     <link rel="top" title="HamCalc 2.1 documentation" href="../index.html" />
     <link rel="up" title="Python Modules" href="index.html" />
     <link rel="next" title="RESTful Web Services Interface" href="rest.html" />
-    <link rel="prev" title="other – including Finance and Nutrition" href="other.html" /> 
+    <link rel="prev" title="timeq – Time Quiz" href="other/timeq.html" /> 
   </head>
   <body>
     <div class="header-wrapper">
@@ -34,7 +34,7 @@
         <div class="headertitle"><a
           href="../index.html">HamCalc 2.1 documentation</a></div>
         <div class="rel">
-          <a href="other.html" title="other – including Finance and Nutrition"
+          <a href="other/timeq.html" title="timeq – Time Quiz"
              accesskey="P">previous</a> |
           <a href="rest.html" title="RESTful Web Services Interface"
              accesskey="N">next</a> |
@@ -68,6 +68,8 @@ They can be imported and reused.</p>
 <li>The <tt class="xref py py-mod docutils literal"><span class="pre">hamlcalc.stdio.intro</span></tt>, <tt class="xref py py-mod docutils literal"><span class="pre">hamlcalc.stdio.menu</span></tt>.
 <strong class="program">intro</strong> is just a &#8220;splash page&#8221;, which imports the menu.
 <strong class="program">menu</strong> (circularly) imports <strong class="program">intro</strong>.</li>
+<li><a class="reference internal" href="#module-hamcalc.stdio.rjd" title="hamcalc.stdio.rjd"><tt class="xref py py-mod docutils literal"><span class="pre">hamcalc.stdio.rjd</span></tt></a> is a separate menu program with
+a subset of HamCalc modules.</li>
 <li><a class="reference internal" href="#module-hamcalc.stdio.graphs" title="hamcalc.stdio.graphs"><tt class="xref py py-mod docutils literal"><span class="pre">hamcalc.stdio.graphs</span></tt></a>. This contains a useful class
 for graphing functions.</li>
 <li><a class="reference internal" href="#module-hamcalc.stdio.gwgraphics" title="hamcalc.stdio.gwgraphics"><tt class="xref py py-mod docutils literal"><span class="pre">hamcalc.stdio.gwgraphics</span></tt></a>. This contains a useful
@@ -80,6 +82,20 @@ Most of these wrap a calculation module; the calculation module has
 the relevant documentation.</p>
 <p>A few of these are stand-alone programs that on&#8217;t have a calculation
 module.</p>
+</li>
+<li><p class="first">Screen Savers.</p>
+<p>Once upon a time, a screen saver was considered essential to
+preserve the life of expensive monitors.</p>
+<p>There are four screen savers.</p>
+<ul class="simple">
+<li><tt class="xref py py-mod docutils literal"><span class="pre">hamcalc.stdio.logoclok</span></tt>.</li>
+<li><tt class="xref py py-mod docutils literal"><span class="pre">hamcalc.stdio.bignum</span></tt>.</li>
+<li><tt class="xref py py-mod docutils literal"><span class="pre">hamcalc.stdio.shuttle</span></tt>.</li>
+<li><tt class="xref py py-mod docutils literal"><span class="pre">hamcalc.stdio.walker</span></tt>.</li>
+</ul>
+<p>These tend to be rather quirky programs because of the way that
+they depend (deeply) on GW Basic Graphics, MS-DOS and legacy
+hardware.</p>
 </li>
 </ul>
 <div class="section" id="module-hamcalc.stdio.intro">
@@ -193,6 +209,12 @@ programs that bypass the ordinary menu structure. Here&#8217;s the list.</p>
 </pre></div>
 </div>
 </div>
+<div class="section" id="rjd">
+<h3>RJD<a class="headerlink" href="#rjd" title="Permalink to this headline">¶</a></h3>
+<p>There&#8217;s also the &#8220;Dehoney Algorithm Index&#8221;, a program named <strong class="program">RJD</strong>.
+This is yet another menu, actually. However, it is packaged as a separate
+app so that it fits into the existing menu structure neatly.</p>
+</div>
 <div class="section" id="data-files">
 <h3>Data Files<a class="headerlink" href="#data-files" title="Permalink to this headline">¶</a></h3>
 <p>This program reads and displays two documentation files.</p>
@@ -240,7 +262,7 @@ For a sub-menu, that executes a program.</p>
 
 <dl class="class">
 <dt id="hamcalc.stdio.menu.Program_Menu">
-<em class="property">class </em><tt class="descclassname">hamcalc.stdio.menu.</tt><tt class="descname">Program_Menu</tt><big>(</big><em>name</em>, <em>item_list</em><big>)</big><a class="reference internal" href="../_modules/hamcalc/stdio/menu.html#Program_Menu"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.stdio.menu.Program_Menu" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><tt class="descclassname">hamcalc.stdio.menu.</tt><tt class="descname">Program_Menu</tt><big>(</big><em>name</em>, <em>item_list=None</em><big>)</big><a class="reference internal" href="../_modules/hamcalc/stdio/menu.html#Program_Menu"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.stdio.menu.Program_Menu" title="Permalink to this definition">¶</a></dt>
 <dd><p>The program menu.</p>
 <p>Picking an item runs a program.</p>
 <dl class="method">
@@ -265,7 +287,7 @@ For a sub-menu, that executes a program.</p>
 
 <dl class="class">
 <dt id="hamcalc.stdio.menu.QT_Menu">
-<em class="property">class </em><tt class="descclassname">hamcalc.stdio.menu.</tt><tt class="descname">QT_Menu</tt><a class="reference internal" href="../_modules/hamcalc/stdio/menu.html#QT_Menu"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.stdio.menu.QT_Menu" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><tt class="descclassname">hamcalc.stdio.menu.</tt><tt class="descname">QT_Menu</tt><big>(</big><em>name='QuikTables                                              by George Murphy VE3ERP'</em><big>)</big><a class="reference internal" href="../_modules/hamcalc/stdio/menu.html#QT_Menu"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.stdio.menu.QT_Menu" title="Permalink to this definition">¶</a></dt>
 <dd><p>The QuikTabl menu.</p>
 <dl class="method">
 <dt id="hamcalc.stdio.menu.QT_Menu.display">
@@ -364,6 +386,37 @@ and a &#8220;flat&#8221; Hamdex index.</p>
 
 </div>
 </div>
+<div class="section" id="id1">
+<h2>RJD<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<span class="target" id="module-hamcalc.stdio.rjd"></span><p>Dehoney Algorithm Index</p>
+<p>&#8220;DEHONEY ALGORITHMS&#8221;,&#8221;, Program index&#8221;,&#8221;&#8221;,&#8221;RJD&#8221;</p>
+<dl class="class">
+<dt id="hamcalc.stdio.rjd.RJD_Menu">
+<em class="property">class </em><tt class="descclassname">hamcalc.stdio.rjd.</tt><tt class="descname">RJD_Menu</tt><a class="reference internal" href="../_modules/hamcalc/stdio/rjd.html#RJD_Menu"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.stdio.rjd.RJD_Menu" title="Permalink to this definition">¶</a></dt>
+<dd><p>Menu to display the RJD list of algorithms.</p>
+<p>This is a two-column menu with more than 40 items on it.
+It differs in minor ways from the superclas menu.</p>
+<dl class="method">
+<dt id="hamcalc.stdio.rjd.RJD_Menu.display">
+<tt class="descname">display</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/hamcalc/stdio/rjd.html#RJD_Menu.display"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.stdio.rjd.RJD_Menu.display" title="Permalink to this definition">¶</a></dt>
+<dd><p>Display the RJD menu.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="hamcalc.stdio.rjd.RJD_Menu.get_choice">
+<tt class="descname">get_choice</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/hamcalc/stdio/rjd.html#RJD_Menu.get_choice"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.stdio.rjd.RJD_Menu.get_choice" title="Permalink to this definition">¶</a></dt>
+<dd><p>Prompt and get the user&#8217;s choice.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="hamcalc.stdio.rjd.pairs">
+<tt class="descclassname">hamcalc.stdio.rjd.</tt><tt class="descname">pairs</tt><big>(</big><em>iterable</em><big>)</big><a class="reference internal" href="../_modules/hamcalc/stdio/rjd.html#pairs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.stdio.rjd.pairs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Consume an interable in pairs.</p>
+</dd></dl>
+
+</div>
 <div class="section" id="module-hamcalc.stdio.graphs">
 <span id="graphs"></span><span id="stdio-graphs"></span><h2>Graphs<a class="headerlink" href="#module-hamcalc.stdio.graphs" title="Permalink to this headline">¶</a></h2>
 <p>Graphs</p>
@@ -459,14 +512,14 @@ diagrams display correctly.</p>
 <dl class="class">
 <dt id="hamcalc.stdio.gwgraphics.GWGraphics">
 <em class="property">class </em><tt class="descclassname">hamcalc.stdio.gwgraphics.</tt><tt class="descname">GWGraphics</tt><a class="reference internal" href="../_modules/hamcalc/stdio/gwgraphics.html#GWGraphics"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.stdio.gwgraphics.GWGraphics" title="Permalink to this definition">¶</a></dt>
-<dd><p>Note (0,0) is top-left. (319,199) is below and to the right.
-Because of the 4:3 aspect ratio issue, screens are described
+<dd><p>Note (0,0) is top-left. (319,199) is below and to the right.</p>
+<p>In mode 8, with a 4:3 aspect ratio, screens are described
 as 640x200. This turns out to look like 640x480.
 If square pixels had been used, this would not even exist.</p>
 <p>Therefore, we have to adjust GWBasic coordinates from
 GWBasic 640x200 with 4:3 pixels to modern square pixel 640x480.</p>
-<p>Only one of the various screen modes is actually supported:
-mode 8, which is described as &#8220;640 × 200 pixel high-resolution graphics, 80 × 25 text&#8221;. It&#8217;s really the classic 640x480 graphics.</p>
+<p>Only two of the various screen modes is actually supported:
+mode 8 and mode 9.</p>
 <dl class="method">
 <dt id="hamcalc.stdio.gwgraphics.GWGraphics.CIRCLE">
 <tt class="descname">CIRCLE</tt><big>(</big><em>x</em>, <em>y</em>, <em>r</em>, <em>start=None</em>, <em>end=None</em><big>)</big><a class="reference internal" href="../_modules/hamcalc/stdio/gwgraphics.html#GWGraphics.CIRCLE"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.stdio.gwgraphics.GWGraphics.CIRCLE" title="Permalink to this definition">¶</a></dt>
@@ -545,16 +598,17 @@ only.</p>
 <li class="toctree-l2"><a class="reference internal" href="radio.html">radio &#8211; Radio Design and Engineering</a></li>
 <li class="toctree-l2"><a class="reference internal" href="ham.html">ham &#8211; Ham Radio Operations</a></li>
 <li class="toctree-l2"><a class="reference internal" href="electronics/index.html">electronics &#8211; General Electronics</a></li>
-<li class="toctree-l2"><a class="reference internal" href="construction/index.html">construction &#8211; Construction and Related Projects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="construction/index.html">construction &#8211; Construction and Mechanical</a></li>
 <li class="toctree-l2"><a class="reference internal" href="math/index.html">math &#8211; Math, Physics, Units Conversion</a></li>
 <li class="toctree-l2"><a class="reference internal" href="navigation/index.html">navigation &#8211; Navigation and Astronomy</a></li>
 <li class="toctree-l2"><a class="reference internal" href="calendar/index.html">calendar &#8211; Calendrical Calculations</a></li>
 <li class="toctree-l2"><a class="reference internal" href="audio_photo.html">audio_photo &#8211; Audio, Sound and Photography</a></li>
 <li class="toctree-l2"><a class="reference internal" href="software.html">software &#8211; Software Engineering, Programming and Computers</a></li>
-<li class="toctree-l2"><a class="reference internal" href="other.html">other &#8211; including Finance and Nutrition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="other/index.html">other &#8211; including Finance and Nutrition</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="">STDIO Interface</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#module-hamcalc.stdio.intro">Intro</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#module-hamcalc.stdio.menu">Menu</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id1">RJD</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#module-hamcalc.stdio.graphs">Graphs</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#module-hamcalc.stdio.gwgraphics">GW Graphics</a></li>
 </ul>
@@ -587,7 +641,7 @@ only.</p>
     <div class="footer-wrapper">
       <div class="footer">
         <div class="left">
-          <a href="other.html" title="other – including Finance and Nutrition"
+          <a href="other/timeq.html" title="timeq – Time Quiz"
              >previous</a> |
           <a href="rest.html" title="RESTful Web Services Interface"
              >next</a> |

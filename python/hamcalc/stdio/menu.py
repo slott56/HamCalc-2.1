@@ -105,6 +105,13 @@ programs that bypass the ordinary menu structure. Here's the list.
     Item( "", "solutri", "Triangles - solution of" ),
     Item( "", "trig", "Trigonometric functions" ),
 
+RJD
+====
+
+There's also the "Dehoney Algorithm Index", a program named :program:`RJD`.
+This is yet another menu, actually. However, it is packaged as a separate
+app so that it fits into the existing menu structure neatly.
+
 Data Files
 ==========
 
@@ -347,9 +354,10 @@ class Program_Menu( Menu ):
     """The program menu.
 
     Picking an item runs a program."""
-    def __init__( self, name, item_list ):
+    def __init__( self, name, item_list=None ):
         super().__init__( name )
-        self.item_list= item_list
+        self.item_list= item_list if item_list is not None else []
+        assert len(self.item_list) <= 40
     def display( self ):
         """Display the two-column program menu."""
         print( " H A M C A L C  Program Menu {0}                           by George Murphy VE3ERP".format( self.name ) )
@@ -444,8 +452,8 @@ class Topic_Index( Menu ):
 
 class QT_Menu( Menu ):
     """The QuikTabl menu."""
-    def __init__( self ):
-        super().__init__( "QuikTables                                              by George Murphy VE3ERP" )
+    def __init__( self, name="QuikTables                                              by George Murphy VE3ERP" ):
+        super().__init__( name )
         self.item_list= [
         Item( "", "awgexact", "A.W.G. wire sizes" ),
         Item( "", "propcirc", "Circles - properties of" ),

@@ -53,15 +53,33 @@
 
 <span class="sd">Some satellite orbit information.</span>
 
-<span class="sd">Test Cases</span>
+<span class="sd">Test Cases for Orbital Details</span>
 
 <span class="sd">&gt;&gt;&gt; import hamcalc.navigation.satorbit as satorbit</span>
-<span class="sd">&gt;&gt;&gt; satorbit.orbit( 88 )</span>
-<span class="sd">&gt;&gt;&gt; satorbit.orbit( 144 )</span>
-<span class="sd">&gt;&gt;&gt;</span>
+<span class="sd">&gt;&gt;&gt; satorbit.orbit( 88, 10.1, 10.2 )</span>
+<span class="sd">{&#39;cone_diameter&#39;: 1762.2173168121756, &#39;fq_up&#39;: 10.1, &#39;speed_mph&#39;: 17407.307854142113, &#39;fq_down&#39;: 10.2, &#39;altitude&#39;: 100.0, &#39;doppler_shift&#39;: 0.004999999999999982, &#39;speed_mpm&#39;: 290.1217975690352, &#39;period&#39;: 88, &#39;radio_horizon&#39;: 881.1086584060878, &#39;signal_time&#39;: 0.001075268817204301, &#39;radius&#39;: 4063.34, &#39;apex_angle&#39;: 154.5246143812527}</span>
+<span class="sd">&gt;&gt;&gt; satorbit.orbit( 144, 10.1, 10.2 )</span>
+<span class="sd">{&#39;cone_diameter&#39;: 6306.827741575378, &#39;fq_up&#39;: 10.1, &#39;speed_mph&#39;: 14826.58944898434, &#39;fq_down&#39;: 10.2, &#39;altitude&#39;: 1699.9999999999957, &#39;doppler_shift&#39;: 0.004999999999999982, &#39;speed_mpm&#39;: 247.10982414973898, &#39;period&#39;: 144, &#39;radio_horizon&#39;: 3153.413870787689, &#39;signal_time&#39;: 0.01827956989247307, &#39;radius&#39;: 5663.339999999996, &#39;apex_angle&#39;: 88.82573493359294}</span>
+
+<span class="sd">Test Cases for Units</span>
+
+<span class="sd">&gt;&gt;&gt; import hamcalc.navigation.satorbit as satorbit</span>
+<span class="sd">&gt;&gt;&gt; speed= satorbit.MPM.to_std( 7 ) # 7 miles per minute</span>
+<span class="sd">&gt;&gt;&gt; satorbit.MPM.from_std( speed )</span>
+<span class="sd">7</span>
+<span class="sd">&gt;&gt;&gt; satorbit.MPH.from_std( speed )</span>
+<span class="sd">420</span>
+<span class="sd">&gt;&gt;&gt; round(satorbit.FPS.from_std( speed ),4)</span>
+<span class="sd">616.0</span>
+<span class="sd">&gt;&gt;&gt; satorbit.KPH.from_std( speed )</span>
+<span class="sd">675.92448</span>
+<span class="sd">&gt;&gt;&gt; satorbit.KPM.from_std( speed )</span>
+<span class="sd">11.265408</span>
+<span class="sd">&gt;&gt;&gt; satorbit.MPS.from_std( speed )</span>
+<span class="sd">187.7568</span>
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">import</span> <span class="nn">math</span>
-<span class="kn">from</span> <span class="nn">hamcalc.lib</span> <span class="kn">import</span> <span class="n">AttrDict</span>
+<span class="kn">from</span> <span class="nn">hamcalc.lib</span> <span class="kn">import</span> <span class="n">AttrDict</span><span class="p">,</span> <span class="n">Unit</span><span class="p">,</span> <span class="n">Standard_Unit</span>
 
 <span class="n">note_text</span><span class="o">=</span> <span class="s">&quot;&quot;&quot;</span><span class="se">\</span>
 <span class="s">The calculations used in this program were interpolated from</span>
@@ -74,21 +92,80 @@
 <span class="k">def</span> <span class="nf">note</span><span class="p">():</span>
     <span class="k">return</span> <span class="n">note_text</span>
 
-<div class="viewcode-block" id="orbit"><a class="viewcode-back" href="../../../python/navigation/satorbit.html#hamcalc.navigation.satorbit.orbit">[docs]</a><span class="k">def</span> <span class="nf">orbit</span><span class="p">(</span> <span class="n">minutes</span> <span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Given an orbital time in minutes, return the calculated</span>
+<div class="viewcode-block" id="MPM"><a class="viewcode-back" href="../../../python/navigation/satorbit.html#hamcalc.navigation.satorbit.MPM">[docs]</a><span class="k">class</span> <span class="nc">MPM</span><span class="p">(</span> <span class="n">Standard_Unit</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;miles per minute&quot;&quot;&quot;</span>
+    <span class="n">name</span><span class="o">=</span><span class="s">&quot;mpm&quot;</span>
+</div>
+<div class="viewcode-block" id="MPH"><a class="viewcode-back" href="../../../python/navigation/satorbit.html#hamcalc.navigation.satorbit.MPH">[docs]</a><span class="k">class</span> <span class="nc">MPH</span><span class="p">(</span> <span class="n">Unit</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;miles per hour&quot;&quot;&quot;</span>
+    <span class="n">name</span><span class="o">=</span> <span class="s">&quot;mph&quot;</span>
+    <span class="n">standard</span><span class="o">=</span> <span class="n">MPM</span>
+    <span class="n">factor</span><span class="o">=</span> <span class="mi">60</span>
+</div>
+<div class="viewcode-block" id="FPS"><a class="viewcode-back" href="../../../python/navigation/satorbit.html#hamcalc.navigation.satorbit.FPS">[docs]</a><span class="k">class</span> <span class="nc">FPS</span><span class="p">(</span> <span class="n">Unit</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;feet per second&quot;&quot;&quot;</span>
+    <span class="n">name</span><span class="o">=</span> <span class="s">&quot;fps&quot;</span>
+    <span class="n">standard</span><span class="o">=</span> <span class="n">MPM</span>
+    <span class="n">factor</span><span class="o">=</span> <span class="mi">60</span><span class="o">*</span><span class="mf">1.4666667</span>
+</div>
+<div class="viewcode-block" id="KPM"><a class="viewcode-back" href="../../../python/navigation/satorbit.html#hamcalc.navigation.satorbit.KPM">[docs]</a><span class="k">class</span> <span class="nc">KPM</span><span class="p">(</span> <span class="n">Unit</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;kilometres per minute&quot;&quot;&quot;</span>
+    <span class="n">name</span><span class="o">=</span> <span class="s">&quot;kpm&quot;</span>
+    <span class="n">standard</span><span class="o">=</span> <span class="n">MPM</span>
+    <span class="n">factor</span><span class="o">=</span> <span class="mf">1.609344</span>
+</div>
+<div class="viewcode-block" id="KPH"><a class="viewcode-back" href="../../../python/navigation/satorbit.html#hamcalc.navigation.satorbit.KPH">[docs]</a><span class="k">class</span> <span class="nc">KPH</span><span class="p">(</span> <span class="n">Unit</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;kilometres per hour&quot;&quot;&quot;</span>
+    <span class="n">name</span><span class="o">=</span> <span class="s">&quot;kph&quot;</span>
+    <span class="n">standard</span><span class="o">=</span> <span class="n">MPM</span>
+    <span class="n">factor</span><span class="o">=</span> <span class="mi">60</span><span class="o">*</span><span class="mf">1.609344</span>
+</div>
+<div class="viewcode-block" id="MPS"><a class="viewcode-back" href="../../../python/navigation/satorbit.html#hamcalc.navigation.satorbit.MPS">[docs]</a><span class="k">class</span> <span class="nc">MPS</span><span class="p">(</span> <span class="n">Unit</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;metres per second&quot;&quot;&quot;</span>
+    <span class="n">name</span><span class="o">=</span> <span class="s">&quot;kph&quot;</span>
+    <span class="n">standard</span><span class="o">=</span> <span class="n">MPM</span>
+    <span class="n">factor</span><span class="o">=</span> <span class="mf">1609.344</span><span class="o">/</span><span class="mi">60</span>
+</div>
+<div class="viewcode-block" id="orbit"><a class="viewcode-back" href="../../../python/navigation/satorbit.html#hamcalc.navigation.satorbit.orbit">[docs]</a><span class="k">def</span> <span class="nf">orbit</span><span class="p">(</span> <span class="n">minutes</span><span class="p">,</span> <span class="n">fq_up</span><span class="p">,</span> <span class="n">fq_down</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Given an orbital period in minutes, return the calculated</span>
 <span class="sd">    values as a dict-like object.</span>
 
 <span class="sd">    :param minutes: orbit time in minutes 88 &lt;= time &lt;= 157</span>
+<span class="sd">    :param fq_up: uplink frequency</span>
+<span class="sd">    :parma fq_down: downlink frequency</span>
 
 <span class="sd">    :returns: :class:`hamcalc.lib.AttrDict` with the following</span>
-<span class="sd">    attributes</span>
+<span class="sd">        attributes</span>
 
+<span class="sd">        -   altitude</span>
+<span class="sd">        -   period</span>
+<span class="sd">        -   radius</span>
+<span class="sd">        -   radio_horizon</span>
+<span class="sd">        -   cone_diameter</span>
+<span class="sd">        -   apex_angle</span>
+<span class="sd">        -   speed_mpm</span>
+<span class="sd">        -   speed_mph</span>
+<span class="sd">        -   signal_time</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">R</span><span class="o">=</span> <span class="mf">3963.34</span> <span class="c"># Earth&#39;s Radius</span>
+    <span class="n">R</span><span class="o">=</span> <span class="mf">3963.34</span> <span class="c"># Earth&#39;s Radius (miles)</span>
+    <span class="n">c</span><span class="o">=</span> <span class="mi">186000</span> <span class="c"># Speed of light (miles per hour)</span>
     <span class="n">Y</span><span class="o">=</span> <span class="p">(</span><span class="mi">144</span><span class="o">/</span><span class="mi">88</span><span class="p">)</span><span class="o">**</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="mi">16</span><span class="p">)</span>
     <span class="n">z</span> <span class="o">=</span> <span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">minutes</span><span class="p">)</span><span class="o">-</span><span class="n">math</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mi">88</span><span class="p">))</span><span class="o">/</span><span class="n">math</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">Y</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
-    <span class="n">altitude</span> <span class="o">=</span> <span class="n">R</span> <span class="o">+</span> <span class="n">z</span><span class="o">*</span><span class="mi">100</span>
-    <span class="k">return</span> <span class="n">AttrDict</span><span class="p">()</span></div>
+    <span class="n">altitude</span> <span class="o">=</span> <span class="n">z</span><span class="o">*</span><span class="mi">100</span>
+    <span class="n">horizon</span><span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">acos</span><span class="p">(</span> <span class="n">R</span><span class="o">/</span><span class="p">(</span><span class="n">R</span><span class="o">+</span><span class="n">altitude</span><span class="p">)</span> <span class="p">)</span><span class="o">*</span><span class="n">R</span>
+    <span class="n">apex_angle</span><span class="o">=</span> <span class="mi">2</span><span class="o">*</span><span class="p">(</span><span class="mi">90</span><span class="o">-</span><span class="n">math</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span> <span class="n">math</span><span class="o">.</span><span class="n">acos</span><span class="p">(</span> <span class="n">R</span><span class="o">/</span><span class="p">(</span><span class="n">R</span><span class="o">+</span><span class="n">altitude</span><span class="p">)</span> <span class="p">)</span> <span class="p">)</span> <span class="p">)</span>
+    <span class="n">speed_mpm</span><span class="o">=</span> <span class="mi">2</span><span class="o">*</span><span class="n">math</span><span class="o">.</span><span class="n">pi</span><span class="o">*</span><span class="p">(</span><span class="n">R</span><span class="o">+</span><span class="n">altitude</span><span class="p">)</span><span class="o">/</span><span class="n">minutes</span>
+    <span class="n">signal_time</span><span class="o">=</span> <span class="mi">2</span><span class="o">*</span><span class="n">altitude</span><span class="o">/</span><span class="n">c</span>
+    <span class="n">doppler_shift</span><span class="o">=</span> <span class="nb">abs</span><span class="p">(</span> <span class="n">fq_up</span> <span class="o">-</span> <span class="n">fq_down</span> <span class="p">)</span> <span class="o">/</span><span class="mi">20</span>
+    <span class="k">return</span> <span class="n">AttrDict</span><span class="p">(</span>
+        <span class="n">altitude</span><span class="o">=</span><span class="n">altitude</span><span class="p">,</span> <span class="n">period</span><span class="o">=</span><span class="n">minutes</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="n">R</span><span class="o">+</span><span class="n">altitude</span><span class="p">,</span>
+        <span class="n">radio_horizon</span><span class="o">=</span><span class="n">horizon</span><span class="p">,</span> <span class="n">apex_angle</span><span class="o">=</span><span class="n">apex_angle</span><span class="p">,</span>
+        <span class="n">cone_diameter</span><span class="o">=</span><span class="mi">2</span><span class="o">*</span><span class="n">horizon</span><span class="p">,</span>
+        <span class="n">speed_mpm</span><span class="o">=</span> <span class="n">speed_mpm</span><span class="p">,</span>  <span class="n">speed_mph</span><span class="o">=</span><span class="n">speed_mpm</span><span class="o">*</span><span class="mi">60</span><span class="p">,</span>
+        <span class="n">signal_time</span><span class="o">=</span> <span class="n">signal_time</span><span class="p">,</span>
+        <span class="n">fq_up</span><span class="o">=</span> <span class="n">fq_up</span><span class="p">,</span> <span class="n">fq_down</span><span class="o">=</span> <span class="n">fq_down</span><span class="p">,</span>
+        <span class="n">doppler_shift</span><span class="o">=</span> <span class="n">doppler_shift</span><span class="p">,</span>
+        <span class="p">)</span></div>
 </pre></div>
 
           </div>

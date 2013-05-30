@@ -91,17 +91,35 @@
 
 <div class="viewcode-block" id="GWGraphics"><a class="viewcode-back" href="../../../python/stdio.html#hamcalc.stdio.gwgraphics.GWGraphics">[docs]</a><span class="k">class</span> <span class="nc">GWGraphics</span><span class="p">():</span>
     <span class="sd">&quot;&quot;&quot;Note (0,0) is top-left. (319,199) is below and to the right.</span>
-<span class="sd">    Because of the 4:3 aspect ratio issue, screens are described</span>
+
+<span class="sd">    In mode 8, with a 4:3 aspect ratio, screens are described</span>
 <span class="sd">    as 640x200. This turns out to look like 640x480.</span>
 <span class="sd">    If square pixels had been used, this would not even exist.</span>
 
 <span class="sd">    Therefore, we have to adjust GWBasic coordinates from</span>
 <span class="sd">    GWBasic 640x200 with 4:3 pixels to modern square pixel 640x480.</span>
 
-<span class="sd">    Only one of the various screen modes is actually supported:</span>
-<span class="sd">    mode 8, which is described as &quot;640 × 200 pixel high-resolution graphics, 80 × 25 text&quot;. It&#39;s really the classic 640x480 graphics.</span>
+<span class="sd">    Only two of the various screen modes is actually supported:</span>
+<span class="sd">    mode 8 and mode 9.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">aspect_v</span> <span class="o">=</span> <span class="p">(</span><span class="mi">200</span><span class="o">/</span><span class="mi">640</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="mi">4</span><span class="o">/</span><span class="mi">3</span><span class="p">)</span>
+    <span class="n">colors</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="mi">0</span><span class="p">:</span> <span class="s">&quot;Black&quot;</span><span class="p">,</span>
+        <span class="mi">1</span><span class="p">:</span> <span class="s">&quot;Blue&quot;</span><span class="p">,</span>
+        <span class="mi">2</span><span class="p">:</span> <span class="s">&quot;Green&quot;</span><span class="p">,</span>
+        <span class="mi">3</span><span class="p">:</span> <span class="s">&quot;Cyan&quot;</span><span class="p">,</span>
+        <span class="mi">4</span><span class="p">:</span> <span class="s">&quot;Red&quot;</span><span class="p">,</span>
+        <span class="mi">5</span><span class="p">:</span> <span class="s">&quot;Magenta&quot;</span><span class="p">,</span>
+        <span class="mi">6</span><span class="p">:</span> <span class="s">&quot;Brown&quot;</span><span class="p">,</span>
+        <span class="mi">7</span><span class="p">:</span> <span class="s">&quot;White&quot;</span><span class="p">,</span>
+        <span class="mi">8</span><span class="p">:</span> <span class="s">&quot;Gray&quot;</span><span class="p">,</span>
+        <span class="mi">9</span><span class="p">:</span> <span class="s">&quot;Light Blue&quot;</span><span class="p">,</span>
+        <span class="mi">10</span><span class="p">:</span> <span class="s">&quot;Light Green&quot;</span><span class="p">,</span>
+        <span class="mi">11</span><span class="p">:</span> <span class="s">&quot;Light Cyan&quot;</span><span class="p">,</span>
+        <span class="mi">12</span><span class="p">:</span> <span class="s">&quot;Red&quot;</span><span class="p">,</span> <span class="c"># &quot;Light Red&quot;,</span>
+        <span class="mi">13</span><span class="p">:</span> <span class="s">&quot;Magenta&quot;</span><span class="p">,</span> <span class="c"># &quot;Light Magenta&quot;,</span>
+        <span class="mi">14</span><span class="p">:</span> <span class="s">&quot;Yellow&quot;</span><span class="p">,</span>
+        <span class="mi">15</span><span class="p">:</span> <span class="s">&quot;White&quot;</span><span class="p">,</span> <span class="c"># &quot;High-intensity White&quot;,</span>
+    <span class="p">}</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span> <span class="bp">self</span> <span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span> <span class="s">&quot;hamcalc.&quot;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">__class__</span><span class="o">.</span><span class="n">__name__</span> <span class="p">)</span>
 <div class="viewcode-block" id="GWGraphics.SCREEN"><a class="viewcode-back" href="../../../python/stdio.html#hamcalc.stdio.gwgraphics.GWGraphics.SCREEN">[docs]</a>    <span class="k">def</span> <span class="nf">SCREEN</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">mode</span> <span class="p">):</span>
@@ -121,8 +139,15 @@
 <span class="sd">        SCREEN 10 ● 640 × 350 enhanced-resolution graphics ● 80 × 25 text</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">mode</span> <span class="o">==</span> <span class="mi">8</span><span class="p">:</span>
+            <span class="c"># Officially 640x200 with rectangular pixels, appears as 640x480.</span>
             <span class="n">turtle</span><span class="o">.</span><span class="n">setup</span><span class="p">(</span> <span class="n">width</span><span class="o">=</span><span class="mi">640</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">480</span> <span class="p">)</span>
-            <span class="n">turtle</span><span class="o">.</span><span class="n">setworldcoordinates</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">640</span><span class="p">,</span><span class="mi">480</span><span class="p">)</span></div>
+            <span class="n">turtle</span><span class="o">.</span><span class="n">setworldcoordinates</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">640</span><span class="p">,</span><span class="mi">480</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">aspect_v</span> <span class="o">=</span> <span class="p">(</span><span class="mi">200</span><span class="o">/</span><span class="mi">640</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="mi">4</span><span class="o">/</span><span class="mi">3</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">mode</span> <span class="o">==</span> <span class="mi">9</span><span class="p">:</span>
+            <span class="c"># Official 640x350 with rectangular pixels, appears 640x480.</span>
+            <span class="n">turtle</span><span class="o">.</span><span class="n">setup</span><span class="p">(</span> <span class="n">width</span><span class="o">=</span><span class="mi">640</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">480</span> <span class="p">)</span>
+            <span class="n">turtle</span><span class="o">.</span><span class="n">setworldcoordinates</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">640</span><span class="p">,</span><span class="mi">480</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">aspect_v</span> <span class="o">=</span> <span class="p">(</span><span class="mi">350</span><span class="o">/</span><span class="mi">640</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="mi">4</span><span class="o">/</span><span class="mi">3</span><span class="p">)</span></div>
     <span class="k">def</span> <span class="nf">PRINT</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">text</span> <span class="p">):</span>
         <span class="n">turtle</span><span class="o">.</span><span class="n">write</span><span class="p">(</span> <span class="n">text</span><span class="p">,</span> <span class="n">font</span><span class="o">=</span><span class="p">(</span><span class="s">&#39;Courier&#39;</span><span class="p">,</span> <span class="mi">14</span><span class="p">)</span> <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span> <span class="s">&quot;PRINT </span><span class="si">%r</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">text</span> <span class="p">)</span>
@@ -184,6 +209,8 @@
         <span class="n">turtle</span><span class="o">.</span><span class="n">goto</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="o">/</span><span class="bp">self</span><span class="o">.</span><span class="n">aspect_v</span><span class="p">)</span>
         <span class="n">turtle</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span> <span class="s">&quot;PSET </span><span class="si">%r</span><span class="s"> </span><span class="si">%r</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="o">/</span><span class="bp">self</span><span class="o">.</span><span class="n">aspect_v</span> <span class="p">)</span></div>
+    <span class="k">def</span> <span class="nf">COLOR</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">fg</span><span class="p">,</span> <span class="n">bg</span><span class="o">=</span><span class="bp">None</span> <span class="p">):</span>
+        <span class="n">turtle</span><span class="o">.</span><span class="n">pencolor</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">colors</span><span class="p">[</span><span class="n">fg</span><span class="p">]</span> <span class="p">)</span>
 <div class="viewcode-block" id="GWGraphics.display"><a class="viewcode-back" href="../../../python/stdio.html#hamcalc.stdio.gwgraphics.GWGraphics.display">[docs]</a>    <span class="k">def</span> <span class="nf">display</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">text</span> <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Display the finished graphic until the window is closed.</span>
 

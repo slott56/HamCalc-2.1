@@ -25,7 +25,7 @@
     <script type="text/javascript" src="../_static/doctools.js"></script>
     <link rel="top" title="HamCalc 2.1 documentation" href="../index.html" />
     <link rel="up" title="Python Modules" href="index.html" />
-    <link rel="next" title="other – including Finance and Nutrition" href="other.html" />
+    <link rel="next" title="other – including Finance and Nutrition" href="other/index.html" />
     <link rel="prev" title="audio_photo – Audio, Sound and Photography" href="audio_photo.html" /> 
   </head>
   <body>
@@ -36,7 +36,7 @@
         <div class="rel">
           <a href="audio_photo.html" title="audio_photo – Audio, Sound and Photography"
              accesskey="P">previous</a> |
-          <a href="other.html" title="other – including Finance and Nutrition"
+          <a href="other/index.html" title="other – including Finance and Nutrition"
              accesskey="N">next</a> |
           <a href="../py-modindex.html" title="Python Module Index"
              >modules</a> |
@@ -57,13 +57,90 @@
   <div class="section" id="software-software-engineering-programming-and-computers">
 <h1>software &#8211; Software Engineering, Programming and Computers<a class="headerlink" href="#software-software-engineering-programming-and-computers" title="Permalink to this headline">¶</a></h1>
 <p>Software Engineering, Programming and Computers.</p>
-<div class="section" id="numsort">
-<h2>numsort<a class="headerlink" href="#numsort" title="Permalink to this headline">¶</a></h2>
-<p>Ideally, we&#8217;d simply <tt class="docutils literal"><span class="pre">..</span>&nbsp;&nbsp; <span class="pre">automodule</span>&nbsp; <span class="pre">hamcalc.software.numsort</span></tt></p>
+<div class="section" id="numsort-number-sorter">
+<h2>numsort, Number Sorter<a class="headerlink" href="#numsort-number-sorter" title="Permalink to this headline">¶</a></h2>
+<p>From the comments:</p>
+<div class="highlight-python"><pre>280 REM  (Shell-Metzner algorithm) QST Dec 1985, page 53</pre>
 </div>
-<div class="section" id="more-software">
-<h2>more software<a class="headerlink" href="#more-software" title="Permalink to this headline">¶</a></h2>
-<p>Some other Software Engineering module.</p>
+<p>This may be rather silly and have no little real use.
+While the algorithm may be interesting, it isn&#8217;t used elsewhere in HamCalc.
+And, it&#8217;s not easily used outside of HamCalc.</p>
+<p>Indeed, the value proposition for rewriting HamCalc into Python is
+to leverage the amazingly fast Python sort feature.</p>
+<p>And, further, who would type data into an interactive program?
+Really, you want to use interactive Python something like this:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="p">[</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="o">...</span> <span class="p">]</span> <span class="c"># your data values.</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span>
+</pre></div>
+</div>
+<p>Practical use cases for sorting involve two things:</p>
+<ol class="arabic simple">
+<li>Displaying calculated or gathered in an intelligable order.
+This means that there&#8217;s more data than just the
+numbers to be sorted.</li>
+<li>Rank-ordering data to filter or weight the items
+in further calculations.</li>
+</ol>
+<p>None of which is directly supported a single stand-alone program
+that&#8217;s part of HamCalc.</p>
+<p>Both use cases are first-class features of Python, however.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span> <span class="n">some_data</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">attribute</span> <span class="p">):</span>
+    <span class="k">print</span><span class="p">(</span> <span class="n">item</span> <span class="p">)</span>
+</pre></div>
+</div>
+<p>or</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">rank_order</span><span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">rank</span><span class="p">,</span> <span class="n">item</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span> <span class="nb">sorted</span><span class="p">(</span> <span class="n">some_data</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">attribute</span> <span class="p">)</span> <span class="p">):</span>
+    <span class="n">score</span><span class="o">=</span> <span class="n">f</span><span class="p">(</span> <span class="n">item</span><span class="p">,</span> <span class="n">rank</span> <span class="p">)</span>
+    <span class="n">rank_order</span><span class="o">.</span><span class="n">append</span><span class="p">(</span> <span class="n">score</span><span class="p">,</span> <span class="n">item</span> <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="page437-ascii-character-code-page-437">
+<h2>page437, ASCII Character Code Page 437<a class="headerlink" href="#page437-ascii-character-code-page-437" title="Permalink to this headline">¶</a></h2>
+<p>This is it.</p>
+<div class="highlight-python"><pre>ASCII Character Code Page 437 (Codes 1 to 31 are control codes)
+
+32  │ 33 !│ 34 &quot;│ 35 #│ 36 $│ 37 %│ 38 &amp;│ 39 &#x27;│ 40 (│ 41 )│ 42 *│ 43 +│ 44 ,│
+45 -│ 46 .│ 47 /│ 48 0│ 49 1│ 50 2│ 51 3│ 52 4│ 53 5│ 54 6│ 55 7│ 56 8│ 57 9│
+58 :│ 59 ;│ 60 &lt;│ 61 =│ 62 &gt;│ 63 ?│ 64 @│ 65 A│ 66 B│ 67 C│ 68 D│ 69 E│ 70 F│
+71 G│ 72 H│ 73 I│ 74 J│ 75 K│ 76 L│ 77 M│ 78 N│ 79 O│ 80 P│ 81 Q│ 82 R│ 83 S│
+84 T│ 85 U│ 86 V│ 87 W│ 88 X│ 89 Y│ 90 Z│ 91 [│ 92 \│ 93 ]│ 94 ^│ 95 _│ 96 `│
+97 a│ 98 b│ 99 c│100 d│101 e│102 f│103 g│104 h│105 i│106 j│107 k│108 l│109 m│
+110 n│111 o│112 p│113 q│114 r│115 s│116 t│117 u│118 v│119 w│120 x│121 y│122 z│
+123 {│124 |│125 }│126 ~│127 │128 Ç│129 ü│130 é│131 â│132 ä│133 à│134 å│135 ç│
+136 ê│137 ë│138 è│139 ï│140 î│141 ì│142 Ä│143 Å│144 É│145 æ│146 Æ│147 ô│148 ö│
+149 ò│150 û│151 ù│152 ÿ│153 Ö│154 Ü│155 ¢│156 £│157 ¥│158 ₧│159 ƒ│160 á│161 í│
+162 ó│163 ú│164 ñ│165 Ñ│166 ª│167 º│168 ¿│169 ⌐│170 ¬│171 ½│172 ¼│173 ¡│174 «│
+175 »│176 ░│177 ▒│178 ▓│179 ││180 ┤│181 ╡│182 ╢│183 ╖│184 ╕│185 ╣│186 ║│187 ╗│
+188 ╝│189 ╜│190 ╛│191 ┐│192 └│193 ┴│194 ┬│195 ├│196 ─│197 ┼│198 ╞│199 ╟│200 ╚│
+201 ╔│202 ╩│203 ╦│204 ╠│205 ═│206 ╬│207 ╧│208 ╨│209 ╤│210 ╥│211 ╙│212 ╘│213 ╒│
+214 ╓│215 ╫│216 ╪│217 ┘│218 ┌│219 █│220 ▄│221 ▌│222 ▐│223 ▀│224 α│225 ß│226 Γ│
+227 π│228 Σ│229 σ│230 µ│231 τ│232 Φ│233 Θ│234 Ω│235 δ│236 ∞│237 φ│238 ε│239 ∩│
+240 ≡│241 ±│242 ≥│243 ≤│244 ⌠│245 ⌡│246 ÷│247 ≈│248 °│249 ∙│250 ·│251 √│252 ⁿ│
+253 ²│254 ■│</pre>
+</div>
+<p>Page 2. This doesn&#8217;t look good except with Courier font.</p>
+<div class="highlight-python"><pre>                             ASCII Graphic Symbols
+┌─vert─horiz─vert─╥─vert─horiz─vert─╥─vert─horiz─vert─╥─vert─horiz─vert─┐
+││179  ─196  │179 ║║186  ═205  ║186 ║║186  ─196  ║ 186║│179  ═205  │179 │
+╞═════════════════╬═════╤═════╤═════╬═════╤═════╤═════╬═════╤═════╤═════╡
+│┌ 218│┬ 194│┐ 191║╔ 201│╦ 203│╗ 187║╓ 214│╥ 210│╖ 183║╒ 213│╤ 209│╕ 184│
+├─────┼─────┼─────╫─────┼─────┼─────╫─────┼─────┼─────╫─────┼─────┼─────┤
+│├ 195│┼ 197│┤ 180║╠ 204│╬ 206│╣ 185║╟ 199│╫ 215│╢ 182║╞ 198│╪ 216│╡181 │
+├─────┼─────┼─────╫─────┼─────┼─────╫─────┼─────┼─────╫─────┼─────┼─────┤
+│└ 192│┴ 193│┘ 217║╚ 200│╩ 202│╝ 188║╙ 211│╨ 208│╜ 189║╘ 212│╧ 207│╛ 190│
+└─────┴─────┴─────╨─────┴─────┴─────╨─────┴─────┴─────╨─────┴─────┴─────┘
+
+ Other codes used frequently:
+│ ü 129 │ é 130 │ è 138 │ ¢ 155 │ £ 156 │ ƒ 159 │ ½ 171 │ ¼ 172 │ π 227 │ Σ 228
+│ µ 230 │ Φ 232 │ Ω 234 │ ÷ 246 │ √ 251 │ ² 253 │</pre>
+</div>
+</div>
+<div class="section" id="sorter-sorter">
+<h2>sorter, Sorter<a class="headerlink" href="#sorter-sorter" title="Permalink to this headline">¶</a></h2>
+<p>See <a class="reference internal" href="#numsort-number-sorter">numsort, Number Sorter</a> above.</p>
 </div>
 </div>
 
@@ -85,17 +162,18 @@
 <li class="toctree-l2"><a class="reference internal" href="radio.html">radio &#8211; Radio Design and Engineering</a></li>
 <li class="toctree-l2"><a class="reference internal" href="ham.html">ham &#8211; Ham Radio Operations</a></li>
 <li class="toctree-l2"><a class="reference internal" href="electronics/index.html">electronics &#8211; General Electronics</a></li>
-<li class="toctree-l2"><a class="reference internal" href="construction/index.html">construction &#8211; Construction and Related Projects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="construction/index.html">construction &#8211; Construction and Mechanical</a></li>
 <li class="toctree-l2"><a class="reference internal" href="math/index.html">math &#8211; Math, Physics, Units Conversion</a></li>
 <li class="toctree-l2"><a class="reference internal" href="navigation/index.html">navigation &#8211; Navigation and Astronomy</a></li>
 <li class="toctree-l2"><a class="reference internal" href="calendar/index.html">calendar &#8211; Calendrical Calculations</a></li>
 <li class="toctree-l2"><a class="reference internal" href="audio_photo.html">audio_photo &#8211; Audio, Sound and Photography</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="">software &#8211; Software Engineering, Programming and Computers</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#numsort">numsort</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#more-software">more software</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#numsort-number-sorter">numsort, Number Sorter</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#page437-ascii-character-code-page-437">page437, ASCII Character Code Page 437</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#sorter-sorter">sorter, Sorter</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="other.html">other &#8211; including Finance and Nutrition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="other/index.html">other &#8211; including Finance and Nutrition</a></li>
 <li class="toctree-l2"><a class="reference internal" href="stdio.html">STDIO Interface</a></li>
 <li class="toctree-l2"><a class="reference internal" href="rest.html">RESTful Web Services Interface</a></li>
 <li class="toctree-l2"><a class="reference internal" href="cli.html">Command-Line Interface</a></li>
@@ -127,7 +205,7 @@
         <div class="left">
           <a href="audio_photo.html" title="audio_photo – Audio, Sound and Photography"
              >previous</a> |
-          <a href="other.html" title="other – including Finance and Nutrition"
+          <a href="other/index.html" title="other – including Finance and Nutrition"
              >next</a> |
           <a href="../py-modindex.html" title="Python Module Index"
              >modules</a> |

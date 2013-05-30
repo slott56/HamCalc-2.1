@@ -156,6 +156,13 @@
 <span class="sd">    Item( &quot;&quot;, &quot;solutri&quot;, &quot;Triangles - solution of&quot; ),</span>
 <span class="sd">    Item( &quot;&quot;, &quot;trig&quot;, &quot;Trigonometric functions&quot; ),</span>
 
+<span class="sd">RJD</span>
+<span class="sd">====</span>
+
+<span class="sd">There&#39;s also the &quot;Dehoney Algorithm Index&quot;, a program named :program:`RJD`.</span>
+<span class="sd">This is yet another menu, actually. However, it is packaged as a separate</span>
+<span class="sd">app so that it fits into the existing menu structure neatly.</span>
+
 <span class="sd">Data Files</span>
 <span class="sd">==========</span>
 
@@ -398,9 +405,10 @@
     <span class="sd">&quot;&quot;&quot;The program menu.</span>
 
 <span class="sd">    Picking an item runs a program.&quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">item_list</span> <span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">item_list</span><span class="o">=</span><span class="bp">None</span> <span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span> <span class="n">name</span> <span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">item_list</span><span class="o">=</span> <span class="n">item_list</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">item_list</span><span class="o">=</span> <span class="n">item_list</span> <span class="k">if</span> <span class="n">item_list</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span> <span class="k">else</span> <span class="p">[]</span>
+        <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">item_list</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">40</span>
 <div class="viewcode-block" id="Program_Menu.display"><a class="viewcode-back" href="../../../python/stdio.html#hamcalc.stdio.menu.Program_Menu.display">[docs]</a>    <span class="k">def</span> <span class="nf">display</span><span class="p">(</span> <span class="bp">self</span> <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Display the two-column program menu.&quot;&quot;&quot;</span>
         <span class="k">print</span><span class="p">(</span> <span class="s">&quot; H A M C A L C  Program Menu {0}                           by George Murphy VE3ERP&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="p">)</span> <span class="p">)</span>
@@ -495,8 +503,8 @@
 </div>
 <div class="viewcode-block" id="QT_Menu"><a class="viewcode-back" href="../../../python/stdio.html#hamcalc.stdio.menu.QT_Menu">[docs]</a><span class="k">class</span> <span class="nc">QT_Menu</span><span class="p">(</span> <span class="n">Menu</span> <span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;The QuikTabl menu.&quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span> <span class="bp">self</span> <span class="p">):</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span> <span class="s">&quot;QuikTables                                              by George Murphy VE3ERP&quot;</span> <span class="p">)</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s">&quot;QuikTables                                              by George Murphy VE3ERP&quot;</span> <span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span> <span class="n">name</span> <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">item_list</span><span class="o">=</span> <span class="p">[</span>
         <span class="n">Item</span><span class="p">(</span> <span class="s">&quot;&quot;</span><span class="p">,</span> <span class="s">&quot;awgexact&quot;</span><span class="p">,</span> <span class="s">&quot;A.W.G. wire sizes&quot;</span> <span class="p">),</span>
         <span class="n">Item</span><span class="p">(</span> <span class="s">&quot;&quot;</span><span class="p">,</span> <span class="s">&quot;propcirc&quot;</span><span class="p">,</span> <span class="s">&quot;Circles - properties of&quot;</span> <span class="p">),</span>

@@ -40,17 +40,35 @@ import sys
 
 class GWGraphics():
     """Note (0,0) is top-left. (319,199) is below and to the right.
-    Because of the 4:3 aspect ratio issue, screens are described
+
+    In mode 8, with a 4:3 aspect ratio, screens are described
     as 640x200. This turns out to look like 640x480.
     If square pixels had been used, this would not even exist.
 
     Therefore, we have to adjust GWBasic coordinates from
     GWBasic 640x200 with 4:3 pixels to modern square pixel 640x480.
 
-    Only one of the various screen modes is actually supported:
-    mode 8, which is described as "640 × 200 pixel high-resolution graphics, 80 × 25 text". It's really the classic 640x480 graphics.
+    Only two of the various screen modes is actually supported:
+    mode 8 and mode 9.
     """
-    aspect_v = (200/640)*(4/3)
+    colors = {
+        0: "Black",
+        1: "Blue",
+        2: "Green",
+        3: "Cyan",
+        4: "Red",
+        5: "Magenta",
+        6: "Brown",
+        7: "White",
+        8: "Gray",
+        9: "Light Blue",
+        10: "Light Green",
+        11: "Light Cyan",
+        12: "Red", # "Light Red",
+        13: "Magenta", # "Light Magenta",
+        14: "Yellow",
+        15: "White", # "High-intensity White",
+    }
     def __init__( self ):
         self.log= logging.getLogger( "hamcalc." + self.__class__.__name__ )
     def SCREEN( self, mode ):
@@ -70,8 +88,15 @@ class GWGraphics():
         SCREEN 10 ● 640 × 350 enhanced-resolution graphics ● 80 × 25 text
         """
         if mode == 8:
+            # Officially 640x200 with rectangular pixels, appears as 640x480.
             turtle.setup( width=640, height=480 )
             turtle.setworldcoordinates(0,0,640,480)
+            self.aspect_v = (200/640)*(4/3)
+        elif mode == 9:
+            # Official 640x350 with rectangular pixels, appears 640x480.
+            turtle.setup( width=640, height=480 )
+            turtle.setworldcoordinates(0,0,640,480)
+            self.aspect_v = (350/640)*(4/3)
     def PRINT( self, text ):
         turtle.write( text, font=('Courier', 14) )
         self.log.debug( "PRINT %r", text )
@@ -133,6 +158,8 @@ class GWGraphics():
         turtle.goto(x,y/self.aspect_v)
         turtle.dot(2)
         self.log.debug( "PSET %r %r", x, y/self.aspect_v )
+    def COLOR( self, fg, bg=None ):
+        turtle.pencolor( self.colors[fg] )
     def display( self, text ):
         """Display the finished graphic until the window is closed.
 

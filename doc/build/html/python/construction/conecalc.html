@@ -24,9 +24,9 @@
     <script type="text/javascript" src="../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../_static/doctools.js"></script>
     <link rel="top" title="HamCalc 2.1 documentation" href="../../index.html" />
-    <link rel="up" title="construction – Construction and Related Projects" href="index.html" />
-    <link rel="next" title="diamfind" href="diamfind.html" />
-    <link rel="prev" title="construction – Construction and Related Projects" href="index.html" /> 
+    <link rel="up" title="construction – Construction and Mechanical" href="index.html" />
+    <link rel="next" title="diamfind – Diameter Finder" href="diamfind.html" />
+    <link rel="prev" title="construction – Construction and Mechanical" href="index.html" /> 
   </head>
   <body>
     <div class="header-wrapper">
@@ -34,9 +34,9 @@
         <div class="headertitle"><a
           href="../../index.html">HamCalc 2.1 documentation</a></div>
         <div class="rel">
-          <a href="index.html" title="construction – Construction and Related Projects"
+          <a href="index.html" title="construction – Construction and Mechanical"
              accesskey="P">previous</a> |
-          <a href="diamfind.html" title="diamfind"
+          <a href="diamfind.html" title="diamfind – Diameter Finder"
              accesskey="N">next</a> |
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |
@@ -67,12 +67,188 @@ the lower left corner of the pattern sheet.</p>
 </div></blockquote>
 <p>There are three use cases:</p>
 <ul class="simple">
-<li>To compute cone pattern layout</li>
-<li>To compute cone size to fit a known pattern sheet size</li>
-<li>To compute truncated cone pattern layout</li>
+<li>To compute cone pattern layout: Given base diameter and cone height,
+compute pattern sheet size and offsets for center.</li>
+<li>To compute cone size to fit a known pattern sheet size:
+Given size of the sheet, compute five aterantive cone layouts on the sheet.</li>
+<li>To compute truncated cone pattern layout: given large and small diameters
+and height between ends, compute the pattern layout.</li>
 </ul>
 <div class="section" id="analysis">
 <h2>Analysis<a class="headerlink" href="#analysis" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="cone-pattern-layout">
+<h3>Cone pattern layout<a class="headerlink" href="#cone-pattern-layout" title="Permalink to this headline">¶</a></h3>
+<p>Lines 1110 to 1310.</p>
+<p>Input is base diameter, <em>D</em> and height, <em>H</em> of desired cone.</p>
+<p>Calculations:</p>
+<div class="highlight-python"><pre>1160 R=D/2
+1170 L=SQR(R^2+H^2)
+1180 THETA=PI*D/L :DEG=THETA*180/PI :PRINT
+1190 IF THETA=&gt;PI THEN B=2*L:A=L+L*SIN((THETA-PI)/2):X=B/2:Y=A-B/2:GOTO 1220
+1200 IF THETA=&gt;PI/2 THEN A=L:B=L+L*SIN(THETA-PI/2):X=B-A:Y=0:GOTO 1220
+1210 B=L:A=L*SIN(THETA) :X=0 :Y=O
+1220 PRINT &quot; CONE PATTERN &quot;</pre>
+</div>
+<p>Explanation...</p>
+<div class="math">
+<p><img src="../../_images/math/115c5727f80caad75f24219467a8df0bd4a275f7.png" alt="R &amp;= \frac{D}{2} \\
+L &amp;= \sqrt{R^2+H^2} \\
+\theta &amp;= \pi \frac{D}{L} \\
+A, B, X, Y &amp;= \begin{cases}
+A = L+L\sin \frac{(\theta-\pi)}{2}, B=2L, X=\frac{B}{2}, Y=A-\frac{B}{2} &amp;\text{if $\pi \leq \theta$} \\
+A =L, B=L+L\sin (\theta-\frac{\pi}{2}), X=B-A, Y=0 &amp;\text{if $\frac{\pi}{2} \leq \theta &lt; \pi$} \\
+A = L\sin\theta, B=L, X=0, Y=0 &amp;\text{otherwise}
+\end{cases}"/></p>
+</div><p>Quirk: <tt class="docutils literal"><span class="pre">Y=O</span></tt> will happen to act like <tt class="docutils literal"><span class="pre">Y=0</span></tt> if variable <tt class="docutils literal"><span class="pre">O</span></tt> is undefined.</p>
+<p>Sample Output</p>
+<div class="highlight-python"><pre>     B
+ ┌─────────┐
+y│         │A
+││         │
+ └─────────┘
+ ────x
+ENTER: cone base diameter...............D=? 8
+ENTER: cone height......................H=? 4
+
+CONE PATTERN
+
+Cone base dia ...............   8.000
+Cone height .................   4.000
+Base circumference...........  25.133
+Arc angle ................... 254.558°
+Arc radius ..................   5.657
+Arc center coordinates...  X=   5.657
+                           Y=   3.426
+Pattern sheet ........... (A)   9.083  x (B) 11.314</pre>
+</div>
+</div>
+<div class="section" id="cone-size-to-fit-a-sheet">
+<h3>Cone size to fit a sheet<a class="headerlink" href="#cone-size-to-fit-a-sheet" title="Permalink to this headline">¶</a></h3>
+<p>Lines 430-1040.</p>
+<p>Input is small dimension, <em>A</em> and large dimension, <em>B</em> of available sheet.</p>
+<p>Calculations:</p>
+<div class="highlight-python"><pre>510 L1=B/2:X=A/L1-1:GOSUB 1060:THETA1=PI+2*ALPHA:ANG1=THETA1*180/PI
+520 C1=L1*THETA1 :D1=C1/PI:R1=D1/2:H1=SQR(L1^2-R1^2)
+530 :REM&#x27;
+540 L2=A:X=B/2/L2:GOSUB 1060:THETA2=2*ALPHA:ANG2=THETA2*180/PI
+550 C2=L2*THETA2:D2=C2/PI:R2=D2/2:H2=SQR(L2^2-R2^2)
+560 :REM&#x27;
+570 L3=A:X=B/L3-1:GOSUB 1060:THETA3=ALPHA+PI/2:ANG3=THETA3*180/PI
+580 C3=L3*THETA3:D3=C3/PI:R3=D3/2:H3=SQR(L3^2-R3^2)
+590 :REM&#x27;
+600 L4=B:X=A/L4:GOSUB 1060:THETA4=ALPHA:ANG4=THETA4*180/PI
+610 C4=L4*THETA4:D4=C4/PI:R4=D4/2:H4=SQR(L4^2-R4^2)
+620 :REM&#x27;
+630 L5=B:X=A/2/L5:GOSUB 1060:THETA5=2*ALPHA:ANG5=THETA5*180/PI
+640 C5=L5*THETA5:D5=C5/PI:R5=D5/2:H5=SQR(L5^2-R5^2)</pre>
+</div>
+<p>Line 1060 is essentially <img class="math" src="../../_images/math/e6e5de32446bcf51955c5b901051ebec5c589b68.png" alt="\alpha = \arcsin X"/>, using a trig identity.
+<img class="math" src="../../_images/math/087d0676fa1ae415933c99c5587d50aa1c7c20e9.png" alt="\arcsin X = \arctan \frac{X}{\sqrt{1-X^2}}"/>.</p>
+<p>Explanation...</p>
+<p>There are at most five orientations.
+If <img class="math" src="../../_images/math/591a6ff55e14d18eed92102a313e3f757ba43dd9.png" alt="B&gt;2A"/>, then the first three can&#8217;t be used, only #4 and #5.</p>
+<div class="math">
+<p><img src="../../_images/math/f456165273e757f1702be4d58f1518aaa60879ae.png" alt="L_1 = B/2;
+\theta_1 = \pi + 2 \arcsin (A/L_1-1)"/></p>
+</div><div class="math">
+<p><img src="../../_images/math/a5617ed1741b578933b860b86852e66375367983.png" alt="L_2 = A;
+\theta_2 = 2 \arcsin (B/2/L_2)"/></p>
+</div><div class="math">
+<p><img src="../../_images/math/4fac9750c087dfdee4bf42e46cf6ac025c2843e3.png" alt="L_3 = A;
+\theta_3 = \arcsin (B/L_3-1) + \pi/2"/></p>
+</div><div class="math">
+<p><img src="../../_images/math/079fcb856312e9f4213ff987b1f5289ddcaf1a1f.png" alt="L_4 = B;
+\theta_4 = \arcsin (A/L_4)"/></p>
+</div><div class="math">
+<p><img src="../../_images/math/a9e143621f327561af3c661956f9fa88082be1e2.png" alt="L_5 = B;
+\theta_5 = 2 \arcsin ( A/2/L_5 )"/></p>
+</div><p>In all cases, the Circumference, Diameter, Radius and Height are
+calculated from <img class="math" src="../../_images/math/859ccf4cd60c7bc6b8fa1afc9a42dc811a826d6f.png" alt="L"/> and <img class="math" src="../../_images/math/52e8ed7a3ba22130ad3984eb2cd413406475a689.png" alt="\theta"/>.</p>
+<div class="math">
+<p><img src="../../_images/math/e9d52bd81357687c2b926a56c30bd3df5df1e255.png" alt="C_n &amp;= L_n \theta_n \\
+D_n &amp;= \dfrac{C_n}{\pi} \\
+R_n &amp;= \dfrac{1}{2}D_n \\
+H_n &amp;= \sqrt{ L_n^s - R_n^2 }"/></p>
+</div><p>Sample Output</p>
+<div class="highlight-python"><pre>Pattern sheet:  (A) ###.## in. x  (B) ###.## in.
+
+Type    Height  Base Diameter  Base Circum    Radius      Arc
+
+1       H       D               C             L           theta
+2
+3
+4
+5
+
+Type      Location of Arc Center
+1         X = B/2; Y = A-B/2
+2         X = B/2; Y = 0
+3         X = B-A; Y = 0
+4         X = 0; Y = 0
+5         X = 0; Y = A/2
+
+     B
+ ┌─────────┐
+y│         │A
+││         │
+ └─────────┘
+ ────x
+
+Note that types 1, 2, and 3 do not apply when B&gt;2A</pre>
+</div>
+</div>
+<div class="section" id="truncated-cone-pattern">
+<h3>Truncated cone pattern<a class="headerlink" href="#truncated-cone-pattern" title="Permalink to this headline">¶</a></h3>
+<p>Lines 1560-1950.</p>
+<p>Input is Diameter at the large end, <em>D1T</em>, small end <em>D1B</em> and the height, <em>H1</em>.</p>
+<p>Calculations:</p>
+<div class="highlight-python"><pre>1730 RT=D1B/2:RB=D1T/2 :H=H1 :GOSUB 2020
+1740 TOP=A:BOT=0
+1750 IF DEG&gt;180 THEN Y=A-L
+1760 IF DEG&lt;180 THEN Y=L-A
+1770 IF D1T&gt;D1B THEN LE=D1T:E=D1B :ELSE LE=D1B:SE=D1T</pre>
+</div>
+<p>Line 2020:</p>
+<div class="highlight-python"><pre>2020 :REM&#x27;.....calculate sector pattern
+2030 HX=RB*H/(RT-RB):L=SQR(RT^2+(H+HX)^2):LX=RB*L/RT
+2040 THETA=2*PI*RT/L:DEG=THETA*180/PI:PRINT
+2050 IF THETA=&gt;PI THEN B=2*L:A=L+L*SIN((THETA-PI)/2):X=B/2:Y=A-B/2:GOTO 2070
+2060 B=2*L*SIN(THETA/2):A=L-LX*COS(THETA/2):X=B/2:Y=0
+2070 RETURN</pre>
+</div>
+<p>Explanation...</p>
+<div class="math">
+<p><img src="../../_images/math/8248cbef0b2b7924565c10ba4c32c4f7b164e9fe.png" alt="R_t &amp;= D_t / 2; R_b = D_b / 2 \\
+H_x &amp;= R_b \frac{H}{R_t-R_b} \\
+L &amp;=\sqrt{R_t^2+(H+H_x)^2} \\
+L_x &amp;= R_b \frac{L}{R_t} \\
+\theta &amp;= 2\pi \frac{R_t}{L} \\
+A, B, X, Y &amp; \begin{cases}
+B=2L; A=L+L\sin(\theta-\pi)/2; X=B/2; Y=A-B/2 &amp;\text{if $\theta \geq \pi$} \\
+B=2L\sin(\theta/2); A=L-LX\cos(\theta/2); X=B/2; Y=0 &amp;\text{if $\theta &lt; \pi$}\\
+\end{cases}"/></p>
+</div><p>Sample Output:</p>
+<div class="highlight-python"><pre>TRUNCATED CONE PATTERN
+
+Diameter at large end............   4.000
+Diameter at small end............   2.000
+Length between ends..............   2.000
+Outer arc radius.................   4.472
+Inner arc radius.................   2.236
+Arc angle........................ 160.997°
+Minimum sheet size............(B)   8.822 x (A)   4.103
+Location of arc centre.........x=   4.411    y=   0.369 below bottom of sheet
+Location of top of sheet.......y=   4.103
+Location of bottom of sheet....y=   0.000
+
+       B
+  ┌─────────┐
+ y│         │A
+ ││         │
+  └─────────┘
+   ────x</pre>
+</div>
+</div>
 </div>
 </div>
 
@@ -94,9 +270,10 @@ the lower left corner of the pattern sheet.</p>
 <li class="toctree-l2"><a class="reference internal" href="../radio.html">radio &#8211; Radio Design and Engineering</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../ham.html">ham &#8211; Ham Radio Operations</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../electronics/index.html">electronics &#8211; General Electronics</a></li>
-<li class="toctree-l2 current"><a class="reference internal" href="index.html">construction &#8211; Construction and Related Projects</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">construction &#8211; Construction and Mechanical</a><ul class="current">
 <li class="toctree-l3 current"><a class="current reference internal" href="">conecalc &#8211; Cone Calculator</a></li>
-<li class="toctree-l3"><a class="reference internal" href="diamfind.html">diamfind</a></li>
+<li class="toctree-l3"><a class="reference internal" href="diamfind.html">diamfind &#8211; Diameter Finder</a></li>
+<li class="toctree-l3"><a class="reference internal" href="survey.html">survey &#8211; Surveyor&#8217;s Calculator</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../math/index.html">math &#8211; Math, Physics, Units Conversion</a></li>
@@ -104,7 +281,7 @@ the lower left corner of the pattern sheet.</p>
 <li class="toctree-l2"><a class="reference internal" href="../calendar/index.html">calendar &#8211; Calendrical Calculations</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../audio_photo.html">audio_photo &#8211; Audio, Sound and Photography</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../software.html">software &#8211; Software Engineering, Programming and Computers</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../other.html">other &#8211; including Finance and Nutrition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../other/index.html">other &#8211; including Finance and Nutrition</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../stdio.html">STDIO Interface</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../rest.html">RESTful Web Services Interface</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../cli.html">Command-Line Interface</a></li>
@@ -134,9 +311,9 @@ the lower left corner of the pattern sheet.</p>
     <div class="footer-wrapper">
       <div class="footer">
         <div class="left">
-          <a href="index.html" title="construction – Construction and Related Projects"
+          <a href="index.html" title="construction – Construction and Mechanical"
              >previous</a> |
-          <a href="diamfind.html" title="diamfind"
+          <a href="diamfind.html" title="diamfind – Diameter Finder"
              >next</a> |
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |

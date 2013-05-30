@@ -90,8 +90,8 @@
 <span class="sd">It&#39;s quite easy to add timezones to cover other historical periods or</span>
 <span class="sd">other places on earth.</span>
 
-<span class="sd">Test Case</span>
-<span class="sd">----------</span>
+<span class="sd">Solar Position Test Cases</span>
+<span class="sd">---------------------------</span>
 
 <span class="sd">&gt;&gt;&gt; import hamcalc.navigation.solar as solar</span>
 <span class="sd">&gt;&gt;&gt; import datetime</span>
@@ -231,6 +231,28 @@
 <span class="sd">-34.28</span>
 <span class="sd">&gt;&gt;&gt; round(s.AH,2)</span>
 <span class="sd">343.29</span>
+
+<span class="sd">Equation of Time Test Cases</span>
+<span class="sd">----------------------------</span>
+
+<span class="sd">&gt;&gt;&gt; solar.eot( 73 )</span>
+<span class="sd">-9.288136257894735</span>
+<span class="sd">&gt;&gt;&gt; solar.eot( 171 )</span>
+<span class="sd">-1.3629763831233621</span>
+<span class="sd">&gt;&gt;&gt; solar.eot( 257 )</span>
+<span class="sd">4.438308798331203</span>
+<span class="sd">&gt;&gt;&gt; solar.eot( 354 )</span>
+<span class="sd">2.3235852575988147</span>
+
+<span class="sd">Compared with HamCalc &quot;wobble correction factors&quot;</span>
+<span class="sd">of 4,8,11 for Jan 1, Jan 10 and Jan 21.</span>
+
+<span class="sd">&gt;&gt;&gt; round(solar.eot( 0 ))</span>
+<span class="sd">-3</span>
+<span class="sd">&gt;&gt;&gt; round(solar.eot( 9 ))</span>
+<span class="sd">-7</span>
+<span class="sd">&gt;&gt;&gt; round(solar.eot( 20 ))</span>
+<span class="sd">-11</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">import</span> <span class="nn">datetime</span>
@@ -540,7 +562,24 @@
 <span class="sd">        the input datetime.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">sun</span><span class="o">=</span> <span class="n">Position_Sun</span><span class="p">(</span> <span class="n">lat</span><span class="p">,</span> <span class="n">lon</span><span class="p">,</span> <span class="n">date_time</span> <span class="p">)</span>
-    <span class="k">return</span> <span class="n">sun</span><span class="o">.</span><span class="n">AH</span><span class="p">,</span> <span class="n">sun</span><span class="o">.</span><span class="n">AE</span></div>
+    <span class="k">return</span> <span class="n">sun</span><span class="o">.</span><span class="n">AH</span><span class="p">,</span> <span class="n">sun</span><span class="o">.</span><span class="n">AE</span>
+</div>
+<div class="viewcode-block" id="eot"><a class="viewcode-back" href="../../../python/navigation/sunup.html#hamcalc.navigation.solar.eot">[docs]</a><span class="k">def</span> <span class="nf">eot</span><span class="p">(</span><span class="n">d</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;An approximation for the Equation of Time.</span>
+
+<span class="sd">    See http://en.wikipedia.org/wiki/Equation_of_time</span>
+
+<span class="sd">     A positive value of the equation of time implies that a sundial is ahead of a clock.</span>
+
+<span class="sd">    :param d: Day of the year, zero is  January 1.</span>
+<span class="sd">        Use ``some_date.toordinal()-some_date.replace(month=1,day=1).toordinal()``</span>
+<span class="sd">    :returns: Equation of Time offset for this date.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">W</span> <span class="o">=</span> <span class="mi">360</span><span class="o">/</span><span class="mf">365.24</span>
+    <span class="n">A</span> <span class="o">=</span> <span class="n">W</span><span class="o">*</span><span class="p">(</span><span class="n">d</span><span class="o">+</span><span class="mi">10</span><span class="p">)</span>
+    <span class="n">B</span> <span class="o">=</span> <span class="n">A</span> <span class="o">+</span><span class="mf">1.914</span><span class="o">*</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">W</span><span class="o">*</span><span class="p">(</span><span class="n">d</span><span class="o">-</span><span class="mi">2</span><span class="p">))))</span>
+    <span class="n">C</span> <span class="o">=</span> <span class="p">(</span><span class="n">A</span><span class="o">-</span><span class="n">math</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">atan2</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">tan</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">B</span><span class="p">)),</span><span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="mf">23.44</span><span class="p">)))))</span><span class="o">/</span><span class="mi">180</span>
+    <span class="k">return</span> <span class="mi">720</span><span class="o">*</span><span class="p">(</span><span class="n">C</span><span class="o">-</span><span class="nb">int</span><span class="p">(</span><span class="n">C</span><span class="o">+.</span><span class="mi">5</span><span class="p">))</span></div>
 </pre></div>
 
           </div>
