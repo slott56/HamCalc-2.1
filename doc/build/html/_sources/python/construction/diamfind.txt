@@ -41,3 +41,10 @@ The essence::
 ..  math::
 
     D = \dfrac{L}{\pi(N-1)}
+
+Implementation
+^^^^^^^^^^^^^^
+
+This doesn't need a formal calculation module.
+
+It's just a small stdio program.

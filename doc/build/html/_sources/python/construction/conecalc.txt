@@ -325,3 +325,6 @@ Also, this
     1890 IF DEG<180 THEN S$=" below" :ELSE S$= " above"::ELSE S$=" below"
 
 Also, the menu is different from most other menus.
+
+It appears that the case 3 large-end vs. small-end and
+top vs. bottom got hopeless screwed up somehow.
