@@ -1,4 +1,4 @@
-Results of doctest builder run on 2013-05-31 10:26:45
+Results of doctest builder run on 2013-05-31 19:13:40
 =====================================================
 
 Document: python/math/baromtr
@@ -132,9 +132,9 @@ Test passed.
 Document: python/construction/arch
 ----------------------------------
 1 items passed all tests:
-   6 tests in default
-6 tests in 1 items.
-6 passed and 0 failed.
+  78 tests in default
+78 tests in 1 items.
+78 passed and 0 failed.
 Test passed.
 
 Document: python/math/rotaplot
@@ -219,7 +219,7 @@ Test passed.
 
 Doctest summary
 ===============
-  520 tests
+  592 tests
     0 failures in tests
     0 failures in setup code
     0 failures in cleanup code

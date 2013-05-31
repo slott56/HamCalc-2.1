@@ -131,7 +131,7 @@ Angle AXB..........    45.240°</pre>
 <p><strong>470</strong>. Given <em>R</em>: <img class="math" src="../../_images/math/7dcbc8ad06fb1409575ff187afc644dc69274266.png" alt="C_F=2 \pi R"/></p>
 <p><strong>480</strong>. Given <em>A</em> and <em>R</em>:  <img class="math" src="../../_images/math/4e92568d186d50ad992d2e6966871d0e768b6c5d.png" alt="A_C=A R"/></p>
 <p><strong>490</strong>. Given <em>AC</em> and <em>R</em>:  <img class="math" src="../../_images/math/31a56fe35acc7288931383909dc82f8bc81ee559.png" alt="A=A_C/R"/></p>
-<p><strong>500</strong>. Given <em>R</em> and <em>C</em>:  <img class="math" src="../../_images/math/3a8471e9f6c5f53b458a4aee988f6ba31c4895b5.png" alt="A=\arcsin \dfrac{C}{2R}"/></p>
+<p><strong>500</strong>. Given <em>R</em> and <em>C</em>:  <img class="math" src="../../_images/math/949eb3f8adfe81248d733f581f9aec78fe6c1d66.png" alt="A=2\arcsin \dfrac{C}{2R}"/></p>
 <blockquote>
 <div>Legacy uses a trig identity <img class="math" src="../../_images/math/087d0676fa1ae415933c99c5587d50aa1c7c20e9.png" alt="\arcsin X = \arctan \frac{X}{\sqrt{1-X^2}}"/>.</div></blockquote>
 <p><strong>510</strong>. Given <em>A</em> and <em>B</em>: <img class="math" src="../../_images/math/8e574e51717f631122c3051f444cce27759ba8fc.png" alt="R=\dfrac{B}{1-\cos(A/2)}"/></p>
@@ -146,19 +146,20 @@ Angle AXB..........    45.240°</pre>
 <p><strong>590</strong>. Given <em>CF</em>: <img class="math" src="../../_images/math/7192f216b0e2ec57529a4ebc6cfa446c8f68b375.png" alt="R=\dfrac{C_F}{2\pi}"/></p>
 <p><strong>600</strong>. Given <em>A</em> and <em>AC</em>: <img class="math" src="../../_images/math/4366019be1236f0959181372d07e25ea8d96f943.png" alt="R=A_C/A"/></p>
 <p><strong>610</strong>. Given <em>AC</em> and <em>B</em>: approximate <em>A</em> via 640.</p>
-<p><strong>620</strong>. Given <em>AC</em> and <em>C</em>, approximate <em>A</em> via 700.
-This doesn&#8217;t look completely sensible.</p>
-<p>Line 640 says this.</p>
+<p><strong>620</strong>. Given <em>AC</em> and <em>C</em>, approximate <em>A</em> via 700.</p>
+<p><strong>640</strong>. A subroutine with this initial comment</p>
 <div class="highlight-python"><pre>640 :REM&#x27;.....solve angle A by iteration if AC (arc) and B (height) known</pre>
 </div>
-<p>Solve <em>A</em> from AHB (<em>AC</em>) and the segment height CH (<em>B</em>).
-In <a class="reference internal" href="../math/propcirc.html#math-propcirc"><em>propcirc &#8211; Circle, Properties of</em></a>, these are called <em>AC</em> and <em>B</em>, also.
+<p>Solve <em>A</em> from AHB (<em>AC</em>) and the segment height CH (<em>B</em>).</p>
+<p>We&#8217;re finding <em>A</em> such that <img class="math" src="../../_images/math/81b11928a66f0ae82a07978f56f925435d52530d.png" alt="\frac{AB}{1-\cos \frac{A}{2}} - A_C = 0"/></p>
+<p>In <a class="reference internal" href="../math/propcirc.html#math-propcirc"><em>propcirc &#8211; Circle, Properties of</em></a>, these are called <em>AC</em> and <em>B</em>, also.
 The <a class="reference internal" href="../math/propcirc.html#module-hamcalc.math.propcirc" title="hamcalc.math.propcirc"><tt class="xref py py-mod docutils literal"><span class="pre">hamcalc.math.propcirc</span></tt></a> module has <a class="reference internal" href="../math/propcirc.html#hamcalc.math.propcirc.arc_height_2_r" title="hamcalc.math.propcirc.arc_height_2_r"><tt class="xref py py-func docutils literal"><span class="pre">hamcalc.math.propcirc.arc_height_2_r()</span></tt></a> which does precisely this.</p>
-<p>Line 700 says this:</p>
+<p><strong>700</strong>.  A subroutine with this initial comment</p>
 <div class="highlight-python"><pre>700 :REM&#x27;.....solve angle A by iteration if AC (arc) and C (chord) known</pre>
 </div>
-<p>Is an approximation even possible? Two points do not define a circle,
-this may not actually be sensible.</p>
+<p>Use <a class="reference internal" href="../math/propcirc.html#module-hamcalc.math.propcirc" title="hamcalc.math.propcirc"><tt class="xref py py-mod docutils literal"><span class="pre">hamcalc.math.propcirc</span></tt></a> module, function
+<a class="reference internal" href="../math/propcirc.html#hamcalc.math.propcirc.bisection" title="hamcalc.math.propcirc.bisection"><tt class="xref py py-func docutils literal"><span class="pre">hamcalc.math.propcirc.bisection()</span></tt></a> to solve for <em>A</em> from <em>AC</em> and <em>C</em>.</p>
+<p>We&#8217;re finding <em>A</em> such that <img class="math" src="../../_images/math/16119302ef2124b5b95646c848560d0fc0291ac6.png" alt="\dfrac{A}{\sin \frac{A}{2}} - \dfrac{2A_C}{C} = 0"/></p>
 </div>
 <div class="section" id="implementation">
 <h2>Implementation<a class="headerlink" href="#implementation" title="Permalink to this headline">¶</a></h2>
@@ -171,16 +172,183 @@ second, comute all remaining derived values from the essential values.</p>
 <p>Test Cases</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">hamcalc.construction.arch</span> <span class="kn">as</span> <span class="nn">arch</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">a</span><span class="o">=</span> <span class="n">arch</span><span class="o">.</span><span class="n">arch</span><span class="p">(</span> <span class="n">C</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">B</span><span class="o">=</span><span class="mi">1</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span> <span class="n">a</span><span class="o">.</span><span class="n">A_d</span><span class="p">,</span> <span class="mi">3</span> <span class="p">)</span>
+<span class="go">45.24</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span> <span class="n">a</span><span class="o">.</span><span class="n">B</span><span class="p">,</span> <span class="mi">3</span> <span class="p">)</span>
+<span class="go">1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span> <span class="n">a</span><span class="o">.</span><span class="n">C</span><span class="p">,</span> <span class="mi">3</span> <span class="p">)</span>
+<span class="go">10</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span> <span class="n">a</span><span class="o">.</span><span class="n">A_C</span><span class="p">,</span> <span class="mi">3</span> <span class="p">)</span>
 <span class="go">10.265</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span> <span class="n">a</span><span class="o">.</span><span class="n">R</span><span class="p">,</span> <span class="mi">3</span> <span class="p">)</span>
 <span class="go">13.0</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span> <span class="n">a</span><span class="o">.</span><span class="n">A_d</span><span class="p">,</span> <span class="mi">3</span> <span class="p">)</span>
-<span class="go">45.24</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span> <span class="n">a</span><span class="o">.</span><span class="n">C_F</span><span class="p">,</span> <span class="mi">3</span> <span class="p">)</span>
 <span class="go">81.681</span>
 </pre></div>
 </div>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">b</span><span class="o">=</span> <span class="n">arch</span><span class="o">.</span><span class="n">arch</span><span class="p">(</span> <span class="n">R</span><span class="o">=</span><span class="mi">13</span><span class="p">,</span> <span class="n">A_d</span><span class="o">=</span><span class="mi">45</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span> <span class="n">b</span><span class="o">.</span><span class="n">A_d</span><span class="p">,</span> <span class="mi">3</span> <span class="p">)</span>
+<span class="go">45</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span> <span class="n">b</span><span class="o">.</span><span class="n">B</span><span class="p">,</span> <span class="mi">3</span> <span class="p">)</span>
+<span class="go">0.99</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span> <span class="n">b</span><span class="o">.</span><span class="n">C</span><span class="p">,</span> <span class="mi">3</span> <span class="p">)</span>
+<span class="go">9.95</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span> <span class="n">b</span><span class="o">.</span><span class="n">A_C</span><span class="p">,</span> <span class="mi">3</span> <span class="p">)</span>
+<span class="go">10.21</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span> <span class="n">b</span><span class="o">.</span><span class="n">R</span><span class="p">,</span> <span class="mi">3</span> <span class="p">)</span>
+<span class="go">13</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span> <span class="n">b</span><span class="o">.</span><span class="n">C_F</span><span class="p">,</span> <span class="mi">3</span> <span class="p">)</span>
+<span class="go">81.681</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">d</span><span class="o">=</span> <span class="n">arch</span><span class="o">.</span><span class="n">arch</span><span class="p">(</span> <span class="n">A_d</span><span class="o">=</span><span class="mi">45</span><span class="p">,</span> <span class="n">C</span><span class="o">=</span><span class="mi">10</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span> <span class="n">d</span><span class="o">.</span><span class="n">A_d</span><span class="p">,</span> <span class="mi">3</span> <span class="p">)</span>
+<span class="go">45</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span> <span class="n">d</span><span class="o">.</span><span class="n">B</span><span class="p">,</span> <span class="mi">3</span> <span class="p">)</span>
+<span class="go">0.995</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span> <span class="n">d</span><span class="o">.</span><span class="n">C</span><span class="p">,</span> <span class="mi">3</span> <span class="p">)</span>
+<span class="go">10</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span> <span class="n">d</span><span class="o">.</span><span class="n">A_C</span><span class="p">,</span> <span class="mi">3</span> <span class="p">)</span>
+<span class="go">10.262</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span> <span class="n">d</span><span class="o">.</span><span class="n">R</span><span class="p">,</span> <span class="mi">3</span> <span class="p">)</span>
+<span class="go">13.066</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span> <span class="n">d</span><span class="o">.</span><span class="n">C_F</span><span class="p">,</span> <span class="mi">3</span> <span class="p">)</span>
+<span class="go">82.094</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">e</span><span class="o">=</span> <span class="n">arch</span><span class="o">.</span><span class="n">arch</span><span class="p">(</span> <span class="n">R</span><span class="o">=</span><span class="mi">13</span><span class="p">,</span> <span class="n">C</span><span class="o">=</span><span class="mi">10</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span> <span class="n">e</span><span class="o">.</span><span class="n">A_d</span><span class="p">,</span> <span class="mi">3</span> <span class="p">)</span>
+<span class="go">45.24</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span> <span class="n">e</span><span class="o">.</span><span class="n">B</span><span class="p">,</span> <span class="mi">3</span> <span class="p">)</span>
+<span class="go">1.0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span> <span class="n">e</span><span class="o">.</span><span class="n">C</span><span class="p">,</span> <span class="mi">3</span> <span class="p">)</span>
+<span class="go">10</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span> <span class="n">e</span><span class="o">.</span><span class="n">A_C</span><span class="p">,</span> <span class="mi">3</span> <span class="p">)</span>
+<span class="go">10.265</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span> <span class="n">e</span><span class="o">.</span><span class="n">R</span><span class="p">,</span> <span class="mi">3</span> <span class="p">)</span>
+<span class="go">13</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span> <span class="n">e</span><span class="o">.</span><span class="n">C_F</span><span class="p">,</span> <span class="mi">3</span> <span class="p">)</span>
+<span class="go">81.681</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">f</span><span class="o">=</span> <span class="n">arch</span><span class="o">.</span><span class="n">arch</span><span class="p">(</span> <span class="n">R</span><span class="o">=</span><span class="mi">13</span><span class="p">,</span> <span class="n">B</span><span class="o">=</span><span class="mi">1</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span> <span class="n">f</span><span class="o">.</span><span class="n">A_d</span><span class="p">,</span> <span class="mi">3</span> <span class="p">)</span>
+<span class="go">45.24</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span> <span class="n">f</span><span class="o">.</span><span class="n">B</span><span class="p">,</span> <span class="mi">3</span> <span class="p">)</span>
+<span class="go">1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span> <span class="n">f</span><span class="o">.</span><span class="n">C</span><span class="p">,</span> <span class="mi">3</span> <span class="p">)</span>
+<span class="go">10.0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span> <span class="n">f</span><span class="o">.</span><span class="n">A_C</span><span class="p">,</span> <span class="mi">3</span> <span class="p">)</span>
+<span class="go">10.265</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span> <span class="n">f</span><span class="o">.</span><span class="n">R</span><span class="p">,</span> <span class="mi">3</span> <span class="p">)</span>
+<span class="go">13</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span> <span class="n">f</span><span class="o">.</span><span class="n">C_F</span><span class="p">,</span> <span class="mi">3</span> <span class="p">)</span>
+<span class="go">81.681</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">g</span><span class="o">=</span> <span class="n">arch</span><span class="o">.</span><span class="n">arch</span><span class="p">(</span> <span class="n">R</span><span class="o">=</span><span class="mi">13</span><span class="p">,</span> <span class="n">A_C</span><span class="o">=</span><span class="mf">10.25</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span> <span class="n">g</span><span class="o">.</span><span class="n">A_d</span><span class="p">,</span> <span class="mi">3</span> <span class="p">)</span>
+<span class="go">45.176</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span> <span class="n">g</span><span class="o">.</span><span class="n">B</span><span class="p">,</span> <span class="mi">3</span> <span class="p">)</span>
+<span class="go">0.997</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span> <span class="n">g</span><span class="o">.</span><span class="n">C</span><span class="p">,</span> <span class="mi">3</span> <span class="p">)</span>
+<span class="go">9.987</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span> <span class="n">g</span><span class="o">.</span><span class="n">A_C</span><span class="p">,</span> <span class="mi">3</span> <span class="p">)</span>
+<span class="go">10.25</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span> <span class="n">g</span><span class="o">.</span><span class="n">R</span><span class="p">,</span> <span class="mi">3</span> <span class="p">)</span>
+<span class="go">13</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span> <span class="n">g</span><span class="o">.</span><span class="n">C_F</span><span class="p">,</span> <span class="mi">3</span> <span class="p">)</span>
+<span class="go">81.681</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">h</span><span class="o">=</span> <span class="n">arch</span><span class="o">.</span><span class="n">arch</span><span class="p">(</span> <span class="n">A_d</span><span class="o">=</span><span class="mi">45</span><span class="p">,</span> <span class="n">A_C</span><span class="o">=</span><span class="mf">10.25</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span> <span class="n">h</span><span class="o">.</span><span class="n">A_d</span><span class="p">,</span> <span class="mi">3</span> <span class="p">)</span>
+<span class="go">45</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span> <span class="n">h</span><span class="o">.</span><span class="n">B</span><span class="p">,</span> <span class="mi">3</span> <span class="p">)</span>
+<span class="go">0.993</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span> <span class="n">h</span><span class="o">.</span><span class="n">C</span><span class="p">,</span> <span class="mi">3</span> <span class="p">)</span>
+<span class="go">9.989</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span> <span class="n">h</span><span class="o">.</span><span class="n">A_C</span><span class="p">,</span> <span class="mi">3</span> <span class="p">)</span>
+<span class="go">10.25</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span> <span class="n">h</span><span class="o">.</span><span class="n">R</span><span class="p">,</span> <span class="mi">3</span> <span class="p">)</span>
+<span class="go">13.051</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span> <span class="n">h</span><span class="o">.</span><span class="n">C_F</span><span class="p">,</span> <span class="mi">3</span> <span class="p">)</span>
+<span class="go">82.0</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">i</span><span class="o">=</span> <span class="n">arch</span><span class="o">.</span><span class="n">arch</span><span class="p">(</span> <span class="n">A_d</span><span class="o">=</span><span class="mi">45</span><span class="p">,</span> <span class="n">B</span><span class="o">=</span><span class="mi">1</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span> <span class="n">i</span><span class="o">.</span><span class="n">A_d</span><span class="p">,</span> <span class="mi">3</span> <span class="p">)</span>
+<span class="go">45</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span> <span class="n">i</span><span class="o">.</span><span class="n">B</span><span class="p">,</span> <span class="mi">3</span> <span class="p">)</span>
+<span class="go">1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span> <span class="n">i</span><span class="o">.</span><span class="n">C</span><span class="p">,</span> <span class="mi">3</span> <span class="p">)</span>
+<span class="go">10.055</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span> <span class="n">i</span><span class="o">.</span><span class="n">A_C</span><span class="p">,</span> <span class="mi">3</span> <span class="p">)</span>
+<span class="go">10.318</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span> <span class="n">i</span><span class="o">.</span><span class="n">R</span><span class="p">,</span> <span class="mi">3</span> <span class="p">)</span>
+<span class="go">13.137</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span> <span class="n">i</span><span class="o">.</span><span class="n">C_F</span><span class="p">,</span> <span class="mi">3</span> <span class="p">)</span>
+<span class="go">82.543</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">j</span><span class="o">=</span> <span class="n">arch</span><span class="o">.</span><span class="n">arch</span><span class="p">(</span> <span class="n">C</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">A_C</span><span class="o">=</span><span class="mf">10.3</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span> <span class="n">j</span><span class="o">.</span><span class="n">A_d</span><span class="p">,</span> <span class="mi">3</span> <span class="p">)</span>
+<span class="go">48.115</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span> <span class="n">j</span><span class="o">.</span><span class="n">B</span><span class="p">,</span> <span class="mi">3</span> <span class="p">)</span>
+<span class="go">1.065</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span> <span class="n">j</span><span class="o">.</span><span class="n">C</span><span class="p">,</span> <span class="mi">3</span> <span class="p">)</span>
+<span class="go">10</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span> <span class="n">j</span><span class="o">.</span><span class="n">A_C</span><span class="p">,</span> <span class="mi">3</span> <span class="p">)</span>
+<span class="go">10.3</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span> <span class="n">j</span><span class="o">.</span><span class="n">R</span><span class="p">,</span> <span class="mi">3</span> <span class="p">)</span>
+<span class="go">12.265</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span> <span class="n">j</span><span class="o">.</span><span class="n">C_F</span><span class="p">,</span> <span class="mi">3</span> <span class="p">)</span>
+<span class="go">77.065</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">k</span><span class="o">=</span> <span class="n">arch</span><span class="o">.</span><span class="n">arch</span><span class="p">(</span> <span class="n">B</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">A_C</span><span class="o">=</span><span class="mf">10.3</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span> <span class="n">k</span><span class="o">.</span><span class="n">A_d</span><span class="p">,</span> <span class="mi">3</span> <span class="p">)</span>
+<span class="go">57.296</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span> <span class="n">k</span><span class="o">.</span><span class="n">B</span><span class="p">,</span> <span class="mi">3</span> <span class="p">)</span>
+<span class="go">1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span> <span class="n">k</span><span class="o">.</span><span class="n">C</span><span class="p">,</span> <span class="mi">3</span> <span class="p">)</span>
+<span class="go">7.833</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span> <span class="n">k</span><span class="o">.</span><span class="n">A_C</span><span class="p">,</span> <span class="mi">3</span> <span class="p">)</span>
+<span class="go">10.3</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span> <span class="n">k</span><span class="o">.</span><span class="n">R</span><span class="p">,</span> <span class="mi">3</span> <span class="p">)</span>
+<span class="go">8.169</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span> <span class="n">k</span><span class="o">.</span><span class="n">C_F</span><span class="p">,</span> <span class="mi">3</span> <span class="p">)</span>
+<span class="go">51.326</span>
+</pre></div>
+</div>
+<p>Here&#8217;s an incomplete example, showing how things can&#8217;t be computed
+from an incomplete set of parameters.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">c</span><span class="o">=</span> <span class="n">arch</span><span class="o">.</span><span class="n">arch</span><span class="p">(</span> <span class="n">R</span><span class="o">=</span><span class="mi">13</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">c</span><span class="o">.</span><span class="n">A_d</span> <span class="ow">is</span> <span class="bp">None</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">c</span><span class="o">.</span><span class="n">B</span> <span class="ow">is</span> <span class="bp">None</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">c</span><span class="o">.</span><span class="n">C</span> <span class="ow">is</span> <span class="bp">None</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">c</span><span class="o">.</span><span class="n">A_C</span> <span class="ow">is</span> <span class="bp">None</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span> <span class="n">c</span><span class="o">.</span><span class="n">R</span><span class="p">,</span> <span class="mi">3</span> <span class="p">)</span>
+<span class="go">13</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span> <span class="n">c</span><span class="o">.</span><span class="n">C_F</span><span class="p">,</span> <span class="mi">3</span> <span class="p">)</span>
+<span class="go">81.681</span>
+</pre></div>
+</div>
+<dl class="function">
+<dt id="hamcalc.construction.arch.arc_chord_2_angle">
+<tt class="descclassname">hamcalc.construction.arch.</tt><tt class="descname">arc_chord_2_angle</tt><big>(</big><em>A_C</em>, <em>C</em>, <em>eps=1e-07</em><big>)</big><a class="headerlink" href="#hamcalc.construction.arch.arc_chord_2_angle" title="Permalink to this definition">¶</a></dt>
+<dd><p>Use bisection to find the angle that gives the proper
+arc and chord information.</p>
+<div class="admonition-todo admonition" id="index-0">
+<p class="first admonition-title">Todo</p>
+<p class="last">move this to propcirc, where it belongs.</p>
+</div>
+</dd></dl>
+
 <dl class="function">
 <dt id="hamcalc.construction.arch.arch">
 <tt class="descclassname">hamcalc.construction.arch.</tt><tt class="descname">arch</tt><big>(</big><em>**kw</em><big>)</big><a class="reference internal" href="../../_modules/hamcalc/construction/arch.html#arch"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.construction.arch.arch" title="Permalink to this definition">¶</a></dt>

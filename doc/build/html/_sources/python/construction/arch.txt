@@ -88,7 +88,7 @@ The Calculations::
 
 **490**. Given *AC* and *R*:  :math:`A=A_C/R`
 
-**500**. Given *R* and *C*:  :math:`A=\arcsin \dfrac{C}{2R}`
+**500**. Given *R* and *C*:  :math:`A=2\arcsin \dfrac{C}{2R}`
 
     Legacy uses a trig identity :math:`\arcsin X = \arctan \frac{X}{\sqrt{1-X^2}}`.
 
@@ -116,26 +116,30 @@ The Calculations::
 **610**. Given *AC* and *B*: approximate *A* via 640.
 
 **620**. Given *AC* and *C*, approximate *A* via 700.
-This doesn't look completely sensible.
 
-Line 640 says this.
+**640**. A subroutine with this initial comment
 
 ::
 
     640 :REM'.....solve angle A by iteration if AC (arc) and B (height) known
 
 Solve *A* from AHB (*AC*) and the segment height CH (*B*).
+
+We're finding *A* such that :math:`\frac{AB}{1-\cos \frac{A}{2}} - A_C = 0`
+
 In :ref:`math.propcirc`, these are called *AC* and *B*, also.
 The :mod:`hamcalc.math.propcirc` module has :func:`hamcalc.math.propcirc.arc_height_2_r` which does precisely this.
 
-Line 700 says this:
+**700**.  A subroutine with this initial comment
 
 ::
 
     700 :REM'.....solve angle A by iteration if AC (arc) and C (chord) known
 
-Is an approximation even possible? Two points do not define a circle,
-this may not actually be sensible.
+Use :mod:`hamcalc.math.propcirc` module, function
+:func:`hamcalc.math.propcirc.bisection` to solve for *A* from *AC* and *C*.
+
+We're finding *A* such that :math:`\dfrac{A}{\sin \frac{A}{2}} - \dfrac{2A_C}{C} = 0`
 
 Implementation
 ~~~~~~~~~~~~~~~~

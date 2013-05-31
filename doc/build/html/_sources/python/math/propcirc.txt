@@ -234,6 +234,22 @@ Bonus value: area of segment.
 
     S_g = S_c - (R-B)\frac{C}{2}
 
+Approximation
+^^^^^^^^^^^^^^^
+
+This implementation includes the bisection algorithm for approximation.
+
+See http://en.wikipedia.org/wiki/Bisection_method
+
+This may not be the most effective root-finding approximation.
+
+There are some alternatives that might be "better"; in this case, faster.
+
+-   http://en.wikipedia.org/wiki/Secant_method
+
+-   http://en.wikipedia.org/wiki/Newton%27s_method
+
+
 Implementation
 ~~~~~~~~~~~~~~~~
 

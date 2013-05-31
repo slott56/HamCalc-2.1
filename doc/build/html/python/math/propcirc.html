@@ -207,6 +207,17 @@ it can be treated as zero for the purposes of computing the output values.</p>
 <div class="math">
 <p><img src="../../_images/math/3cc57f079577f02ae2cb1f54cb7212ae45787a7f.png" alt="S_g = S_c - (R-B)\frac{C}{2}"/></p>
 </div></div>
+<div class="section" id="approximation">
+<h3>Approximation<a class="headerlink" href="#approximation" title="Permalink to this headline">¶</a></h3>
+<p>This implementation includes the bisection algorithm for approximation.</p>
+<p>See <a class="reference external" href="http://en.wikipedia.org/wiki/Bisection_method">http://en.wikipedia.org/wiki/Bisection_method</a></p>
+<p>This may not be the most effective root-finding approximation.</p>
+<p>There are some alternatives that might be &#8220;better&#8221;; in this case, faster.</p>
+<ul class="simple">
+<li><a class="reference external" href="http://en.wikipedia.org/wiki/Secant_method">http://en.wikipedia.org/wiki/Secant_method</a></li>
+<li><a class="reference external" href="http://en.wikipedia.org/wiki/Newton%27s_method">http://en.wikipedia.org/wiki/Newton%27s_method</a></li>
+</ul>
+</div>
 </div>
 <div class="section" id="implementation">
 <h2>Implementation<a class="headerlink" href="#implementation" title="Permalink to this headline">¶</a></h2>
@@ -216,11 +227,6 @@ so many relationships among to many variables.</p>
 <p>Note that the sample output includes 10 output values from 8 potential input variables.</p>
 <span class="target" id="module-hamcalc.math.propcirc"></span><p>hamcalc.math.propcirc &#8211; Circle, Properties of</p>
 <p>This includes the bisection algorithm for approximation.</p>
-<p>See <a class="reference external" href="http://en.wikipedia.org/wiki/Bisection_method">http://en.wikipedia.org/wiki/Bisection_method</a></p>
-<p>This may not be the most effective root-finding approximation.</p>
-<p>There are some alternatives that might be more helpful.</p>
-<p>See  <a class="reference external" href="http://en.wikipedia.org/wiki/Secant_method">http://en.wikipedia.org/wiki/Secant_method</a></p>
-<p><a class="reference external" href="http://en.wikipedia.org/wiki/Newton%27s_method">http://en.wikipedia.org/wiki/Newton%27s_method</a></p>
 <p>Here are some test cases.</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">hamcalc.math.propcirc</span> <span class="kn">as</span> <span class="nn">propcirc</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">math</span>

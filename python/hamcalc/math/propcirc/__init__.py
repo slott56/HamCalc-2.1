@@ -2,16 +2,6 @@
 
 This includes the bisection algorithm for approximation.
 
-See http://en.wikipedia.org/wiki/Bisection_method
-
-This may not be the most effective root-finding approximation.
-
-There are some alternatives that might be more helpful.
-
-See  http://en.wikipedia.org/wiki/Secant_method
-
-http://en.wikipedia.org/wiki/Newton%27s_method
-
 Here are some test cases.
 
 >>> import hamcalc.math.propcirc as propcirc

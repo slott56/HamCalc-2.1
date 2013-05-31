@@ -5,6 +5,7 @@
 """
 
 import hamcalc.math.accelr as accelr
+from hamcalc.lib import AttrDict
 
 def solve():
     """Gather Inputs for Acceleration/Force Problems."""
@@ -14,13 +15,13 @@ def solve():
     v_o= input( "ENTER: Velocity at START of acceleration (metres/second)? " )
     v_f= input( "ENTER: Velocity at END of acceleration (metres/second)? " )
 
-    args = dict()
+    args = AttrDict()
     try:
-        if m: args['m']= float(m)
-        if d: args['d']= float(d)
-        if t: args['t']= float(t)
-        if v_o: args['v_o']= float(v_o)
-        if v_f: args['v_f']= float(v_f)
+        if m: args.m= float(m)
+        if d: args.d= float(d)
+        if t: args.t= float(t)
+        if v_o: args.v_o= float(v_o)
+        if v_f: args.v_f= float(v_f)
         display( **args )
     except ValueError as e:
         print( e )
@@ -29,7 +30,7 @@ def display( **args_r ):
     """Compute and display results."""
     args_a= accelr.accel( **args_r )
     args= accelr.force( **args_a )
-    args['f_g']= args['f']/accelr.g
+    args.f_g= args.f/accelr.g
 
     print("ACCELERATION CALCULATION")
     print()
@@ -55,7 +56,7 @@ z= None
 while z != '0':
     print()
     print( " ENTER 1 to continue or 0 to EXIT" )
-    z= input( "Choice? " )
+    z= input( "CHOICE? " )
     if z == '1':
         solve()
 
