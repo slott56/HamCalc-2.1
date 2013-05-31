@@ -34,16 +34,20 @@ def display( **args_r ):
     print("ACCELERATION CALCULATION")
     print()
 
-    print( "Mass of moving object (kilograms)..M= {m:10.3f}".format(**args) )
-    print( "Displacement (metres)..............D= {d:10.3f}".format(**args) )
-    print( "Duration of motion (seconds).......T= {t:10.3f}".format(**args) )
-    print( "Start velocity (metres/second)....Vo= {v_o:10.3f}".format(**args) )
-    print( "End velocity (metres/second)......Vf= {v_f:10.3f}".format(**args) )
-    print( "Acceleration constant (m./sec.)....A= {a:10.3f}".format(**args) )
-    print( "Acceleration force (newtons).......F= {f:10.3f}".format(**args) )
-    print( "Force (standard gravitys)............ {f_g:10.3f}".format(**args) )
-    print()
-    print( "(Standard gravity <g-force> is 9.80665 metres/second²)." )
+    template="""\
+Mass of moving object (kilograms)..M= {m:10.3f}
+Displacement (metres)..............D= {d:10.3f}
+Duration of motion (seconds).......T= {t:10.3f}
+Start velocity (metres/second)....Vo= {v_o:10.3f}
+End velocity (metres/second)......Vf= {v_f:10.3f}
+Acceleration constant (m./sec.)....A= {a:10.3f}
+Acceleration force (newtons).......F= {f:10.3f}
+Force (standard gravitys)............ {f_g:10.3f}
+
+(Standard gravity <g-force> is 9.80665 metres/second²).
+"""
+
+    print( template.format(**args) )
 
 print( accelr.intro() )
 

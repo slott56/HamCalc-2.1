@@ -56,13 +56,19 @@ def force( **kw ):
         args.a = args.f / args.m
     elif 'f' in args and 'a' in args:
         args.m = args.f / args.a
+    else:
+        raise Error( "Insufficient data: {0}".format(args.keys()) )
     return args
 
 def accel( **kw ):
     """Solve Acceleration problems.
 
-    Some combination of a, d, t, v_o and v_f must be provided.
-    The others will be deduced.
+    Some combinations of a, d, t, v_o and v_f must be provided.
+
+    -   v_o, v_f and t gives us a
+    -   v_o, t and a gives us v_f
+    -   v_f, t and a gives us v_o
+    -   d and a give us t
 
     :param d: Displacement (in m)
     :param t: Time (in seconds)
@@ -79,11 +85,13 @@ def accel( **kw ):
     elif 'd' not in args and 'v_o' in args and 't' in args and 'a' in args:
         args.d = args.v_o*args.t + 0.5*args.a*args.t**2
     # 430 IF VF=0 AND VO*A*T THEN VF=VO+A*T
-    elif 'v_f' not in kw and 'v_o' in kw and 't' in kw and 'a' in kw:
+    elif 'v_f' not in args and 'v_o' in args and 't' in args and 'a' in args:
         args.v_f = args.v_o+args.a*args.t
     # 440 IF VO=0 AND VF*A*T THEN V0=VF-A*T
-    elif 'v_o' not in kw and 'v_f' in kw and 't' in kw and 'a' in kw:
+    elif 'v_o' not in args and 'v_f' in args and 't' in args and 'a' in args:
         args.v_o = args.v_f-args.a*args.t
-    elif 't' not in kw and 'd' in kw and 'a' in kw:
+    elif 't' not in args and 'd' in args and 'a' in args:
         args.t = args.d / args.a
+    else:
+        raise Error( "Insufficient data: {0}".format(args.keys()) )
     return args

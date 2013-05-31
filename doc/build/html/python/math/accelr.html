@@ -97,8 +97,13 @@
 <dt id="hamcalc.math.accelr.accel">
 <tt class="descclassname">hamcalc.math.accelr.</tt><tt class="descname">accel</tt><big>(</big><em>**kw</em><big>)</big><a class="reference internal" href="../../_modules/hamcalc/math/accelr.html#accel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.math.accelr.accel" title="Permalink to this definition">¶</a></dt>
 <dd><p>Solve Acceleration problems.</p>
-<p>Some combination of a, d, t, v_o and v_f must be provided.
-The others will be deduced.</p>
+<p>Some combinations of a, d, t, v_o and v_f must be provided.</p>
+<ul class="simple">
+<li>v_o, v_f and t gives us a</li>
+<li>v_o, t and a gives us v_f</li>
+<li>v_f, t and a gives us v_o</li>
+<li>d and a give us t</li>
+</ul>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />

@@ -1,4 +1,4 @@
-Results of doctest builder run on 2013-05-30 20:34:10
+Results of doctest builder run on 2013-05-31 10:26:45
 =====================================================
 
 Document: python/math/baromtr
@@ -129,6 +129,14 @@ Document: python/math/primenos
 7 passed and 0 failed.
 Test passed.
 
+Document: python/construction/arch
+----------------------------------
+1 items passed all tests:
+   6 tests in default
+6 tests in 1 items.
+6 passed and 0 failed.
+Test passed.
+
 Document: python/math/rotaplot
 ------------------------------
 1 items passed all tests:
@@ -188,9 +196,9 @@ Test passed.
 Document: python/math/propcirc
 ------------------------------
 1 items passed all tests:
-  14 tests in default
-14 tests in 1 items.
-14 passed and 0 failed.
+  18 tests in default
+18 tests in 1 items.
+18 passed and 0 failed.
 Test passed.
 
 Document: python/math/deciconv
@@ -211,7 +219,7 @@ Test passed.
 
 Doctest summary
 ===============
-  510 tests
+  520 tests
     0 failures in tests
     0 failures in setup code
     0 failures in cleanup code

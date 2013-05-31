@@ -55,7 +55,7 @@
           <div class="body">
             
   <div class="section" id="propcirc-circle-properties-of">
-<h1>propcirc &#8211; Circle, Properties of<a class="headerlink" href="#propcirc-circle-properties-of" title="Permalink to this headline">¶</a></h1>
+<span id="math-propcirc"></span><h1>propcirc &#8211; Circle, Properties of<a class="headerlink" href="#propcirc-circle-properties-of" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="analysis">
 <h2>Analysis<a class="headerlink" href="#analysis" title="Permalink to this headline">¶</a></h2>
 <p>This is a kind of <strong>Solver</strong> with a number of circle elements.</p>
@@ -172,7 +172,8 @@ it can be treated as zero for the purposes of computing the output values.</p>
 <p><img src="../../_images/math/f476ea65689f3071069ee856929131484fe9ca8a.png" alt="Z = \frac{C}{2R}"/></p>
 </div><div class="math">
 <p><img src="../../_images/math/6ab57bf4fe927c90b0ebfff88920325af9199aa5.png" alt="A = f_1(C, R) = 2 \arctan \frac{Z}{\sqrt{1-Z^2}}"/></p>
-</div></li>
+</div><p>Note the trig identity for arcsine <img class="math" src="../../_images/math/087d0676fa1ae415933c99c5587d50aa1c7c20e9.png" alt="\arcsin X = \arctan \frac{X}{\sqrt{1-X^2}}"/>.</p>
+</li>
 <li><p class="first"><em>R</em> and <em>AC</em> (line 640):</p>
 <div class="math">
 <p><img src="../../_images/math/73d55fdc02e021d07a05e43e4332ad2aeb46ca7b.png" alt="A = f_2(A_c, R) = \frac{A_c}{R}"/></p>
@@ -214,6 +215,12 @@ so many relationships among to many variables.</p>
 <p>Instead, we derive <em>R</em> and <em>A</em> and then compute all the derived values from those two.</p>
 <p>Note that the sample output includes 10 output values from 8 potential input variables.</p>
 <span class="target" id="module-hamcalc.math.propcirc"></span><p>hamcalc.math.propcirc &#8211; Circle, Properties of</p>
+<p>This includes the bisection algorithm for approximation.</p>
+<p>See <a class="reference external" href="http://en.wikipedia.org/wiki/Bisection_method">http://en.wikipedia.org/wiki/Bisection_method</a></p>
+<p>This may not be the most effective root-finding approximation.</p>
+<p>There are some alternatives that might be more helpful.</p>
+<p>See  <a class="reference external" href="http://en.wikipedia.org/wiki/Secant_method">http://en.wikipedia.org/wiki/Secant_method</a></p>
+<p><a class="reference external" href="http://en.wikipedia.org/wiki/Newton%27s_method">http://en.wikipedia.org/wiki/Newton%27s_method</a></p>
 <p>Here are some test cases.</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">hamcalc.math.propcirc</span> <span class="kn">as</span> <span class="nn">propcirc</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">math</span>
@@ -232,23 +239,23 @@ so many relationships among to many variables.</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">propcirc</span><span class="o">.</span><span class="n">circle</span><span class="p">(</span> <span class="n">G</span><span class="o">=</span><span class="mf">1.6</span><span class="p">,</span> <span class="n">angle</span><span class="o">=</span><span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="mi">60</span><span class="p">)</span> <span class="p">)</span>
 <span class="go">{&#39;A&#39;: 448.0690272864175, &#39;C&#39;: 75.03733375924637, &#39;angle&#39;: 1.0471975511965976, &#39;D&#39;: 23.885125168440826, &#39;G&#39;: 1.6, &#39;L_A&#39;: 12.506222293207728, &#39;A_G&#39;: 12.919820742768572, &#39;L_C&#39;: 11.942562584220411, &#39;R&#39;: 11.942562584220413, &#39;A_C&#39;: 74.67817121440291}</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">propcirc</span><span class="o">.</span><span class="n">circle</span><span class="p">(</span> <span class="n">R</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">L_C</span><span class="o">=</span><span class="mi">12</span> <span class="p">)</span>
-<span class="go">{&#39;A&#39;: 452.3893421169302, &#39;C&#39;: 75.39822368615503, &#39;angle&#39;: 1.0471975511965979, &#39;D&#39;: 24, &#39;G&#39;: 1.6076951545867368, &#39;L_A&#39;: 12.566370614359174, &#39;A_G&#39;: 13.044394613675465, &#39;L_C&#39;: 12.0, &#39;R&#39;: 12, &#39;A_C&#39;: 75.39822368615505}</span>
+<span class="go">{&#39;A&#39;: 452.3893421169302, &#39;C&#39;: 75.39822368615503, &#39;angle&#39;: 1.0471975511965976, &#39;D&#39;: 24, &#39;G&#39;: 1.6076951545867355, &#39;L_A&#39;: 12.566370614359172, &#39;A_G&#39;: 13.044394613675443, &#39;L_C&#39;: 11.999999999999998, &#39;R&#39;: 12, &#39;A_C&#39;: 75.39822368615502}</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">propcirc</span><span class="o">.</span><span class="n">circle</span><span class="p">(</span> <span class="n">R</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">G</span><span class="o">=</span><span class="mf">1.6</span> <span class="p">)</span>
-<span class="go">{&#39;A&#39;: 452.3893421169302, &#39;C&#39;: 75.39822368615503, &#39;angle&#39;: 1.0446296436120974, &#39;D&#39;: 24, &#39;G&#39;: 1.600000000000001, &#39;L_A&#39;: 12.535555723345169, &#39;A_G&#39;: 12.952155424152622, &#39;L_C&#39;: 11.973303637676615, &#39;R&#39;: 12, &#39;A_C&#39;: 75.21333434007101}</span>
+<span class="go">{&#39;A&#39;: 452.3893421169302, &#39;C&#39;: 75.39822368615503, &#39;angle&#39;: 1.0446296436120972, &#39;D&#39;: 24, &#39;G&#39;: 1.5999999999999996, &#39;L_A&#39;: 12.535555723345166, &#39;A_G&#39;: 12.952155424152622, &#39;L_C&#39;: 11.973303637676612, &#39;R&#39;: 12, &#39;A_C&#39;: 75.213334340071}</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">propcirc</span><span class="o">.</span><span class="n">circle</span><span class="p">(</span> <span class="n">L_A</span><span class="o">=</span><span class="mf">12.56</span><span class="p">,</span> <span class="n">G</span><span class="o">=</span><span class="mf">1.61</span> <span class="p">)</span>
 <span class="go">{&#39;A&#39;: 450.09677997191295, &#39;C&#39;: 75.20693418466634, &#39;angle&#39;: 1.049328872579753, &#39;D&#39;: 23.939110660552977, &#39;G&#39;: 1.6099999693011857, &#39;L_A&#39;: 12.56, &#39;A_G&#39;: 13.054769563165337, &#39;L_C&#39;: 11.991641677007895, &#39;R&#39;: 11.969555330276489, &#39;A_C&#39;: 75.16880747413634}</span>
 </pre></div>
 </div>
 <dl class="function">
-<dt id="hamcalc.math.propcirc.bisection">
-<tt class="descclassname">hamcalc.math.propcirc.</tt><tt class="descname">bisection</tt><big>(</big><em>L_A</em>, <em>G</em>, <em>eps=1e-07</em><big>)</big><a class="reference internal" href="../../_modules/hamcalc/math/propcirc.html#bisection"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.math.propcirc.bisection" title="Permalink to this definition">¶</a></dt>
+<dt id="hamcalc.math.propcirc.arc_height_2_r">
+<tt class="descclassname">hamcalc.math.propcirc.</tt><tt class="descname">arc_height_2_r</tt><big>(</big><em>L_A</em>, <em>G</em>, <em>eps=1e-07</em><big>)</big><a class="headerlink" href="#hamcalc.math.propcirc.arc_height_2_r" title="Permalink to this definition">¶</a></dt>
 <dd><p>Approximate a value for <em>R</em> from <em>L_A</em> and <em>G</em> via bisection.</p>
 <p>We&#8217;re solving <img class="math" src="../../_images/math/d63acb262eb96c867284483b5b45ba23b6d62e51.png" alt="G = R (1 - \cos \frac{L_A}{2R})"/> for a value of <em>R</em>.</p>
 <p>We know only that <img class="math" src="../../_images/math/296b1846c4f21e2c1237486740c79e9bebd064ba.png" alt="R &gt; 0"/>.</p>
 <p>This requires a 2-phase search.</p>
 <ol class="arabic simple">
 <li>Double R until it&#8217;s demonstrably too large.</li>
-<li>Bisect between the last two values of R.</li>
+<li>Bisect between R and R/2.</li>
 </ol>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -257,6 +264,7 @@ so many relationships among to many variables.</p>
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>L_A</strong> &#8211; Length of Arc</li>
 <li><strong>G</strong> &#8211; Height of Arc</li>
+<li><strong>eps</strong> &#8211; Epsilon &#8211; precision of approximation.</li>
 </ul>
 </td>
 </tr>
@@ -266,9 +274,44 @@ so many relationships among to many variables.</p>
 </tbody>
 </table>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">hamcalc.math.propcirc</span> <span class="kn">as</span> <span class="nn">propcirc</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">propcirc</span><span class="o">.</span><span class="n">bisection</span><span class="p">(</span>  <span class="n">L_A</span><span class="o">=</span><span class="mf">12.56</span><span class="p">,</span> <span class="n">G</span><span class="o">=</span><span class="mf">1.61</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">propcirc</span><span class="o">.</span><span class="n">arc_height_2_r</span><span class="p">(</span> <span class="n">L_A</span><span class="o">=</span><span class="mf">12.56</span><span class="p">,</span> <span class="n">G</span><span class="o">=</span><span class="mf">1.61</span> <span class="p">)</span>
 <span class="go">11.969555330276489</span>
 </pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="hamcalc.math.propcirc.bisection">
+<tt class="descclassname">hamcalc.math.propcirc.</tt><tt class="descname">bisection</tt><big>(</big><em>f</em>, <em>low</em>, <em>high</em>, <em>eps=1e-07</em><big>)</big><a class="reference internal" href="../../_modules/hamcalc/math/propcirc.html#bisection"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.math.propcirc.bisection" title="Permalink to this definition">¶</a></dt>
+<dd><p>Approximate <em>x</em> where <img class="math" src="../../_images/math/11fddd15b1f4d71187a617a85c2e3cbdb1f37b0a.png" alt="f(x)=0 \vert l \leq x &lt; h"/> by bisection.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>f</strong> &#8211; A single-argument function, <tt class="docutils literal"><span class="pre">f(x)</span></tt>.</li>
+<li><strong>low</strong> &#8211; Lower bound on search.</li>
+<li><strong>high</strong> &#8211; Upper bound on search.</li>
+<li><strong>eps</strong> &#8211; Epsilon &#8211; precision of approximation.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">x value</p>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">hamcalc.math.propcirc</span> <span class="kn">as</span> <span class="nn">propcirc</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sqrt_13</span><span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">**</span><span class="mi">2</span><span class="o">-</span><span class="mi">13</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">root</span><span class="o">=</span> <span class="n">propcirc</span><span class="o">.</span><span class="n">bisection</span><span class="p">(</span> <span class="n">sqrt_13</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">13</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">root</span>
+<span class="go">3.6055512726306915</span>
+</pre></div>
+</div>
+<div class="admonition-todo admonition" id="index-0">
+<p class="first admonition-title">Todo</p>
+<p>Optimization possible</p>
+<p class="last">Cache computation of f(low).</p>
 </div>
 </dd></dl>
 
@@ -372,8 +415,8 @@ In this case, Diameter, <em>D</em>, Radius, <em>R</em>, and Chord Length, <em>C<
 <blockquote>
 <div><p><strong>640</strong>. If Length of Arc, <em>AC</em>, and Radius, <em>R</em>, are known: <img class="math" src="../../_images/math/617006280fbe07359366baf1273c1186865b311d.png" alt="A = \frac{A_c}{R}"/>.</p>
 <p><strong>650</strong>. If  Radius, <em>R</em>,  and Length of Chord, <em>C</em>,  are known, this is two
-sides of a triangle, and the angle, <em>A</em> can be computed. <img class="math" src="../../_images/math/20ee33e64e19e10d30572a5210946c562b0d51c6.png" alt="Z=\frac{C}{2R}"/>
-<img class="math" src="../../_images/math/c6cbecda3bea14108b44efd3d48d53055e1eac04.png" alt="A= 2 \arctan \frac{Z}{\sqrt{1-Z^2}}"/>.</p>
+sides of a triangle, and the angle, <em>A</em> can be computed. <img class="math" src="../../_images/math/d81d31f73d7e795e9a055987039a35f765ec7ef7.png" alt="Z=\frac{C}{2R}; A= 2 \arctan \frac{Z}{\sqrt{1-Z^2}}"/>.
+<img class="math" src="../../_images/math/8ab25d06fd59f81798490a00f515b69e181f09a8.png" alt="A = 2 \arcsin \frac{C}{2R}"/>.</p>
 </div></blockquote>
 <p>Ways to compute Radius, <em>R</em>.</p>
 <blockquote>

@@ -56,6 +56,165 @@
             
   <div class="section" id="arch-arch-calculator">
 <h1>arch &#8211; Arch Calculator<a class="headerlink" href="#arch-arch-calculator" title="Permalink to this headline">¶</a></h1>
+<p>From the introduction:</p>
+<div class="highlight-python"><pre>ARCH CALCULATOR                                         by George Murphy VE3ERP
+
+            *H
+ A*         *C        *B
+
+
+
+            *X
+
+ This program calculates the following elements of an arch:
+                                 Curved arch AHB
+                                 Chord AB
+                                 Segment height CH
+                                 Radii XA, XH, XB
+                                 Angle AXB
+
+ All dimensions in ANY identical units of measure:</pre>
+</div>
+<p>Sample Output:</p>
+<div class="highlight-python"><pre>Curved arch AHB....    10.265 units
+Chord AB...........    10.000 units
+Segment Height CH..     1.000 units
+Radii XA, XH, XB...    13.000 units
+Angle AXB..........    45.240°</pre>
+</div>
+<div class="section" id="analysis">
+<h2>Analysis<a class="headerlink" href="#analysis" title="Permalink to this headline">¶</a></h2>
+<p>This is a proper <strong>Solver</strong> for various features of an arch.</p>
+<p>Input parameters are the following.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">R:</th><td class="field-body">Radii XA, XH, XB, <img class="math" src="../../_images/math/4d0e49ddd0bfe7fa19df36ea3ce216a0167cda64.png" alt="D = 2R"/>.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">A:</th><td class="field-body">Angle AXB.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">C:</th><td class="field-body">Chord AB.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">AC:</th><td class="field-body">Curved arch AHB.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">B:</th><td class="field-body">Segment height CH.</td>
+</tr>
+</tbody>
+</table>
+<p>Extra variables, <em>CF</em> (Circumference) and <em>AR</em> (Area) are also computed.</p>
+<p>The Calculations:</p>
+<div class="highlight-python"><pre>440 IF B=0  AND A=P     THEN B=0:GOSUB 640
+450 IF AR=0 AND R&lt;&gt;0    THEN AR=P*R^2:D=2*R:CF=P*D
+460 IF D=0  AND R&lt;&gt;0    THEN D=2*R
+470 IF CF=0 AND R&lt;&gt;0    THEN CF=P*2*R
+480 IF AC=0 AND A*R&lt;&gt;0  THEN AC=A*R
+490 IF A=0  AND AC*R&lt;&gt;0 THEN A=AC/R
+500 IF A=0  AND R*C&lt;&gt;0  THEN Z=C/2/R:A=2*ATN(Z/SQR(-Z*Z+1))
+510 IF R=0  AND A*B&lt;&gt;0  THEN R=B/(1-COS(A/2))
+520 IF R=0  AND B*C&lt;&gt;0  THEN R=(4*B^2+C^2)/(8*B):A=2*(P-(2*(ATN((C/2)/B))))
+530 IF C=0  AND B*R&lt;&gt;0  THEN C=2*(SQR(2*B*R-B^2))
+540 IF C=0  AND A*R&lt;&gt;0  THEN C=2*R*SIN(A/2)
+550 IF B=0  AND R*C&lt;&gt;0  THEN B=R-0.5!*(SQR(4*R^2-C^2))
+560 IF B=0  AND A*C&lt;&gt;0  THEN B=C/2*TAN(A/4)
+570 IF B=0  AND A*R&lt;&gt;0  THEN B=2*R*(SIN(A/4)^2)
+580 IF R=0  AND AR&lt;&gt;0   THEN R=SQR(AR/P)
+590 IF R=0  AND CF&lt;&gt;0   THEN R=CF/(2*P)
+600 IF R=0  AND A*AC&lt;&gt;0 THEN R=AC/A
+610 IF A=0  AND AC*B&lt;&gt;0 THEN GOSUB 640
+620 IF A=0  AND AC*C&lt;&gt;0 THEN GOSUB 700</pre>
+</div>
+<p><strong>440</strong>. If <img class="math" src="../../_images/math/3ed752b6663432185ca67a4bfc7a0fd8ac8aff8e.png" alt="A = \pi"/> and <em>B</em> is unknown: <img class="math" src="../../_images/math/c85145af0b6431672968299c4d2f016270e22caf.png" alt="B = 0"/>; approximate <em>A</em> via 640. This seems needless.</p>
+<p><strong>450</strong>. Given <em>R</em>:
+<img class="math" src="../../_images/math/5cb92d3b2fefab91ba5eed476aa2cf4fe5a91091.png" alt="A_R=\pi R^2; D=2R; C_F=\pi D"/></p>
+<p><strong>460</strong>. Given <em>R</em>: <img class="math" src="../../_images/math/287cdcb26eebdf39e1a294d912a81753e8dde5a3.png" alt="D=2R"/></p>
+<p><strong>470</strong>. Given <em>R</em>: <img class="math" src="../../_images/math/7dcbc8ad06fb1409575ff187afc644dc69274266.png" alt="C_F=2 \pi R"/></p>
+<p><strong>480</strong>. Given <em>A</em> and <em>R</em>:  <img class="math" src="../../_images/math/4e92568d186d50ad992d2e6966871d0e768b6c5d.png" alt="A_C=A R"/></p>
+<p><strong>490</strong>. Given <em>AC</em> and <em>R</em>:  <img class="math" src="../../_images/math/31a56fe35acc7288931383909dc82f8bc81ee559.png" alt="A=A_C/R"/></p>
+<p><strong>500</strong>. Given <em>R</em> and <em>C</em>:  <img class="math" src="../../_images/math/3a8471e9f6c5f53b458a4aee988f6ba31c4895b5.png" alt="A=\arcsin \dfrac{C}{2R}"/></p>
+<blockquote>
+<div>Legacy uses a trig identity <img class="math" src="../../_images/math/087d0676fa1ae415933c99c5587d50aa1c7c20e9.png" alt="\arcsin X = \arctan \frac{X}{\sqrt{1-X^2}}"/>.</div></blockquote>
+<p><strong>510</strong>. Given <em>A</em> and <em>B</em>: <img class="math" src="../../_images/math/8e574e51717f631122c3051f444cce27759ba8fc.png" alt="R=\dfrac{B}{1-\cos(A/2)}"/></p>
+<p><strong>520</strong>. Given <em>B</em> and <em>C</em>:
+<img class="math" src="../../_images/math/39295c2d3618b5ba2184d3e3fea0bc7cf12fbc42.png" alt="R=\dfrac{4B^2+C^2}{8B}; A=2(\pi-2\arctan\frac{C/2}{B})"/></p>
+<p><strong>530</strong>. Given <em>B</em> and <em>R</em>: <img class="math" src="../../_images/math/079ce73166306a5db25adb5da61c46c7bc13de91.png" alt="C=2\sqrt{2BR-B^2}"/></p>
+<p><strong>540</strong>. Given <em>A</em> and <em>R</em>: <img class="math" src="../../_images/math/61ee81dc8ceb43fb21997974c0bece59a74d7411.png" alt="C=2R\sin \frac{A}{2}"/></p>
+<p><strong>550</strong>. Given <em>R</em> and <em>C</em>: <img class="math" src="../../_images/math/3f33062fe341eac393102afbffe12e83ef0be144.png" alt="B=R-\frac{1}{2}\sqrt{4R^2-C^2}"/></p>
+<p><strong>560</strong>. Given <em>A</em> and <em>C</em>: <img class="math" src="../../_images/math/d261111651f53956521d1a8458981442dcc4a167.png" alt="B=\dfrac{C}{2}\tan \frac{A}{4}"/></p>
+<p><strong>570</strong>. Given <em>A</em> and <em>R</em>: <img class="math" src="../../_images/math/b36e75e25f7d1c962df2391dc60eb4c201e8f395.png" alt="B=2R(\sin \frac{A}{4})^2"/></p>
+<p><strong>580</strong>. Given <em>AR</em>: <img class="math" src="../../_images/math/0330bc9a5c49e26e93db60c82006685b49648f8e.png" alt="R=\sqrt{\dfrac{A_R}{\pi}}"/></p>
+<p><strong>590</strong>. Given <em>CF</em>: <img class="math" src="../../_images/math/7192f216b0e2ec57529a4ebc6cfa446c8f68b375.png" alt="R=\dfrac{C_F}{2\pi}"/></p>
+<p><strong>600</strong>. Given <em>A</em> and <em>AC</em>: <img class="math" src="../../_images/math/4366019be1236f0959181372d07e25ea8d96f943.png" alt="R=A_C/A"/></p>
+<p><strong>610</strong>. Given <em>AC</em> and <em>B</em>: approximate <em>A</em> via 640.</p>
+<p><strong>620</strong>. Given <em>AC</em> and <em>C</em>, approximate <em>A</em> via 700.
+This doesn&#8217;t look completely sensible.</p>
+<p>Line 640 says this.</p>
+<div class="highlight-python"><pre>640 :REM&#x27;.....solve angle A by iteration if AC (arc) and B (height) known</pre>
+</div>
+<p>Solve <em>A</em> from AHB (<em>AC</em>) and the segment height CH (<em>B</em>).
+In <a class="reference internal" href="../math/propcirc.html#math-propcirc"><em>propcirc &#8211; Circle, Properties of</em></a>, these are called <em>AC</em> and <em>B</em>, also.
+The <a class="reference internal" href="../math/propcirc.html#module-hamcalc.math.propcirc" title="hamcalc.math.propcirc"><tt class="xref py py-mod docutils literal"><span class="pre">hamcalc.math.propcirc</span></tt></a> module has <a class="reference internal" href="../math/propcirc.html#hamcalc.math.propcirc.arc_height_2_r" title="hamcalc.math.propcirc.arc_height_2_r"><tt class="xref py py-func docutils literal"><span class="pre">hamcalc.math.propcirc.arc_height_2_r()</span></tt></a> which does precisely this.</p>
+<p>Line 700 says this:</p>
+<div class="highlight-python"><pre>700 :REM&#x27;.....solve angle A by iteration if AC (arc) and C (chord) known</pre>
+</div>
+<p>Is an approximation even possible? Two points do not define a circle,
+this may not actually be sensible.</p>
+</div>
+<div class="section" id="implementation">
+<h2>Implementation<a class="headerlink" href="#implementation" title="Permalink to this headline">¶</a></h2>
+<p>Note that some optimization may be possible. Specifically, it
+may be possible to follow the two-phase strategy shown in <a class="reference internal" href="../math/propcirc.html#math-propcirc"><em>propcirc &#8211; Circle, Properties of</em></a>.
+First, compute the <strong>essential</strong> parameters from the inputs;
+second, comute all remaining derived values from the essential values.</p>
+<span class="target" id="module-hamcalc.construction.arch"></span><p>hamcalc.construction.arch</p>
+<p>A <strong>Solver</strong> which calculates various properties of an arch.</p>
+<p>Test Cases</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">hamcalc.construction.arch</span> <span class="kn">as</span> <span class="nn">arch</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span><span class="o">=</span> <span class="n">arch</span><span class="o">.</span><span class="n">arch</span><span class="p">(</span> <span class="n">C</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">B</span><span class="o">=</span><span class="mi">1</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span> <span class="n">a</span><span class="o">.</span><span class="n">A_C</span><span class="p">,</span> <span class="mi">3</span> <span class="p">)</span>
+<span class="go">10.265</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span> <span class="n">a</span><span class="o">.</span><span class="n">R</span><span class="p">,</span> <span class="mi">3</span> <span class="p">)</span>
+<span class="go">13.0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span> <span class="n">a</span><span class="o">.</span><span class="n">A_d</span><span class="p">,</span> <span class="mi">3</span> <span class="p">)</span>
+<span class="go">45.24</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span> <span class="n">a</span><span class="o">.</span><span class="n">C_F</span><span class="p">,</span> <span class="mi">3</span> <span class="p">)</span>
+<span class="go">81.681</span>
+</pre></div>
+</div>
+<dl class="function">
+<dt id="hamcalc.construction.arch.arch">
+<tt class="descclassname">hamcalc.construction.arch.</tt><tt class="descname">arch</tt><big>(</big><em>**kw</em><big>)</big><a class="reference internal" href="../../_modules/hamcalc/construction/arch.html#arch"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.construction.arch.arch" title="Permalink to this definition">¶</a></dt>
+<dd><p>Solve arch problems.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>R</strong> &#8211; Radii XA, XH, XB, <img class="math" src="../../_images/math/4d0e49ddd0bfe7fa19df36ea3ce216a0167cda64.png" alt="D = 2R"/>.</li>
+<li><strong>A_d</strong> &#8211; Angle AXB in degrees.</li>
+<li><strong>A_r</strong> &#8211; Angle AXB in radians.</li>
+<li><strong>C</strong> &#8211; Chord AB.</li>
+<li><strong>A_C</strong> &#8211; Curved arch AHB.</li>
+<li><strong>B</strong> &#8211; Segment height CH.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Dictionary with <strong>all</strong> values computed.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="legacy-quirks">
+<h2>Legacy Quirks<a class="headerlink" href="#legacy-quirks" title="Permalink to this headline">¶</a></h2>
+<p>The &#8220;solver&#8221; algorithm in lines 410-630 iterates 21 times.
+There are only five unknowns.</p>
+<p>Being sure that <tt class="docutils literal"><span class="pre">B</span></tt> really is zero and A is really <tt class="docutils literal"><span class="pre">pi</span></tt>?</p>
+<div class="highlight-python"><pre>440 IF B=0  AND A=P     THEN B=0:GOSUB 640</pre>
+</div>
+</div>
 </div>
 
 

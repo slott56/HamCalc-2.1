@@ -1,3 +1,5 @@
+..  _`math.propcirc`:
+
 propcirc -- Circle, Properties of
 ----------------------------------
 
@@ -175,6 +177,8 @@ There are three cases.
 
         A = f_1(C, R) = 2 \arctan \frac{Z}{\sqrt{1-Z^2}}
 
+    Note the trig identity for arcsine :math:`\arcsin X = \arctan \frac{X}{\sqrt{1-X^2}}`.
+
 -   *R* and *AC* (line 640):
 
     ..  math::
@@ -294,8 +298,8 @@ Ways to compute Angle, *A*.
     **640**. If Length of Arc, *AC*, and Radius, *R*, are known: :math:`A = \frac{A_c}{R}`.
 
     **650**. If  Radius, *R*,  and Length of Chord, *C*,  are known, this is two
-    sides of a triangle, and the angle, *A* can be computed. :math:`Z=\frac{C}{2R}`
-    :math:`A= 2 \arctan \frac{Z}{\sqrt{1-Z^2}}`.
+    sides of a triangle, and the angle, *A* can be computed. :math:`Z=\frac{C}{2R}; A= 2 \arctan \frac{Z}{\sqrt{1-Z^2}}`.
+    :math:`A = 2 \arcsin \frac{C}{2R}`.
 
 Ways to compute Radius, *R*.
 

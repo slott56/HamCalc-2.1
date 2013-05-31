@@ -76,6 +76,8 @@ Here's an attempt at a step-by-step overview.
 
     **1380**.   :math:`Z = \arctan { \frac{D_L}{\sqrt{1-D_L^2}} }`.  This is an output. Equatorial Latitude of the sun, perhaps?
 
+    Note the trig identity for arcsine :math:`\arcsin X = \arctan \frac{X}{\sqrt{1-X^2}}`.
+
     **1390-1400**. This may be the Equation of Time to provide an offset
         between due south for local apparent noon and actual position.
 

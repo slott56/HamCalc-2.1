@@ -1,5 +1,17 @@
 """hamcalc.math.propcirc -- Circle, Properties of
 
+This includes the bisection algorithm for approximation.
+
+See http://en.wikipedia.org/wiki/Bisection_method
+
+This may not be the most effective root-finding approximation.
+
+There are some alternatives that might be more helpful.
+
+See  http://en.wikipedia.org/wiki/Secant_method
+
+http://en.wikipedia.org/wiki/Newton%27s_method
+
 Here are some test cases.
 
 >>> import hamcalc.math.propcirc as propcirc
@@ -19,9 +31,9 @@ Here are some test cases.
 >>> propcirc.circle( G=1.6, angle=math.radians(60) )
 {'A': 448.0690272864175, 'C': 75.03733375924637, 'angle': 1.0471975511965976, 'D': 23.885125168440826, 'G': 1.6, 'L_A': 12.506222293207728, 'A_G': 12.919820742768572, 'L_C': 11.942562584220411, 'R': 11.942562584220413, 'A_C': 74.67817121440291}
 >>> propcirc.circle( R=12, L_C=12 )
-{'A': 452.3893421169302, 'C': 75.39822368615503, 'angle': 1.0471975511965979, 'D': 24, 'G': 1.6076951545867368, 'L_A': 12.566370614359174, 'A_G': 13.044394613675465, 'L_C': 12.0, 'R': 12, 'A_C': 75.39822368615505}
+{'A': 452.3893421169302, 'C': 75.39822368615503, 'angle': 1.0471975511965976, 'D': 24, 'G': 1.6076951545867355, 'L_A': 12.566370614359172, 'A_G': 13.044394613675443, 'L_C': 11.999999999999998, 'R': 12, 'A_C': 75.39822368615502}
 >>> propcirc.circle( R=12, G=1.6 )
-{'A': 452.3893421169302, 'C': 75.39822368615503, 'angle': 1.0446296436120974, 'D': 24, 'G': 1.600000000000001, 'L_A': 12.535555723345169, 'A_G': 12.952155424152622, 'L_C': 11.973303637676615, 'R': 12, 'A_C': 75.21333434007101}
+{'A': 452.3893421169302, 'C': 75.39822368615503, 'angle': 1.0446296436120972, 'D': 24, 'G': 1.5999999999999996, 'L_A': 12.535555723345166, 'A_G': 12.952155424152622, 'L_C': 11.973303637676612, 'R': 12, 'A_C': 75.213334340071}
 >>> propcirc.circle( L_A=12.56, G=1.61 )
 {'A': 450.09677997191295, 'C': 75.20693418466634, 'angle': 1.049328872579753, 'D': 23.939110660552977, 'G': 1.6099999693011857, 'L_A': 12.56, 'A_G': 13.054769563165337, 'L_C': 11.991641677007895, 'R': 11.969555330276489, 'A_C': 75.16880747413634}
 
@@ -66,7 +78,7 @@ def intro():
     """Returns the text from the introductory page."""
     return introduction
 
-def bisection( L_A, G, eps=1.0E-7 ):
+def arc_height_2_r( L_A, G, eps=1.0E-7 ):
     """Approximate a value for *R* from *L_A* and *G* via bisection.
 
     We're solving :math:`G = R (1 - \\cos \\frac{L_A}{2R})` for a value of *R*.
@@ -76,33 +88,58 @@ def bisection( L_A, G, eps=1.0E-7 ):
     This requires a 2-phase search.
 
     1. Double R until it's demonstrably too large.
-    2. Bisect between the last two values of R.
+    2. Bisect between R and R/2.
 
     :param L_A: Length of Arc
     :param G: Height of Arc
+    :param eps: Epsilon -- precision of approximation.
     :return: R radius
 
     >>> import hamcalc.math.propcirc as propcirc
-    >>> propcirc.bisection(  L_A=12.56, G=1.61 )
+    >>> propcirc.arc_height_2_r( L_A=12.56, G=1.61 )
     11.969555330276489
 
     """
-    def f( L_A, R ):
-        return R*(1 - math.cos( L_A/(2*R) ))
+    def f( R ):
+        return R*(1 - math.cos( L_A/(2*R) )) - G
     # Find upper bound on R.
     R= G if G>1.0 else 1.0
-    G_calc= f( L_A, R )
-    while G_calc > G:
+    G_calc= f( R )
+    while G_calc > 0:
         R= 2*R
-        G_calc= f( L_A, R )
-    # Root lies between R and R/2.
-    high= R
-    low= R/2
+        G_calc= f( R )
+    # Root lies between R/2 and R.
+    return bisection( f, R/2, R, eps )
+
+def sign( x ):
+    if x < 0: return -1
+    elif x > 0: return 1
+    else: return 0
+
+def bisection( f, low, high, eps=1.0E-7 ):
+    """Approximate *x* where :math:`f(x)=0 \\vert l \\leq x < h` by bisection.
+
+    :param f: A single-argument function, ``f(x)``.
+    :param low: Lower bound on search.
+    :param high: Upper bound on search.
+    :param eps: Epsilon -- precision of approximation.
+    :return: x value
+
+    >>> import hamcalc.math.propcirc as propcirc
+    >>> sqrt_13= lambda x: x**2-13
+    >>> root= propcirc.bisection( sqrt_13, 0, 13 )
+    >>> root
+    3.6055512726306915
+
+    ..  todo:: Optimization possible
+
+        Cache computation of f(low).
+    """
     for count in range(64): # 64 bit of precision, in effect.
         mid= (high+low)/2
-        G_calc= f( L_A, mid )
-        if abs( G-G_calc) <= eps: break
-        if G < G_calc:
+        G_calc= f( mid )
+        if abs(G_calc) <= eps: break
+        if sign(G_calc) == sign(f(low)):
             low= mid
         else:
             high= mid
@@ -173,7 +210,7 @@ def circle( **kw ):
         r= (4*args.G**2 + args.L_C**2)/(2*args.G)
     elif "L_A" in args and "G" in args:
         # approximate a value for *R* from *L_A* and *G*.
-        r= bisection( args.L_A, args.G )
+        r= arc_height_2_r( args.L_A, args.G )
     else:
         raise Error( "Insufficient Data")
     # Step 1B: compute angle, if possible; it's not *required*.
@@ -181,14 +218,18 @@ def circle( **kw ):
     if "angle" in args:
         angle= args.angle
     elif "L_C" in args:
-        z= args.L_C/(2*r)
-        angle= 2 * math.atan2( z, math.sqrt(1-z**2) )
+        # Legacy
+        # z= args.L_C/(2*r)
+        # angle= 2 * math.atan2( z, math.sqrt(1-z**2) )
+        angle= 2 * math.asin( args.L_C/(2*r) )
     elif "L_A" in args:
         angle= args.L_A / r
     elif "G" in args:
         args.L_C = 2 * math.sqrt( 2*args.G*r - args.G**2 )
-        z= args.L_C/(2*r)
-        angle= 2 * math.atan2( z, math.sqrt(1-z**2) )
+        # Legacy
+        # z= args.L_C/(2*r)
+        # angle= 2 * math.atan2( z, math.sqrt(1-z**2) )
+        angle= 2 * math.asin( args.L_C/(2*r) )
     else:
         angle= None
     # Step 3: compute the outputs from *r* and *angle*.
