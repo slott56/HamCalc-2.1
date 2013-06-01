@@ -1,4 +1,4 @@
-Results of doctest builder run on 2013-06-01 15:49:10
+Results of doctest builder run on 2013-06-01 16:01:23
 =====================================================
 
 Document: python/math/baromtr
