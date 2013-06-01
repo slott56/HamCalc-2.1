@@ -19,12 +19,13 @@ def bend( unit ):
         L= float(l_raw)
     except ValueError:
         return
+    display( T, R, L )
+
+def display( T, R, L ):
     C_1 = 0.55*T + math.pi/2*R
     C_2 = 0.64*T + math.pi/2*R
     C_3 = 0.71*T + math.pi/2*R
-    display( T, R, L, C_1, C_2, C_3 )
 
-def display( T, R, L, C_1, C_2, C_3 ):
     template= """\
  Material thickness.......T= {T_mm:5.1f} mm = {T_in:6.3f} in.
  Inside radius of bend....R= {R_mm:5.1f} mm = {R_in:6.3f} in.

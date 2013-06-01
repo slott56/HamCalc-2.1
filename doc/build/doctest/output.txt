@@ -1,4 +1,4 @@
-Results of doctest builder run on 2013-06-01 12:54:49
+Results of doctest builder run on 2013-06-01 15:49:10
 =====================================================
 
 Document: python/math/baromtr
@@ -108,9 +108,9 @@ Test passed.
 Document: python/math/equiv
 ---------------------------
 1 items passed all tests:
-  45 tests in default
-45 tests in 1 items.
-45 passed and 0 failed.
+  48 tests in default
+48 tests in 1 items.
+48 passed and 0 failed.
 Test passed.
 
 Document: python/math/involute
@@ -219,7 +219,7 @@ Test passed.
 
 Doctest summary
 ===============
-  592 tests
+  595 tests
     0 failures in tests
     0 failures in setup code
     0 failures in cleanup code

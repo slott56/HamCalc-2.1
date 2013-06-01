@@ -8,13 +8,13 @@ Construction, including towers, stairs, plumbing, masonry, etc.
 
     arch
     bend
+    brick
     conecalc
     diamfind
     survey
 
 Plus these additional modules, not yet examined.
 
--       brick -- Masonry Estimator
 -       copwire -- Copper Wire Data
 -       guywires -- Guy Wires for Antenna Towers/Masts
 -       mechmenu -- MECHANICS Math

@@ -4,7 +4,6 @@ bend -- Bend Allowance, Metals
 Legacy Output
 ~~~~~~~~~~~~~~
 
-
 Introduction::
 
     BEND ALLOWANCE, Metal                                   By George Murphy VE3ERP
@@ -58,3 +57,8 @@ Bronze, hard copper, cold rolled & spring steel: :math:`0.71T+\frac{\pi}{2}R`
 Plus unit conversions from inches or millimeters.
 
 And nice ASCII art diagrams.
+
+Implementation
+~~~~~~~~~~~~~~~
+
+There's no "module" for this. It's just a simple stdio application.

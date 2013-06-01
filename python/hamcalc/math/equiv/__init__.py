@@ -160,6 +160,14 @@ VOLUME
 It's possible that the legacy computes this incorrectly.
 The result from the legacy may be 22.6 LPK.
 
+Area
+
+>>> a = equiv.SQ_FOOT.to_std( 9 )
+>>> equiv.SQ_METRE.from_std( a )
+0.83612736
+>>> equiv.SQ_FOOT.from_std( a )
+9.0
+
 """
 
 from hamcalc.lib import Unit, Standard_Unit, AttrDict
@@ -418,6 +426,16 @@ def freq_wavelength( **kw ):
     elif 'l' in args:
         args.f = c/(args.l/1000)
     return args
+
+
+class SQ_METRE( Standard_Unit ):
+    """Square Metre"""
+    name= "sq.metre"
+
+class SQ_FOOT( Unit ):
+    """Square Foot"""
+    name= "sq.ft"
+    factor= 1/0.09290304
 
 unit_map = {
     'capacitance': (FARAD, MICROFARAD, NANOFARAD, PICOFARAD),

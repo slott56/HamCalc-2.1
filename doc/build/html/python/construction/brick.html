@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>construction – Construction and Mechanical &mdash; HamCalc 2.1 documentation</title>
+    <title>brick – Masonry Estimator &mdash; HamCalc 2.1 documentation</title>
     
     <link rel="stylesheet" href="../../_static/agogo.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
@@ -24,9 +24,9 @@
     <script type="text/javascript" src="../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../_static/doctools.js"></script>
     <link rel="top" title="HamCalc 2.1 documentation" href="../../index.html" />
-    <link rel="up" title="Python Modules" href="../index.html" />
-    <link rel="next" title="arch – Arch Calculator" href="arch.html" />
-    <link rel="prev" title="ohmslaw" href="../electronics/ohmslaw.html" /> 
+    <link rel="up" title="construction – Construction and Mechanical" href="index.html" />
+    <link rel="next" title="conecalc – Cone Calculator" href="conecalc.html" />
+    <link rel="prev" title="bend – Bend Allowance, Metals" href="bend.html" /> 
   </head>
   <body>
     <div class="header-wrapper">
@@ -34,9 +34,9 @@
         <div class="headertitle"><a
           href="../../index.html">HamCalc 2.1 documentation</a></div>
         <div class="rel">
-          <a href="../electronics/ohmslaw.html" title="ohmslaw"
+          <a href="bend.html" title="bend – Bend Allowance, Metals"
              accesskey="P">previous</a> |
-          <a href="arch.html" title="arch – Arch Calculator"
+          <a href="conecalc.html" title="conecalc – Cone Calculator"
              accesskey="N">next</a> |
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |
@@ -54,30 +54,65 @@
         <div class="bodywrapper">
           <div class="body">
             
-  <div class="section" id="construction-construction-and-mechanical">
-<h1>construction &#8211; Construction and Mechanical<a class="headerlink" href="#construction-construction-and-mechanical" title="Permalink to this headline">¶</a></h1>
-<p>Construction, including towers, stairs, plumbing, masonry, etc.</p>
-<div class="toctree-wrapper compound">
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="arch.html">arch &#8211; Arch Calculator</a></li>
-<li class="toctree-l1"><a class="reference internal" href="bend.html">bend &#8211; Bend Allowance, Metals</a></li>
-<li class="toctree-l1"><a class="reference internal" href="brick.html">brick &#8211; Masonry Estimator</a></li>
-<li class="toctree-l1"><a class="reference internal" href="conecalc.html">conecalc &#8211; Cone Calculator</a></li>
-<li class="toctree-l1"><a class="reference internal" href="diamfind.html">diamfind &#8211; Diameter Finder</a></li>
-<li class="toctree-l1"><a class="reference internal" href="survey.html">survey &#8211; Surveyor&#8217;s Calculator</a></li>
-</ul>
+  <div class="section" id="brick-masonry-estimator">
+<h1>brick &#8211; Masonry Estimator<a class="headerlink" href="#brick-masonry-estimator" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="legacy-output">
+<h2>Legacy Output<a class="headerlink" href="#legacy-output" title="Permalink to this headline">¶</a></h2>
+<p>Introduction:</p>
+<div class="highlight-python"><pre>MASONRY ESTIMATOR                                       by George Murphy VE3ERP
+
+ │«──── A ────»│
+ ┌─┬───┬───┬───┐«─┐
+ ├─┴─┬─┴─┬─┴─┬─┤  │
+ ├─┬─┴─┬─┴─┬─┴─┤  B
+ ├─┴─┬─┴─┬─┴─┬─┤  │
+ └───┴───┴───┴─┘«─┘
+  Typical Panel
+
+│«L»│
+┌───┐«┐H
+└───┘«┘
+Brick/Block
+Dimensions
+ This program estimates quantities and dimensions for brick/block panels.</pre>
 </div>
-<p>Plus these additional modules, not yet examined.</p>
-<ul class="simple">
-<li>copwire &#8211; Copper Wire Data</li>
-<li>guywires &#8211; Guy Wires for Antenna Towers/Masts</li>
-<li>mechmenu &#8211; MECHANICS Math</li>
-<li>nmbrsize &#8211; Numbered Drills/Screws/Taps/Gauges</li>
-<li>pipesize &#8211; Pipe Sizes, ANSI Standard</li>
-<li>teletube &#8211; Telescoping Aluminum Tubing</li>
-<li>wirecond &#8211; Wires in Conduit</li>
-<li>wiremesh &#8211; Wire Mesh Screens, Wind Loads</li>
-</ul>
+<p>Sample Output:</p>
+<div class="highlight-python"><pre>Enter all dimensions in the same units of measure (cm.,in. etc,)
+ENTER: Panel length A (in.)...........? 120
+ENTER: Panel height B (in.)...........? 60
+ENTER: Brick/block length L (in.).....? 5
+ENTER: Brick/block height H (in.).....? 3
+ENTER: Width of mortar joints (in.)...? .5
+
+Panel area...................     2.000 sq.feet
+Panel length...............A=   120.000 in.
+Panel height...............B=    60.000 in.
+Brick/block length.........L=     5.000 in.
+Brick/block height.........H=     3.000 in.
+Bricks/blocks per course.....    22 (approximate)(depends on pattern)
+Width of mortar joints.......     0.500 in.
+Number of bricks/blocks......   374 (approximate)
+
+Height B contains 17 courses</pre>
+</div>
+</div>
+<div class="section" id="analysis">
+<h2>Analysis<a class="headerlink" href="#analysis" title="Permalink to this headline">¶</a></h2>
+<p>The unit of construction is brick plus joint (<em>J</em>) on each side.
+<img class="math" src="../../_images/math/82737ee00feb7584422beea12de93d8b508ed478.png" alt="U=(L+J)\times(H+J)"/>.</p>
+<p>Bricks per course <em>B_C</em> is the length (<em>A</em>) divided by the brick length plus joint.
+<img class="math" src="../../_images/math/c8a52f77ab3074eafe5050712ef35794bd28de30.png" alt="B_C = \lceil \frac{A}{L+J} \rceil"/>.</p>
+<p>Total number of bricks, <em>N</em> is total area/unit size. <img class="math" src="../../_images/math/a92318ffedba5fae37a7ab737e71edc5b7ad4b94.png" alt="N=\frac{AB}{U}"/>.</p>
+<p>Number of courses, <em>N_C</em> is the height (<em>B</em>) divided by the brick height plus joint.
+<img class="math" src="../../_images/math/cb6ab5ee3a5a5b7a1f4cffd7d1ee0674d163162f.png" alt="N_C = \lfloor \frac{B}{H+J} \rfloor"/>.</p>
+<p>Plus unit conversions between inches and millimeters, square meters
+and square feet.</p>
+<p>And nice ASCII art diagrams.</p>
+</div>
+<div class="section" id="implementation">
+<h2>Implementation<a class="headerlink" href="#implementation" title="Permalink to this headline">¶</a></h2>
+<p>There&#8217;s no &#8220;module&#8221; for this. It&#8217;s just a simple stdio application.</p>
+</div>
 </div>
 
 
@@ -98,10 +133,10 @@
 <li class="toctree-l2"><a class="reference internal" href="../radio.html">radio &#8211; Radio Design and Engineering</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../ham.html">ham &#8211; Ham Radio Operations</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../electronics/index.html">electronics &#8211; General Electronics</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="">construction &#8211; Construction and Mechanical</a><ul>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">construction &#8211; Construction and Mechanical</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="arch.html">arch &#8211; Arch Calculator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="bend.html">bend &#8211; Bend Allowance, Metals</a></li>
-<li class="toctree-l3"><a class="reference internal" href="brick.html">brick &#8211; Masonry Estimator</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="">brick &#8211; Masonry Estimator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="conecalc.html">conecalc &#8211; Cone Calculator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="diamfind.html">diamfind &#8211; Diameter Finder</a></li>
 <li class="toctree-l3"><a class="reference internal" href="survey.html">survey &#8211; Surveyor&#8217;s Calculator</a></li>
@@ -142,16 +177,16 @@
     <div class="footer-wrapper">
       <div class="footer">
         <div class="left">
-          <a href="../electronics/ohmslaw.html" title="ohmslaw"
+          <a href="bend.html" title="bend – Bend Allowance, Metals"
              >previous</a> |
-          <a href="arch.html" title="arch – Arch Calculator"
+          <a href="conecalc.html" title="conecalc – Cone Calculator"
              >next</a> |
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |
           <a href="../../genindex.html" title="General Index"
              >index</a>
             <br/>
-            <a href="../../_sources/python/construction/index.txt"
+            <a href="../../_sources/python/construction/brick.txt"
                rel="nofollow">Show Source</a>
         </div>
 

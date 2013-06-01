@@ -375,6 +375,14 @@ This collects units into dimensions.</p>
 </div>
 <p>It&#8217;s possible that the legacy computes this incorrectly.
 The result from the legacy may be 22.6 LPK.</p>
+<p>Area</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">equiv</span><span class="o">.</span><span class="n">SQ_FOOT</span><span class="o">.</span><span class="n">to_std</span><span class="p">(</span> <span class="mi">9</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">equiv</span><span class="o">.</span><span class="n">SQ_METRE</span><span class="o">.</span><span class="n">from_std</span><span class="p">(</span> <span class="n">a</span> <span class="p">)</span>
+<span class="go">0.83612736</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">equiv</span><span class="o">.</span><span class="n">SQ_FOOT</span><span class="o">.</span><span class="n">from_std</span><span class="p">(</span> <span class="n">a</span> <span class="p">)</span>
+<span class="go">9.0</span>
+</pre></div>
+</div>
 <dl class="class">
 <dt id="hamcalc.math.equiv.AMPERE">
 <em class="property">class </em><tt class="descclassname">hamcalc.math.equiv.</tt><tt class="descname">AMPERE</tt><a class="reference internal" href="../../_modules/hamcalc/math/equiv.html#AMPERE"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.math.equiv.AMPERE" title="Permalink to this definition">¶</a></dt>
@@ -839,6 +847,24 @@ The result from the legacy may be 22.6 LPK.</p>
 <dt id="hamcalc.math.equiv.SECOND.standard">
 <tt class="descname">standard</tt><a class="headerlink" href="#hamcalc.math.equiv.SECOND.standard" title="Permalink to this definition">¶</a></dt>
 <dd><p>alias of <a class="reference internal" href="#hamcalc.math.equiv.SECOND" title="hamcalc.math.equiv.SECOND"><tt class="xref py py-class docutils literal"><span class="pre">SECOND</span></tt></a></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="hamcalc.math.equiv.SQ_FOOT">
+<em class="property">class </em><tt class="descclassname">hamcalc.math.equiv.</tt><tt class="descname">SQ_FOOT</tt><a class="headerlink" href="#hamcalc.math.equiv.SQ_FOOT" title="Permalink to this definition">¶</a></dt>
+<dd><p>Square Foot</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="hamcalc.math.equiv.SQ_METRE">
+<em class="property">class </em><tt class="descclassname">hamcalc.math.equiv.</tt><tt class="descname">SQ_METRE</tt><a class="headerlink" href="#hamcalc.math.equiv.SQ_METRE" title="Permalink to this definition">¶</a></dt>
+<dd><p>Square Metre</p>
+<dl class="attribute">
+<dt id="hamcalc.math.equiv.SQ_METRE.standard">
+<tt class="descname">standard</tt><a class="headerlink" href="#hamcalc.math.equiv.SQ_METRE.standard" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#hamcalc.math.equiv.SQ_METRE" title="hamcalc.math.equiv.SQ_METRE"><tt class="xref py py-class docutils literal"><span class="pre">SQ_METRE</span></tt></a></p>
 </dd></dl>
 
 </dd></dl>
