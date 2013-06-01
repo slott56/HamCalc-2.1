@@ -7,13 +7,13 @@ Construction, including towers, stairs, plumbing, masonry, etc.
     :maxdepth: 1
 
     arch
+    bend
     conecalc
     diamfind
     survey
 
 Plus these additional modules, not yet examined.
 
--       bend -- Bend Allowance, Metals
 -       brick -- Masonry Estimator
 -       copwire -- Copper Wire Data
 -       guywires -- Guy Wires for Antenna Towers/Masts
