@@ -56,6 +56,53 @@
             
   <div class="section" id="bend-bend-allowance-metals">
 <h1>bend &#8211; Bend Allowance, Metals<a class="headerlink" href="#bend-bend-allowance-metals" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="legacy-output">
+<h2>Legacy Output<a class="headerlink" href="#legacy-output" title="Permalink to this headline">¶</a></h2>
+<p>Introduction:</p>
+<div class="highlight-python"><pre>BEND ALLOWANCE, Metal                                   By George Murphy VE3ERP
+
+     leg         leg
+ │«── A ─»│«C»│«─ B ─»│     █▀▀▀▀▀▀▀ A
+ ┌────────┬─┬─┬───────┐     █ L
+ │    bend─»| |       │     █
+ └────────┴─┴─┴───────┘     B
+  BLANK BEFORE BENDING    »│T│«
+ T = Thickness of material
+ R = Bending radius to inside face of blank
+ L = Included angle of bend
+ C = Bend allowance
+
+ In bending metal the problem is to find the length of straight stock required
+ for each bend; then these lengths are added to the lengths of the straight
+ sections to obtain the total length of the material before bending.
+         (Machinery&#x27;s Handbook, revised 21st edition, page 1928).
+
+ Bend allowance for pipe or tubing = radius to centreline of the material x
+ included angle in degrees x 0.01745.
+        (Machinery&#x27;s Handbook, revised 21st edition, page 2335).</pre>
+</div>
+<p>Sample Output.</p>
+<p>(Numeric values aren&#8217;t correct.)</p>
+<div class="highlight-python"><pre>ENTER: Material thickness (in.)....................T=? .125
+ENTER: Inside radius to face of material (in.).....R=? 3
+ENTER: Included angle of bend (degrees)............L=? 90
+Material thickness.......T=   3.2 mm =  0.125 in.
+Inside radius of bend....R=  76.2 mm =  3.000 in.
+Included angle...........L=  90.0 degrees
+Bending allowance C:
+ For brass &amp; soft copper................................  15.0 mm =  0.592 in.
+ For half-hard copper &amp; brass, soft steel, &amp; aluminum...  15.3 mm =  0.604 in.
+ For bronze, hard copper, cold rolled &amp; spring steel....  15.6 mm =  0.612 in.</pre>
+</div>
+</div>
+<div class="section" id="analysis">
+<h2>Analysis<a class="headerlink" href="#analysis" title="Permalink to this headline">¶</a></h2>
+<p>Brass and soft copper: <img class="math" src="../../_images/math/0cd0c3f1b05c778839795baebfbe80ffea529b6f.png" alt="0.55T+\frac{\pi}{2}R"/></p>
+<p>Half-hard copper &amp; brass, soft steel, &amp; aluminum: <img class="math" src="../../_images/math/ffb03a0b5c9c0c355b8166d549d4176b662dcf28.png" alt="0.64T+\frac{\pi}{2}R"/></p>
+<p>Bronze, hard copper, cold rolled &amp; spring steel: <img class="math" src="../../_images/math/284508717ead036b80dd4cc347307df3c3d3aad0.png" alt="0.71T+\frac{\pi}{2}R"/></p>
+<p>Plus unit conversions from inches or millimeters.</p>
+<p>And nice ASCII art diagrams.</p>
+</div>
 </div>
 
 

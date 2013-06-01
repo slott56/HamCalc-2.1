@@ -137,8 +137,15 @@ the legacy HamCalc code in detail.</p>
 <p><img src="../../_images/math/3c42d8717e1a9e8d0451c5c7c96c60454a75bd10.png" alt="R= \frac{B}{1-\cos \frac{A}{2} }"/></p>
 </div></li>
 <li><p class="first"><em>C</em> and <em>AC</em>.</p>
-<p>Two points on the circumference are not sufficient to define a circle.
-There&#8217;s no way to compute the radius.</p>
+<div class="admonition-todo admonition" id="index-0">
+<p class="first admonition-title">Todo</p>
+<p>Fix this.</p>
+<p class="last">The approximation is in the <a class="reference internal" href="../construction/arch.html#module-hamcalc.construction.arch" title="hamcalc.construction.arch"><tt class="xref py py-mod docutils literal"><span class="pre">hamcalc.construction.arch</span></tt></a> module.
+Move the code to this module.</p>
+</div>
+<p>Use
+<a class="reference internal" href="#hamcalc.math.propcirc.bisection" title="hamcalc.math.propcirc.bisection"><tt class="xref py py-func docutils literal"><span class="pre">hamcalc.math.propcirc.bisection()</span></tt></a> to solve for <em>A</em> from <em>AC</em> and <em>C</em>.</p>
+<p>We&#8217;re finding <em>A</em> such that <img class="math" src="../../_images/math/16119302ef2124b5b95646c848560d0fc0291ac6.png" alt="\dfrac{A}{\sin \frac{A}{2}} - \dfrac{2A_C}{C} = 0"/></p>
 </li>
 <li><p class="first"><em>C</em> and <em>B</em> (line 670):</p>
 <div class="math">
@@ -314,7 +321,7 @@ so many relationships among to many variables.</p>
 <span class="go">3.6055512726306915</span>
 </pre></div>
 </div>
-<div class="admonition-todo admonition" id="index-0">
+<div class="admonition-todo admonition" id="index-1">
 <p class="first admonition-title">Todo</p>
 <p>Optimization possible</p>
 <p class="last">Cache computation of f(low).</p>

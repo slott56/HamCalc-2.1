@@ -126,8 +126,16 @@ What's left is deriving *R* from the remaining four variables, *A*, *C*, *AC* an
 
 -   *C* and *AC*.
 
-    Two points on the circumference are not sufficient to define a circle.
-    There's no way to compute the radius.
+    ..  todo:: Fix this.
+
+        The approximation is in the :mod:`hamcalc.construction.arch` module.
+        Move the code to this module.
+
+    Use
+    :func:`hamcalc.math.propcirc.bisection` to solve for *A* from *AC* and *C*.
+
+    We're finding *A* such that :math:`\dfrac{A}{\sin \frac{A}{2}} - \dfrac{2A_C}{C} = 0`
+
 
 -   *C* and *B* (line 670):
 

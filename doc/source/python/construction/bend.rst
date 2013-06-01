@@ -1,6 +1,10 @@
 bend -- Bend Allowance, Metals
 --------------------------------
 
+Legacy Output
+~~~~~~~~~~~~~~
+
+
 Introduction::
 
     BEND ALLOWANCE, Metal                                   By George Murphy VE3ERP
@@ -25,7 +29,11 @@ Introduction::
      included angle in degrees x 0.01745.
             (Machinery's Handbook, revised 21st edition, page 2335).
 
-Sample Output::
+Sample Output.
+
+(Numeric values aren't correct.)
+
+::
 
      ENTER: Material thickness (in.)....................T=? .125
      ENTER: Inside radius to face of material (in.).....R=? 3
@@ -38,3 +46,15 @@ Sample Output::
       For half-hard copper & brass, soft steel, & aluminum...  15.3 mm =  0.604 in.
       For bronze, hard copper, cold rolled & spring steel....  15.6 mm =  0.612 in.
 
+Analysis
+~~~~~~~~~~
+
+Brass and soft copper: :math:`0.55T+\frac{\pi}{2}R`
+
+Half-hard copper & brass, soft steel, & aluminum: :math:`0.64T+\frac{\pi}{2}R`
+
+Bronze, hard copper, cold rolled & spring steel: :math:`0.71T+\frac{\pi}{2}R`
+
+Plus unit conversions from inches or millimeters.
+
+And nice ASCII art diagrams.
