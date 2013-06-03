@@ -177,11 +177,9 @@ The idea is something like this.
 ::
 
     args = dict( H=H, type_= type_code, R=R )
-    args= guywires.wireset( **args )
-    print( template.format(**args) )
-    while params.next:
-        args= guywires.wireset( **args )
+    while args.next:
         print( template.format(**args) )
+        args= guywires.wireset( **args )
 
 Something like the above should yield a description of each set.
 

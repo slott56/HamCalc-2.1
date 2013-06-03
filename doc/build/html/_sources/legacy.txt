@@ -1275,7 +1275,7 @@ There appear to be the following subject areas.
 
 #.  General Electronics
 
-#.  Construction including Plumbing and Electrical
+#.  Construction including Plumbing and Electrical and Mechanical
 
 #.  Mathematics and Physics including Unit Conversions
 

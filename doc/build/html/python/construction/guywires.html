@@ -209,11 +209,9 @@ can enter their selected radius, <em>R</em>.</p>
 the required number, <em>N</em>.</p>
 <p>The idea is something like this.</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="n">args</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span> <span class="n">H</span><span class="o">=</span><span class="n">H</span><span class="p">,</span> <span class="n">type_</span><span class="o">=</span> <span class="n">type_code</span><span class="p">,</span> <span class="n">R</span><span class="o">=</span><span class="n">R</span> <span class="p">)</span>
-<span class="n">args</span><span class="o">=</span> <span class="n">guywires</span><span class="o">.</span><span class="n">wireset</span><span class="p">(</span> <span class="o">**</span><span class="n">args</span> <span class="p">)</span>
-<span class="k">print</span><span class="p">(</span> <span class="n">template</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">**</span><span class="n">args</span><span class="p">)</span> <span class="p">)</span>
-<span class="k">while</span> <span class="n">params</span><span class="o">.</span><span class="n">next</span><span class="p">:</span>
-    <span class="n">args</span><span class="o">=</span> <span class="n">guywires</span><span class="o">.</span><span class="n">wireset</span><span class="p">(</span> <span class="o">**</span><span class="n">args</span> <span class="p">)</span>
+<span class="k">while</span> <span class="n">args</span><span class="o">.</span><span class="n">next</span><span class="p">:</span>
     <span class="k">print</span><span class="p">(</span> <span class="n">template</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">**</span><span class="n">args</span><span class="p">)</span> <span class="p">)</span>
+    <span class="n">args</span><span class="o">=</span> <span class="n">guywires</span><span class="o">.</span><span class="n">wireset</span><span class="p">(</span> <span class="o">**</span><span class="n">args</span> <span class="p">)</span>
 </pre></div>
 </div>
 <p>Something like the above should yield a description of each set.</p>

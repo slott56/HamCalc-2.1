@@ -6,9 +6,19 @@ Python :func:`print` and :func:`input` functions.
 
 This is approximately like the legacy HamCalc user experience.
 
-There are two subgroups of stdio programs.
+There are four subgroups of stdio programs.
 
--   Importable Modules.
+-   Application Programs.
+
+    This is the bulk of HamCalc.
+    These are short programs that do the real work.
+    Most of these wrap a calculation module; the calculation module has
+    all relevant documentation.
+
+    A few of these are stand-alone programs that don't even have a calculation
+    module.
+
+-   Special Importable Modules.
 
     These are modules with a proper "main/import" switch block of code.
     They can be imported and reused.
@@ -17,30 +27,29 @@ There are two subgroups of stdio programs.
         :program:`intro` is just a "splash page", which imports the menu.
         :program:`menu` (circularly) imports :program:`intro`.
 
-    -   :mod:`hamcalc.stdio.rjd` is a separate menu program with
-        a subset of HamCalc modules.
-
     -   :mod:`hamcalc.stdio.graphs`. This contains a useful class
-        for graphing functions.
+        for graphing functions; other modules might import this.
 
     -   :mod:`hamcalc.stdio.gwgraphics`. This contains a useful
         class for emulating some aspects of GW-Basic graphics mode output.
 
--   Simple Programs.
+-   Other Menus.
 
-    These programs are so short that they don't really need documentation.
-    Most of these wrap a calculation module; the calculation module has
-    the relevant documentation.
+    There are few programs which are, themselves, merely menus.
 
-    A few of these are stand-alone programs that on't have a calculation
-    module.
+    -   :mod:`hamcalc.stdio.rjd`.
+
+    -   :mod:`hamcalc.stdio.mechmenu`.
+
+    It might be sensible to merge these into the menu application
+    itself.
 
 -   Screen Savers.
 
     Once upon a time, a screen saver was considered essential to
     preserve the life of expensive monitors.
 
-    There are four screen savers.
+    There are four screen savers in HamCalc.
 
     -   :mod:`hamcalc.stdio.logoclok`.
 
@@ -70,6 +79,12 @@ RJD
 -------------------
 
 ..  automodule:: hamcalc.stdio.rjd
+    :members:
+
+mechmenu
+-------------------
+
+..  automodule:: hamcalc.stdio.mechmenu
     :members:
 
 ..  _`stdio.graphs`:

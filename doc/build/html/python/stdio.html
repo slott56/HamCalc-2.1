@@ -59,34 +59,42 @@
 <p>These are HamCalc programs that run from the terminal window, using only
 Python <tt class="xref py py-func docutils literal"><span class="pre">print()</span></tt> and <tt class="xref py py-func docutils literal"><span class="pre">input()</span></tt> functions.</p>
 <p>This is approximately like the legacy HamCalc user experience.</p>
-<p>There are two subgroups of stdio programs.</p>
+<p>There are four subgroups of stdio programs.</p>
 <ul>
-<li><p class="first">Importable Modules.</p>
+<li><p class="first">Application Programs.</p>
+<p>This is the bulk of HamCalc.
+These are short programs that do the real work.
+Most of these wrap a calculation module; the calculation module has
+all relevant documentation.</p>
+<p>A few of these are stand-alone programs that don&#8217;t even have a calculation
+module.</p>
+</li>
+<li><p class="first">Special Importable Modules.</p>
 <p>These are modules with a proper &#8220;main/import&#8221; switch block of code.
 They can be imported and reused.</p>
 <ul class="simple">
 <li>The <tt class="xref py py-mod docutils literal"><span class="pre">hamlcalc.stdio.intro</span></tt>, <tt class="xref py py-mod docutils literal"><span class="pre">hamlcalc.stdio.menu</span></tt>.
 <strong class="program">intro</strong> is just a &#8220;splash page&#8221;, which imports the menu.
 <strong class="program">menu</strong> (circularly) imports <strong class="program">intro</strong>.</li>
-<li><a class="reference internal" href="#module-hamcalc.stdio.rjd" title="hamcalc.stdio.rjd"><tt class="xref py py-mod docutils literal"><span class="pre">hamcalc.stdio.rjd</span></tt></a> is a separate menu program with
-a subset of HamCalc modules.</li>
 <li><a class="reference internal" href="#module-hamcalc.stdio.graphs" title="hamcalc.stdio.graphs"><tt class="xref py py-mod docutils literal"><span class="pre">hamcalc.stdio.graphs</span></tt></a>. This contains a useful class
-for graphing functions.</li>
+for graphing functions; other modules might import this.</li>
 <li><a class="reference internal" href="#module-hamcalc.stdio.gwgraphics" title="hamcalc.stdio.gwgraphics"><tt class="xref py py-mod docutils literal"><span class="pre">hamcalc.stdio.gwgraphics</span></tt></a>. This contains a useful
 class for emulating some aspects of GW-Basic graphics mode output.</li>
 </ul>
 </li>
-<li><p class="first">Simple Programs.</p>
-<p>These programs are so short that they don&#8217;t really need documentation.
-Most of these wrap a calculation module; the calculation module has
-the relevant documentation.</p>
-<p>A few of these are stand-alone programs that on&#8217;t have a calculation
-module.</p>
+<li><p class="first">Other Menus.</p>
+<p>There are few programs which are, themselves, merely menus.</p>
+<ul class="simple">
+<li><a class="reference internal" href="#module-hamcalc.stdio.rjd" title="hamcalc.stdio.rjd"><tt class="xref py py-mod docutils literal"><span class="pre">hamcalc.stdio.rjd</span></tt></a>.</li>
+<li><a class="reference internal" href="#module-hamcalc.stdio.mechmenu" title="hamcalc.stdio.mechmenu"><tt class="xref py py-mod docutils literal"><span class="pre">hamcalc.stdio.mechmenu</span></tt></a>.</li>
+</ul>
+<p>It might be sensible to merge these into the menu application
+itself.</p>
 </li>
 <li><p class="first">Screen Savers.</p>
 <p>Once upon a time, a screen saver was considered essential to
 preserve the life of expensive monitors.</p>
-<p>There are four screen savers.</p>
+<p>There are four screen savers in HamCalc.</p>
 <ul class="simple">
 <li><tt class="xref py py-mod docutils literal"><span class="pre">hamcalc.stdio.logoclok</span></tt>.</li>
 <li><tt class="xref py py-mod docutils literal"><span class="pre">hamcalc.stdio.bignum</span></tt>.</li>
@@ -417,6 +425,28 @@ It differs in minor ways from the superclas menu.</p>
 </dd></dl>
 
 </div>
+<div class="section" id="module-hamcalc.stdio.mechmenu">
+<span id="mechmenu"></span><h2>mechmenu<a class="headerlink" href="#module-hamcalc.stdio.mechmenu" title="Permalink to this headline">¶</a></h2>
+<p>MECHANICS Math</p>
+<dl class="class">
+<dt id="hamcalc.stdio.mechmenu.Mechanics_Menu">
+<em class="property">class </em><tt class="descclassname">hamcalc.stdio.mechmenu.</tt><tt class="descname">Mechanics_Menu</tt><a class="reference internal" href="../_modules/hamcalc/stdio/mechmenu.html#Mechanics_Menu"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.stdio.mechmenu.Mechanics_Menu" title="Permalink to this definition">¶</a></dt>
+<dd><p>Menu to display the Mechanics list of programs.</p>
+<dl class="method">
+<dt id="hamcalc.stdio.mechmenu.Mechanics_Menu.display">
+<tt class="descname">display</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/hamcalc/stdio/mechmenu.html#Mechanics_Menu.display"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.stdio.mechmenu.Mechanics_Menu.display" title="Permalink to this definition">¶</a></dt>
+<dd><p>Display the menu.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="hamcalc.stdio.mechmenu.Mechanics_Menu.get_choice">
+<tt class="descname">get_choice</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/hamcalc/stdio/mechmenu.html#Mechanics_Menu.get_choice"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.stdio.mechmenu.Mechanics_Menu.get_choice" title="Permalink to this definition">¶</a></dt>
+<dd><p>Prompt and get the user&#8217;s choice.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
 <div class="section" id="module-hamcalc.stdio.graphs">
 <span id="graphs"></span><span id="stdio-graphs"></span><h2>Graphs<a class="headerlink" href="#module-hamcalc.stdio.graphs" title="Permalink to this headline">¶</a></h2>
 <p>Graphs</p>
@@ -609,6 +639,7 @@ only.</p>
 <li class="toctree-l3"><a class="reference internal" href="#module-hamcalc.stdio.intro">Intro</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#module-hamcalc.stdio.menu">Menu</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#id1">RJD</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-hamcalc.stdio.mechmenu">mechmenu</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#module-hamcalc.stdio.graphs">Graphs</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#module-hamcalc.stdio.gwgraphics">GW Graphics</a></li>
 </ul>

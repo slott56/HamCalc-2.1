@@ -1,7 +1,7 @@
 construction -- Construction and Mechanical
 =================================================================
 
-Construction, including towers, stairs, plumbing, masonry, etc.
+Construction, including towers, stairs, plumbing, masonry, mechanical, etc.
 
 ..  toctree::
     :maxdepth: 1
@@ -16,9 +16,21 @@ Construction, including towers, stairs, plumbing, masonry, etc.
 
 Plus these additional modules, not yet examined.
 
--       mechmenu -- MECHANICS Math
 -       nmbrsize -- Numbered Drills/Screws/Taps/Gauges
 -       pipesize -- Pipe Sizes, ANSI Standard
 -       teletube -- Telescoping Aluminum Tubing
 -       wirecond -- Wires in Conduit
 -       wiremesh -- Wire Mesh Screens, Wind Loads
+
+From the mechanics menu, we have these modules, also.
+
+-   "beamdefl","BEAMS - Deflection in"
+-   "beamsect","BEAMS - Properties of (Start new beam design here)"
+-   "beltdriv","Belt Drives"
+-   "chain","Chain Drives"
+-   "cyl","Cylinders - Air & Hydraulic"
+-   "gearing","Gears & gearing"
+-   "binhop","Hoppered Bins & Tanks"
+-   "shaft","Shafting"
+-   "stairs","Stairs, Ladders & Ramps"
+-   "torque","Torque & Horsepower"

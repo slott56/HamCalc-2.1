@@ -515,7 +515,7 @@ def run( intro=True ):
     page_group_iter= ( all_programs[i:i+40] for i in range(0, len(all_programs), 40 ) )
     # Build Program_Menu instances for each subset.
     pages= [ Program_Menu( "Program Menu {0}  ( {1}-{2} )".format(
-        string.ascii_uppercase[i//40], pg[0].title[:3], pg[-1].title[:3] ), pg ) for i, pg in enumerate(page_group_iter) ]
+        string.ascii_uppercase[i], pg[0].title[:3], pg[-1].title[:3] ), pg ) for i, pg in enumerate(page_group_iter) ]
     # Build the special Quick Tables menu.
     quick_tables= QT_Menu()
     # Build a top-level menu from the Quick Tables and the Pages
