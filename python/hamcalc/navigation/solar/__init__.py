@@ -204,6 +204,8 @@ of 4,8,11 for Jan 1, Jan 10 and Jan 21.
 -11
 
 """
+__version__ = "2.1"
+
 import datetime
 from hamcalc.lib import AttrDict
 from hamcalc.navigation.solar.timezone import utc, Newfoundland, Atlantic, \

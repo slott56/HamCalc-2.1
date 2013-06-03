@@ -27,6 +27,8 @@ Test Cases for Units
 >>> satorbit.MPS.from_std( speed )
 187.7568
 """
+__version__ = "2.1"
+
 import math
 from hamcalc.lib import AttrDict, Unit, Standard_Unit
 

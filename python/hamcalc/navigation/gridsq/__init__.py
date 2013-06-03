@@ -10,6 +10,8 @@ Test Case
 (38.9792, -76.4583)
 
 """
+__version__ = "2.1"
+
 import string
 
 introduction="""\

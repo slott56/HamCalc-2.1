@@ -56,20 +56,213 @@
 <span class="sd">Test Cases</span>
 
 <span class="sd">&gt;&gt;&gt; import hamcalc.construction.arch as arch</span>
-<span class="sd">&gt;&gt;&gt; arch.arch( C=10, B=1 )</span>
-<span class="sd">{ A_C:10.265, R:13, A_d:45.240, C:10, B=1, C_F=81.68140899333463 }</span>
+<span class="sd">&gt;&gt;&gt; a= arch.arch( C=10, B=1 )</span>
+<span class="sd">&gt;&gt;&gt; round( a.A_d, 3 )</span>
+<span class="sd">45.24</span>
+<span class="sd">&gt;&gt;&gt; round( a.B, 3 )</span>
+<span class="sd">1</span>
+<span class="sd">&gt;&gt;&gt; round( a.C, 3 )</span>
+<span class="sd">10</span>
+<span class="sd">&gt;&gt;&gt; round( a.A_C, 3 )</span>
+<span class="sd">10.265</span>
+<span class="sd">&gt;&gt;&gt; round( a.R, 3 )</span>
+<span class="sd">13.0</span>
+<span class="sd">&gt;&gt;&gt; round( a.C_F, 3 )</span>
+<span class="sd">81.681</span>
+
+<span class="sd">&gt;&gt;&gt; b= arch.arch( R=13, A_d=45 )</span>
+<span class="sd">&gt;&gt;&gt; round( b.A_d, 3 )</span>
+<span class="sd">45</span>
+<span class="sd">&gt;&gt;&gt; round( b.B, 3 )</span>
+<span class="sd">0.99</span>
+<span class="sd">&gt;&gt;&gt; round( b.C, 3 )</span>
+<span class="sd">9.95</span>
+<span class="sd">&gt;&gt;&gt; round( b.A_C, 3 )</span>
+<span class="sd">10.21</span>
+<span class="sd">&gt;&gt;&gt; round( b.R, 3 )</span>
+<span class="sd">13</span>
+<span class="sd">&gt;&gt;&gt; round( b.C_F, 3 )</span>
+<span class="sd">81.681</span>
+
+<span class="sd">&gt;&gt;&gt; d= arch.arch( A_d=45, C=10 )</span>
+<span class="sd">&gt;&gt;&gt; round( d.A_d, 3 )</span>
+<span class="sd">45</span>
+<span class="sd">&gt;&gt;&gt; round( d.B, 3 )</span>
+<span class="sd">0.995</span>
+<span class="sd">&gt;&gt;&gt; round( d.C, 3 )</span>
+<span class="sd">10</span>
+<span class="sd">&gt;&gt;&gt; round( d.A_C, 3 )</span>
+<span class="sd">10.262</span>
+<span class="sd">&gt;&gt;&gt; round( d.R, 3 )</span>
+<span class="sd">13.066</span>
+<span class="sd">&gt;&gt;&gt; round( d.C_F, 3 )</span>
+<span class="sd">82.094</span>
+
+<span class="sd">&gt;&gt;&gt; e= arch.arch( R=13, C=10 )</span>
+<span class="sd">&gt;&gt;&gt; round( e.A_d, 3 )</span>
+<span class="sd">45.24</span>
+<span class="sd">&gt;&gt;&gt; round( e.B, 3 )</span>
+<span class="sd">1.0</span>
+<span class="sd">&gt;&gt;&gt; round( e.C, 3 )</span>
+<span class="sd">10</span>
+<span class="sd">&gt;&gt;&gt; round( e.A_C, 3 )</span>
+<span class="sd">10.265</span>
+<span class="sd">&gt;&gt;&gt; round( e.R, 3 )</span>
+<span class="sd">13</span>
+<span class="sd">&gt;&gt;&gt; round( e.C_F, 3 )</span>
+<span class="sd">81.681</span>
+
+<span class="sd">&gt;&gt;&gt; f= arch.arch( R=13, B=1 )</span>
+<span class="sd">&gt;&gt;&gt; round( f.A_d, 3 )</span>
+<span class="sd">45.24</span>
+<span class="sd">&gt;&gt;&gt; round( f.B, 3 )</span>
+<span class="sd">1</span>
+<span class="sd">&gt;&gt;&gt; round( f.C, 3 )</span>
+<span class="sd">10.0</span>
+<span class="sd">&gt;&gt;&gt; round( f.A_C, 3 )</span>
+<span class="sd">10.265</span>
+<span class="sd">&gt;&gt;&gt; round( f.R, 3 )</span>
+<span class="sd">13</span>
+<span class="sd">&gt;&gt;&gt; round( f.C_F, 3 )</span>
+<span class="sd">81.681</span>
+
+<span class="sd">&gt;&gt;&gt; g= arch.arch( R=13, A_C=10.25 )</span>
+<span class="sd">&gt;&gt;&gt; round( g.A_d, 3 )</span>
+<span class="sd">45.176</span>
+<span class="sd">&gt;&gt;&gt; round( g.B, 3 )</span>
+<span class="sd">0.997</span>
+<span class="sd">&gt;&gt;&gt; round( g.C, 3 )</span>
+<span class="sd">9.987</span>
+<span class="sd">&gt;&gt;&gt; round( g.A_C, 3 )</span>
+<span class="sd">10.25</span>
+<span class="sd">&gt;&gt;&gt; round( g.R, 3 )</span>
+<span class="sd">13</span>
+<span class="sd">&gt;&gt;&gt; round( g.C_F, 3 )</span>
+<span class="sd">81.681</span>
+
+<span class="sd">&gt;&gt;&gt; h= arch.arch( A_d=45, A_C=10.25 )</span>
+<span class="sd">&gt;&gt;&gt; round( h.A_d, 3 )</span>
+<span class="sd">45</span>
+<span class="sd">&gt;&gt;&gt; round( h.B, 3 )</span>
+<span class="sd">0.993</span>
+<span class="sd">&gt;&gt;&gt; round( h.C, 3 )</span>
+<span class="sd">9.989</span>
+<span class="sd">&gt;&gt;&gt; round( h.A_C, 3 )</span>
+<span class="sd">10.25</span>
+<span class="sd">&gt;&gt;&gt; round( h.R, 3 )</span>
+<span class="sd">13.051</span>
+<span class="sd">&gt;&gt;&gt; round( h.C_F, 3 )</span>
+<span class="sd">82.0</span>
+
+<span class="sd">&gt;&gt;&gt; i= arch.arch( A_d=45, B=1 )</span>
+<span class="sd">&gt;&gt;&gt; round( i.A_d, 3 )</span>
+<span class="sd">45</span>
+<span class="sd">&gt;&gt;&gt; round( i.B, 3 )</span>
+<span class="sd">1</span>
+<span class="sd">&gt;&gt;&gt; round( i.C, 3 )</span>
+<span class="sd">10.055</span>
+<span class="sd">&gt;&gt;&gt; round( i.A_C, 3 )</span>
+<span class="sd">10.318</span>
+<span class="sd">&gt;&gt;&gt; round( i.R, 3 )</span>
+<span class="sd">13.137</span>
+<span class="sd">&gt;&gt;&gt; round( i.C_F, 3 )</span>
+<span class="sd">82.543</span>
+
+<span class="sd">&gt;&gt;&gt; j= arch.arch( C=10, A_C=10.3 )</span>
+<span class="sd">&gt;&gt;&gt; round( j.A_d, 3 )</span>
+<span class="sd">48.115</span>
+<span class="sd">&gt;&gt;&gt; round( j.B, 3 )</span>
+<span class="sd">1.065</span>
+<span class="sd">&gt;&gt;&gt; round( j.C, 3 )</span>
+<span class="sd">10</span>
+<span class="sd">&gt;&gt;&gt; round( j.A_C, 3 )</span>
+<span class="sd">10.3</span>
+<span class="sd">&gt;&gt;&gt; round( j.R, 3 )</span>
+<span class="sd">12.265</span>
+<span class="sd">&gt;&gt;&gt; round( j.C_F, 3 )</span>
+<span class="sd">77.065</span>
+
+<span class="sd">&gt;&gt;&gt; k= arch.arch( B=1, A_C=10.3 )</span>
+<span class="sd">&gt;&gt;&gt; round( k.A_d, 3 )</span>
+<span class="sd">57.296</span>
+<span class="sd">&gt;&gt;&gt; round( k.B, 3 )</span>
+<span class="sd">1</span>
+<span class="sd">&gt;&gt;&gt; round( k.C, 3 )</span>
+<span class="sd">7.833</span>
+<span class="sd">&gt;&gt;&gt; round( k.A_C, 3 )</span>
+<span class="sd">10.3</span>
+<span class="sd">&gt;&gt;&gt; round( k.R, 3 )</span>
+<span class="sd">8.169</span>
+<span class="sd">&gt;&gt;&gt; round( k.C_F, 3 )</span>
+<span class="sd">51.326</span>
+
+
+
+
+<span class="sd">Here&#39;s an incomplete example, showing how things can&#39;t be computed</span>
+<span class="sd">from an incomplete set of parameters.</span>
+
+<span class="sd">&gt;&gt;&gt; c= arch.arch( R=13 )</span>
+<span class="sd">&gt;&gt;&gt; c.A_d is None</span>
+<span class="sd">True</span>
+<span class="sd">&gt;&gt;&gt; c.B is None</span>
+<span class="sd">True</span>
+<span class="sd">&gt;&gt;&gt; c.C is None</span>
+<span class="sd">True</span>
+<span class="sd">&gt;&gt;&gt; c.A_C is None</span>
+<span class="sd">True</span>
+<span class="sd">&gt;&gt;&gt; round( c.R, 3 )</span>
+<span class="sd">13</span>
+<span class="sd">&gt;&gt;&gt; round( c.C_F, 3 )</span>
+<span class="sd">81.681</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">from</span> <span class="nn">hamcalc.lib</span> <span class="kn">import</span> <span class="n">AttrDict</span>
+<span class="kn">from</span> <span class="nn">hamcalc.math.propcirc</span> <span class="kn">import</span> <span class="n">arc_height_2_r</span><span class="p">,</span> <span class="n">bisection</span>
+<span class="kn">import</span> <span class="nn">math</span>
 
+<span class="n">introduction</span><span class="o">=</span><span class="s">&quot;&quot;&quot;</span><span class="se">\</span>
+<span class="s">ARCH CALCULATOR                                         by George Murphy VE3ERP</span>
+
+<span class="s">            *H</span>
+<span class="s"> A*         *C        *B</span>
+
+
+
+<span class="s">            *X</span>
+
+<span class="s"> This program calculates the following elements of an arch:</span>
+<span class="s">                                 Curved arch AHB</span>
+<span class="s">                                 Chord AB</span>
+<span class="s">                                 Segment height CH</span>
+<span class="s">                                 Radii XA, XH, XB</span>
+<span class="s">                                 Angle AXB</span>
+<span class="s">&quot;&quot;&quot;</span>
+
+<span class="k">def</span> <span class="nf">intro</span><span class="p">():</span>
+    <span class="k">return</span> <span class="n">introduction</span>
+
+<div class="viewcode-block" id="arc_chord_2_angle"><a class="viewcode-back" href="../../../python/construction/arch.html#hamcalc.construction.arch.arc_chord_2_angle">[docs]</a><span class="k">def</span> <span class="nf">arc_chord_2_angle</span><span class="p">(</span> <span class="n">A_C</span><span class="p">,</span> <span class="n">C</span><span class="p">,</span> <span class="n">eps</span><span class="o">=</span><span class="mf">1.0E-7</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Use bisection to find the angle that gives the proper</span>
+<span class="sd">    arc and chord information.</span>
+
+<span class="sd">    ..  todo:: move this to propcirc, where it belongs.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">f_a_c_ac</span><span class="p">(</span> <span class="n">A_r</span> <span class="p">):</span>
+        <span class="k">return</span> <span class="n">A_r</span><span class="o">/</span><span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span> <span class="n">A_r</span><span class="o">/</span><span class="mi">2</span> <span class="p">)</span> <span class="o">-</span> <span class="mi">2</span><span class="o">*</span><span class="n">A_C</span><span class="o">/</span><span class="n">C</span>
+    <span class="k">return</span> <span class="n">bisection</span><span class="p">(</span> <span class="n">f_a_c_ac</span><span class="p">,</span> <span class="n">eps</span><span class="p">,</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="n">eps</span> <span class="p">)</span>
+</div>
 <div class="viewcode-block" id="arch"><a class="viewcode-back" href="../../../python/construction/arch.html#hamcalc.construction.arch.arch">[docs]</a><span class="k">def</span> <span class="nf">arch</span><span class="p">(</span> <span class="o">**</span><span class="n">kw</span> <span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Solve arch problems.</span>
 
 <span class="sd">    :param R:</span>
 <span class="sd">        Radii XA, XH, XB, :math:`D = 2R`.</span>
 
-<span class="sd">    :param A:</span>
-<span class="sd">        Angle AXB.</span>
+<span class="sd">    :param A_d:</span>
+<span class="sd">        Angle AXB in degrees.</span>
+
+<span class="sd">    :param A_r:</span>
+<span class="sd">        Angle AXB in radians.</span>
 
 <span class="sd">    :param C:</span>
 <span class="sd">        Chord AB.</span>
@@ -84,9 +277,56 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">args</span><span class="o">=</span> <span class="n">AttrDict</span><span class="p">(</span> <span class="n">kw</span> <span class="p">)</span>
-    <span class="k">while</span> <span class="ow">not</span> <span class="nb">all</span><span class="p">(</span> <span class="p">(</span><span class="s">&#39;R&#39;</span> <span class="ow">in</span> <span class="n">args</span><span class="p">,</span> <span class="s">&#39;A&#39;</span> <span class="ow">in</span> <span class="n">args</span><span class="p">,</span> <span class="s">&#39;C&#39;</span> <span class="ow">in</span> <span class="n">args</span><span class="p">,</span> <span class="s">&#39;A_C&#39;</span> <span class="ow">in</span> <span class="n">args</span><span class="p">,</span> <span class="s">&#39;B&#39;</span> <span class="ow">in</span> <span class="n">args</span> <span class="p">)</span> <span class="p">):</span>
+    <span class="k">while</span> <span class="ow">not</span> <span class="nb">all</span><span class="p">(</span> <span class="p">(</span><span class="s">&#39;R&#39;</span> <span class="ow">in</span> <span class="n">args</span><span class="p">,</span> <span class="s">&#39;A_d&#39;</span> <span class="ow">in</span> <span class="n">args</span><span class="p">,</span> <span class="s">&#39;A_r&#39;</span> <span class="ow">in</span> <span class="n">args</span><span class="p">,</span>
+        <span class="s">&#39;C&#39;</span> <span class="ow">in</span> <span class="n">args</span><span class="p">,</span> <span class="s">&#39;A_C&#39;</span> <span class="ow">in</span> <span class="n">args</span><span class="p">,</span> <span class="s">&#39;B&#39;</span> <span class="ow">in</span> <span class="n">args</span><span class="p">,</span> <span class="s">&#39;C_F&#39;</span> <span class="ow">in</span> <span class="n">args</span><span class="p">,</span> <span class="p">)</span> <span class="p">):</span>
         <span class="c"># Calculate or break</span>
-        <span class="k">break</span>
+        <span class="k">if</span> <span class="s">&#39;AR&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">args</span> <span class="ow">and</span> <span class="s">&#39;R&#39;</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
+            <span class="n">args</span><span class="o">.</span><span class="n">AR</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">args</span><span class="o">.</span><span class="n">R</span><span class="o">**</span><span class="mi">2</span>
+            <span class="c"># Legacy redundancy.</span>
+            <span class="c"># args.D = 2*args.R</span>
+            <span class="c"># args.C_F = math.pi * args.D</span>
+        <span class="k">elif</span> <span class="s">&#39;D&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">args</span> <span class="ow">and</span> <span class="s">&#39;R&#39;</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
+            <span class="n">args</span><span class="o">.</span><span class="n">D</span> <span class="o">=</span> <span class="mi">2</span><span class="o">*</span><span class="n">args</span><span class="o">.</span><span class="n">R</span>
+        <span class="k">elif</span> <span class="s">&#39;C_F&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">args</span> <span class="ow">and</span> <span class="s">&#39;R&#39;</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
+            <span class="n">args</span><span class="o">.</span><span class="n">C_F</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">args</span><span class="o">.</span><span class="n">R</span>
+        <span class="k">elif</span> <span class="s">&#39;A_r&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">args</span> <span class="ow">and</span> <span class="s">&#39;A_d&#39;</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
+            <span class="n">args</span><span class="o">.</span><span class="n">A_r</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span> <span class="n">args</span><span class="o">.</span><span class="n">A_d</span> <span class="p">)</span>
+        <span class="k">elif</span> <span class="s">&#39;A_d&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">args</span> <span class="ow">and</span> <span class="s">&#39;A_r&#39;</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
+            <span class="n">args</span><span class="o">.</span><span class="n">A_d</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span> <span class="n">args</span><span class="o">.</span><span class="n">A_r</span> <span class="p">)</span>
+        <span class="k">elif</span> <span class="s">&#39;A_C&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">args</span> <span class="ow">and</span> <span class="s">&#39;A_r&#39;</span> <span class="ow">in</span> <span class="n">args</span> <span class="ow">and</span> <span class="s">&#39;R&#39;</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
+            <span class="n">args</span><span class="o">.</span><span class="n">A_C</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">A_r</span> <span class="o">*</span> <span class="n">args</span><span class="o">.</span><span class="n">R</span>
+        <span class="k">elif</span> <span class="s">&#39;A_r&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">args</span> <span class="ow">and</span> <span class="s">&#39;A_C&#39;</span> <span class="ow">in</span> <span class="n">args</span> <span class="ow">and</span> <span class="s">&#39;R&#39;</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
+            <span class="n">args</span><span class="o">.</span><span class="n">A_r</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">A_C</span> <span class="o">/</span> <span class="n">args</span><span class="o">.</span><span class="n">R</span>
+        <span class="k">elif</span> <span class="s">&#39;A_r&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">args</span> <span class="ow">and</span> <span class="s">&#39;R&#39;</span> <span class="ow">in</span> <span class="n">args</span> <span class="ow">and</span> <span class="s">&#39;C&#39;</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
+            <span class="n">args</span><span class="o">.</span><span class="n">A_r</span> <span class="o">=</span> <span class="mi">2</span><span class="o">*</span><span class="n">math</span><span class="o">.</span><span class="n">asin</span><span class="p">(</span> <span class="n">args</span><span class="o">.</span><span class="n">C</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">/</span> <span class="n">args</span><span class="o">.</span><span class="n">R</span> <span class="p">)</span>
+        <span class="k">elif</span> <span class="s">&#39;R&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">args</span> <span class="ow">and</span> <span class="s">&#39;A_r&#39;</span> <span class="ow">in</span> <span class="n">args</span> <span class="ow">and</span> <span class="s">&#39;B&#39;</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
+            <span class="n">args</span><span class="o">.</span><span class="n">R</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">B</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span> <span class="n">args</span><span class="o">.</span><span class="n">A_r</span><span class="o">/</span><span class="mi">2</span> <span class="p">)</span> <span class="p">)</span>
+        <span class="k">elif</span> <span class="p">(</span><span class="s">&#39;R&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">args</span> <span class="ow">or</span> <span class="s">&#39;A_r&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">args</span><span class="p">)</span> <span class="ow">and</span> <span class="s">&#39;B&#39;</span> <span class="ow">in</span> <span class="n">args</span> <span class="ow">and</span> <span class="s">&#39;C&#39;</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
+            <span class="n">args</span><span class="o">.</span><span class="n">R</span> <span class="o">=</span> <span class="p">(</span><span class="mi">4</span><span class="o">*</span><span class="n">args</span><span class="o">.</span><span class="n">B</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">args</span><span class="o">.</span><span class="n">C</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="mi">8</span><span class="o">*</span><span class="n">args</span><span class="o">.</span><span class="n">B</span><span class="p">)</span>
+            <span class="n">args</span><span class="o">.</span><span class="n">A_r</span> <span class="o">=</span> <span class="mi">2</span><span class="o">*</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">pi</span> <span class="o">-</span> <span class="mi">2</span><span class="o">*</span><span class="n">math</span><span class="o">.</span><span class="n">atan2</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">C</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span><span class="n">args</span><span class="o">.</span><span class="n">B</span><span class="p">))</span>
+        <span class="k">elif</span> <span class="s">&#39;C&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">args</span> <span class="ow">and</span> <span class="s">&#39;B&#39;</span> <span class="ow">in</span> <span class="n">args</span> <span class="ow">and</span> <span class="s">&#39;R&#39;</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
+            <span class="n">args</span><span class="o">.</span><span class="n">C</span> <span class="o">=</span> <span class="mi">2</span><span class="o">*</span><span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span> <span class="mi">2</span><span class="o">*</span><span class="n">args</span><span class="o">.</span><span class="n">B</span><span class="o">*</span><span class="n">args</span><span class="o">.</span><span class="n">R</span><span class="o">-</span><span class="n">args</span><span class="o">.</span><span class="n">B</span><span class="o">**</span><span class="mi">2</span> <span class="p">)</span>
+        <span class="k">elif</span> <span class="s">&#39;C&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">args</span> <span class="ow">and</span> <span class="s">&#39;A_r&#39;</span> <span class="ow">in</span> <span class="n">args</span> <span class="ow">and</span> <span class="s">&#39;R&#39;</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
+            <span class="n">args</span><span class="o">.</span><span class="n">C</span> <span class="o">=</span> <span class="mi">2</span><span class="o">*</span><span class="n">args</span><span class="o">.</span><span class="n">R</span><span class="o">*</span><span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span> <span class="n">args</span><span class="o">.</span><span class="n">A_r</span><span class="o">/</span><span class="mi">2</span> <span class="p">)</span>
+        <span class="k">elif</span> <span class="s">&#39;B&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">args</span> <span class="ow">and</span> <span class="s">&#39;C&#39;</span> <span class="ow">in</span> <span class="n">args</span> <span class="ow">and</span> <span class="s">&#39;R&#39;</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
+            <span class="n">args</span><span class="o">.</span><span class="n">B</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">R</span> <span class="o">-</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">4</span><span class="o">*</span><span class="n">args</span><span class="o">.</span><span class="n">R</span><span class="o">**</span><span class="mi">2</span><span class="o">-</span><span class="n">args</span><span class="o">.</span><span class="n">C</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span>
+        <span class="k">elif</span> <span class="s">&#39;B&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">args</span> <span class="ow">and</span> <span class="s">&#39;A_r&#39;</span> <span class="ow">in</span> <span class="n">args</span> <span class="ow">and</span> <span class="s">&#39;C&#39;</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
+            <span class="n">args</span><span class="o">.</span><span class="n">B</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">C</span><span class="o">/</span><span class="mi">2</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">tan</span><span class="p">(</span> <span class="n">args</span><span class="o">.</span><span class="n">A_r</span><span class="o">/</span><span class="mi">4</span> <span class="p">)</span>
+        <span class="k">elif</span> <span class="s">&#39;B&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">args</span> <span class="ow">and</span> <span class="s">&#39;A_r&#39;</span> <span class="ow">in</span> <span class="n">args</span> <span class="ow">and</span> <span class="s">&#39;R&#39;</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
+            <span class="n">args</span><span class="o">.</span><span class="n">B</span> <span class="o">=</span> <span class="mi">2</span><span class="o">*</span><span class="n">args</span><span class="o">.</span><span class="n">R</span><span class="o">*</span><span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span> <span class="n">args</span><span class="o">.</span><span class="n">A_r</span><span class="o">/</span><span class="mi">4</span> <span class="p">)</span><span class="o">**</span><span class="mi">2</span>
+        <span class="k">elif</span> <span class="s">&#39;R&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">args</span> <span class="ow">and</span> <span class="s">&#39;AR&#39;</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
+            <span class="n">args</span><span class="o">.</span><span class="n">R</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span> <span class="n">args</span><span class="o">.</span><span class="n">AR</span><span class="o">/</span><span class="n">math</span><span class="o">.</span><span class="n">pi</span> <span class="p">)</span>
+        <span class="k">elif</span> <span class="s">&#39;R&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">args</span> <span class="ow">and</span> <span class="s">&#39;C_F&#39;</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
+            <span class="n">args</span><span class="o">.</span><span class="n">R</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">C_F</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">math</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="s">&#39;R&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">args</span> <span class="ow">and</span> <span class="s">&#39;A_C&#39;</span> <span class="ow">in</span> <span class="n">args</span> <span class="ow">and</span> <span class="s">&#39;A_r&#39;</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
+            <span class="n">args</span><span class="o">.</span><span class="n">R</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">A_C</span> <span class="o">/</span> <span class="n">args</span><span class="o">.</span><span class="n">A_r</span>
+
+        <span class="k">elif</span> <span class="s">&#39;A_r&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">args</span> <span class="ow">and</span> <span class="s">&#39;A_C&#39;</span> <span class="ow">in</span> <span class="n">args</span> <span class="ow">and</span> <span class="s">&#39;B&#39;</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
+            <span class="n">args</span><span class="o">.</span><span class="n">A_r</span><span class="o">=</span> <span class="n">arc_height_2_r</span><span class="p">(</span> <span class="n">args</span><span class="o">.</span><span class="n">A_C</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">B</span> <span class="p">)</span>
+        <span class="k">elif</span> <span class="s">&#39;A_r&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">args</span> <span class="ow">and</span> <span class="s">&#39;A_C&#39;</span> <span class="ow">in</span> <span class="n">args</span> <span class="ow">and</span> <span class="s">&#39;C&#39;</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
+            <span class="n">args</span><span class="o">.</span><span class="n">A_r</span><span class="o">=</span> <span class="n">arc_chord_2_angle</span><span class="p">(</span> <span class="n">args</span><span class="o">.</span><span class="n">A_C</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">C</span> <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">break</span> <span class="c"># Nothing more to do.</span>
     <span class="k">return</span> <span class="n">args</span></div>
 </pre></div>
 

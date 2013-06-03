@@ -17,6 +17,8 @@ Test Cases
 73.29078877349203
 
 """
+__version__ = "2.1"
+
 from hamcalc.lib import AttrDict
 import math
 

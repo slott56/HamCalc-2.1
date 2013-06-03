@@ -16,6 +16,7 @@ Some Test Cases
 '13\\'- 3 5/8"'
 
 """
+__version__ = "2.1"
 
 from hamcalc.lib import Unit, Standard_Unit
 import re

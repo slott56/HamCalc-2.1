@@ -60,6 +60,8 @@ for validation.
 >>> quadratic.solve( 94906265.625, -189812534.0, 94906268.375 ) #doctest: +SKIP
 (1.000000028975958, 1.0)
 """
+__version__ = "2.1"
+
 import cmath
 import math
 

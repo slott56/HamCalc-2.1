@@ -50,6 +50,8 @@ This module defines the following timezones:
 
 
 """
+__version__ = "2.1"
+
 import datetime
 
 ZERO = datetime.timedelta(0)

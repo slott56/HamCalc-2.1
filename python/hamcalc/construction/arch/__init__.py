@@ -145,9 +145,6 @@ Test Cases
 >>> round( k.C_F, 3 )
 51.326
 
-
-
-
 Here's an incomplete example, showing how things can't be computed
 from an incomplete set of parameters.
 
@@ -166,7 +163,7 @@ True
 81.681
 
 """
-from hamcalc.lib import AttrDict
+from hamcalc.lib import AttrDict, Solver
 from hamcalc.math.propcirc import arc_height_2_r, bisection
 import math
 
@@ -201,79 +198,84 @@ def arc_chord_2_angle( A_C, C, eps=1.0E-7 ):
         return A_r/math.sin( A_r/2 ) - 2*A_C/C
     return bisection( f_a_c_ac, eps, math.pi, eps )
 
-def arch( **kw ):
-    """Solve arch problems.
+class Arch( Solver ):
+    """Solver for Arch problems.
 
-    :param R:
-        Radii XA, XH, XB, :math:`D = 2R`.
-
-    :param A_d:
-        Angle AXB in degrees.
-
-    :param A_r:
-        Angle AXB in radians.
-
-    :param C:
-        Chord AB.
-
-    :param A_C:
-        Curved arch AHB.
-
-    :param B:
-        Segment height CH.
-
-    :returns: Dictionary with **all** values computed.
+    ..  todo:: Refactor the :meth:`solve` method.
     """
+    def solve( self, args ):
+        """Solve arch problems.
 
-    args= AttrDict( kw )
-    while not all( ('R' in args, 'A_d' in args, 'A_r' in args,
-        'C' in args, 'A_C' in args, 'B' in args, 'C_F' in args, ) ):
-        # Calculate or break
-        if 'AR' not in args and 'R' in args:
-            args.AR = math.pi * args.R**2
-            # Legacy redundancy.
-            # args.D = 2*args.R
-            # args.C_F = math.pi * args.D
-        elif 'D' not in args and 'R' in args:
-            args.D = 2*args.R
-        elif 'C_F' not in args and 'R' in args:
-            args.C_F = 2 * math.pi * args.R
-        elif 'A_r' not in args and 'A_d' in args:
-            args.A_r = math.radians( args.A_d )
-        elif 'A_d' not in args and 'A_r' in args:
-            args.A_d = math.degrees( args.A_r )
-        elif 'A_C' not in args and 'A_r' in args and 'R' in args:
-            args.A_C = args.A_r * args.R
-        elif 'A_r' not in args and 'A_C' in args and 'R' in args:
-            args.A_r = args.A_C / args.R
-        elif 'A_r' not in args and 'R' in args and 'C' in args:
-            args.A_r = 2*math.asin( args.C / 2 / args.R )
-        elif 'R' not in args and 'A_r' in args and 'B' in args:
-            args.R = args.B / (1 - math.cos( args.A_r/2 ) )
-        elif ('R' not in args or 'A_r' not in args) and 'B' in args and 'C' in args:
-            args.R = (4*args.B**2 + args.C**2)/(8*args.B)
-            args.A_r = 2*(math.pi - 2*math.atan2(args.C/2,args.B))
-        elif 'C' not in args and 'B' in args and 'R' in args:
-            args.C = 2*math.sqrt( 2*args.B*args.R-args.B**2 )
-        elif 'C' not in args and 'A_r' in args and 'R' in args:
-            args.C = 2*args.R*math.sin( args.A_r/2 )
-        elif 'B' not in args and 'C' in args and 'R' in args:
-            args.B = args.R - math.sqrt(4*args.R**2-args.C**2)/2
-        elif 'B' not in args and 'A_r' in args and 'C' in args:
-            args.B = args.C/2 * math.tan( args.A_r/4 )
-        elif 'B' not in args and 'A_r' in args and 'R' in args:
-            args.B = 2*args.R*math.sin( args.A_r/4 )**2
-        elif 'R' not in args and 'AR' in args:
-            args.R = math.sqrt( args.AR/math.pi )
-        elif 'R' not in args and 'C_F' in args:
-            args.R = args.C_F / (2*math.pi)
-        elif 'R' not in args and 'A_C' in args and 'A_r' in args:
-            args.R = args.A_C / args.A_r
+        :param R:
+            Radii XA, XH, XB, :math:`D = 2R`.
 
-        elif 'A_r' not in args and 'A_C' in args and 'B' in args:
-            args.A_r= arc_height_2_r( args.A_C, args.B )
-        elif 'A_r' not in args and 'A_C' in args and 'C' in args:
-            args.A_r= arc_chord_2_angle( args.A_C, args.C )
-        else:
-            break # Nothing more to do.
-    return args
+        :param A_d:
+            Angle AXB in degrees.
+
+        :param A_r:
+            Angle AXB in radians.
+
+        :param C:
+            Chord AB.
+
+        :param A_C:
+            Curved arch AHB.
+
+        :param B:
+            Segment height CH.
+
+        :returns: Dictionary with **all** values computed.
+        """
+        while not all( ('R' in args, 'A_d' in args, 'A_r' in args,
+            'C' in args, 'A_C' in args, 'B' in args, 'C_F' in args, ) ):
+            # Calculate or break
+            if 'AR' not in args and 'R' in args:
+                args.AR = math.pi * args.R**2
+                # Legacy redundancy.
+                # args.D = 2*args.R
+                # args.C_F = math.pi * args.D
+            elif 'D' not in args and 'R' in args:
+                args.D = 2*args.R
+            elif 'C_F' not in args and 'R' in args:
+                args.C_F = 2 * math.pi * args.R
+            elif 'A_r' not in args and 'A_d' in args:
+                args.A_r = math.radians( args.A_d )
+            elif 'A_d' not in args and 'A_r' in args:
+                args.A_d = math.degrees( args.A_r )
+            elif 'A_C' not in args and 'A_r' in args and 'R' in args:
+                args.A_C = args.A_r * args.R
+            elif 'A_r' not in args and 'A_C' in args and 'R' in args:
+                args.A_r = args.A_C / args.R
+            elif 'A_r' not in args and 'R' in args and 'C' in args:
+                args.A_r = 2*math.asin( args.C / 2 / args.R )
+            elif 'R' not in args and 'A_r' in args and 'B' in args:
+                args.R = args.B / (1 - math.cos( args.A_r/2 ) )
+            elif ('R' not in args or 'A_r' not in args) and 'B' in args and 'C' in args:
+                args.R = (4*args.B**2 + args.C**2)/(8*args.B)
+                args.A_r = 2*(math.pi - 2*math.atan2(args.C/2,args.B))
+            elif 'C' not in args and 'B' in args and 'R' in args:
+                args.C = 2*math.sqrt( 2*args.B*args.R-args.B**2 )
+            elif 'C' not in args and 'A_r' in args and 'R' in args:
+                args.C = 2*args.R*math.sin( args.A_r/2 )
+            elif 'B' not in args and 'C' in args and 'R' in args:
+                args.B = args.R - math.sqrt(4*args.R**2-args.C**2)/2
+            elif 'B' not in args and 'A_r' in args and 'C' in args:
+                args.B = args.C/2 * math.tan( args.A_r/4 )
+            elif 'B' not in args and 'A_r' in args and 'R' in args:
+                args.B = 2*args.R*math.sin( args.A_r/4 )**2
+            elif 'R' not in args and 'AR' in args:
+                args.R = math.sqrt( args.AR/math.pi )
+            elif 'R' not in args and 'C_F' in args:
+                args.R = args.C_F / (2*math.pi)
+            elif 'R' not in args and 'A_C' in args and 'A_r' in args:
+                args.R = args.A_C / args.A_r
+
+            elif 'A_r' not in args and 'A_C' in args and 'B' in args:
+                args.A_r= arc_height_2_r( args.A_C, args.B )
+            elif 'A_r' not in args and 'A_C' in args and 'C' in args:
+                args.A_r= arc_chord_2_angle( args.A_C, args.C )
+            else:
+                break # Nothing more to do.
+        return args
+
+arch = Arch()

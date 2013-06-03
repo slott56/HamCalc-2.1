@@ -24,7 +24,9 @@ Example Output
 >>> round(2*sq.R**2, 6)
 100.0
 """
-from hamcalc.lib import AttrDict
+__version__ = "2.1"
+
+from hamcalc.lib import AttrDict, Solver
 import math
 
 def intro():
@@ -32,51 +34,55 @@ def intro():
 POLYGON DIMENSIONS (Regular polygons)                   by George Murphy VE3ERP
 """
 
-def polygon( **kw ):
-    """Solve a polygon.
+class Polygon( Solver ):
+    """Solver for polygon problems."""
 
-    The number of sides, N, is required.
+    def solve( self, args ):
+        """Solve a polygon.
 
-    One of these three is also required.
+        The number of sides, N, is required.
 
-    -   H = "Perpendicular distance from centre to mid point of each side"
+        One of these three is also required.
 
-    -   R = "Length of radial from centre to end of each side"
+        -   H = "Perpendicular distance from centre to mid point of each side"
 
-    -   S = "Length of each side"
+        -   R = "Length of radial from centre to end of each side"
 
-    This will also compute a number of additional values:
+        -   S = "Length of each side"
 
-    -   A = "Angle between radials"
+        This will also compute a number of additional values:
 
-    -   P = "Perimeter"
+        -   A = "Angle between radials"
 
-    -   D = "Circumference of circle running thru mid points of sides"
+        -   P = "Perimeter"
 
-    -   E = "Circumference of circle running thru end points of sides"
+        -   D = "Circumference of circle running thru mid points of sides"
 
-    -   A_P = "Area of polygon"
+        -   E = "Circumference of circle running thru end points of sides"
 
-    :returns: AttrDict with all values computed.
-    """
-    args = AttrDict( kw )
-    if "N" not in args:
-        raise ValueError( 'N = "Number of sides/radials" required' )
-    args.A = 2*math.pi/args.N
-    args.B = args.A/2
-    if "S" in args:
-        args.H = args.S/(2*math.tan(args.B))
-        args.R = args.S/(2*math.sin(args.B))
-    elif "H" in args:
-        args.R = args.H/math.cos(args.B)
-        args.S = 2 * math.tan(args.B) * args.H
-    elif "R" in args:
-        args.H = args.R * math.cos(args.B)
-        args.S = 2 * math.sin(args.B) * args.R
-    else:
-        raise ValueError( 'One of H, R or S required' )
-    args.P = args.N * args.S
-    args.A_P = args.S * args.H * args.N / 2
-    args.D = 2*math.pi*args.H
-    args.E = 2*math.pi*args.R
-    return args
+        -   A_P = "Area of polygon"
+
+        :returns: AttrDict with all values computed.
+        """
+        if "N" not in args:
+            raise ValueError( 'N = "Number of sides/radials" required' )
+        args.A = 2*math.pi/args.N
+        args.B = args.A/2
+        if "S" in args:
+            args.H = args.S/(2*math.tan(args.B))
+            args.R = args.S/(2*math.sin(args.B))
+        elif "H" in args:
+            args.R = args.H/math.cos(args.B)
+            args.S = 2 * math.tan(args.B) * args.H
+        elif "R" in args:
+            args.H = args.R * math.cos(args.B)
+            args.S = 2 * math.sin(args.B) * args.R
+        else:
+            raise ValueError( 'One of H, R or S required' )
+        args.P = args.N * args.S
+        args.A_P = args.S * args.H * args.N / 2
+        args.D = 2*math.pi*args.H
+        args.E = 2*math.pi*args.R
+        return args
+
+polygon= Polygon()

@@ -141,6 +141,8 @@ Test Cases
 -16.2275
 
 """
+__version__ = "2.1"
+
 from hamcalc.navigation.solar import jad_to_datetime, datetime_to_jad, utc
 from collections import namedtuple
 import math

@@ -19,6 +19,8 @@ Some test cases.
 [641, 6700417]
 
 """
+__version__ = "2.1"
+
 import itertools
 
 introduction = """\

@@ -51,6 +51,8 @@
   <h1>Source code for hamcalc.math.propcirc</h1><div class="highlight"><pre>
 <span class="sd">&quot;&quot;&quot;hamcalc.math.propcirc -- Circle, Properties of</span>
 
+<span class="sd">This includes the bisection algorithm for approximation.</span>
+
 <span class="sd">Here are some test cases.</span>
 
 <span class="sd">&gt;&gt;&gt; import hamcalc.math.propcirc as propcirc</span>
@@ -117,7 +119,7 @@
     <span class="sd">&quot;&quot;&quot;Returns the text from the introductory page.&quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">introduction</span>
 </div>
-<div class="viewcode-block" id="bisection"><a class="viewcode-back" href="../../../python/math/propcirc.html#hamcalc.math.propcirc.bisection">[docs]</a><span class="k">def</span> <span class="nf">bisection</span><span class="p">(</span> <span class="n">L_A</span><span class="p">,</span> <span class="n">G</span><span class="p">,</span> <span class="n">eps</span><span class="o">=</span><span class="mf">1.0E-7</span> <span class="p">):</span>
+<div class="viewcode-block" id="arc_height_2_r"><a class="viewcode-back" href="../../../python/math/propcirc.html#hamcalc.math.propcirc.arc_height_2_r">[docs]</a><span class="k">def</span> <span class="nf">arc_height_2_r</span><span class="p">(</span> <span class="n">L_A</span><span class="p">,</span> <span class="n">G</span><span class="p">,</span> <span class="n">eps</span><span class="o">=</span><span class="mf">1.0E-7</span> <span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Approximate a value for *R* from *L_A* and *G* via bisection.</span>
 
 <span class="sd">    We&#39;re solving :math:`G = R (1 - \\cos \\frac{L_A}{2R})` for a value of *R*.</span>
@@ -127,33 +129,58 @@
 <span class="sd">    This requires a 2-phase search.</span>
 
 <span class="sd">    1. Double R until it&#39;s demonstrably too large.</span>
-<span class="sd">    2. Bisect between the last two values of R.</span>
+<span class="sd">    2. Bisect between R and R/2.</span>
 
 <span class="sd">    :param L_A: Length of Arc</span>
 <span class="sd">    :param G: Height of Arc</span>
+<span class="sd">    :param eps: Epsilon -- precision of approximation.</span>
 <span class="sd">    :return: R radius</span>
 
 <span class="sd">    &gt;&gt;&gt; import hamcalc.math.propcirc as propcirc</span>
-<span class="sd">    &gt;&gt;&gt; propcirc.bisection(  L_A=12.56, G=1.61 )</span>
+<span class="sd">    &gt;&gt;&gt; propcirc.arc_height_2_r( L_A=12.56, G=1.61 )</span>
 <span class="sd">    11.969555330276489</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="nf">f</span><span class="p">(</span> <span class="n">L_A</span><span class="p">,</span> <span class="n">R</span> <span class="p">):</span>
-        <span class="k">return</span> <span class="n">R</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span> <span class="n">L_A</span><span class="o">/</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">R</span><span class="p">)</span> <span class="p">))</span>
+    <span class="k">def</span> <span class="nf">f</span><span class="p">(</span> <span class="n">R</span> <span class="p">):</span>
+        <span class="k">return</span> <span class="n">R</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span> <span class="n">L_A</span><span class="o">/</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">R</span><span class="p">)</span> <span class="p">))</span> <span class="o">-</span> <span class="n">G</span>
     <span class="c"># Find upper bound on R.</span>
     <span class="n">R</span><span class="o">=</span> <span class="n">G</span> <span class="k">if</span> <span class="n">G</span><span class="o">&gt;</span><span class="mf">1.0</span> <span class="k">else</span> <span class="mf">1.0</span>
-    <span class="n">G_calc</span><span class="o">=</span> <span class="n">f</span><span class="p">(</span> <span class="n">L_A</span><span class="p">,</span> <span class="n">R</span> <span class="p">)</span>
-    <span class="k">while</span> <span class="n">G_calc</span> <span class="o">&gt;</span> <span class="n">G</span><span class="p">:</span>
+    <span class="n">G_calc</span><span class="o">=</span> <span class="n">f</span><span class="p">(</span> <span class="n">R</span> <span class="p">)</span>
+    <span class="k">while</span> <span class="n">G_calc</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
         <span class="n">R</span><span class="o">=</span> <span class="mi">2</span><span class="o">*</span><span class="n">R</span>
-        <span class="n">G_calc</span><span class="o">=</span> <span class="n">f</span><span class="p">(</span> <span class="n">L_A</span><span class="p">,</span> <span class="n">R</span> <span class="p">)</span>
-    <span class="c"># Root lies between R and R/2.</span>
-    <span class="n">high</span><span class="o">=</span> <span class="n">R</span>
-    <span class="n">low</span><span class="o">=</span> <span class="n">R</span><span class="o">/</span><span class="mi">2</span>
+        <span class="n">G_calc</span><span class="o">=</span> <span class="n">f</span><span class="p">(</span> <span class="n">R</span> <span class="p">)</span>
+    <span class="c"># Root lies between R/2 and R.</span>
+    <span class="k">return</span> <span class="n">bisection</span><span class="p">(</span> <span class="n">f</span><span class="p">,</span> <span class="n">R</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">R</span><span class="p">,</span> <span class="n">eps</span> <span class="p">)</span>
+</div>
+<span class="k">def</span> <span class="nf">sign</span><span class="p">(</span> <span class="n">x</span> <span class="p">):</span>
+    <span class="k">if</span> <span class="n">x</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span> <span class="k">return</span> <span class="o">-</span><span class="mi">1</span>
+    <span class="k">elif</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span> <span class="k">return</span> <span class="mi">1</span>
+    <span class="k">else</span><span class="p">:</span> <span class="k">return</span> <span class="mi">0</span>
+
+<div class="viewcode-block" id="bisection"><a class="viewcode-back" href="../../../python/math/propcirc.html#hamcalc.math.propcirc.bisection">[docs]</a><span class="k">def</span> <span class="nf">bisection</span><span class="p">(</span> <span class="n">f</span><span class="p">,</span> <span class="n">low</span><span class="p">,</span> <span class="n">high</span><span class="p">,</span> <span class="n">eps</span><span class="o">=</span><span class="mf">1.0E-7</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Approximate *x* where :math:`f(x)=0 \\vert l \\leq x &lt; h` by bisection.</span>
+
+<span class="sd">    :param f: A single-argument function, ``f(x)``.</span>
+<span class="sd">    :param low: Lower bound on search.</span>
+<span class="sd">    :param high: Upper bound on search.</span>
+<span class="sd">    :param eps: Epsilon -- precision of approximation.</span>
+<span class="sd">    :return: x value</span>
+
+<span class="sd">    &gt;&gt;&gt; import hamcalc.math.propcirc as propcirc</span>
+<span class="sd">    &gt;&gt;&gt; sqrt_13= lambda x: x**2-13</span>
+<span class="sd">    &gt;&gt;&gt; root= propcirc.bisection( sqrt_13, 0, 13 )</span>
+<span class="sd">    &gt;&gt;&gt; root</span>
+<span class="sd">    3.6055512726306915</span>
+
+<span class="sd">    ..  todo:: Optimization possible</span>
+
+<span class="sd">        Cache computation of f(low).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">for</span> <span class="n">count</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">64</span><span class="p">):</span> <span class="c"># 64 bit of precision, in effect.</span>
         <span class="n">mid</span><span class="o">=</span> <span class="p">(</span><span class="n">high</span><span class="o">+</span><span class="n">low</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span>
-        <span class="n">G_calc</span><span class="o">=</span> <span class="n">f</span><span class="p">(</span> <span class="n">L_A</span><span class="p">,</span> <span class="n">mid</span> <span class="p">)</span>
-        <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span> <span class="n">G</span><span class="o">-</span><span class="n">G_calc</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="n">eps</span><span class="p">:</span> <span class="k">break</span>
-        <span class="k">if</span> <span class="n">G</span> <span class="o">&lt;</span> <span class="n">G_calc</span><span class="p">:</span>
+        <span class="n">G_calc</span><span class="o">=</span> <span class="n">f</span><span class="p">(</span> <span class="n">mid</span> <span class="p">)</span>
+        <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">G_calc</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="n">eps</span><span class="p">:</span> <span class="k">break</span>
+        <span class="k">if</span> <span class="n">sign</span><span class="p">(</span><span class="n">G_calc</span><span class="p">)</span> <span class="o">==</span> <span class="n">sign</span><span class="p">(</span><span class="n">f</span><span class="p">(</span><span class="n">low</span><span class="p">)):</span>
             <span class="n">low</span><span class="o">=</span> <span class="n">mid</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">high</span><span class="o">=</span> <span class="n">mid</span>
@@ -224,7 +251,7 @@
         <span class="n">r</span><span class="o">=</span> <span class="p">(</span><span class="mi">4</span><span class="o">*</span><span class="n">args</span><span class="o">.</span><span class="n">G</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">args</span><span class="o">.</span><span class="n">L_C</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">args</span><span class="o">.</span><span class="n">G</span><span class="p">)</span>
     <span class="k">elif</span> <span class="s">&quot;L_A&quot;</span> <span class="ow">in</span> <span class="n">args</span> <span class="ow">and</span> <span class="s">&quot;G&quot;</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
         <span class="c"># approximate a value for *R* from *L_A* and *G*.</span>
-        <span class="n">r</span><span class="o">=</span> <span class="n">bisection</span><span class="p">(</span> <span class="n">args</span><span class="o">.</span><span class="n">L_A</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">G</span> <span class="p">)</span>
+        <span class="n">r</span><span class="o">=</span> <span class="n">arc_height_2_r</span><span class="p">(</span> <span class="n">args</span><span class="o">.</span><span class="n">L_A</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">G</span> <span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="k">raise</span> <span class="n">Error</span><span class="p">(</span> <span class="s">&quot;Insufficient Data&quot;</span><span class="p">)</span>
     <span class="c"># Step 1B: compute angle, if possible; it&#39;s not *required*.</span>

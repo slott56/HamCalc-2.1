@@ -7,6 +7,7 @@ General Electronics, outside the narrow focus area of radio design.
     :maxdepth: 1
 
     awgexact
+    copwire
     decibel
     elecleng
     ohmslaw

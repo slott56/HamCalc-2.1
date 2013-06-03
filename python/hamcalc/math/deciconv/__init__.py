@@ -32,6 +32,8 @@ Test Cases
 >>> deciconv.DEGREE.from_std( lon )
 76.30777777777777
 """
+__version__ = "2.1"
+
 
 from hamcalc.lib import Unit, Standard_Unit
 from hamcalc.math.trig import DEGREE, RADIAN, DMS_TUPLE, DEG_MIN_SEC

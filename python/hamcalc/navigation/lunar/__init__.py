@@ -6,6 +6,7 @@ See http://www.stjarnhimlen.se/comp/ppcomp.html
 
 See http://www.stargazing.net/kepler/moon3.html
 """
+__version__ = "2.1"
 
 # The default implementation
 from hamcalc.navigation.lunar.schlyter import *

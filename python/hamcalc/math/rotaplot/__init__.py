@@ -26,6 +26,8 @@ Test Cases
 90.0
 
 """
+__version__ = "2.1"
+
 import math
 import cmath
 

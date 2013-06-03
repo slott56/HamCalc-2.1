@@ -28,11 +28,10 @@ Here are some test cases.
 {'A': 450.09677997191295, 'C': 75.20693418466634, 'angle': 1.049328872579753, 'D': 23.939110660552977, 'G': 1.6099999693011857, 'L_A': 12.56, 'A_G': 13.054769563165337, 'L_C': 11.991641677007895, 'R': 11.969555330276489, 'A_C': 75.16880747413634}
 
 """
-
 __version__ = "2.1"
 
 import math
-from hamcalc.lib import AttrDict
+from hamcalc.lib import AttrDict, Solver
 
 introduction = """\
 
@@ -135,103 +134,109 @@ def bisection( f, low, high, eps=1.0E-7 ):
             high= mid
     return mid
 
-def circle( **kw ):
+class Circle( Solver ):
     """Solve properties of a circle.
 
-    Note that only *R* and *angle* are really **required** to compute
-    all of the values. If *angle* cannot be computed, it's assumed to
-    be irrelevant and angle-related values are not computed, either.
-
-    This solver derives values for *R* or *angle* (or both, if possible)
-    and then recomputes the remaining values. It's entirely possible that
-    an output value will fail to agree with an input value because
-    the circle was over-specified.
-
-    It's also possible that the circle is under-specified and *R* cannot
-    be computed.
-
-    There are two subsets of parameters: Radius and Angle.
-    Without the Angle, only the Radius-related values can be computed.
-    With the angle, the remaining values can be computed.
-
-    Radius-only
-
-    :param R: Radius
-
-    :param D: Diameter
-
-    :param C: Circumference
-
-    :param A: Area of entire circle.
-
-    Radius and Angle.
-
-    :param angle: Angle (:math:`\\theta` might be better.) This must be in radians.
-
-    :param L_C:
-        Length of Chord (A-B line on diagram).
-
-    :param L_A:
-        Length of Arc (A-B arc on diagram).
-
-    :param G:
-        Height of segment between chord and arc.
-
-    :returns: A dictionary with 10 values, the 8 input values plus two more.
-        ``A_G`` area of segment and ``A_S`` area of the whole sector.
+    ..  todo:: Refactor the :meth:`solve` function.
     """
-    args= AttrDict( kw )
-    # Step 1A: compute R from available data.
-    if "R" in args:
-        r= args.R
-    elif "D" in args:
-        r= args.D/2
-    elif "C" in args:
-        r= args.C/(2*math.pi)
-    elif "A" in args:
-        r= math.sqrt( args.A/math.pi )
-    elif "angle" in args and "L_C" in args:
-        r= args.L_C/(2*math.sin(args.angle/2))
-    elif "angle" in args and "L_A" in args:
-        r= args.L_A/args.angle
-    elif "angle" in args and "G" in args:
-        r= args.G/(1-math.cos(args.angle/2))
-    elif "L_C" in args and "G" in args:
-        r= (4*args.G**2 + args.L_C**2)/(2*args.G)
-    elif "L_A" in args and "G" in args:
-        # approximate a value for *R* from *L_A* and *G*.
-        r= arc_height_2_r( args.L_A, args.G )
-    else:
-        raise Error( "Insufficient Data")
-    # Step 1B: compute angle, if possible; it's not *required*.
-    # Note that *r* is known at this point.
-    if "angle" in args:
-        angle= args.angle
-    elif "L_C" in args:
-        # Legacy
-        # z= args.L_C/(2*r)
-        # angle= 2 * math.atan2( z, math.sqrt(1-z**2) )
-        angle= 2 * math.asin( args.L_C/(2*r) )
-    elif "L_A" in args:
-        angle= args.L_A / r
-    elif "G" in args:
-        args.L_C = 2 * math.sqrt( 2*args.G*r - args.G**2 )
-        # Legacy
-        # z= args.L_C/(2*r)
-        # angle= 2 * math.atan2( z, math.sqrt(1-z**2) )
-        angle= 2 * math.asin( args.L_C/(2*r) )
-    else:
-        angle= None
-    # Step 3: compute the outputs from *r* and *angle*.
-    args.R= r
-    args.D= r*2
-    args.A= math.pi*r**2
-    args.C= 2*math.pi*r
-    if angle:
-        args.angle= angle
-        args.L_C= 2*r*math.sin(angle/2)
-        args.L_A= r*angle
-        args.G= r*(1-math.cos(angle/2))
-        args.A_C= math.pi * r**2 * angle/(2*math.pi)
-        args.A_G= args.A_C-(r - args.G)*(args.L_C/2)
-    return args
+    def solve( self, args ):
+        """Solve properties of a circle.
+
+        Note that only *R* and *angle* are really **required** to compute
+        all of the values. If *angle* cannot be computed, it's assumed to
+        be irrelevant and angle-related values are not computed, either.
+
+        This solver derives values for *R* or *angle* (or both, if possible)
+        and then recomputes the remaining values. It's entirely possible that
+        an output value will fail to agree with an input value because
+        the circle was over-specified.
+
+        It's also possible that the circle is under-specified and *R* cannot
+        be computed.
+
+        There are two subsets of parameters: Radius and Angle.
+        Without the Angle, only the Radius-related values can be computed.
+        With the angle, the remaining values can be computed.
+
+        Radius-only
+
+        :param R: Radius
+
+        :param D: Diameter
+
+        :param C: Circumference
+
+        :param A: Area of entire circle.
+
+        Radius and Angle.
+
+        :param angle: Angle (:math:`\\theta` might be better.) This must be in radians.
+
+        :param L_C:
+            Length of Chord (A-B line on diagram).
+
+        :param L_A:
+            Length of Arc (A-B arc on diagram).
+
+        :param G:
+            Height of segment between chord and arc.
+
+        :returns: A dictionary with 10 values, the 8 input values plus two more.
+            ``A_G`` area of segment and ``A_S`` area of the whole sector.
+        """
+        # Step 1A: compute R from available data.
+        if "R" in args:
+            r= args.R
+        elif "D" in args:
+            r= args.D/2
+        elif "C" in args:
+            r= args.C/(2*math.pi)
+        elif "A" in args:
+            r= math.sqrt( args.A/math.pi )
+        elif "angle" in args and "L_C" in args:
+            r= args.L_C/(2*math.sin(args.angle/2))
+        elif "angle" in args and "L_A" in args:
+            r= args.L_A/args.angle
+        elif "angle" in args and "G" in args:
+            r= args.G/(1-math.cos(args.angle/2))
+        elif "L_C" in args and "G" in args:
+            r= (4*args.G**2 + args.L_C**2)/(2*args.G)
+        elif "L_A" in args and "G" in args:
+            # approximate a value for *R* from *L_A* and *G*.
+            r= arc_height_2_r( args.L_A, args.G )
+        else:
+            raise Error( "Insufficient Data")
+        # Step 1B: compute angle, if possible; it's not *required*.
+        # Note that *r* is known at this point.
+        if "angle" in args:
+            angle= args.angle
+        elif "L_C" in args:
+            # Legacy
+            # z= args.L_C/(2*r)
+            # angle= 2 * math.atan2( z, math.sqrt(1-z**2) )
+            angle= 2 * math.asin( args.L_C/(2*r) )
+        elif "L_A" in args:
+            angle= args.L_A / r
+        elif "G" in args:
+            args.L_C = 2 * math.sqrt( 2*args.G*r - args.G**2 )
+            # Legacy
+            # z= args.L_C/(2*r)
+            # angle= 2 * math.atan2( z, math.sqrt(1-z**2) )
+            angle= 2 * math.asin( args.L_C/(2*r) )
+        else:
+            angle= None
+        # Step 3: compute the outputs from *r* and *angle*.
+        args.R= r
+        args.D= r*2
+        args.A= math.pi*r**2
+        args.C= 2*math.pi*r
+        if angle:
+            args.angle= angle
+            args.L_C= 2*r*math.sin(angle/2)
+            args.L_A= r*angle
+            args.G= r*(1-math.cos(angle/2))
+            args.A_C= math.pi * r**2 * angle/(2*math.pi)
+            args.A_G= args.A_C-(r - args.G)*(args.L_C/2)
+        return args
+
+circle= Circle()

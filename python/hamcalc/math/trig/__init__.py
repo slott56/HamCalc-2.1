@@ -17,6 +17,8 @@ Test Cases
 1.331821967102384
 
 """
+__version__ = "2.1"
+
 from hamcalc.lib import Unit, Standard_Unit
 import math
 import re

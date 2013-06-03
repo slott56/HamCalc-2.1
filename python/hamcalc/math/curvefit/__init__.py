@@ -124,6 +124,8 @@ absolute error.
 Sum of absolute error is 1.49, sum of relative error is .106.
 
 """
+__version__ = "2.1"
+
 import math
 
 introduction="""\

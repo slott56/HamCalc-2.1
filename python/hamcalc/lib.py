@@ -9,7 +9,10 @@
 -   Utility functions for degree and radian conversions.
 
 """
+__version__ = "2.1"
+
 from collections import namedtuple
+from collections import Callable
 import math
 
 class Unit:
@@ -145,3 +148,29 @@ class AttrDict( dict ):
         return self.get(name,None)
     def __setattr__( self, name, value ):
         self[name]= value
+
+class Solver( Callable ):
+    """An abstract **Solver** which accepts a cluster
+    of keywords and returns a dictionary.
+
+    This allows a **Solver** to be configured
+    with parameters or options. For example,
+    units can be configured into a solver, allowing
+    one solver class to have two instances
+    which handle metric and imperical units.
+
+    A subclass must override the :meth:`solve`
+    method.
+    """
+    def __call__( self, **kw ):
+        self.args= AttrDict( kw )
+        return self.solve( self.args )
+    def solve( self, args ):
+        """Override this method to accept an AttrDict
+        of arguments and return a revised AttrDict
+        with additional values.
+
+        :param args: AttrDict with argument values.
+        :returns: AttrDict with revised values.
+        """
+        raise NotImplementedError

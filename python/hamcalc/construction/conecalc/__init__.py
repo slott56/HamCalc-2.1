@@ -1,7 +1,11 @@
 """hamcalc.construction.conecalc
 
-Two solvers for laying out cones (or truncated cones)
+This creates two solvers for laying out cones (or truncated cones)
 on rectangular sheets.
+
+-   cone
+
+-   truncated_cone
 
 A Cone is defined by diameter ("D") and height ("H").
 
@@ -17,6 +21,10 @@ to properly lay out the cone pattern.
 -   Arc Center Coordinates ("X", "Y").
     "X" is measured along the "B" (length) axis.
     "Y" is measured along the "A" (width) axis.
+
+A Truncated Code is defined two diameters and a height:
+"D_B", "D_T", "H".
+
 
 Test Cases
 
@@ -149,7 +157,9 @@ Test Cases
 0.369
 
 """
-from hamcalc.lib import AttrDict
+__version__ = "2.1"
+
+from hamcalc.lib import AttrDict, Solver
 import math
 
 class Error( Exception ):
@@ -170,144 +180,154 @@ Algorithm by Robert Dehoney
 def intro():
     return introduction
 
-def cone( **kw ):
-    """This solves Cone and Sheet Size problems.
+class Cone( Solver ):
+    """Solver for Cone and Sheet Size problems.
 
-    -   Given the Cone base diameter and height ("D", "H"),
+    ..  todo:: Refactor the :meth:`solve` method.
+    """
+    def solve( self, args ):
+        """Solve Cone and Sheet Size problems.
+
+        -   Given the Cone base diameter and height ("D", "H"),
+            Compute the sheet size and other helpful measures.
+
+        -   Given sheet size ("A", "B") maximize the cone
+            that can be cut. There are as many as five alternatives.
+
+            A "next" indicator is used. If omitted to set to ``None``, a solution
+            is picked, and the value of "next" is added to the
+            attr dict with state information to compute the next value.
+
+            When "next" is returned as ``None``, there are no more
+            values.
+
+            ::
+
+                params= conecalc.cone( **params )
+                print( template.format( **params ) )
+                while params.next:
+                    params= conecalc.cone( **params )
+                    print( template.format( **params ) )
+
+        """
+        if 'next' not in args or args.next is None:
+            # General cases: cone to sheet or sheet to cones
+            if "D" in args or "H" in args:
+                # Given a cone, compute the sheet
+                args.R = args.D/2
+                args.L = math.sqrt( args.R**2 + args.H**2 )
+                args.theta_r = math.pi * args.D / args.L
+                args.theta_d = math.degrees( args.theta_r )
+                if math.pi <= args.theta_r:
+                    args.A = args.L + args.L*math.sin( (args.theta_r-math.pi)/2 )
+                    args.B = 2*args.L
+                    args.X = args.B/2
+                    args.Y = args.A - args.B/2
+                elif math.pi/2 <= args.theta_r < math.pi:
+                    args.A = args.L
+                    args.B = args.L + args.L*math.sin( args.theta_r-(math.pi/2) )
+                    args.X = args.B-args.A
+                    args.Y = 0
+                else:
+                    args.A = args.L*math.sin( args.theta_r )
+                    args.B = args.L
+                    args.X = 0
+                    args.Y = 0
+                args.C = math.pi * args.D
+                return args
+            elif "A" in args or "B" in args:
+                # Given a sheet, compute the first of the cones and set "more"
+                if args.B > 2*args.A:
+                    args.next= 3
+                else:
+                    args.next= 0
+            else:
+                raise Error( "Unrecognized variables: {0}".format(kw.keys()) )
+        assert 'next' in args and args.next is not None
+        # Fitting cones to sheets, next alternative solution.
+        if args.next == 0:
+            args.next += 1
+            args.L = args.B/2
+            args.theta_r = math.pi + math.asin( args.A/args.L - 1 )
+            args.X, args.Y = args.B/2, args.A-args.B/2
+        elif args.next == 1:
+            args.next += 1
+            args.L = args.A
+            args.theta_r = 2 * math.asin( args.B / 2 / args.L )
+            args.X, args.Y = args.B/2, 0
+        elif args.next == 2:
+            args.next += 1
+            args.L = args.A
+            args.theta_r = math.pi/2 + math.asin( args.B/args.L - 1 )
+            args.X, args.Y = args.B-args.A, 0
+        elif args.next == 3:
+            args.next += 1
+            args.L = args.B
+            args.theta_r = math.asin( args.A / args.L )
+            args.X, args.Y = 0, 0
+        elif args.next == 4:
+            args.next = None
+            args.L = args.B
+            args.theta_r = 2 * math.asin( args.A / 2 / args.L )
+            args.X, args.Y = 0, args.A/2
+        else:
+            raise Error( "Logic Error: next={0}".format(args.next) )
+
+        args.theta_d = math.degrees( args.theta_r )
+        args.C = args.L * args.theta_r
+        args.D = args.C / math.pi
+        args.R = args.D / 2
+        args.H = math.sqrt( args.L**2 - args.R**2 )
+
+        return args
+
+cone = Cone()
+
+class Truncate_Cone( Solver ):
+    """Solver for Truncated Cone and Sheet Size problems."""
+
+    def solve( self, args ):
+        """Solve Truncated Cone and Sheet Size problems.
+
+        Given the Cone base diameter, top diameter and height
+        ("D_B", "D_T", "H"),
         Compute the sheet size and other helpful measures.
 
-    -   Given sheet size ("A", "B") maximize the cone
-        that can be cut. There are as many as five alternatives.
-
-        A "next" indicator is used. If omitted to set to ``None``, a solution
-        is picked, and the value of "next" is added to the
-        attr dict with state information to compute the next value.
-
-        When "next" is returned as ``None``, there are no more
-        values.
-
-        ::
-
-            result= conecalc.cone( **params )
-            format( result )
-            while params.next:
-                result= conecalc.cone( **params )
-                format( result )
-
-    """
-    args= AttrDict( kw )
-    if 'next' not in args or args.next is None:
-        # General cases: cone to sheet or sheet to cones
-        if "D" in args or "H" in args:
-            # Given a cone, compute the sheet
-            args.R = args.D/2
-            args.L = math.sqrt( args.R**2 + args.H**2 )
-            args.theta_r = math.pi * args.D / args.L
-            args.theta_d = math.degrees( args.theta_r )
-            if math.pi <= args.theta_r:
-                args.A = args.L + args.L*math.sin( (args.theta_r-math.pi)/2 )
-                args.B = 2*args.L
-                args.X = args.B/2
-                args.Y = args.A - args.B/2
-            elif math.pi/2 <= args.theta_r < math.pi:
-                args.A = args.L
-                args.B = args.L + args.L*math.sin( args.theta_r-(math.pi/2) )
-                args.X = args.B-args.A
-                args.Y = 0
-            else:
-                args.A = args.L*math.sin( args.theta_r )
-                args.B = args.L
-                args.X = 0
-                args.Y = 0
-            args.C = math.pi * args.D
-            return args
-        elif "A" in args or "B" in args:
-            # Given a sheet, compute the first of the cones and set "more"
-            if args.B > 2*args.A:
-                args.next= 3
-            else:
-                args.next= 0
+        This is not complete solver, because it can't resolve
+        a cone design given a sheet size.
+        """
+        if args.D_T > args.D_B:
+            args.LE, args.SE=args.D_T, args.D_B
         else:
-            raise Error( "Unrecognized variables: {0}".format(kw.keys()) )
-    assert 'next' in args and args.next is not None
-    # Fitting cones to sheets, next alternative solution.
-    if args.next == 0:
-        args.next += 1
-        args.L = args.B/2
-        args.theta_r = math.pi + math.asin( args.A/args.L - 1 )
-        args.X, args.Y = args.B/2, args.A-args.B/2
-    elif args.next == 1:
-        args.next += 1
-        args.L = args.A
-        args.theta_r = 2 * math.asin( args.B / 2 / args.L )
-        args.X, args.Y = args.B/2, 0
-    elif args.next == 2:
-        args.next += 1
-        args.L = args.A
-        args.theta_r = math.pi/2 + math.asin( args.B/args.L - 1 )
-        args.X, args.Y = args.B-args.A, 0
-    elif args.next == 3:
-        args.next += 1
-        args.L = args.B
-        args.theta_r = math.asin( args.A / args.L )
-        args.X, args.Y = 0, 0
-    elif args.next == 4:
-        args.next = None
-        args.L = args.B
-        args.theta_r = 2 * math.asin( args.A / 2 / args.L )
-        args.X, args.Y = 0, args.A/2
-    else:
-        raise Error( "Logic Error: next={0}".format(args.next) )
+            args.LE, args.SE=args.D_B, args.D_T
 
-    args.theta_d = math.degrees( args.theta_r )
-    args.C = args.L * args.theta_r
-    args.D = args.C / math.pi
-    args.R = args.D / 2
-    args.H = math.sqrt( args.L**2 - args.R**2 )
+        assert args.LE >= args.SE # LE is the large end
 
-    return args
+        args.R_T = args.LE/2
+        args.R_B = args.SE/2
+        args.H_X = args.R_B * args.H / (args.R_T - args.R_B)
+        args.L = math.sqrt( args.R_T**2 + (args.H + args.H_X)**2 )
+        args.L_X = args.R_B * args.L / args.R_T
+        args.theta_r = 2*math.pi*args.R_T/args.L
+        args.theta_d = math.degrees( args.theta_r )
+        if args.theta_r >= math.pi:
+            args.B = 2*args.L
+            args.A = args.L + args.L * math.sin( (args.theta_r-math.pi)/2 )
+            args.X, args.Y = args.B/2, args.A-args.B/2
+        else:
+            args.B = 2*args.L*math.sin( args.theta_r/2 )
+            args.A = args.L - args.L_X*math.cos( args.theta_r/2 )
+            args.X, args.Y = args.B/2, 0
+        args.TOP= args.A
+        args.BOT= 0
+        if args.theta_r > math.pi:
+            args.Y = args.A - args.L
+            args.relative= "above"
+        elif args.theta_r < math.pi:
+            args.Y = args.L - args.A
+            args.relative= "below"
+        else:
+            args.relative= "above"
+        return args
 
-def truncated_cone( **kw ):
-    """This solves Truncated Cone and Sheet Size problems.
-
-    Given the Cone base diameter, top diameter and height
-    ("D_B", "D_T", "H"),
-    Compute the sheet size and other helpful measures.
-
-    This is not complete solver, because it can't resolve
-    a cone design given a sheet size.
-    """
-    args= AttrDict( kw )
-    if args.D_T > args.D_B:
-        args.LE, args.SE=args.D_T, args.D_B
-    else:
-        args.LE, args.SE=args.D_B, args.D_T
-
-    assert args.LE >= args.SE # LE is the large end
-
-    args.R_T = args.LE/2
-    args.R_B = args.SE/2
-    args.H_X = args.R_B * args.H / (args.R_T - args.R_B)
-    args.L = math.sqrt( args.R_T**2 + (args.H + args.H_X)**2 )
-    args.L_X = args.R_B * args.L / args.R_T
-    args.theta_r = 2*math.pi*args.R_T/args.L
-    args.theta_d = math.degrees( args.theta_r )
-    if args.theta_r >= math.pi:
-        args.B = 2*args.L
-        args.A = args.L + args.L * math.sin( (args.theta_r-math.pi)/2 )
-        args.X, args.Y = args.B/2, args.A-args.B/2
-    else:
-        args.B = 2*args.L*math.sin( args.theta_r/2 )
-        args.A = args.L - args.L_X*math.cos( args.theta_r/2 )
-        args.X, args.Y = args.B/2, 0
-    args.TOP= args.A
-    args.BOT= 0
-    if args.theta_r > math.pi:
-        args.Y = args.A - args.L
-        args.relative= "above"
-    elif args.theta_r < math.pi:
-        args.Y = args.L - args.A
-        args.relative= "below"
-    else:
-        args.relative= "above"
-    return args
+truncated_cone = Truncate_Cone()

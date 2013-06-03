@@ -30,8 +30,9 @@ Unit Conversion Test Cases
 1.8287999879299202
 
 """
+__version__ = "2.1"
 
-from hamcalc.lib import AttrDict, Unit, Standard_Unit
+from hamcalc.lib import AttrDict, Unit, Standard_Unit, Solver
 from hamcalc.math.equiv import METRE, FOOT
 import math
 
@@ -80,22 +81,25 @@ class FT_PER_SEC( Unit ):
     standard= M_PER_SEC
     factor= 3.2808399
 
-def centrif( **kw ):
-    """Solve Force-Mass-Velocity and Radius problems.
+class Centripetal( Solver ):
+    """Solver for Force-Mass-Velocity and Radius problems."""
+    def solve( self, args ):
+        """Solve Force-Mass-Velocity and Radius problems.
 
-    :params F: force (newtons, kg-m/sec^2)
-    :params M: mass (kilograms)
-    :params V: velocity (meters/second)
-    :params R: radius (meters)
-    """
-    args= AttrDict( kw )
-    if 'M' in args and 'V' in args and 'R' in args:
-        args.F= args.M*args.V**2/args.R
-    elif 'F' in args and 'V' in args and 'R' in args:
-        args.M= args.F/(args.V**2/args.R)
-    elif 'F' in args and 'M' in args and 'R' in args:
-        args.V= math.sqrt( args.F/args.M*args.R )
-    elif 'F' in args and 'M' in args and 'V' in args:
-        args.R= args.M*args.V**2/args.F
-    return args
+        :params F: force (newtons, kg-m/sec^2)
+        :params M: mass (kilograms)
+        :params V: velocity (meters/second)
+        :params R: radius (meters)
+        """
+        if 'M' in args and 'V' in args and 'R' in args:
+            args.F= args.M*args.V**2/args.R
+        elif 'F' in args and 'V' in args and 'R' in args:
+            args.M= args.F/(args.V**2/args.R)
+        elif 'F' in args and 'M' in args and 'R' in args:
+            args.V= math.sqrt( args.F/args.M*args.R )
+        elif 'F' in args and 'M' in args and 'V' in args:
+            args.R= args.M*args.V**2/args.F
+        return args
 
+centrif = Centripetal()
+centrip = Centripetal()

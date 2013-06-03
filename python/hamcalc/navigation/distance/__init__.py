@@ -51,6 +51,8 @@ Test Cases
 (60, 9, 44)
 
 """
+__version__ = "2.1"
+
 import math
 import hamcalc.math.trig as trig
 

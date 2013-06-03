@@ -15,7 +15,6 @@ There are two implementations.
 -   Object-Oriented. This uses recursive method and memoization.
 
 """
-
 __version__ = "2.1"
 
 import math

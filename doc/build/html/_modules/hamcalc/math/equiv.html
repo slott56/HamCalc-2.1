@@ -211,6 +211,14 @@
 <span class="sd">It&#39;s possible that the legacy computes this incorrectly.</span>
 <span class="sd">The result from the legacy may be 22.6 LPK.</span>
 
+<span class="sd">Area</span>
+
+<span class="sd">&gt;&gt;&gt; a = equiv.SQ_FOOT.to_std( 9 )</span>
+<span class="sd">&gt;&gt;&gt; equiv.SQ_METRE.from_std( a )</span>
+<span class="sd">0.83612736</span>
+<span class="sd">&gt;&gt;&gt; equiv.SQ_FOOT.from_std( a )</span>
+<span class="sd">9.0</span>
+
 <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="kn">from</span> <span class="nn">hamcalc.lib</span> <span class="kn">import</span> <span class="n">Unit</span><span class="p">,</span> <span class="n">Standard_Unit</span><span class="p">,</span> <span class="n">AttrDict</span>
@@ -469,6 +477,16 @@
     <span class="k">elif</span> <span class="s">&#39;l&#39;</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
         <span class="n">args</span><span class="o">.</span><span class="n">f</span> <span class="o">=</span> <span class="n">c</span><span class="o">/</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">l</span><span class="o">/</span><span class="mi">1000</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">args</span>
+
+</div>
+<div class="viewcode-block" id="SQ_METRE"><a class="viewcode-back" href="../../../python/math/equiv.html#hamcalc.math.equiv.SQ_METRE">[docs]</a><span class="k">class</span> <span class="nc">SQ_METRE</span><span class="p">(</span> <span class="n">Standard_Unit</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Square Metre&quot;&quot;&quot;</span>
+    <span class="n">name</span><span class="o">=</span> <span class="s">&quot;sq.metre&quot;</span>
+</div>
+<div class="viewcode-block" id="SQ_FOOT"><a class="viewcode-back" href="../../../python/math/equiv.html#hamcalc.math.equiv.SQ_FOOT">[docs]</a><span class="k">class</span> <span class="nc">SQ_FOOT</span><span class="p">(</span> <span class="n">Unit</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Square Foot&quot;&quot;&quot;</span>
+    <span class="n">name</span><span class="o">=</span> <span class="s">&quot;sq.ft&quot;</span>
+    <span class="n">factor</span><span class="o">=</span> <span class="mi">1</span><span class="o">/</span><span class="mf">0.09290304</span>
 </div>
 <span class="n">unit_map</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s">&#39;capacitance&#39;</span><span class="p">:</span> <span class="p">(</span><span class="n">FARAD</span><span class="p">,</span> <span class="n">MICROFARAD</span><span class="p">,</span> <span class="n">NANOFARAD</span><span class="p">,</span> <span class="n">PICOFARAD</span><span class="p">),</span>
