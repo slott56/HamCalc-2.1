@@ -52,7 +52,7 @@ we see this calculation of the Hour Angle, *W*, based on declination, *T*.
 
 ..  math::
 
-    \arccos (\frac{\cos 90.833^{\circ}}{\cos \phi_o \cos T} - \tan \phi_o \tan T )
+    \arccos \left(\frac{\cos 90.833^{\circ}}{\cos \phi_o \cos T} - \tan \phi_o \tan T \right)
 
 It appears that we can replace 90.833° with another angle of our choosing.
 

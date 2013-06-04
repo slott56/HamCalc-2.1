@@ -39,6 +39,8 @@ Current Carrying Capacity of Wire
 
 Lines 1850 to 2120
 
+Note that this may overlap with :program:`wirecond`.
+
 Current Carrying Capacity of PCB
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 

@@ -62,7 +62,7 @@
 Given minutes, <em>m</em>, we can compute a <em>z</em> factor and the
 altitude, <em>h</em>.</p>
 <div class="math">
-<p><img src="../../_images/math/302d023b66336e75753fab4cfae532a786f9edb1.png" alt="Y = (\frac{144}{88})^{1/16}
+<p><img src="../../_images/math/3b0fad182e25abb9454f5036e279689c6e873c9f.png" alt="Y = \left(\frac{144}{88}\right)^{1/16}
 
 z = \frac{\log m - \log 88}{\log Y} + 1"/></p>
 </div><p>Where R is the radius of the earth, 3963.34 miles.</p>
@@ -265,16 +265,16 @@ be suitable for very accurate satellite tracking.</pre>
 <h2>Legacy Quirks<a class="headerlink" href="#legacy-quirks" title="Permalink to this headline">¶</a></h2>
 <p>The calculation involves a set of approximations in a <tt class="docutils literal"><span class="pre">B</span></tt> array.</p>
 <div class="math">
-<p><img src="../../_images/math/2c67ef869c5c8159a6a01b14bb60254a3b579da9.png" alt="H = 144, L = 88, R_i = 100
+<p><img src="../../_images/math/a332992de3d050b8cfa245c7cc04496eca47ac60.png" alt="H = 144, L = 88, R_i = 100
 
-Y = (\frac{H}{L})^{1/16}"/></p>
+Y = \left(\frac{H}{L}\right)^{1/16}"/></p>
 </div><p>For Y, the comment is &#8220;HI &amp; LO 1600 miles apart on 100 mi.increment graph&#8221;.</p>
 <div class="math">
-<p><img src="../../_images/math/4dce664620b69a84f202f2e0ab8b658769631aa1.png" alt="B_{z,1} = h_z = \lbrace R + R_i \times z \vert 1 \leq z &lt; 21 \rbrace
+<p><img src="../../_images/math/f1558e69df45317806495ba8cb448ed8dbcbf23b.png" alt="B_{z,1} = h_z = \lbrace R + R_i \times z \vert 1 \leq z &lt; 21 \rbrace
 
-B_{z,2} = t_z = \lbrace (\frac{L}{Y})Y^z \vert 1 \leq z &lt; 21 \rbrace
+B_{z,2} = t_z = \left\lbrace \left(\frac{L}{Y}\right)Y^z \vert 1 \leq z &lt; 21 \right\rbrace
 
-(\frac{L}{Y})Y^z = LY^{z-1}
+\left(\frac{L}{Y}\right)Y^z = LY^{z-1}
 
 B_{z,3} =  \lbrace h_z/t_z  \vert 1 \leq z &lt; 21  \rbrace"/></p>
 </div><p>The calculation of the altitude is <img class="math" src="../../_images/math/de9567187999d7998a48045f8b1e211f16a55824.png" alt="h = J_6 \times M - R"/>, where <img class="math" src="../../_images/math/78e229862f699fb03293dbcb1fbbaf46cc1fbf88.png" alt="J_6"/> is an interpolated value between <img class="math" src="../../_images/math/4c34e990e1fd7b2d00f523a676ee9d71f32cf44b.png" alt="B_{z,3} = h_z/t_z"/> and
@@ -299,7 +299,7 @@ discrete intervals and then interpolated.</p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html">Python Modules</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../lib.html">lib &#8211; Supporting Library</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../radio.html">radio &#8211; Radio Design and Engineering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../radio/index.html">radio &#8211; Radio Design and Engineering</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../ham.html">ham &#8211; Ham Radio Operations</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../electronics/index.html">electronics &#8211; General Electronics</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../construction/index.html">construction &#8211; Construction and Mechanical</a></li>

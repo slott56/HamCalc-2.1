@@ -51,7 +51,7 @@ The preferred solution is this.
 
 ..  math::
 
-    q = -\frac{1}{2} ( B + \operatorname{sgn}(B)\sqrt{B^2-4AC} )
+    q = -\frac{1}{2} \left( B + \operatorname{sgn}(B)\sqrt{B^2-4AC} \right)
 
     x_1 = \frac{q}{A}
 

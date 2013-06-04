@@ -8,7 +8,7 @@ These are the various HamCalc core calculation packages.
     :maxdepth: 2
 
     lib
-    radio
+    radio/index
     ham
     electronics/index
     construction/index

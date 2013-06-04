@@ -10,7 +10,7 @@ altitude, *h*.
 
 ..  math::
 
-    Y = (\frac{144}{88})^{1/16}
+    Y = \left(\frac{144}{88}\right)^{1/16}
 
     z = \frac{\log m - \log 88}{\log Y} + 1
 
@@ -93,7 +93,7 @@ The calculation involves a set of approximations in a ``B`` array.
 
     H = 144, L = 88, R_i = 100
 
-    Y = (\frac{H}{L})^{1/16}
+    Y = \left(\frac{H}{L}\right)^{1/16}
 
 For Y, the comment is "HI & LO 1600 miles apart on 100 mi.increment graph".
 
@@ -101,9 +101,9 @@ For Y, the comment is "HI & LO 1600 miles apart on 100 mi.increment graph".
 
     B_{z,1} = h_z = \lbrace R + R_i \times z \vert 1 \leq z < 21 \rbrace
 
-    B_{z,2} = t_z = \lbrace (\frac{L}{Y})Y^z \vert 1 \leq z < 21 \rbrace
+    B_{z,2} = t_z = \left\lbrace \left(\frac{L}{Y}\right)Y^z \vert 1 \leq z < 21 \right\rbrace
 
-    (\frac{L}{Y})Y^z = LY^{z-1}
+    \left(\frac{L}{Y}\right)Y^z = LY^{z-1}
 
     B_{z,3} =  \lbrace h_z/t_z  \vert 1 \leq z < 21  \rbrace
 

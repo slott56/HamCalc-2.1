@@ -1,0 +1,71 @@
+teletube -- Telescoping Aluminum Tubing
+---------------------------------------
+
+This does three things.
+
+-   DISPLAY table of standard tubing sizes
+
+-   Construction details of a typical YAGI element
+
+-   Convert one-piece YAGI element to tapered sections
+
+Tubing Sizes
+~~~~~~~~~~~~~~~~
+
+Output::
+
+    STANDARD TELESCOPING TUBING SIZES
+    Alloy #6061-T6 Round Aluminum Tube in standard 12 ft. lengths.
+
+      O.D.    I.D.    Wall    Gauge       Weight
+
+      1/4"    0.134"   .058"    #17     0.041 lb./ft.
+      3/8"    0.259"   .058"    #17     0.068 lb./ft.
+      1/2"    0.384"   .058"    #17     0.095 lb./ft.
+      5/8"    0.509"   .058"    #17     0.121 lb./ft.
+      3/4"    0.634"   .058"    #17     0.148 lb./ft.
+      7/8"    0.759"   .058"    #17     0.175 lb./ft.
+    1 "       0.884"   .058"    #17     0.202 lb./ft.
+    1 1/8"    1.009"   .058"    #17     0.229 lb./ft.
+    1 1/4"    1.134"   .058"    #17     0.255 lb./ft.
+    1 3/8"    1.259"   .058"    #17     0.282 lb./ft.
+    1 1/2"    1.384"   .058"    #17     0.309 lb./ft.
+    1 5/8"    1.509"   .058"    #17     0.336 lb./ft.
+    1 3/4"    1.634"   .058"    #17     0.363 lb./ft.
+    1 7/8"    1.759"   .058"    #17     0.389 lb./ft.
+
+    Note: Each of the above sizes fits snugly inside the next larger size.
+
+Yagi Details
+~~~~~~~~~~~~~~
+
+Sample output of construction details of a typical YAGI element
+
+::
+
+    Do you want (l)ight, (m)edium, or (h)eavy construction?  (l/m/h)
+    ENTER: Total overall length of element, in inches.....? 96
+                ┌─────── Exposed Length ───────┐       Size         Weight (lbs.)
+
+    3 sections
+    1 centre sect. @ 72"                     72.0"   0.625" dia.tubing     0.73
+    2 end sections projecting+12" each       24.0"   0.500" dia.tubing     0.09
+                                          ────────                      ────────
+    Overall length of element                96.0"  (  8.00 ft.)           0.8
+
+       All tubing is .058" wall #6061-T6 round aluminum tubing available in
+       standard 12 foot lengths.
+
+       All tubing sections, except end sections, are 72 inches long,
+       (standard 12' length cut in half).
+
+       End sections should be cut about 8 to 12 inches longer than the
+       projecting dimension shown to allow for final tuning adjustments.
+
+Tapered Sections
+~~~~~~~~~~~~~~~~~~
+
+Here's the ASCII art for this third option.
+
+..  image:: tube.png
+    :width: 5in

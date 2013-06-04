@@ -1,4 +1,4 @@
-Results of doctest builder run on 2013-06-03 13:37:47
+Results of doctest builder run on 2013-06-04 08:27:55
 =====================================================
 
 Document: python/math/baromtr
@@ -55,14 +55,6 @@ Document: python/navigation/gridsq
   35 tests in default
 35 tests in 1 items.
 35 passed and 0 failed.
-Test passed.
-
-Document: python/navigation/moontrac
-------------------------------------
-1 items passed all tests:
-  67 tests in default
-67 tests in 1 items.
-67 passed and 0 failed.
 Test passed.
 
 Document: python/construction/guywires
@@ -215,6 +207,14 @@ Document: python/math/deciconv
   11 tests in default
 11 tests in 1 items.
 11 passed and 0 failed.
+Test passed.
+
+Document: python/navigation/moontrac
+------------------------------------
+1 items passed all tests:
+  67 tests in default
+67 tests in 1 items.
+67 passed and 0 failed.
 Test passed.
 
 Document: python/electronics/decibel

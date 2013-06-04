@@ -15,12 +15,8 @@ Construction, including towers, stairs, plumbing, masonry, mechanical, etc.
     nmbrsize
     pipesize
     survey
-
-Plus these additional modules, not yet examined.
-
--       teletube -- Telescoping Aluminum Tubing
--       wirecond -- Wires in Conduit
--       wiremesh -- Wire Mesh Screens, Wind Loads
+    wirecond
+    wiremesh
 
 From the mechanics menu, we have these modules, also.
 

@@ -95,7 +95,7 @@ The Calculations::
 **510**. Given *A* and *B*: :math:`R=\dfrac{B}{1-\cos(A/2)}`
 
 **520**. Given *B* and *C*:
-:math:`R=\dfrac{4B^2+C^2}{8B}; A=2(\pi-2\arctan\frac{C/2}{B})`
+:math:`R=\dfrac{4B^2+C^2}{8B}; A=2\left(\pi-2\arctan\frac{C/2}{B}\right)`
 
 **530**. Given *B* and *R*: :math:`C=2\sqrt{2BR-B^2}`
 

@@ -308,7 +308,7 @@ and <img class="math" src="../../_images/math/e8c615c0bcf030a0d2bfe9cd1ceacf491b
 <p><strong>O</strong>.  Sun Rad Vector (AUs).</p>
 <blockquote>
 <div><div class="math">
-<p><img src="../../_images/math/3345b5929e1d50c7648057018b5767636748c37c.png" alt="\dfrac{(1.000001018(1-K^2))}{(1+K \cos N)}"/></p>
+<p><img src="../../_images/math/d72ba012e3e5484ba79eeb728a758bb9fe186d3b.png" alt="\dfrac{1.000001018(1-K^2)}{1+K \cos N}"/></p>
 </div></div></blockquote>
 <p><strong>P</strong>.  Sun App Long (deg).</p>
 <blockquote>
@@ -322,7 +322,9 @@ and <img class="math" src="../../_images/math/e8c615c0bcf030a0d2bfe9cd1ceacf491b
 </div></div></blockquote>
 <p><strong>R</strong>.  Obliq Corr (deg).</p>
 <blockquote>
-<div><img class="math" src="../../_images/math/83f453b18138489ad7930c083839e3b12dfc4150.png" alt="Q+0.00256 \cos (125.04-1934.136 G)"/></div></blockquote>
+<div><div class="math">
+<p><img src="../../_images/math/d61e1d532fbd6339684651ac3113e5301ea02e12.png" alt="Q+0.00256 \cos (125.04-1934.136 G)"/></p>
+</div></div></blockquote>
 <p><strong>S</strong>.  Sun Rt Ascen (deg).</p>
 <blockquote>
 <div><div class="math">
@@ -342,14 +344,14 @@ and <img class="math" src="../../_images/math/e8c615c0bcf030a0d2bfe9cd1ceacf491b
 <p><strong>W</strong>.  HA Sunrise (deg).</p>
 <blockquote>
 <div><div class="math">
-<p><img src="../../_images/math/e860dcdc2028aed56f06d65337237083cd43096e.png" alt="\arccos (\frac{\cos 90.833^{\circ}}{\cos \phi_o \cos T} - \tan \phi_o \tan T )"/></p>
+<p><img src="../../_images/math/36d17231f4a23e943b30eb963bdf058a9b102844.png" alt="\arccos \left(\frac{\cos 90.833^{\circ}}{\cos \phi_o \cos T} - \tan \phi_o \tan T \right)"/></p>
 </div><p>Latitude of observer is <img class="math" src="../../_images/math/092305802f8a8cd4debabfc2539af7037867123f.png" alt="\phi_o"/>.</p>
 <p>Alternate form? This is used in the hour angle above, as well
 as the Stargazing version below, as well as the legacy HamCalc.</p>
 <div class="math">
-<p><img src="../../_images/math/9935405b3ea99576cad63e1e35875a262fb617f3.png" alt="\delta = T
+<p><img src="../../_images/math/99cbc8879e6a4cddd95fb6214e4fd714ca443029.png" alt="\delta = T
 
-\arccos (\frac{\sin -0.833^{\circ} - \sin \phi_o \sin \delta}{\cos \phi_o \cos \delta })"/></p>
+\arccos \left(\frac{\sin -0.833^{\circ} - \sin \phi_o \sin \delta}{\cos \phi_o \cos \delta }\right)"/></p>
 </div></div></blockquote>
 <p><strong>X</strong>.  Solar Noon (LST).</p>
 <blockquote>
@@ -394,9 +396,9 @@ In hours. <img class="math" src="../../_images/math/fa2fa899f0afb05d683788552350
 <p><strong>AH</strong>. Solar Azimuth Angle (deg cw from N)</p>
 <blockquote>
 <div><div class="math">
-<p><img src="../../_images/math/57823290138409b93c0bc63204d6c28b7df975e3.png" alt="\begin{cases}
-\arccos (\dfrac{\sin \phi_o \cos AD-\sin T}{\cos \phi_o \sin AD}) + 180  \mod 360 &amp; \text{if $AC &gt; 0$},\\
-[540 - \arccos (\dfrac{\sin \phi_o \cos AD - \sin T}{\cos \phi_o \sin AD})] \mod 360&amp; \text{otherwise}
+<p><img src="../../_images/math/87808f7f14cf3c07f3a9ca5d67e6827a8f8f3185.png" alt="\begin{cases}
+\arccos \left(\dfrac{\sin \phi_o \cos AD-\sin T}{\cos \phi_o \sin AD}\right) + 180  \mod 360 &amp; \text{if $AC &gt; 0$},\\
+\left[540 - \arccos \left(\dfrac{\sin \phi_o \cos AD - \sin T}{\cos \phi_o \sin AD}\right) \right] \mod 360&amp; \text{otherwise}
 \end{cases}"/></p>
 </div></div></blockquote>
 </div>
@@ -887,7 +889,7 @@ Date       Daylight   (degrees)            (degrees)            (degrees)</pre>
 <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html">Python Modules</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../lib.html">lib &#8211; Supporting Library</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../radio.html">radio &#8211; Radio Design and Engineering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../radio/index.html">radio &#8211; Radio Design and Engineering</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../ham.html">ham &#8211; Ham Radio Operations</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../electronics/index.html">electronics &#8211; General Electronics</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../construction/index.html">construction &#8211; Construction and Mechanical</a></li>

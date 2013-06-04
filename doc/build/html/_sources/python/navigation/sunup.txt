@@ -336,7 +336,7 @@ The calculation works like this:
 
     ..  math::
 
-        \dfrac{(1.000001018(1-K^2))}{(1+K \cos N)}
+        \dfrac{1.000001018(1-K^2)}{1+K \cos N}
 
 **P**.  Sun App Long (deg).
 
@@ -352,7 +352,9 @@ The calculation works like this:
 
 **R**.  Obliq Corr (deg).
 
-    :math:`Q+0.00256 \cos (125.04-1934.136 G)`
+    ..  math::
+
+        Q+0.00256 \cos (125.04-1934.136 G)
 
 **S**.  Sun Rt Ascen (deg).
 
@@ -378,7 +380,7 @@ The calculation works like this:
 
     ..  math::
 
-        \arccos (\frac{\cos 90.833^{\circ}}{\cos \phi_o \cos T} - \tan \phi_o \tan T )
+        \arccos \left(\frac{\cos 90.833^{\circ}}{\cos \phi_o \cos T} - \tan \phi_o \tan T \right)
 
     Latitude of observer is :math:`\phi_o`.
 
@@ -389,7 +391,7 @@ The calculation works like this:
 
         \delta = T
 
-        \arccos (\frac{\sin -0.833^{\circ} - \sin \phi_o \sin \delta}{\cos \phi_o \cos \delta })
+        \arccos \left(\frac{\sin -0.833^{\circ} - \sin \phi_o \sin \delta}{\cos \phi_o \cos \delta }\right)
 
 **X**.  Solar Noon (LST).
 
@@ -448,8 +450,8 @@ The calculation works like this:
     ..  math::
 
         \begin{cases}
-        \arccos (\dfrac{\sin \phi_o \cos AD-\sin T}{\cos \phi_o \sin AD}) + 180  \mod 360 & \text{if $AC > 0$},\\
-        [540 - \arccos (\dfrac{\sin \phi_o \cos AD - \sin T}{\cos \phi_o \sin AD})] \mod 360& \text{otherwise}
+        \arccos \left(\dfrac{\sin \phi_o \cos AD-\sin T}{\cos \phi_o \sin AD}\right) + 180  \mod 360 & \text{if $AC > 0$},\\
+        \left[540 - \arccos \left(\dfrac{\sin \phi_o \cos AD - \sin T}{\cos \phi_o \sin AD}\right) \right] \mod 360& \text{otherwise}
         \end{cases}
 
 The Stargazing Model

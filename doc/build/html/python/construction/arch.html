@@ -25,7 +25,7 @@
     <script type="text/javascript" src="../../_static/doctools.js"></script>
     <link rel="top" title="HamCalc 2.1 documentation" href="../../index.html" />
     <link rel="up" title="construction – Construction and Mechanical" href="index.html" />
-    <link rel="next" title="conecalc – Cone Calculator" href="conecalc.html" />
+    <link rel="next" title="bend – Bend Allowance, Metals" href="bend.html" />
     <link rel="prev" title="construction – Construction and Mechanical" href="index.html" /> 
   </head>
   <body>
@@ -36,7 +36,7 @@
         <div class="rel">
           <a href="index.html" title="construction – Construction and Mechanical"
              accesskey="P">previous</a> |
-          <a href="conecalc.html" title="conecalc – Cone Calculator"
+          <a href="bend.html" title="bend – Bend Allowance, Metals"
              accesskey="N">next</a> |
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |
@@ -136,7 +136,7 @@ Angle AXB..........    45.240°</pre>
 <div>Legacy uses a trig identity <img class="math" src="../../_images/math/087d0676fa1ae415933c99c5587d50aa1c7c20e9.png" alt="\arcsin X = \arctan \frac{X}{\sqrt{1-X^2}}"/>.</div></blockquote>
 <p><strong>510</strong>. Given <em>A</em> and <em>B</em>: <img class="math" src="../../_images/math/8e574e51717f631122c3051f444cce27759ba8fc.png" alt="R=\dfrac{B}{1-\cos(A/2)}"/></p>
 <p><strong>520</strong>. Given <em>B</em> and <em>C</em>:
-<img class="math" src="../../_images/math/39295c2d3618b5ba2184d3e3fea0bc7cf12fbc42.png" alt="R=\dfrac{4B^2+C^2}{8B}; A=2(\pi-2\arctan\frac{C/2}{B})"/></p>
+<img class="math" src="../../_images/math/5d98d32959b8d201b046be291aff500101a0397f.png" alt="R=\dfrac{4B^2+C^2}{8B}; A=2\left(\pi-2\arctan\frac{C/2}{B}\right)"/></p>
 <p><strong>530</strong>. Given <em>B</em> and <em>R</em>: <img class="math" src="../../_images/math/079ce73166306a5db25adb5da61c46c7bc13de91.png" alt="C=2\sqrt{2BR-B^2}"/></p>
 <p><strong>540</strong>. Given <em>A</em> and <em>R</em>: <img class="math" src="../../_images/math/61ee81dc8ceb43fb21997974c0bece59a74d7411.png" alt="C=2R\sin \frac{A}{2}"/></p>
 <p><strong>550</strong>. Given <em>R</em> and <em>C</em>: <img class="math" src="../../_images/math/3f33062fe341eac393102afbffe12e83ef0be144.png" alt="B=R-\frac{1}{2}\sqrt{4R^2-C^2}"/></p>
@@ -338,20 +338,17 @@ from an incomplete set of parameters.</p>
 <span class="go">81.681</span>
 </pre></div>
 </div>
-<dl class="function">
-<dt id="hamcalc.construction.arch.arc_chord_2_angle">
-<tt class="descclassname">hamcalc.construction.arch.</tt><tt class="descname">arc_chord_2_angle</tt><big>(</big><em>A_C</em>, <em>C</em>, <em>eps=1e-07</em><big>)</big><a class="headerlink" href="#hamcalc.construction.arch.arc_chord_2_angle" title="Permalink to this definition">¶</a></dt>
-<dd><p>Use bisection to find the angle that gives the proper
-arc and chord information.</p>
+<dl class="class">
+<dt id="hamcalc.construction.arch.Arch">
+<em class="property">class </em><tt class="descclassname">hamcalc.construction.arch.</tt><tt class="descname">Arch</tt><a class="headerlink" href="#hamcalc.construction.arch.Arch" title="Permalink to this definition">¶</a></dt>
+<dd><p>Solver for Arch problems.</p>
 <div class="admonition-todo admonition" id="index-0">
 <p class="first admonition-title">Todo</p>
-<p class="last">move this to propcirc, where it belongs.</p>
+<p class="last">Refactor the <a class="reference internal" href="#hamcalc.construction.arch.Arch.solve" title="hamcalc.construction.arch.Arch.solve"><tt class="xref py py-meth docutils literal"><span class="pre">solve()</span></tt></a> method.</p>
 </div>
-</dd></dl>
-
-<dl class="function">
-<dt id="hamcalc.construction.arch.arch">
-<tt class="descclassname">hamcalc.construction.arch.</tt><tt class="descname">arch</tt><big>(</big><em>**kw</em><big>)</big><a class="reference internal" href="../../_modules/hamcalc/construction/arch.html#arch"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.construction.arch.arch" title="Permalink to this definition">¶</a></dt>
+<dl class="method">
+<dt id="hamcalc.construction.arch.Arch.solve">
+<tt class="descname">solve</tt><big>(</big><em>args</em><big>)</big><a class="headerlink" href="#hamcalc.construction.arch.Arch.solve" title="Permalink to this definition">¶</a></dt>
 <dd><p>Solve arch problems.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -372,6 +369,19 @@ arc and chord information.</p>
 </tr>
 </tbody>
 </table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="hamcalc.construction.arch.arc_chord_2_angle">
+<tt class="descclassname">hamcalc.construction.arch.</tt><tt class="descname">arc_chord_2_angle</tt><big>(</big><em>A_C</em>, <em>C</em>, <em>eps=1e-07</em><big>)</big><a class="reference internal" href="../../_modules/hamcalc/construction/arch.html#arc_chord_2_angle"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.construction.arch.arc_chord_2_angle" title="Permalink to this definition">¶</a></dt>
+<dd><p>Use bisection to find the angle that gives the proper
+arc and chord information.</p>
+<div class="admonition-todo admonition" id="index-1">
+<p class="first admonition-title">Todo</p>
+<p class="last">move this to propcirc, where it belongs.</p>
+</div>
 </dd></dl>
 
 </div>
@@ -400,14 +410,21 @@ There are only five unknowns.</p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html">Python Modules</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../lib.html">lib &#8211; Supporting Library</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../radio.html">radio &#8211; Radio Design and Engineering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../radio/index.html">radio &#8211; Radio Design and Engineering</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../ham.html">ham &#8211; Ham Radio Operations</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../electronics/index.html">electronics &#8211; General Electronics</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="index.html">construction &#8211; Construction and Mechanical</a><ul class="current">
 <li class="toctree-l3 current"><a class="current reference internal" href="">arch &#8211; Arch Calculator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="bend.html">bend &#8211; Bend Allowance, Metals</a></li>
+<li class="toctree-l3"><a class="reference internal" href="brick.html">brick &#8211; Masonry Estimator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="conecalc.html">conecalc &#8211; Cone Calculator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="diamfind.html">diamfind &#8211; Diameter Finder</a></li>
+<li class="toctree-l3"><a class="reference internal" href="guywires.html">guywires &#8211; Guy Wires for Antenna Towers/Masts</a></li>
+<li class="toctree-l3"><a class="reference internal" href="nmbrsize.html">nmbrsize &#8211; Numbered Drills/Screws/Taps/Gauges</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pipesize.html">pipesize &#8211; Pipe Sizes, ANSI Standard</a></li>
 <li class="toctree-l3"><a class="reference internal" href="survey.html">survey &#8211; Surveyor&#8217;s Calculator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="wirecond.html">wirecond &#8211; Wires in Conduit</a></li>
+<li class="toctree-l3"><a class="reference internal" href="wiremesh.html">wiremesh &#8211; Wire Mesh Screens, Wind Loads</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../math/index.html">math &#8211; Math, Physics, Units Conversion</a></li>
@@ -447,7 +464,7 @@ There are only five unknowns.</p>
         <div class="left">
           <a href="index.html" title="construction – Construction and Mechanical"
              >previous</a> |
-          <a href="conecalc.html" title="conecalc – Cone Calculator"
+          <a href="bend.html" title="bend – Bend Allowance, Metals"
              >next</a> |
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |
