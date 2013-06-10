@@ -170,7 +170,7 @@ Area
 
 """
 
-from hamcalc.lib import Unit, Standard_Unit, AttrDict
+from hamcalc.lib import Unit, Standard_Unit, AttrDict, NoSolutionError
 from hamcalc.math.trig import DEGREE, RADIAN
 import math
 
@@ -413,11 +413,12 @@ class GALLON( Unit ):
     factor= 1/3.7854118
 
 def freq_wavelength( **kw ):
-    """Solver for frequency-wavelength problems in Standard units
+    """A kind of **Solver** for frequency-wavelength problems in Standard units
     of meters and Hertz.
 
     :param f: Frequency in Hz
     :param l: Wavelength in m
+    :returns: dict with both values
     """
     c= 299792.458
     args= AttrDict( kw )
@@ -425,6 +426,8 @@ def freq_wavelength( **kw ):
         args.l= 1000*c/args.f
     elif 'l' in args:
         args.f = c/(args.l/1000)
+    else:
+        raise NoSolutionError( "Insufficient Data: {0!r}".format(args) )
     return args
 
 

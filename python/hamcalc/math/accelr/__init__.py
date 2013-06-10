@@ -2,6 +2,34 @@
 
 These are two **Solvers** for acceleration and force problems.
 
+..  py:function:: force( f=None, m=None, a=None )
+
+    Solve :math:`f=m \\times a` problems. This an instance of the :class:`Force`.
+
+    :param m: mass (e.g., kg)
+    :param a: acceleration (e.g., m/s^2)
+    :param f: force in Newtons (e.g., kg m/s^s)
+    :returns: Dictionary with all three values.
+
+..  py:function:: accel( a=None, d=None, t=None, v_o=None, v_f=None )
+
+    Solve acceleration problems. This an instance of the :class:`Acceleration`.
+
+    Some combinations of a, d, t, v_o and v_f must be provided.
+
+    -   v_o, v_f and t gives us a
+    -   v_o, t and a gives us v_f
+    -   v_f, t and a gives us v_o
+    -   d and a give us t
+
+    :param d: Displacement (in m)
+    :param t: Time (in seconds)
+    :param v_o: Velocity at START
+    :param v_f: Velocity at END
+    :param a: Acceleration (m/s^2)
+    :returns: Dictionary with all values.
+
+
 Here are some test cases
 
 >>> import hamcalc.math.accelr as accelr
@@ -24,7 +52,7 @@ Here are some test cases
 """
 __version__ = "2.1"
 
-from hamcalc.lib import AttrDict, Solver
+from hamcalc.lib import AttrDict, Solver, NoSolutionError
 
 introduction = """\
  ACCELERATION                                            by George Murphy VE3ERP
@@ -40,9 +68,6 @@ introduction = """\
 
  Force of acceleration is calculated in kilogams and Standard Gravitys (g's).
 """
-
-class Error( Exception ):
-    pass
 
 def intro():
     """Returns the text from the introductory page."""
@@ -67,7 +92,7 @@ class Force( Solver ):
         elif 'f' in args and 'a' in args:
             args.m = args.f / args.a
         else:
-            raise Error( "Insufficient data: {0}".format(args.keys()) )
+            raise NoSolutionError( "Insufficient data: {0}".format(args.keys()) )
         return args
 
 force= Force()
@@ -106,7 +131,7 @@ class Acceleration( Solver ):
         elif 't' not in args and 'd' in args and 'a' in args:
             args.t = args.d / args.a
         else:
-            raise Error( "Insufficient data: {0}".format(args.keys()) )
+            raise NoSolutionError( "Insufficient data: {0}".format(args.keys()) )
         return args
 
 accel= Acceleration()

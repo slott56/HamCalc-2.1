@@ -1,6 +1,33 @@
 """hamcalc.math.propcirc -- Circle, Properties of
 
-This includes the bisection algorithm for approximation.
+This is a **Solver** for circle problems.
+
+..  py:function:: circle( **args )
+
+    Solve circle problems. This an instance of  :class:`Circle`.
+
+    :param R: Radius
+
+    :param D: Diameter
+
+    :param C: Circumference
+
+    :param A: Area of entire circle.
+
+    :param angle: Angle (:math:`\\theta` might be better.) This must be in radians.
+
+    :param L_C:
+        Length of Chord (A-B line on diagram).
+
+    :param L_A:
+        Length of Arc (A-B arc on diagram).
+
+    :param G:
+        Height of segment between chord and arc.
+
+    :returns: dict with all 8 input values plus the output values.
+
+This includes the :func:`bisection` algorithm for approximation.
 
 Here are some test cases.
 
@@ -31,7 +58,7 @@ Here are some test cases.
 __version__ = "2.1"
 
 import math
-from hamcalc.lib import AttrDict, Solver
+from hamcalc.lib import AttrDict, Solver, NoSolutionError
 
 introduction = """\
 
@@ -205,7 +232,7 @@ class Circle( Solver ):
             # approximate a value for *R* from *L_A* and *G*.
             r= arc_height_2_r( args.L_A, args.G )
         else:
-            raise Error( "Insufficient Data")
+            raise NoSolutionError( "Insufficient Data: {0!r}".format(args) )
         # Step 1B: compute angle, if possible; it's not *required*.
         # Note that *r* is known at this point.
         if "angle" in args:

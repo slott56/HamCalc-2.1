@@ -2,6 +2,16 @@
 
 This is a **Solver** for Force-Mass-Velocity and Radius.
 
+..  py:function:: centrip( F=None, M=None, V=None, R=None )
+
+    Solve centripetal acceleration problems. This an instance of  :class:`Centripetal`.
+
+    :params F: force (newtons, kg-m/sec^2)
+    :params M: mass (kilograms)
+    :params V: velocity (meters/second)
+    :params R: radius (meters)
+    :returns: dict with all four values.
+
 Solver Test Cases
 
 >>> import hamcalc.math.centrif as centrif
@@ -32,7 +42,7 @@ Unit Conversion Test Cases
 """
 __version__ = "2.1"
 
-from hamcalc.lib import AttrDict, Unit, Standard_Unit, Solver
+from hamcalc.lib import AttrDict, Unit, Standard_Unit, Solver, NoSolutionError
 from hamcalc.math.equiv import METRE, FOOT
 import math
 
@@ -90,6 +100,7 @@ class Centripetal( Solver ):
         :params M: mass (kilograms)
         :params V: velocity (meters/second)
         :params R: radius (meters)
+        :returns: dict with all four values.
         """
         if 'M' in args and 'V' in args and 'R' in args:
             args.F= args.M*args.V**2/args.R
@@ -99,6 +110,8 @@ class Centripetal( Solver ):
             args.V= math.sqrt( args.F/args.M*args.R )
         elif 'F' in args and 'M' in args and 'V' in args:
             args.R= args.M*args.V**2/args.F
+        else:
+            raise NoSolutionError( "Insufficient Data: {0!r}".format(args) )
         return args
 
 centrif = Centripetal()

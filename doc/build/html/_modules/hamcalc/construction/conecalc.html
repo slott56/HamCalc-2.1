@@ -51,7 +51,7 @@
   <h1>Source code for hamcalc.construction.conecalc</h1><div class="highlight"><pre>
 <span class="sd">&quot;&quot;&quot;hamcalc.construction.conecalc</span>
 
-<span class="sd">Two solvers for laying out cones (or truncated cones)</span>
+<span class="sd">This creates two solvers for laying out cones (or truncated cones)</span>
 <span class="sd">on rectangular sheets.</span>
 
 <span class="sd">A Cone is defined by diameter (&quot;D&quot;) and height (&quot;H&quot;).</span>
@@ -68,6 +68,28 @@
 <span class="sd">-   Arc Center Coordinates (&quot;X&quot;, &quot;Y&quot;).</span>
 <span class="sd">    &quot;X&quot; is measured along the &quot;B&quot; (length) axis.</span>
 <span class="sd">    &quot;Y&quot; is measured along the &quot;A&quot; (width) axis.</span>
+
+<span class="sd">A Truncated Code is defined two diameters and a height:</span>
+<span class="sd">&quot;D_B&quot;, &quot;D_T&quot;, &quot;H&quot;.</span>
+
+<span class="sd">..  py:function:: cone( D=None, H=None, A=None, B=None )</span>
+
+<span class="sd">    Solve cone problems. This an instance of the :class:`Cone` **Solver**.</span>
+
+<span class="sd">    :param D: Cone Diameter</span>
+<span class="sd">    :param H: Cone Height</span>
+<span class="sd">    :param A: Sheet length</span>
+<span class="sd">    :param B: Sheet width</span>
+<span class="sd">    :returns: dict with all values</span>
+
+<span class="sd">..  py:function:: truncated_cone( D_B=None, D_T=None, H=None )</span>
+
+<span class="sd">    Solve truncated cone problems. This an instance of the :class:`Truncated_Cone` **Solver**.</span>
+
+<span class="sd">    :param D_B: Cone Bottom Diameter</span>
+<span class="sd">    :param D_T: Cone Top Diameter</span>
+<span class="sd">    :param H: Truncated Cone Height</span>
+<span class="sd">    :returns: dict with additional computed values</span>
 
 <span class="sd">Test Cases</span>
 
@@ -200,11 +222,10 @@
 <span class="sd">0.369</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="kn">from</span> <span class="nn">hamcalc.lib</span> <span class="kn">import</span> <span class="n">AttrDict</span>
-<span class="kn">import</span> <span class="nn">math</span>
+<span class="n">__version__</span> <span class="o">=</span> <span class="s">&quot;2.1&quot;</span>
 
-<span class="k">class</span> <span class="nc">Error</span><span class="p">(</span> <span class="ne">Exception</span> <span class="p">):</span>
-    <span class="k">pass</span>
+<span class="kn">from</span> <span class="nn">hamcalc.lib</span> <span class="kn">import</span> <span class="n">AttrDict</span><span class="p">,</span> <span class="n">Solver</span><span class="p">,</span> <span class="n">NoSolutionError</span>
+<span class="kn">import</span> <span class="nn">math</span>
 
 <span class="n">introduction</span><span class="o">=</span><span class="s">&quot;&quot;&quot;</span><span class="se">\</span>
 <span class="s">Cone Calculator                                         by George Murphy VE3ERP</span>
@@ -221,147 +242,157 @@
 <span class="k">def</span> <span class="nf">intro</span><span class="p">():</span>
     <span class="k">return</span> <span class="n">introduction</span>
 
-<div class="viewcode-block" id="cone"><a class="viewcode-back" href="../../../python/construction/conecalc.html#hamcalc.construction.conecalc.cone">[docs]</a><span class="k">def</span> <span class="nf">cone</span><span class="p">(</span> <span class="o">**</span><span class="n">kw</span> <span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;This solves Cone and Sheet Size problems.</span>
+<div class="viewcode-block" id="Cone"><a class="viewcode-back" href="../../../python/construction/conecalc.html#hamcalc.construction.conecalc.Cone">[docs]</a><span class="k">class</span> <span class="nc">Cone</span><span class="p">(</span> <span class="n">Solver</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Solver for Cone and Sheet Size problems.</span>
 
-<span class="sd">    -   Given the Cone base diameter and height (&quot;D&quot;, &quot;H&quot;),</span>
+<span class="sd">    ..  todo:: Refactor the :meth:`solve` method.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="Cone.solve"><a class="viewcode-back" href="../../../python/construction/conecalc.html#hamcalc.construction.conecalc.Cone.solve">[docs]</a>    <span class="k">def</span> <span class="nf">solve</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">args</span> <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Solve Cone and Sheet Size problems.</span>
+
+<span class="sd">        -   Given the Cone base diameter and height (&quot;D&quot;, &quot;H&quot;),</span>
+<span class="sd">            Compute the sheet size and other helpful measures.</span>
+
+<span class="sd">        -   Given sheet size (&quot;A&quot;, &quot;B&quot;) maximize the cone</span>
+<span class="sd">            that can be cut. There are as many as five alternatives.</span>
+
+<span class="sd">            A &quot;next&quot; indicator is used. If omitted to set to ``None``, a solution</span>
+<span class="sd">            is picked, and the value of &quot;next&quot; is added to the</span>
+<span class="sd">            attr dict with state information to compute the next value.</span>
+
+<span class="sd">            When &quot;next&quot; is returned as ``None``, there are no more</span>
+<span class="sd">            values.</span>
+
+<span class="sd">            ::</span>
+
+<span class="sd">                params= conecalc.cone( **params )</span>
+<span class="sd">                print( template.format( **params ) )</span>
+<span class="sd">                while params.next:</span>
+<span class="sd">                    params= conecalc.cone( **params )</span>
+<span class="sd">                    print( template.format( **params ) )</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="s">&#39;next&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">args</span> <span class="ow">or</span> <span class="n">args</span><span class="o">.</span><span class="n">next</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="c"># General cases: cone to sheet or sheet to cones</span>
+            <span class="k">if</span> <span class="s">&quot;D&quot;</span> <span class="ow">in</span> <span class="n">args</span> <span class="ow">or</span> <span class="s">&quot;H&quot;</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
+                <span class="c"># Given a cone, compute the sheet</span>
+                <span class="n">args</span><span class="o">.</span><span class="n">R</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">D</span><span class="o">/</span><span class="mi">2</span>
+                <span class="n">args</span><span class="o">.</span><span class="n">L</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span> <span class="n">args</span><span class="o">.</span><span class="n">R</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">args</span><span class="o">.</span><span class="n">H</span><span class="o">**</span><span class="mi">2</span> <span class="p">)</span>
+                <span class="n">args</span><span class="o">.</span><span class="n">theta_r</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">args</span><span class="o">.</span><span class="n">D</span> <span class="o">/</span> <span class="n">args</span><span class="o">.</span><span class="n">L</span>
+                <span class="n">args</span><span class="o">.</span><span class="n">theta_d</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span> <span class="n">args</span><span class="o">.</span><span class="n">theta_r</span> <span class="p">)</span>
+                <span class="k">if</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span> <span class="o">&lt;=</span> <span class="n">args</span><span class="o">.</span><span class="n">theta_r</span><span class="p">:</span>
+                    <span class="n">args</span><span class="o">.</span><span class="n">A</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">L</span> <span class="o">+</span> <span class="n">args</span><span class="o">.</span><span class="n">L</span><span class="o">*</span><span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span> <span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">theta_r</span><span class="o">-</span><span class="n">math</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span> <span class="p">)</span>
+                    <span class="n">args</span><span class="o">.</span><span class="n">B</span> <span class="o">=</span> <span class="mi">2</span><span class="o">*</span><span class="n">args</span><span class="o">.</span><span class="n">L</span>
+                    <span class="n">args</span><span class="o">.</span><span class="n">X</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">B</span><span class="o">/</span><span class="mi">2</span>
+                    <span class="n">args</span><span class="o">.</span><span class="n">Y</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">A</span> <span class="o">-</span> <span class="n">args</span><span class="o">.</span><span class="n">B</span><span class="o">/</span><span class="mi">2</span>
+                <span class="k">elif</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">2</span> <span class="o">&lt;=</span> <span class="n">args</span><span class="o">.</span><span class="n">theta_r</span> <span class="o">&lt;</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span><span class="p">:</span>
+                    <span class="n">args</span><span class="o">.</span><span class="n">A</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">L</span>
+                    <span class="n">args</span><span class="o">.</span><span class="n">B</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">L</span> <span class="o">+</span> <span class="n">args</span><span class="o">.</span><span class="n">L</span><span class="o">*</span><span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span> <span class="n">args</span><span class="o">.</span><span class="n">theta_r</span><span class="o">-</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span> <span class="p">)</span>
+                    <span class="n">args</span><span class="o">.</span><span class="n">X</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">B</span><span class="o">-</span><span class="n">args</span><span class="o">.</span><span class="n">A</span>
+                    <span class="n">args</span><span class="o">.</span><span class="n">Y</span> <span class="o">=</span> <span class="mi">0</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">args</span><span class="o">.</span><span class="n">A</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">L</span><span class="o">*</span><span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span> <span class="n">args</span><span class="o">.</span><span class="n">theta_r</span> <span class="p">)</span>
+                    <span class="n">args</span><span class="o">.</span><span class="n">B</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">L</span>
+                    <span class="n">args</span><span class="o">.</span><span class="n">X</span> <span class="o">=</span> <span class="mi">0</span>
+                    <span class="n">args</span><span class="o">.</span><span class="n">Y</span> <span class="o">=</span> <span class="mi">0</span>
+                <span class="n">args</span><span class="o">.</span><span class="n">C</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">args</span><span class="o">.</span><span class="n">D</span>
+                <span class="k">return</span> <span class="n">args</span>
+            <span class="k">elif</span> <span class="s">&quot;A&quot;</span> <span class="ow">in</span> <span class="n">args</span> <span class="ow">or</span> <span class="s">&quot;B&quot;</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
+                <span class="c"># Given a sheet, compute the first of the cones and set &quot;more&quot;</span>
+                <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">B</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="o">*</span><span class="n">args</span><span class="o">.</span><span class="n">A</span><span class="p">:</span>
+                    <span class="n">args</span><span class="o">.</span><span class="n">next</span><span class="o">=</span> <span class="mi">3</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">args</span><span class="o">.</span><span class="n">next</span><span class="o">=</span> <span class="mi">0</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">NoSolutionError</span><span class="p">(</span> <span class="s">&quot;Unrecognized variables: {0}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">kw</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span> <span class="p">)</span>
+        <span class="k">assert</span> <span class="s">&#39;next&#39;</span> <span class="ow">in</span> <span class="n">args</span> <span class="ow">and</span> <span class="n">args</span><span class="o">.</span><span class="n">next</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span>
+        <span class="c"># Fitting cones to sheets, next alternative solution.</span>
+        <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">next</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">args</span><span class="o">.</span><span class="n">next</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="n">args</span><span class="o">.</span><span class="n">L</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">B</span><span class="o">/</span><span class="mi">2</span>
+            <span class="n">args</span><span class="o">.</span><span class="n">theta_r</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span> <span class="o">+</span> <span class="n">math</span><span class="o">.</span><span class="n">asin</span><span class="p">(</span> <span class="n">args</span><span class="o">.</span><span class="n">A</span><span class="o">/</span><span class="n">args</span><span class="o">.</span><span class="n">L</span> <span class="o">-</span> <span class="mi">1</span> <span class="p">)</span>
+            <span class="n">args</span><span class="o">.</span><span class="n">X</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">Y</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">B</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">A</span><span class="o">-</span><span class="n">args</span><span class="o">.</span><span class="n">B</span><span class="o">/</span><span class="mi">2</span>
+        <span class="k">elif</span> <span class="n">args</span><span class="o">.</span><span class="n">next</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">args</span><span class="o">.</span><span class="n">next</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="n">args</span><span class="o">.</span><span class="n">L</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">A</span>
+            <span class="n">args</span><span class="o">.</span><span class="n">theta_r</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">asin</span><span class="p">(</span> <span class="n">args</span><span class="o">.</span><span class="n">B</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">/</span> <span class="n">args</span><span class="o">.</span><span class="n">L</span> <span class="p">)</span>
+            <span class="n">args</span><span class="o">.</span><span class="n">X</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">Y</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">B</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span>
+        <span class="k">elif</span> <span class="n">args</span><span class="o">.</span><span class="n">next</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="n">args</span><span class="o">.</span><span class="n">next</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="n">args</span><span class="o">.</span><span class="n">L</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">A</span>
+            <span class="n">args</span><span class="o">.</span><span class="n">theta_r</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">2</span> <span class="o">+</span> <span class="n">math</span><span class="o">.</span><span class="n">asin</span><span class="p">(</span> <span class="n">args</span><span class="o">.</span><span class="n">B</span><span class="o">/</span><span class="n">args</span><span class="o">.</span><span class="n">L</span> <span class="o">-</span> <span class="mi">1</span> <span class="p">)</span>
+            <span class="n">args</span><span class="o">.</span><span class="n">X</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">Y</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">B</span><span class="o">-</span><span class="n">args</span><span class="o">.</span><span class="n">A</span><span class="p">,</span> <span class="mi">0</span>
+        <span class="k">elif</span> <span class="n">args</span><span class="o">.</span><span class="n">next</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+            <span class="n">args</span><span class="o">.</span><span class="n">next</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="n">args</span><span class="o">.</span><span class="n">L</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">B</span>
+            <span class="n">args</span><span class="o">.</span><span class="n">theta_r</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">asin</span><span class="p">(</span> <span class="n">args</span><span class="o">.</span><span class="n">A</span> <span class="o">/</span> <span class="n">args</span><span class="o">.</span><span class="n">L</span> <span class="p">)</span>
+            <span class="n">args</span><span class="o">.</span><span class="n">X</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">Y</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span>
+        <span class="k">elif</span> <span class="n">args</span><span class="o">.</span><span class="n">next</span> <span class="o">==</span> <span class="mi">4</span><span class="p">:</span>
+            <span class="n">args</span><span class="o">.</span><span class="n">next</span> <span class="o">=</span> <span class="bp">None</span>
+            <span class="n">args</span><span class="o">.</span><span class="n">L</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">B</span>
+            <span class="n">args</span><span class="o">.</span><span class="n">theta_r</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">asin</span><span class="p">(</span> <span class="n">args</span><span class="o">.</span><span class="n">A</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">/</span> <span class="n">args</span><span class="o">.</span><span class="n">L</span> <span class="p">)</span>
+            <span class="n">args</span><span class="o">.</span><span class="n">X</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">Y</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">A</span><span class="o">/</span><span class="mi">2</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">NoSolutionError</span><span class="p">(</span> <span class="s">&quot;Logic Error: next={0}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">next</span><span class="p">)</span> <span class="p">)</span>
+
+        <span class="n">args</span><span class="o">.</span><span class="n">theta_d</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span> <span class="n">args</span><span class="o">.</span><span class="n">theta_r</span> <span class="p">)</span>
+        <span class="n">args</span><span class="o">.</span><span class="n">C</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">L</span> <span class="o">*</span> <span class="n">args</span><span class="o">.</span><span class="n">theta_r</span>
+        <span class="n">args</span><span class="o">.</span><span class="n">D</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">C</span> <span class="o">/</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span>
+        <span class="n">args</span><span class="o">.</span><span class="n">R</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">D</span> <span class="o">/</span> <span class="mi">2</span>
+        <span class="n">args</span><span class="o">.</span><span class="n">H</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span> <span class="n">args</span><span class="o">.</span><span class="n">L</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="n">args</span><span class="o">.</span><span class="n">R</span><span class="o">**</span><span class="mi">2</span> <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">args</span>
+</div></div>
+<span class="n">cone</span> <span class="o">=</span> <span class="n">Cone</span><span class="p">()</span>
+
+<div class="viewcode-block" id="Truncated_Cone"><a class="viewcode-back" href="../../../python/construction/conecalc.html#hamcalc.construction.conecalc.Truncated_Cone">[docs]</a><span class="k">class</span> <span class="nc">Truncated_Cone</span><span class="p">(</span> <span class="n">Solver</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Solver for Truncated Cone and Sheet Size problems.&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="Truncated_Cone.solve"><a class="viewcode-back" href="../../../python/construction/conecalc.html#hamcalc.construction.conecalc.Truncated_Cone.solve">[docs]</a>    <span class="k">def</span> <span class="nf">solve</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">args</span> <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Solve Truncated Cone and Sheet Size problems.</span>
+
+<span class="sd">        Given the Cone base diameter, top diameter and height</span>
+<span class="sd">        (&quot;D_B&quot;, &quot;D_T&quot;, &quot;H&quot;),</span>
 <span class="sd">        Compute the sheet size and other helpful measures.</span>
 
-<span class="sd">    -   Given sheet size (&quot;A&quot;, &quot;B&quot;) maximize the cone</span>
-<span class="sd">        that can be cut. There are as many as five alternatives.</span>
-
-<span class="sd">        A &quot;next&quot; indicator is used. If omitted to set to ``None``, a solution</span>
-<span class="sd">        is picked, and the value of &quot;next&quot; is added to the</span>
-<span class="sd">        attr dict with state information to compute the next value.</span>
-
-<span class="sd">        When &quot;next&quot; is returned as ``None``, there are no more</span>
-<span class="sd">        values.</span>
-
-<span class="sd">        ::</span>
-
-<span class="sd">            result= conecalc.cone( **params )</span>
-<span class="sd">            format( result )</span>
-<span class="sd">            while params.next:</span>
-<span class="sd">                result= conecalc.cone( **params )</span>
-<span class="sd">                format( result )</span>
-
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">args</span><span class="o">=</span> <span class="n">AttrDict</span><span class="p">(</span> <span class="n">kw</span> <span class="p">)</span>
-    <span class="k">if</span> <span class="s">&#39;next&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">args</span> <span class="ow">or</span> <span class="n">args</span><span class="o">.</span><span class="n">next</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
-        <span class="c"># General cases: cone to sheet or sheet to cones</span>
-        <span class="k">if</span> <span class="s">&quot;D&quot;</span> <span class="ow">in</span> <span class="n">args</span> <span class="ow">or</span> <span class="s">&quot;H&quot;</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
-            <span class="c"># Given a cone, compute the sheet</span>
-            <span class="n">args</span><span class="o">.</span><span class="n">R</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">D</span><span class="o">/</span><span class="mi">2</span>
-            <span class="n">args</span><span class="o">.</span><span class="n">L</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span> <span class="n">args</span><span class="o">.</span><span class="n">R</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">args</span><span class="o">.</span><span class="n">H</span><span class="o">**</span><span class="mi">2</span> <span class="p">)</span>
-            <span class="n">args</span><span class="o">.</span><span class="n">theta_r</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">args</span><span class="o">.</span><span class="n">D</span> <span class="o">/</span> <span class="n">args</span><span class="o">.</span><span class="n">L</span>
-            <span class="n">args</span><span class="o">.</span><span class="n">theta_d</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span> <span class="n">args</span><span class="o">.</span><span class="n">theta_r</span> <span class="p">)</span>
-            <span class="k">if</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span> <span class="o">&lt;=</span> <span class="n">args</span><span class="o">.</span><span class="n">theta_r</span><span class="p">:</span>
-                <span class="n">args</span><span class="o">.</span><span class="n">A</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">L</span> <span class="o">+</span> <span class="n">args</span><span class="o">.</span><span class="n">L</span><span class="o">*</span><span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span> <span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">theta_r</span><span class="o">-</span><span class="n">math</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span> <span class="p">)</span>
-                <span class="n">args</span><span class="o">.</span><span class="n">B</span> <span class="o">=</span> <span class="mi">2</span><span class="o">*</span><span class="n">args</span><span class="o">.</span><span class="n">L</span>
-                <span class="n">args</span><span class="o">.</span><span class="n">X</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">B</span><span class="o">/</span><span class="mi">2</span>
-                <span class="n">args</span><span class="o">.</span><span class="n">Y</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">A</span> <span class="o">-</span> <span class="n">args</span><span class="o">.</span><span class="n">B</span><span class="o">/</span><span class="mi">2</span>
-            <span class="k">elif</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">2</span> <span class="o">&lt;=</span> <span class="n">args</span><span class="o">.</span><span class="n">theta_r</span> <span class="o">&lt;</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span><span class="p">:</span>
-                <span class="n">args</span><span class="o">.</span><span class="n">A</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">L</span>
-                <span class="n">args</span><span class="o">.</span><span class="n">B</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">L</span> <span class="o">+</span> <span class="n">args</span><span class="o">.</span><span class="n">L</span><span class="o">*</span><span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span> <span class="n">args</span><span class="o">.</span><span class="n">theta_r</span><span class="o">-</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span> <span class="p">)</span>
-                <span class="n">args</span><span class="o">.</span><span class="n">X</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">B</span><span class="o">-</span><span class="n">args</span><span class="o">.</span><span class="n">A</span>
-                <span class="n">args</span><span class="o">.</span><span class="n">Y</span> <span class="o">=</span> <span class="mi">0</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="n">args</span><span class="o">.</span><span class="n">A</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">L</span><span class="o">*</span><span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span> <span class="n">args</span><span class="o">.</span><span class="n">theta_r</span> <span class="p">)</span>
-                <span class="n">args</span><span class="o">.</span><span class="n">B</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">L</span>
-                <span class="n">args</span><span class="o">.</span><span class="n">X</span> <span class="o">=</span> <span class="mi">0</span>
-                <span class="n">args</span><span class="o">.</span><span class="n">Y</span> <span class="o">=</span> <span class="mi">0</span>
-            <span class="n">args</span><span class="o">.</span><span class="n">C</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">args</span><span class="o">.</span><span class="n">D</span>
-            <span class="k">return</span> <span class="n">args</span>
-        <span class="k">elif</span> <span class="s">&quot;A&quot;</span> <span class="ow">in</span> <span class="n">args</span> <span class="ow">or</span> <span class="s">&quot;B&quot;</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
-            <span class="c"># Given a sheet, compute the first of the cones and set &quot;more&quot;</span>
-            <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">B</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="o">*</span><span class="n">args</span><span class="o">.</span><span class="n">A</span><span class="p">:</span>
-                <span class="n">args</span><span class="o">.</span><span class="n">next</span><span class="o">=</span> <span class="mi">3</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="n">args</span><span class="o">.</span><span class="n">next</span><span class="o">=</span> <span class="mi">0</span>
+<span class="sd">        This is not complete solver, because it can&#39;t resolve</span>
+<span class="sd">        a cone design given a sheet size.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">D_T</span> <span class="o">&gt;</span> <span class="n">args</span><span class="o">.</span><span class="n">D_B</span><span class="p">:</span>
+            <span class="n">args</span><span class="o">.</span><span class="n">LE</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">SE</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">D_T</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">D_B</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">Error</span><span class="p">(</span> <span class="s">&quot;Unrecognized variables: {0}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">kw</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span> <span class="p">)</span>
-    <span class="k">assert</span> <span class="s">&#39;next&#39;</span> <span class="ow">in</span> <span class="n">args</span> <span class="ow">and</span> <span class="n">args</span><span class="o">.</span><span class="n">next</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span>
-    <span class="c"># Fitting cones to sheets, next alternative solution.</span>
-    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">next</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-        <span class="n">args</span><span class="o">.</span><span class="n">next</span> <span class="o">+=</span> <span class="mi">1</span>
-        <span class="n">args</span><span class="o">.</span><span class="n">L</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">B</span><span class="o">/</span><span class="mi">2</span>
-        <span class="n">args</span><span class="o">.</span><span class="n">theta_r</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span> <span class="o">+</span> <span class="n">math</span><span class="o">.</span><span class="n">asin</span><span class="p">(</span> <span class="n">args</span><span class="o">.</span><span class="n">A</span><span class="o">/</span><span class="n">args</span><span class="o">.</span><span class="n">L</span> <span class="o">-</span> <span class="mi">1</span> <span class="p">)</span>
-        <span class="n">args</span><span class="o">.</span><span class="n">X</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">Y</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">B</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">A</span><span class="o">-</span><span class="n">args</span><span class="o">.</span><span class="n">B</span><span class="o">/</span><span class="mi">2</span>
-    <span class="k">elif</span> <span class="n">args</span><span class="o">.</span><span class="n">next</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
-        <span class="n">args</span><span class="o">.</span><span class="n">next</span> <span class="o">+=</span> <span class="mi">1</span>
-        <span class="n">args</span><span class="o">.</span><span class="n">L</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">A</span>
-        <span class="n">args</span><span class="o">.</span><span class="n">theta_r</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">asin</span><span class="p">(</span> <span class="n">args</span><span class="o">.</span><span class="n">B</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">/</span> <span class="n">args</span><span class="o">.</span><span class="n">L</span> <span class="p">)</span>
-        <span class="n">args</span><span class="o">.</span><span class="n">X</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">Y</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">B</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span>
-    <span class="k">elif</span> <span class="n">args</span><span class="o">.</span><span class="n">next</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
-        <span class="n">args</span><span class="o">.</span><span class="n">next</span> <span class="o">+=</span> <span class="mi">1</span>
-        <span class="n">args</span><span class="o">.</span><span class="n">L</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">A</span>
-        <span class="n">args</span><span class="o">.</span><span class="n">theta_r</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">2</span> <span class="o">+</span> <span class="n">math</span><span class="o">.</span><span class="n">asin</span><span class="p">(</span> <span class="n">args</span><span class="o">.</span><span class="n">B</span><span class="o">/</span><span class="n">args</span><span class="o">.</span><span class="n">L</span> <span class="o">-</span> <span class="mi">1</span> <span class="p">)</span>
-        <span class="n">args</span><span class="o">.</span><span class="n">X</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">Y</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">B</span><span class="o">-</span><span class="n">args</span><span class="o">.</span><span class="n">A</span><span class="p">,</span> <span class="mi">0</span>
-    <span class="k">elif</span> <span class="n">args</span><span class="o">.</span><span class="n">next</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
-        <span class="n">args</span><span class="o">.</span><span class="n">next</span> <span class="o">+=</span> <span class="mi">1</span>
-        <span class="n">args</span><span class="o">.</span><span class="n">L</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">B</span>
-        <span class="n">args</span><span class="o">.</span><span class="n">theta_r</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">asin</span><span class="p">(</span> <span class="n">args</span><span class="o">.</span><span class="n">A</span> <span class="o">/</span> <span class="n">args</span><span class="o">.</span><span class="n">L</span> <span class="p">)</span>
-        <span class="n">args</span><span class="o">.</span><span class="n">X</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">Y</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span>
-    <span class="k">elif</span> <span class="n">args</span><span class="o">.</span><span class="n">next</span> <span class="o">==</span> <span class="mi">4</span><span class="p">:</span>
-        <span class="n">args</span><span class="o">.</span><span class="n">next</span> <span class="o">=</span> <span class="bp">None</span>
-        <span class="n">args</span><span class="o">.</span><span class="n">L</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">B</span>
-        <span class="n">args</span><span class="o">.</span><span class="n">theta_r</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">asin</span><span class="p">(</span> <span class="n">args</span><span class="o">.</span><span class="n">A</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">/</span> <span class="n">args</span><span class="o">.</span><span class="n">L</span> <span class="p">)</span>
-        <span class="n">args</span><span class="o">.</span><span class="n">X</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">Y</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">A</span><span class="o">/</span><span class="mi">2</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="n">Error</span><span class="p">(</span> <span class="s">&quot;Logic Error: next={0}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">next</span><span class="p">)</span> <span class="p">)</span>
+            <span class="n">args</span><span class="o">.</span><span class="n">LE</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">SE</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">D_B</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">D_T</span>
 
-    <span class="n">args</span><span class="o">.</span><span class="n">theta_d</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span> <span class="n">args</span><span class="o">.</span><span class="n">theta_r</span> <span class="p">)</span>
-    <span class="n">args</span><span class="o">.</span><span class="n">C</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">L</span> <span class="o">*</span> <span class="n">args</span><span class="o">.</span><span class="n">theta_r</span>
-    <span class="n">args</span><span class="o">.</span><span class="n">D</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">C</span> <span class="o">/</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span>
-    <span class="n">args</span><span class="o">.</span><span class="n">R</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">D</span> <span class="o">/</span> <span class="mi">2</span>
-    <span class="n">args</span><span class="o">.</span><span class="n">H</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span> <span class="n">args</span><span class="o">.</span><span class="n">L</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="n">args</span><span class="o">.</span><span class="n">R</span><span class="o">**</span><span class="mi">2</span> <span class="p">)</span>
+        <span class="k">assert</span> <span class="n">args</span><span class="o">.</span><span class="n">LE</span> <span class="o">&gt;=</span> <span class="n">args</span><span class="o">.</span><span class="n">SE</span> <span class="c"># LE is the large end</span>
 
-    <span class="k">return</span> <span class="n">args</span>
-</div>
-<div class="viewcode-block" id="truncated_cone"><a class="viewcode-back" href="../../../python/construction/conecalc.html#hamcalc.construction.conecalc.truncated_cone">[docs]</a><span class="k">def</span> <span class="nf">truncated_cone</span><span class="p">(</span> <span class="o">**</span><span class="n">kw</span> <span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;This solves Truncated Cone and Sheet Size problems.</span>
-
-<span class="sd">    Given the Cone base diameter, top diameter and height</span>
-<span class="sd">    (&quot;D_B&quot;, &quot;D_T&quot;, &quot;H&quot;),</span>
-<span class="sd">    Compute the sheet size and other helpful measures.</span>
-
-<span class="sd">    This is not complete solver, because it can&#39;t resolve</span>
-<span class="sd">    a cone design given a sheet size.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">args</span><span class="o">=</span> <span class="n">AttrDict</span><span class="p">(</span> <span class="n">kw</span> <span class="p">)</span>
-    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">D_T</span> <span class="o">&gt;</span> <span class="n">args</span><span class="o">.</span><span class="n">D_B</span><span class="p">:</span>
-        <span class="n">args</span><span class="o">.</span><span class="n">LE</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">SE</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">D_T</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">D_B</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="n">args</span><span class="o">.</span><span class="n">LE</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">SE</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">D_B</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">D_T</span>
-
-    <span class="k">assert</span> <span class="n">args</span><span class="o">.</span><span class="n">LE</span> <span class="o">&gt;=</span> <span class="n">args</span><span class="o">.</span><span class="n">SE</span> <span class="c"># LE is the large end</span>
-
-    <span class="n">args</span><span class="o">.</span><span class="n">R_T</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">LE</span><span class="o">/</span><span class="mi">2</span>
-    <span class="n">args</span><span class="o">.</span><span class="n">R_B</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">SE</span><span class="o">/</span><span class="mi">2</span>
-    <span class="n">args</span><span class="o">.</span><span class="n">H_X</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">R_B</span> <span class="o">*</span> <span class="n">args</span><span class="o">.</span><span class="n">H</span> <span class="o">/</span> <span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">R_T</span> <span class="o">-</span> <span class="n">args</span><span class="o">.</span><span class="n">R_B</span><span class="p">)</span>
-    <span class="n">args</span><span class="o">.</span><span class="n">L</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span> <span class="n">args</span><span class="o">.</span><span class="n">R_T</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">H</span> <span class="o">+</span> <span class="n">args</span><span class="o">.</span><span class="n">H_X</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="p">)</span>
-    <span class="n">args</span><span class="o">.</span><span class="n">L_X</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">R_B</span> <span class="o">*</span> <span class="n">args</span><span class="o">.</span><span class="n">L</span> <span class="o">/</span> <span class="n">args</span><span class="o">.</span><span class="n">R_T</span>
-    <span class="n">args</span><span class="o">.</span><span class="n">theta_r</span> <span class="o">=</span> <span class="mi">2</span><span class="o">*</span><span class="n">math</span><span class="o">.</span><span class="n">pi</span><span class="o">*</span><span class="n">args</span><span class="o">.</span><span class="n">R_T</span><span class="o">/</span><span class="n">args</span><span class="o">.</span><span class="n">L</span>
-    <span class="n">args</span><span class="o">.</span><span class="n">theta_d</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span> <span class="n">args</span><span class="o">.</span><span class="n">theta_r</span> <span class="p">)</span>
-    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">theta_r</span> <span class="o">&gt;=</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span><span class="p">:</span>
-        <span class="n">args</span><span class="o">.</span><span class="n">B</span> <span class="o">=</span> <span class="mi">2</span><span class="o">*</span><span class="n">args</span><span class="o">.</span><span class="n">L</span>
-        <span class="n">args</span><span class="o">.</span><span class="n">A</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">L</span> <span class="o">+</span> <span class="n">args</span><span class="o">.</span><span class="n">L</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span> <span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">theta_r</span><span class="o">-</span><span class="n">math</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span> <span class="p">)</span>
-        <span class="n">args</span><span class="o">.</span><span class="n">X</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">Y</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">B</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">A</span><span class="o">-</span><span class="n">args</span><span class="o">.</span><span class="n">B</span><span class="o">/</span><span class="mi">2</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="n">args</span><span class="o">.</span><span class="n">B</span> <span class="o">=</span> <span class="mi">2</span><span class="o">*</span><span class="n">args</span><span class="o">.</span><span class="n">L</span><span class="o">*</span><span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span> <span class="n">args</span><span class="o">.</span><span class="n">theta_r</span><span class="o">/</span><span class="mi">2</span> <span class="p">)</span>
-        <span class="n">args</span><span class="o">.</span><span class="n">A</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">L</span> <span class="o">-</span> <span class="n">args</span><span class="o">.</span><span class="n">L_X</span><span class="o">*</span><span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span> <span class="n">args</span><span class="o">.</span><span class="n">theta_r</span><span class="o">/</span><span class="mi">2</span> <span class="p">)</span>
-        <span class="n">args</span><span class="o">.</span><span class="n">X</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">Y</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">B</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span>
-    <span class="n">args</span><span class="o">.</span><span class="n">TOP</span><span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">A</span>
-    <span class="n">args</span><span class="o">.</span><span class="n">BOT</span><span class="o">=</span> <span class="mi">0</span>
-    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">theta_r</span> <span class="o">&gt;</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span><span class="p">:</span>
-        <span class="n">args</span><span class="o">.</span><span class="n">Y</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">A</span> <span class="o">-</span> <span class="n">args</span><span class="o">.</span><span class="n">L</span>
-        <span class="n">args</span><span class="o">.</span><span class="n">relative</span><span class="o">=</span> <span class="s">&quot;above&quot;</span>
-    <span class="k">elif</span> <span class="n">args</span><span class="o">.</span><span class="n">theta_r</span> <span class="o">&lt;</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span><span class="p">:</span>
-        <span class="n">args</span><span class="o">.</span><span class="n">Y</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">L</span> <span class="o">-</span> <span class="n">args</span><span class="o">.</span><span class="n">A</span>
-        <span class="n">args</span><span class="o">.</span><span class="n">relative</span><span class="o">=</span> <span class="s">&quot;below&quot;</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="n">args</span><span class="o">.</span><span class="n">relative</span><span class="o">=</span> <span class="s">&quot;above&quot;</span>
-    <span class="k">return</span> <span class="n">args</span></div>
+        <span class="n">args</span><span class="o">.</span><span class="n">R_T</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">LE</span><span class="o">/</span><span class="mi">2</span>
+        <span class="n">args</span><span class="o">.</span><span class="n">R_B</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">SE</span><span class="o">/</span><span class="mi">2</span>
+        <span class="n">args</span><span class="o">.</span><span class="n">H_X</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">R_B</span> <span class="o">*</span> <span class="n">args</span><span class="o">.</span><span class="n">H</span> <span class="o">/</span> <span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">R_T</span> <span class="o">-</span> <span class="n">args</span><span class="o">.</span><span class="n">R_B</span><span class="p">)</span>
+        <span class="n">args</span><span class="o">.</span><span class="n">L</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span> <span class="n">args</span><span class="o">.</span><span class="n">R_T</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">H</span> <span class="o">+</span> <span class="n">args</span><span class="o">.</span><span class="n">H_X</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="p">)</span>
+        <span class="n">args</span><span class="o">.</span><span class="n">L_X</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">R_B</span> <span class="o">*</span> <span class="n">args</span><span class="o">.</span><span class="n">L</span> <span class="o">/</span> <span class="n">args</span><span class="o">.</span><span class="n">R_T</span>
+        <span class="n">args</span><span class="o">.</span><span class="n">theta_r</span> <span class="o">=</span> <span class="mi">2</span><span class="o">*</span><span class="n">math</span><span class="o">.</span><span class="n">pi</span><span class="o">*</span><span class="n">args</span><span class="o">.</span><span class="n">R_T</span><span class="o">/</span><span class="n">args</span><span class="o">.</span><span class="n">L</span>
+        <span class="n">args</span><span class="o">.</span><span class="n">theta_d</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span> <span class="n">args</span><span class="o">.</span><span class="n">theta_r</span> <span class="p">)</span>
+        <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">theta_r</span> <span class="o">&gt;=</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span><span class="p">:</span>
+            <span class="n">args</span><span class="o">.</span><span class="n">B</span> <span class="o">=</span> <span class="mi">2</span><span class="o">*</span><span class="n">args</span><span class="o">.</span><span class="n">L</span>
+            <span class="n">args</span><span class="o">.</span><span class="n">A</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">L</span> <span class="o">+</span> <span class="n">args</span><span class="o">.</span><span class="n">L</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span> <span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">theta_r</span><span class="o">-</span><span class="n">math</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span> <span class="p">)</span>
+            <span class="n">args</span><span class="o">.</span><span class="n">X</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">Y</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">B</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">A</span><span class="o">-</span><span class="n">args</span><span class="o">.</span><span class="n">B</span><span class="o">/</span><span class="mi">2</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">args</span><span class="o">.</span><span class="n">B</span> <span class="o">=</span> <span class="mi">2</span><span class="o">*</span><span class="n">args</span><span class="o">.</span><span class="n">L</span><span class="o">*</span><span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span> <span class="n">args</span><span class="o">.</span><span class="n">theta_r</span><span class="o">/</span><span class="mi">2</span> <span class="p">)</span>
+            <span class="n">args</span><span class="o">.</span><span class="n">A</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">L</span> <span class="o">-</span> <span class="n">args</span><span class="o">.</span><span class="n">L_X</span><span class="o">*</span><span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span> <span class="n">args</span><span class="o">.</span><span class="n">theta_r</span><span class="o">/</span><span class="mi">2</span> <span class="p">)</span>
+            <span class="n">args</span><span class="o">.</span><span class="n">X</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">Y</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">B</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span>
+        <span class="n">args</span><span class="o">.</span><span class="n">TOP</span><span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">A</span>
+        <span class="n">args</span><span class="o">.</span><span class="n">BOT</span><span class="o">=</span> <span class="mi">0</span>
+        <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">theta_r</span> <span class="o">&gt;</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span><span class="p">:</span>
+            <span class="n">args</span><span class="o">.</span><span class="n">Y</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">A</span> <span class="o">-</span> <span class="n">args</span><span class="o">.</span><span class="n">L</span>
+            <span class="n">args</span><span class="o">.</span><span class="n">relative</span><span class="o">=</span> <span class="s">&quot;above&quot;</span>
+        <span class="k">elif</span> <span class="n">args</span><span class="o">.</span><span class="n">theta_r</span> <span class="o">&lt;</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span><span class="p">:</span>
+            <span class="n">args</span><span class="o">.</span><span class="n">Y</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">L</span> <span class="o">-</span> <span class="n">args</span><span class="o">.</span><span class="n">A</span>
+            <span class="n">args</span><span class="o">.</span><span class="n">relative</span><span class="o">=</span> <span class="s">&quot;below&quot;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">args</span><span class="o">.</span><span class="n">relative</span><span class="o">=</span> <span class="s">&quot;above&quot;</span>
+        <span class="k">return</span> <span class="n">args</span>
+</div></div>
+<span class="n">truncated_cone</span> <span class="o">=</span> <span class="n">Truncated_Cone</span><span class="p">()</span>
 </pre></div>
 
           </div>

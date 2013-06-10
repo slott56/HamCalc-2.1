@@ -83,19 +83,85 @@
 <span id="implementation"></span><h2>Implementation<a class="headerlink" href="#module-hamcalc.math.accelr" title="Permalink to this headline">¶</a></h2>
 <p>hamcalc.math.accelr &#8211; Acceleration Calculator</p>
 <p>These are two <strong>Solvers</strong> for acceleration and force problems.</p>
+<dl class="function">
+<dt id="hamcalc.math.accelr.force">
+<tt class="descclassname">hamcalc.math.accelr.</tt><tt class="descname">force</tt><big>(</big><em>f=None</em>, <em>m=None</em>, <em>a=None</em><big>)</big><a class="headerlink" href="#hamcalc.math.accelr.force" title="Permalink to this definition">¶</a></dt>
+<dd><p>Solve <img class="math" src="../../_images/math/64f3ca5cf55282291173b649e6bc6336f9db37e1.png" alt="f=m \times a"/> problems. This an instance of the <a class="reference internal" href="#hamcalc.math.accelr.Force" title="hamcalc.math.accelr.Force"><tt class="xref py py-class docutils literal"><span class="pre">Force</span></tt></a>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>m</strong> &#8211; mass (e.g., kg)</li>
+<li><strong>a</strong> &#8211; acceleration (e.g., m/s^2)</li>
+<li><strong>f</strong> &#8211; force in Newtons (e.g., kg m/s^s)</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Dictionary with all three values.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="hamcalc.math.accelr.accel">
+<tt class="descclassname">hamcalc.math.accelr.</tt><tt class="descname">accel</tt><big>(</big><em>a=None</em>, <em>d=None</em>, <em>t=None</em>, <em>v_o=None</em>, <em>v_f=None</em><big>)</big><a class="headerlink" href="#hamcalc.math.accelr.accel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Solve acceleration problems. This an instance of the <a class="reference internal" href="#hamcalc.math.accelr.Acceleration" title="hamcalc.math.accelr.Acceleration"><tt class="xref py py-class docutils literal"><span class="pre">Acceleration</span></tt></a>.</p>
+<p>Some combinations of a, d, t, v_o and v_f must be provided.</p>
+<ul class="simple">
+<li>v_o, v_f and t gives us a</li>
+<li>v_o, t and a gives us v_f</li>
+<li>v_f, t and a gives us v_o</li>
+<li>d and a give us t</li>
+</ul>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>d</strong> &#8211; Displacement (in m)</li>
+<li><strong>t</strong> &#8211; Time (in seconds)</li>
+<li><strong>v_o</strong> &#8211; Velocity at START</li>
+<li><strong>v_f</strong> &#8211; Velocity at END</li>
+<li><strong>a</strong> &#8211; Acceleration (m/s^2)</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Dictionary with all values.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
 <p>Here are some test cases</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">hamcalc.math.accelr</span> <span class="kn">as</span> <span class="nn">accelr</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">accelr</span><span class="o">.</span><span class="n">force</span><span class="p">(</span> <span class="n">m</span><span class="o">=</span><span class="mi">12000</span><span class="p">,</span> <span class="n">a</span><span class="o">=-</span><span class="mf">2.5</span> <span class="p">)</span>
 <span class="go">{&#39;a&#39;: -2.5, &#39;m&#39;: 12000, &#39;f&#39;: -30000.0}</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">accelr</span><span class="o">.</span><span class="n">force</span><span class="p">(</span> <span class="n">m</span><span class="o">=</span><span class="mi">12000</span><span class="p">,</span> <span class="n">f</span><span class="o">=</span><span class="mi">30000</span> <span class="p">)</span>
 <span class="go">{&#39;a&#39;: 2.5, &#39;m&#39;: 12000, &#39;f&#39;: 30000}</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">accelr</span><span class="o">.</span><span class="n">accel</span><span class="p">(</span> <span class="n">d</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">t</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">v_o</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">a</span><span class="o">=-.</span><span class="mi">25</span> <span class="p">)</span>
-<span class="go">{&#39;a&#39;: -0.25, &#39;v_f&#39;: 0.5, &#39;v_o&#39;: 2, &#39;d&#39;: 50, &#39;t&#39;: 6}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span><span class="o">=</span><span class="n">accelr</span><span class="o">.</span><span class="n">accel</span><span class="p">(</span> <span class="n">d</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">t</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">v_o</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">a</span><span class="o">=-.</span><span class="mi">25</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span><span class="o">.</span><span class="n">a</span>
+<span class="go">-0.25</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span><span class="o">.</span><span class="n">v_f</span>
+<span class="go">0.5</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span><span class="o">.</span><span class="n">v_o</span>
+<span class="go">2</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span><span class="o">.</span><span class="n">d</span>
+<span class="go">50</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span><span class="o">.</span><span class="n">t</span>
+<span class="go">6</span>
 </pre></div>
 </div>
-<dl class="function">
-<dt id="hamcalc.math.accelr.accel">
-<tt class="descclassname">hamcalc.math.accelr.</tt><tt class="descname">accel</tt><big>(</big><em>**kw</em><big>)</big><a class="reference internal" href="../../_modules/hamcalc/math/accelr.html#accel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.math.accelr.accel" title="Permalink to this definition">¶</a></dt>
+<dl class="class">
+<dt id="hamcalc.math.accelr.Acceleration">
+<em class="property">class </em><tt class="descclassname">hamcalc.math.accelr.</tt><tt class="descname">Acceleration</tt><a class="reference internal" href="../../_modules/hamcalc/math/accelr.html#Acceleration"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.math.accelr.Acceleration" title="Permalink to this definition">¶</a></dt>
+<dd><p>Solver class for acceleration problems.</p>
+<dl class="method">
+<dt id="hamcalc.math.accelr.Acceleration.solve">
+<tt class="descname">solve</tt><big>(</big><em>args</em><big>)</big><a class="reference internal" href="../../_modules/hamcalc/math/accelr.html#Acceleration.solve"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.math.accelr.Acceleration.solve" title="Permalink to this definition">¶</a></dt>
 <dd><p>Solve Acceleration problems.</p>
 <p>Some combinations of a, d, t, v_o and v_f must be provided.</p>
 <ul class="simple">
@@ -124,18 +190,24 @@
 </table>
 </dd></dl>
 
-<dl class="function">
-<dt id="hamcalc.math.accelr.force">
-<tt class="descclassname">hamcalc.math.accelr.</tt><tt class="descname">force</tt><big>(</big><em>**kw</em><big>)</big><a class="reference internal" href="../../_modules/hamcalc/math/accelr.html#force"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.math.accelr.force" title="Permalink to this definition">¶</a></dt>
-<dd><p>Solve f = m * a problems.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="hamcalc.math.accelr.Force">
+<em class="property">class </em><tt class="descclassname">hamcalc.math.accelr.</tt><tt class="descname">Force</tt><a class="reference internal" href="../../_modules/hamcalc/math/accelr.html#Force"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.math.accelr.Force" title="Permalink to this definition">¶</a></dt>
+<dd><p>Solver class for <img class="math" src="../../_images/math/64f3ca5cf55282291173b649e6bc6336f9db37e1.png" alt="f=m \times a"/> problems.</p>
+<dl class="method">
+<dt id="hamcalc.math.accelr.Force.solve">
+<tt class="descname">solve</tt><big>(</big><em>args</em><big>)</big><a class="reference internal" href="../../_modules/hamcalc/math/accelr.html#Force.solve"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.math.accelr.Force.solve" title="Permalink to this definition">¶</a></dt>
+<dd><p>Solve <img class="math" src="../../_images/math/64f3ca5cf55282291173b649e6bc6336f9db37e1.png" alt="f=m \times a"/> problems.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>m</strong> &#8211; mass (kg)</li>
-<li><strong>a</strong> &#8211; acceleration (m/s^2)</li>
-<li><strong>f</strong> &#8211; force in Newtons (kg m/s^s)</li>
+<li><strong>m</strong> &#8211; mass (e.g., kg)</li>
+<li><strong>a</strong> &#8211; acceleration (e.g., m/s^2)</li>
+<li><strong>f</strong> &#8211; force in Newtons (e.g., kg m/s^s)</li>
 </ul>
 </td>
 </tr>
@@ -144,6 +216,8 @@
 </tr>
 </tbody>
 </table>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="function">
@@ -250,7 +324,7 @@ which is only computed from V_f, V_o and T on a previous line.</p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html">Python Modules</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../lib.html">lib &#8211; Supporting Library</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../radio.html">radio &#8211; Radio Design and Engineering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../radio/index.html">radio &#8211; Radio Design and Engineering</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../ham.html">ham &#8211; Ham Radio Operations</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../electronics/index.html">electronics &#8211; General Electronics</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../construction/index.html">construction &#8211; Construction and Mechanical</a></li>

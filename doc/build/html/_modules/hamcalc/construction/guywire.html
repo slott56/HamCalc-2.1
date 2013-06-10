@@ -51,6 +51,37 @@
   <h1>Source code for hamcalc.construction.guywire</h1><div class="highlight"><pre>
 <span class="sd">&quot;&quot;&quot;hamcalc.construction.guywire</span>
 
+<span class="sd">This module creates two **Solver** instances.</span>
+
+<span class="sd">..  py:function:: guywire_f( H=None, J=None, R=None )</span>
+
+<span class="sd">    Solve guy wire problems. This an instance of the :class:`GuyWire` **Solver** in imperial units.</span>
+
+<span class="sd">    :param H: height in feet</span>
+<span class="sd">    :param J: Structure Type J Factor</span>
+<span class="sd">    :param R: distance from base in feet</span>
+<span class="sd">    :returns: Dict with all values.</span>
+
+<span class="sd">..  py:function:: guywire_m( H=None, J=None, R=None )</span>
+
+<span class="sd">    Solve guy wire problems. This an instance of the :class:`GuyWire` **Solver** in</span>
+<span class="sd">    metric units.</span>
+
+<span class="sd">    :param H: height in metres</span>
+<span class="sd">    :param J: Structure Type J Factor</span>
+<span class="sd">    :param R: distance from base in metres</span>
+<span class="sd">    :returns: Dict with all values.</span>
+
+
+<span class="sd">The unit-specific versions are necessary for two reasons.</span>
+<span class="sd">First, because the</span>
+<span class="sd">renonance check is for multiples of 16&#39; and 22&#39;.</span>
+<span class="sd">Metric tower designs must be have this resonance</span>
+<span class="sd">check done in feet, hence the explicit conversions.</span>
+
+<span class="sd">Second, the stand-off is a fixed 1&#39;. This becomes 30.48 cm</span>
+<span class="sd">in the metric version.</span>
+
 <span class="sd">Test Case</span>
 
 <span class="sd">&gt;&gt;&gt; import hamcalc.construction.guywire as guywire</span>
@@ -58,28 +89,33 @@
 <span class="sd">&gt;&gt;&gt; round(min,2)</span>
 <span class="sd">6.93</span>
 <span class="sd">&gt;&gt;&gt; round(rec,2)</span>
-<span class="sd">9.60</span>
-<span class="sd">&gt;&gt;&gt; args= guywire.guywire_f( 12, 9 )</span>
+<span class="sd">9.6</span>
+<span class="sd">&gt;&gt;&gt; J= guywire.J_Factor[&#39;Amateur Radio type tower&#39;]</span>
+<span class="sd">&gt;&gt;&gt; args= guywire.guywire_f( H=12, R=9, J=J )</span>
 <span class="sd">&gt;&gt;&gt; args.next</span>
 <span class="sd">1</span>
 <span class="sd">&gt;&gt;&gt; args.H</span>
 <span class="sd">12</span>
-<span class="sd">&gt;&gt;&gt; args.L</span>
-<span class="sd">15</span>
+<span class="sd">&gt;&gt;&gt; round(args.L,1)</span>
+<span class="sd">15.0</span>
 <span class="sd">&gt;&gt;&gt; args.space</span>
-<span class="sd">1</span>
+<span class="sd">1.0</span>
 <span class="sd">&gt;&gt;&gt; args.C</span>
 <span class="sd">1</span>
-<span class="sd">&gt;&gt;&gt; args.GW</span>
-<span class="sd">13</span>
-<span class="sd">&gt;&gt;&gt; args.theta_d</span>
+<span class="sd">&gt;&gt;&gt; round(args.GW,1)</span>
+<span class="sd">13.0</span>
+<span class="sd">&gt;&gt;&gt; round(args.theta_d,2)</span>
 <span class="sd">53.13</span>
+<span class="sd">&gt;&gt;&gt; args= guywire.guywire_f( **args )</span>
+<span class="sd">&gt;&gt;&gt; args.next is None</span>
+<span class="sd">True</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="n">__version__</span> <span class="o">=</span> <span class="s">&quot;2.1&quot;</span>
 
 <span class="kn">import</span> <span class="nn">math</span>
-<span class="kn">from</span> <span class="nn">hamcalc.lib</span> <span class="kn">import</span> <span class="n">Solver</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">OrderedDict</span>
+<span class="kn">from</span> <span class="nn">hamcalc.lib</span> <span class="kn">import</span> <span class="n">Solver</span><span class="p">,</span> <span class="n">NoSolutionError</span>
 <span class="kn">from</span> <span class="nn">hamcalc.math.equiv</span> <span class="kn">import</span> <span class="n">FOOT</span><span class="p">,</span> <span class="n">METRE</span>
 
 <span class="n">introduction</span><span class="o">=</span><span class="s">&quot;&quot;&quot;</span><span class="se">\</span>
@@ -126,12 +162,13 @@
 <span class="k">def</span> <span class="nf">intro</span><span class="p">():</span>
     <span class="k">return</span> <span class="n">introduction</span>
 
-<span class="n">J_Factor</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s">&quot;Amateur Radio type tower&quot;</span><span class="p">:</span> <span class="mi">35</span><span class="p">,</span>
-    <span class="s">&quot;TV antenna type tower&quot;</span><span class="p">:</span> <span class="mi">20</span><span class="p">,</span>
-    <span class="s">&quot;thinwall pipe or tubing mast&quot;</span><span class="p">:</span> <span class="mi">12</span><span class="p">,</span>
-    <span class="s">&quot;supporting structure&quot;</span><span class="p">:</span> <span class="bp">None</span>
-    <span class="p">}</span>
+<span class="n">J_Factor</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">(</span>
+    <span class="p">(</span> <span class="p">(</span><span class="s">&quot;Amateur Radio type tower&quot;</span><span class="p">,</span> <span class="mi">35</span><span class="p">),</span>
+    <span class="p">(</span><span class="s">&quot;TV antenna type tower&quot;</span><span class="p">,</span> <span class="mi">20</span><span class="p">),</span>
+    <span class="p">(</span><span class="s">&quot;thinwall pipe or tubing mast&quot;</span><span class="p">,</span> <span class="mi">12</span><span class="p">),</span>
+    <span class="p">(</span><span class="s">&quot;supporting structure&quot;</span><span class="p">,</span> <span class="bp">None</span><span class="p">),</span>
+    <span class="p">)</span>
+<span class="p">)</span>
 
 <div class="viewcode-block" id="minimim_recommended"><a class="viewcode-back" href="../../../python/construction/guywires.html#hamcalc.construction.guywire.minimim_recommended">[docs]</a><span class="k">def</span> <span class="nf">minimim_recommended</span><span class="p">(</span> <span class="n">H</span> <span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Compute minimum and recommended distance from base.</span>
@@ -151,13 +188,13 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">r_1</span> <span class="o">=</span> <span class="mi">16</span> <span class="c"># Feet</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">r_2</span> <span class="o">=</span> <span class="mi">22</span> <span class="c"># Feet</span>
 <div class="viewcode-block" id="GuyWire.solve"><a class="viewcode-back" href="../../../python/construction/guywires.html#hamcalc.construction.guywire.GuyWire.solve">[docs]</a>    <span class="k">def</span> <span class="nf">solve</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">args</span> <span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Compute various Guywire Paremeters.</span>
+        <span class="sd">&quot;&quot;&quot;Compute various Guywire Parameters.</span>
 
 <span class="sd">        :param H: height</span>
 <span class="sd">        :param J: Structure Type J Factor</span>
 <span class="sd">        :param R: distance from base.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="s">&#39;next&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">args</span> <span class="ow">or</span> <span class="n">args</span><span class="o">.</span><span class="n">NEXT</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="s">&#39;next&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">args</span> <span class="ow">or</span> <span class="n">args</span><span class="o">.</span><span class="n">next</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
             <span class="c"># First solution</span>
             <span class="n">args</span><span class="o">.</span><span class="n">theta_r</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">atan2</span><span class="p">(</span> <span class="n">args</span><span class="o">.</span><span class="n">H</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">R</span> <span class="p">)</span>
             <span class="n">args</span><span class="o">.</span><span class="n">N</span><span class="o">=</span> <span class="mi">1</span>
@@ -173,7 +210,7 @@
         <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">next</span> <span class="o">&gt;</span> <span class="n">args</span><span class="o">.</span><span class="n">N</span><span class="p">:</span>
             <span class="n">args</span><span class="o">.</span><span class="n">next</span><span class="o">=</span> <span class="bp">None</span>
             <span class="k">return</span> <span class="n">args</span>
-        <span class="n">args</span><span class="o">.</span><span class="n">A_r</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">next</span> <span class="o">*</span> <span class="n">args</span><span class="o">.</span><span class="n">A_I_R</span>
+        <span class="n">args</span><span class="o">.</span><span class="n">A_r</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">next</span> <span class="o">*</span> <span class="n">args</span><span class="o">.</span><span class="n">A_I_r</span>
         <span class="n">args</span><span class="o">.</span><span class="n">A_d</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span> <span class="n">args</span><span class="o">.</span><span class="n">A_r</span> <span class="p">)</span>
         <span class="n">args</span><span class="o">.</span><span class="n">E</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">R</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">tan</span><span class="p">(</span> <span class="n">args</span><span class="o">.</span><span class="n">A_r</span> <span class="p">)</span>
         <span class="n">args</span><span class="o">.</span><span class="n">L</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span> <span class="n">args</span><span class="o">.</span><span class="n">R</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">args</span><span class="o">.</span><span class="n">E</span><span class="o">**</span><span class="mi">2</span> <span class="p">)</span>
@@ -181,10 +218,12 @@
         <span class="n">args</span><span class="o">.</span><span class="n">GW</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">L</span> <span class="o">-</span> <span class="mi">2</span><span class="o">*</span><span class="n">args</span><span class="o">.</span><span class="n">space</span> <span class="c"># Feet</span>
         <span class="c"># set args.C based on resonance rule.</span>
         <span class="k">for</span> <span class="n">args</span><span class="o">.</span><span class="n">C</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">16</span><span class="p">):</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">resonant</span><span class="p">(</span> <span class="n">ars</span><span class="o">.</span><span class="n">GW</span><span class="o">/</span><span class="n">args</span><span class="o">.</span><span class="n">C</span> <span class="p">):</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">resonant</span><span class="p">(</span> <span class="n">args</span><span class="o">.</span><span class="n">GW</span><span class="o">/</span><span class="n">args</span><span class="o">.</span><span class="n">C</span> <span class="p">):</span>
                 <span class="k">continue</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="k">break</span></div>
+                <span class="k">break</span>
+        <span class="n">args</span><span class="o">.</span><span class="n">GW_C</span><span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">GW</span><span class="o">/</span><span class="n">args</span><span class="o">.</span><span class="n">C</span>
+        <span class="k">return</span> <span class="n">args</span></div>
 <div class="viewcode-block" id="GuyWire.resonant"><a class="viewcode-back" href="../../../python/construction/guywires.html#hamcalc.construction.guywire.GuyWire.resonant">[docs]</a>    <span class="k">def</span> <span class="nf">resonant</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">Y</span> <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Check resonance for all integer wire lengths &quot;near&quot; Y.</span>
 

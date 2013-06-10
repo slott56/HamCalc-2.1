@@ -2,6 +2,30 @@
 
 A **Solver** which calculates various properties of an arch.
 
+..  py:function:: arch( R=None, A_d=None, A_r=None, C=None, A_C=None, B=None )
+
+    Solve arch problems. This an instance of the :class:`Arch` **Solver**.
+
+    :param R:
+        Radii XA, XH, XB, :math:`D = 2R`.
+
+    :param A_d:
+        Angle AXB in degrees.
+
+    :param A_r:
+        Angle AXB in radians.
+
+    :param C:
+        Chord AB.
+
+    :param A_C:
+        Curved arch AHB.
+
+    :param B:
+        Segment height CH.
+
+    :returns: Dictionary with **all** values computed.
+
 Test Cases
 
 >>> import hamcalc.construction.arch as arch
@@ -163,7 +187,7 @@ True
 81.681
 
 """
-from hamcalc.lib import AttrDict, Solver
+from hamcalc.lib import AttrDict, Solver, NoSolutionError
 from hamcalc.math.propcirc import arc_height_2_r, bisection
 import math
 

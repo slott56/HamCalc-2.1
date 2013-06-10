@@ -2,6 +2,37 @@
 
 A **Solver** for properties of a regular N-sided polygon.
 
+..  py:function:: polygon( N, H=None, R=None, S=None )
+
+    Solve polygon problems. This an instance of  :class:`Polygon`.
+
+    The number of sides, *N*, is required.
+    One of these three is also required.
+
+    -   H = "Perpendicular distance from centre to mid point of each side"
+
+    -   R = "Length of radial from centre to end of each side"
+
+    -   S = "Length of each side"
+
+    This will also compute a number of additional values:
+
+    -   A = "Angle between radials"
+
+    -   P = "Perimeter"
+
+    -   D = "Circumference of circle running thru mid points of sides"
+
+    -   E = "Circumference of circle running thru end points of sides"
+
+    -   A_P = "Area of polygon"
+
+    :param N: The number of sides; required.
+    :param H: Perpendicular distance from centre to mid point of each side
+    :param R: Length of radial from centre to end of each side
+    :param S: Length of each side
+    :returns: Dict with the required parameters plus a number of derived values.
+
 Example Output
 
 >>> import hamcalc.math.polygon as polygon
@@ -26,7 +57,7 @@ Example Output
 """
 __version__ = "2.1"
 
-from hamcalc.lib import AttrDict, Solver
+from hamcalc.lib import AttrDict, Solver, NoSolutionError
 import math
 
 def intro():
@@ -65,7 +96,7 @@ class Polygon( Solver ):
         :returns: AttrDict with all values computed.
         """
         if "N" not in args:
-            raise ValueError( 'N = "Number of sides/radials" required' )
+            raise NoSolutionError( 'N = "Number of sides/radials" required' )
         args.A = 2*math.pi/args.N
         args.B = args.A/2
         if "S" in args:
@@ -78,7 +109,7 @@ class Polygon( Solver ):
             args.H = args.R * math.cos(args.B)
             args.S = 2 * math.sin(args.B) * args.R
         else:
-            raise ValueError( 'One of H, R or S required' )
+            raise NoSolutionError( 'Insufficient Data: {0!r}'.format(args) )
         args.P = args.N * args.S
         args.A_P = args.S * args.H * args.N / 2
         args.D = 2*math.pi*args.H

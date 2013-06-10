@@ -135,20 +135,29 @@ Each of the solutions amounts to these goodness-of-fit rules.
 Implementation
 ~~~~~~~~~~~~~~~
 
-TBD
+..  automodule:: hamcalc.construction.wirecond
+    :members:
+
 
 Legacy Quirks
 ~~~~~~~~~~~~~~~
 
-"Conduit ID (D)" vs. "*Conduit ID (ID)"? It's simply ID.
+"Conduit ID (D)" vs. "Conduit ID (ID)"? Isn't it simply ID?
 
 Line 1300 is missing the ``GOSUB 1350``. That geometry
 will never be a solution.
 
 Also, the code between lines 1000 and 1360 suffers
 from the problem of working around the global variables by
-creating a distinct set of variables.
+creating a confusingly not-very-distinct set of variables.
 
 A common convention for this is to add digits to the end
 of the variable name. Here, however, they're simply a little
 different.
+
+Note that the number of wires, W, is a function of N;
+only integer values of W make sense. However, non-integer
+values are used.
+
+Why does the third case (**Wire OD (OD) and number of wires (NW) known**)
+increment *N* by 1, when the other two cases increment *N* by 0.01?

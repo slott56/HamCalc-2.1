@@ -149,6 +149,10 @@ class AttrDict( dict ):
     def __setattr__( self, name, value ):
         self[name]= value
 
+class NoSolutionError( Exception ):
+    """A :class:`Solver` could not find a proper solution."""
+    pass
+
 class Solver( Callable ):
     """An abstract **Solver** which accepts a cluster
     of keywords and returns a dictionary.

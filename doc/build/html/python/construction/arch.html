@@ -169,6 +169,31 @@ First, compute the <strong>essential</strong> parameters from the inputs;
 second, comute all remaining derived values from the essential values.</p>
 <span class="target" id="module-hamcalc.construction.arch"></span><p>hamcalc.construction.arch</p>
 <p>A <strong>Solver</strong> which calculates various properties of an arch.</p>
+<dl class="function">
+<dt id="hamcalc.construction.arch.arch">
+<tt class="descclassname">hamcalc.construction.arch.</tt><tt class="descname">arch</tt><big>(</big><em>R=None</em>, <em>A_d=None</em>, <em>A_r=None</em>, <em>C=None</em>, <em>A_C=None</em>, <em>B=None</em><big>)</big><a class="headerlink" href="#hamcalc.construction.arch.arch" title="Permalink to this definition">¶</a></dt>
+<dd><p>Solve arch problems. This an instance of the <a class="reference internal" href="#hamcalc.construction.arch.Arch" title="hamcalc.construction.arch.Arch"><tt class="xref py py-class docutils literal"><span class="pre">Arch</span></tt></a> <strong>Solver</strong>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>R</strong> &#8211; Radii XA, XH, XB, <img class="math" src="../../_images/math/4d0e49ddd0bfe7fa19df36ea3ce216a0167cda64.png" alt="D = 2R"/>.</li>
+<li><strong>A_d</strong> &#8211; Angle AXB in degrees.</li>
+<li><strong>A_r</strong> &#8211; Angle AXB in radians.</li>
+<li><strong>C</strong> &#8211; Chord AB.</li>
+<li><strong>A_C</strong> &#8211; Curved arch AHB.</li>
+<li><strong>B</strong> &#8211; Segment height CH.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Dictionary with <strong>all</strong> values computed.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
 <p>Test Cases</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">hamcalc.construction.arch</span> <span class="kn">as</span> <span class="nn">arch</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">a</span><span class="o">=</span> <span class="n">arch</span><span class="o">.</span><span class="n">arch</span><span class="p">(</span> <span class="n">C</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">B</span><span class="o">=</span><span class="mi">1</span> <span class="p">)</span>
@@ -340,7 +365,7 @@ from an incomplete set of parameters.</p>
 </div>
 <dl class="class">
 <dt id="hamcalc.construction.arch.Arch">
-<em class="property">class </em><tt class="descclassname">hamcalc.construction.arch.</tt><tt class="descname">Arch</tt><a class="headerlink" href="#hamcalc.construction.arch.Arch" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><tt class="descclassname">hamcalc.construction.arch.</tt><tt class="descname">Arch</tt><a class="reference internal" href="../../_modules/hamcalc/construction/arch.html#Arch"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.construction.arch.Arch" title="Permalink to this definition">¶</a></dt>
 <dd><p>Solver for Arch problems.</p>
 <div class="admonition-todo admonition" id="index-0">
 <p class="first admonition-title">Todo</p>
@@ -348,7 +373,7 @@ from an incomplete set of parameters.</p>
 </div>
 <dl class="method">
 <dt id="hamcalc.construction.arch.Arch.solve">
-<tt class="descname">solve</tt><big>(</big><em>args</em><big>)</big><a class="headerlink" href="#hamcalc.construction.arch.Arch.solve" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">solve</tt><big>(</big><em>args</em><big>)</big><a class="reference internal" href="../../_modules/hamcalc/construction/arch.html#Arch.solve"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.construction.arch.Arch.solve" title="Permalink to this definition">¶</a></dt>
 <dd><p>Solve arch problems.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />

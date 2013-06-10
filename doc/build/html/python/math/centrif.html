@@ -69,6 +69,28 @@
 <span id="implementation"></span><h2>Implementation<a class="headerlink" href="#module-hamcalc.math.centrif" title="Permalink to this headline">¶</a></h2>
 <p>hamcalc.math.centrif &#8211; Centrifugal/Centripetel Force</p>
 <p>This is a <strong>Solver</strong> for Force-Mass-Velocity and Radius.</p>
+<dl class="function">
+<dt id="hamcalc.math.centrif.centrip">
+<tt class="descclassname">hamcalc.math.centrif.</tt><tt class="descname">centrip</tt><big>(</big><em>F=None</em>, <em>M=None</em>, <em>V=None</em>, <em>R=None</em><big>)</big><a class="headerlink" href="#hamcalc.math.centrif.centrip" title="Permalink to this definition">¶</a></dt>
+<dd><p>Solve centripetal acceleration problems. This an instance of  <a class="reference internal" href="#hamcalc.math.centrif.Centripetal" title="hamcalc.math.centrif.Centripetal"><tt class="xref py py-class docutils literal"><span class="pre">Centripetal</span></tt></a>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Params F:</th><td class="field-body">force (newtons, kg-m/sec^2)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Params M:</th><td class="field-body">mass (kilograms)</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Params V:</th><td class="field-body">velocity (meters/second)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Params R:</th><td class="field-body">radius (meters)</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">dict with all four values.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
 <p>Solver Test Cases</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">hamcalc.math.centrif</span> <span class="kn">as</span> <span class="nn">centrif</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">centrif</span><span class="o">.</span><span class="n">centrif</span><span class="p">(</span> <span class="n">F</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">M</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">R</span><span class="o">=</span><span class="mi">333</span> <span class="p">)</span>
@@ -96,6 +118,34 @@
 <span class="go">1.8287999879299202</span>
 </pre></div>
 </div>
+<dl class="class">
+<dt id="hamcalc.math.centrif.Centripetal">
+<em class="property">class </em><tt class="descclassname">hamcalc.math.centrif.</tt><tt class="descname">Centripetal</tt><a class="reference internal" href="../../_modules/hamcalc/math/centrif.html#Centripetal"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.math.centrif.Centripetal" title="Permalink to this definition">¶</a></dt>
+<dd><p>Solver for Force-Mass-Velocity and Radius problems.</p>
+<dl class="method">
+<dt id="hamcalc.math.centrif.Centripetal.solve">
+<tt class="descname">solve</tt><big>(</big><em>args</em><big>)</big><a class="reference internal" href="../../_modules/hamcalc/math/centrif.html#Centripetal.solve"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.math.centrif.Centripetal.solve" title="Permalink to this definition">¶</a></dt>
+<dd><p>Solve Force-Mass-Velocity and Radius problems.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Params F:</th><td class="field-body">force (newtons, kg-m/sec^2)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Params M:</th><td class="field-body">mass (kilograms)</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Params V:</th><td class="field-body">velocity (meters/second)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Params R:</th><td class="field-body">radius (meters)</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">dict with all four values.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
 <dl class="class">
 <dt id="hamcalc.math.centrif.FT_PER_SEC">
 <em class="property">class </em><tt class="descclassname">hamcalc.math.centrif.</tt><tt class="descname">FT_PER_SEC</tt><a class="reference internal" href="../../_modules/hamcalc/math/centrif.html#FT_PER_SEC"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.math.centrif.FT_PER_SEC" title="Permalink to this definition">¶</a></dt>
@@ -166,26 +216,6 @@
 <dd><p>alias of <a class="reference internal" href="#hamcalc.math.centrif.KILOGRAM" title="hamcalc.math.centrif.KILOGRAM"><tt class="xref py py-class docutils literal"><span class="pre">KILOGRAM</span></tt></a></p>
 </dd></dl>
 
-</dd></dl>
-
-<dl class="function">
-<dt id="hamcalc.math.centrif.centrif">
-<tt class="descclassname">hamcalc.math.centrif.</tt><tt class="descname">centrif</tt><big>(</big><em>**kw</em><big>)</big><a class="reference internal" href="../../_modules/hamcalc/math/centrif.html#centrif"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.math.centrif.centrif" title="Permalink to this definition">¶</a></dt>
-<dd><p>Solve Force-Mass-Velocity and Radius problems.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Params F:</th><td class="field-body">force (newtons, kg-m/sec^2)</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Params M:</th><td class="field-body">mass (kilograms)</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Params V:</th><td class="field-body">velocity (meters/second)</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Params R:</th><td class="field-body">radius (meters)</td>
-</tr>
-</tbody>
-</table>
 </dd></dl>
 
 </div>
@@ -259,7 +289,7 @@ Orbital Radius.. 333.000 m. =    1092.240 ft.</pre>
 <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html">Python Modules</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../lib.html">lib &#8211; Supporting Library</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../radio.html">radio &#8211; Radio Design and Engineering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../radio/index.html">radio &#8211; Radio Design and Engineering</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../ham.html">ham &#8211; Ham Radio Operations</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../electronics/index.html">electronics &#8211; General Electronics</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../construction/index.html">construction &#8211; Construction and Mechanical</a></li>

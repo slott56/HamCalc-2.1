@@ -109,6 +109,44 @@ R = \frac{S}{2 \sin B}"/></p>
 <p>This is a <strong>Solver</strong> that works with B, S and H to derive the missing values.</p>
 <span class="target" id="module-hamcalc.math.polygon"></span><p>hamcalc.math.polygon</p>
 <p>A <strong>Solver</strong> for properties of a regular N-sided polygon.</p>
+<dl class="function">
+<dt id="hamcalc.math.polygon.polygon">
+<tt class="descclassname">hamcalc.math.polygon.</tt><tt class="descname">polygon</tt><big>(</big><em>N</em>, <em>H=None</em>, <em>R=None</em>, <em>S=None</em><big>)</big><a class="headerlink" href="#hamcalc.math.polygon.polygon" title="Permalink to this definition">¶</a></dt>
+<dd><p>Solve polygon problems. This an instance of  <a class="reference internal" href="#hamcalc.math.polygon.Polygon" title="hamcalc.math.polygon.Polygon"><tt class="xref py py-class docutils literal"><span class="pre">Polygon</span></tt></a>.</p>
+<p>The number of sides, <em>N</em>, is required.
+One of these three is also required.</p>
+<ul class="simple">
+<li>H = &#8220;Perpendicular distance from centre to mid point of each side&#8221;</li>
+<li>R = &#8220;Length of radial from centre to end of each side&#8221;</li>
+<li>S = &#8220;Length of each side&#8221;</li>
+</ul>
+<p>This will also compute a number of additional values:</p>
+<ul class="simple">
+<li>A = &#8220;Angle between radials&#8221;</li>
+<li>P = &#8220;Perimeter&#8221;</li>
+<li>D = &#8220;Circumference of circle running thru mid points of sides&#8221;</li>
+<li>E = &#8220;Circumference of circle running thru end points of sides&#8221;</li>
+<li>A_P = &#8220;Area of polygon&#8221;</li>
+</ul>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>N</strong> &#8211; The number of sides; required.</li>
+<li><strong>H</strong> &#8211; Perpendicular distance from centre to mid point of each side</li>
+<li><strong>R</strong> &#8211; Length of radial from centre to end of each side</li>
+<li><strong>S</strong> &#8211; Length of each side</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Dict with the required parameters plus a number of derived values.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
 <p>Example Output</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">hamcalc.math.polygon</span> <span class="kn">as</span> <span class="nn">polygon</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">math</span>
@@ -132,9 +170,13 @@ R = \frac{S}{2 \sin B}"/></p>
 <span class="go">100.0</span>
 </pre></div>
 </div>
-<dl class="function">
-<dt id="hamcalc.math.polygon.polygon">
-<tt class="descclassname">hamcalc.math.polygon.</tt><tt class="descname">polygon</tt><big>(</big><em>**kw</em><big>)</big><a class="reference internal" href="../../_modules/hamcalc/math/polygon.html#polygon"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.math.polygon.polygon" title="Permalink to this definition">¶</a></dt>
+<dl class="class">
+<dt id="hamcalc.math.polygon.Polygon">
+<em class="property">class </em><tt class="descclassname">hamcalc.math.polygon.</tt><tt class="descname">Polygon</tt><a class="reference internal" href="../../_modules/hamcalc/math/polygon.html#Polygon"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.math.polygon.Polygon" title="Permalink to this definition">¶</a></dt>
+<dd><p>Solver for polygon problems.</p>
+<dl class="method">
+<dt id="hamcalc.math.polygon.Polygon.solve">
+<tt class="descname">solve</tt><big>(</big><em>args</em><big>)</big><a class="reference internal" href="../../_modules/hamcalc/math/polygon.html#Polygon.solve"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.math.polygon.Polygon.solve" title="Permalink to this definition">¶</a></dt>
 <dd><p>Solve a polygon.</p>
 <p>The number of sides, N, is required.</p>
 <p>One of these three is also required.</p>
@@ -161,6 +203,8 @@ R = \frac{S}{2 \sin B}"/></p>
 </table>
 </dd></dl>
 
+</dd></dl>
+
 </div>
 <div class="section" id="legacy-quirks">
 <h2>Legacy Quirks<a class="headerlink" href="#legacy-quirks" title="Permalink to this headline">¶</a></h2>
@@ -184,7 +228,7 @@ A RETURN or something would be helpful.</p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html">Python Modules</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../lib.html">lib &#8211; Supporting Library</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../radio.html">radio &#8211; Radio Design and Engineering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../radio/index.html">radio &#8211; Radio Design and Engineering</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../ham.html">ham &#8211; Ham Radio Operations</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../electronics/index.html">electronics &#8211; General Electronics</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../construction/index.html">construction &#8211; Construction and Mechanical</a></li>

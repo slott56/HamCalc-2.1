@@ -26,7 +26,7 @@
     <link rel="top" title="HamCalc 2.1 documentation" href="../../index.html" />
     <link rel="up" title="construction – Construction and Mechanical" href="index.html" />
     <link rel="next" title="diamfind – Diameter Finder" href="diamfind.html" />
-    <link rel="prev" title="arch – Arch Calculator" href="arch.html" /> 
+    <link rel="prev" title="brick – Masonry Estimator" href="brick.html" /> 
   </head>
   <body>
     <div class="header-wrapper">
@@ -34,7 +34,7 @@
         <div class="headertitle"><a
           href="../../index.html">HamCalc 2.1 documentation</a></div>
         <div class="rel">
-          <a href="arch.html" title="arch – Arch Calculator"
+          <a href="brick.html" title="brick – Masonry Estimator"
              accesskey="P">previous</a> |
           <a href="diamfind.html" title="diamfind – Diameter Finder"
              accesskey="N">next</a> |
@@ -306,7 +306,7 @@ Location of bottom of sheet....y=   0.000
 <div class="section" id="module-hamcalc.construction.conecalc">
 <span id="implementation"></span><h2>Implementation<a class="headerlink" href="#module-hamcalc.construction.conecalc" title="Permalink to this headline">¶</a></h2>
 <p>hamcalc.construction.conecalc</p>
-<p>Two solvers for laying out cones (or truncated cones)
+<p>This creates two solvers for laying out cones (or truncated cones)
 on rectangular sheets.</p>
 <p>A Cone is defined by diameter (&#8220;D&#8221;) and height (&#8220;H&#8221;).</p>
 <p>A Sheet is defined by an width (&#8220;A&#8221;) and length (&#8220;B&#8221;).</p>
@@ -319,6 +319,53 @@ to properly lay out the cone pattern.</p>
 &#8220;X&#8221; is measured along the &#8220;B&#8221; (length) axis.
 &#8220;Y&#8221; is measured along the &#8220;A&#8221; (width) axis.</li>
 </ul>
+<p>A Truncated Code is defined two diameters and a height:
+&#8220;D_B&#8221;, &#8220;D_T&#8221;, &#8220;H&#8221;.</p>
+<dl class="function">
+<dt id="hamcalc.construction.conecalc.cone">
+<tt class="descclassname">hamcalc.construction.conecalc.</tt><tt class="descname">cone</tt><big>(</big><em>D=None</em>, <em>H=None</em>, <em>A=None</em>, <em>B=None</em><big>)</big><a class="headerlink" href="#hamcalc.construction.conecalc.cone" title="Permalink to this definition">¶</a></dt>
+<dd><p>Solve cone problems. This an instance of the <a class="reference internal" href="#hamcalc.construction.conecalc.Cone" title="hamcalc.construction.conecalc.Cone"><tt class="xref py py-class docutils literal"><span class="pre">Cone</span></tt></a> <strong>Solver</strong>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>D</strong> &#8211; Cone Diameter</li>
+<li><strong>H</strong> &#8211; Cone Height</li>
+<li><strong>A</strong> &#8211; Sheet length</li>
+<li><strong>B</strong> &#8211; Sheet width</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">dict with all values</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="hamcalc.construction.conecalc.truncated_cone">
+<tt class="descclassname">hamcalc.construction.conecalc.</tt><tt class="descname">truncated_cone</tt><big>(</big><em>D_B=None</em>, <em>D_T=None</em>, <em>H=None</em><big>)</big><a class="headerlink" href="#hamcalc.construction.conecalc.truncated_cone" title="Permalink to this definition">¶</a></dt>
+<dd><p>Solve truncated cone problems. This an instance of the <a class="reference internal" href="#hamcalc.construction.conecalc.Truncated_Cone" title="hamcalc.construction.conecalc.Truncated_Cone"><tt class="xref py py-class docutils literal"><span class="pre">Truncated_Cone</span></tt></a> <strong>Solver</strong>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>D_B</strong> &#8211; Cone Bottom Diameter</li>
+<li><strong>D_T</strong> &#8211; Cone Top Diameter</li>
+<li><strong>H</strong> &#8211; Truncated Cone Height</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">dict with additional computed values</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
 <p>Test Cases</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">hamcalc.construction.conecalc</span> <span class="kn">as</span> <span class="nn">conecalc</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">c</span><span class="o">=</span> <span class="n">conecalc</span><span class="o">.</span><span class="n">cone</span><span class="p">(</span> <span class="n">D</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">H</span><span class="o">=</span><span class="mi">4</span> <span class="p">)</span>
@@ -455,10 +502,18 @@ to properly lay out the cone pattern.</p>
 <span class="go">0.369</span>
 </pre></div>
 </div>
-<dl class="function">
-<dt id="hamcalc.construction.conecalc.cone">
-<tt class="descclassname">hamcalc.construction.conecalc.</tt><tt class="descname">cone</tt><big>(</big><em>**kw</em><big>)</big><a class="reference internal" href="../../_modules/hamcalc/construction/conecalc.html#cone"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.construction.conecalc.cone" title="Permalink to this definition">¶</a></dt>
-<dd><p>This solves Cone and Sheet Size problems.</p>
+<dl class="class">
+<dt id="hamcalc.construction.conecalc.Cone">
+<em class="property">class </em><tt class="descclassname">hamcalc.construction.conecalc.</tt><tt class="descname">Cone</tt><a class="reference internal" href="../../_modules/hamcalc/construction/conecalc.html#Cone"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.construction.conecalc.Cone" title="Permalink to this definition">¶</a></dt>
+<dd><p>Solver for Cone and Sheet Size problems.</p>
+<div class="admonition-todo admonition" id="index-0">
+<p class="first admonition-title">Todo</p>
+<p class="last">Refactor the <a class="reference internal" href="#hamcalc.construction.conecalc.Cone.solve" title="hamcalc.construction.conecalc.Cone.solve"><tt class="xref py py-meth docutils literal"><span class="pre">solve()</span></tt></a> method.</p>
+</div>
+<dl class="method">
+<dt id="hamcalc.construction.conecalc.Cone.solve">
+<tt class="descname">solve</tt><big>(</big><em>args</em><big>)</big><a class="reference internal" href="../../_modules/hamcalc/construction/conecalc.html#Cone.solve"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.construction.conecalc.Cone.solve" title="Permalink to this definition">¶</a></dt>
+<dd><p>Solve Cone and Sheet Size problems.</p>
 <ul>
 <li><p class="first">Given the Cone base diameter and height (&#8220;D&#8221;, &#8220;H&#8221;),
 Compute the sheet size and other helpful measures.</p>
@@ -470,26 +525,34 @@ is picked, and the value of &#8220;next&#8221; is added to the
 attr dict with state information to compute the next value.</p>
 <p>When &#8220;next&#8221; is returned as <tt class="docutils literal"><span class="pre">None</span></tt>, there are no more
 values.</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="n">result</span><span class="o">=</span> <span class="n">conecalc</span><span class="o">.</span><span class="n">cone</span><span class="p">(</span> <span class="o">**</span><span class="n">params</span> <span class="p">)</span>
-<span class="n">format</span><span class="p">(</span> <span class="n">result</span> <span class="p">)</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">params</span><span class="o">=</span> <span class="n">conecalc</span><span class="o">.</span><span class="n">cone</span><span class="p">(</span> <span class="o">**</span><span class="n">params</span> <span class="p">)</span>
+<span class="k">print</span><span class="p">(</span> <span class="n">template</span><span class="o">.</span><span class="n">format</span><span class="p">(</span> <span class="o">**</span><span class="n">params</span> <span class="p">)</span> <span class="p">)</span>
 <span class="k">while</span> <span class="n">params</span><span class="o">.</span><span class="n">next</span><span class="p">:</span>
-    <span class="n">result</span><span class="o">=</span> <span class="n">conecalc</span><span class="o">.</span><span class="n">cone</span><span class="p">(</span> <span class="o">**</span><span class="n">params</span> <span class="p">)</span>
-    <span class="n">format</span><span class="p">(</span> <span class="n">result</span> <span class="p">)</span>
+    <span class="n">params</span><span class="o">=</span> <span class="n">conecalc</span><span class="o">.</span><span class="n">cone</span><span class="p">(</span> <span class="o">**</span><span class="n">params</span> <span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span> <span class="n">template</span><span class="o">.</span><span class="n">format</span><span class="p">(</span> <span class="o">**</span><span class="n">params</span> <span class="p">)</span> <span class="p">)</span>
 </pre></div>
 </div>
 </li>
 </ul>
 </dd></dl>
 
-<dl class="function">
-<dt id="hamcalc.construction.conecalc.truncated_cone">
-<tt class="descclassname">hamcalc.construction.conecalc.</tt><tt class="descname">truncated_cone</tt><big>(</big><em>**kw</em><big>)</big><a class="reference internal" href="../../_modules/hamcalc/construction/conecalc.html#truncated_cone"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.construction.conecalc.truncated_cone" title="Permalink to this definition">¶</a></dt>
-<dd><p>This solves Truncated Cone and Sheet Size problems.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="hamcalc.construction.conecalc.Truncated_Cone">
+<em class="property">class </em><tt class="descclassname">hamcalc.construction.conecalc.</tt><tt class="descname">Truncated_Cone</tt><a class="reference internal" href="../../_modules/hamcalc/construction/conecalc.html#Truncated_Cone"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.construction.conecalc.Truncated_Cone" title="Permalink to this definition">¶</a></dt>
+<dd><p>Solver for Truncated Cone and Sheet Size problems.</p>
+<dl class="method">
+<dt id="hamcalc.construction.conecalc.Truncated_Cone.solve">
+<tt class="descname">solve</tt><big>(</big><em>args</em><big>)</big><a class="reference internal" href="../../_modules/hamcalc/construction/conecalc.html#Truncated_Cone.solve"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.construction.conecalc.Truncated_Cone.solve" title="Permalink to this definition">¶</a></dt>
+<dd><p>Solve Truncated Cone and Sheet Size problems.</p>
 <p>Given the Cone base diameter, top diameter and height
 (&#8220;D_B&#8221;, &#8220;D_T&#8221;, &#8220;H&#8221;),
 Compute the sheet size and other helpful measures.</p>
 <p>This is not complete solver, because it can&#8217;t resolve
 a cone design given a sheet size.</p>
+</dd></dl>
+
 </dd></dl>
 
 </div>
@@ -522,14 +585,21 @@ top vs. bottom got hopeless screwed up somehow.</p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html">Python Modules</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../lib.html">lib &#8211; Supporting Library</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../radio.html">radio &#8211; Radio Design and Engineering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../radio/index.html">radio &#8211; Radio Design and Engineering</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../ham.html">ham &#8211; Ham Radio Operations</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../electronics/index.html">electronics &#8211; General Electronics</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="index.html">construction &#8211; Construction and Mechanical</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="arch.html">arch &#8211; Arch Calculator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="bend.html">bend &#8211; Bend Allowance, Metals</a></li>
+<li class="toctree-l3"><a class="reference internal" href="brick.html">brick &#8211; Masonry Estimator</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="">conecalc &#8211; Cone Calculator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="diamfind.html">diamfind &#8211; Diameter Finder</a></li>
+<li class="toctree-l3"><a class="reference internal" href="guywires.html">guywires &#8211; Guy Wires for Antenna Towers/Masts</a></li>
+<li class="toctree-l3"><a class="reference internal" href="nmbrsize.html">nmbrsize &#8211; Numbered Drills/Screws/Taps/Gauges</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pipesize.html">pipesize &#8211; Pipe Sizes, ANSI Standard</a></li>
 <li class="toctree-l3"><a class="reference internal" href="survey.html">survey &#8211; Surveyor&#8217;s Calculator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="wirecond.html">wirecond &#8211; Wires in Conduit</a></li>
+<li class="toctree-l3"><a class="reference internal" href="wiremesh.html">wiremesh &#8211; Wire Mesh Screens, Wind Loads</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../math/index.html">math &#8211; Math, Physics, Units Conversion</a></li>
@@ -567,7 +637,7 @@ top vs. bottom got hopeless screwed up somehow.</p>
     <div class="footer-wrapper">
       <div class="footer">
         <div class="left">
-          <a href="arch.html" title="arch – Arch Calculator"
+          <a href="brick.html" title="brick – Masonry Estimator"
              >previous</a> |
           <a href="diamfind.html" title="diamfind – Diameter Finder"
              >next</a> |

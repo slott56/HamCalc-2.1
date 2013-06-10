@@ -2,11 +2,25 @@
 
 This module creates two **Solver** instances.
 
-::
+..  py:function:: guywire_f( H=None, J=None, R=None )
 
-    guywire_f= GuyWire( FOOT )
+    Solve guy wire problems. This an instance of the :class:`GuyWire` **Solver** in imperial units.
 
-    guywire_m= GuyWire( METRE )
+    :param H: height in feet
+    :param J: Structure Type J Factor
+    :param R: distance from base in feet
+    :returns: Dict with all values.
+
+..  py:function:: guywire_m( H=None, J=None, R=None )
+
+    Solve guy wire problems. This an instance of the :class:`GuyWire` **Solver** in
+    metric units.
+
+    :param H: height in metres
+    :param J: Structure Type J Factor
+    :param R: distance from base in metres
+    :returns: Dict with all values.
+
 
 The unit-specific versions are necessary for two reasons.
 First, because the
@@ -50,7 +64,7 @@ __version__ = "2.1"
 
 import math
 from collections import OrderedDict
-from hamcalc.lib import Solver
+from hamcalc.lib import Solver, NoSolutionError
 from hamcalc.math.equiv import FOOT, METRE
 
 introduction="""\
@@ -123,7 +137,7 @@ class GuyWire( Solver ):
         self.r_1 = 16 # Feet
         self.r_2 = 22 # Feet
     def solve( self, args ):
-        """Compute various Guywire Paremeters.
+        """Compute various Guywire Parameters.
 
         :param H: height
         :param J: Structure Type J Factor

@@ -53,6 +53,16 @@
 
 <span class="sd">This is a **Solver** for Force-Mass-Velocity and Radius.</span>
 
+<span class="sd">..  py:function:: centrip( F=None, M=None, V=None, R=None )</span>
+
+<span class="sd">    Solve centripetal acceleration problems. This an instance of  :class:`Centripetal`.</span>
+
+<span class="sd">    :params F: force (newtons, kg-m/sec^2)</span>
+<span class="sd">    :params M: mass (kilograms)</span>
+<span class="sd">    :params V: velocity (meters/second)</span>
+<span class="sd">    :params R: radius (meters)</span>
+<span class="sd">    :returns: dict with all four values.</span>
+
 <span class="sd">Solver Test Cases</span>
 
 <span class="sd">&gt;&gt;&gt; import hamcalc.math.centrif as centrif</span>
@@ -81,8 +91,9 @@
 <span class="sd">1.8287999879299202</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
+<span class="n">__version__</span> <span class="o">=</span> <span class="s">&quot;2.1&quot;</span>
 
-<span class="kn">from</span> <span class="nn">hamcalc.lib</span> <span class="kn">import</span> <span class="n">AttrDict</span><span class="p">,</span> <span class="n">Unit</span><span class="p">,</span> <span class="n">Standard_Unit</span>
+<span class="kn">from</span> <span class="nn">hamcalc.lib</span> <span class="kn">import</span> <span class="n">AttrDict</span><span class="p">,</span> <span class="n">Unit</span><span class="p">,</span> <span class="n">Standard_Unit</span><span class="p">,</span> <span class="n">Solver</span><span class="p">,</span> <span class="n">NoSolutionError</span>
 <span class="kn">from</span> <span class="nn">hamcalc.math.equiv</span> <span class="kn">import</span> <span class="n">METRE</span><span class="p">,</span> <span class="n">FOOT</span>
 <span class="kn">import</span> <span class="nn">math</span>
 
@@ -131,25 +142,32 @@
     <span class="n">standard</span><span class="o">=</span> <span class="n">M_PER_SEC</span>
     <span class="n">factor</span><span class="o">=</span> <span class="mf">3.2808399</span>
 </div>
-<div class="viewcode-block" id="centrif"><a class="viewcode-back" href="../../../python/math/centrif.html#hamcalc.math.centrif.centrif">[docs]</a><span class="k">def</span> <span class="nf">centrif</span><span class="p">(</span> <span class="o">**</span><span class="n">kw</span> <span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Solve Force-Mass-Velocity and Radius problems.</span>
+<div class="viewcode-block" id="Centripetal"><a class="viewcode-back" href="../../../python/math/centrif.html#hamcalc.math.centrif.Centripetal">[docs]</a><span class="k">class</span> <span class="nc">Centripetal</span><span class="p">(</span> <span class="n">Solver</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Solver for Force-Mass-Velocity and Radius problems.&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="Centripetal.solve"><a class="viewcode-back" href="../../../python/math/centrif.html#hamcalc.math.centrif.Centripetal.solve">[docs]</a>    <span class="k">def</span> <span class="nf">solve</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">args</span> <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Solve Force-Mass-Velocity and Radius problems.</span>
 
-<span class="sd">    :params F: force (newtons, kg-m/sec^2)</span>
-<span class="sd">    :params M: mass (kilograms)</span>
-<span class="sd">    :params V: velocity (meters/second)</span>
-<span class="sd">    :params R: radius (meters)</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">args</span><span class="o">=</span> <span class="n">AttrDict</span><span class="p">(</span> <span class="n">kw</span> <span class="p">)</span>
-    <span class="k">if</span> <span class="s">&#39;M&#39;</span> <span class="ow">in</span> <span class="n">args</span> <span class="ow">and</span> <span class="s">&#39;V&#39;</span> <span class="ow">in</span> <span class="n">args</span> <span class="ow">and</span> <span class="s">&#39;R&#39;</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
-        <span class="n">args</span><span class="o">.</span><span class="n">F</span><span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">M</span><span class="o">*</span><span class="n">args</span><span class="o">.</span><span class="n">V</span><span class="o">**</span><span class="mi">2</span><span class="o">/</span><span class="n">args</span><span class="o">.</span><span class="n">R</span>
-    <span class="k">elif</span> <span class="s">&#39;F&#39;</span> <span class="ow">in</span> <span class="n">args</span> <span class="ow">and</span> <span class="s">&#39;V&#39;</span> <span class="ow">in</span> <span class="n">args</span> <span class="ow">and</span> <span class="s">&#39;R&#39;</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
-        <span class="n">args</span><span class="o">.</span><span class="n">M</span><span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">F</span><span class="o">/</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">V</span><span class="o">**</span><span class="mi">2</span><span class="o">/</span><span class="n">args</span><span class="o">.</span><span class="n">R</span><span class="p">)</span>
-    <span class="k">elif</span> <span class="s">&#39;F&#39;</span> <span class="ow">in</span> <span class="n">args</span> <span class="ow">and</span> <span class="s">&#39;M&#39;</span> <span class="ow">in</span> <span class="n">args</span> <span class="ow">and</span> <span class="s">&#39;R&#39;</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
-        <span class="n">args</span><span class="o">.</span><span class="n">V</span><span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span> <span class="n">args</span><span class="o">.</span><span class="n">F</span><span class="o">/</span><span class="n">args</span><span class="o">.</span><span class="n">M</span><span class="o">*</span><span class="n">args</span><span class="o">.</span><span class="n">R</span> <span class="p">)</span>
-    <span class="k">elif</span> <span class="s">&#39;F&#39;</span> <span class="ow">in</span> <span class="n">args</span> <span class="ow">and</span> <span class="s">&#39;M&#39;</span> <span class="ow">in</span> <span class="n">args</span> <span class="ow">and</span> <span class="s">&#39;V&#39;</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
-        <span class="n">args</span><span class="o">.</span><span class="n">R</span><span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">M</span><span class="o">*</span><span class="n">args</span><span class="o">.</span><span class="n">V</span><span class="o">**</span><span class="mi">2</span><span class="o">/</span><span class="n">args</span><span class="o">.</span><span class="n">F</span>
-    <span class="k">return</span> <span class="n">args</span>
-</pre></div></div>
+<span class="sd">        :params F: force (newtons, kg-m/sec^2)</span>
+<span class="sd">        :params M: mass (kilograms)</span>
+<span class="sd">        :params V: velocity (meters/second)</span>
+<span class="sd">        :params R: radius (meters)</span>
+<span class="sd">        :returns: dict with all four values.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="s">&#39;M&#39;</span> <span class="ow">in</span> <span class="n">args</span> <span class="ow">and</span> <span class="s">&#39;V&#39;</span> <span class="ow">in</span> <span class="n">args</span> <span class="ow">and</span> <span class="s">&#39;R&#39;</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
+            <span class="n">args</span><span class="o">.</span><span class="n">F</span><span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">M</span><span class="o">*</span><span class="n">args</span><span class="o">.</span><span class="n">V</span><span class="o">**</span><span class="mi">2</span><span class="o">/</span><span class="n">args</span><span class="o">.</span><span class="n">R</span>
+        <span class="k">elif</span> <span class="s">&#39;F&#39;</span> <span class="ow">in</span> <span class="n">args</span> <span class="ow">and</span> <span class="s">&#39;V&#39;</span> <span class="ow">in</span> <span class="n">args</span> <span class="ow">and</span> <span class="s">&#39;R&#39;</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
+            <span class="n">args</span><span class="o">.</span><span class="n">M</span><span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">F</span><span class="o">/</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">V</span><span class="o">**</span><span class="mi">2</span><span class="o">/</span><span class="n">args</span><span class="o">.</span><span class="n">R</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="s">&#39;F&#39;</span> <span class="ow">in</span> <span class="n">args</span> <span class="ow">and</span> <span class="s">&#39;M&#39;</span> <span class="ow">in</span> <span class="n">args</span> <span class="ow">and</span> <span class="s">&#39;R&#39;</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
+            <span class="n">args</span><span class="o">.</span><span class="n">V</span><span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span> <span class="n">args</span><span class="o">.</span><span class="n">F</span><span class="o">/</span><span class="n">args</span><span class="o">.</span><span class="n">M</span><span class="o">*</span><span class="n">args</span><span class="o">.</span><span class="n">R</span> <span class="p">)</span>
+        <span class="k">elif</span> <span class="s">&#39;F&#39;</span> <span class="ow">in</span> <span class="n">args</span> <span class="ow">and</span> <span class="s">&#39;M&#39;</span> <span class="ow">in</span> <span class="n">args</span> <span class="ow">and</span> <span class="s">&#39;V&#39;</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
+            <span class="n">args</span><span class="o">.</span><span class="n">R</span><span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">M</span><span class="o">*</span><span class="n">args</span><span class="o">.</span><span class="n">V</span><span class="o">**</span><span class="mi">2</span><span class="o">/</span><span class="n">args</span><span class="o">.</span><span class="n">F</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">NoSolutionError</span><span class="p">(</span> <span class="s">&quot;Insufficient Data: {0!r}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">args</span><span class="p">)</span> <span class="p">)</span>
+        <span class="k">return</span> <span class="n">args</span>
+</div></div>
+<span class="n">centrif</span> <span class="o">=</span> <span class="n">Centripetal</span><span class="p">()</span>
+<span class="n">centrip</span> <span class="o">=</span> <span class="n">Centripetal</span><span class="p">()</span>
+</pre></div>
 
           </div>
         </div>

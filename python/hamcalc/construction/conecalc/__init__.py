@@ -3,10 +3,6 @@
 This creates two solvers for laying out cones (or truncated cones)
 on rectangular sheets.
 
--   cone
-
--   truncated_cone
-
 A Cone is defined by diameter ("D") and height ("H").
 
 A Sheet is defined by an width ("A") and length ("B").
@@ -25,6 +21,24 @@ to properly lay out the cone pattern.
 A Truncated Code is defined two diameters and a height:
 "D_B", "D_T", "H".
 
+..  py:function:: cone( D=None, H=None, A=None, B=None )
+
+    Solve cone problems. This an instance of the :class:`Cone` **Solver**.
+
+    :param D: Cone Diameter
+    :param H: Cone Height
+    :param A: Sheet length
+    :param B: Sheet width
+    :returns: dict with all values
+
+..  py:function:: truncated_cone( D_B=None, D_T=None, H=None )
+
+    Solve truncated cone problems. This an instance of the :class:`Truncated_Cone` **Solver**.
+
+    :param D_B: Cone Bottom Diameter
+    :param D_T: Cone Top Diameter
+    :param H: Truncated Cone Height
+    :returns: dict with additional computed values
 
 Test Cases
 
@@ -159,11 +173,8 @@ Test Cases
 """
 __version__ = "2.1"
 
-from hamcalc.lib import AttrDict, Solver
+from hamcalc.lib import AttrDict, Solver, NoSolutionError
 import math
-
-class Error( Exception ):
-    pass
 
 introduction="""\
 Cone Calculator                                         by George Murphy VE3ERP
@@ -242,7 +253,7 @@ class Cone( Solver ):
                 else:
                     args.next= 0
             else:
-                raise Error( "Unrecognized variables: {0}".format(kw.keys()) )
+                raise NoSolutionError( "Unrecognized variables: {0}".format(kw.keys()) )
         assert 'next' in args and args.next is not None
         # Fitting cones to sheets, next alternative solution.
         if args.next == 0:
@@ -271,7 +282,7 @@ class Cone( Solver ):
             args.theta_r = 2 * math.asin( args.A / 2 / args.L )
             args.X, args.Y = 0, args.A/2
         else:
-            raise Error( "Logic Error: next={0}".format(args.next) )
+            raise NoSolutionError( "Logic Error: next={0}".format(args.next) )
 
         args.theta_d = math.degrees( args.theta_r )
         args.C = args.L * args.theta_r
@@ -283,7 +294,7 @@ class Cone( Solver ):
 
 cone = Cone()
 
-class Truncate_Cone( Solver ):
+class Truncated_Cone( Solver ):
     """Solver for Truncated Cone and Sheet Size problems."""
 
     def solve( self, args ):
@@ -330,4 +341,4 @@ class Truncate_Cone( Solver ):
             args.relative= "above"
         return args
 
-truncated_cone = Truncate_Cone()
+truncated_cone = Truncated_Cone()

@@ -51,60 +51,88 @@
   <h1>Source code for hamcalc.math.speedtd</h1><div class="highlight"><pre>
 <span class="sd">&quot;&quot;&quot;hamcalc.math.speedtd -- Speed/Time/Distance Calculator</span>
 
-<span class="sd">A **Solver** for :math:`d = s \\times t` calculations.</span>
+<span class="sd">..  py:function:: speed_time_distance( S=None, T=None, D=None )</span>
 
-<span class="sd">Plus a **Solver** for MPG, gallons, distance (or LPK, liters, kilometers)</span>
-<span class="sd">problems.</span>
+<span class="sd">    A **Solver** for :math:`d = s \\times t` calculations.</span>
+<span class="sd">    This an instance of  :class:`Speed_Time_Distance`.</span>
+
+<span class="sd">    :param S: speed</span>
+<span class="sd">    :param T: time</span>
+<span class="sd">    :param D: distance</span>
+<span class="sd">    :returns: Dict with all three values.</span>
+
+<span class="sd">..  py:function:: fuel_volume_distance( R=None, V=None, D=None )</span>
+
+<span class="sd">    A **Solver** for MPG, gallons, distance (or LPK, liters, kilometers)</span>
+<span class="sd">    problems.</span>
+<span class="sd">    This an instance of  :class:`Fuel_Volume_Distance`.</span>
+
+<span class="sd">    :param R: fuel consumption rate (e.g. miles/gallon)</span>
+<span class="sd">    :param V: volume (e.g. gallons)</span>
+<span class="sd">    :param D: distance (e.g. miles)</span>
+<span class="sd">    :returns: Dict with all three values.</span>
 
 <span class="sd">Test Cases</span>
 
 <span class="sd">&gt;&gt;&gt; import hamcalc.math.speedtd as speedtd</span>
 <span class="sd">&gt;&gt;&gt; speedtd.speed_time_distance( D=37, T=11 )</span>
-<span class="sd">{&#39;S&#39;: 3.3636363636363638, &#39;D&#39;: 37, &#39;T&#39;: 11}</span>
+<span class="sd">{&#39;S&#39;: 3.3636363636363638, &#39;T&#39;: 11, &#39;D&#39;: 37}</span>
 <span class="sd">&gt;&gt;&gt; speedtd.fuel_volume_distance( D=53, V=17 )</span>
 <span class="sd">{&#39;R&#39;: 3.1176470588235294, &#39;D&#39;: 53, &#39;V&#39;: 17}</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="kn">from</span> <span class="nn">hamcalc.lib</span> <span class="kn">import</span> <span class="n">AttrDict</span>
+<span class="n">__version__</span> <span class="o">=</span> <span class="s">&quot;2.1&quot;</span>
+
+<span class="kn">from</span> <span class="nn">hamcalc.lib</span> <span class="kn">import</span> <span class="n">AttrDict</span><span class="p">,</span> <span class="n">Solver</span><span class="p">,</span> <span class="n">NoSolutionError</span>
 
 <span class="k">def</span> <span class="nf">intro</span><span class="p">():</span>
     <span class="k">return</span> <span class="s">&quot;&quot;&quot;</span><span class="se">\</span>
 <span class="s">SPEED, TIME and DISTANCE Calculator                     by George Murphy VE3ERP</span>
 <span class="s">&quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="speed_time_distance"><a class="viewcode-back" href="../../../python/math/speedtd.html#hamcalc.math.speedtd.speed_time_distance">[docs]</a><span class="k">def</span> <span class="nf">speed_time_distance</span><span class="p">(</span> <span class="o">**</span><span class="n">kw</span> <span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Solver for speed/time/distance problems.</span>
+<div class="viewcode-block" id="Speed_Time_Distance"><a class="viewcode-back" href="../../../python/math/speedtd.html#hamcalc.math.speedtd.Speed_Time_Distance">[docs]</a><span class="k">class</span> <span class="nc">Speed_Time_Distance</span><span class="p">(</span> <span class="n">Solver</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Solver for speed/time/distance problems.&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="Speed_Time_Distance.solve"><a class="viewcode-back" href="../../../python/math/speedtd.html#hamcalc.math.speedtd.Speed_Time_Distance.solve">[docs]</a>    <span class="k">def</span> <span class="nf">solve</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">args</span> <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Solve speed/time/distance problems.</span>
 
-<span class="sd">    :param S: speed</span>
-<span class="sd">    :param T: time</span>
-<span class="sd">    :param D: distance</span>
-<span class="sd">    :returns: Dict with all three values.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">args</span><span class="o">=</span> <span class="n">AttrDict</span><span class="p">(</span> <span class="n">kw</span> <span class="p">)</span>
-    <span class="k">if</span> <span class="s">&quot;S&quot;</span> <span class="ow">in</span> <span class="n">args</span> <span class="ow">and</span> <span class="s">&quot;T&quot;</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
-        <span class="n">args</span><span class="o">.</span><span class="n">D</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">S</span> <span class="o">*</span> <span class="n">args</span><span class="o">.</span><span class="n">T</span>
-    <span class="k">elif</span> <span class="s">&quot;S&quot;</span> <span class="ow">in</span> <span class="n">args</span> <span class="ow">and</span> <span class="s">&quot;D&quot;</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
-        <span class="n">args</span><span class="o">.</span><span class="n">T</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">D</span> <span class="o">/</span> <span class="n">args</span><span class="o">.</span><span class="n">S</span>
-    <span class="k">elif</span> <span class="s">&quot;T&quot;</span> <span class="ow">in</span> <span class="n">args</span> <span class="ow">and</span> <span class="s">&quot;D&quot;</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
-        <span class="n">args</span><span class="o">.</span><span class="n">S</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">D</span> <span class="o">/</span> <span class="n">args</span><span class="o">.</span><span class="n">T</span>
-    <span class="k">return</span> <span class="n">args</span>
-</div>
-<div class="viewcode-block" id="fuel_volume_distance"><a class="viewcode-back" href="../../../python/math/speedtd.html#hamcalc.math.speedtd.fuel_volume_distance">[docs]</a><span class="k">def</span> <span class="nf">fuel_volume_distance</span><span class="p">(</span> <span class="o">**</span><span class="n">kw</span> <span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Solver for fuel-rate/volume/distance problems.</span>
+<span class="sd">        :param S: speed</span>
+<span class="sd">        :param T: time</span>
+<span class="sd">        :param D: distance</span>
+<span class="sd">        :returns: Dict with all three values.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="s">&quot;S&quot;</span> <span class="ow">in</span> <span class="n">args</span> <span class="ow">and</span> <span class="s">&quot;T&quot;</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
+            <span class="n">args</span><span class="o">.</span><span class="n">D</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">S</span> <span class="o">*</span> <span class="n">args</span><span class="o">.</span><span class="n">T</span>
+        <span class="k">elif</span> <span class="s">&quot;S&quot;</span> <span class="ow">in</span> <span class="n">args</span> <span class="ow">and</span> <span class="s">&quot;D&quot;</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
+            <span class="n">args</span><span class="o">.</span><span class="n">T</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">D</span> <span class="o">/</span> <span class="n">args</span><span class="o">.</span><span class="n">S</span>
+        <span class="k">elif</span> <span class="s">&quot;T&quot;</span> <span class="ow">in</span> <span class="n">args</span> <span class="ow">and</span> <span class="s">&quot;D&quot;</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
+            <span class="n">args</span><span class="o">.</span><span class="n">S</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">D</span> <span class="o">/</span> <span class="n">args</span><span class="o">.</span><span class="n">T</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">NoSolutionError</span><span class="p">(</span> <span class="s">&quot;Insufficient Data: {0!r}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">args</span><span class="p">)</span> <span class="p">)</span>
+        <span class="k">return</span> <span class="n">args</span>
+</div></div>
+<span class="n">speed_time_distance</span> <span class="o">=</span> <span class="n">Speed_Time_Distance</span><span class="p">()</span>
 
-<span class="sd">    :param R: fuel consumption rate (e.g. miles/gallon)</span>
-<span class="sd">    :param V: volume (e.g. gallons)</span>
-<span class="sd">    :param D: distance (e.g. miles)</span>
-<span class="sd">    :returns: Dict with all three values.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">args</span><span class="o">=</span> <span class="n">AttrDict</span><span class="p">(</span> <span class="n">kw</span> <span class="p">)</span>
-    <span class="k">if</span> <span class="s">&quot;R&quot;</span> <span class="ow">in</span> <span class="n">args</span> <span class="ow">and</span> <span class="s">&quot;V&quot;</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
-        <span class="n">args</span><span class="o">.</span><span class="n">D</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">R</span> <span class="o">*</span> <span class="n">args</span><span class="o">.</span><span class="n">V</span>
-    <span class="k">elif</span> <span class="s">&quot;R&quot;</span> <span class="ow">in</span> <span class="n">args</span> <span class="ow">and</span> <span class="s">&quot;D&quot;</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
-        <span class="n">args</span><span class="o">.</span><span class="n">V</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">D</span> <span class="o">/</span> <span class="n">args</span><span class="o">.</span><span class="n">R</span>
-    <span class="k">elif</span> <span class="s">&quot;V&quot;</span> <span class="ow">in</span> <span class="n">args</span> <span class="ow">and</span> <span class="s">&quot;D&quot;</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
-        <span class="n">args</span><span class="o">.</span><span class="n">R</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">D</span> <span class="o">/</span> <span class="n">args</span><span class="o">.</span><span class="n">V</span>
-    <span class="k">return</span> <span class="n">args</span></div>
+<div class="viewcode-block" id="Fuel_Volume_Distance"><a class="viewcode-back" href="../../../python/math/speedtd.html#hamcalc.math.speedtd.Fuel_Volume_Distance">[docs]</a><span class="k">class</span> <span class="nc">Fuel_Volume_Distance</span><span class="p">(</span> <span class="n">Solver</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Solver for fuel-rate/volume/distance problems.&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="Fuel_Volume_Distance.solve"><a class="viewcode-back" href="../../../python/math/speedtd.html#hamcalc.math.speedtd.Fuel_Volume_Distance.solve">[docs]</a>    <span class="k">def</span> <span class="nf">solve</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">args</span> <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Solve fuel-rate/volume/distance problems.</span>
+
+<span class="sd">        :param R: fuel consumption rate (e.g. miles/gallon)</span>
+<span class="sd">        :param V: volume (e.g. gallons)</span>
+<span class="sd">        :param D: distance (e.g. miles)</span>
+<span class="sd">        :returns: Dict with all three values.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="s">&quot;R&quot;</span> <span class="ow">in</span> <span class="n">args</span> <span class="ow">and</span> <span class="s">&quot;V&quot;</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
+            <span class="n">args</span><span class="o">.</span><span class="n">D</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">R</span> <span class="o">*</span> <span class="n">args</span><span class="o">.</span><span class="n">V</span>
+        <span class="k">elif</span> <span class="s">&quot;R&quot;</span> <span class="ow">in</span> <span class="n">args</span> <span class="ow">and</span> <span class="s">&quot;D&quot;</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
+            <span class="n">args</span><span class="o">.</span><span class="n">V</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">D</span> <span class="o">/</span> <span class="n">args</span><span class="o">.</span><span class="n">R</span>
+        <span class="k">elif</span> <span class="s">&quot;V&quot;</span> <span class="ow">in</span> <span class="n">args</span> <span class="ow">and</span> <span class="s">&quot;D&quot;</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
+            <span class="n">args</span><span class="o">.</span><span class="n">R</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">D</span> <span class="o">/</span> <span class="n">args</span><span class="o">.</span><span class="n">V</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">NoSolutionError</span><span class="p">(</span> <span class="s">&quot;Insufficient Data: {0!r}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">args</span><span class="p">)</span> <span class="p">)</span>
+        <span class="k">return</span> <span class="n">args</span>
+</div></div>
+<span class="n">fuel_volume_distance</span> <span class="o">=</span> <span class="n">Fuel_Volume_Distance</span><span class="p">()</span>
 </pre></div>
 
           </div>

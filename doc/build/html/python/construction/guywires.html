@@ -25,7 +25,7 @@
     <script type="text/javascript" src="../../_static/doctools.js"></script>
     <link rel="top" title="HamCalc 2.1 documentation" href="../../index.html" />
     <link rel="up" title="construction – Construction and Mechanical" href="index.html" />
-    <link rel="next" title="survey – Surveyor’s Calculator" href="survey.html" />
+    <link rel="next" title="nmbrsize – Numbered Drills/Screws/Taps/Gauges" href="nmbrsize.html" />
     <link rel="prev" title="diamfind – Diameter Finder" href="diamfind.html" /> 
   </head>
   <body>
@@ -36,7 +36,7 @@
         <div class="rel">
           <a href="diamfind.html" title="diamfind – Diameter Finder"
              accesskey="P">previous</a> |
-          <a href="survey.html" title="survey – Surveyor’s Calculator"
+          <a href="nmbrsize.html" title="nmbrsize – Numbered Drills/Screws/Taps/Gauges"
              accesskey="N">next</a> |
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |
@@ -217,11 +217,51 @@ the required number, <em>N</em>.</p>
 <p>Something like the above should yield a description of each set.</p>
 <span class="target" id="module-hamcalc.construction.guywire"></span><p>hamcalc.construction.guywire</p>
 <p>This module creates two <strong>Solver</strong> instances.</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="n">guywire_f</span><span class="o">=</span> <span class="n">GuyWire</span><span class="p">(</span> <span class="n">FOOT</span> <span class="p">)</span>
+<dl class="function">
+<dt id="hamcalc.construction.guywire.guywire_f">
+<tt class="descclassname">hamcalc.construction.guywire.</tt><tt class="descname">guywire_f</tt><big>(</big><em>H=None</em>, <em>J=None</em>, <em>R=None</em><big>)</big><a class="headerlink" href="#hamcalc.construction.guywire.guywire_f" title="Permalink to this definition">¶</a></dt>
+<dd><p>Solve guy wire problems. This an instance of the <a class="reference internal" href="#hamcalc.construction.guywire.GuyWire" title="hamcalc.construction.guywire.GuyWire"><tt class="xref py py-class docutils literal"><span class="pre">GuyWire</span></tt></a> <strong>Solver</strong> in imperial units.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>H</strong> &#8211; height in feet</li>
+<li><strong>J</strong> &#8211; Structure Type J Factor</li>
+<li><strong>R</strong> &#8211; distance from base in feet</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Dict with all values.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
-<span class="n">guywire_m</span><span class="o">=</span> <span class="n">GuyWire</span><span class="p">(</span> <span class="n">METRE</span> <span class="p">)</span>
-</pre></div>
-</div>
+<dl class="function">
+<dt id="hamcalc.construction.guywire.guywire_m">
+<tt class="descclassname">hamcalc.construction.guywire.</tt><tt class="descname">guywire_m</tt><big>(</big><em>H=None</em>, <em>J=None</em>, <em>R=None</em><big>)</big><a class="headerlink" href="#hamcalc.construction.guywire.guywire_m" title="Permalink to this definition">¶</a></dt>
+<dd><p>Solve guy wire problems. This an instance of the <a class="reference internal" href="#hamcalc.construction.guywire.GuyWire" title="hamcalc.construction.guywire.GuyWire"><tt class="xref py py-class docutils literal"><span class="pre">GuyWire</span></tt></a> <strong>Solver</strong> in
+metric units.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>H</strong> &#8211; height in metres</li>
+<li><strong>J</strong> &#8211; Structure Type J Factor</li>
+<li><strong>R</strong> &#8211; distance from base in metres</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Dict with all values.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
 <p>The unit-specific versions are necessary for two reasons.
 First, because the
 renonance check is for multiples of 16&#8217; and 22&#8217;.
@@ -282,7 +322,7 @@ This must be instantiated with proper units.</p>
 <dl class="method">
 <dt id="hamcalc.construction.guywire.GuyWire.solve">
 <tt class="descname">solve</tt><big>(</big><em>args</em><big>)</big><a class="reference internal" href="../../_modules/hamcalc/construction/guywire.html#GuyWire.solve"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.construction.guywire.GuyWire.solve" title="Permalink to this definition">¶</a></dt>
-<dd><p>Compute various Guywire Paremeters.</p>
+<dd><p>Compute various Guywire Parameters.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -350,7 +390,7 @@ they&#8217;re never used elsewhere in this program.</p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html">Python Modules</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../lib.html">lib &#8211; Supporting Library</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../radio.html">radio &#8211; Radio Design and Engineering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../radio/index.html">radio &#8211; Radio Design and Engineering</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../ham.html">ham &#8211; Ham Radio Operations</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../electronics/index.html">electronics &#8211; General Electronics</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="index.html">construction &#8211; Construction and Mechanical</a><ul class="current">
@@ -360,7 +400,11 @@ they&#8217;re never used elsewhere in this program.</p>
 <li class="toctree-l3"><a class="reference internal" href="conecalc.html">conecalc &#8211; Cone Calculator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="diamfind.html">diamfind &#8211; Diameter Finder</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="">guywires &#8211; Guy Wires for Antenna Towers/Masts</a></li>
+<li class="toctree-l3"><a class="reference internal" href="nmbrsize.html">nmbrsize &#8211; Numbered Drills/Screws/Taps/Gauges</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pipesize.html">pipesize &#8211; Pipe Sizes, ANSI Standard</a></li>
 <li class="toctree-l3"><a class="reference internal" href="survey.html">survey &#8211; Surveyor&#8217;s Calculator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="wirecond.html">wirecond &#8211; Wires in Conduit</a></li>
+<li class="toctree-l3"><a class="reference internal" href="wiremesh.html">wiremesh &#8211; Wire Mesh Screens, Wind Loads</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../math/index.html">math &#8211; Math, Physics, Units Conversion</a></li>
@@ -400,7 +444,7 @@ they&#8217;re never used elsewhere in this program.</p>
         <div class="left">
           <a href="diamfind.html" title="diamfind – Diameter Finder"
              >previous</a> |
-          <a href="survey.html" title="survey – Surveyor’s Calculator"
+          <a href="nmbrsize.html" title="nmbrsize – Numbered Drills/Screws/Taps/Gauges"
              >next</a> |
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |

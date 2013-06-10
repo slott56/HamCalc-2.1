@@ -221,7 +221,7 @@
 
 <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="kn">from</span> <span class="nn">hamcalc.lib</span> <span class="kn">import</span> <span class="n">Unit</span><span class="p">,</span> <span class="n">Standard_Unit</span><span class="p">,</span> <span class="n">AttrDict</span>
+<span class="kn">from</span> <span class="nn">hamcalc.lib</span> <span class="kn">import</span> <span class="n">Unit</span><span class="p">,</span> <span class="n">Standard_Unit</span><span class="p">,</span> <span class="n">AttrDict</span><span class="p">,</span> <span class="n">NoSolutionError</span>
 <span class="kn">from</span> <span class="nn">hamcalc.math.trig</span> <span class="kn">import</span> <span class="n">DEGREE</span><span class="p">,</span> <span class="n">RADIAN</span>
 <span class="kn">import</span> <span class="nn">math</span>
 
@@ -464,11 +464,12 @@
     <span class="n">factor</span><span class="o">=</span> <span class="mi">1</span><span class="o">/</span><span class="mf">3.7854118</span>
 </div>
 <div class="viewcode-block" id="freq_wavelength"><a class="viewcode-back" href="../../../python/math/equiv.html#hamcalc.math.equiv.freq_wavelength">[docs]</a><span class="k">def</span> <span class="nf">freq_wavelength</span><span class="p">(</span> <span class="o">**</span><span class="n">kw</span> <span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Solver for frequency-wavelength problems in Standard units</span>
+    <span class="sd">&quot;&quot;&quot;A kind of **Solver** for frequency-wavelength problems in Standard units</span>
 <span class="sd">    of meters and Hertz.</span>
 
 <span class="sd">    :param f: Frequency in Hz</span>
 <span class="sd">    :param l: Wavelength in m</span>
+<span class="sd">    :returns: dict with both values</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">c</span><span class="o">=</span> <span class="mf">299792.458</span>
     <span class="n">args</span><span class="o">=</span> <span class="n">AttrDict</span><span class="p">(</span> <span class="n">kw</span> <span class="p">)</span>
@@ -476,6 +477,8 @@
         <span class="n">args</span><span class="o">.</span><span class="n">l</span><span class="o">=</span> <span class="mi">1000</span><span class="o">*</span><span class="n">c</span><span class="o">/</span><span class="n">args</span><span class="o">.</span><span class="n">f</span>
     <span class="k">elif</span> <span class="s">&#39;l&#39;</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
         <span class="n">args</span><span class="o">.</span><span class="n">f</span> <span class="o">=</span> <span class="n">c</span><span class="o">/</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">l</span><span class="o">/</span><span class="mi">1000</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">NoSolutionError</span><span class="p">(</span> <span class="s">&quot;Insufficient Data: {0!r}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">args</span><span class="p">)</span> <span class="p">)</span>
     <span class="k">return</span> <span class="n">args</span>
 
 </div>

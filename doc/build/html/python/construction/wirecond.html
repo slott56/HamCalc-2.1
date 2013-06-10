@@ -170,21 +170,206 @@ bundle size from the target size.</p>
 </li>
 </ul>
 </div>
-<div class="section" id="implementation">
-<h2>Implementation<a class="headerlink" href="#implementation" title="Permalink to this headline">¶</a></h2>
-<p>TBD</p>
+<div class="section" id="module-hamcalc.construction.wirecond">
+<span id="implementation"></span><h2>Implementation<a class="headerlink" href="#module-hamcalc.construction.wirecond" title="Permalink to this headline">¶</a></h2>
+<p>hamcalc.constructure.wirecond</p>
+<p>Wires in a Conduit.</p>
+<p>This is a <strong>Solver</strong> oriented around the rather
+complex packing of circles into a circular space.</p>
+<dl class="function">
+<dt id="hamcalc.construction.wirecond.conduit">
+<tt class="descclassname">hamcalc.construction.wirecond.</tt><tt class="descname">conduit</tt><big>(</big><em>ID=None</em>, <em>OD=None</em>, <em>NW=None</em><big>)</big><a class="headerlink" href="#hamcalc.construction.wirecond.conduit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Solver for conduit problems.
+This an instance of the <a class="reference internal" href="#hamcalc.construction.wirecond.Conduit" title="hamcalc.construction.wirecond.Conduit"><tt class="xref py py-class docutils literal"><span class="pre">Conduit</span></tt></a> <strong>Solver</strong>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>ID</strong> &#8211; Conduit inside diameter</li>
+<li><strong>OD</strong> &#8211; Wire outside diameter</li>
+<li><strong>NW</strong> &#8211; Number of wires.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Dictionary with all three values.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>Complex</p>
+<p class="last">This seems rather complex.
+Perhaps there&#8217;s a simplification.</p>
+</div>
+<p>Test Cases:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">hamcalc.construction.wirecond</span> <span class="kn">as</span> <span class="nn">wirecond</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b1</span><span class="o">=</span> <span class="n">wirecond</span><span class="o">.</span><span class="n">conduit</span><span class="p">(</span> <span class="n">ID</span><span class="o">=.</span><span class="mi">75</span><span class="p">,</span> <span class="n">OD</span><span class="o">=.</span><span class="mo">0625</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">b1</span><span class="o">.</span><span class="n">NW</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">100.92</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b2</span><span class="o">=</span> <span class="n">wirecond</span><span class="o">.</span><span class="n">conduit</span><span class="p">(</span> <span class="n">NW</span><span class="o">=</span><span class="mi">101</span><span class="p">,</span> <span class="n">OD</span><span class="o">=.</span><span class="mo">0625</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">b2</span><span class="o">.</span><span class="n">ID</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">0.694</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b3</span><span class="o">=</span> <span class="n">wirecond</span><span class="o">.</span><span class="n">conduit</span><span class="p">(</span> <span class="n">NW</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">ID</span><span class="o">=.</span><span class="mi">75</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">b3</span><span class="o">.</span><span class="n">OD</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">0.067</span>
+</pre></div>
+</div>
+<dl class="class">
+<dt id="hamcalc.construction.wirecond.Conduit">
+<em class="property">class </em><tt class="descclassname">hamcalc.construction.wirecond.</tt><tt class="descname">Conduit</tt><a class="reference internal" href="../../_modules/hamcalc/construction/wirecond.html#Conduit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.construction.wirecond.Conduit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Solver for conduit problems.</p>
+<p>It appears that there are four geometries.
+Each geometry it itself a solver for NW, ID or OD
+given a parameter value, N.</p>
+<dl class="method">
+<dt id="hamcalc.construction.wirecond.Conduit.calc_id">
+<tt class="descname">calc_id</tt><big>(</big><em>args</em><big>)</big><a class="reference internal" href="../../_modules/hamcalc/construction/wirecond.html#Conduit.calc_id"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.construction.wirecond.Conduit.calc_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>Solve for ID, given OD and NW.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="hamcalc.construction.wirecond.Conduit.calc_nw">
+<tt class="descname">calc_nw</tt><big>(</big><em>args</em><big>)</big><a class="reference internal" href="../../_modules/hamcalc/construction/wirecond.html#Conduit.calc_nw"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.construction.wirecond.Conduit.calc_nw" title="Permalink to this definition">¶</a></dt>
+<dd><p>Solve for NW, given ID and OD.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="hamcalc.construction.wirecond.Conduit.calc_od">
+<tt class="descname">calc_od</tt><big>(</big><em>args</em><big>)</big><a class="reference internal" href="../../_modules/hamcalc/construction/wirecond.html#Conduit.calc_od"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.construction.wirecond.Conduit.calc_od" title="Permalink to this definition">¶</a></dt>
+<dd><p>Solve for OD, given ID and NW.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="hamcalc.construction.wirecond.Conduit.solve">
+<tt class="descname">solve</tt><big>(</big><em>args</em><big>)</big><a class="reference internal" href="../../_modules/hamcalc/construction/wirecond.html#Conduit.solve"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.construction.wirecond.Conduit.solve" title="Permalink to this definition">¶</a></dt>
+<dd><p>Requires two of three values:</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>ID</strong> &#8211; the conduit inside diameter.</li>
+<li><strong>OD</strong> &#8211; the wire&#8217;s outsdie diameter.</li>
+<li><strong>NW</strong> &#8211; the number of wires to pack into the conduit.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">dict with the missing value added.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="hamcalc.construction.wirecond.Geometry">
+<em class="property">class </em><tt class="descclassname">hamcalc.construction.wirecond.</tt><tt class="descname">Geometry</tt><big>(</big><em>n</em><big>)</big><a class="reference internal" href="../../_modules/hamcalc/construction/wirecond.html#Geometry"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.construction.wirecond.Geometry" title="Permalink to this definition">¶</a></dt>
+<dd><p>A superclass for the four wire-packing geometries.</p>
+<dl class="method">
+<dt id="hamcalc.construction.wirecond.Geometry.id">
+<tt class="descname">id</tt><big>(</big><em>od</em><big>)</big><a class="reference internal" href="../../_modules/hamcalc/construction/wirecond.html#Geometry.id"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.construction.wirecond.Geometry.id" title="Permalink to this definition">¶</a></dt>
+<dd><p>The diameter of a bundle.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>od</strong> &#8211; diameter of one wire.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="hamcalc.construction.wirecond.Geometry.id_opt">
+<tt class="descname">id_opt</tt><big>(</big><em>od</em><big>)</big><a class="reference internal" href="../../_modules/hamcalc/construction/wirecond.html#Geometry.id_opt"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.construction.wirecond.Geometry.id_opt" title="Permalink to this definition">¶</a></dt>
+<dd><p>An optimized bundle diameter.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>od</strong> &#8211; diameter of one wire.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="hamcalc.construction.wirecond.Geometry.nw">
+<tt class="descname">nw</tt><big>(</big><big>)</big><a class="reference internal" href="../../_modules/hamcalc/construction/wirecond.html#Geometry.nw"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.construction.wirecond.Geometry.nw" title="Permalink to this definition">¶</a></dt>
+<dd><p>Number of wires for parameter.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>n</strong> &#8211; parameter &gt;= 0</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="hamcalc.construction.wirecond.Geometry.od">
+<tt class="descname">od</tt><big>(</big><em>id</em><big>)</big><a class="reference internal" href="../../_modules/hamcalc/construction/wirecond.html#Geometry.od"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.construction.wirecond.Geometry.od" title="Permalink to this definition">¶</a></dt>
+<dd><p>Largest wire size that will fill the conduit.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>id</strong> &#8211; diameter of the conduit.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="hamcalc.construction.wirecond.Geometry_1">
+<em class="property">class </em><tt class="descclassname">hamcalc.construction.wirecond.</tt><tt class="descname">Geometry_1</tt><big>(</big><em>n</em><big>)</big><a class="reference internal" href="../../_modules/hamcalc/construction/wirecond.html#Geometry_1"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.construction.wirecond.Geometry_1" title="Permalink to this definition">¶</a></dt>
+<dd><p>Geometry based on <img class="math" src="../../_images/math/71c4a5b7976948c6ba1dce4e9ff23b929e3e2562.png" alt="W = 3N^2+3N+1; B = (2N+1)D"/></p>
+</dd></dl>
+
+<dl class="class">
+<dt id="hamcalc.construction.wirecond.Geometry_2">
+<em class="property">class </em><tt class="descclassname">hamcalc.construction.wirecond.</tt><tt class="descname">Geometry_2</tt><big>(</big><em>n</em><big>)</big><a class="reference internal" href="../../_modules/hamcalc/construction/wirecond.html#Geometry_2"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.construction.wirecond.Geometry_2" title="Permalink to this definition">¶</a></dt>
+<dd><p>Geometry based on <img class="math" src="../../_images/math/1995b57eca98ea08029ec0bdfbecbb04132842b9.png" alt="W = 3N^2+5N+2; B = (2N+2)D"/></p>
+</dd></dl>
+
+<dl class="class">
+<dt id="hamcalc.construction.wirecond.Geometry_3">
+<em class="property">class </em><tt class="descclassname">hamcalc.construction.wirecond.</tt><tt class="descname">Geometry_3</tt><big>(</big><em>n</em><big>)</big><a class="reference internal" href="../../_modules/hamcalc/construction/wirecond.html#Geometry_3"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.construction.wirecond.Geometry_3" title="Permalink to this definition">¶</a></dt>
+<dd><p>Geometry based on <img class="math" src="../../_images/math/812568d4430b356e36d5780db55e61b3d6eeecdf.png" alt="W = 3N^2+6N+3; B = \left(1+2\sqrt{N^2+N+\frac{1}{3}}\right)D"/></p>
+</dd></dl>
+
+<dl class="class">
+<dt id="hamcalc.construction.wirecond.Geometry_4">
+<em class="property">class </em><tt class="descclassname">hamcalc.construction.wirecond.</tt><tt class="descname">Geometry_4</tt><big>(</big><em>n</em><big>)</big><a class="reference internal" href="../../_modules/hamcalc/construction/wirecond.html#Geometry_4"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.construction.wirecond.Geometry_4" title="Permalink to this definition">¶</a></dt>
+<dd><p>Geometry based on <img class="math" src="../../_images/math/a1d01bb2927df0cdc8c01132ee8fc3f99abaa5ab.png" alt="W = 3N^2+7N+4; B = \left(1+\sqrt{4N^2+5.644N+2}\right)D"/></p>
+</dd></dl>
+
 </div>
 <div class="section" id="legacy-quirks">
 <h2>Legacy Quirks<a class="headerlink" href="#legacy-quirks" title="Permalink to this headline">¶</a></h2>
-<p>&#8220;Conduit ID (D)&#8221; vs. &#8220;<a href="#id1"><span class="problematic" id="id2">*</span></a>Conduit ID (ID)&#8221;? It&#8217;s simply ID.</p>
+<p>&#8220;Conduit ID (D)&#8221; vs. &#8220;Conduit ID (ID)&#8221;? Isn&#8217;t it simply ID?</p>
 <p>Line 1300 is missing the <tt class="docutils literal"><span class="pre">GOSUB</span> <span class="pre">1350</span></tt>. That geometry
 will never be a solution.</p>
 <p>Also, the code between lines 1000 and 1360 suffers
 from the problem of working around the global variables by
-creating a distinct set of variables.</p>
+creating a confusingly not-very-distinct set of variables.</p>
 <p>A common convention for this is to add digits to the end
 of the variable name. Here, however, they&#8217;re simply a little
 different.</p>
+<p>Note that the number of wires, W, is a function of N;
+only integer values of W make sense. However, non-integer
+values are used.</p>
+<p>Why does the third case (<strong>Wire OD (OD) and number of wires (NW) known</strong>)
+increment <em>N</em> by 1, when the other two cases increment <em>N</em> by 0.01?</p>
 </div>
 </div>
 

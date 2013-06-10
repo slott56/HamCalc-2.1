@@ -233,7 +233,35 @@ so many relationships among to many variables.</p>
 <p>Instead, we derive <em>R</em> and <em>A</em> and then compute all the derived values from those two.</p>
 <p>Note that the sample output includes 10 output values from 8 potential input variables.</p>
 <span class="target" id="module-hamcalc.math.propcirc"></span><p>hamcalc.math.propcirc &#8211; Circle, Properties of</p>
-<p>This includes the bisection algorithm for approximation.</p>
+<p>This is a <strong>Solver</strong> for circle problems.</p>
+<dl class="function">
+<dt id="hamcalc.math.propcirc.circle">
+<tt class="descclassname">hamcalc.math.propcirc.</tt><tt class="descname">circle</tt><big>(</big><em>**args</em><big>)</big><a class="headerlink" href="#hamcalc.math.propcirc.circle" title="Permalink to this definition">¶</a></dt>
+<dd><p>Solve circle problems. This an instance of  <a class="reference internal" href="#hamcalc.math.propcirc.Circle" title="hamcalc.math.propcirc.Circle"><tt class="xref py py-class docutils literal"><span class="pre">Circle</span></tt></a>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>R</strong> &#8211; Radius</li>
+<li><strong>D</strong> &#8211; Diameter</li>
+<li><strong>C</strong> &#8211; Circumference</li>
+<li><strong>A</strong> &#8211; Area of entire circle.</li>
+<li><strong>angle</strong> &#8211; Angle (<img class="math" src="../../_images/math/52e8ed7a3ba22130ad3984eb2cd413406475a689.png" alt="\theta"/> might be better.) This must be in radians.</li>
+<li><strong>L_C</strong> &#8211; Length of Chord (A-B line on diagram).</li>
+<li><strong>L_A</strong> &#8211; Length of Arc (A-B arc on diagram).</li>
+<li><strong>G</strong> &#8211; Height of segment between chord and arc.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">dict with all 8 input values plus the output values.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<p>This includes the <a class="reference internal" href="#hamcalc.math.propcirc.bisection" title="hamcalc.math.propcirc.bisection"><tt class="xref py py-func docutils literal"><span class="pre">bisection()</span></tt></a> algorithm for approximation.</p>
 <p>Here are some test cases.</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">hamcalc.math.propcirc</span> <span class="kn">as</span> <span class="nn">propcirc</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">math</span>
@@ -259,9 +287,71 @@ so many relationships among to many variables.</p>
 <span class="go">{&#39;A&#39;: 450.09677997191295, &#39;C&#39;: 75.20693418466634, &#39;angle&#39;: 1.049328872579753, &#39;D&#39;: 23.939110660552977, &#39;G&#39;: 1.6099999693011857, &#39;L_A&#39;: 12.56, &#39;A_G&#39;: 13.054769563165337, &#39;L_C&#39;: 11.991641677007895, &#39;R&#39;: 11.969555330276489, &#39;A_C&#39;: 75.16880747413634}</span>
 </pre></div>
 </div>
+<dl class="class">
+<dt id="hamcalc.math.propcirc.Circle">
+<em class="property">class </em><tt class="descclassname">hamcalc.math.propcirc.</tt><tt class="descname">Circle</tt><a class="reference internal" href="../../_modules/hamcalc/math/propcirc.html#Circle"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.math.propcirc.Circle" title="Permalink to this definition">¶</a></dt>
+<dd><p>Solve properties of a circle.</p>
+<div class="admonition-todo admonition" id="index-1">
+<p class="first admonition-title">Todo</p>
+<p class="last">Refactor the <a class="reference internal" href="#hamcalc.math.propcirc.Circle.solve" title="hamcalc.math.propcirc.Circle.solve"><tt class="xref py py-meth docutils literal"><span class="pre">solve()</span></tt></a> function.</p>
+</div>
+<dl class="method">
+<dt id="hamcalc.math.propcirc.Circle.solve">
+<tt class="descname">solve</tt><big>(</big><em>args</em><big>)</big><a class="reference internal" href="../../_modules/hamcalc/math/propcirc.html#Circle.solve"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.math.propcirc.Circle.solve" title="Permalink to this definition">¶</a></dt>
+<dd><p>Solve properties of a circle.</p>
+<p>Note that only <em>R</em> and <em>angle</em> are really <strong>required</strong> to compute
+all of the values. If <em>angle</em> cannot be computed, it&#8217;s assumed to
+be irrelevant and angle-related values are not computed, either.</p>
+<p>This solver derives values for <em>R</em> or <em>angle</em> (or both, if possible)
+and then recomputes the remaining values. It&#8217;s entirely possible that
+an output value will fail to agree with an input value because
+the circle was over-specified.</p>
+<p>It&#8217;s also possible that the circle is under-specified and <em>R</em> cannot
+be computed.</p>
+<p>There are two subsets of parameters: Radius and Angle.
+Without the Angle, only the Radius-related values can be computed.
+With the angle, the remaining values can be computed.</p>
+<p>Radius-only</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>R</strong> &#8211; Radius</li>
+<li><strong>D</strong> &#8211; Diameter</li>
+<li><strong>C</strong> &#8211; Circumference</li>
+<li><strong>A</strong> &#8211; Area of entire circle.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p>Radius and Angle.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>angle</strong> &#8211; Angle (<img class="math" src="../../_images/math/52e8ed7a3ba22130ad3984eb2cd413406475a689.png" alt="\theta"/> might be better.) This must be in radians.</li>
+<li><strong>L_C</strong> &#8211; Length of Chord (A-B line on diagram).</li>
+<li><strong>L_A</strong> &#8211; Length of Arc (A-B arc on diagram).</li>
+<li><strong>G</strong> &#8211; Height of segment between chord and arc.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">A dictionary with 10 values, the 8 input values plus two more.
+<tt class="docutils literal"><span class="pre">A_G</span></tt> area of segment and <tt class="docutils literal"><span class="pre">A_S</span></tt> area of the whole sector.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
 <dl class="function">
 <dt id="hamcalc.math.propcirc.arc_height_2_r">
-<tt class="descclassname">hamcalc.math.propcirc.</tt><tt class="descname">arc_height_2_r</tt><big>(</big><em>L_A</em>, <em>G</em>, <em>eps=1e-07</em><big>)</big><a class="headerlink" href="#hamcalc.math.propcirc.arc_height_2_r" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">hamcalc.math.propcirc.</tt><tt class="descname">arc_height_2_r</tt><big>(</big><em>L_A</em>, <em>G</em>, <em>eps=1e-07</em><big>)</big><a class="reference internal" href="../../_modules/hamcalc/math/propcirc.html#arc_height_2_r"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.math.propcirc.arc_height_2_r" title="Permalink to this definition">¶</a></dt>
 <dd><p>Approximate a value for <em>R</em> from <em>L_A</em> and <em>G</em> via bisection.</p>
 <p>We&#8217;re solving <img class="math" src="../../_images/math/d63acb262eb96c867284483b5b45ba23b6d62e51.png" alt="G = R (1 - \cos \frac{L_A}{2R})"/> for a value of <em>R</em>.</p>
 <p>We know only that <img class="math" src="../../_images/math/296b1846c4f21e2c1237486740c79e9bebd064ba.png" alt="R &gt; 0"/>.</p>
@@ -321,63 +411,11 @@ so many relationships among to many variables.</p>
 <span class="go">3.6055512726306915</span>
 </pre></div>
 </div>
-<div class="admonition-todo admonition" id="index-1">
+<div class="admonition-todo admonition" id="index-2">
 <p class="first admonition-title">Todo</p>
 <p>Optimization possible</p>
 <p class="last">Cache computation of f(low).</p>
 </div>
-</dd></dl>
-
-<dl class="function">
-<dt id="hamcalc.math.propcirc.circle">
-<tt class="descclassname">hamcalc.math.propcirc.</tt><tt class="descname">circle</tt><big>(</big><em>**kw</em><big>)</big><a class="reference internal" href="../../_modules/hamcalc/math/propcirc.html#circle"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.math.propcirc.circle" title="Permalink to this definition">¶</a></dt>
-<dd><p>Solve properties of a circle.</p>
-<p>Note that only <em>R</em> and <em>angle</em> are really <strong>required</strong> to compute
-all of the values. If <em>angle</em> cannot be computed, it&#8217;s assumed to
-be irrelevant and angle-related values are not computed, either.</p>
-<p>This solver derives values for <em>R</em> or <em>angle</em> (or both, if possible)
-and then recomputes the remaining values. It&#8217;s entirely possible that
-an output value will fail to agree with an input value because
-the circle was over-specified.</p>
-<p>It&#8217;s also possible that the circle is under-specified and <em>R</em> cannot
-be computed.</p>
-<p>There are two subsets of parameters: Radius and Angle.
-Without the Angle, only the Radius-related values can be computed.
-With the angle, the remaining values can be computed.</p>
-<p>Radius-only</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>R</strong> &#8211; Radius</li>
-<li><strong>D</strong> &#8211; Diameter</li>
-<li><strong>C</strong> &#8211; Circumference</li>
-<li><strong>A</strong> &#8211; Area of entire circle.</li>
-</ul>
-</td>
-</tr>
-</tbody>
-</table>
-<p>Radius and Angle.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>angle</strong> &#8211; Angle (<img class="math" src="../../_images/math/52e8ed7a3ba22130ad3984eb2cd413406475a689.png" alt="\theta"/> might be better.) This must be in radians.</li>
-<li><strong>L_C</strong> &#8211; Length of Chord (A-B line on diagram).</li>
-<li><strong>L_A</strong> &#8211; Length of Arc (A-B arc on diagram).</li>
-<li><strong>G</strong> &#8211; Height of segment between chord and arc.</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">A dictionary with 10 values, the 8 input values plus two more.
-<tt class="docutils literal"><span class="pre">A_G</span></tt> area of segment and <tt class="docutils literal"><span class="pre">A_S</span></tt> area of the whole sector.</p>
-</td>
-</tr>
-</tbody>
-</table>
 </dd></dl>
 
 <dl class="function">
@@ -525,7 +563,7 @@ Area of sector...............    75.398 units²</pre>
 <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html">Python Modules</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../lib.html">lib &#8211; Supporting Library</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../radio.html">radio &#8211; Radio Design and Engineering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../radio/index.html">radio &#8211; Radio Design and Engineering</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../ham.html">ham &#8211; Ham Radio Operations</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../electronics/index.html">electronics &#8211; General Electronics</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../construction/index.html">construction &#8211; Construction and Mechanical</a></li>

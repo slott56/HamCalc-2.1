@@ -26,7 +26,7 @@
     <link rel="top" title="HamCalc 2.1 documentation" href="../../index.html" />
     <link rel="up" title="electronics – General Electronics" href="index.html" />
     <link rel="next" title="elecleng" href="elecleng.html" />
-    <link rel="prev" title="awgexact – AWG wire size calculator" href="awgexact.html" /> 
+    <link rel="prev" title="copwire – Copper Wire Data" href="copwire.html" /> 
   </head>
   <body>
     <div class="header-wrapper">
@@ -34,7 +34,7 @@
         <div class="headertitle"><a
           href="../../index.html">HamCalc 2.1 documentation</a></div>
         <div class="rel">
-          <a href="awgexact.html" title="awgexact – AWG wire size calculator"
+          <a href="copwire.html" title="copwire – Copper Wire Data"
              accesskey="P">previous</a> |
           <a href="elecleng.html" title="elecleng"
              accesskey="N">next</a> |
@@ -99,6 +99,72 @@ for the various detailed calculations.</p>
 various scales of Volts, Amps and Watts to dBm.</p>
 <span class="target" id="module-hamcalc.electronics.decibel"></span><p>hamcalc.electronics.decibel &#8211; Decibel Calculator</p>
 <p>These are three <strong>Solvers</strong> for decibel problems in power, voltage or current.</p>
+<dl class="function">
+<dt id="hamcalc.electronics.decibel.power">
+<tt class="descclassname">hamcalc.electronics.decibel.</tt><tt class="descname">power</tt><big>(</big><em>f_1=None</em>, <em>f_2=None</em>, <em>db=None</em><big>)</big><a class="headerlink" href="#hamcalc.electronics.decibel.power" title="Permalink to this definition">¶</a></dt>
+<dd><p>Solve power dB problems. This an instance of the <a class="reference internal" href="#hamcalc.electronics.decibel.DB_Solver" title="hamcalc.electronics.decibel.DB_Solver"><tt class="xref py py-class docutils literal"><span class="pre">DB_Solver</span></tt></a>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>f_1</strong> &#8211; source power</li>
+<li><strong>f_2</strong> &#8211; load power</li>
+<li><strong>db</strong> &#8211; db of difference</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Dictionary with all three values.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="hamcalc.electronics.decibel.voltage">
+<tt class="descclassname">hamcalc.electronics.decibel.</tt><tt class="descname">voltage</tt><big>(</big><em>f_1=None</em>, <em>f_2=None</em>, <em>db=None</em><big>)</big><a class="headerlink" href="#hamcalc.electronics.decibel.voltage" title="Permalink to this definition">¶</a></dt>
+<dd><p>Solve voltage dB problems. This an instance of the <a class="reference internal" href="#hamcalc.electronics.decibel.DB_Solver" title="hamcalc.electronics.decibel.DB_Solver"><tt class="xref py py-class docutils literal"><span class="pre">DB_Solver</span></tt></a>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>f_1</strong> &#8211; source voltage</li>
+<li><strong>f_2</strong> &#8211; load voltage</li>
+<li><strong>db</strong> &#8211; db of difference</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Dictionary with all three values.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="hamcalc.electronics.decibel.current">
+<tt class="descclassname">hamcalc.electronics.decibel.</tt><tt class="descname">current</tt><big>(</big><em>f_1=None</em>, <em>f_2=None</em>, <em>db=None</em><big>)</big><a class="headerlink" href="#hamcalc.electronics.decibel.current" title="Permalink to this definition">¶</a></dt>
+<dd><p>Solve current dB problems. This an instance of the <a class="reference internal" href="#hamcalc.electronics.decibel.DB_Solver" title="hamcalc.electronics.decibel.DB_Solver"><tt class="xref py py-class docutils literal"><span class="pre">DB_Solver</span></tt></a>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>f_1</strong> &#8211; source current</li>
+<li><strong>f_2</strong> &#8211; load current</li>
+<li><strong>db</strong> &#8211; db of difference</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Dictionary with all three values.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
 <p>Here are some test cases:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">hamcalc.electronics.decibel</span> <span class="kn">as</span> <span class="nn">decibel</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">decibel</span><span class="o">.</span><span class="n">voltage</span><span class="p">(</span> <span class="n">f_1</span><span class="o">=</span><span class="mf">13.2</span><span class="p">,</span> <span class="n">f_2</span><span class="o">=</span><span class="mi">12</span> <span class="p">)</span>
@@ -140,6 +206,28 @@ as follows:</p>
 </pre></div>
 </div>
 <p>Similar solvers can be built for Power or Current.</p>
+<dl class="method">
+<dt id="hamcalc.electronics.decibel.DB_Solver.solve">
+<tt class="descname">solve</tt><big>(</big><em>args</em><big>)</big><a class="reference internal" href="../../_modules/hamcalc/electronics/decibel.html#DB_Solver.solve"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.electronics.decibel.DB_Solver.solve" title="Permalink to this definition">¶</a></dt>
+<dd><p>Solve decibel problems.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>f_1</strong> &#8211; source measurement</li>
+<li><strong>f_2</strong> &#8211; load measurement</li>
+<li><strong>db</strong> &#8211; db of difference</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Dictionary with all three values.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -338,10 +426,11 @@ ENTER: Next value (V)...(or 0 to Quit)?</pre>
 <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html">Python Modules</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../lib.html">lib &#8211; Supporting Library</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../radio.html">radio &#8211; Radio Design and Engineering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../radio/index.html">radio &#8211; Radio Design and Engineering</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../ham.html">ham &#8211; Ham Radio Operations</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="index.html">electronics &#8211; General Electronics</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="awgexact.html">awgexact &#8211; AWG wire size calculator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="copwire.html">copwire &#8211; Copper Wire Data</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="">decibel &#8211; Decibel Calculator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="elecleng.html">elecleng</a></li>
 <li class="toctree-l3"><a class="reference internal" href="ohmslaw.html">ohmslaw</a></li>
@@ -383,7 +472,7 @@ ENTER: Next value (V)...(or 0 to Quit)?</pre>
     <div class="footer-wrapper">
       <div class="footer">
         <div class="left">
-          <a href="awgexact.html" title="awgexact – AWG wire size calculator"
+          <a href="copwire.html" title="copwire – Copper Wire Data"
              >previous</a> |
           <a href="elecleng.html" title="elecleng"
              >next</a> |

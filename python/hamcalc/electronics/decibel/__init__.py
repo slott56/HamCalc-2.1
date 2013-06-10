@@ -2,6 +2,34 @@
 
 These are three **Solvers** for decibel problems in power, voltage or current.
 
+..  py:function:: power( f_1=None, f_2=None, db=None )
+
+    Solve power dB problems. This an instance of the :class:`DB_Solver`.
+
+    :param f_1: source power
+    :param f_2: load power
+    :param db: db of difference
+    :returns: Dictionary with all three values.
+
+..  py:function:: voltage( f_1=None, f_2=None, db=None )
+
+    Solve voltage dB problems. This an instance of the :class:`DB_Solver`.
+
+    :param f_1: source voltage
+    :param f_2: load voltage
+    :param db: db of difference
+    :returns: Dictionary with all three values.
+
+..  py:function:: current( f_1=None, f_2=None, db=None )
+
+    Solve current dB problems. This an instance of the :class:`DB_Solver`.
+
+    :param f_1: source current
+    :param f_2: load current
+    :param db: db of difference
+    :returns: Dictionary with all three values.
+
+
 Here are some test cases:
 
 >>> import hamcalc.electronics.decibel as decibel
@@ -21,8 +49,7 @@ Here are some test cases:
 """
 __version__ = "2.1"
 
-from hamcalc.lib import AttrDict, Standard_Unit, Unit
-from collections import Callable
+from hamcalc.lib import AttrDict, Standard_Unit, Unit, Solver, NoSolutionError
 import math
 
 introduction = """\
@@ -93,7 +120,7 @@ class MICROWATT( Unit ):
     name= "µW"
     factor= 1000000
 
-class DB_Solver( Callable ):
+class DB_Solver( Solver ):
     """Superclass for all dB solvers. This handles the generic
     case.
 
@@ -109,7 +136,8 @@ class DB_Solver( Callable ):
     def __init__( self, M=10 ):
         """Initialize this solver with the "M" factor, 10 or 20."""
         self.M= M
-    def __call__( self, **kw ):
+        super().__init__()
+    def solve( self, args ):
         """Solve decibel problems.
 
         :param f_1: source measurement
@@ -117,13 +145,14 @@ class DB_Solver( Callable ):
         :param db: db of difference
         :returns: Dictionary with all three values.
         """
-        args= AttrDict( kw )
         if 'f_1' in args and 'f_2' in args:
             args.db = self.M*math.log10(args.f_2/args.f_1)
         elif 'f_1' in args and 'db' in args:
             args.f_2 = args.f_1 * 10**( args.db/self.M )
         elif 'f_2' in args and 'db' in args:
             args.f_1 = args.f_2 * 10**( -args.db/self.M )
+        else:
+            raise( "Insufficient Data: {0!r}".format(args) )
         return args
 
 power= DB_Solver()

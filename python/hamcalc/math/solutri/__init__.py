@@ -1,5 +1,18 @@
 """hamcalc.math.solutri -- Triangles, solution of
 
+This is a **Solver** for triangle problems.
+
+..  py:function:: triangle( **args )
+
+    Solve triangle problems. This an instance of  :class:`Triangle`.
+
+    :param A_f: Angle opposite S_k, and adjacent to S_i and S_j
+    :param A_g: Angle
+    :param A_h: Angle
+    :param S_i: Side Length
+    :param S_j: Side Length
+    :param S_k: Side Length opposite A_f
+
 Some test cases
 
 >>> import hamcalc.math.solutri as solutri
@@ -24,7 +37,7 @@ Some test cases
 """
 __version__ = "2.1"
 
-from hamcalc.lib import AttrDict, Solver
+from hamcalc.lib import AttrDict, Solver, NoSolutionError
 import math
 
 def intro():
