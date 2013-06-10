@@ -1,4 +1,4 @@
-Results of doctest builder run on 2013-06-10 09:42:16
+Results of doctest builder run on 2013-06-10 15:22:57
 =====================================================
 
 Document: python/math/baromtr
@@ -55,6 +55,14 @@ Document: python/navigation/gridsq
   35 tests in default
 35 tests in 1 items.
 35 passed and 0 failed.
+Test passed.
+
+Document: python/construction/wiremesh
+--------------------------------------
+1 items passed all tests:
+  15 tests in default
+15 tests in 1 items.
+15 passed and 0 failed.
 Test passed.
 
 Document: python/construction/guywires
@@ -188,9 +196,9 @@ Test passed.
 Document: python/navigation/satorbit
 ------------------------------------
 1 items passed all tests:
-  11 tests in default
-11 tests in 1 items.
-11 passed and 0 failed.
+  12 tests in default
+12 tests in 1 items.
+12 passed and 0 failed.
 Test passed.
 
 Document: python/lib
@@ -235,7 +243,7 @@ Test passed.
 
 Doctest summary
 ===============
-  622 tests
+  638 tests
     0 failures in tests
     0 failures in setup code
     0 failures in cleanup code

@@ -86,8 +86,37 @@
 
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">from</span> <span class="nn">hamcalc.lib</span> <span class="kn">import</span> <span class="n">Solver</span><span class="p">,</span> <span class="n">NoSolutionError</span>
-
 <span class="kn">import</span> <span class="nn">math</span>
+
+<span class="n">introduction</span><span class="o">=</span><span class="s">&quot;&quot;&quot;</span><span class="se">\</span>
+<span class="s">WIRES in CONDUIT                                        by George Murphy VE3ERP</span>
+
+<span class="s">    This program computes the geometry of a circle enclosing a given</span>
+<span class="s">    number of smaller circles all of the same size, such as a conduit</span>
+<span class="s">    or hole surrounding a number of same-size wires or cables.</span>
+
+<span class="s">    The calculations are based on formulae published in Machinery&#39;s</span>
+<span class="s">    Handbook, Revised 21st Edition, pages 86-87, adjusted to provide</span>
+<span class="s">    clearances to ease the near-impossible task of trying to pack the</span>
+<span class="s">    theoretical maximum number of wires into any appreciable length</span>
+<span class="s">    of conduit.</span>
+<span class="s">&quot;&quot;&quot;</span>
+
+<span class="n">warning</span><span class="o">=</span><span class="s">&quot;&quot;&quot;</span><span class="se">\</span>
+<span class="s">The overriding factor governing the maximum number of conductors</span>
+<span class="s">in a conduit is the danger of fire due to heat build-up caused by</span>
+<span class="s">current flow through the conductors.</span>
+
+<span class="s">The maximum number of conductors allowed by your local Electrical</span>
+<span class="s">Codes may be less than the maximum number of conductors that will</span>
+<span class="s">physically fit into the conduit</span>
+<span class="s">&quot;&quot;&quot;</span>
+
+<span class="k">def</span> <span class="nf">intro</span><span class="p">():</span>
+    <span class="k">return</span> <span class="n">introduction</span>
+
+<span class="k">def</span> <span class="nf">warn</span><span class="p">():</span>
+    <span class="k">return</span> <span class="n">warning</span>
 
 <div class="viewcode-block" id="Geometry"><a class="viewcode-back" href="../../../python/construction/wirecond.html#hamcalc.construction.wirecond.Geometry">[docs]</a><span class="k">class</span> <span class="nc">Geometry</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;A superclass for the four wire-packing geometries.&quot;&quot;&quot;</span>

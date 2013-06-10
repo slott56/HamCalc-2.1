@@ -75,6 +75,12 @@ class NEWTON( Standard_Unit ):
     """Newton"""
     name= "n"
 
+class KILOGRAM_FORCE( Unit ):
+    """Kg (force)"""
+    name= "kg_f"
+    standard= NEWTON
+    factor= 1/9.8065 # Gravity Acceleration
+
 class POUND_FORCE( Unit ):
     """pound (force)"""
     name= "lb_f"

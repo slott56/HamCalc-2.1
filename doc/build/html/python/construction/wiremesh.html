@@ -56,9 +56,307 @@
             
   <div class="section" id="wiremesh-wire-mesh-screens-wind-loads">
 <h1>wiremesh &#8211; Wire Mesh Screens, Wind Loads<a class="headerlink" href="#wiremesh-wire-mesh-screens-wind-loads" title="Permalink to this headline">¶</a></h1>
-<div class="admonition-todo admonition" id="index-0">
-<p class="first admonition-title">Todo</p>
-<p class="last">Start this.</p>
+<p>This program is at the edge of &#8220;construction&#8221; and &#8220;radio design&#8221;.
+Since it&#8217;s about windage, it&#8217;s more construction than radio.</p>
+<p>This is part of the output:</p>
+<blockquote>
+<div>This program may be used in the design of reflectors for antennas</div></blockquote>
+<p>So, it&#8217;s <em>partially</em> about radio design.</p>
+<div class="section" id="legacy-output">
+<h2>Legacy Output<a class="headerlink" href="#legacy-output" title="Permalink to this headline">¶</a></h2>
+<p>Introduction:</p>
+<div class="highlight-python"><pre>WIRE MESH SCREENS                                       by George Murphy VE3ERP
+
+   This program may be used in the design of reflectors for antennas
+   in the VHF/UHF frequency range, or for anything else you want to
+   make out of chain link fencing, chicken wire, hardware cloth, or
+   window screening.
+
+   The calculated effects of wind do not apply if any part of the mesh
+   is covered by ice, snow, leaves, plastic sheets, or other matter
+   that obstructs the free passage of air through the mesh.
+
+   A hexagonal mesh screen of a given size contains the same amount of
+   wire as a square mesh screen of the same size, if both screens have
+   the same size mesh (i.e. same distance between between opposite
+   sides of the hexagonal or square opening).</pre>
+</div>
+<p>Sample Output:</p>
+<div class="highlight-python"><pre>SQUARE OR HEXAGONAL WIRE MESH SCREEN
+ENTER: c.c. Distance across mesh opening.......(in.)? .25
+                                             .......    0.250 in.      6.3 mm
+ENTER: Wire diameter...........................(in.)? .0625
+                                             .......    0.062 in.      1.6 mm
+ENTER: Screen area.............................(ft²)? 12
+                                             .......   12.0 ft²        1.1 m²
+
+        Weight of this area of mesh: aluminum wire...   0.0 lb.        0.0 kg
+                                    steel wire......    0.0 lb.        0.0 kg
+                                    copper wire.....    0.0 lb.        0.0 kg
+       Percent of screen area filled by wire........   43.8 %
+       Wind vane area (screen area filled by wire)..    5.2 ft²        0.5 m²
+Wind load on this area of vertical mesh at various wind speeds:
+   @ 10 knots = 12 mph = 19 km/hr = Beaufort  3.0...    1.6 lb.        0.7 kg
+   @ 15 knots = 17 mph = 28 km/hr = Beaufort  3.8...    4.2 lb.        1.9 kg
+   @ 20 knots = 23 mph = 37 km/hr = Beaufort  4.7...    6.8 lb.        3.1 kg
+   @ 25 knots = 29 mph = 46 km/hr = Beaufort  5.5...   11.0 lb.        5.0 kg
+   @ 30 knots = 35 mph = 56 km/hr = Beaufort  6.4...   16.3 lb.        7.4 kg
+   @ 35 knots = 40 mph = 65 km/hr = Beaufort  7.2...   22.1 lb.       10.0 kg
+   @ 40 knots = 46 mph = 74 km/hr = Beaufort  8.0...   28.9 lb.       13.1 kg
+   @ 45 knots = 52 mph = 83 km/hr = Beaufort  8.9...   36.2 lb.       16.4 kg
+   @ 50 knots = 58 mph = 93 km/hr = Beaufort  9.7...   44.6 lb.       20.2 kg
+   @ 55 knots = 63 mph =102 km/hr = Beaufort 10.6...   54.1 lb.       24.5 kg
+   @ 60 knots = 69 mph =111 km/hr = Beaufort 11.4...   64.6 lb.       29.3 kg</pre>
+</div>
+</div>
+<div class="section" id="analysis">
+<h2>Analysis<a class="headerlink" href="#analysis" title="Permalink to this headline">¶</a></h2>
+<p>Inputs:</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">A:</th><td class="field-body">c.c. Distance across mesh opening (in)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">D:</th><td class="field-body">Wire diameter (in)</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">SA:</th><td class="field-body">Screen area (ft²)</td>
+</tr>
+</tbody>
+</table>
+<p>Calculations of cell data.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">LS:</th><td class="field-body">length of side</td>
+</tr>
+<tr class="field-even field"><th class="field-name">CA:</th><td class="field-body">Cell Area</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">WL:</th><td class="field-body">Wire Length</td>
+</tr>
+</tbody>
+</table>
+<div class="math">
+<p><img src="../../_images/math/810c92d757a22028929320a7abdbc2318098a8fa.png" alt="LS &amp;= 1.155 \frac{A}{2} \\
+CA &amp;= 3.464 \frac{A}{2}^2 \\
+WL &amp;= 3 LS"/></p>
+</div><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">LSO:</th><td class="field-body">length of side omitting diameter (?)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">OA:</th><td class="field-body">Open Area</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">WA:</th><td class="field-body">Wire Area</td>
+</tr>
+</tbody>
+</table>
+<div class="math">
+<p><img src="../../_images/math/1676a64cc81f6535c0febfdf505c954182d23db1.png" alt="LSO &amp;= 1.155 \frac{(A-D)}{2} \\
+OA &amp;= 3.464 \frac{(A-D)}{2}^2 \\
+WA &amp;= CA - OA"/></p>
+</div><p>Calculations of overall mesh data.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">WV:</th><td class="field-body">wire volume per cell</td>
+</tr>
+<tr class="field-even field"><th class="field-name">N:</th><td class="field-body">total number of cells</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">TV:</th><td class="field-body">total wire volume</td>
+</tr>
+<tr class="field-even field"><th class="field-name">FF:</th><td class="field-body">filled area factor</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">FA:</th><td class="field-body">wind vane area</td>
+</tr>
+</tbody>
+</table>
+<div class="math">
+<p><img src="../../_images/math/199286be5e109e654e73372d8f2ae586af9179fe.png" alt="WV &amp;= WL \pi (D/2)^2 \\
+N  &amp;= 144 SA/CA \\
+TV &amp;= WV \times N  \\
+FF &amp;= WA/CA \\
+FA &amp;= SA \times FF"/></p>
+</div><p>Handy Constants:</p>
+<div class="highlight-python"><pre>610 WTA=0.0975         :REM&#x27;weight/cu.in. of aluminum
+620 WTC=0.321          :REM&#x27;weight/cu.in. of copper
+630 WTS=0.2835         :REM&#x27;weight/cu.in. of steel</pre>
+</div>
+<p>Outputs</p>
+<ul class="simple">
+<li>Weight of this area of mesh: aluminum wire: <tt class="docutils literal"><span class="pre">Z=TV*WTA</span></tt> pounds</li>
+<li>Weight of this area of mesh: steel wire: <tt class="docutils literal"><span class="pre">Z=TV*WTS</span></tt> pounds</li>
+<li>Weight of this area of mesh: copper wire: <tt class="docutils literal"><span class="pre">Z=TV*WTC</span></tt> pounds</li>
+<li>Percent of screen area filled by wire: <tt class="docutils literal"><span class="pre">FF</span></tt></li>
+<li>Wind vane area (screen area filled by wire): <tt class="docutils literal"><span class="pre">FA</span></tt> ft²</li>
+</ul>
+<p>The wind pressure is based on this table for <tt class="docutils literal"><span class="pre">WP</span></tt> for values
+from 1 to 11.</p>
+<div class="highlight-python"><pre>100 DATA .3, .8, 1.3, 2.1, 3.1, 4.2, 5.5, 6.9, 8.5, 10.3, 12.3</pre>
+</div>
+<p>for values of  <em>x</em> such that <img class="math" src="../../_images/math/0880a668c006d81e36a060c3d26a2054753bbc02.png" alt="1 \leq x \leq 11"/>:</p>
+<ul class="simple">
+<li><img class="math" src="../../_images/math/43670f5fe2b329b6b3154b28bb49f84453705795.png" alt="z = (x+1)/2; 1 \leq z \leq 6"/></li>
+<li>knots, <em>K</em>, <img class="math" src="../../_images/math/38320af7464a6646d7f164d7287c18e42001e667.png" alt="10z"/></li>
+<li>mph, <em>SM</em>, <img class="math" src="../../_images/math/4eaab18ad5a52fce01d8c8b0c2961e578de9bacc.png" alt="1.1507 \times 10z"/></li>
+<li>kph, <em>KM</em>, <img class="math" src="../../_images/math/223ab8f7b1b9098494124a0863f3901bdee3a906.png" alt="1.8519 \times 10z"/></li>
+<li>Beaufort <img class="math" src="../../_images/math/31139efd77b5c122f73edc51fcd1dce705ea68d2.png" alt="(3-K) + x \times K"/></li>
+<li>force <img class="math" src="../../_images/math/e53ecadaa171d26e8c5ed0ceac7fa3c155a36569.png" alt="FA \times WP(x)"/> lb. (0.4536 to convert to kg.)</li>
+</ul>
+<p>This isn&#8217;t a proper <strong>Solver</strong>.  It&#8217;s simply tabular display of
+results from cell, mesh and wind calculation.s</p>
+</div>
+<div class="section" id="module-hamcalc.construction.wiremesh">
+<span id="implementation"></span><h2>Implementation<a class="headerlink" href="#module-hamcalc.construction.wiremesh" title="Permalink to this headline">¶</a></h2>
+<p>hamcalc.construction.wiremesh</p>
+<p>These are two limited kind of <strong>Solver</strong> that elaborates
+a wire mesh design.</p>
+<p>Notes on the Beaufort Scale.</p>
+<div class="math">
+<p><img src="../../_images/math/1453c16b001725ef9f744b23386be46755d3c9b3.png" alt="v = 0.836 B^{3/2} \text{ m/s}
+
+B^{3/2} = \frac{v}{0.836}
+
+B = \left(\frac{v}{0.836}\right)^{2/3}"/></p>
+</div><p>Test Cases: Wind Speed</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">hamcalc.construction.wiremesh</span> <span class="kn">as</span> <span class="nn">wiremesh</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">wiremesh</span><span class="o">.</span><span class="n">Beaufort</span><span class="o">.</span><span class="n">to_std</span><span class="p">(</span> <span class="mi">3</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span> <span class="n">wiremesh</span><span class="o">.</span><span class="n">KNOT</span><span class="o">.</span><span class="n">from_std</span><span class="p">(</span> <span class="n">x</span> <span class="p">),</span> <span class="mi">1</span> <span class="p">)</span>
+<span class="go">8.4</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span> <span class="n">wiremesh</span><span class="o">.</span><span class="n">MPS</span><span class="o">.</span><span class="n">from_std</span><span class="p">(</span> <span class="n">x</span> <span class="p">),</span> <span class="mi">1</span> <span class="p">)</span>
+<span class="go">4.3</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="n">wiremesh</span><span class="o">.</span><span class="n">KNOT</span><span class="o">.</span><span class="n">to_std</span><span class="p">(</span> <span class="mi">24</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span> <span class="n">wiremesh</span><span class="o">.</span><span class="n">MPS</span><span class="o">.</span><span class="n">from_std</span><span class="p">(</span> <span class="n">y</span> <span class="p">),</span> <span class="mi">1</span> <span class="p">)</span>
+<span class="go">12.3</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span> <span class="n">wiremesh</span><span class="o">.</span><span class="n">Beaufort</span><span class="o">.</span><span class="n">from_std</span><span class="p">(</span> <span class="n">y</span> <span class="p">),</span> <span class="mi">1</span> <span class="p">)</span>
+<span class="go">6.0</span>
+</pre></div>
+</div>
+<p>Test Cases: Wire Mesh</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">hamcalc.construction.wiremesh</span> <span class="kn">as</span> <span class="nn">wiremesh</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">wm</span><span class="o">=</span> <span class="n">wiremesh</span><span class="o">.</span><span class="n">mesh</span><span class="p">(</span> <span class="n">A</span><span class="o">=.</span><span class="mi">25</span><span class="p">,</span> <span class="n">D</span><span class="o">=.</span><span class="mo">0625</span><span class="p">,</span> <span class="n">SA</span><span class="o">=</span><span class="mi">12</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span> <span class="n">wm</span><span class="o">.</span><span class="n">TV</span><span class="o">*</span><span class="n">wiremesh</span><span class="o">.</span><span class="n">Al_lb_cu_in</span><span class="p">,</span> <span class="mi">2</span> <span class="p">)</span>
+<span class="go">4.14</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span> <span class="n">wm</span><span class="o">.</span><span class="n">TV</span><span class="o">*</span><span class="n">wiremesh</span><span class="o">.</span><span class="n">Cu_lb_cu_in</span><span class="p">,</span> <span class="mi">2</span> <span class="p">)</span>
+<span class="go">13.62</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span> <span class="n">wm</span><span class="o">.</span><span class="n">TV</span><span class="o">*</span><span class="n">wiremesh</span><span class="o">.</span><span class="n">S_lb_cu_in</span><span class="p">,</span> <span class="mi">2</span> <span class="p">)</span>
+<span class="go">12.03</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span> <span class="n">wm</span><span class="o">.</span><span class="n">FF</span><span class="o">*</span><span class="mi">100</span><span class="p">,</span> <span class="mi">1</span> <span class="p">)</span>
+<span class="go">43.8</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span> <span class="n">wm</span><span class="o">.</span><span class="n">FA</span><span class="p">,</span> <span class="mi">1</span> <span class="p">)</span>
+<span class="go">5.2</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">12</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="n">k</span> <span class="o">=</span> <span class="p">(</span><span class="n">x</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="mi">5</span>
+<span class="gp">... </span>    <span class="n">f</span> <span class="o">=</span> <span class="n">wiremesh</span><span class="o">.</span><span class="n">force</span><span class="p">(</span> <span class="n">A</span><span class="o">=.</span><span class="mi">25</span><span class="p">,</span> <span class="n">D</span><span class="o">=.</span><span class="mo">0625</span><span class="p">,</span> <span class="n">SA</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">W_k</span><span class="o">=</span> <span class="n">k</span> <span class="p">)</span>
+<span class="gp">... </span>    <span class="k">print</span><span class="p">(</span> <span class="n">k</span><span class="p">,</span> <span class="nb">round</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">Y_lb</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span> <span class="nb">round</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">Y_n</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span> <span class="p">)</span>
+<span class="go">10 1.6 0.7</span>
+<span class="go">15 4.2 1.9</span>
+<span class="go">20 6.8 3.1</span>
+<span class="go">25 11.0 5.0</span>
+<span class="go">30 16.3 7.4</span>
+<span class="go">35 22.1 10.0</span>
+<span class="go">40 28.9 13.1</span>
+<span class="go">45 36.2 16.4</span>
+<span class="go">50 44.6 20.2</span>
+<span class="go">55 54.1 24.5</span>
+<span class="go">60 64.6 29.3</span>
+<span class="go">&gt;&gt;&gt;</span>
+</pre></div>
+</div>
+<dl class="class">
+<dt id="hamcalc.construction.wiremesh.Beaufort">
+<em class="property">class </em><tt class="descclassname">hamcalc.construction.wiremesh.</tt><tt class="descname">Beaufort</tt><a class="reference internal" href="../../_modules/hamcalc/construction/wiremesh.html#Beaufort"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.construction.wiremesh.Beaufort" title="Permalink to this definition">¶</a></dt>
+<dd><p>beaufort</p>
+<dl class="attribute">
+<dt id="hamcalc.construction.wiremesh.Beaufort.standard">
+<tt class="descname">standard</tt><a class="headerlink" href="#hamcalc.construction.wiremesh.Beaufort.standard" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <tt class="xref py py-class docutils literal"><span class="pre">MPM</span></tt></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="hamcalc.construction.wiremesh.constrain">
+<tt class="descclassname">hamcalc.construction.wiremesh.</tt><tt class="descname">constrain</tt><big>(</big><em>x</em>, <em>lo</em>, <em>hi</em><big>)</big><a class="reference internal" href="../../_modules/hamcalc/construction/wiremesh.html#constrain"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.construction.wiremesh.constrain" title="Permalink to this definition">¶</a></dt>
+<dd><p>Constrain a value to be between lo and hi, inclusive.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="hamcalc.construction.wiremesh.force">
+<tt class="descclassname">hamcalc.construction.wiremesh.</tt><tt class="descname">force</tt><big>(</big><em>A</em>, <em>D</em>, <em>SA</em>, <em>W_k=None</em>, <em>W_mph=None</em>, <em>W_kph=None</em>, <em>W_b=None</em><big>)</big><a class="reference internal" href="../../_modules/hamcalc/construction/wiremesh.html#force"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.construction.wiremesh.force" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute force on a wire mesh for a given windspeed
+in knots, kph, mph or on the Beaufort scale.</p>
+<p>This relies an in internal table that has forces
+for knots between 10 and 60, where <img class="math" src="../../_images/math/1c3362fd6ee16afc866c1fc509cd773d7e9b94ef.png" alt="10 \leq 5(x+1) \leq 60"/>.
+This value of <em>x</em> is an integer <img class="math" src="../../_images/math/0880a668c006d81e36a060c3d26a2054753bbc02.png" alt="1 \leq x \leq 11"/>.</p>
+<p>Therefore, wind speeds are rounded up to the nearest
+5 knots.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>A</strong> &#8211; Center-to-center distance across mesh opening (in)</li>
+<li><strong>D</strong> &#8211; Wire diameter (in)</li>
+<li><strong>SA</strong> &#8211; Screen area (ft²)</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">dict with mesh values plus force values.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="hamcalc.construction.wiremesh.mesh">
+<tt class="descclassname">hamcalc.construction.wiremesh.</tt><tt class="descname">mesh</tt><big>(</big><em>A</em>, <em>D</em>, <em>SA</em><big>)</big><a class="reference internal" href="../../_modules/hamcalc/construction/wiremesh.html#mesh"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.construction.wiremesh.mesh" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute a number of values for the overall wire mesh.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>A</strong> &#8211; Center-to-center distance across mesh opening (in)</li>
+<li><strong>D</strong> &#8211; Wire diameter (in)</li>
+<li><strong>SA</strong> &#8211; Screen area (ft²)</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">dict with computed values.
+-   WV Wire Volume per cell
+-   N number of cells
+-   TV total volume
+-   FA windvane area</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="hamcalc.construction.wiremesh.wind_force">
+<tt class="descclassname">hamcalc.construction.wiremesh.</tt><tt class="descname">wind_force</tt><big>(</big><em>knots</em><big>)</big><a class="reference internal" href="../../_modules/hamcalc/construction/wiremesh.html#wind_force"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.construction.wiremesh.wind_force" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retun wind force value for wind speed in
+knots. This does a table lookup by rounding
+wind speed up to the next multiple of 5 knots.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="quirks">
+<h2>Quirks<a class="headerlink" href="#quirks" title="Permalink to this headline">¶</a></h2>
+<p>The calculations are all done in both units.
+Unlike many other programs, there&#8217;s no choice between imperial and metric.</p>
+<p>The <tt class="docutils literal"><span class="pre">LSO</span></tt> variable is never used.</p>
+<p>Also, the usual subtleties with pounds of force and pounds of mass.
+Presumably, the calculation is pounds of force, which maps to newtons of
+force, or kilograms of force.</p>
 </div>
 </div>
 

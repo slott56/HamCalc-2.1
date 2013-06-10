@@ -26,6 +26,9 @@ Test Cases for Units
 11.265408
 >>> satorbit.MPS.from_std( speed )
 187.7568
+>>> satorbit.KNOT.from_std( speed )
+364.970018
+
 """
 __version__ = "2.1"
 
@@ -76,6 +79,12 @@ class MPS( Unit ):
     name= "kph"
     standard= MPM
     factor= 1609.344/60
+
+class KNOT( Unit ):
+    """knot"""
+    name= "knot"
+    standard= MPM
+    factor= 52.138574
 
 def orbit( minutes, fq_up, fq_down ):
     """Given an orbital period in minutes, return the calculated

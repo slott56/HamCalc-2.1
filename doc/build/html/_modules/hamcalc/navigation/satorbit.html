@@ -77,6 +77,9 @@
 <span class="sd">11.265408</span>
 <span class="sd">&gt;&gt;&gt; satorbit.MPS.from_std( speed )</span>
 <span class="sd">187.7568</span>
+<span class="sd">&gt;&gt;&gt; satorbit.KNOT.from_std( speed )</span>
+<span class="sd">364.970018</span>
+
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="n">__version__</span> <span class="o">=</span> <span class="s">&quot;2.1&quot;</span>
 
@@ -127,6 +130,12 @@
     <span class="n">name</span><span class="o">=</span> <span class="s">&quot;kph&quot;</span>
     <span class="n">standard</span><span class="o">=</span> <span class="n">MPM</span>
     <span class="n">factor</span><span class="o">=</span> <span class="mf">1609.344</span><span class="o">/</span><span class="mi">60</span>
+</div>
+<div class="viewcode-block" id="KNOT"><a class="viewcode-back" href="../../../python/navigation/satorbit.html#hamcalc.navigation.satorbit.KNOT">[docs]</a><span class="k">class</span> <span class="nc">KNOT</span><span class="p">(</span> <span class="n">Unit</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;knot&quot;&quot;&quot;</span>
+    <span class="n">name</span><span class="o">=</span> <span class="s">&quot;knot&quot;</span>
+    <span class="n">standard</span><span class="o">=</span> <span class="n">MPM</span>
+    <span class="n">factor</span><span class="o">=</span> <span class="mf">52.138574</span>
 </div>
 <div class="viewcode-block" id="orbit"><a class="viewcode-back" href="../../../python/navigation/satorbit.html#hamcalc.navigation.satorbit.orbit">[docs]</a><span class="k">def</span> <span class="nf">orbit</span><span class="p">(</span> <span class="n">minutes</span><span class="p">,</span> <span class="n">fq_up</span><span class="p">,</span> <span class="n">fq_down</span> <span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Given an orbital period in minutes, return the calculated</span>
