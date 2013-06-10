@@ -35,8 +35,37 @@ Test Cases:
 
 """
 from hamcalc.lib import Solver, NoSolutionError
-
 import math
+
+introduction="""\
+WIRES in CONDUIT                                        by George Murphy VE3ERP
+
+    This program computes the geometry of a circle enclosing a given
+    number of smaller circles all of the same size, such as a conduit
+    or hole surrounding a number of same-size wires or cables.
+
+    The calculations are based on formulae published in Machinery's
+    Handbook, Revised 21st Edition, pages 86-87, adjusted to provide
+    clearances to ease the near-impossible task of trying to pack the
+    theoretical maximum number of wires into any appreciable length
+    of conduit.
+"""
+
+warning="""\
+The overriding factor governing the maximum number of conductors
+in a conduit is the danger of fire due to heat build-up caused by
+current flow through the conductors.
+
+The maximum number of conductors allowed by your local Electrical
+Codes may be less than the maximum number of conductors that will
+physically fit into the conduit
+"""
+
+def intro():
+    return introduction
+
+def warn():
+    return warning
 
 class Geometry:
     """A superclass for the four wire-packing geometries."""
