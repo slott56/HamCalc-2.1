@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>construction – Construction and Mechanical &mdash; HamCalc 2.1 documentation</title>
+    <title>beamdefl – BEAMS, Deflection in &mdash; HamCalc 2.1 documentation</title>
     
     <link rel="stylesheet" href="../../_static/agogo.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
@@ -24,9 +24,9 @@
     <script type="text/javascript" src="../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../_static/doctools.js"></script>
     <link rel="top" title="HamCalc 2.1 documentation" href="../../index.html" />
-    <link rel="up" title="Python Modules" href="../index.html" />
-    <link rel="next" title="arch – Arch Calculator" href="arch.html" />
-    <link rel="prev" title="ohmslaw" href="../electronics/ohmslaw.html" /> 
+    <link rel="up" title="construction – Construction and Mechanical" href="index.html" />
+    <link rel="next" title="math – Math, Physics, Units Conversion" href="../math/index.html" />
+    <link rel="prev" title="wiremesh – Wire Mesh Screens, Wind Loads" href="wiremesh.html" /> 
   </head>
   <body>
     <div class="header-wrapper">
@@ -34,9 +34,9 @@
         <div class="headertitle"><a
           href="../../index.html">HamCalc 2.1 documentation</a></div>
         <div class="rel">
-          <a href="../electronics/ohmslaw.html" title="ohmslaw"
+          <a href="wiremesh.html" title="wiremesh – Wire Mesh Screens, Wind Loads"
              accesskey="P">previous</a> |
-          <a href="arch.html" title="arch – Arch Calculator"
+          <a href="../math/index.html" title="math – Math, Physics, Units Conversion"
              accesskey="N">next</a> |
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |
@@ -54,43 +54,116 @@
         <div class="bodywrapper">
           <div class="body">
             
-  <div class="section" id="construction-construction-and-mechanical">
-<h1>construction &#8211; Construction and Mechanical<a class="headerlink" href="#construction-construction-and-mechanical" title="Permalink to this headline">¶</a></h1>
-<p>Construction, including towers, stairs, plumbing, masonry, mechanical, etc.</p>
-<div class="toctree-wrapper compound">
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="arch.html">arch &#8211; Arch Calculator</a></li>
-<li class="toctree-l1"><a class="reference internal" href="bend.html">bend &#8211; Bend Allowance, Metals</a></li>
-<li class="toctree-l1"><a class="reference internal" href="brick.html">brick &#8211; Masonry Estimator</a></li>
-<li class="toctree-l1"><a class="reference internal" href="conecalc.html">conecalc &#8211; Cone Calculator</a></li>
-<li class="toctree-l1"><a class="reference internal" href="diamfind.html">diamfind &#8211; Diameter Finder</a></li>
-<li class="toctree-l1"><a class="reference internal" href="guywires.html">guywires &#8211; Guy Wires for Antenna Towers/Masts</a></li>
-<li class="toctree-l1"><a class="reference internal" href="nmbrsize.html">nmbrsize &#8211; Numbered Drills/Screws/Taps/Gauges</a></li>
-<li class="toctree-l1"><a class="reference internal" href="pipesize.html">pipesize &#8211; Pipe Sizes, ANSI Standard</a></li>
-<li class="toctree-l1"><a class="reference internal" href="survey.html">survey &#8211; Surveyor&#8217;s Calculator</a></li>
-<li class="toctree-l1"><a class="reference internal" href="wirecond.html">wirecond &#8211; Wires in Conduit</a></li>
-<li class="toctree-l1"><a class="reference internal" href="wiremesh.html">wiremesh &#8211; Wire Mesh Screens, Wind Loads</a></li>
-</ul>
+  <div class="section" id="beamdefl-beams-deflection-in">
+<h1>beamdefl &#8211; BEAMS, Deflection in<a class="headerlink" href="#beamdefl-beams-deflection-in" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="legacy-output">
+<h2>Legacy Output<a class="headerlink" href="#legacy-output" title="Permalink to this headline">¶</a></h2>
+<p>Introduction:</p>
+<div class="highlight-python"><pre> DEFLECTION in BEAMS                                     by George Murphy VE3ERP
+  Ref: Machinery&#x27;s Handbook, 21st Edition
+
+ beam of any cross-section:
+
+ Select Modulus of Elasticity by pressing letter in &lt; &gt;:
+
+  &lt; a &gt;  ALLOY STEEL......................(   30Σ6 PSI )
+  &lt; b &gt;  STRUCTURAL STEEL.................(   29Σ6 PSI )
+  &lt; c &gt;  WROUGHT IRON.....................(   28Σ6 PSI )
+  &lt; d &gt;  TYPICAL ALUMINUM EXTRUSION.......( 10.3Σ6 PSI )
+  &lt; e &gt;  WOOD - Fir.......................( 1,76Σ4 PSI )
+  &lt; f &gt;  WOOD - Redwood...................( 1,32Σ4 PSI )
+  &lt; g &gt;  WOOD - Cedar, Pine, Spruce.......( 1,10Σ4 PSI )
+  &lt; h &gt;  OTHER............................
+    or
+  &lt; z &gt;  to EXIT
+
+ Modulus of Elasticity =    30000000 PSI for Steel Alloy
+
+ Press &lt; 1 &gt; to continue or &lt; 0 &gt; to re-do.....
+ Press letter in ( ) to define beam:
+
+ (a) case  1: Supported both ends, uniform load
+ (b) case  2: Supported both ends, load at centre
+ (c) case  3: Supported both ends, load at any point
+ (d) case  4: Supported both ends, two symmetrical loads
+
+ (k) case 10: Fixed one end, uniform load (cantilever)
+ (l) case 11: Fixed one end, load at other (cantilever)
+ (m) case 12: Fixed one end, intermediate load (cantilever)
+
+ (r) case 18: Fixed both ends, uniform load
+ (s) case 19: Fixed both ends, load at centre
+ (t) case 20: Fixed both ends, load at any point
+
+ CANTILEVER BEAM FIXED ONE END, LOAD AT OTHER
+ Steel Alloy beam of any cross-section
+
+
+                              D= (W x L^3) / (3 x E x I)
+                  █ W
+ ╬════════════════╛
+ ║
+
+ENTER: Load (in pounds).....................W = ? 40
+ENTER: Moment of Inertia (in inches^4)......I = ? 24
+ENTER: Length of beam (in inches)...........L = ? 14
+         Modulus of Elasticity .....................E =    30000000.0    PSI
+         Moment of Inertia .........................I =          24.000 in^4
+         Length of beam ............................L =          14.000 in.
+         Load ......................................W =          40.0    lbs.
+         Deflection at .............................D =           0.000 in.
+end
+         Maximum safe deflection ......................           0.039 in.</pre>
 </div>
-<p>From the mechanics menu, we have these modules, also.
-Some of these don&#8217;t appear on any other menu; they may not appear in the
-index, either.</p>
-<div class="toctree-wrapper compound">
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="beamdefl.html">beamdefl &#8211; BEAMS, Deflection in</a></li>
-</ul>
+<p>Note that <tt class="docutils literal"><span class="pre">Σ6</span></tt> means <img class="math" src="../../_images/math/ea9ad21ee51da11c1016775bd18da3862216f1ac.png" alt="\times 10^6"/>.</p>
 </div>
-<ul class="simple">
-<li>&#8220;beamsect&#8221;, &#8220;BEAMS - Properties of (Start new beam design here)&#8221;</li>
-<li>&#8220;beltdriv&#8221;, &#8220;Belt Drives&#8221;</li>
-<li>&#8220;chain&#8221;, &#8220;Chain Drives&#8221;</li>
-<li>&#8220;cyl&#8221;, &#8220;Cylinders - Air &amp; Hydraulic&#8221;</li>
-<li>&#8220;gearing&#8221;, &#8220;Gears &amp; gearing&#8221;</li>
-<li>&#8220;binhop&#8221;, &#8220;Hoppered Bins &amp; Tanks&#8221;</li>
-<li>&#8220;shaft&#8221;, &#8220;Shafting&#8221;</li>
-<li>&#8220;stairs&#8221;, &#8220;Stairs, Ladders &amp; Ramps&#8221;</li>
-<li>&#8220;torque&#8221;, &#8220;Torque &amp; Horsepower&#8221;</li>
-</ul>
+<div class="section" id="analysis">
+<h2>Analysis<a class="headerlink" href="#analysis" title="Permalink to this headline">¶</a></h2>
+<p>It appears that the there are 10 equations for deflection based on
+beam loading, some measurements and the modulus of elasticity.</p>
+<p>Materials have both modullus of elasticity and pounds per cubic inch.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="33%" />
+<col width="33%" />
+<col width="33%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td>E</td>
+<td>PCI</td>
+<td>Material</td>
+</tr>
+<tr class="row-even"><td>30000000</td>
+<td>0.2833</td>
+<td>Steel Alloy</td>
+</tr>
+<tr class="row-odd"><td>29000000</td>
+<td>0.2833</td>
+<td>Structural Steel</td>
+</tr>
+<tr class="row-even"><td>28000000</td>
+<td>0.285</td>
+<td>Wrought Iron</td>
+</tr>
+<tr class="row-odd"><td>10300000</td>
+<td>0.0979</td>
+<td>Extruded Aluminum</td>
+</tr>
+<tr class="row-even"><td>1760000</td>
+<td>0.0162</td>
+<td>Fir</td>
+</tr>
+<tr class="row-odd"><td>1320000</td>
+<td>0.0162</td>
+<td>Redwood</td>
+</tr>
+<tr class="row-even"><td>1100000</td>
+<td>0.0162</td>
+<td>Cedar, Pine or Spruce</td>
+</tr>
+</tbody>
+</table>
+</div>
 </div>
 
 
@@ -111,7 +184,7 @@ index, either.</p>
 <li class="toctree-l2"><a class="reference internal" href="../radio/index.html">radio &#8211; Radio Design and Engineering</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../ham.html">ham &#8211; Ham Radio Operations</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../electronics/index.html">electronics &#8211; General Electronics</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="">construction &#8211; Construction and Mechanical</a><ul>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">construction &#8211; Construction and Mechanical</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="arch.html">arch &#8211; Arch Calculator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="bend.html">bend &#8211; Bend Allowance, Metals</a></li>
 <li class="toctree-l3"><a class="reference internal" href="brick.html">brick &#8211; Masonry Estimator</a></li>
@@ -123,7 +196,7 @@ index, either.</p>
 <li class="toctree-l3"><a class="reference internal" href="survey.html">survey &#8211; Surveyor&#8217;s Calculator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="wirecond.html">wirecond &#8211; Wires in Conduit</a></li>
 <li class="toctree-l3"><a class="reference internal" href="wiremesh.html">wiremesh &#8211; Wire Mesh Screens, Wind Loads</a></li>
-<li class="toctree-l3"><a class="reference internal" href="beamdefl.html">beamdefl &#8211; BEAMS, Deflection in</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="">beamdefl &#8211; BEAMS, Deflection in</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../math/index.html">math &#8211; Math, Physics, Units Conversion</a></li>
@@ -161,16 +234,16 @@ index, either.</p>
     <div class="footer-wrapper">
       <div class="footer">
         <div class="left">
-          <a href="../electronics/ohmslaw.html" title="ohmslaw"
+          <a href="wiremesh.html" title="wiremesh – Wire Mesh Screens, Wind Loads"
              >previous</a> |
-          <a href="arch.html" title="arch – Arch Calculator"
+          <a href="../math/index.html" title="math – Math, Physics, Units Conversion"
              >next</a> |
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |
           <a href="../../genindex.html" title="General Index"
              >index</a>
             <br/>
-            <a href="../../_sources/python/construction/index.txt"
+            <a href="../../_sources/python/construction/beamdefl.txt"
                rel="nofollow">Show Source</a>
         </div>
 

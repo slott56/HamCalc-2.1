@@ -19,8 +19,14 @@ Construction, including towers, stairs, plumbing, masonry, mechanical, etc.
     wiremesh
 
 From the mechanics menu, we have these modules, also.
+Some of these don't appear on any other menu; they may not appear in the
+index, either.
 
--   "beamdefl", "BEAMS - Deflection in"
+..  toctree::
+    :maxdepth: 1
+
+    beamdefl
+
 -   "beamsect", "BEAMS - Properties of (Start new beam design here)"
 -   "beltdriv", "Belt Drives"
 -   "chain", "Chain Drives"
