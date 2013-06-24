@@ -1,0 +1,55 @@
+############
+HamCalc 2.1
+############
+
+This is a port of HamCalc from it's GW-Basic Legacy code base to more modern
+languages.
+
+The goals include:
+
+-   **Preserve the Knowledge**. We need to preserve it in a more useful format.
+    Languages other than GW-Basic, to begin with.
+
+-   **Supplement the Knowledge**. HamCalc has some bare-bones explanations that
+    deserve to be expanded on and include proper WWW links to other sources.
+
+-   **Correct the Bugs**. Also remove the cruft and fix the quirks where
+    necessary and appropriate.
+
+-   **Promote Recreational Programming**. This is a labor of love by a serious
+    amateur programmer. Many people share this passion and it needs to be
+    encouraged.
+
+Of these, the last, Promote Recreational Programming, is perhaps of the
+most important goal. HamCalc is amateur programming in parallel with
+amateur radio. It's serious and can lead professional quality software
+without commercial interests.
+
+In a way, HamCalc can serve as a basis for case studies in programming.
+The various HamCalc programs and modules should be neat, simple and
+suitable for pedagogy. People should be able to learn from the code.
+
+HamCalc
+=========
+
+The definitive version of HamCalc 129. Accept no substitutes.
+
+This is the interesting version:
+http://www.cq-amateur-radio.com/cq_ham_calc/cq_ham_calc.html
+
+Blogs
+========
+
+Associated with project is a wiki space, some blogs and some code repositories.
+
+http://hamcalc.wikispaces.com/home
+
+http://slott-softwarearchitect.blogspot.com
+
+See `This Seems Irrational... But... HamCalc <http://slott-softwarearchitect.blogspot.com/2013/04/this-seems-irrational-but-hamcalc.html>`_ which started this effort. The response was overwhelming.
+
+Code Repositories
+===================
+
+This is where we're starting: https://github.com/slott56/HamCalc-2.1
+
