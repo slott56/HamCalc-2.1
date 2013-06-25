@@ -59,69 +59,71 @@
 <div class="section" id="legacy-output">
 <h2>Legacy Output<a class="headerlink" href="#legacy-output" title="Permalink to this headline">¶</a></h2>
 <p>Introduction:</p>
-<div class="highlight-python"><pre> DEFLECTION in BEAMS                                     by George Murphy VE3ERP
-  Ref: Machinery&#x27;s Handbook, 21st Edition
+<div class="highlight-python"><pre>DEFLECTION in BEAMS                                     by George Murphy VE3ERP
+ Ref: Machinery&#x27;s Handbook, 21st Edition
 
- beam of any cross-section:
+beam of any cross-section:
 
- Select Modulus of Elasticity by pressing letter in &lt; &gt;:
+Select Modulus of Elasticity by pressing letter in &lt; &gt;:
 
-  &lt; a &gt;  ALLOY STEEL......................(   30Σ6 PSI )
-  &lt; b &gt;  STRUCTURAL STEEL.................(   29Σ6 PSI )
-  &lt; c &gt;  WROUGHT IRON.....................(   28Σ6 PSI )
-  &lt; d &gt;  TYPICAL ALUMINUM EXTRUSION.......( 10.3Σ6 PSI )
-  &lt; e &gt;  WOOD - Fir.......................( 1,76Σ4 PSI )
-  &lt; f &gt;  WOOD - Redwood...................( 1,32Σ4 PSI )
-  &lt; g &gt;  WOOD - Cedar, Pine, Spruce.......( 1,10Σ4 PSI )
-  &lt; h &gt;  OTHER............................
-    or
-  &lt; z &gt;  to EXIT
+ &lt; a &gt;  ALLOY STEEL......................(   30Σ6 PSI )
+ &lt; b &gt;  STRUCTURAL STEEL.................(   29Σ6 PSI )
+ &lt; c &gt;  WROUGHT IRON.....................(   28Σ6 PSI )
+ &lt; d &gt;  TYPICAL ALUMINUM EXTRUSION.......( 10.3Σ6 PSI )
+ &lt; e &gt;  WOOD - Fir.......................( 1,76Σ4 PSI )
+ &lt; f &gt;  WOOD - Redwood...................( 1,32Σ4 PSI )
+ &lt; g &gt;  WOOD - Cedar, Pine, Spruce.......( 1,10Σ4 PSI )
+ &lt; h &gt;  OTHER............................
+   or
+ &lt; z &gt;  to EXIT
 
- Modulus of Elasticity =    30000000 PSI for Steel Alloy
+Modulus of Elasticity =    30000000 PSI for Steel Alloy
 
- Press &lt; 1 &gt; to continue or &lt; 0 &gt; to re-do.....
- Press letter in ( ) to define beam:
+Press &lt; 1 &gt; to continue or &lt; 0 &gt; to re-do.....
+Press letter in ( ) to define beam:
 
- (a) case  1: Supported both ends, uniform load
- (b) case  2: Supported both ends, load at centre
- (c) case  3: Supported both ends, load at any point
- (d) case  4: Supported both ends, two symmetrical loads
+(a) case  1: Supported both ends, uniform load
+(b) case  2: Supported both ends, load at centre
+(c) case  3: Supported both ends, load at any point
+(d) case  4: Supported both ends, two symmetrical loads
 
- (k) case 10: Fixed one end, uniform load (cantilever)
- (l) case 11: Fixed one end, load at other (cantilever)
- (m) case 12: Fixed one end, intermediate load (cantilever)
+(k) case 10: Fixed one end, uniform load (cantilever)
+(l) case 11: Fixed one end, load at other (cantilever)
+(m) case 12: Fixed one end, intermediate load (cantilever)
 
- (r) case 18: Fixed both ends, uniform load
- (s) case 19: Fixed both ends, load at centre
- (t) case 20: Fixed both ends, load at any point
-
- CANTILEVER BEAM FIXED ONE END, LOAD AT OTHER
- Steel Alloy beam of any cross-section
-
-
-                              D= (W x L^3) / (3 x E x I)
-                  █ W
- ╬════════════════╛
- ║
-
-ENTER: Load (in pounds).....................W = ? 40
-ENTER: Moment of Inertia (in inches^4)......I = ? 24
-ENTER: Length of beam (in inches)...........L = ? 14
-         Modulus of Elasticity .....................E =    30000000.0    PSI
-         Moment of Inertia .........................I =          24.000 in^4
-         Length of beam ............................L =          14.000 in.
-         Load ......................................W =          40.0    lbs.
-         Deflection at .............................D =           0.000 in.
-end
-         Maximum safe deflection ......................           0.039 in.</pre>
+(r) case 18: Fixed both ends, uniform load
+(s) case 19: Fixed both ends, load at centre
+(t) case 20: Fixed both ends, load at any point</pre>
 </div>
 <p>Note that <tt class="docutils literal"><span class="pre">Σ6</span></tt> means <img class="math" src="../../_images/math/ea9ad21ee51da11c1016775bd18da3862216f1ac.png" alt="\times 10^6"/>.</p>
 </div>
 <div class="section" id="analysis">
 <h2>Analysis<a class="headerlink" href="#analysis" title="Permalink to this headline">¶</a></h2>
-<p>It appears that the there are 10 equations for deflection based on
+<p>It appears that there are 10 <strong>Solvers</strong> for deflection based on
 beam loading, some measurements and the modulus of elasticity.</p>
-<p>Materials have both modullus of elasticity and pounds per cubic inch.</p>
+<p>Each <strong>Solver</strong> involves the first four of following variables.
+Some involve the last two, also.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">W:</th><td class="field-body">Weight (Load in pounds)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">I:</th><td class="field-body">Inertia (Moment of Inertia in inches^4)</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">L:</th><td class="field-body">Length (in inches)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">E:</th><td class="field-body">Elasticity Modulus (in PSI)</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">D:</th><td class="field-body">Deflection (in inches)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">A:</th><td class="field-body">Load distance from nearest end</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">AA:</th><td class="field-body">Load distance from fixed end</td>
+</tr>
+</tbody>
+</table>
+<p>Materials have both modulus of elasticity and pounds per cubic inch.</p>
 <table border="1" class="docutils">
 <colgroup>
 <col width="33%" />
@@ -163,6 +165,803 @@ beam loading, some measurements and the modulus of elasticity.</p>
 </tr>
 </tbody>
 </table>
+<p>Note that each of the 10 cases below has an illustration,
+the basic math, and the GW Basic calculations.</p>
+<p>The illustration depends heavily on font selection,
+so it may not look correct on your particular browser and
+the default Sphinx CSS.</p>
+<div class="section" id="a-1-beam-supported-both-ends-uniform-load">
+<h3>A, 1, BEAM SUPPORTED BOTH ENDS, UNIFORM LOAD<a class="headerlink" href="#a-1-beam-supported-both-ends-uniform-load" title="Permalink to this headline">¶</a></h3>
+<p>Example:</p>
+<div class="highlight-python"><pre> Case  1: BEAM SUPPORTED BOTH ENDS, UNIFORM LOAD
+ Steel Alloy beam of any cross-section
+
+
+                              D= (5/384) x (W x L^3) / (E x I)
+ █████████████████ W
+ ╪═══╧═══╧═══╧═══╪
+ ^               ^
+
+ENTER: Load (in pounds).....................W = ? 100
+ENTER: Moment of Inertia (in inches^4)......I = ? 12
+ENTER: Length of beam (in inches)...........L = ? 18
+         Modulus of Elasticity .....................E =    30000000.0    PSI
+         Moment of Inertia .........................I =          12.000 in^4
+         Length of beam ............................L =          18.000 in.
+         Load ......................................W =         100.0    lbs.
+         Deflection at centre.......................D =           0.000 in.
+         Maximum safe deflection ......................           0.050 in.</pre>
+</div>
+<div class="math">
+<p><img src="../../_images/math/83a105d1cd25361309fd722b1c79948dd1998cf7.png" alt="D= (5/384) \times (W \times L^3) / (E \times I)"/></p>
+</div><p>Calculations:</p>
+<div class="highlight-python"><pre>1390 :REM&#x27;.....calculate
+1400 IF W*L*E*I THEN D=5*W*L^3/(384*E*I):GOTO 3900
+1410 IF D*E*I*L THEN W=D*384*E*I/(5*L^3):GOTO 3900
+1420 IF D*W*E*L THEN I=W*5*L^3/(D*384*E):GOTO 3900
+1430 IF D*W*E*I THEN L=(D*384*E*I/(5*W))^(1/3):GOTO 3900
+1440 RETURN</pre>
+</div>
+</div>
+<div class="section" id="b-2-beam-supported-both-ends-load-at-centre">
+<h3>B, 2, BEAM SUPPORTED BOTH ENDS, LOAD AT CENTRE<a class="headerlink" href="#b-2-beam-supported-both-ends-load-at-centre" title="Permalink to this headline">¶</a></h3>
+<p>Illustration:</p>
+<div class="highlight-python"><pre>        █ W
+╤═══════╧═══════╤
+^               ^</pre>
+</div>
+<div class="math">
+<p><img src="../../_images/math/4e6e5ed91d8df7320613d98e046b4c5e20726b96.png" alt="D= (W \times L^3) / (48 \times E \times I)"/></p>
+</div><p>Calculations:</p>
+<div class="highlight-python"><pre>1650 :REM&#x27;.....calculate
+1660 IF W*L*E*I THEN D=W*L^3/(48*E*I):GOTO 3900
+1670 IF D*E*I*L THEN W=D*48*E*I/L^3:GOTO 3900
+1680 IF D*E*I*W THEN L=(D*48*E*I/W)^(1/3):GOTO 3900
+1690 IF W*L*D*E THEN I=W*L^3/(D*48*E):GOTO 3900
+1700 RETURN</pre>
+</div>
+</div>
+<div class="section" id="c-3-beam-supported-both-ends-load-at-any-point">
+<h3>C, 3, BEAM SUPPORTED BOTH ENDS, LOAD AT ANY POINT<a class="headerlink" href="#c-3-beam-supported-both-ends-load-at-any-point" title="Permalink to this headline">¶</a></h3>
+<p>Illustration:</p>
+<div class="highlight-python"><pre>           █ W
+╤══════════╧════╤
+^               ^</pre>
+</div>
+<div class="math">
+<p><img src="../../_images/math/e16f7747a260d1aa1602d7b29f7adca3663f9466.png" alt="D= (W \times A^2 \times B^2) / (3 \times E \times I \times L)"/></p>
+</div><p>Calculations:</p>
+<div class="highlight-python"><pre>1920 :REM&#x27;.....calculate
+1930 IF A*L THEN B=L-A
+1940 IF W*A*B*E*I*L THEN D=W*A^2*B^2/(3*E*I*L):GOTO 3900
+1950 IF D*E*I*L*A*B THEN W=D*3*E*I*L/(A^2*B^2):GOTO 3900
+1960 IF D*E*I*L*W*B THEN A=SQR(D*3*E*I*L/(W*B^2)):GOTO 3900
+1970 IF W*A*B*D*E*L THEN I=W*A^2*B^2/(D*3*E*L):GOTO 3900
+1980 IF W*A*B*D*E*I THEN L=W*A^2*B^2/(D*3*E*I):GOTO 3900
+1990 RETURN</pre>
+</div>
+</div>
+<div class="section" id="d-4-beam-supported-both-ends-two-symmetrical-loads">
+<h3>D, 4, BEAM SUPPORTED BOTH ENDS, TWO SYMMETRICAL LOADS<a class="headerlink" href="#d-4-beam-supported-both-ends-two-symmetrical-loads" title="Permalink to this headline">¶</a></h3>
+<p>Illustration:</p>
+<div class="highlight-python"><pre>    █ W     █ W
+╤═══╧═══════╧═══╤
+^               ^</pre>
+</div>
+<div class="math">
+<p><img src="../../_images/math/9e52af856b079bec03aee3520ca885266189b8ed.png" alt="D   &amp;= (W \times A) / (24 \times E \times I) \times (3 \times L^2 - 4 \times A^2) \text{ at centre} \\
+D_1 &amp;= (W \times A^2) / (6 \times E \times I) \times (3 \times L - 4 \times A) \text{ at loads}"/></p>
+</div><p>Calculations:</p>
+<div class="highlight-python"><pre>2220 :REM&#x27;.....calculate
+2230 IF W*A*L*E*I THEN 2240 :ELSE 2250
+2240 D=W*A*(3*L^2-4*A^2)/(24*E*I):D1=W*A^2*(3*L-4*A)/(6*E*I):GOTO 3900
+2250 IF D*A*L*E*I THEN W=D/(A*(3*L^2-4*A^2)/(24*E*I)):GOTO 3900
+2260 IF D1*A*L*E*I THEN W=D1/(A^2*(3*L-4*A)/(6*E*I)):GOTO 3900
+2270 RETURN</pre>
+</div>
+</div>
+<div class="section" id="k-10-cantilever-beam-fixed-one-end-uniform-load">
+<h3>K, 10, CANTILEVER BEAM FIXED ONE END, UNIFORM LOAD<a class="headerlink" href="#k-10-cantilever-beam-fixed-one-end-uniform-load" title="Permalink to this headline">¶</a></h3>
+<p>Illustration:</p>
+<div class="highlight-python"><pre> ████████████████ W
+╬╧══╧══╧══╧══╧══╧
+║</pre>
+</div>
+<div class="math">
+<p><img src="../../_images/math/c3f922e5265681dbf57a377c471d352e7a0f08a9.png" alt="D= (W \times L^3) / (8 \times E \times I)"/></p>
+</div><p>Calculations:</p>
+<div class="highlight-python"><pre>2480 :REM&#x27;.....calculate
+2490 IF W*L*E*I THEN D=W*L^3/(8*E*I):GOTO 3900
+2500 IF D*E*I*L THEN W=D*8*E*I/L^3:GOTO 3900
+2510 IF D*E*I*W THEN L=(D*8*E*I/W)^(1/3):GOTO 3900
+2520 IF W*L*D*E THEN I=W*L^3/(D*8*E):GOTO 3900
+2530 RETURN</pre>
+</div>
+</div>
+<div class="section" id="l-11-cantilever-beam-fixed-one-end-load-at-other">
+<h3>L, 11, CANTILEVER BEAM FIXED ONE END, LOAD AT OTHER<a class="headerlink" href="#l-11-cantilever-beam-fixed-one-end-load-at-other" title="Permalink to this headline">¶</a></h3>
+<p>Example:</p>
+<div class="highlight-python"><pre> CANTILEVER BEAM FIXED ONE END, LOAD AT OTHER
+ Steel Alloy beam of any cross-section
+
+
+                              D= (W x L^3) / (3 x E x I)
+                  █ W
+ ╬════════════════╛
+ ║
+
+ENTER: Load (in pounds).....................W = ? 40
+ENTER: Moment of Inertia (in inches^4)......I = ? 24
+ENTER: Length of beam (in inches)...........L = ? 14
+         Modulus of Elasticity .....................E =    30000000.0    PSI
+         Moment of Inertia .........................I =          24.000 in^4
+         Length of beam ............................L =          14.000 in.
+         Load ......................................W =          40.0    lbs.
+         Deflection at .............................D =           0.000 in.
+end
+         Maximum safe deflection ......................           0.039 in.</pre>
+</div>
+<div class="math">
+<p><img src="../../_images/math/45f6d3067224215de11fc16311eaa75c4399466b.png" alt="D= (W \times L^3) / (3 \times E \times I)"/></p>
+</div><p>Calculations:</p>
+<div class="highlight-python"><pre>2740 :REM&#x27;.....calculate
+2750 IF W*L*E*I THEN D=W*L^3/(3*E*I):GOTO 3900
+2760 IF D*E*I*L THEN W=D*3*E*I/L^3:GOTO 3900
+2770 IF D*E*I*W THEN L=(D*3*E*I/W)^(1/3):GOTO 3900
+2780 IF W*L*D*E THEN I=W*L^3/(D*3*E):GOTO 3900
+2790 RETURN</pre>
+</div>
+</div>
+<div class="section" id="m-12-beam-fixed-at-one-end-intermediate-load">
+<h3>M, 12, BEAM FIXED AT ONE END, INTERMEDIATE LOAD<a class="headerlink" href="#m-12-beam-fixed-at-one-end-intermediate-load" title="Permalink to this headline">¶</a></h3>
+<p>Illustration:</p>
+<div class="highlight-python"><pre>          █ W
+╬═════════╧════
+║</pre>
+</div>
+<div class="math">
+<p><img src="../../_images/math/1c7be9e0ab8699138cc9eb5ba979c925637a3468.png" alt="BB &amp;= L-AA \\
+D  &amp;= (W \times AA^3) / (3 \times E \times I) \text{ at load} \\
+D_1 &amp;= (W \times AA^2) / (6 \times E \times I) \times (2 \times AA + 3 \times BB) \text{ at end}"/></p>
+</div><p>Calculations:</p>
+<div class="highlight-python"><pre>3010 :REM&#x27;.....calculate
+3020 IF BB=0 THEN IF L*AA THEN BB=L-AA
+3030 IF W*E*I*AA*BB=0 THEN 3070
+3040 D=(W*AA^3)/(3*E*I)
+3050 D1=(W*AA^2)/(6*E*I)*(2*AA+6*BB)
+3060 GOTO 3900
+3070 RETURN</pre>
+</div>
+<p>Quirky by comparison with others.</p>
+</div>
+<div class="section" id="r-18-beam-fixed-both-ends-uniform-load">
+<h3>R, 18, BEAM FIXED BOTH ENDS, UNIFORM LOAD<a class="headerlink" href="#r-18-beam-fixed-both-ends-uniform-load" title="Permalink to this headline">¶</a></h3>
+<p>Illustration:</p>
+<div class="highlight-python"><pre> █████████████████ W
+╬╧═══╧═══╧═══╧═══╧╬
+║                 ║</pre>
+</div>
+<div class="math">
+<p><img src="../../_images/math/c91254d36403d052ca50cff9f467d128e70ecad5.png" alt="D= (W \times L^3) / (384 \times E \times I)"/></p>
+</div><p>Calculations:</p>
+<div class="highlight-python"><pre>3280 :REM&#x27;.....CALCULATE
+3290 IF W*L*E*I THEN D=W*L^3/(384*E*I):GOTO 3900
+3300 IF D*E*I*L THEN W=D*384*E*I/L^3:GOTO 3900
+3310 IF D*E*I*W THEN L=(D*384*E*I/W)^(1/3):GOTO 3900
+3320 IF W*L*D*E THEN I=W*L^3/(D*384*E):GOTO 3900
+3330 RETURN</pre>
+</div>
+</div>
+<div class="section" id="s-19-beam-fixed-both-ends-load-at-centre">
+<h3>S, 19, BEAM FIXED BOTH ENDS, LOAD AT CENTRE<a class="headerlink" href="#s-19-beam-fixed-both-ends-load-at-centre" title="Permalink to this headline">¶</a></h3>
+<p>Illustration:</p>
+<div class="highlight-python"><pre>         █ W
+╬════════╧════════╬
+║                 ║</pre>
+</div>
+<div class="math">
+<p><img src="../../_images/math/dae27955145e1c6ce66350c6737dad3607fb4baa.png" alt="D= (W \times L^3) / (192 \times E \times I)"/></p>
+</div><p>Calculations:</p>
+<div class="highlight-python"><pre>3540 :REM&#x27;.....CALCULATE
+3550 IF W*L*E*I THEN D=W*L^3/(192*E*I):GOTO 3900
+3560 IF D*E*I*L THEN W=D*192*E*I/L^3:GOTO 3900
+3570 IF D*E*I*W THEN L=(D*192*E*I/W)^(1/3):GOTO 3900
+3580 IF W*L*D*E THEN I=W*L^3/(D*192*E):GOTO 3900
+3590 RETURN</pre>
+</div>
+</div>
+<div class="section" id="t-20-beam-fixed-both-ends-load-at-any-point">
+<h3>T, 20, BEAM FIXED BOTH ENDS, LOAD AT ANY POINT<a class="headerlink" href="#t-20-beam-fixed-both-ends-load-at-any-point" title="Permalink to this headline">¶</a></h3>
+<p>Illustration:</p>
+<div class="highlight-python"><pre>            █ W
+╬═══════════╧════╬
+║                ║</pre>
+</div>
+<div class="math">
+<p><img src="../../_images/math/8f1df25e71177a70150c3c08f0edeab4dbe003a0.png" alt="B &amp;= L-A \\
+D &amp;= (W \times A^3 \times B^3)) / (3 \times E \times I \times L^3)"/></p>
+</div><p>Calculations:</p>
+<div class="highlight-python"><pre>3810 :REM&#x27;.....calculate
+3820 IF L*A THEN B=L-A
+3830 IF W*A*B*E*I*L THEN D=W*A^3*B^3/(3*E*I*L^3):GOTO 3900
+3840 IF D*E*I*L*A*B THEN W=D*3*E*I*L^3/(A^3*B^3):GOTO 3900
+3850 IF D*E*I*L*W*B THEN A=(D*3*E*I*L^3/(W*B^3))^(1/3):GOTO 3900
+3860 IF W*A*B*D*E*L THEN I=W*A^3*B^3/(D*3*E*L^3):GOTO 3900
+3870 IF W*A*B*D*E*I THEN L=(W*A^3*B^3/(D*3*E*I))^(1/3):GOTO 3900
+3880 RETURN</pre>
+</div>
+</div>
+</div>
+<div class="section" id="module-hamcalc.construction.beamdefl">
+<span id="implementation"></span><h2>Implementation<a class="headerlink" href="#module-hamcalc.construction.beamdefl" title="Permalink to this headline">¶</a></h2>
+<p>hamcalc.construction.beamdefl</p>
+<p>A family of <strong>Solver</strong> classes to handle 10 beam deflection cases.</p>
+<p>Plus definitions of modulus of elasticity for some common construction
+materials.</p>
+<p>Materials, this winds up in a module global, <tt class="xref py py-data docutils literal"><span class="pre">material</span></tt>.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="33%" />
+<col width="33%" />
+<col width="33%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td>Material</td>
+<td>E</td>
+<td>PCI</td>
+</tr>
+<tr class="row-even"><td>Steel Alloy</td>
+<td>30000000</td>
+<td>0.2833</td>
+</tr>
+<tr class="row-odd"><td>Structural Steel</td>
+<td>29000000</td>
+<td>0.2833</td>
+</tr>
+<tr class="row-even"><td>Wrought Iron</td>
+<td>28000000</td>
+<td>0.285</td>
+</tr>
+<tr class="row-odd"><td>Extruded Aluminum</td>
+<td>10300000</td>
+<td>0.0979</td>
+</tr>
+<tr class="row-even"><td>Fir</td>
+<td>1760000</td>
+<td>0.0162</td>
+</tr>
+<tr class="row-odd"><td>Redwood</td>
+<td>1320000</td>
+<td>0.0162</td>
+</tr>
+<tr class="row-even"><td>Cedar, Pine or Spruce</td>
+<td>1100000</td>
+<td>0.0162</td>
+</tr>
+</tbody>
+</table>
+<p>Test Cases for Materials</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">hamcalc.construction.beamdefl</span> <span class="kn">as</span> <span class="nn">beamdefl</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">beamdefl</span><span class="o">.</span><span class="n">material</span><span class="p">[</span><span class="s">&quot;Pine&quot;</span><span class="p">]</span>
+<span class="go">Material(name=&#39;Pine&#39;, E=1100000, PCI=0.0162)</span>
+</pre></div>
+</div>
+<p>Test Cases for BEAM SUPPORTED BOTH ENDS, UNIFORM LOAD</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">hamcalc.construction.beamdefl</span> <span class="kn">as</span> <span class="nn">beamdefl</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">C1</span><span class="o">=</span> <span class="n">beamdefl</span><span class="o">.</span><span class="n">Case_1</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span><span class="o">=</span><span class="n">C1</span><span class="p">(</span> <span class="n">W</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">I</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">L</span><span class="o">=</span><span class="mi">36</span><span class="p">,</span> <span class="n">E</span><span class="o">=</span><span class="mf">1760000.0</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">D</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">0.002</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">MD</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">0.1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span>
+<span class="go">{&#39;MD&#39;: 0.1, &#39;E&#39;: 1760000.0, &#39;D&#39;: 0.0023011363636363637, &#39;I&#39;: 15, &#39;L&#39;: 36, &#39;W&#39;: 100}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span><span class="o">=</span><span class="n">C1</span><span class="p">(</span> <span class="n">D</span><span class="o">=</span><span class="mf">0.0023</span><span class="p">,</span> <span class="n">I</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">L</span><span class="o">=</span><span class="mi">36</span><span class="p">,</span> <span class="n">E</span><span class="o">=</span><span class="mf">1760000.0</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">b</span><span class="o">.</span><span class="n">W</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+<span class="go">100.0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">c</span><span class="o">=</span><span class="n">C1</span><span class="p">(</span> <span class="n">D</span><span class="o">=</span><span class="mf">0.0023</span><span class="p">,</span> <span class="n">W</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">L</span><span class="o">=</span><span class="mi">36</span><span class="p">,</span> <span class="n">E</span><span class="o">=</span><span class="mf">1760000.0</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">I</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">15.007</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">d</span><span class="o">=</span><span class="n">C1</span><span class="p">(</span> <span class="n">D</span><span class="o">=</span><span class="mf">0.0023</span><span class="p">,</span> <span class="n">W</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">I</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">E</span><span class="o">=</span><span class="mf">1760000.0</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">d</span><span class="o">.</span><span class="n">L</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">35.994</span>
+</pre></div>
+</div>
+<p>Test Cases for BEAM SUPPORTED BOTH ENDS, LOAD AT CENTRE</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">hamcalc.construction.beamdefl</span> <span class="kn">as</span> <span class="nn">beamdefl</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">C2</span><span class="o">=</span> <span class="n">beamdefl</span><span class="o">.</span><span class="n">Case_2</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span><span class="o">=</span><span class="n">C2</span><span class="p">(</span> <span class="n">W</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">I</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">L</span><span class="o">=</span><span class="mi">36</span><span class="p">,</span> <span class="n">E</span><span class="o">=</span><span class="mf">1760000.0</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">D</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">0.011</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">MD</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">0.1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span><span class="o">=</span><span class="n">C2</span><span class="p">(</span> <span class="n">D</span><span class="o">=</span><span class="mf">0.011</span><span class="p">,</span> <span class="n">I</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">L</span><span class="o">=</span><span class="mi">36</span><span class="p">,</span> <span class="n">E</span><span class="o">=</span><span class="mf">1760000.0</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">b</span><span class="o">.</span><span class="n">W</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+<span class="go">100.0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">c</span><span class="o">=</span><span class="n">C2</span><span class="p">(</span> <span class="n">D</span><span class="o">=</span><span class="mf">0.011</span><span class="p">,</span> <span class="n">W</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">L</span><span class="o">=</span><span class="mi">36</span><span class="p">,</span> <span class="n">E</span><span class="o">=</span><span class="mf">1760000.0</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">I</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">5.021</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">d</span><span class="o">=</span><span class="n">C2</span><span class="p">(</span> <span class="n">D</span><span class="o">=</span><span class="mf">0.011</span><span class="p">,</span> <span class="n">W</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">I</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">E</span><span class="o">=</span><span class="mf">1760000.0</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">d</span><span class="o">.</span><span class="n">L</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">35.951</span>
+</pre></div>
+</div>
+<p>Test Cases for BEAM SUPPORTED BOTH ENDS, LOAD AT ANY POINT</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">hamcalc.construction.beamdefl</span> <span class="kn">as</span> <span class="nn">beamdefl</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">C3</span><span class="o">=</span> <span class="n">beamdefl</span><span class="o">.</span><span class="n">Case_3</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span><span class="o">=</span><span class="n">C3</span><span class="p">(</span> <span class="n">W</span><span class="o">=</span><span class="mi">250</span><span class="p">,</span> <span class="n">I</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span> <span class="n">L</span><span class="o">=</span><span class="mi">36</span><span class="p">,</span> <span class="n">E</span><span class="o">=</span><span class="mf">10300000.0</span><span class="p">,</span> <span class="n">A</span><span class="o">=</span><span class="mi">30</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">D</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">0.005</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">MD</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">0.1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span><span class="o">=</span><span class="n">C3</span><span class="p">(</span> <span class="n">D</span><span class="o">=</span><span class="mf">0.005</span><span class="p">,</span> <span class="n">I</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span> <span class="n">L</span><span class="o">=</span><span class="mi">36</span><span class="p">,</span> <span class="n">E</span><span class="o">=</span><span class="mf">10300000.0</span><span class="p">,</span> <span class="n">A</span><span class="o">=</span><span class="mi">30</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">b</span><span class="o">.</span><span class="n">W</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+<span class="go">258.0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">c</span><span class="o">=</span><span class="n">C3</span><span class="p">(</span> <span class="n">D</span><span class="o">=</span><span class="mf">0.005</span><span class="p">,</span> <span class="n">W</span><span class="o">=</span><span class="mi">250</span><span class="p">,</span> <span class="n">L</span><span class="o">=</span><span class="mi">36</span><span class="p">,</span> <span class="n">E</span><span class="o">=</span><span class="mf">10300000.0</span><span class="p">,</span> <span class="n">A</span><span class="o">=</span><span class="mi">30</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">I</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">1.456</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">d</span><span class="o">=</span><span class="n">C3</span><span class="p">(</span> <span class="n">D</span><span class="o">=</span><span class="mf">0.005</span><span class="p">,</span> <span class="n">W</span><span class="o">=</span><span class="mi">250</span><span class="p">,</span> <span class="n">I</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span> <span class="n">E</span><span class="o">=</span><span class="mf">10300000.0</span><span class="p">,</span> <span class="n">A</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">B</span><span class="o">=</span><span class="mi">6</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">d</span><span class="o">.</span><span class="n">L</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">34.951</span>
+</pre></div>
+</div>
+<p>Test Cases for BEAM SUPPORTED BOTH ENDS, TWO SYMMETRICAL LOADS</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">hamcalc.construction.beamdefl</span> <span class="kn">as</span> <span class="nn">beamdefl</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">C4</span><span class="o">=</span> <span class="n">beamdefl</span><span class="o">.</span><span class="n">Case_4</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span><span class="o">=</span><span class="n">C4</span><span class="p">(</span> <span class="n">W</span><span class="o">=</span><span class="mi">350</span><span class="p">,</span> <span class="n">I</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span> <span class="n">L</span><span class="o">=</span><span class="mi">36</span><span class="p">,</span> <span class="n">E</span><span class="o">=</span><span class="mf">10300000.0</span><span class="p">,</span> <span class="n">A</span><span class="o">=</span><span class="mi">30</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">D</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">0.008</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">D1</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">-0.041</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">MD</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">0.1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span><span class="o">=</span><span class="n">C4</span><span class="p">(</span> <span class="n">D</span><span class="o">=</span><span class="mf">0.008</span><span class="p">,</span> <span class="n">I</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span> <span class="n">L</span><span class="o">=</span><span class="mi">36</span><span class="p">,</span> <span class="n">E</span><span class="o">=</span><span class="mf">10300000.0</span><span class="p">,</span> <span class="n">A</span><span class="o">=</span><span class="mi">30</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">b</span><span class="o">.</span><span class="n">W</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+<span class="go">343.0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">c</span><span class="o">=</span><span class="n">C4</span><span class="p">(</span> <span class="n">D1</span><span class="o">=-</span><span class="mf">0.041</span><span class="p">,</span> <span class="n">I</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span> <span class="n">L</span><span class="o">=</span><span class="mi">36</span><span class="p">,</span> <span class="n">E</span><span class="o">=</span><span class="mf">10300000.0</span><span class="p">,</span> <span class="n">A</span><span class="o">=</span><span class="mi">30</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">W</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+<span class="go">352.0</span>
+</pre></div>
+</div>
+<p>Test Cases for CANTILEVER BEAM FIXED ONE END, UNIFORM LOAD</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">hamcalc.construction.beamdefl</span> <span class="kn">as</span> <span class="nn">beamdefl</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">C10</span><span class="o">=</span> <span class="n">beamdefl</span><span class="o">.</span><span class="n">Case_10</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span><span class="o">=</span><span class="n">C10</span><span class="p">(</span> <span class="n">W</span><span class="o">=</span><span class="mi">450</span><span class="p">,</span> <span class="n">I</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span> <span class="n">L</span><span class="o">=</span><span class="mi">36</span><span class="p">,</span> <span class="n">E</span><span class="o">=</span><span class="mf">10300000.0</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">D</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">0.17</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">MD</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">0.1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span><span class="o">=</span><span class="n">C10</span><span class="p">(</span> <span class="n">D</span><span class="o">=</span><span class="mf">0.17</span><span class="p">,</span> <span class="n">I</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span> <span class="n">L</span><span class="o">=</span><span class="mi">36</span><span class="p">,</span> <span class="n">E</span><span class="o">=</span><span class="mf">10300000.0</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">b</span><span class="o">.</span><span class="n">W</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+<span class="go">450.0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">c</span><span class="o">=</span><span class="n">C10</span><span class="p">(</span> <span class="n">D</span><span class="o">=</span><span class="mf">0.17</span><span class="p">,</span> <span class="n">W</span><span class="o">=</span><span class="mi">450</span><span class="p">,</span> <span class="n">L</span><span class="o">=</span><span class="mi">36</span><span class="p">,</span> <span class="n">E</span><span class="o">=</span><span class="mf">10300000.0</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">I</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">1.499</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">d</span><span class="o">=</span><span class="n">C10</span><span class="p">(</span> <span class="n">D</span><span class="o">=</span><span class="mf">0.17</span><span class="p">,</span> <span class="n">W</span><span class="o">=</span><span class="mi">450</span><span class="p">,</span> <span class="n">I</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span> <span class="n">E</span><span class="o">=</span><span class="mf">10300000.0</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">d</span><span class="o">.</span><span class="n">L</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">36.01</span>
+</pre></div>
+</div>
+<p>Test Cases for CANTILEVER BEAM FIXED ONE END, LOAD AT OTHER</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">hamcalc.construction.beamdefl</span> <span class="kn">as</span> <span class="nn">beamdefl</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">C11</span><span class="o">=</span> <span class="n">beamdefl</span><span class="o">.</span><span class="n">Case_11</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span><span class="o">=</span><span class="n">C11</span><span class="p">(</span> <span class="n">W</span><span class="o">=</span><span class="mi">550</span><span class="p">,</span> <span class="n">I</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span> <span class="n">L</span><span class="o">=</span><span class="mi">36</span><span class="p">,</span> <span class="n">E</span><span class="o">=</span><span class="mf">10300000.0</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">D</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">0.554</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">MD</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">0.1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span><span class="o">=</span><span class="n">C11</span><span class="p">(</span> <span class="n">D</span><span class="o">=</span><span class="mf">0.554</span><span class="p">,</span> <span class="n">I</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span> <span class="n">L</span><span class="o">=</span><span class="mi">36</span><span class="p">,</span> <span class="n">E</span><span class="o">=</span><span class="mf">10300000.0</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">b</span><span class="o">.</span><span class="n">W</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+<span class="go">550.0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">c</span><span class="o">=</span><span class="n">C11</span><span class="p">(</span> <span class="n">D</span><span class="o">=</span><span class="mf">0.554</span><span class="p">,</span> <span class="n">W</span><span class="o">=</span><span class="mi">550</span><span class="p">,</span> <span class="n">L</span><span class="o">=</span><span class="mi">36</span><span class="p">,</span> <span class="n">E</span><span class="o">=</span><span class="mf">10300000.0</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">I</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">1.499</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">d</span><span class="o">=</span><span class="n">C11</span><span class="p">(</span> <span class="n">D</span><span class="o">=</span><span class="mf">0.554</span><span class="p">,</span> <span class="n">W</span><span class="o">=</span><span class="mi">550</span><span class="p">,</span> <span class="n">I</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span> <span class="n">E</span><span class="o">=</span><span class="mf">10300000.0</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">d</span><span class="o">.</span><span class="n">L</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">36.008</span>
+</pre></div>
+</div>
+<p>Test Cases for BEAM FIXED AT ONE END, INTERMEDIATE LOAD</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">hamcalc.construction.beamdefl</span> <span class="kn">as</span> <span class="nn">beamdefl</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">C12</span><span class="o">=</span> <span class="n">beamdefl</span><span class="o">.</span><span class="n">Case_12</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span><span class="o">=</span><span class="n">C12</span><span class="p">(</span> <span class="n">W</span><span class="o">=</span><span class="mi">350</span><span class="p">,</span> <span class="n">I</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span> <span class="n">E</span><span class="o">=</span><span class="mf">10300000.0</span><span class="p">,</span> <span class="n">L</span><span class="o">=</span><span class="mi">36</span><span class="p">,</span> <span class="n">AA</span><span class="o">=</span><span class="mi">30</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">D</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">0.204</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">D1</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">0.326</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">MD</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">0.1</span>
+</pre></div>
+</div>
+<p>Test Cases for BEAM FIXED BOTH ENDS, UNIFORM LOAD</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">hamcalc.construction.beamdefl</span> <span class="kn">as</span> <span class="nn">beamdefl</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">C18</span><span class="o">=</span> <span class="n">beamdefl</span><span class="o">.</span><span class="n">Case_18</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span><span class="o">=</span><span class="n">C18</span><span class="p">(</span> <span class="n">W</span><span class="o">=</span><span class="mi">650</span><span class="p">,</span> <span class="n">I</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span> <span class="n">E</span><span class="o">=</span><span class="mf">10300000.0</span><span class="p">,</span> <span class="n">L</span><span class="o">=</span><span class="mi">36</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">D</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">0.005</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span><span class="o">=</span><span class="n">C18</span><span class="p">(</span> <span class="n">D</span><span class="o">=</span><span class="mf">0.005</span><span class="p">,</span> <span class="n">I</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span> <span class="n">L</span><span class="o">=</span><span class="mi">36</span><span class="p">,</span> <span class="n">E</span><span class="o">=</span><span class="mf">10300000.0</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">b</span><span class="o">.</span><span class="n">W</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+<span class="go">636.0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">c</span><span class="o">=</span><span class="n">C18</span><span class="p">(</span> <span class="n">D</span><span class="o">=</span><span class="mf">0.005</span><span class="p">,</span> <span class="n">W</span><span class="o">=</span><span class="mi">650</span><span class="p">,</span> <span class="n">L</span><span class="o">=</span><span class="mi">36</span><span class="p">,</span> <span class="n">E</span><span class="o">=</span><span class="mf">10300000.0</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">I</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">1.533</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">d</span><span class="o">=</span><span class="n">C18</span><span class="p">(</span> <span class="n">D</span><span class="o">=</span><span class="mf">0.005</span><span class="p">,</span> <span class="n">W</span><span class="o">=</span><span class="mi">650</span><span class="p">,</span> <span class="n">I</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span> <span class="n">E</span><span class="o">=</span><span class="mf">10300000.0</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">d</span><span class="o">.</span><span class="n">L</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">35.736</span>
+</pre></div>
+</div>
+<p>Test Cases for BEAM FIXED BOTH ENDS, LOAD AT CENTRE</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">hamcalc.construction.beamdefl</span> <span class="kn">as</span> <span class="nn">beamdefl</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">C19</span><span class="o">=</span> <span class="n">beamdefl</span><span class="o">.</span><span class="n">Case_19</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span><span class="o">=</span><span class="n">C19</span><span class="p">(</span> <span class="n">W</span><span class="o">=</span><span class="mi">750</span><span class="p">,</span> <span class="n">I</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span> <span class="n">E</span><span class="o">=</span><span class="mf">10300000.0</span><span class="p">,</span> <span class="n">L</span><span class="o">=</span><span class="mi">36</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">D</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">0.012</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span><span class="o">=</span><span class="n">C19</span><span class="p">(</span> <span class="n">D</span><span class="o">=</span><span class="mf">0.012</span><span class="p">,</span> <span class="n">I</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span> <span class="n">L</span><span class="o">=</span><span class="mi">36</span><span class="p">,</span> <span class="n">E</span><span class="o">=</span><span class="mf">10300000.0</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">b</span><span class="o">.</span><span class="n">W</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+<span class="go">763.0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">c</span><span class="o">=</span><span class="n">C19</span><span class="p">(</span> <span class="n">D</span><span class="o">=</span><span class="mf">0.012</span><span class="p">,</span> <span class="n">W</span><span class="o">=</span><span class="mi">750</span><span class="p">,</span> <span class="n">L</span><span class="o">=</span><span class="mi">36</span><span class="p">,</span> <span class="n">E</span><span class="o">=</span><span class="mf">10300000.0</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">I</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">1.475</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">d</span><span class="o">=</span><span class="n">C19</span><span class="p">(</span> <span class="n">D</span><span class="o">=</span><span class="mf">0.012</span><span class="p">,</span> <span class="n">W</span><span class="o">=</span><span class="mi">750</span><span class="p">,</span> <span class="n">I</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span> <span class="n">E</span><span class="o">=</span><span class="mf">10300000.0</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">d</span><span class="o">.</span><span class="n">L</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">36.206</span>
+</pre></div>
+</div>
+<p>Test Cases for BEAM FIXED BOTH ENDS, LOAD AT ANY POINT</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">hamcalc.construction.beamdefl</span> <span class="kn">as</span> <span class="nn">beamdefl</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">C20</span><span class="o">=</span> <span class="n">beamdefl</span><span class="o">.</span><span class="n">Case_20</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span><span class="o">=</span><span class="n">C20</span><span class="p">(</span> <span class="n">W</span><span class="o">=</span><span class="mi">850</span><span class="p">,</span> <span class="n">I</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span> <span class="n">E</span><span class="o">=</span><span class="mf">10300000.0</span><span class="p">,</span> <span class="n">L</span><span class="o">=</span><span class="mi">36</span><span class="p">,</span> <span class="n">A</span><span class="o">=</span><span class="mi">30</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">D</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">0.002</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span><span class="o">=</span><span class="n">C20</span><span class="p">(</span> <span class="n">D</span><span class="o">=</span><span class="mf">0.0023</span><span class="p">,</span> <span class="n">I</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span> <span class="n">L</span><span class="o">=</span><span class="mi">36</span><span class="p">,</span> <span class="n">E</span><span class="o">=</span><span class="mf">10300000.0</span><span class="p">,</span> <span class="n">A</span><span class="o">=</span><span class="mi">30</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">b</span><span class="o">.</span><span class="n">W</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+<span class="go">853.0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">c</span><span class="o">=</span><span class="n">C20</span><span class="p">(</span> <span class="n">D</span><span class="o">=</span><span class="mf">0.0023</span><span class="p">,</span> <span class="n">W</span><span class="o">=</span><span class="mi">850</span><span class="p">,</span> <span class="n">L</span><span class="o">=</span><span class="mi">36</span><span class="p">,</span> <span class="n">E</span><span class="o">=</span><span class="mf">10300000.0</span><span class="p">,</span> <span class="n">A</span><span class="o">=</span><span class="mi">30</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">I</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">1.495</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">d</span><span class="o">=</span><span class="n">C20</span><span class="p">(</span> <span class="n">D</span><span class="o">=</span><span class="mf">0.0023</span><span class="p">,</span> <span class="n">W</span><span class="o">=</span><span class="mi">850</span><span class="p">,</span> <span class="n">I</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span> <span class="n">E</span><span class="o">=</span><span class="mf">10300000.0</span><span class="p">,</span> <span class="n">A</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">B</span><span class="o">=</span><span class="mi">6</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">d</span><span class="o">.</span><span class="n">L</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">35.96</span>
+</pre></div>
+</div>
+<dl class="class">
+<dt id="hamcalc.construction.beamdefl.Case_1">
+<em class="property">class </em><tt class="descclassname">hamcalc.construction.beamdefl.</tt><tt class="descname">Case_1</tt><a class="reference internal" href="../../_modules/hamcalc/construction/beamdefl.html#Case_1"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.construction.beamdefl.Case_1" title="Permalink to this definition">¶</a></dt>
+<dd><p>BEAM SUPPORTED BOTH ENDS, UNIFORM LOAD
+D= (5/384) x (W x L^3) / (E x I)</p>
+<dl class="method">
+<dt id="hamcalc.construction.beamdefl.Case_1.solve">
+<tt class="descname">solve</tt><big>(</big><em>args</em><big>)</big><a class="reference internal" href="../../_modules/hamcalc/construction/beamdefl.html#Case_1.solve"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.construction.beamdefl.Case_1.solve" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">W :</th><td class="field-body">Weight (Load in pounds)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">I :</th><td class="field-body">Inertia (Moment of Inertia in inches^4)</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">L :</th><td class="field-body">Length (in inches)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">E :</th><td class="field-body">Elasticity Modulus (in PSI)</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">D :</th><td class="field-body">Deflection (in inches)</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="hamcalc.construction.beamdefl.Case_10">
+<em class="property">class </em><tt class="descclassname">hamcalc.construction.beamdefl.</tt><tt class="descname">Case_10</tt><a class="reference internal" href="../../_modules/hamcalc/construction/beamdefl.html#Case_10"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.construction.beamdefl.Case_10" title="Permalink to this definition">¶</a></dt>
+<dd><p>CANTILEVER BEAM FIXED ONE END, UNIFORM LOAD
+D= (W x L^3) / (8 x E x I)</p>
+<dl class="method">
+<dt id="hamcalc.construction.beamdefl.Case_10.solve">
+<tt class="descname">solve</tt><big>(</big><em>args</em><big>)</big><a class="reference internal" href="../../_modules/hamcalc/construction/beamdefl.html#Case_10.solve"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.construction.beamdefl.Case_10.solve" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">W :</th><td class="field-body">Weight (Load in pounds)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">I :</th><td class="field-body">Inertia (Moment of Inertia in inches^4)</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">L :</th><td class="field-body">Length (in inches)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">E :</th><td class="field-body">Elasticity Modulus (in PSI)</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">D :</th><td class="field-body">Deflection (in inches)</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="hamcalc.construction.beamdefl.Case_11">
+<em class="property">class </em><tt class="descclassname">hamcalc.construction.beamdefl.</tt><tt class="descname">Case_11</tt><a class="reference internal" href="../../_modules/hamcalc/construction/beamdefl.html#Case_11"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.construction.beamdefl.Case_11" title="Permalink to this definition">¶</a></dt>
+<dd><p>CANTILEVER BEAM FIXED ONE END, LOAD AT OTHER
+D= (W x L^3) / (3 x E x I)</p>
+<dl class="method">
+<dt id="hamcalc.construction.beamdefl.Case_11.solve">
+<tt class="descname">solve</tt><big>(</big><em>args</em><big>)</big><a class="reference internal" href="../../_modules/hamcalc/construction/beamdefl.html#Case_11.solve"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.construction.beamdefl.Case_11.solve" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">W :</th><td class="field-body">Weight (Load in pounds)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">I :</th><td class="field-body">Inertia (Moment of Inertia in inches^4)</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">L :</th><td class="field-body">Length (in inches)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">E :</th><td class="field-body">Elasticity Modulus (in PSI)</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">D :</th><td class="field-body">Deflection (in inches)</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="hamcalc.construction.beamdefl.Case_12">
+<em class="property">class </em><tt class="descclassname">hamcalc.construction.beamdefl.</tt><tt class="descname">Case_12</tt><a class="reference internal" href="../../_modules/hamcalc/construction/beamdefl.html#Case_12"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.construction.beamdefl.Case_12" title="Permalink to this definition">¶</a></dt>
+<dd><p>BEAM FIXED AT ONE END, INTERMEDIATE LOAD
+at load: D= (W x AA^3) / (3 x E x I)
+at end: D1= (W x AA^2) / (6 x E x I) x (2 x AA + 3 x BB)</p>
+<dl class="method">
+<dt id="hamcalc.construction.beamdefl.Case_12.solve">
+<tt class="descname">solve</tt><big>(</big><em>args</em><big>)</big><a class="reference internal" href="../../_modules/hamcalc/construction/beamdefl.html#Case_12.solve"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.construction.beamdefl.Case_12.solve" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">W :</th><td class="field-body">Weight (Load in pounds)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">I :</th><td class="field-body">Inertia (Moment of Inertia in inches^4)</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">L :</th><td class="field-body">Length (in inches)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">E :</th><td class="field-body">Elasticity Modulus (in PSI)</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">D :</th><td class="field-body">Deflection (in inches)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Aa :</th><td class="field-body">Load distance from fixed end</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Bb :</th><td class="field-body">Load distance from free end</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="hamcalc.construction.beamdefl.Case_18">
+<em class="property">class </em><tt class="descclassname">hamcalc.construction.beamdefl.</tt><tt class="descname">Case_18</tt><a class="reference internal" href="../../_modules/hamcalc/construction/beamdefl.html#Case_18"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.construction.beamdefl.Case_18" title="Permalink to this definition">¶</a></dt>
+<dd><p>BEAM FIXED BOTH ENDS, UNIFORM LOAD
+D= (W x L^3) / (384 x E x I)</p>
+<dl class="method">
+<dt id="hamcalc.construction.beamdefl.Case_18.solve">
+<tt class="descname">solve</tt><big>(</big><em>args</em><big>)</big><a class="reference internal" href="../../_modules/hamcalc/construction/beamdefl.html#Case_18.solve"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.construction.beamdefl.Case_18.solve" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">W :</th><td class="field-body">Weight (Load in pounds)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">I :</th><td class="field-body">Inertia (Moment of Inertia in inches^4)</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">L :</th><td class="field-body">Length (in inches)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">E :</th><td class="field-body">Elasticity Modulus (in PSI)</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">D :</th><td class="field-body">Deflection (in inches)</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="hamcalc.construction.beamdefl.Case_19">
+<em class="property">class </em><tt class="descclassname">hamcalc.construction.beamdefl.</tt><tt class="descname">Case_19</tt><a class="reference internal" href="../../_modules/hamcalc/construction/beamdefl.html#Case_19"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.construction.beamdefl.Case_19" title="Permalink to this definition">¶</a></dt>
+<dd><p>BEAM FIXED BOTH ENDS, LOAD AT CENTRE
+D= (W x L^3) / (192 x E x I)</p>
+<dl class="method">
+<dt id="hamcalc.construction.beamdefl.Case_19.solve">
+<tt class="descname">solve</tt><big>(</big><em>args</em><big>)</big><a class="reference internal" href="../../_modules/hamcalc/construction/beamdefl.html#Case_19.solve"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.construction.beamdefl.Case_19.solve" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">W :</th><td class="field-body">Weight (Load in pounds)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">I :</th><td class="field-body">Inertia (Moment of Inertia in inches^4)</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">L :</th><td class="field-body">Length (in inches)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">E :</th><td class="field-body">Elasticity Modulus (in PSI)</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">D :</th><td class="field-body">Deflection (in inches)</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="hamcalc.construction.beamdefl.Case_2">
+<em class="property">class </em><tt class="descclassname">hamcalc.construction.beamdefl.</tt><tt class="descname">Case_2</tt><a class="reference internal" href="../../_modules/hamcalc/construction/beamdefl.html#Case_2"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.construction.beamdefl.Case_2" title="Permalink to this definition">¶</a></dt>
+<dd><p>BEAM SUPPORTED BOTH ENDS, LOAD AT CENTRE
+D= (W x L^3) / (48 x E x I)</p>
+<dl class="method">
+<dt id="hamcalc.construction.beamdefl.Case_2.solve">
+<tt class="descname">solve</tt><big>(</big><em>args</em><big>)</big><a class="reference internal" href="../../_modules/hamcalc/construction/beamdefl.html#Case_2.solve"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.construction.beamdefl.Case_2.solve" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">W :</th><td class="field-body">Weight (Load in pounds)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">I :</th><td class="field-body">Inertia (Moment of Inertia in inches^4)</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">L :</th><td class="field-body">Length (in inches)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">E :</th><td class="field-body">Elasticity Modulus (in PSI)</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">D :</th><td class="field-body">Deflection (in inches)</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="hamcalc.construction.beamdefl.Case_20">
+<em class="property">class </em><tt class="descclassname">hamcalc.construction.beamdefl.</tt><tt class="descname">Case_20</tt><a class="reference internal" href="../../_modules/hamcalc/construction/beamdefl.html#Case_20"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.construction.beamdefl.Case_20" title="Permalink to this definition">¶</a></dt>
+<dd><p>BEAM FIXED BOTH ENDS, LOAD AT ANY POINT
+D= (W x A^3 x B^3)) / (3 x E x I x L^3)</p>
+<dl class="method">
+<dt id="hamcalc.construction.beamdefl.Case_20.solve">
+<tt class="descname">solve</tt><big>(</big><em>args</em><big>)</big><a class="reference internal" href="../../_modules/hamcalc/construction/beamdefl.html#Case_20.solve"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.construction.beamdefl.Case_20.solve" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">W :</th><td class="field-body">Weight (Load in pounds)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">I :</th><td class="field-body">Inertia (Moment of Inertia in inches^4)</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">L :</th><td class="field-body">Length (in inches)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">E :</th><td class="field-body">Elasticity Modulus (in PSI)</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">D :</th><td class="field-body">Deflection (in inches)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">A :</th><td class="field-body">Load distance from nearest end</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">B :</th><td class="field-body">Load distance from farthest end</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="hamcalc.construction.beamdefl.Case_3">
+<em class="property">class </em><tt class="descclassname">hamcalc.construction.beamdefl.</tt><tt class="descname">Case_3</tt><a class="reference internal" href="../../_modules/hamcalc/construction/beamdefl.html#Case_3"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.construction.beamdefl.Case_3" title="Permalink to this definition">¶</a></dt>
+<dd><p>BEAM SUPPORTED BOTH ENDS, LOAD AT ANY POINT
+D= (W x A^2 x B^2) / (3 x E x I x L)</p>
+<dl class="method">
+<dt id="hamcalc.construction.beamdefl.Case_3.solve">
+<tt class="descname">solve</tt><big>(</big><em>args</em><big>)</big><a class="reference internal" href="../../_modules/hamcalc/construction/beamdefl.html#Case_3.solve"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.construction.beamdefl.Case_3.solve" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">W :</th><td class="field-body">Weight (Load in pounds)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">I :</th><td class="field-body">Inertia (Moment of Inertia in inches^4)</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">L :</th><td class="field-body">Length (in inches)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">E :</th><td class="field-body">Elasticity Modulus (in PSI)</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">D :</th><td class="field-body">Deflection (in inches)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">A :</th><td class="field-body">Load distance from nearest end</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">B :</th><td class="field-body">Load distance from farthest end</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="hamcalc.construction.beamdefl.Case_4">
+<em class="property">class </em><tt class="descclassname">hamcalc.construction.beamdefl.</tt><tt class="descname">Case_4</tt><a class="reference internal" href="../../_modules/hamcalc/construction/beamdefl.html#Case_4"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.construction.beamdefl.Case_4" title="Permalink to this definition">¶</a></dt>
+<dd><p>BEAM SUPPORTED BOTH ENDS, TWO SYMMETRICAL LOADS
+at centre: D= (W x A) / (24 x E x I) x (3 x L^2 - 4 x A^2)
+at loads: D1= (W x A^2) / (6 x E x I) x (3 x L - 4 x A)</p>
+<dl class="method">
+<dt id="hamcalc.construction.beamdefl.Case_4.solve">
+<tt class="descname">solve</tt><big>(</big><em>args</em><big>)</big><a class="reference internal" href="../../_modules/hamcalc/construction/beamdefl.html#Case_4.solve"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.construction.beamdefl.Case_4.solve" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">W :</th><td class="field-body">Weight (Load in pounds)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">I :</th><td class="field-body">Inertia (Moment of Inertia in inches^4)</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">L :</th><td class="field-body">Length (in inches)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">E :</th><td class="field-body">Elasticity Modulus (in PSI)</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">A :</th><td class="field-body">Load distance from nearest end</td>
+</tr>
+<tr class="field-even field"><th class="field-name">D :</th><td class="field-body">Deflection (in inches) at center</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">D1 :</th><td class="field-body">Deflection (in inches) at loads</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition-todo admonition" id="index-0">
+<p class="first admonition-title">Todo</p>
+<p class="last">Solve for I or L.</p>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="hamcalc.construction.beamdefl.Material">
+<em class="property">class </em><tt class="descclassname">hamcalc.construction.beamdefl.</tt><tt class="descname">Material</tt><a class="headerlink" href="#hamcalc.construction.beamdefl.Material" title="Permalink to this definition">¶</a></dt>
+<dd><p>Material(name, E, PCI)</p>
+<dl class="attribute">
+<dt id="hamcalc.construction.beamdefl.Material.E">
+<tt class="descname">E</tt><a class="headerlink" href="#hamcalc.construction.beamdefl.Material.E" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 1</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="hamcalc.construction.beamdefl.Material.PCI">
+<tt class="descname">PCI</tt><a class="headerlink" href="#hamcalc.construction.beamdefl.Material.PCI" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 2</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="hamcalc.construction.beamdefl.Material.name">
+<tt class="descname">name</tt><a class="headerlink" href="#hamcalc.construction.beamdefl.Material.name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 0</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="quirks">
+<h2>Quirks<a class="headerlink" href="#quirks" title="Permalink to this headline">¶</a></h2>
+<p>Cas 4, &#8220;BEAM SUPPORTED BOTH ENDS, TWO SYMMETRICAL LOADS&#8221;
+doesn&#8217;t solve for I or L.</p>
+<p>Case 12, &#8220;BEAM FIXED AT ONE END, INTERMEDIATE LOAD,&#8221; isn&#8217;t a <strong>Solver</strong>
+doesn&#8217;t solve for I or L.</p>
+<p>Also, each of the 10 menu options uses a GOSUB to the calculation
+section. The calculation does a GOTO 3900 which prints the result
+and then chains to restart the program from the top.</p>
+<p>The only way the GOSUB will RETURN is if there are insufficient input values.
+Making the return and kind of exception.</p>
 </div>
 </div>
 

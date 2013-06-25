@@ -168,7 +168,11 @@ class Solver( Callable ):
     """
     def __call__( self, **kw ):
         self.args= AttrDict( kw )
-        return self.solve( self.args )
+        result= self.solve( self.args )
+        if result: return result
+        else: return self.args
+    def args_contains( self, *names ):
+        return all( n in self.args for n in names )
     def solve( self, args ):
         """Override this method to accept an AttrDict
         of arguments and return a revised AttrDict

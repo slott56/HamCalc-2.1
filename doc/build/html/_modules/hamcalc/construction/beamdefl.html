@@ -1,0 +1,198 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>hamcalc.construction.beamdefl &mdash; HamCalc 2.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../../_static/agogo.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '2.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="top" title="HamCalc 2.1 documentation" href="../../../index.html" />
+    <link rel="up" title="Module code" href="../../index.html" /> 
+  </head>
+  <body>
+    <div class="header-wrapper">
+      <div class="header">
+        <div class="headertitle"><a
+          href="../../../index.html">HamCalc 2.1 documentation</a></div>
+        <div class="rel">
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a>
+        </div>
+       </div>
+    </div>
+
+    <div class="content-wrapper">
+      <div class="content">
+        <div class="document">
+            
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for hamcalc.construction.beamdefl</h1><div class="highlight"><pre>
+<span class="sd">&quot;&quot;&quot;hamcalc.construction.beamdefl</span>
+
+<span class="sd">A family of **Solver** classes to handle 10 beam deflection cases.</span>
+
+<span class="sd">Plus definitions of modulus of elasticity for some common construction</span>
+<span class="sd">materials.</span>
+
+<span class="sd">Materials.</span>
+
+<span class="sd">..  csv-table::</span>
+
+<span class="sd">    &quot;E&quot;,&quot;PCI&quot;,&quot;Material&quot;</span>
+<span class="sd">    &quot;30000000&quot;,&quot;0.2833&quot;,&quot;Steel Alloy&quot;</span>
+<span class="sd">    &quot;29000000&quot;,&quot;0.2833&quot;,&quot;Structural Steel&quot;</span>
+<span class="sd">    &quot;28000000&quot;,&quot;0.285&quot;,&quot;Wrought Iron&quot;</span>
+<span class="sd">    &quot;10300000&quot;,&quot;0.0979&quot;,&quot;Extruded Aluminum&quot;</span>
+<span class="sd">    &quot;1760000&quot;,&quot;0.0162&quot;,&quot;Fir&quot;</span>
+<span class="sd">    &quot;1320000&quot;,&quot;0.0162&quot;,&quot;Redwood&quot;</span>
+<span class="sd">    &quot;1100000&quot;,&quot;0.0162&quot;,&quot;Cedar, Pine or Spruce&quot;</span>
+
+<span class="sd">Test Cases for BEAM SUPPORTED BOTH ENDS, UNIFORM LOAD</span>
+
+<span class="sd">&gt;&gt;&gt; hamcalc.construction.beamdefl as beamdefl</span>
+<span class="sd">&gt;&gt;&gt; C1= beamdefl.Case_1()</span>
+<span class="sd">&gt;&gt;&gt; a=C1( W=100, I=12, L=18, E=30000000.0 )</span>
+<span class="sd">&gt;&gt;&gt; round(a.D,3)</span>
+<span class="sd">0.05</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">hamcalc.lib</span> <span class="kn">import</span> <span class="n">Solver</span><span class="p">,</span> <span class="n">NoSolutionError</span>
+
+<div class="viewcode-block" id="Case_1"><a class="viewcode-back" href="../../../python/construction/beamdefl.html#hamcalc.construction.beamdefl.Case_1">[docs]</a><span class="k">class</span> <span class="nc">Case_1</span><span class="p">(</span> <span class="n">Solver</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;BEAM SUPPORTED BOTH ENDS, UNIFORM LOAD&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="Case_1.solve"><a class="viewcode-back" href="../../../python/construction/beamdefl.html#hamcalc.construction.beamdefl.Case_1.solve">[docs]</a>    <span class="k">def</span> <span class="nf">solve</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">args</span> <span class="p">):</span>
+        <span class="k">if</span> <span class="s">&quot;W&quot;</span> <span class="ow">in</span> <span class="n">args</span> <span class="ow">and</span> <span class="s">&quot;L&quot;</span> <span class="ow">in</span> <span class="n">args</span> <span class="ow">and</span> <span class="s">&quot;E&quot;</span> <span class="ow">in</span> <span class="n">args</span> <span class="ow">and</span> <span class="s">&quot;I&quot;</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
+            <span class="n">args</span><span class="o">.</span><span class="n">D</span> <span class="o">=</span> <span class="mi">5</span><span class="o">*</span><span class="n">args</span><span class="o">.</span><span class="n">W</span><span class="o">*</span><span class="n">args</span><span class="o">.</span><span class="n">L</span><span class="o">**</span><span class="mi">3</span><span class="o">/</span><span class="p">(</span><span class="mi">384</span><span class="o">*</span><span class="n">args</span><span class="o">.</span><span class="n">E</span><span class="o">*</span><span class="n">args</span><span class="o">.</span><span class="n">I</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="s">&quot;D&quot;</span> <span class="ow">in</span> <span class="n">args</span> <span class="ow">and</span> <span class="s">&quot;E&quot;</span> <span class="ow">in</span> <span class="n">args</span> <span class="ow">and</span> <span class="s">&quot;I&quot;</span> <span class="ow">in</span> <span class="n">args</span> <span class="ow">and</span> <span class="s">&quot;L&quot;</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
+            <span class="n">args</span><span class="o">.</span><span class="n">W</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">D</span><span class="o">*</span><span class="mi">384</span><span class="o">*</span><span class="n">args</span><span class="o">.</span><span class="n">E</span><span class="o">*</span><span class="n">args</span><span class="o">.</span><span class="n">I</span><span class="o">/</span><span class="p">(</span><span class="mi">5</span><span class="o">*</span><span class="n">args</span><span class="o">.</span><span class="n">L</span><span class="o">**</span><span class="mi">3</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="s">&quot;D&quot;</span> <span class="ow">in</span> <span class="n">args</span> <span class="ow">and</span> <span class="s">&quot;W&quot;</span> <span class="ow">in</span> <span class="n">args</span> <span class="ow">and</span> <span class="s">&quot;E&quot;</span> <span class="ow">in</span> <span class="n">args</span> <span class="ow">and</span> <span class="s">&quot;L&quot;</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
+            <span class="n">args</span><span class="o">.</span><span class="n">I</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">W</span><span class="o">*</span><span class="mi">5</span><span class="o">*</span><span class="n">args</span><span class="o">.</span><span class="n">L</span><span class="o">**</span><span class="mi">3</span><span class="o">/</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">D</span><span class="o">*</span><span class="mi">384</span><span class="o">*</span><span class="n">args</span><span class="o">.</span><span class="n">E</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="s">&quot;D&quot;</span> <span class="ow">in</span> <span class="n">args</span> <span class="ow">and</span> <span class="s">&quot;W&quot;</span> <span class="ow">in</span> <span class="n">args</span> <span class="ow">and</span> <span class="s">&quot;E&quot;</span> <span class="ow">in</span> <span class="n">args</span> <span class="ow">and</span> <span class="s">&quot;I&quot;</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
+            <span class="n">args</span><span class="o">.</span><span class="n">L</span> <span class="o">=</span> <span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">D</span><span class="o">*</span><span class="mi">384</span><span class="o">*</span><span class="n">args</span><span class="o">.</span><span class="n">E</span><span class="o">*</span><span class="n">args</span><span class="o">.</span><span class="n">I</span><span class="o">/</span><span class="p">(</span><span class="mi">5</span><span class="o">*</span><span class="n">args</span><span class="o">.</span><span class="n">W</span><span class="p">))</span><span class="o">**</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="mi">3</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">NoSolutionError</span><span class="p">(</span> <span class="s">&quot;No usable combination of inputs in {0:r}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">args</span><span class="p">)</span> <span class="p">)</span>
+        <span class="k">return</span> <span class="n">args</span>
+</div></div>
+<div class="viewcode-block" id="Case_2"><a class="viewcode-back" href="../../../python/construction/beamdefl.html#hamcalc.construction.beamdefl.Case_2">[docs]</a><span class="k">class</span> <span class="nc">Case_2</span><span class="p">(</span> <span class="n">Solver</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;BEAM SUPPORTED BOTH ENDS, LOAD AT CENTRE&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="Case_2.solve"><a class="viewcode-back" href="../../../python/construction/beamdefl.html#hamcalc.construction.beamdefl.Case_2.solve">[docs]</a>    <span class="k">def</span> <span class="nf">solve</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">args</span> <span class="p">):</span>
+        <span class="k">pass</span>
+</div></div>
+<div class="viewcode-block" id="Case_3"><a class="viewcode-back" href="../../../python/construction/beamdefl.html#hamcalc.construction.beamdefl.Case_3">[docs]</a><span class="k">class</span> <span class="nc">Case_3</span><span class="p">(</span> <span class="n">Solver</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;BEAM SUPPORTED BOTH ENDS, LOAD AT ANY POINT&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="Case_3.solve"><a class="viewcode-back" href="../../../python/construction/beamdefl.html#hamcalc.construction.beamdefl.Case_3.solve">[docs]</a>    <span class="k">def</span> <span class="nf">solve</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">args</span> <span class="p">):</span>
+        <span class="k">pass</span>
+</div></div>
+<div class="viewcode-block" id="Case_4"><a class="viewcode-back" href="../../../python/construction/beamdefl.html#hamcalc.construction.beamdefl.Case_4">[docs]</a><span class="k">class</span> <span class="nc">Case_4</span><span class="p">(</span> <span class="n">Solver</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;BEAM SUPPORTED BOTH ENDS, TWO SYMMETRICAL LOADS&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="Case_4.solve"><a class="viewcode-back" href="../../../python/construction/beamdefl.html#hamcalc.construction.beamdefl.Case_4.solve">[docs]</a>    <span class="k">def</span> <span class="nf">solve</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">args</span> <span class="p">):</span>
+        <span class="k">pass</span>
+</div></div>
+<div class="viewcode-block" id="Case_10"><a class="viewcode-back" href="../../../python/construction/beamdefl.html#hamcalc.construction.beamdefl.Case_10">[docs]</a><span class="k">class</span> <span class="nc">Case_10</span><span class="p">(</span> <span class="n">Solver</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;CANTILEVER BEAM FIXED ONE END, UNIFORM LOAD&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="Case_10.solve"><a class="viewcode-back" href="../../../python/construction/beamdefl.html#hamcalc.construction.beamdefl.Case_10.solve">[docs]</a>    <span class="k">def</span> <span class="nf">solve</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">args</span> <span class="p">):</span>
+        <span class="k">pass</span>
+</div></div>
+<div class="viewcode-block" id="Case_11"><a class="viewcode-back" href="../../../python/construction/beamdefl.html#hamcalc.construction.beamdefl.Case_11">[docs]</a><span class="k">class</span> <span class="nc">Case_11</span><span class="p">(</span> <span class="n">Solver</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;CANTILEVER BEAM FIXED ONE END, LOAD AT OTHER&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="Case_11.solve"><a class="viewcode-back" href="../../../python/construction/beamdefl.html#hamcalc.construction.beamdefl.Case_11.solve">[docs]</a>    <span class="k">def</span> <span class="nf">solve</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">args</span> <span class="p">):</span>
+        <span class="k">pass</span>
+</div></div>
+<div class="viewcode-block" id="Case_12"><a class="viewcode-back" href="../../../python/construction/beamdefl.html#hamcalc.construction.beamdefl.Case_12">[docs]</a><span class="k">class</span> <span class="nc">Case_12</span><span class="p">(</span> <span class="n">Solver</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;BEAM FIXED AT ONE END, INTERMEDIATE LOAD&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="Case_12.solve"><a class="viewcode-back" href="../../../python/construction/beamdefl.html#hamcalc.construction.beamdefl.Case_12.solve">[docs]</a>    <span class="k">def</span> <span class="nf">solve</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">args</span> <span class="p">):</span>
+        <span class="k">pass</span>
+</div></div>
+<div class="viewcode-block" id="Case_18"><a class="viewcode-back" href="../../../python/construction/beamdefl.html#hamcalc.construction.beamdefl.Case_18">[docs]</a><span class="k">class</span> <span class="nc">Case_18</span><span class="p">(</span> <span class="n">Solver</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;BEAM FIXED BOTH ENDS, UNIFORM LOAD&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="Case_18.solve"><a class="viewcode-back" href="../../../python/construction/beamdefl.html#hamcalc.construction.beamdefl.Case_18.solve">[docs]</a>    <span class="k">def</span> <span class="nf">solve</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">args</span> <span class="p">):</span>
+        <span class="k">pass</span>
+</div></div>
+<div class="viewcode-block" id="Case_19"><a class="viewcode-back" href="../../../python/construction/beamdefl.html#hamcalc.construction.beamdefl.Case_19">[docs]</a><span class="k">class</span> <span class="nc">Case_19</span><span class="p">(</span> <span class="n">Solver</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;BEAM FIXED BOTH ENDS, LOAD AT CENTRE&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="Case_19.solve"><a class="viewcode-back" href="../../../python/construction/beamdefl.html#hamcalc.construction.beamdefl.Case_19.solve">[docs]</a>    <span class="k">def</span> <span class="nf">solve</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">args</span> <span class="p">):</span>
+        <span class="k">pass</span>
+</div></div>
+<div class="viewcode-block" id="Case_20"><a class="viewcode-back" href="../../../python/construction/beamdefl.html#hamcalc.construction.beamdefl.Case_20">[docs]</a><span class="k">class</span> <span class="nc">Case_20</span><span class="p">(</span> <span class="n">Solver</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;BEAM FIXED BOTH ENDS, LOAD AT ANY POINT&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="Case_20.solve"><a class="viewcode-back" href="../../../python/construction/beamdefl.html#hamcalc.construction.beamdefl.Case_20.solve">[docs]</a>    <span class="k">def</span> <span class="nf">solve</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">args</span> <span class="p">):</span>
+        <span class="k">pass</span></div></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+        </div>
+        <div class="sidebar">
+          <h3>Table Of Contents</h3>
+          <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../background.html">Background</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../legacy.html">The HamCalc Legacy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../python_architecture.html">Python Architecture</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../python/index.html">Python Modules</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../todo.html">The To Do List</a></li>
+</ul>
+
+          <h3 style="margin-top: 1.5em;">Search</h3>
+          <form class="search" action="../../../search.html" method="get">
+            <input type="text" name="q" />
+            <input type="submit" value="Go" />
+            <input type="hidden" name="check_keywords" value="yes" />
+            <input type="hidden" name="area" value="default" />
+          </form>
+          <p class="searchtip" style="font-size: 90%">
+            Enter search terms or a module, class or function name.
+          </p>
+        </div>
+        <div class="clearer"></div>
+      </div>
+    </div>
+
+    <div class="footer-wrapper">
+      <div class="footer">
+        <div class="left">
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |
+          <a href="../../../genindex.html" title="General Index"
+             >index</a>
+        </div>
+
+        <div class="right">
+          
+    <div class="footer">
+        &copy; Copyright 2013, S.Lott.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2b1.
+    </div>
+        </div>
+        <div class="clearer"></div>
+      </div>
+    </div>
+
+  </body>
+</html>
