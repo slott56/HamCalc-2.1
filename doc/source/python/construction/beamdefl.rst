@@ -1,6 +1,13 @@
 beamdefl -- BEAMS, Deflection in
 ----------------------------------
 
+This program can be used in two modes.
+
+1.  Stand-alone.
+
+2.  The legacy could chained from :program:`beamsect`, where the cross section
+    ``AR`` variable is set.
+
 Legacy Output
 ~~~~~~~~~~~~~~
 
@@ -350,6 +357,9 @@ Calculations::
 
 Implementation
 ~~~~~~~~~~~~~~
+
+Note that this may be used by :program:`beamsect`, as well
+as used by :program:`beamdefl`.
 
 ..  automodule:: hamcalc.construction.beamdefl
     :members:

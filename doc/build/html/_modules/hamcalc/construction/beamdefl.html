@@ -56,89 +56,512 @@
 <span class="sd">Plus definitions of modulus of elasticity for some common construction</span>
 <span class="sd">materials.</span>
 
-<span class="sd">Materials.</span>
+<span class="sd">The materials are a module global, :data:`material`.</span>
 
 <span class="sd">..  csv-table::</span>
 
-<span class="sd">    &quot;E&quot;,&quot;PCI&quot;,&quot;Material&quot;</span>
-<span class="sd">    &quot;30000000&quot;,&quot;0.2833&quot;,&quot;Steel Alloy&quot;</span>
-<span class="sd">    &quot;29000000&quot;,&quot;0.2833&quot;,&quot;Structural Steel&quot;</span>
-<span class="sd">    &quot;28000000&quot;,&quot;0.285&quot;,&quot;Wrought Iron&quot;</span>
-<span class="sd">    &quot;10300000&quot;,&quot;0.0979&quot;,&quot;Extruded Aluminum&quot;</span>
-<span class="sd">    &quot;1760000&quot;,&quot;0.0162&quot;,&quot;Fir&quot;</span>
-<span class="sd">    &quot;1320000&quot;,&quot;0.0162&quot;,&quot;Redwood&quot;</span>
-<span class="sd">    &quot;1100000&quot;,&quot;0.0162&quot;,&quot;Cedar, Pine or Spruce&quot;</span>
+<span class="sd">    &quot;Material&quot;,&quot;E&quot;,&quot;PCI&quot;</span>
+<span class="sd">    &quot;Steel Alloy&quot;,&quot;30000000&quot;,&quot;0.2833&quot;</span>
+<span class="sd">    &quot;Structural Steel&quot;,&quot;29000000&quot;,&quot;0.2833&quot;</span>
+<span class="sd">    &quot;Wrought Iron&quot;,&quot;28000000&quot;,&quot;0.285&quot;</span>
+<span class="sd">    &quot;Extruded Aluminum&quot;,&quot;10300000&quot;,&quot;0.0979&quot;</span>
+<span class="sd">    &quot;Fir&quot;,&quot;1760000&quot;,&quot;0.0162&quot;</span>
+<span class="sd">    &quot;Redwood&quot;,&quot;1320000&quot;,&quot;0.0162&quot;</span>
+<span class="sd">    &quot;Cedar, Pine or Spruce&quot;,&quot;1100000&quot;,&quot;0.0162&quot;</span>
+
+<span class="sd">Test Cases for Materials</span>
+
+<span class="sd">&gt;&gt;&gt; import hamcalc.construction.beamdefl as beamdefl</span>
+<span class="sd">&gt;&gt;&gt; beamdefl.material[&quot;Pine&quot;]</span>
+<span class="sd">Material(name=&#39;Pine&#39;, E=1100000, PCI=0.0162)</span>
+
 
 <span class="sd">Test Cases for BEAM SUPPORTED BOTH ENDS, UNIFORM LOAD</span>
 
-<span class="sd">&gt;&gt;&gt; hamcalc.construction.beamdefl as beamdefl</span>
+<span class="sd">&gt;&gt;&gt; import hamcalc.construction.beamdefl as beamdefl</span>
 <span class="sd">&gt;&gt;&gt; C1= beamdefl.Case_1()</span>
-<span class="sd">&gt;&gt;&gt; a=C1( W=100, I=12, L=18, E=30000000.0 )</span>
+<span class="sd">&gt;&gt;&gt; a=C1( W=100, I=15, L=36, E=1760000.0 )</span>
 <span class="sd">&gt;&gt;&gt; round(a.D,3)</span>
-<span class="sd">0.05</span>
+<span class="sd">0.002</span>
+<span class="sd">&gt;&gt;&gt; round(a.MD,3)</span>
+<span class="sd">0.1</span>
+<span class="sd">&gt;&gt;&gt; a</span>
+<span class="sd">{&#39;MD&#39;: 0.1, &#39;E&#39;: 1760000.0, &#39;D&#39;: 0.0023011363636363637, &#39;I&#39;: 15, &#39;L&#39;: 36, &#39;W&#39;: 100}</span>
+<span class="sd">&gt;&gt;&gt; b=C1( D=0.0023, I=15, L=36, E=1760000.0 )</span>
+<span class="sd">&gt;&gt;&gt; round(b.W,0)</span>
+<span class="sd">100.0</span>
+<span class="sd">&gt;&gt;&gt; c=C1( D=0.0023, W=100, L=36, E=1760000.0 )</span>
+<span class="sd">&gt;&gt;&gt; round(c.I,3)</span>
+<span class="sd">15.007</span>
+<span class="sd">&gt;&gt;&gt; d=C1( D=0.0023, W=100, I=15, E=1760000.0 )</span>
+<span class="sd">&gt;&gt;&gt; round(d.L,3)</span>
+<span class="sd">35.994</span>
+
+<span class="sd">Test Cases for BEAM SUPPORTED BOTH ENDS, LOAD AT CENTRE</span>
+
+<span class="sd">&gt;&gt;&gt; import hamcalc.construction.beamdefl as beamdefl</span>
+<span class="sd">&gt;&gt;&gt; C2= beamdefl.Case_2()</span>
+<span class="sd">&gt;&gt;&gt; a=C2( W=100, I=5, L=36, E=1760000.0 )</span>
+<span class="sd">&gt;&gt;&gt; round(a.D,3)</span>
+<span class="sd">0.011</span>
+<span class="sd">&gt;&gt;&gt; round(a.MD,3)</span>
+<span class="sd">0.1</span>
+<span class="sd">&gt;&gt;&gt; b=C2( D=0.011, I=5, L=36, E=1760000.0 )</span>
+<span class="sd">&gt;&gt;&gt; round(b.W,0)</span>
+<span class="sd">100.0</span>
+<span class="sd">&gt;&gt;&gt; c=C2( D=0.011, W=100, L=36, E=1760000.0 )</span>
+<span class="sd">&gt;&gt;&gt; round(c.I,3)</span>
+<span class="sd">5.021</span>
+<span class="sd">&gt;&gt;&gt; d=C2( D=0.011, W=100, I=5, E=1760000.0 )</span>
+<span class="sd">&gt;&gt;&gt; round(d.L,3)</span>
+<span class="sd">35.951</span>
+
+<span class="sd">Test Cases for BEAM SUPPORTED BOTH ENDS, LOAD AT ANY POINT</span>
+
+<span class="sd">&gt;&gt;&gt; import hamcalc.construction.beamdefl as beamdefl</span>
+<span class="sd">&gt;&gt;&gt; C3= beamdefl.Case_3()</span>
+<span class="sd">&gt;&gt;&gt; a=C3( W=250, I=1.5, L=36, E=10300000.0, A=30 )</span>
+<span class="sd">&gt;&gt;&gt; round(a.D,3)</span>
+<span class="sd">0.005</span>
+<span class="sd">&gt;&gt;&gt; round(a.MD,3)</span>
+<span class="sd">0.1</span>
+<span class="sd">&gt;&gt;&gt; b=C3( D=0.005, I=1.5, L=36, E=10300000.0, A=30 )</span>
+<span class="sd">&gt;&gt;&gt; round(b.W,0)</span>
+<span class="sd">258.0</span>
+<span class="sd">&gt;&gt;&gt; c=C3( D=0.005, W=250, L=36, E=10300000.0, A=30 )</span>
+<span class="sd">&gt;&gt;&gt; round(c.I,3)</span>
+<span class="sd">1.456</span>
+<span class="sd">&gt;&gt;&gt; d=C3( D=0.005, W=250, I=1.5, E=10300000.0, A=30, B=6 )</span>
+<span class="sd">&gt;&gt;&gt; round(d.L,3)</span>
+<span class="sd">34.951</span>
+
+<span class="sd">Test Cases for BEAM SUPPORTED BOTH ENDS, TWO SYMMETRICAL LOADS</span>
+
+<span class="sd">&gt;&gt;&gt; import hamcalc.construction.beamdefl as beamdefl</span>
+<span class="sd">&gt;&gt;&gt; C4= beamdefl.Case_4()</span>
+<span class="sd">&gt;&gt;&gt; a=C4( W=350, I=1.5, L=36, E=10300000.0, A=30 )</span>
+<span class="sd">&gt;&gt;&gt; round(a.D,3)</span>
+<span class="sd">0.008</span>
+<span class="sd">&gt;&gt;&gt; round(a.D1,3)</span>
+<span class="sd">-0.041</span>
+<span class="sd">&gt;&gt;&gt; round(a.MD,3)</span>
+<span class="sd">0.1</span>
+<span class="sd">&gt;&gt;&gt; b=C4( D=0.008, I=1.5, L=36, E=10300000.0, A=30 )</span>
+<span class="sd">&gt;&gt;&gt; round(b.W,0)</span>
+<span class="sd">343.0</span>
+<span class="sd">&gt;&gt;&gt; c=C4( D1=-0.041, I=1.5, L=36, E=10300000.0, A=30 )</span>
+<span class="sd">&gt;&gt;&gt; round(c.W,0)</span>
+<span class="sd">352.0</span>
+
+<span class="sd">Test Cases for CANTILEVER BEAM FIXED ONE END, UNIFORM LOAD</span>
+
+<span class="sd">&gt;&gt;&gt; import hamcalc.construction.beamdefl as beamdefl</span>
+<span class="sd">&gt;&gt;&gt; C10= beamdefl.Case_10()</span>
+<span class="sd">&gt;&gt;&gt; a=C10( W=450, I=1.5, L=36, E=10300000.0 )</span>
+<span class="sd">&gt;&gt;&gt; round(a.D,3)</span>
+<span class="sd">0.17</span>
+<span class="sd">&gt;&gt;&gt; round(a.MD,3)</span>
+<span class="sd">0.1</span>
+<span class="sd">&gt;&gt;&gt; b=C10( D=0.17, I=1.5, L=36, E=10300000.0 )</span>
+<span class="sd">&gt;&gt;&gt; round(b.W,0)</span>
+<span class="sd">450.0</span>
+<span class="sd">&gt;&gt;&gt; c=C10( D=0.17, W=450, L=36, E=10300000.0 )</span>
+<span class="sd">&gt;&gt;&gt; round(c.I,3)</span>
+<span class="sd">1.499</span>
+<span class="sd">&gt;&gt;&gt; d=C10( D=0.17, W=450, I=1.5, E=10300000.0 )</span>
+<span class="sd">&gt;&gt;&gt; round(d.L,3)</span>
+<span class="sd">36.01</span>
+
+<span class="sd">Test Cases for CANTILEVER BEAM FIXED ONE END, LOAD AT OTHER</span>
+
+<span class="sd">&gt;&gt;&gt; import hamcalc.construction.beamdefl as beamdefl</span>
+<span class="sd">&gt;&gt;&gt; C11= beamdefl.Case_11()</span>
+<span class="sd">&gt;&gt;&gt; a=C11( W=550, I=1.5, L=36, E=10300000.0 )</span>
+<span class="sd">&gt;&gt;&gt; round(a.D,3)</span>
+<span class="sd">0.554</span>
+<span class="sd">&gt;&gt;&gt; round(a.MD,3)</span>
+<span class="sd">0.1</span>
+<span class="sd">&gt;&gt;&gt; b=C11( D=0.554, I=1.5, L=36, E=10300000.0 )</span>
+<span class="sd">&gt;&gt;&gt; round(b.W,0)</span>
+<span class="sd">550.0</span>
+<span class="sd">&gt;&gt;&gt; c=C11( D=0.554, W=550, L=36, E=10300000.0 )</span>
+<span class="sd">&gt;&gt;&gt; round(c.I,3)</span>
+<span class="sd">1.499</span>
+<span class="sd">&gt;&gt;&gt; d=C11( D=0.554, W=550, I=1.5, E=10300000.0 )</span>
+<span class="sd">&gt;&gt;&gt; round(d.L,3)</span>
+<span class="sd">36.008</span>
+
+<span class="sd">Test Cases for BEAM FIXED AT ONE END, INTERMEDIATE LOAD</span>
+
+<span class="sd">&gt;&gt;&gt; import hamcalc.construction.beamdefl as beamdefl</span>
+<span class="sd">&gt;&gt;&gt; C12= beamdefl.Case_12()</span>
+<span class="sd">&gt;&gt;&gt; a=C12( W=350, I=1.5, E=10300000.0, L=36, AA=30 )</span>
+<span class="sd">&gt;&gt;&gt; round(a.D,3)</span>
+<span class="sd">0.204</span>
+<span class="sd">&gt;&gt;&gt; round(a.D1,3)</span>
+<span class="sd">0.326</span>
+<span class="sd">&gt;&gt;&gt; round(a.MD,3)</span>
+<span class="sd">0.1</span>
+
+<span class="sd">Test Cases for BEAM FIXED BOTH ENDS, UNIFORM LOAD</span>
+
+<span class="sd">&gt;&gt;&gt; import hamcalc.construction.beamdefl as beamdefl</span>
+<span class="sd">&gt;&gt;&gt; C18= beamdefl.Case_18()</span>
+<span class="sd">&gt;&gt;&gt; a=C18( W=650, I=1.5, E=10300000.0, L=36 )</span>
+<span class="sd">&gt;&gt;&gt; round(a.D,3)</span>
+<span class="sd">0.005</span>
+<span class="sd">&gt;&gt;&gt; b=C18( D=0.005, I=1.5, L=36, E=10300000.0 )</span>
+<span class="sd">&gt;&gt;&gt; round(b.W,0)</span>
+<span class="sd">636.0</span>
+<span class="sd">&gt;&gt;&gt; c=C18( D=0.005, W=650, L=36, E=10300000.0 )</span>
+<span class="sd">&gt;&gt;&gt; round(c.I,3)</span>
+<span class="sd">1.533</span>
+<span class="sd">&gt;&gt;&gt; d=C18( D=0.005, W=650, I=1.5, E=10300000.0 )</span>
+<span class="sd">&gt;&gt;&gt; round(d.L,3)</span>
+<span class="sd">35.736</span>
+
+<span class="sd">Test Cases for BEAM FIXED BOTH ENDS, LOAD AT CENTRE</span>
+
+<span class="sd">&gt;&gt;&gt; import hamcalc.construction.beamdefl as beamdefl</span>
+<span class="sd">&gt;&gt;&gt; C19= beamdefl.Case_19()</span>
+<span class="sd">&gt;&gt;&gt; a=C19( W=750, I=1.5, E=10300000.0, L=36 )</span>
+<span class="sd">&gt;&gt;&gt; round(a.D,3)</span>
+<span class="sd">0.012</span>
+<span class="sd">&gt;&gt;&gt; b=C19( D=0.012, I=1.5, L=36, E=10300000.0 )</span>
+<span class="sd">&gt;&gt;&gt; round(b.W,0)</span>
+<span class="sd">763.0</span>
+<span class="sd">&gt;&gt;&gt; c=C19( D=0.012, W=750, L=36, E=10300000.0 )</span>
+<span class="sd">&gt;&gt;&gt; round(c.I,3)</span>
+<span class="sd">1.475</span>
+<span class="sd">&gt;&gt;&gt; d=C19( D=0.012, W=750, I=1.5, E=10300000.0 )</span>
+<span class="sd">&gt;&gt;&gt; round(d.L,3)</span>
+<span class="sd">36.206</span>
+
+<span class="sd">Test Cases for BEAM FIXED BOTH ENDS, LOAD AT ANY POINT</span>
+
+<span class="sd">&gt;&gt;&gt; import hamcalc.construction.beamdefl as beamdefl</span>
+<span class="sd">&gt;&gt;&gt; C20= beamdefl.Case_20()</span>
+<span class="sd">&gt;&gt;&gt; a=C20( W=850, I=1.5, E=10300000.0, L=36, A=30 )</span>
+<span class="sd">&gt;&gt;&gt; round(a.D,3)</span>
+<span class="sd">0.002</span>
+<span class="sd">&gt;&gt;&gt; b=C20( D=0.0023, I=1.5, L=36, E=10300000.0, A=30 )</span>
+<span class="sd">&gt;&gt;&gt; round(b.W,0)</span>
+<span class="sd">853.0</span>
+<span class="sd">&gt;&gt;&gt; c=C20( D=0.0023, W=850, L=36, E=10300000.0, A=30 )</span>
+<span class="sd">&gt;&gt;&gt; round(c.I,3)</span>
+<span class="sd">1.495</span>
+<span class="sd">&gt;&gt;&gt; d=C20( D=0.0023, W=850, I=1.5, E=10300000.0, A=30, B=6 )</span>
+<span class="sd">&gt;&gt;&gt; round(d.L,3)</span>
+<span class="sd">35.96</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">from</span> <span class="nn">hamcalc.lib</span> <span class="kn">import</span> <span class="n">Solver</span><span class="p">,</span> <span class="n">NoSolutionError</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">namedtuple</span><span class="p">,</span> <span class="n">OrderedDict</span>
+<span class="kn">import</span> <span class="nn">math</span>
 
-<div class="viewcode-block" id="Case_1"><a class="viewcode-back" href="../../../python/construction/beamdefl.html#hamcalc.construction.beamdefl.Case_1">[docs]</a><span class="k">class</span> <span class="nc">Case_1</span><span class="p">(</span> <span class="n">Solver</span> <span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;BEAM SUPPORTED BOTH ENDS, UNIFORM LOAD&quot;&quot;&quot;</span>
+<span class="k">def</span> <span class="nf">intro</span><span class="p">():</span>
+    <span class="k">return</span> <span class="s">&quot;&quot;&quot;</span><span class="se">\</span>
+<span class="s">DEFLECTION in BEAMS                                     by George Murphy VE3ERP</span>
+<span class="s"> Ref: Machinery&#39;s Handbook, 21st Edition</span>
+<span class="s">&quot;&quot;&quot;</span>
+
+<span class="n">Material</span><span class="o">=</span> <span class="n">namedtuple</span><span class="p">(</span> <span class="s">&quot;Material&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s">&quot;name&quot;</span><span class="p">,</span><span class="s">&quot;E&quot;</span><span class="p">,</span><span class="s">&quot;PCI&quot;</span><span class="p">]</span> <span class="p">)</span>
+
+<span class="n">material_list</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="n">Material</span><span class="p">(</span><span class="s">&quot;Steel Alloy&quot;</span><span class="p">,</span> <span class="mi">30000000</span><span class="p">,</span> <span class="mf">0.2833</span><span class="p">),</span>
+    <span class="n">Material</span><span class="p">(</span><span class="s">&quot;Structural Steel&quot;</span><span class="p">,</span> <span class="mi">29000000</span><span class="p">,</span> <span class="mf">0.2833</span><span class="p">),</span>
+    <span class="n">Material</span><span class="p">(</span><span class="s">&quot;Wrought Iron&quot;</span><span class="p">,</span> <span class="mi">28000000</span><span class="p">,</span> <span class="mf">0.285</span><span class="p">),</span>
+    <span class="n">Material</span><span class="p">(</span><span class="s">&quot;Extruded Aluminum&quot;</span><span class="p">,</span> <span class="mi">10300000</span><span class="p">,</span> <span class="mf">0.0979</span><span class="p">),</span>
+    <span class="n">Material</span><span class="p">(</span><span class="s">&quot;Fir&quot;</span><span class="p">,</span> <span class="mi">1760000</span><span class="p">,</span> <span class="mf">0.0162</span><span class="p">),</span>
+    <span class="n">Material</span><span class="p">(</span><span class="s">&quot;Redwood&quot;</span><span class="p">,</span> <span class="mi">1320000</span><span class="p">,</span> <span class="mf">0.0162</span><span class="p">),</span>
+    <span class="n">Material</span><span class="p">(</span><span class="s">&quot;Cedar&quot;</span><span class="p">,</span> <span class="mi">1100000</span><span class="p">,</span> <span class="mf">0.0162</span><span class="p">),</span>
+    <span class="n">Material</span><span class="p">(</span><span class="s">&quot;Pine&quot;</span><span class="p">,</span> <span class="mi">1100000</span><span class="p">,</span> <span class="mf">0.0162</span><span class="p">),</span>
+    <span class="n">Material</span><span class="p">(</span><span class="s">&quot;Spruce&quot;</span><span class="p">,</span> <span class="mi">1100000</span><span class="p">,</span> <span class="mf">0.0162</span><span class="p">),</span>
+<span class="p">]</span>
+
+<span class="n">material</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">(</span>
+    <span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">name</span><span class="p">,</span><span class="n">m</span><span class="p">)</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">material_list</span>
+<span class="p">)</span>
+
+<div class="viewcode-block" id="BeamSolver"><a class="viewcode-back" href="../../../python/construction/beamdefl.html#hamcalc.construction.beamdefl.BeamSolver">[docs]</a><span class="k">class</span> <span class="nc">BeamSolver</span><span class="p">(</span> <span class="n">Solver</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Superclass for beam deflection solvers.&quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span> <span class="p">):</span>
+        <span class="n">result</span><span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">__call__</span><span class="p">(</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span> <span class="p">)</span>
+        <span class="k">if</span> <span class="n">result</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="o">=</span> <span class="n">result</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_max_defl</span><span class="p">()</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">args</span>
+<div class="viewcode-block" id="BeamSolver.set_max_defl"><a class="viewcode-back" href="../../../python/construction/beamdefl.html#hamcalc.construction.beamdefl.BeamSolver.set_max_defl">[docs]</a>    <span class="k">def</span> <span class="nf">set_max_defl</span><span class="p">(</span> <span class="bp">self</span> <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Compute maximum deflection.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">MD</span><span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">L</span><span class="o">/</span><span class="mi">360</span>
+</div></div>
+<div class="viewcode-block" id="Case_1"><a class="viewcode-back" href="../../../python/construction/beamdefl.html#hamcalc.construction.beamdefl.Case_1">[docs]</a><span class="k">class</span> <span class="nc">Case_1</span><span class="p">(</span> <span class="n">BeamSolver</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;BEAM SUPPORTED BOTH ENDS, UNIFORM LOAD</span>
+<span class="sd">    D= (5/384) x (W x L^3) / (E x I)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">positions</span><span class="o">=</span> <span class="s">&quot;centre&quot;</span><span class="p">,</span><span class="s">&quot;&quot;</span>
 <div class="viewcode-block" id="Case_1.solve"><a class="viewcode-back" href="../../../python/construction/beamdefl.html#hamcalc.construction.beamdefl.Case_1.solve">[docs]</a>    <span class="k">def</span> <span class="nf">solve</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">args</span> <span class="p">):</span>
-        <span class="k">if</span> <span class="s">&quot;W&quot;</span> <span class="ow">in</span> <span class="n">args</span> <span class="ow">and</span> <span class="s">&quot;L&quot;</span> <span class="ow">in</span> <span class="n">args</span> <span class="ow">and</span> <span class="s">&quot;E&quot;</span> <span class="ow">in</span> <span class="n">args</span> <span class="ow">and</span> <span class="s">&quot;I&quot;</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :W: Weight (Load in pounds)</span>
+<span class="sd">        :I: Inertia (Moment of Inertia in inches^4)</span>
+<span class="sd">        :L: Length (in inches)</span>
+<span class="sd">        :E: Elasticity Modulus (in PSI)</span>
+<span class="sd">        :D: Deflection (in inches)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">args_contains</span><span class="p">(</span> <span class="s">&quot;W&quot;</span><span class="p">,</span> <span class="s">&quot;L&quot;</span><span class="p">,</span> <span class="s">&quot;E&quot;</span><span class="p">,</span> <span class="s">&quot;I&quot;</span> <span class="p">):</span>
             <span class="n">args</span><span class="o">.</span><span class="n">D</span> <span class="o">=</span> <span class="mi">5</span><span class="o">*</span><span class="n">args</span><span class="o">.</span><span class="n">W</span><span class="o">*</span><span class="n">args</span><span class="o">.</span><span class="n">L</span><span class="o">**</span><span class="mi">3</span><span class="o">/</span><span class="p">(</span><span class="mi">384</span><span class="o">*</span><span class="n">args</span><span class="o">.</span><span class="n">E</span><span class="o">*</span><span class="n">args</span><span class="o">.</span><span class="n">I</span><span class="p">)</span>
-        <span class="k">elif</span> <span class="s">&quot;D&quot;</span> <span class="ow">in</span> <span class="n">args</span> <span class="ow">and</span> <span class="s">&quot;E&quot;</span> <span class="ow">in</span> <span class="n">args</span> <span class="ow">and</span> <span class="s">&quot;I&quot;</span> <span class="ow">in</span> <span class="n">args</span> <span class="ow">and</span> <span class="s">&quot;L&quot;</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">args_contains</span><span class="p">(</span> <span class="s">&quot;D&quot;</span><span class="p">,</span> <span class="s">&quot;E&quot;</span><span class="p">,</span> <span class="s">&quot;I&quot;</span><span class="p">,</span> <span class="s">&quot;L&quot;</span> <span class="p">):</span>
             <span class="n">args</span><span class="o">.</span><span class="n">W</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">D</span><span class="o">*</span><span class="mi">384</span><span class="o">*</span><span class="n">args</span><span class="o">.</span><span class="n">E</span><span class="o">*</span><span class="n">args</span><span class="o">.</span><span class="n">I</span><span class="o">/</span><span class="p">(</span><span class="mi">5</span><span class="o">*</span><span class="n">args</span><span class="o">.</span><span class="n">L</span><span class="o">**</span><span class="mi">3</span><span class="p">)</span>
-        <span class="k">elif</span> <span class="s">&quot;D&quot;</span> <span class="ow">in</span> <span class="n">args</span> <span class="ow">and</span> <span class="s">&quot;W&quot;</span> <span class="ow">in</span> <span class="n">args</span> <span class="ow">and</span> <span class="s">&quot;E&quot;</span> <span class="ow">in</span> <span class="n">args</span> <span class="ow">and</span> <span class="s">&quot;L&quot;</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">args_contains</span><span class="p">(</span> <span class="s">&quot;D&quot;</span><span class="p">,</span> <span class="s">&quot;W&quot;</span><span class="p">,</span> <span class="s">&quot;E&quot;</span><span class="p">,</span> <span class="s">&quot;L&quot;</span> <span class="p">):</span>
             <span class="n">args</span><span class="o">.</span><span class="n">I</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">W</span><span class="o">*</span><span class="mi">5</span><span class="o">*</span><span class="n">args</span><span class="o">.</span><span class="n">L</span><span class="o">**</span><span class="mi">3</span><span class="o">/</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">D</span><span class="o">*</span><span class="mi">384</span><span class="o">*</span><span class="n">args</span><span class="o">.</span><span class="n">E</span><span class="p">)</span>
-        <span class="k">elif</span> <span class="s">&quot;D&quot;</span> <span class="ow">in</span> <span class="n">args</span> <span class="ow">and</span> <span class="s">&quot;W&quot;</span> <span class="ow">in</span> <span class="n">args</span> <span class="ow">and</span> <span class="s">&quot;E&quot;</span> <span class="ow">in</span> <span class="n">args</span> <span class="ow">and</span> <span class="s">&quot;I&quot;</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">args_contains</span><span class="p">(</span> <span class="s">&quot;D&quot;</span><span class="p">,</span> <span class="s">&quot;W&quot;</span><span class="p">,</span> <span class="s">&quot;E&quot;</span><span class="p">,</span> <span class="s">&quot;I&quot;</span> <span class="p">):</span>
             <span class="n">args</span><span class="o">.</span><span class="n">L</span> <span class="o">=</span> <span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">D</span><span class="o">*</span><span class="mi">384</span><span class="o">*</span><span class="n">args</span><span class="o">.</span><span class="n">E</span><span class="o">*</span><span class="n">args</span><span class="o">.</span><span class="n">I</span><span class="o">/</span><span class="p">(</span><span class="mi">5</span><span class="o">*</span><span class="n">args</span><span class="o">.</span><span class="n">W</span><span class="p">))</span><span class="o">**</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="mi">3</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">NoSolutionError</span><span class="p">(</span> <span class="s">&quot;No usable combination of inputs in {0:r}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">args</span><span class="p">)</span> <span class="p">)</span>
+            <span class="k">raise</span> <span class="n">NoSolutionError</span><span class="p">(</span> <span class="s">&quot;No usable combination of inputs in {0!r}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">args</span><span class="p">)</span> <span class="p">)</span>
         <span class="k">return</span> <span class="n">args</span>
 </div></div>
-<div class="viewcode-block" id="Case_2"><a class="viewcode-back" href="../../../python/construction/beamdefl.html#hamcalc.construction.beamdefl.Case_2">[docs]</a><span class="k">class</span> <span class="nc">Case_2</span><span class="p">(</span> <span class="n">Solver</span> <span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;BEAM SUPPORTED BOTH ENDS, LOAD AT CENTRE&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="Case_2"><a class="viewcode-back" href="../../../python/construction/beamdefl.html#hamcalc.construction.beamdefl.Case_2">[docs]</a><span class="k">class</span> <span class="nc">Case_2</span><span class="p">(</span> <span class="n">BeamSolver</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;BEAM SUPPORTED BOTH ENDS, LOAD AT CENTRE</span>
+<span class="sd">    D= (W x L^3) / (48 x E x I)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">positions</span><span class="o">=</span> <span class="s">&quot;load&quot;</span><span class="p">,</span><span class="s">&quot;&quot;</span>
 <div class="viewcode-block" id="Case_2.solve"><a class="viewcode-back" href="../../../python/construction/beamdefl.html#hamcalc.construction.beamdefl.Case_2.solve">[docs]</a>    <span class="k">def</span> <span class="nf">solve</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">args</span> <span class="p">):</span>
-        <span class="k">pass</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :W: Weight (Load in pounds)</span>
+<span class="sd">        :I: Inertia (Moment of Inertia in inches^4)</span>
+<span class="sd">        :L: Length (in inches)</span>
+<span class="sd">        :E: Elasticity Modulus (in PSI)</span>
+<span class="sd">        :D: Deflection (in inches)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">args_contains</span><span class="p">(</span> <span class="s">&quot;W&quot;</span><span class="p">,</span> <span class="s">&quot;L&quot;</span><span class="p">,</span> <span class="s">&quot;E&quot;</span><span class="p">,</span> <span class="s">&quot;I&quot;</span> <span class="p">):</span>
+            <span class="n">args</span><span class="o">.</span><span class="n">D</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">W</span><span class="o">*</span><span class="n">args</span><span class="o">.</span><span class="n">L</span><span class="o">**</span><span class="mi">3</span><span class="o">/</span><span class="p">(</span><span class="mi">48</span><span class="o">*</span><span class="n">args</span><span class="o">.</span><span class="n">E</span><span class="o">*</span><span class="n">args</span><span class="o">.</span><span class="n">I</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">args_contains</span><span class="p">(</span> <span class="s">&quot;D&quot;</span><span class="p">,</span> <span class="s">&quot;E&quot;</span><span class="p">,</span> <span class="s">&quot;I&quot;</span><span class="p">,</span> <span class="s">&quot;L&quot;</span> <span class="p">):</span>
+            <span class="n">args</span><span class="o">.</span><span class="n">W</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">D</span><span class="o">*</span><span class="mi">48</span><span class="o">*</span><span class="n">args</span><span class="o">.</span><span class="n">E</span><span class="o">*</span><span class="n">args</span><span class="o">.</span><span class="n">I</span><span class="o">/</span><span class="n">args</span><span class="o">.</span><span class="n">L</span><span class="o">**</span><span class="mi">3</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">args_contains</span><span class="p">(</span> <span class="s">&quot;D&quot;</span><span class="p">,</span> <span class="s">&quot;W&quot;</span><span class="p">,</span> <span class="s">&quot;E&quot;</span><span class="p">,</span> <span class="s">&quot;L&quot;</span> <span class="p">):</span>
+            <span class="n">args</span><span class="o">.</span><span class="n">I</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">W</span><span class="o">*</span><span class="n">args</span><span class="o">.</span><span class="n">L</span><span class="o">**</span><span class="mi">3</span><span class="o">/</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">D</span><span class="o">*</span><span class="mi">48</span><span class="o">*</span><span class="n">args</span><span class="o">.</span><span class="n">E</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">args_contains</span><span class="p">(</span> <span class="s">&quot;D&quot;</span><span class="p">,</span> <span class="s">&quot;W&quot;</span><span class="p">,</span> <span class="s">&quot;E&quot;</span><span class="p">,</span> <span class="s">&quot;I&quot;</span> <span class="p">):</span>
+            <span class="n">args</span><span class="o">.</span><span class="n">L</span> <span class="o">=</span> <span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">D</span><span class="o">*</span><span class="mi">48</span><span class="o">*</span><span class="n">args</span><span class="o">.</span><span class="n">E</span><span class="o">*</span><span class="n">args</span><span class="o">.</span><span class="n">I</span><span class="o">/</span><span class="n">args</span><span class="o">.</span><span class="n">W</span><span class="p">)</span><span class="o">**</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="mi">3</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">NoSolutionError</span><span class="p">(</span> <span class="s">&quot;No usable combination of inputs in {0!r}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">args</span><span class="p">)</span> <span class="p">)</span>
+        <span class="k">return</span> <span class="n">args</span>
 </div></div>
-<div class="viewcode-block" id="Case_3"><a class="viewcode-back" href="../../../python/construction/beamdefl.html#hamcalc.construction.beamdefl.Case_3">[docs]</a><span class="k">class</span> <span class="nc">Case_3</span><span class="p">(</span> <span class="n">Solver</span> <span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;BEAM SUPPORTED BOTH ENDS, LOAD AT ANY POINT&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="Case_3"><a class="viewcode-back" href="../../../python/construction/beamdefl.html#hamcalc.construction.beamdefl.Case_3">[docs]</a><span class="k">class</span> <span class="nc">Case_3</span><span class="p">(</span> <span class="n">BeamSolver</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;BEAM SUPPORTED BOTH ENDS, LOAD AT ANY POINT</span>
+<span class="sd">    D= (W x A^2 x B^2) / (3 x E x I x L)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">positions</span><span class="o">=</span> <span class="s">&quot;load&quot;</span><span class="p">,</span><span class="s">&quot;&quot;</span>
 <div class="viewcode-block" id="Case_3.solve"><a class="viewcode-back" href="../../../python/construction/beamdefl.html#hamcalc.construction.beamdefl.Case_3.solve">[docs]</a>    <span class="k">def</span> <span class="nf">solve</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">args</span> <span class="p">):</span>
-        <span class="k">pass</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :W: Weight (Load in pounds)</span>
+<span class="sd">        :I: Inertia (Moment of Inertia in inches^4)</span>
+<span class="sd">        :L: Length (in inches)</span>
+<span class="sd">        :E: Elasticity Modulus (in PSI)</span>
+<span class="sd">        :D: Deflection (in inches)</span>
+<span class="sd">        :A: Load distance from nearest end</span>
+<span class="sd">        :B: Load distance from farthest end</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="s">&quot;A&quot;</span> <span class="ow">in</span> <span class="n">args</span> <span class="ow">and</span> <span class="s">&quot;L&quot;</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
+            <span class="n">args</span><span class="o">.</span><span class="n">B</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">L</span> <span class="o">-</span> <span class="n">args</span><span class="o">.</span><span class="n">A</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">args_contains</span><span class="p">(</span> <span class="s">&quot;W&quot;</span><span class="p">,</span> <span class="s">&quot;A&quot;</span><span class="p">,</span> <span class="s">&quot;B&quot;</span><span class="p">,</span> <span class="s">&quot;E&quot;</span><span class="p">,</span> <span class="s">&quot;I&quot;</span><span class="p">,</span> <span class="s">&quot;L&quot;</span> <span class="p">):</span>
+            <span class="n">args</span><span class="o">.</span><span class="n">D</span><span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">W</span><span class="o">*</span><span class="n">args</span><span class="o">.</span><span class="n">A</span><span class="o">**</span><span class="mi">2</span><span class="o">*</span><span class="n">args</span><span class="o">.</span><span class="n">B</span><span class="o">**</span><span class="mi">2</span><span class="o">/</span><span class="p">(</span><span class="mi">3</span><span class="o">*</span><span class="n">args</span><span class="o">.</span><span class="n">E</span><span class="o">*</span><span class="n">args</span><span class="o">.</span><span class="n">I</span><span class="o">*</span><span class="n">args</span><span class="o">.</span><span class="n">L</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">args_contains</span><span class="p">(</span> <span class="s">&quot;D&quot;</span><span class="p">,</span> <span class="s">&quot;E&quot;</span><span class="p">,</span> <span class="s">&quot;I&quot;</span><span class="p">,</span> <span class="s">&quot;L&quot;</span><span class="p">,</span> <span class="s">&quot;A&quot;</span><span class="p">,</span> <span class="s">&quot;B&quot;</span> <span class="p">):</span>
+            <span class="n">args</span><span class="o">.</span><span class="n">W</span><span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">D</span><span class="o">*</span><span class="mi">3</span><span class="o">*</span><span class="n">args</span><span class="o">.</span><span class="n">E</span><span class="o">*</span><span class="n">args</span><span class="o">.</span><span class="n">I</span><span class="o">*</span><span class="n">args</span><span class="o">.</span><span class="n">L</span><span class="o">/</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">A</span><span class="o">**</span><span class="mi">2</span><span class="o">*</span><span class="n">args</span><span class="o">.</span><span class="n">B</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">args_contains</span><span class="p">(</span> <span class="s">&quot;D&quot;</span><span class="p">,</span> <span class="s">&quot;E&quot;</span><span class="p">,</span> <span class="s">&quot;I&quot;</span><span class="p">,</span> <span class="s">&quot;L&quot;</span><span class="p">,</span> <span class="s">&quot;W&quot;</span><span class="p">,</span> <span class="s">&quot;B&quot;</span> <span class="p">):</span>
+            <span class="n">args</span><span class="o">.</span><span class="n">A</span><span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">D</span><span class="o">*</span><span class="mi">3</span><span class="o">*</span><span class="n">args</span><span class="o">.</span><span class="n">E</span><span class="o">*</span><span class="n">args</span><span class="o">.</span><span class="n">I</span><span class="o">*</span><span class="n">args</span><span class="o">.</span><span class="n">L</span><span class="o">/</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">W</span><span class="o">*</span><span class="n">args</span><span class="o">.</span><span class="n">B</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">args_contains</span><span class="p">(</span> <span class="s">&quot;W&quot;</span><span class="p">,</span> <span class="s">&quot;A&quot;</span><span class="p">,</span> <span class="s">&quot;B&quot;</span><span class="p">,</span> <span class="s">&quot;D&quot;</span><span class="p">,</span> <span class="s">&quot;E&quot;</span><span class="p">,</span> <span class="s">&quot;L&quot;</span> <span class="p">):</span>
+            <span class="n">args</span><span class="o">.</span><span class="n">I</span><span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">W</span><span class="o">*</span><span class="n">args</span><span class="o">.</span><span class="n">A</span><span class="o">**</span><span class="mi">2</span><span class="o">*</span><span class="n">args</span><span class="o">.</span><span class="n">B</span><span class="o">**</span><span class="mi">2</span><span class="o">/</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">D</span><span class="o">*</span><span class="mi">3</span><span class="o">*</span><span class="n">args</span><span class="o">.</span><span class="n">E</span><span class="o">*</span><span class="n">args</span><span class="o">.</span><span class="n">L</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">args_contains</span><span class="p">(</span> <span class="s">&quot;W&quot;</span><span class="p">,</span> <span class="s">&quot;A&quot;</span><span class="p">,</span> <span class="s">&quot;B&quot;</span><span class="p">,</span> <span class="s">&quot;D&quot;</span><span class="p">,</span> <span class="s">&quot;E&quot;</span><span class="p">,</span> <span class="s">&quot;I&quot;</span> <span class="p">):</span>
+            <span class="n">args</span><span class="o">.</span><span class="n">L</span><span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">W</span><span class="o">*</span><span class="n">args</span><span class="o">.</span><span class="n">A</span><span class="o">**</span><span class="mi">2</span><span class="o">*</span><span class="n">args</span><span class="o">.</span><span class="n">B</span><span class="o">**</span><span class="mi">2</span><span class="o">/</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">D</span><span class="o">*</span><span class="mi">3</span><span class="o">*</span><span class="n">args</span><span class="o">.</span><span class="n">E</span><span class="o">*</span><span class="n">args</span><span class="o">.</span><span class="n">I</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">NoSolutionError</span><span class="p">(</span> <span class="s">&quot;No usable combination of inputs in {0!r}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">args</span><span class="p">)</span> <span class="p">)</span>
+        <span class="k">return</span> <span class="n">args</span>
 </div></div>
-<div class="viewcode-block" id="Case_4"><a class="viewcode-back" href="../../../python/construction/beamdefl.html#hamcalc.construction.beamdefl.Case_4">[docs]</a><span class="k">class</span> <span class="nc">Case_4</span><span class="p">(</span> <span class="n">Solver</span> <span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;BEAM SUPPORTED BOTH ENDS, TWO SYMMETRICAL LOADS&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="Case_4"><a class="viewcode-back" href="../../../python/construction/beamdefl.html#hamcalc.construction.beamdefl.Case_4">[docs]</a><span class="k">class</span> <span class="nc">Case_4</span><span class="p">(</span> <span class="n">BeamSolver</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;BEAM SUPPORTED BOTH ENDS, TWO SYMMETRICAL LOADS</span>
+<span class="sd">    at centre: D= (W x A) / (24 x E x I) x (3 x L^2 - 4 x A^2)</span>
+<span class="sd">    at loads: D1= (W x A^2) / (6 x E x I) x (3 x L - 4 x A)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">positions</span><span class="o">=</span> <span class="s">&quot;centre&quot;</span><span class="p">,</span> <span class="s">&quot;loads&quot;</span>
 <div class="viewcode-block" id="Case_4.solve"><a class="viewcode-back" href="../../../python/construction/beamdefl.html#hamcalc.construction.beamdefl.Case_4.solve">[docs]</a>    <span class="k">def</span> <span class="nf">solve</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">args</span> <span class="p">):</span>
-        <span class="k">pass</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :W: Weight (Load in pounds)</span>
+<span class="sd">        :I: Inertia (Moment of Inertia in inches^4)</span>
+<span class="sd">        :L: Length (in inches)</span>
+<span class="sd">        :E: Elasticity Modulus (in PSI)</span>
+<span class="sd">        :A: Load distance from nearest end</span>
+<span class="sd">        :D: Deflection (in inches) at center</span>
+<span class="sd">        :D1: Deflection (in inches) at loads</span>
+
+<span class="sd">        ..  todo:: Solve for I or L.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">args_contains</span><span class="p">(</span> <span class="s">&quot;W&quot;</span><span class="p">,</span> <span class="s">&quot;A&quot;</span><span class="p">,</span> <span class="s">&quot;L&quot;</span><span class="p">,</span> <span class="s">&quot;E&quot;</span><span class="p">,</span> <span class="s">&quot;I&quot;</span> <span class="p">):</span>
+            <span class="n">args</span><span class="o">.</span><span class="n">D</span><span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">W</span><span class="o">*</span><span class="n">args</span><span class="o">.</span><span class="n">A</span><span class="o">*</span><span class="p">(</span><span class="mi">3</span><span class="o">*</span><span class="n">args</span><span class="o">.</span><span class="n">L</span><span class="o">**</span><span class="mi">2</span><span class="o">-</span><span class="mi">4</span><span class="o">*</span><span class="n">args</span><span class="o">.</span><span class="n">A</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="mi">24</span><span class="o">*</span><span class="n">args</span><span class="o">.</span><span class="n">E</span><span class="o">*</span><span class="n">args</span><span class="o">.</span><span class="n">I</span><span class="p">)</span>
+            <span class="n">args</span><span class="o">.</span><span class="n">D1</span><span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">W</span><span class="o">*</span><span class="n">args</span><span class="o">.</span><span class="n">A</span><span class="o">**</span><span class="mi">2</span><span class="o">*</span><span class="p">(</span><span class="mi">3</span><span class="o">*</span><span class="n">args</span><span class="o">.</span><span class="n">L</span><span class="o">-</span><span class="mi">4</span><span class="o">*</span><span class="n">args</span><span class="o">.</span><span class="n">A</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="mi">6</span><span class="o">*</span><span class="n">args</span><span class="o">.</span><span class="n">E</span><span class="o">*</span><span class="n">args</span><span class="o">.</span><span class="n">I</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">args_contains</span><span class="p">(</span> <span class="s">&quot;D&quot;</span><span class="p">,</span> <span class="s">&quot;A&quot;</span><span class="p">,</span> <span class="s">&quot;L&quot;</span><span class="p">,</span> <span class="s">&quot;E&quot;</span><span class="p">,</span> <span class="s">&quot;I&quot;</span> <span class="p">):</span>
+            <span class="n">args</span><span class="o">.</span><span class="n">W</span><span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">D</span><span class="o">/</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">A</span><span class="o">*</span><span class="p">(</span><span class="mi">3</span><span class="o">*</span><span class="n">args</span><span class="o">.</span><span class="n">L</span><span class="o">**</span><span class="mi">2</span><span class="o">-</span><span class="mi">4</span><span class="o">*</span><span class="n">args</span><span class="o">.</span><span class="n">A</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="mi">24</span><span class="o">*</span><span class="n">args</span><span class="o">.</span><span class="n">E</span><span class="o">*</span><span class="n">args</span><span class="o">.</span><span class="n">I</span><span class="p">))</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">args_contains</span><span class="p">(</span> <span class="s">&quot;D1&quot;</span><span class="p">,</span> <span class="s">&quot;A&quot;</span><span class="p">,</span> <span class="s">&quot;L&quot;</span><span class="p">,</span> <span class="s">&quot;E&quot;</span><span class="p">,</span> <span class="s">&quot;I&quot;</span> <span class="p">):</span>
+            <span class="n">args</span><span class="o">.</span><span class="n">W</span><span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">D1</span><span class="o">/</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">A</span><span class="o">**</span><span class="mi">2</span><span class="o">*</span><span class="p">(</span><span class="mi">3</span><span class="o">*</span><span class="n">args</span><span class="o">.</span><span class="n">L</span><span class="o">-</span><span class="mi">4</span><span class="o">*</span><span class="n">args</span><span class="o">.</span><span class="n">A</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="mi">6</span><span class="o">*</span><span class="n">args</span><span class="o">.</span><span class="n">E</span><span class="o">*</span><span class="n">args</span><span class="o">.</span><span class="n">I</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">NoSolutionError</span><span class="p">(</span> <span class="s">&quot;No usable combination of inputs in {0!r}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">args</span><span class="p">)</span> <span class="p">)</span>
+        <span class="k">return</span> <span class="n">args</span>
 </div></div>
-<div class="viewcode-block" id="Case_10"><a class="viewcode-back" href="../../../python/construction/beamdefl.html#hamcalc.construction.beamdefl.Case_10">[docs]</a><span class="k">class</span> <span class="nc">Case_10</span><span class="p">(</span> <span class="n">Solver</span> <span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;CANTILEVER BEAM FIXED ONE END, UNIFORM LOAD&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="Case_10"><a class="viewcode-back" href="../../../python/construction/beamdefl.html#hamcalc.construction.beamdefl.Case_10">[docs]</a><span class="k">class</span> <span class="nc">Case_10</span><span class="p">(</span> <span class="n">BeamSolver</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;CANTILEVER BEAM FIXED ONE END, UNIFORM LOAD</span>
+<span class="sd">    D= (W x L^3) / (8 x E x I)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">positions</span><span class="o">=</span> <span class="s">&quot;end&quot;</span><span class="p">,</span> <span class="s">&quot;&quot;</span>
 <div class="viewcode-block" id="Case_10.solve"><a class="viewcode-back" href="../../../python/construction/beamdefl.html#hamcalc.construction.beamdefl.Case_10.solve">[docs]</a>    <span class="k">def</span> <span class="nf">solve</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">args</span> <span class="p">):</span>
-        <span class="k">pass</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :W: Weight (Load in pounds)</span>
+<span class="sd">        :I: Inertia (Moment of Inertia in inches^4)</span>
+<span class="sd">        :L: Length (in inches)</span>
+<span class="sd">        :E: Elasticity Modulus (in PSI)</span>
+<span class="sd">        :D: Deflection (in inches)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">args_contains</span><span class="p">(</span> <span class="s">&quot;W&quot;</span><span class="p">,</span> <span class="s">&quot;L&quot;</span><span class="p">,</span> <span class="s">&quot;E&quot;</span><span class="p">,</span> <span class="s">&quot;I&quot;</span> <span class="p">):</span>
+            <span class="n">args</span><span class="o">.</span><span class="n">D</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">W</span><span class="o">*</span><span class="n">args</span><span class="o">.</span><span class="n">L</span><span class="o">**</span><span class="mi">3</span><span class="o">/</span><span class="p">(</span><span class="mi">8</span><span class="o">*</span><span class="n">args</span><span class="o">.</span><span class="n">E</span><span class="o">*</span><span class="n">args</span><span class="o">.</span><span class="n">I</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">args_contains</span><span class="p">(</span> <span class="s">&quot;D&quot;</span><span class="p">,</span> <span class="s">&quot;E&quot;</span><span class="p">,</span> <span class="s">&quot;I&quot;</span><span class="p">,</span> <span class="s">&quot;L&quot;</span> <span class="p">):</span>
+            <span class="n">args</span><span class="o">.</span><span class="n">W</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">D</span><span class="o">*</span><span class="mi">8</span><span class="o">*</span><span class="n">args</span><span class="o">.</span><span class="n">E</span><span class="o">*</span><span class="n">args</span><span class="o">.</span><span class="n">I</span><span class="o">/</span><span class="n">args</span><span class="o">.</span><span class="n">L</span><span class="o">**</span><span class="mi">3</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">args_contains</span><span class="p">(</span> <span class="s">&quot;D&quot;</span><span class="p">,</span> <span class="s">&quot;W&quot;</span><span class="p">,</span> <span class="s">&quot;E&quot;</span><span class="p">,</span> <span class="s">&quot;L&quot;</span> <span class="p">):</span>
+            <span class="n">args</span><span class="o">.</span><span class="n">I</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">W</span><span class="o">*</span><span class="n">args</span><span class="o">.</span><span class="n">L</span><span class="o">**</span><span class="mi">3</span><span class="o">/</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">D</span><span class="o">*</span><span class="mi">8</span><span class="o">*</span><span class="n">args</span><span class="o">.</span><span class="n">E</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">args_contains</span><span class="p">(</span> <span class="s">&quot;D&quot;</span><span class="p">,</span> <span class="s">&quot;W&quot;</span><span class="p">,</span> <span class="s">&quot;E&quot;</span><span class="p">,</span> <span class="s">&quot;I&quot;</span> <span class="p">):</span>
+            <span class="n">args</span><span class="o">.</span><span class="n">L</span> <span class="o">=</span> <span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">D</span><span class="o">*</span><span class="mi">8</span><span class="o">*</span><span class="n">args</span><span class="o">.</span><span class="n">E</span><span class="o">*</span><span class="n">args</span><span class="o">.</span><span class="n">I</span><span class="o">/</span><span class="n">args</span><span class="o">.</span><span class="n">W</span><span class="p">)</span><span class="o">**</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="mi">3</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">NoSolutionError</span><span class="p">(</span> <span class="s">&quot;No usable combination of inputs in {0!r}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">args</span><span class="p">)</span> <span class="p">)</span>
+        <span class="k">return</span> <span class="n">args</span>
 </div></div>
-<div class="viewcode-block" id="Case_11"><a class="viewcode-back" href="../../../python/construction/beamdefl.html#hamcalc.construction.beamdefl.Case_11">[docs]</a><span class="k">class</span> <span class="nc">Case_11</span><span class="p">(</span> <span class="n">Solver</span> <span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;CANTILEVER BEAM FIXED ONE END, LOAD AT OTHER&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="Case_11"><a class="viewcode-back" href="../../../python/construction/beamdefl.html#hamcalc.construction.beamdefl.Case_11">[docs]</a><span class="k">class</span> <span class="nc">Case_11</span><span class="p">(</span> <span class="n">BeamSolver</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;CANTILEVER BEAM FIXED ONE END, LOAD AT OTHER</span>
+<span class="sd">    D= (W x L^3) / (3 x E x I)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">positions</span><span class="o">=</span> <span class="s">&quot;end&quot;</span><span class="p">,</span> <span class="s">&quot;&quot;</span>
 <div class="viewcode-block" id="Case_11.solve"><a class="viewcode-back" href="../../../python/construction/beamdefl.html#hamcalc.construction.beamdefl.Case_11.solve">[docs]</a>    <span class="k">def</span> <span class="nf">solve</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">args</span> <span class="p">):</span>
-        <span class="k">pass</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :W: Weight (Load in pounds)</span>
+<span class="sd">        :I: Inertia (Moment of Inertia in inches^4)</span>
+<span class="sd">        :L: Length (in inches)</span>
+<span class="sd">        :E: Elasticity Modulus (in PSI)</span>
+<span class="sd">        :D: Deflection (in inches)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">args_contains</span><span class="p">(</span> <span class="s">&quot;W&quot;</span><span class="p">,</span> <span class="s">&quot;L&quot;</span><span class="p">,</span> <span class="s">&quot;E&quot;</span><span class="p">,</span> <span class="s">&quot;I&quot;</span> <span class="p">):</span>
+            <span class="n">args</span><span class="o">.</span><span class="n">D</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">W</span><span class="o">*</span><span class="n">args</span><span class="o">.</span><span class="n">L</span><span class="o">**</span><span class="mi">3</span><span class="o">/</span><span class="p">(</span><span class="mi">3</span><span class="o">*</span><span class="n">args</span><span class="o">.</span><span class="n">E</span><span class="o">*</span><span class="n">args</span><span class="o">.</span><span class="n">I</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">args_contains</span><span class="p">(</span> <span class="s">&quot;D&quot;</span><span class="p">,</span> <span class="s">&quot;E&quot;</span><span class="p">,</span> <span class="s">&quot;I&quot;</span><span class="p">,</span> <span class="s">&quot;L&quot;</span> <span class="p">):</span>
+            <span class="n">args</span><span class="o">.</span><span class="n">W</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">D</span><span class="o">*</span><span class="mi">3</span><span class="o">*</span><span class="n">args</span><span class="o">.</span><span class="n">E</span><span class="o">*</span><span class="n">args</span><span class="o">.</span><span class="n">I</span><span class="o">/</span><span class="n">args</span><span class="o">.</span><span class="n">L</span><span class="o">**</span><span class="mi">3</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">args_contains</span><span class="p">(</span> <span class="s">&quot;D&quot;</span><span class="p">,</span> <span class="s">&quot;W&quot;</span><span class="p">,</span> <span class="s">&quot;E&quot;</span><span class="p">,</span> <span class="s">&quot;L&quot;</span> <span class="p">):</span>
+            <span class="n">args</span><span class="o">.</span><span class="n">I</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">W</span><span class="o">*</span><span class="n">args</span><span class="o">.</span><span class="n">L</span><span class="o">**</span><span class="mi">3</span><span class="o">/</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">D</span><span class="o">*</span><span class="mi">3</span><span class="o">*</span><span class="n">args</span><span class="o">.</span><span class="n">E</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">args_contains</span><span class="p">(</span> <span class="s">&quot;D&quot;</span><span class="p">,</span> <span class="s">&quot;W&quot;</span><span class="p">,</span> <span class="s">&quot;E&quot;</span><span class="p">,</span> <span class="s">&quot;I&quot;</span> <span class="p">):</span>
+            <span class="n">args</span><span class="o">.</span><span class="n">L</span> <span class="o">=</span> <span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">D</span><span class="o">*</span><span class="mi">3</span><span class="o">*</span><span class="n">args</span><span class="o">.</span><span class="n">E</span><span class="o">*</span><span class="n">args</span><span class="o">.</span><span class="n">I</span><span class="o">/</span><span class="n">args</span><span class="o">.</span><span class="n">W</span><span class="p">)</span><span class="o">**</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="mi">3</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">NoSolutionError</span><span class="p">(</span> <span class="s">&quot;No usable combination of inputs in {0!r}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">args</span><span class="p">)</span> <span class="p">)</span>
+        <span class="k">return</span> <span class="n">args</span>
 </div></div>
-<div class="viewcode-block" id="Case_12"><a class="viewcode-back" href="../../../python/construction/beamdefl.html#hamcalc.construction.beamdefl.Case_12">[docs]</a><span class="k">class</span> <span class="nc">Case_12</span><span class="p">(</span> <span class="n">Solver</span> <span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;BEAM FIXED AT ONE END, INTERMEDIATE LOAD&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="Case_12"><a class="viewcode-back" href="../../../python/construction/beamdefl.html#hamcalc.construction.beamdefl.Case_12">[docs]</a><span class="k">class</span> <span class="nc">Case_12</span><span class="p">(</span> <span class="n">BeamSolver</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;BEAM FIXED AT ONE END, INTERMEDIATE LOAD</span>
+<span class="sd">    at load: D= (W x AA^3) / (3 x E x I)</span>
+<span class="sd">    at end: D1= (W x AA^2) / (6 x E x I) x (2 x AA + 3 x BB)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">positions</span><span class="o">=</span> <span class="s">&quot;load&quot;</span><span class="p">,</span> <span class="s">&quot;end&quot;</span>
 <div class="viewcode-block" id="Case_12.solve"><a class="viewcode-back" href="../../../python/construction/beamdefl.html#hamcalc.construction.beamdefl.Case_12.solve">[docs]</a>    <span class="k">def</span> <span class="nf">solve</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">args</span> <span class="p">):</span>
-        <span class="k">pass</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :W: Weight (Load in pounds)</span>
+<span class="sd">        :I: Inertia (Moment of Inertia in inches^4)</span>
+<span class="sd">        :L: Length (in inches)</span>
+<span class="sd">        :E: Elasticity Modulus (in PSI)</span>
+<span class="sd">        :D: Deflection (in inches)</span>
+<span class="sd">        :AA: Load distance from fixed end</span>
+<span class="sd">        :BB: Load distance from free end</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="s">&quot;AA&quot;</span> <span class="ow">in</span> <span class="n">args</span> <span class="ow">and</span> <span class="s">&quot;L&quot;</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
+            <span class="n">args</span><span class="o">.</span><span class="n">BB</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">L</span> <span class="o">-</span> <span class="n">args</span><span class="o">.</span><span class="n">AA</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">args_contains</span><span class="p">(</span> <span class="s">&quot;W&quot;</span><span class="p">,</span> <span class="s">&quot;AA&quot;</span><span class="p">,</span> <span class="s">&quot;BB&quot;</span><span class="p">,</span> <span class="s">&quot;E&quot;</span><span class="p">,</span> <span class="s">&quot;I&quot;</span> <span class="p">):</span>
+            <span class="n">args</span><span class="o">.</span><span class="n">D</span> <span class="o">=</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">W</span><span class="o">*</span><span class="n">args</span><span class="o">.</span><span class="n">AA</span><span class="o">**</span><span class="mi">3</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="mi">3</span><span class="o">*</span><span class="n">args</span><span class="o">.</span><span class="n">E</span><span class="o">*</span><span class="n">args</span><span class="o">.</span><span class="n">I</span><span class="p">)</span>
+            <span class="n">args</span><span class="o">.</span><span class="n">D1</span><span class="o">=</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">W</span><span class="o">*</span><span class="n">args</span><span class="o">.</span><span class="n">AA</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="mi">6</span><span class="o">*</span><span class="n">args</span><span class="o">.</span><span class="n">E</span><span class="o">*</span><span class="n">args</span><span class="o">.</span><span class="n">I</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">args</span><span class="o">.</span><span class="n">AA</span><span class="o">+</span><span class="mi">6</span><span class="o">*</span><span class="n">args</span><span class="o">.</span><span class="n">BB</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">NoSolutionError</span><span class="p">(</span> <span class="s">&quot;No usable combination of inputs in {0!r}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">args</span><span class="p">)</span> <span class="p">)</span>
+        <span class="k">return</span> <span class="n">args</span>
 </div></div>
-<div class="viewcode-block" id="Case_18"><a class="viewcode-back" href="../../../python/construction/beamdefl.html#hamcalc.construction.beamdefl.Case_18">[docs]</a><span class="k">class</span> <span class="nc">Case_18</span><span class="p">(</span> <span class="n">Solver</span> <span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;BEAM FIXED BOTH ENDS, UNIFORM LOAD&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="Case_18"><a class="viewcode-back" href="../../../python/construction/beamdefl.html#hamcalc.construction.beamdefl.Case_18">[docs]</a><span class="k">class</span> <span class="nc">Case_18</span><span class="p">(</span> <span class="n">BeamSolver</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;BEAM FIXED BOTH ENDS, UNIFORM LOAD</span>
+<span class="sd">    D= (W x L^3) / (384 x E x I)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">positions</span><span class="o">=</span> <span class="s">&quot;centre&quot;</span><span class="p">,</span> <span class="s">&quot;&quot;</span>
 <div class="viewcode-block" id="Case_18.solve"><a class="viewcode-back" href="../../../python/construction/beamdefl.html#hamcalc.construction.beamdefl.Case_18.solve">[docs]</a>    <span class="k">def</span> <span class="nf">solve</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">args</span> <span class="p">):</span>
-        <span class="k">pass</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :W: Weight (Load in pounds)</span>
+<span class="sd">        :I: Inertia (Moment of Inertia in inches^4)</span>
+<span class="sd">        :L: Length (in inches)</span>
+<span class="sd">        :E: Elasticity Modulus (in PSI)</span>
+<span class="sd">        :D: Deflection (in inches)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">args_contains</span><span class="p">(</span> <span class="s">&quot;W&quot;</span><span class="p">,</span> <span class="s">&quot;L&quot;</span><span class="p">,</span> <span class="s">&quot;E&quot;</span><span class="p">,</span> <span class="s">&quot;I&quot;</span> <span class="p">):</span>
+            <span class="n">args</span><span class="o">.</span><span class="n">D</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">W</span><span class="o">*</span><span class="n">args</span><span class="o">.</span><span class="n">L</span><span class="o">**</span><span class="mi">3</span><span class="o">/</span><span class="p">(</span><span class="mi">384</span><span class="o">*</span><span class="n">args</span><span class="o">.</span><span class="n">E</span><span class="o">*</span><span class="n">args</span><span class="o">.</span><span class="n">I</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">args_contains</span><span class="p">(</span> <span class="s">&quot;D&quot;</span><span class="p">,</span> <span class="s">&quot;E&quot;</span><span class="p">,</span> <span class="s">&quot;I&quot;</span><span class="p">,</span> <span class="s">&quot;L&quot;</span> <span class="p">):</span>
+            <span class="n">args</span><span class="o">.</span><span class="n">W</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">D</span><span class="o">*</span><span class="mi">384</span><span class="o">*</span><span class="n">args</span><span class="o">.</span><span class="n">E</span><span class="o">*</span><span class="n">args</span><span class="o">.</span><span class="n">I</span><span class="o">/</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">L</span><span class="o">**</span><span class="mi">3</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">args_contains</span><span class="p">(</span> <span class="s">&quot;D&quot;</span><span class="p">,</span> <span class="s">&quot;W&quot;</span><span class="p">,</span> <span class="s">&quot;E&quot;</span><span class="p">,</span> <span class="s">&quot;L&quot;</span> <span class="p">):</span>
+            <span class="n">args</span><span class="o">.</span><span class="n">I</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">W</span><span class="o">*</span><span class="n">args</span><span class="o">.</span><span class="n">L</span><span class="o">**</span><span class="mi">3</span><span class="o">/</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">D</span><span class="o">*</span><span class="mi">384</span><span class="o">*</span><span class="n">args</span><span class="o">.</span><span class="n">E</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">args_contains</span><span class="p">(</span> <span class="s">&quot;D&quot;</span><span class="p">,</span> <span class="s">&quot;W&quot;</span><span class="p">,</span> <span class="s">&quot;E&quot;</span><span class="p">,</span> <span class="s">&quot;I&quot;</span> <span class="p">):</span>
+            <span class="n">args</span><span class="o">.</span><span class="n">L</span> <span class="o">=</span> <span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">D</span><span class="o">*</span><span class="mi">384</span><span class="o">*</span><span class="n">args</span><span class="o">.</span><span class="n">E</span><span class="o">*</span><span class="n">args</span><span class="o">.</span><span class="n">I</span><span class="o">/</span><span class="n">args</span><span class="o">.</span><span class="n">W</span><span class="p">)</span><span class="o">**</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="mi">3</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">NoSolutionError</span><span class="p">(</span> <span class="s">&quot;No usable combination of inputs in {0!r}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">args</span><span class="p">)</span> <span class="p">)</span>
+        <span class="k">return</span> <span class="n">args</span>
 </div></div>
-<div class="viewcode-block" id="Case_19"><a class="viewcode-back" href="../../../python/construction/beamdefl.html#hamcalc.construction.beamdefl.Case_19">[docs]</a><span class="k">class</span> <span class="nc">Case_19</span><span class="p">(</span> <span class="n">Solver</span> <span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;BEAM FIXED BOTH ENDS, LOAD AT CENTRE&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="Case_19"><a class="viewcode-back" href="../../../python/construction/beamdefl.html#hamcalc.construction.beamdefl.Case_19">[docs]</a><span class="k">class</span> <span class="nc">Case_19</span><span class="p">(</span> <span class="n">BeamSolver</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;BEAM FIXED BOTH ENDS, LOAD AT CENTRE</span>
+<span class="sd">    D= (W x L^3) / (192 x E x I)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">positions</span><span class="o">=</span> <span class="s">&quot;load&quot;</span><span class="p">,</span> <span class="s">&quot;&quot;</span>
 <div class="viewcode-block" id="Case_19.solve"><a class="viewcode-back" href="../../../python/construction/beamdefl.html#hamcalc.construction.beamdefl.Case_19.solve">[docs]</a>    <span class="k">def</span> <span class="nf">solve</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">args</span> <span class="p">):</span>
-        <span class="k">pass</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :W: Weight (Load in pounds)</span>
+<span class="sd">        :I: Inertia (Moment of Inertia in inches^4)</span>
+<span class="sd">        :L: Length (in inches)</span>
+<span class="sd">        :E: Elasticity Modulus (in PSI)</span>
+<span class="sd">        :D: Deflection (in inches)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">args_contains</span><span class="p">(</span> <span class="s">&quot;W&quot;</span><span class="p">,</span> <span class="s">&quot;L&quot;</span><span class="p">,</span> <span class="s">&quot;E&quot;</span><span class="p">,</span> <span class="s">&quot;I&quot;</span> <span class="p">):</span>
+            <span class="n">args</span><span class="o">.</span><span class="n">D</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">W</span><span class="o">*</span><span class="n">args</span><span class="o">.</span><span class="n">L</span><span class="o">**</span><span class="mi">3</span><span class="o">/</span><span class="p">(</span><span class="mi">192</span><span class="o">*</span><span class="n">args</span><span class="o">.</span><span class="n">E</span><span class="o">*</span><span class="n">args</span><span class="o">.</span><span class="n">I</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">args_contains</span><span class="p">(</span> <span class="s">&quot;D&quot;</span><span class="p">,</span> <span class="s">&quot;E&quot;</span><span class="p">,</span> <span class="s">&quot;I&quot;</span><span class="p">,</span> <span class="s">&quot;L&quot;</span> <span class="p">):</span>
+            <span class="n">args</span><span class="o">.</span><span class="n">W</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">D</span><span class="o">*</span><span class="mi">192</span><span class="o">*</span><span class="n">args</span><span class="o">.</span><span class="n">E</span><span class="o">*</span><span class="n">args</span><span class="o">.</span><span class="n">I</span><span class="o">/</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">L</span><span class="o">**</span><span class="mi">3</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">args_contains</span><span class="p">(</span> <span class="s">&quot;D&quot;</span><span class="p">,</span> <span class="s">&quot;W&quot;</span><span class="p">,</span> <span class="s">&quot;E&quot;</span><span class="p">,</span> <span class="s">&quot;L&quot;</span> <span class="p">):</span>
+            <span class="n">args</span><span class="o">.</span><span class="n">I</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">W</span><span class="o">*</span><span class="n">args</span><span class="o">.</span><span class="n">L</span><span class="o">**</span><span class="mi">3</span><span class="o">/</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">D</span><span class="o">*</span><span class="mi">192</span><span class="o">*</span><span class="n">args</span><span class="o">.</span><span class="n">E</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">args_contains</span><span class="p">(</span> <span class="s">&quot;D&quot;</span><span class="p">,</span> <span class="s">&quot;W&quot;</span><span class="p">,</span> <span class="s">&quot;E&quot;</span><span class="p">,</span> <span class="s">&quot;I&quot;</span> <span class="p">):</span>
+            <span class="n">args</span><span class="o">.</span><span class="n">L</span> <span class="o">=</span> <span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">D</span><span class="o">*</span><span class="mi">192</span><span class="o">*</span><span class="n">args</span><span class="o">.</span><span class="n">E</span><span class="o">*</span><span class="n">args</span><span class="o">.</span><span class="n">I</span><span class="o">/</span><span class="n">args</span><span class="o">.</span><span class="n">W</span><span class="p">)</span><span class="o">**</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="mi">3</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">NoSolutionError</span><span class="p">(</span> <span class="s">&quot;No usable combination of inputs in {0!r}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">args</span><span class="p">)</span> <span class="p">)</span>
+        <span class="k">return</span> <span class="n">args</span>
 </div></div>
-<div class="viewcode-block" id="Case_20"><a class="viewcode-back" href="../../../python/construction/beamdefl.html#hamcalc.construction.beamdefl.Case_20">[docs]</a><span class="k">class</span> <span class="nc">Case_20</span><span class="p">(</span> <span class="n">Solver</span> <span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;BEAM FIXED BOTH ENDS, LOAD AT ANY POINT&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="Case_20"><a class="viewcode-back" href="../../../python/construction/beamdefl.html#hamcalc.construction.beamdefl.Case_20">[docs]</a><span class="k">class</span> <span class="nc">Case_20</span><span class="p">(</span> <span class="n">BeamSolver</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;BEAM FIXED BOTH ENDS, LOAD AT ANY POINT</span>
+<span class="sd">    D= (W x A^3 x B^3)) / (3 x E x I x L^3)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">positions</span><span class="o">=</span> <span class="s">&quot;load&quot;</span><span class="p">,</span> <span class="s">&quot;&quot;</span>
 <div class="viewcode-block" id="Case_20.solve"><a class="viewcode-back" href="../../../python/construction/beamdefl.html#hamcalc.construction.beamdefl.Case_20.solve">[docs]</a>    <span class="k">def</span> <span class="nf">solve</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">args</span> <span class="p">):</span>
-        <span class="k">pass</span></div></div>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :W: Weight (Load in pounds)</span>
+<span class="sd">        :I: Inertia (Moment of Inertia in inches^4)</span>
+<span class="sd">        :L: Length (in inches)</span>
+<span class="sd">        :E: Elasticity Modulus (in PSI)</span>
+<span class="sd">        :D: Deflection (in inches)</span>
+<span class="sd">        :A: Load distance from nearest end</span>
+<span class="sd">        :B: Load distance from farthest end</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="s">&quot;A&quot;</span> <span class="ow">in</span> <span class="n">args</span> <span class="ow">and</span> <span class="s">&quot;L&quot;</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
+            <span class="n">args</span><span class="o">.</span><span class="n">B</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">L</span> <span class="o">-</span> <span class="n">args</span><span class="o">.</span><span class="n">A</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">args_contains</span><span class="p">(</span> <span class="s">&quot;W&quot;</span><span class="p">,</span> <span class="s">&quot;A&quot;</span><span class="p">,</span> <span class="s">&quot;B&quot;</span><span class="p">,</span> <span class="s">&quot;E&quot;</span><span class="p">,</span> <span class="s">&quot;I&quot;</span><span class="p">,</span> <span class="s">&quot;L&quot;</span> <span class="p">):</span>
+            <span class="n">args</span><span class="o">.</span><span class="n">D</span><span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">W</span><span class="o">*</span><span class="n">args</span><span class="o">.</span><span class="n">A</span><span class="o">**</span><span class="mi">3</span><span class="o">*</span><span class="n">args</span><span class="o">.</span><span class="n">B</span><span class="o">**</span><span class="mi">3</span><span class="o">/</span><span class="p">(</span><span class="mi">3</span><span class="o">*</span><span class="n">args</span><span class="o">.</span><span class="n">E</span><span class="o">*</span><span class="n">args</span><span class="o">.</span><span class="n">I</span><span class="o">*</span><span class="n">args</span><span class="o">.</span><span class="n">L</span><span class="o">**</span><span class="mi">3</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">args_contains</span><span class="p">(</span> <span class="s">&quot;D&quot;</span><span class="p">,</span> <span class="s">&quot;E&quot;</span><span class="p">,</span> <span class="s">&quot;I&quot;</span><span class="p">,</span> <span class="s">&quot;L&quot;</span><span class="p">,</span> <span class="s">&quot;A&quot;</span><span class="p">,</span> <span class="s">&quot;B&quot;</span> <span class="p">):</span>
+            <span class="n">args</span><span class="o">.</span><span class="n">W</span><span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">D</span><span class="o">*</span><span class="mi">3</span><span class="o">*</span><span class="n">args</span><span class="o">.</span><span class="n">E</span><span class="o">*</span><span class="n">args</span><span class="o">.</span><span class="n">I</span><span class="o">*</span><span class="n">args</span><span class="o">.</span><span class="n">L</span><span class="o">**</span><span class="mi">3</span><span class="o">/</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">A</span><span class="o">**</span><span class="mi">3</span><span class="o">*</span><span class="n">args</span><span class="o">.</span><span class="n">B</span><span class="o">**</span><span class="mi">3</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">args_contains</span><span class="p">(</span> <span class="s">&quot;D&quot;</span><span class="p">,</span> <span class="s">&quot;E&quot;</span><span class="p">,</span> <span class="s">&quot;I&quot;</span><span class="p">,</span> <span class="s">&quot;L&quot;</span><span class="p">,</span> <span class="s">&quot;W&quot;</span><span class="p">,</span> <span class="s">&quot;B&quot;</span> <span class="p">):</span>
+            <span class="n">args</span><span class="o">.</span><span class="n">A</span><span class="o">=</span> <span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">D</span><span class="o">*</span><span class="mi">3</span><span class="o">*</span><span class="n">args</span><span class="o">.</span><span class="n">E</span><span class="o">*</span><span class="n">args</span><span class="o">.</span><span class="n">I</span><span class="o">*</span><span class="n">args</span><span class="o">.</span><span class="n">L</span><span class="o">**</span><span class="mi">3</span><span class="o">/</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">W</span><span class="o">*</span><span class="n">args</span><span class="o">.</span><span class="n">B</span><span class="o">**</span><span class="mi">3</span><span class="p">))</span><span class="o">**</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="mi">3</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">args_contains</span><span class="p">(</span> <span class="s">&quot;W&quot;</span><span class="p">,</span> <span class="s">&quot;A&quot;</span><span class="p">,</span> <span class="s">&quot;B&quot;</span><span class="p">,</span> <span class="s">&quot;D&quot;</span><span class="p">,</span> <span class="s">&quot;E&quot;</span><span class="p">,</span> <span class="s">&quot;L&quot;</span> <span class="p">):</span>
+            <span class="n">args</span><span class="o">.</span><span class="n">I</span><span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">W</span><span class="o">*</span><span class="n">args</span><span class="o">.</span><span class="n">A</span><span class="o">**</span><span class="mi">3</span><span class="o">*</span><span class="n">args</span><span class="o">.</span><span class="n">B</span><span class="o">**</span><span class="mi">3</span><span class="o">/</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">D</span><span class="o">*</span><span class="mi">3</span><span class="o">*</span><span class="n">args</span><span class="o">.</span><span class="n">E</span><span class="o">*</span><span class="n">args</span><span class="o">.</span><span class="n">L</span><span class="o">**</span><span class="mi">3</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">args_contains</span><span class="p">(</span> <span class="s">&quot;W&quot;</span><span class="p">,</span> <span class="s">&quot;A&quot;</span><span class="p">,</span> <span class="s">&quot;B&quot;</span><span class="p">,</span> <span class="s">&quot;D&quot;</span><span class="p">,</span> <span class="s">&quot;E&quot;</span><span class="p">,</span> <span class="s">&quot;I&quot;</span> <span class="p">):</span>
+            <span class="n">args</span><span class="o">.</span><span class="n">L</span><span class="o">=</span> <span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">W</span><span class="o">*</span><span class="n">args</span><span class="o">.</span><span class="n">A</span><span class="o">**</span><span class="mi">3</span><span class="o">*</span><span class="n">args</span><span class="o">.</span><span class="n">B</span><span class="o">**</span><span class="mi">3</span><span class="o">/</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">D</span><span class="o">*</span><span class="mi">3</span><span class="o">*</span><span class="n">args</span><span class="o">.</span><span class="n">E</span><span class="o">*</span><span class="n">args</span><span class="o">.</span><span class="n">I</span><span class="p">))</span><span class="o">**</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="mi">3</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">NoSolutionError</span><span class="p">(</span> <span class="s">&quot;No usable combination of inputs in {0!r}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">args</span><span class="p">)</span> <span class="p">)</span>
+        <span class="k">return</span> <span class="n">args</span></div></div>
 </pre></div>
 
           </div>

@@ -219,7 +219,11 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span> <span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="o">=</span> <span class="n">AttrDict</span><span class="p">(</span> <span class="n">kw</span> <span class="p">)</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">args</span> <span class="p">)</span>
+        <span class="n">result</span><span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">args</span> <span class="p">)</span>
+        <span class="k">if</span> <span class="n">result</span><span class="p">:</span> <span class="k">return</span> <span class="n">result</span>
+        <span class="k">else</span><span class="p">:</span> <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">args</span>
+    <span class="k">def</span> <span class="nf">args_contains</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">names</span> <span class="p">):</span>
+        <span class="k">return</span> <span class="nb">all</span><span class="p">(</span> <span class="n">n</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">args</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">names</span> <span class="p">)</span>
 <div class="viewcode-block" id="Solver.solve"><a class="viewcode-back" href="../../python/lib.html#hamcalc.lib.Solver.solve">[docs]</a>    <span class="k">def</span> <span class="nf">solve</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">args</span> <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Override this method to accept an AttrDict</span>
 <span class="sd">        of arguments and return a revised AttrDict</span>

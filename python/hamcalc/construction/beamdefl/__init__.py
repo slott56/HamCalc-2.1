@@ -5,7 +5,7 @@ A family of **Solver** classes to handle 10 beam deflection cases.
 Plus definitions of modulus of elasticity for some common construction
 materials.
 
-Materials, this winds up in a module global, :data:`material`.
+The materials are a module global, :data:`material`.
 
 ..  csv-table::
 
@@ -233,12 +233,14 @@ material = OrderedDict(
 )
 
 class BeamSolver( Solver ):
+    """Superclass for beam deflection solvers."""
     def __call__( self, *args, **kw ):
         result= super().__call__( *args, **kw )
         if result: self.args= result
         self.set_max_defl()
         return self.args
     def set_max_defl( self ):
+        """Compute maximum deflection."""
         self.args.MD= self.args.L/360
 
 class Case_1( BeamSolver ):

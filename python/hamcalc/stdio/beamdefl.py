@@ -7,13 +7,22 @@ import hamcalc.construction.beamdefl as beamdefl
 from hamcalc.lib import AttrDict, NoSolutionError
 import string
 
-class Beam:
+class Deflection:
     """One the various beam deflection cases.
     Each has slightly different inputs and displays.
 
     There's a common overall structure, however,
     reflected in this superclass.
+
+    :data solver: An instance of :class:`hamcalc.construction.beamdefl.Deflection`
     """
+    variables = [
+        ('W', 'Load (in pounds)'),
+        ('I', 'Moment of Inertia (in inches^4)'),
+        ('L', 'Length of beam (in inches)'),
+        ('D', 'Deflection (in inches)'),
+    ]
+    solver = None # Some Beam Deflection case
     def __init__( self ):
         self.args = AttrDict()
     def set_material( self, material ):
@@ -23,38 +32,28 @@ class Beam:
         """
         self.material= material
         self.args.E= self.material.E
-    def set_cross_section( self, AR ):
+    def set_cross_section( self, AR, I ):
         """Set a beam cross-section for estimating material weight.
 
         :param AR: Cross-section area; units in^2.
+        :param I: Moment of Inertia; units inches^4
         """
         self.args.AR= AR
+        self.args.I= I
     def input( self ):
-        """Gather input values.
-        This will invoke :meth:`input_additional` to gather additional
-        values for beam models with additional inputs.
+        """Gather missing input values.
+        Uses :data:`variables` for the list of variables to gather.
         """
-        print( "ENTER known values, leave unknown value blank." )
         try:
-            w_raw= input( "ENTER: Load (in pounds).....................W = ? " )
-            if w_raw: self.args.W= float(w_raw)
-
-            i_raw= input( "ENTER: Moment of Inertia (in inches^4)......I = ? " )
-            if i_raw: self.args.I= float(i_raw)
-
-            l_raw= input( "ENTER: Length of beam (in inches)...........L = ? " )
-            if l_raw: self.args.L= float(l_raw)
-
-            self.input_additional()
-
-            d_raw= input( "ENTER: Deflection (in inches)...............D = ? " )
-            if d_raw: self.args.D= float(d_raw)
+            for var, prompt in self.variables:
+                if var not in self.args:
+                    raw = input( "ENTER {0:.<32s}? ".format(prompt) )
+                    if raw:
+                        self.args[var]= float(raw)
         except ValueError as e:
             print( e )
             raise
-    def input_additional( self ):
-        """Gather any additional inputs required."""
-        pass
+
     def display( self ):
         """Display the results of the calculation."""
         try:
@@ -64,7 +63,7 @@ class Beam:
             return
 
         if 'AR' in self.args and 'L' in self.args:
-            self.args.wt= material.PCI * args.L * args.AR
+            self.args.wt= self.material.PCI * self.args.L * self.args.AR
 
         self.args.pos= self.solver.positions
 
@@ -131,57 +130,57 @@ Maximum safe deflection ...................... {MD:16,.3f} in.
             print( self.args )
             return ""
 
-class Beam_1( Beam ):
+class Deflection_1( Deflection ):
     """Supported both ends, uniform load"""
     solver= beamdefl.Case_1()
 
-class Beam_2( Beam ):
+class Deflection_2( Deflection ):
     """Supported both ends, load at centre"""
     solver= beamdefl.Case_2()
 
-class Beam_3( Beam ):
+class Deflection_3( Deflection ):
     """Supported both ends, load at any point"""
+    variables= Deflection.variables[:-1] + [
+        ('A', 'Load distance from nearest end' ),
+    ] + Deflection.variables[-1:]
     solver= beamdefl.Case_3()
-    def input_additional( self ):
-        a_raw= input( "ENTER: Load distance from nearest end.......A = ? " )
-        if a_raw: self.args.A= float(a_raw)
 
-class Beam_4( Beam ):
+class Deflection_4( Deflection ):
     """Supported both ends, two symmetrical loads"""
+    variables= Deflection.variables[:-1] + [
+        ('A', 'Load distance from nearest end' ),
+    ] + Deflection.variables[-1:]
     solver= beamdefl.Case_4()
-    def input_additional( self ):
-        a_raw= input( "ENTER: Load distance from nearest end.......A = ? " )
-        if a_raw: self.args.A= float(a_raw)
 
-class Beam_10( Beam ):
+class Deflection_10( Deflection ):
     """Fixed one end, uniform load (cantilever)"""
     solver= beamdefl.Case_10()
 
-class Beam_11( Beam ):
+class Deflection_11( Deflection ):
     """Fixed one end, load at other (cantilever)"""
     solver= beamdefl.Case_11()
 
-class Beam_12( Beam ):
+class Deflection_12( Deflection ):
     """Fixed one end, intermediate load (cantilever)"""
+    variables= Deflection.variables[:-1] + [
+        ('A', 'Load distance from fixed end' ),
+    ] + Deflection.variables[-1:]
     solver= beamdefl.Case_12()
-    def input_additional( self ):
-        a_raw= input( "ENTER: Load distance from fixed end........AA = ? " )
-        if a_raw: self.args.AA= float(a_raw)
 
-class Beam_18( Beam ):
+class Deflection_18( Deflection ):
     """Fixed both ends, uniform load"""
     solver= beamdefl.Case_18()
 
-class Beam_19( Beam ):
+class Deflection_19( Deflection ):
     """Fixed both ends, load at centre"""
     solver= beamdefl.Case_19()
 
-class Beam_20( Beam ):
+class Deflection_20( Deflection ):
     """Fixed both ends, load at any point"""
+    variables= Deflection.variables[:-1] + [
+        ('AA', 'Load distance from nearest end' ),
+    ] + Deflection.variables[-1:]
     solver= beamdefl.Case_20()
-    def input_additional( self ):
-        a_raw= input( "ENTER: Load distance from nearest end.......A = ? " )
-        if a_raw: self.args.AA= float(a_raw)
 
 def pick_material():
     """Pick the material to get the modulus of elasticity. and weight.
@@ -213,23 +212,25 @@ def pick_beam_model():
     """Pick a specific beam model from the available list."""
     print( " Press letter in ( ) to define beam:" )
     model_list = [
-        ('a', Beam_1(), ),
-        ('b', Beam_2(), ),
-        ('c', Beam_3(), ),
-        ('d', Beam_4(), ),
-        (' ', None, ),
-        ('k', Beam_10(), ),
-        ('l', Beam_11(), ),
-        ('m', Beam_12(), ),
-        (' ', None, ),
-        ('r', Beam_18(), ),
-        ('s', Beam_19(), ),
-        ('t', Beam_20(), ),
+        ('a', Deflection_1(), ),
+        ('b', Deflection_2(), ),
+        ('c', Deflection_3(), ),
+        ('d', Deflection_4(), ),
+        (' ', ' ', ),
+        ('k', Deflection_10(), ),
+        ('l', Deflection_11(), ),
+        ('m', Deflection_12(), ),
+        (' ', ' ', ),
+        ('r', Deflection_18(), ),
+        ('s', Deflection_19(), ),
+        ('t', Deflection_20(), ),
     ]
     for label, model in model_list:
-        if model is None:
+        if model == ' ':
             print()
             continue
+        elif model is None:
+            print( ' (', label, ') ', "EXIT" )
         print( ' (', label, ') ', model.__class__.__doc__ )
     models= []
     while len(models) != 1:
@@ -237,18 +238,25 @@ def pick_beam_model():
         models= [ model for label, model in model_list if label == z ]
     return models[0]
 
-print( beamdefl.intro() )
+def run( ar=None, i=None ):
 
-z= '0'
-while z == '0':
-    print()
-    material= pick_material()
-    if material is None: break
-    print( " ENTER < 1 > to continue or < 0 > to re-do" )
-    z= input( "CHOICE? " )
-    if z == '0': continue
-    elif z == '1':
-        model = pick_beam_model()
-        model.set_material( material )
-        model.input()
-        model.display()
+    print( beamdefl.intro() )
+
+    z= '0'
+    while z == '0':
+        print()
+        material= pick_material()
+        if material is None: break
+        print( " ENTER < 1 > to continue or < 0 > to re-do" )
+        z= input( "CHOICE? " )
+        if z == '0': continue
+        elif z == '1':
+            model = pick_beam_model()
+            if ar is not None:
+                model.set_cross_section( ar, i )
+            model.set_material( material )
+            model.input()
+            model.display()
+
+if __name__ == "__main__":
+    run()

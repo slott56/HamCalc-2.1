@@ -25,7 +25,7 @@
     <script type="text/javascript" src="../../_static/doctools.js"></script>
     <link rel="top" title="HamCalc 2.1 documentation" href="../../index.html" />
     <link rel="up" title="construction – Construction and Mechanical" href="index.html" />
-    <link rel="next" title="math – Math, Physics, Units Conversion" href="../math/index.html" />
+    <link rel="next" title="beamsect – BEAMS, Properties of (Start new beam design here)" href="beamsect.html" />
     <link rel="prev" title="wiremesh – Wire Mesh Screens, Wind Loads" href="wiremesh.html" /> 
   </head>
   <body>
@@ -36,7 +36,7 @@
         <div class="rel">
           <a href="wiremesh.html" title="wiremesh – Wire Mesh Screens, Wind Loads"
              accesskey="P">previous</a> |
-          <a href="../math/index.html" title="math – Math, Physics, Units Conversion"
+          <a href="beamsect.html" title="beamsect – BEAMS, Properties of (Start new beam design here)"
              accesskey="N">next</a> |
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |
@@ -56,6 +56,12 @@
             
   <div class="section" id="beamdefl-beams-deflection-in">
 <h1>beamdefl &#8211; BEAMS, Deflection in<a class="headerlink" href="#beamdefl-beams-deflection-in" title="Permalink to this headline">¶</a></h1>
+<p>This program can be used in two modes.</p>
+<ol class="arabic simple">
+<li>Stand-alone.</li>
+<li>The legacy could chained from <strong class="program">beamsect</strong>, where the cross section
+<tt class="docutils literal"><span class="pre">AR</span></tt> variable is set.</li>
+</ol>
 <div class="section" id="legacy-output">
 <h2>Legacy Output<a class="headerlink" href="#legacy-output" title="Permalink to this headline">¶</a></h2>
 <p>Introduction:</p>
@@ -392,13 +398,15 @@ D &amp;= (W \times A^3 \times B^3)) / (3 \times E \times I \times L^3)"/></p>
 </div>
 </div>
 </div>
-<div class="section" id="module-hamcalc.construction.beamdefl">
-<span id="implementation"></span><h2>Implementation<a class="headerlink" href="#module-hamcalc.construction.beamdefl" title="Permalink to this headline">¶</a></h2>
-<p>hamcalc.construction.beamdefl</p>
+<div class="section" id="implementation">
+<h2>Implementation<a class="headerlink" href="#implementation" title="Permalink to this headline">¶</a></h2>
+<p>Note that this may be used by <strong class="program">beamsect</strong>, as well
+as used by <strong class="program">beamdefl</strong>.</p>
+<span class="target" id="module-hamcalc.construction.beamdefl"></span><p>hamcalc.construction.beamdefl</p>
 <p>A family of <strong>Solver</strong> classes to handle 10 beam deflection cases.</p>
 <p>Plus definitions of modulus of elasticity for some common construction
 materials.</p>
-<p>Materials, this winds up in a module global, <tt class="xref py py-data docutils literal"><span class="pre">material</span></tt>.</p>
+<p>The materials are a module global, <tt class="xref py py-data docutils literal"><span class="pre">material</span></tt>.</p>
 <table border="1" class="docutils">
 <colgroup>
 <col width="33%" />
@@ -624,6 +632,18 @@ materials.</p>
 <span class="go">35.96</span>
 </pre></div>
 </div>
+<dl class="class">
+<dt id="hamcalc.construction.beamdefl.BeamSolver">
+<em class="property">class </em><tt class="descclassname">hamcalc.construction.beamdefl.</tt><tt class="descname">BeamSolver</tt><a class="reference internal" href="../../_modules/hamcalc/construction/beamdefl.html#BeamSolver"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.construction.beamdefl.BeamSolver" title="Permalink to this definition">¶</a></dt>
+<dd><p>Superclass for beam deflection solvers.</p>
+<dl class="method">
+<dt id="hamcalc.construction.beamdefl.BeamSolver.set_max_defl">
+<tt class="descname">set_max_defl</tt><big>(</big><big>)</big><a class="reference internal" href="../../_modules/hamcalc/construction/beamdefl.html#BeamSolver.set_max_defl"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.construction.beamdefl.BeamSolver.set_max_defl" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute maximum deflection.</p>
+</dd></dl>
+
+</dd></dl>
+
 <dl class="class">
 <dt id="hamcalc.construction.beamdefl.Case_1">
 <em class="property">class </em><tt class="descclassname">hamcalc.construction.beamdefl.</tt><tt class="descname">Case_1</tt><a class="reference internal" href="../../_modules/hamcalc/construction/beamdefl.html#Case_1"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.construction.beamdefl.Case_1" title="Permalink to this definition">¶</a></dt>
@@ -996,6 +1016,7 @@ Making the return and kind of exception.</p>
 <li class="toctree-l3"><a class="reference internal" href="wirecond.html">wirecond &#8211; Wires in Conduit</a></li>
 <li class="toctree-l3"><a class="reference internal" href="wiremesh.html">wiremesh &#8211; Wire Mesh Screens, Wind Loads</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="">beamdefl &#8211; BEAMS, Deflection in</a></li>
+<li class="toctree-l3"><a class="reference internal" href="beamsect.html">beamsect &#8211; BEAMS, Properties of (Start new beam design here)</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../math/index.html">math &#8211; Math, Physics, Units Conversion</a></li>
@@ -1035,7 +1056,7 @@ Making the return and kind of exception.</p>
         <div class="left">
           <a href="wiremesh.html" title="wiremesh – Wire Mesh Screens, Wind Loads"
              >previous</a> |
-          <a href="../math/index.html" title="math – Math, Physics, Units Conversion"
+          <a href="beamsect.html" title="beamsect – BEAMS, Properties of (Start new beam design here)"
              >next</a> |
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |

@@ -1,0 +1,841 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>beamsect – BEAMS, Properties of (Start new beam design here) &mdash; HamCalc 2.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/agogo.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '2.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="HamCalc 2.1 documentation" href="../../index.html" />
+    <link rel="up" title="construction – Construction and Mechanical" href="index.html" />
+    <link rel="next" title="math – Math, Physics, Units Conversion" href="../math/index.html" />
+    <link rel="prev" title="beamdefl – BEAMS, Deflection in" href="beamdefl.html" /> 
+  </head>
+  <body>
+    <div class="header-wrapper">
+      <div class="header">
+        <div class="headertitle"><a
+          href="../../index.html">HamCalc 2.1 documentation</a></div>
+        <div class="rel">
+          <a href="beamdefl.html" title="beamdefl – BEAMS, Deflection in"
+             accesskey="P">previous</a> |
+          <a href="../math/index.html" title="math – Math, Physics, Units Conversion"
+             accesskey="N">next</a> |
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a>
+        </div>
+       </div>
+    </div>
+
+    <div class="content-wrapper">
+      <div class="content">
+        <div class="document">
+            
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="beamsect-beams-properties-of-start-new-beam-design-here">
+<h1>beamsect &#8211; BEAMS, Properties of (Start new beam design here)<a class="headerlink" href="#beamsect-beams-properties-of-start-new-beam-design-here" title="Permalink to this headline">¶</a></h1>
+<p>This program could provide data (i.e., cross-section) information
+by chaining to <strong class="program">beamdefl</strong>.</p>
+<div class="section" id="legacy-output">
+<h2>Legacy Output<a class="headerlink" href="#legacy-output" title="Permalink to this headline">¶</a></h2>
+<p>Introduction:</p>
+<div class="highlight-python"><pre>PROPERTIES OF COMMON SECTIONS OF BEAMS                  by George Murphy VE3ERP
+
+  Ref: Machinery&#x27;s Handbook, 21st Edition</pre>
+</div>
+<p>Output:</p>
+<div class="highlight-python"><pre>        Hollow Tubular Beam    ( NOTE: ENTER ALL DIMENSIONS IN INCHES )
+
+ENTER: Outside diameter of section.....? 13
+ENTER: Inside diameter of section......? 12
+        Outside diameter of section...........     13.000 in.
+        Inside diameter of section............     12.000 in.
+        Cross section area of section.........     19.635 in²
+        Moment of Inertia....(in inches^4)....    384.109
+        Section Modulus......(in inches^3)....     59.094
+        Radius of Gyration....................      4.423 in.</pre>
+</div>
+</div>
+<div class="section" id="analysis">
+<h2>Analysis<a class="headerlink" href="#analysis" title="Permalink to this headline">¶</a></h2>
+<p>These are 10 sets of formulae for computing the four interesting factors:
+cross section, Moment of Inertia, Section Modulus and Radius of Gyration.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">A:</th><td class="field-body">Area</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Y:</th><td class="field-body">&#8220;Radius&#8221;</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">I:</th><td class="field-body">Moment of Inertia (in inches^4)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Z:</th><td class="field-body">Section Modulus (in inches^3) <img class="math" src="../../_images/math/a9d41fa52de6fba459ff6a04a274a4413606afb6.png" alt="\dfrac{I}{Y}"/></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">K:</th><td class="field-body">Radius of Gyration <img class="math" src="../../_images/math/7f4a1a7c2d61565c3621f5971dd50cee007783ad.png" alt="\sqrt{\dfrac{I}{A}}"/></td>
+</tr>
+</tbody>
+</table>
+<div class="section" id="solid-rectangular-beam">
+<h3>Solid Rectangular Beam<a class="headerlink" href="#solid-rectangular-beam" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">B:</th><td class="field-body">Width</td>
+</tr>
+<tr class="field-even field"><th class="field-name">D:</th><td class="field-body">Height</td>
+</tr>
+</tbody>
+</table>
+<div class="math">
+<p><img src="../../_images/math/593b80ecf95693fd1f7e622d967b4493e45016b5.png" alt="A &amp;= B \times D \\
+Y &amp;= D/2 \\
+I &amp;= B \times D^3/12 \\
+Z &amp;= \dfrac{I}{Y} \\
+K &amp;= \sqrt{\dfrac{I}{A}}"/></p>
+</div></div></blockquote>
+</div>
+<div class="section" id="solid-triangular-beam-flat-bottom">
+<h3>Solid Triangular Beam (flat bottom)<a class="headerlink" href="#solid-triangular-beam-flat-bottom" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">B:</th><td class="field-body">Width</td>
+</tr>
+<tr class="field-even field"><th class="field-name">D:</th><td class="field-body">Height</td>
+</tr>
+</tbody>
+</table>
+<div class="math">
+<p><img src="../../_images/math/7dad06e053af1e28b1c2d32d18713d46218af0b9.png" alt="A &amp;= B \times D/2 \\
+Y &amp;= 2 \times D/3 \\
+I &amp;= B \times D^3/36 \\
+Z &amp;= \dfrac{I}{Y} \\
+K &amp;= \sqrt{\dfrac{I}{A}}"/></p>
+</div></div></blockquote>
+</div>
+<div class="section" id="hollow-rectangular-box-beam">
+<h3>Hollow Rectangular Box Beam<a class="headerlink" href="#hollow-rectangular-box-beam" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">B:</th><td class="field-body">Width</td>
+</tr>
+<tr class="field-even field"><th class="field-name">D:</th><td class="field-body">Height</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">T_1:</th><td class="field-body">Thickness of sidewalls</td>
+</tr>
+<tr class="field-even field"><th class="field-name">T_2:</th><td class="field-body">Thickness of top &amp; bottom walls</td>
+</tr>
+</tbody>
+</table>
+<div class="math">
+<p><img src="../../_images/math/b98cd71fc9a07fb52725231d5a7442285896eb9a.png" alt="H &amp;= B-2 \times T_1 \\
+k^\prime &amp;= D-2 \times T_2 \\
+A &amp;= B \times D-H \times k^\prime \\
+Y &amp;= D/2 \\
+I &amp;= (B \times D^3-H \times k^{\prime3})/12 \\
+Z &amp;= \dfrac{I}{Y} \\
+K &amp;= \sqrt{\dfrac{I}{A}}"/></p>
+</div></div></blockquote>
+<p>Note the <img class="math" src="../../_images/math/f5e36593e4c1d2b0a8ff5963b5d94264c0b37052.png" alt="k^\prime"/> is a quirky use of <tt class="docutils literal"><span class="pre">K</span></tt> as an intermediate
+variable as well as an output.</p>
+</div>
+<div class="section" id="solid-cylindrical-beam">
+<h3>Solid Cylindrical Beam<a class="headerlink" href="#solid-cylindrical-beam" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">D:</th><td class="field-body">Diameter</td>
+</tr>
+</tbody>
+</table>
+<div class="math">
+<p><img src="../../_images/math/97d371cb8c9a04c8158094f0d57422fb71caae77.png" alt="A &amp;= \pi \times D^2/4 \\
+Y &amp;= D/2 \\
+I &amp;= \pi \times D^4/64 \\
+Z &amp;= \dfrac{I}{Y} \\
+K &amp;= \sqrt{\dfrac{I}{A}}"/></p>
+</div></div></blockquote>
+</div>
+<div class="section" id="hollow-tubular-beam">
+<h3>Hollow Tubular Beam<a class="headerlink" href="#hollow-tubular-beam" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">D:</th><td class="field-body">Outside diameter of section</td>
+</tr>
+<tr class="field-even field"><th class="field-name">D_1:</th><td class="field-body">Inside diameter of section</td>
+</tr>
+</tbody>
+</table>
+<div class="math">
+<p><img src="../../_images/math/e12954b55c9fabb997708417b9f7ed77c8a02830.png" alt="A &amp;= \pi \times (D^2-D_1^2)/4 \\
+Y &amp;= D/2 \\
+I &amp;= \pi \times (D^4-D_1^4)/64 \\
+Z &amp;= \dfrac{I}{Y} \\
+K &amp;= \sqrt{\dfrac{I}{A}}"/></p>
+</div></div></blockquote>
+</div>
+<div class="section" id="i-section-built-up-beam">
+<h3>I-Section Built-Up Beam<a class="headerlink" href="#i-section-built-up-beam" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">B:</th><td class="field-body">Width of top &amp; bottom flanges</td>
+</tr>
+<tr class="field-even field"><th class="field-name">D:</th><td class="field-body">Height of section</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">S:</th><td class="field-body">Thickness of top &amp; bottom flanges</td>
+</tr>
+<tr class="field-even field"><th class="field-name">T:</th><td class="field-body">Thickness of vertical web</td>
+</tr>
+</tbody>
+</table>
+<div class="math">
+<p><img src="../../_images/math/4b31588fe8c2efaa61d6a36722801277fe684fce.png" alt="H &amp;= D-2 \times S \\
+A &amp;= B \times D - H \times (B-T) \\
+Y &amp;= H/2 \\
+I &amp;= (B \times D^3 - H^3 \times (B-T))/12 \\
+Z &amp;= \dfrac{I}{Y} \\
+K &amp;= \sqrt{\dfrac{I}{A}}"/></p>
+</div></div></blockquote>
+</div>
+<div class="section" id="h-section-built-up-beam">
+<h3>H-Section Built-Up Beam<a class="headerlink" href="#h-section-built-up-beam" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">D:</th><td class="field-body">Width across outside of vertical legs</td>
+</tr>
+<tr class="field-even field"><th class="field-name">B:</th><td class="field-body">Height of vertical legs</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">S:</th><td class="field-body">Thickness of vertical legs</td>
+</tr>
+<tr class="field-even field"><th class="field-name">T:</th><td class="field-body">Thickness of horizontal web</td>
+</tr>
+</tbody>
+</table>
+<div class="math">
+<p><img src="../../_images/math/1555cdaf0a0ac3e2d3ebd805f2812d1406fc6b64.png" alt="H &amp;= D-2 \times S \\
+A &amp;= B \times D-H \times (B-T) \\
+Y &amp;= B/2 \\
+I &amp;= (2 \times S \times B^3+H \times T^3)/12 \\
+Z &amp;= \dfrac{I}{Y} \\
+K &amp;= \sqrt{\dfrac{I}{A}}"/></p>
+</div></div></blockquote>
+</div>
+<div class="section" id="section-built-up-beam">
+<h3>[-Section Built-Up Beam<a class="headerlink" href="#section-built-up-beam" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">B:</th><td class="field-body">Width of horizontal legs</td>
+</tr>
+<tr class="field-even field"><th class="field-name">D:</th><td class="field-body">Vertical height of section</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">S:</th><td class="field-body">Thickness of horizontal legs</td>
+</tr>
+<tr class="field-even field"><th class="field-name">T:</th><td class="field-body">Thickness of vertical web</td>
+</tr>
+</tbody>
+</table>
+<div class="math">
+<p><img src="../../_images/math/85731e012dfc31350c9bfafcf1075bf04d817b07.png" alt="H &amp;= D-2 \times S \\
+A &amp;= B \times D-H \times (B-T) \\
+Y &amp;= D/2 \\
+I &amp;= (B \times D^3-H^3 \times (B-T))/12 \\
+Z &amp;= \dfrac{I}{Y} \\
+K &amp;= \sqrt{\dfrac{I}{A}}"/></p>
+</div></div></blockquote>
+</div>
+<div class="section" id="u-section-built-up-beam">
+<h3>U-Section Built-Up Beam<a class="headerlink" href="#u-section-built-up-beam" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">D:</th><td class="field-body">Width of base of section</td>
+</tr>
+<tr class="field-even field"><th class="field-name">B:</th><td class="field-body">Height of section</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">T:</th><td class="field-body">Thickness of base web</td>
+</tr>
+<tr class="field-even field"><th class="field-name">S:</th><td class="field-body">Thickness of vertical legs</td>
+</tr>
+</tbody>
+</table>
+<div class="math">
+<p><img src="../../_images/math/1fedf33a27585d745c793851c0a827ecb2ed918b.png" alt="H &amp;= D-2 \times S \\
+A &amp;= B \times D-H \times (B-T) \\
+Q_1 &amp;= 2 \times B^2 \times S+H \times T^2 \\
+Q_2 &amp;= 2 \times B \times D-2 \times H \times (B-T) \\
+Y &amp;= B-Q_1/Q_2 \\
+I &amp;= (2 \times S \times B^3+H \times T^3)/3-A \times (B-Y)^2 \\
+Z &amp;= \dfrac{I}{Y} \\
+K &amp;= \sqrt{\dfrac{I}{A}}"/></p>
+</div></div></blockquote>
+</div>
+<div class="section" id="t-section-built-up-beam">
+<h3>T-Section Built-Up Beam<a class="headerlink" href="#t-section-built-up-beam" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">B:</th><td class="field-body">Width of horizontal flange</td>
+</tr>
+<tr class="field-even field"><th class="field-name">D:</th><td class="field-body">Height of section</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">S:</th><td class="field-body">Thickness of horizontal flange</td>
+</tr>
+<tr class="field-even field"><th class="field-name">T:</th><td class="field-body">Thickness of vertical web</td>
+</tr>
+</tbody>
+</table>
+<div class="math">
+<p><img src="../../_images/math/56e846457218ed39d460918360c115abebb74f86.png" alt="H &amp;= D-S \\
+A &amp;= B \times S+H \times T \\
+Q_1 &amp;= D^2 \times T+S^2 \times (B-T) \\
+Q_2 &amp;= 2 \times (B \times S+H \times T) \\
+Y &amp;= D-Q_1/Q_2 \\
+I &amp;= \dfrac{T \times Y^3+B \times (D-Y)^3 - (B-T) \times (D-Y-S)^3}{3} \\
+Z &amp;= \dfrac{I}{Y} \\
+K &amp;= \sqrt{\dfrac{I}{A}}"/></p>
+</div></div></blockquote>
+</div>
+</div>
+<div class="section" id="module-hamcalc.construction.beamsect">
+<span id="implementation"></span><h2>Implementation<a class="headerlink" href="#module-hamcalc.construction.beamsect" title="Permalink to this headline">¶</a></h2>
+<p>hamcalc.construction.beamsect</p>
+<p>A family of calculation classes to handle 10 beam section cases.</p>
+<p>These are a little like degenerate <strong>Solver</strong> that only compute
+one set of results.</p>
+<p>Test Cases for Beam_1</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">hamcalc.construction.beamsect</span> <span class="kn">as</span> <span class="nn">beamsect</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b1</span><span class="o">=</span> <span class="n">beamsect</span><span class="o">.</span><span class="n">Beam_1</span><span class="p">()(</span> <span class="n">D</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">B</span><span class="o">=</span><span class="mi">4</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">b1</span><span class="o">.</span><span class="n">A</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">16</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">b1</span><span class="o">.</span><span class="n">I</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">21.333</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">b1</span><span class="o">.</span><span class="n">Z</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">10.667</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">b1</span><span class="o">.</span><span class="n">K</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">1.155</span>
+</pre></div>
+</div>
+<p>Test Cases for Beam_2</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">hamcalc.construction.beamsect</span> <span class="kn">as</span> <span class="nn">beamsect</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b2</span><span class="o">=</span> <span class="n">beamsect</span><span class="o">.</span><span class="n">Beam_2</span><span class="p">()(</span> <span class="n">D</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">B</span><span class="o">=</span><span class="mi">5</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">b2</span><span class="o">.</span><span class="n">A</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">12.5</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">b2</span><span class="o">.</span><span class="n">I</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">17.361</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">b2</span><span class="o">.</span><span class="n">Z</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">5.208</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">b2</span><span class="o">.</span><span class="n">K</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">1.179</span>
+</pre></div>
+</div>
+<p>Test Cases for Beam_3</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">hamcalc.construction.beamsect</span> <span class="kn">as</span> <span class="nn">beamsect</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b3</span><span class="o">=</span> <span class="n">beamsect</span><span class="o">.</span><span class="n">Beam_3</span><span class="p">()(</span> <span class="n">D</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">B</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">T_1</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">T_2</span><span class="o">=</span><span class="mi">1</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">b3</span><span class="o">.</span><span class="n">A</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">20</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">b3</span><span class="o">.</span><span class="n">I</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">86.667</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">b3</span><span class="o">.</span><span class="n">Z</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">28.889</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">b3</span><span class="o">.</span><span class="n">K</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">2.082</span>
+</pre></div>
+</div>
+<p>Test Cases for Beam_4</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">hamcalc.construction.beamsect</span> <span class="kn">as</span> <span class="nn">beamsect</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b4</span><span class="o">=</span> <span class="n">beamsect</span><span class="o">.</span><span class="n">Beam_4</span><span class="p">()(</span> <span class="n">D</span><span class="o">=</span><span class="mi">7</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">b4</span><span class="o">.</span><span class="n">A</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">38.485</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">b4</span><span class="o">.</span><span class="n">I</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">117.859</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">b4</span><span class="o">.</span><span class="n">Z</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">33.674</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">b4</span><span class="o">.</span><span class="n">K</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">1.75</span>
+</pre></div>
+</div>
+<p>Test Cases for Beam_5</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">hamcalc.construction.beamsect</span> <span class="kn">as</span> <span class="nn">beamsect</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b5</span><span class="o">=</span> <span class="n">beamsect</span><span class="o">.</span><span class="n">Beam_5</span><span class="p">()(</span> <span class="n">D</span><span class="o">=</span><span class="mi">13</span><span class="p">,</span> <span class="n">D_1</span><span class="o">=</span><span class="mi">12</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">b5</span><span class="o">.</span><span class="n">A</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">19.635</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">b5</span><span class="o">.</span><span class="n">I</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">384.109</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">b5</span><span class="o">.</span><span class="n">Z</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">59.094</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">b5</span><span class="o">.</span><span class="n">K</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">4.423</span>
+</pre></div>
+</div>
+<p>Test Cases for Beam_6</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">hamcalc.construction.beamsect</span> <span class="kn">as</span> <span class="nn">beamsect</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b6</span><span class="o">=</span> <span class="n">beamsect</span><span class="o">.</span><span class="n">Beam_6</span><span class="p">()(</span> <span class="n">B</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">D</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">S</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">T</span><span class="o">=</span><span class="mi">1</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">b6</span><span class="o">.</span><span class="n">A</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">13</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">b6</span><span class="o">.</span><span class="n">I</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">43.083</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">b6</span><span class="o">.</span><span class="n">Z</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">28.722</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">b6</span><span class="o">.</span><span class="n">K</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">1.82</span>
+</pre></div>
+</div>
+<p>Test Cases for Beam_7</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">hamcalc.construction.beamsect</span> <span class="kn">as</span> <span class="nn">beamsect</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b7</span><span class="o">=</span> <span class="n">beamsect</span><span class="o">.</span><span class="n">Beam_7</span><span class="p">()(</span> <span class="n">B</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">D</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">S</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">T</span><span class="o">=</span><span class="mi">1</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">b7</span><span class="o">.</span><span class="n">A</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">13</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">b7</span><span class="o">.</span><span class="n">I</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">21.083</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">b7</span><span class="o">.</span><span class="n">Z</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">8.433</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">b7</span><span class="o">.</span><span class="n">K</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">1.273</span>
+</pre></div>
+</div>
+<p>Test Cases for Beam_8</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">hamcalc.construction.beamsect</span> <span class="kn">as</span> <span class="nn">beamsect</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b8</span><span class="o">=</span> <span class="n">beamsect</span><span class="o">.</span><span class="n">Beam_8</span><span class="p">()(</span> <span class="n">B</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span> <span class="n">D</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span> <span class="n">S</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">T</span><span class="o">=</span><span class="mi">1</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">b8</span><span class="o">.</span><span class="n">A</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">19</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">b8</span><span class="o">.</span><span class="n">I</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">137.583</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">b8</span><span class="o">.</span><span class="n">Z</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">39.31</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">b8</span><span class="o">.</span><span class="n">K</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">2.691</span>
+</pre></div>
+</div>
+<p>Test Cases for Beam_9</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">hamcalc.construction.beamsect</span> <span class="kn">as</span> <span class="nn">beamsect</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b9</span><span class="o">=</span> <span class="n">beamsect</span><span class="o">.</span><span class="n">Beam_9</span><span class="p">()(</span> <span class="n">B</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span> <span class="n">D</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span> <span class="n">S</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">T</span><span class="o">=</span><span class="mi">1</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">b9</span><span class="o">.</span><span class="n">A</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">19</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">b9</span><span class="o">.</span><span class="n">I</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">90.741</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">b9</span><span class="o">.</span><span class="n">Z</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">21.154</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">b9</span><span class="o">.</span><span class="n">K</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">2.185</span>
+</pre></div>
+</div>
+<p>Test Cases for Beam_10</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">hamcalc.construction.beamsect</span> <span class="kn">as</span> <span class="nn">beamsect</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b10</span><span class="o">=</span> <span class="n">beamsect</span><span class="o">.</span><span class="n">Beam_10</span><span class="p">()(</span> <span class="n">B</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span> <span class="n">D</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span> <span class="n">S</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">T</span><span class="o">=</span><span class="mi">1</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">b10</span><span class="o">.</span><span class="n">A</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">12</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">b10</span><span class="o">.</span><span class="n">I</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">58.564</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">b10</span><span class="o">.</span><span class="n">Z</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">12.438</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">b10</span><span class="o">.</span><span class="n">K</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">2.209</span>
+</pre></div>
+</div>
+<dl class="class">
+<dt id="hamcalc.construction.beamsect.BeamSection">
+<em class="property">class </em><tt class="descclassname">hamcalc.construction.beamsect.</tt><tt class="descname">BeamSection</tt><a class="reference internal" href="../../_modules/hamcalc/construction/beamsect.html#BeamSection"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.construction.beamsect.BeamSection" title="Permalink to this definition">¶</a></dt>
+<dd><p>Superclass for beam calculations.</p>
+<dl class="method">
+<dt id="hamcalc.construction.beamsect.BeamSection.solve">
+<tt class="descname">solve</tt><big>(</big><em>args</em><big>)</big><a class="reference internal" href="../../_modules/hamcalc/construction/beamsect.html#BeamSection.solve"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.construction.beamsect.BeamSection.solve" title="Permalink to this definition">¶</a></dt>
+<dd><p>Final computation.</p>
+<p>Inputs:
+:A: Area
+:Y: &#8220;Radius&#8221;
+:I: Moment of Inertia (in inches^4)</p>
+<p>Computes:
+:Z: Section Modulus (in inches^3) <img class="math" src="../../_images/math/a9d41fa52de6fba459ff6a04a274a4413606afb6.png" alt="\dfrac{I}{Y}"/>
+:K: Radius of Gyration <img class="math" src="../../_images/math/7f4a1a7c2d61565c3621f5971dd50cee007783ad.png" alt="\sqrt{\dfrac{I}{A}}"/></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="hamcalc.construction.beamsect.Beam_1">
+<em class="property">class </em><tt class="descclassname">hamcalc.construction.beamsect.</tt><tt class="descname">Beam_1</tt><a class="reference internal" href="../../_modules/hamcalc/construction/beamsect.html#Beam_1"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.construction.beamsect.Beam_1" title="Permalink to this definition">¶</a></dt>
+<dd><p>Solid Rectangular Beam</p>
+<dl class="method">
+<dt id="hamcalc.construction.beamsect.Beam_1.solve">
+<tt class="descname">solve</tt><big>(</big><em>args</em><big>)</big><a class="reference internal" href="../../_modules/hamcalc/construction/beamsect.html#Beam_1.solve"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.construction.beamsect.Beam_1.solve" title="Permalink to this definition">¶</a></dt>
+<dd><p>Requires</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">B :</th><td class="field-body">Width</td>
+</tr>
+<tr class="field-even field"><th class="field-name">D :</th><td class="field-body">Height</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="hamcalc.construction.beamsect.Beam_10">
+<em class="property">class </em><tt class="descclassname">hamcalc.construction.beamsect.</tt><tt class="descname">Beam_10</tt><a class="reference internal" href="../../_modules/hamcalc/construction/beamsect.html#Beam_10"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.construction.beamsect.Beam_10" title="Permalink to this definition">¶</a></dt>
+<dd><p>T-Section Built-Up Beam</p>
+<dl class="method">
+<dt id="hamcalc.construction.beamsect.Beam_10.solve">
+<tt class="descname">solve</tt><big>(</big><em>args</em><big>)</big><a class="reference internal" href="../../_modules/hamcalc/construction/beamsect.html#Beam_10.solve"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.construction.beamsect.Beam_10.solve" title="Permalink to this definition">¶</a></dt>
+<dd><p>Requires</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">B :</th><td class="field-body">Width of horizontal flange</td>
+</tr>
+<tr class="field-even field"><th class="field-name">D :</th><td class="field-body">Height of section</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">S :</th><td class="field-body">Thickness of horizontal flange</td>
+</tr>
+<tr class="field-even field"><th class="field-name">T :</th><td class="field-body">Thickness of vertical web</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="hamcalc.construction.beamsect.Beam_2">
+<em class="property">class </em><tt class="descclassname">hamcalc.construction.beamsect.</tt><tt class="descname">Beam_2</tt><a class="reference internal" href="../../_modules/hamcalc/construction/beamsect.html#Beam_2"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.construction.beamsect.Beam_2" title="Permalink to this definition">¶</a></dt>
+<dd><p>Solid Triangular Beam (flat bottom)</p>
+<dl class="method">
+<dt id="hamcalc.construction.beamsect.Beam_2.solve">
+<tt class="descname">solve</tt><big>(</big><em>args</em><big>)</big><a class="reference internal" href="../../_modules/hamcalc/construction/beamsect.html#Beam_2.solve"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.construction.beamsect.Beam_2.solve" title="Permalink to this definition">¶</a></dt>
+<dd><p>Requires</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">B :</th><td class="field-body">Width</td>
+</tr>
+<tr class="field-even field"><th class="field-name">D :</th><td class="field-body">Height</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="hamcalc.construction.beamsect.Beam_3">
+<em class="property">class </em><tt class="descclassname">hamcalc.construction.beamsect.</tt><tt class="descname">Beam_3</tt><a class="reference internal" href="../../_modules/hamcalc/construction/beamsect.html#Beam_3"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.construction.beamsect.Beam_3" title="Permalink to this definition">¶</a></dt>
+<dd><p>Hollow Rectangular Box Beam</p>
+<dl class="method">
+<dt id="hamcalc.construction.beamsect.Beam_3.solve">
+<tt class="descname">solve</tt><big>(</big><em>args</em><big>)</big><a class="reference internal" href="../../_modules/hamcalc/construction/beamsect.html#Beam_3.solve"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.construction.beamsect.Beam_3.solve" title="Permalink to this definition">¶</a></dt>
+<dd><p>Requires</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">B :</th><td class="field-body">Width</td>
+</tr>
+<tr class="field-even field"><th class="field-name">D :</th><td class="field-body">Height</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">T_1 :</th><td class="field-body">Thickness of sidewalls</td>
+</tr>
+<tr class="field-even field"><th class="field-name">T_2 :</th><td class="field-body">Thickness of top &amp; bottom walls</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="hamcalc.construction.beamsect.Beam_4">
+<em class="property">class </em><tt class="descclassname">hamcalc.construction.beamsect.</tt><tt class="descname">Beam_4</tt><a class="reference internal" href="../../_modules/hamcalc/construction/beamsect.html#Beam_4"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.construction.beamsect.Beam_4" title="Permalink to this definition">¶</a></dt>
+<dd><p>Solid Cylindrical Beam</p>
+<dl class="method">
+<dt id="hamcalc.construction.beamsect.Beam_4.solve">
+<tt class="descname">solve</tt><big>(</big><em>args</em><big>)</big><a class="reference internal" href="../../_modules/hamcalc/construction/beamsect.html#Beam_4.solve"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.construction.beamsect.Beam_4.solve" title="Permalink to this definition">¶</a></dt>
+<dd><p>Requires</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">D :</th><td class="field-body">Diameter</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="hamcalc.construction.beamsect.Beam_5">
+<em class="property">class </em><tt class="descclassname">hamcalc.construction.beamsect.</tt><tt class="descname">Beam_5</tt><a class="reference internal" href="../../_modules/hamcalc/construction/beamsect.html#Beam_5"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.construction.beamsect.Beam_5" title="Permalink to this definition">¶</a></dt>
+<dd><p>Hollow Tubular Beam</p>
+<dl class="method">
+<dt id="hamcalc.construction.beamsect.Beam_5.solve">
+<tt class="descname">solve</tt><big>(</big><em>args</em><big>)</big><a class="reference internal" href="../../_modules/hamcalc/construction/beamsect.html#Beam_5.solve"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.construction.beamsect.Beam_5.solve" title="Permalink to this definition">¶</a></dt>
+<dd><p>Requires</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">D :</th><td class="field-body">Outside diameter of section</td>
+</tr>
+<tr class="field-even field"><th class="field-name">D_1 :</th><td class="field-body">Inside diameter of section</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="hamcalc.construction.beamsect.Beam_6">
+<em class="property">class </em><tt class="descclassname">hamcalc.construction.beamsect.</tt><tt class="descname">Beam_6</tt><a class="reference internal" href="../../_modules/hamcalc/construction/beamsect.html#Beam_6"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.construction.beamsect.Beam_6" title="Permalink to this definition">¶</a></dt>
+<dd><p>I-Section Built-Up Beam</p>
+<dl class="method">
+<dt id="hamcalc.construction.beamsect.Beam_6.solve">
+<tt class="descname">solve</tt><big>(</big><em>args</em><big>)</big><a class="reference internal" href="../../_modules/hamcalc/construction/beamsect.html#Beam_6.solve"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.construction.beamsect.Beam_6.solve" title="Permalink to this definition">¶</a></dt>
+<dd><p>Requires</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">B :</th><td class="field-body">Width of top &amp; bottom flanges</td>
+</tr>
+<tr class="field-even field"><th class="field-name">D :</th><td class="field-body">Height of section</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">S :</th><td class="field-body">Thickness of top &amp; bottom flanges</td>
+</tr>
+<tr class="field-even field"><th class="field-name">T :</th><td class="field-body">Thickness of vertical web</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="hamcalc.construction.beamsect.Beam_7">
+<em class="property">class </em><tt class="descclassname">hamcalc.construction.beamsect.</tt><tt class="descname">Beam_7</tt><a class="reference internal" href="../../_modules/hamcalc/construction/beamsect.html#Beam_7"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.construction.beamsect.Beam_7" title="Permalink to this definition">¶</a></dt>
+<dd><p>H-Section Built-Up Beam</p>
+<dl class="method">
+<dt id="hamcalc.construction.beamsect.Beam_7.solve">
+<tt class="descname">solve</tt><big>(</big><em>args</em><big>)</big><a class="reference internal" href="../../_modules/hamcalc/construction/beamsect.html#Beam_7.solve"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.construction.beamsect.Beam_7.solve" title="Permalink to this definition">¶</a></dt>
+<dd><p>Requires</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">D :</th><td class="field-body">Width across outside of vertical legs</td>
+</tr>
+<tr class="field-even field"><th class="field-name">B :</th><td class="field-body">Height of vertical legs</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">S :</th><td class="field-body">Thickness of vertical legs</td>
+</tr>
+<tr class="field-even field"><th class="field-name">T :</th><td class="field-body">Thickness of horizontal web</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="hamcalc.construction.beamsect.Beam_8">
+<em class="property">class </em><tt class="descclassname">hamcalc.construction.beamsect.</tt><tt class="descname">Beam_8</tt><a class="reference internal" href="../../_modules/hamcalc/construction/beamsect.html#Beam_8"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.construction.beamsect.Beam_8" title="Permalink to this definition">¶</a></dt>
+<dd><p>[-Section Built-Up Beam</p>
+<dl class="method">
+<dt id="hamcalc.construction.beamsect.Beam_8.solve">
+<tt class="descname">solve</tt><big>(</big><em>args</em><big>)</big><a class="reference internal" href="../../_modules/hamcalc/construction/beamsect.html#Beam_8.solve"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.construction.beamsect.Beam_8.solve" title="Permalink to this definition">¶</a></dt>
+<dd><p>Requires</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">B :</th><td class="field-body">Width of horizontal legs</td>
+</tr>
+<tr class="field-even field"><th class="field-name">D :</th><td class="field-body">Vertical height of section</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">S :</th><td class="field-body">Thickness of horizontal legs</td>
+</tr>
+<tr class="field-even field"><th class="field-name">T :</th><td class="field-body">Thickness of vertical web</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="hamcalc.construction.beamsect.Beam_9">
+<em class="property">class </em><tt class="descclassname">hamcalc.construction.beamsect.</tt><tt class="descname">Beam_9</tt><a class="reference internal" href="../../_modules/hamcalc/construction/beamsect.html#Beam_9"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.construction.beamsect.Beam_9" title="Permalink to this definition">¶</a></dt>
+<dd><p>U-Section Built-Up Beam</p>
+<dl class="method">
+<dt id="hamcalc.construction.beamsect.Beam_9.solve">
+<tt class="descname">solve</tt><big>(</big><em>args</em><big>)</big><a class="reference internal" href="../../_modules/hamcalc/construction/beamsect.html#Beam_9.solve"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.construction.beamsect.Beam_9.solve" title="Permalink to this definition">¶</a></dt>
+<dd><p>Requires</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">D :</th><td class="field-body">Width of base of section</td>
+</tr>
+<tr class="field-even field"><th class="field-name">B :</th><td class="field-body">Height of section</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">T :</th><td class="field-body">Thickness of base web</td>
+</tr>
+<tr class="field-even field"><th class="field-name">S :</th><td class="field-body">Thickness of vertical legs</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+        </div>
+        <div class="sidebar">
+          <h3>Table Of Contents</h3>
+          <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../background.html">Background</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../legacy.html">The HamCalc Legacy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../python_architecture.html">Python Architecture</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Python Modules</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../lib.html">lib &#8211; Supporting Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../radio/index.html">radio &#8211; Radio Design and Engineering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ham.html">ham &#8211; Ham Radio Operations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../electronics/index.html">electronics &#8211; General Electronics</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">construction &#8211; Construction and Mechanical</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="arch.html">arch &#8211; Arch Calculator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="bend.html">bend &#8211; Bend Allowance, Metals</a></li>
+<li class="toctree-l3"><a class="reference internal" href="brick.html">brick &#8211; Masonry Estimator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="conecalc.html">conecalc &#8211; Cone Calculator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="diamfind.html">diamfind &#8211; Diameter Finder</a></li>
+<li class="toctree-l3"><a class="reference internal" href="guywires.html">guywires &#8211; Guy Wires for Antenna Towers/Masts</a></li>
+<li class="toctree-l3"><a class="reference internal" href="nmbrsize.html">nmbrsize &#8211; Numbered Drills/Screws/Taps/Gauges</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pipesize.html">pipesize &#8211; Pipe Sizes, ANSI Standard</a></li>
+<li class="toctree-l3"><a class="reference internal" href="survey.html">survey &#8211; Surveyor&#8217;s Calculator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="wirecond.html">wirecond &#8211; Wires in Conduit</a></li>
+<li class="toctree-l3"><a class="reference internal" href="wiremesh.html">wiremesh &#8211; Wire Mesh Screens, Wind Loads</a></li>
+<li class="toctree-l3"><a class="reference internal" href="beamdefl.html">beamdefl &#8211; BEAMS, Deflection in</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="">beamsect &#8211; BEAMS, Properties of (Start new beam design here)</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../math/index.html">math &#8211; Math, Physics, Units Conversion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../navigation/index.html">navigation &#8211; Navigation and Astronomy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../calendar/index.html">calendar &#8211; Calendrical Calculations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../audio_photo.html">audio_photo &#8211; Audio, Sound and Photography</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../software.html">software &#8211; Software Engineering, Programming and Computers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../other/index.html">other &#8211; including Finance and Nutrition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../stdio.html">STDIO Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../rest.html">RESTful Web Services Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../cli.html">Command-Line Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../gui.html">GUI Interface</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../todo.html">The To Do List</a></li>
+</ul>
+
+          <h3 style="margin-top: 1.5em;">Search</h3>
+          <form class="search" action="../../search.html" method="get">
+            <input type="text" name="q" />
+            <input type="submit" value="Go" />
+            <input type="hidden" name="check_keywords" value="yes" />
+            <input type="hidden" name="area" value="default" />
+          </form>
+          <p class="searchtip" style="font-size: 90%">
+            Enter search terms or a module, class or function name.
+          </p>
+        </div>
+        <div class="clearer"></div>
+      </div>
+    </div>
+
+    <div class="footer-wrapper">
+      <div class="footer">
+        <div class="left">
+          <a href="beamdefl.html" title="beamdefl – BEAMS, Deflection in"
+             >previous</a> |
+          <a href="../math/index.html" title="math – Math, Physics, Units Conversion"
+             >next</a> |
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |
+          <a href="../../genindex.html" title="General Index"
+             >index</a>
+            <br/>
+            <a href="../../_sources/python/construction/beamsect.txt"
+               rel="nofollow">Show Source</a>
+        </div>
+
+        <div class="right">
+          
+    <div class="footer">
+        &copy; Copyright 2013, S.Lott.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2b1.
+    </div>
+        </div>
+        <div class="clearer"></div>
+      </div>
+    </div>
+
+  </body>
+</html>

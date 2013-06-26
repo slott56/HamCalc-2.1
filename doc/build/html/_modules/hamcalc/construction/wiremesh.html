@@ -96,24 +96,25 @@
 <span class="sd">&gt;&gt;&gt; for x in range(1,12):</span>
 <span class="sd">...     k = (x+1)*5</span>
 <span class="sd">...     f = wiremesh.force( A=.25, D=.0625, SA=12, W_k= k )</span>
-<span class="sd">...     print( k, round(f.Y,1) )</span>
-<span class="sd">10 1.6</span>
-<span class="sd">15 4.2</span>
-<span class="sd">20 6.8</span>
-<span class="sd">25 11.0</span>
-<span class="sd">30 16.3</span>
-<span class="sd">35 22.1</span>
-<span class="sd">40 28.9</span>
-<span class="sd">45 36.2</span>
-<span class="sd">50 44.6</span>
-<span class="sd">55 54.1</span>
-<span class="sd">60 64.6</span>
+<span class="sd">...     print( k, round(f.Y_lb,1), round(f.Y_n,1) )</span>
+<span class="sd">10 1.6 0.7</span>
+<span class="sd">15 4.2 1.9</span>
+<span class="sd">20 6.8 3.1</span>
+<span class="sd">25 11.0 5.0</span>
+<span class="sd">30 16.3 7.4</span>
+<span class="sd">35 22.1 10.0</span>
+<span class="sd">40 28.9 13.1</span>
+<span class="sd">45 36.2 16.4</span>
+<span class="sd">50 44.6 20.2</span>
+<span class="sd">55 54.1 24.5</span>
+<span class="sd">60 64.6 29.3</span>
 <span class="sd">&gt;&gt;&gt;</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">from</span> <span class="nn">hamcalc.lib</span> <span class="kn">import</span> <span class="n">Solver</span><span class="p">,</span> <span class="n">Unit</span><span class="p">,</span> <span class="n">AttrDict</span><span class="p">,</span> <span class="n">NoSolutionError</span><span class="p">,</span> <span class="n">convert</span>
 <span class="kn">from</span> <span class="nn">hamcalc.math.equiv</span> <span class="kn">import</span> <span class="n">INCH</span><span class="p">,</span> <span class="n">MILLIMETRE</span><span class="p">,</span> <span class="n">SQ_METRE</span><span class="p">,</span> <span class="n">SQ_FOOT</span>
 <span class="kn">from</span> <span class="nn">hamcalc.navigation.satorbit</span> <span class="kn">import</span> <span class="n">KPH</span><span class="p">,</span> <span class="n">MPH</span><span class="p">,</span> <span class="n">MPM</span><span class="p">,</span> <span class="n">KNOT</span><span class="p">,</span> <span class="n">MPS</span>
+<span class="kn">from</span> <span class="nn">hamcalc.math.centrif</span> <span class="kn">import</span> <span class="n">KILOGRAM</span><span class="p">,</span> <span class="n">POUND_MASS</span><span class="p">,</span> <span class="n">KILOGRAM_FORCE</span><span class="p">,</span> <span class="n">POUND_FORCE</span>
 <span class="kn">import</span> <span class="nn">math</span>
 
 <span class="c"># Weight of metals</span>
@@ -240,7 +241,8 @@
 
     <span class="n">results</span><span class="o">.</span><span class="n">W_mph</span><span class="p">,</span> <span class="n">results</span><span class="o">.</span><span class="n">W_kph</span><span class="p">,</span> <span class="n">results</span><span class="o">.</span><span class="n">W_b</span> <span class="o">=</span> <span class="n">convert</span><span class="p">(</span> <span class="n">results</span><span class="o">.</span><span class="n">W_k</span><span class="p">,</span> <span class="n">KNOT</span><span class="p">,</span>
         <span class="n">MPH</span><span class="p">,</span> <span class="n">KPH</span><span class="p">,</span> <span class="n">Beaufort</span> <span class="p">)</span>
-    <span class="n">results</span><span class="o">.</span><span class="n">Y</span> <span class="o">=</span> <span class="n">wind_force</span><span class="p">(</span> <span class="n">results</span><span class="o">.</span><span class="n">W_k</span> <span class="p">)</span><span class="o">*</span><span class="n">results</span><span class="o">.</span><span class="n">FA</span>
+    <span class="n">results</span><span class="o">.</span><span class="n">Y_lb</span> <span class="o">=</span> <span class="n">wind_force</span><span class="p">(</span> <span class="n">results</span><span class="o">.</span><span class="n">W_k</span> <span class="p">)</span><span class="o">*</span><span class="n">results</span><span class="o">.</span><span class="n">FA</span>
+    <span class="n">results</span><span class="o">.</span><span class="n">Y_n</span> <span class="o">=</span> <span class="n">convert</span><span class="p">(</span> <span class="n">results</span><span class="o">.</span><span class="n">Y_lb</span><span class="p">,</span> <span class="n">POUND_FORCE</span><span class="p">,</span> <span class="n">KILOGRAM_FORCE</span> <span class="p">)</span>
 
     <span class="k">return</span> <span class="n">results</span></div>
 </pre></div>

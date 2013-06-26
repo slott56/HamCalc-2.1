@@ -26,8 +26,8 @@ index, either.
     :maxdepth: 1
 
     beamdefl
+    beamsect
 
--   "beamsect", "BEAMS - Properties of (Start new beam design here)"
 -   "beltdriv", "Belt Drives"
 -   "chain", "Chain Drives"
 -   "cyl", "Cylinders - Air & Hydraulic"
