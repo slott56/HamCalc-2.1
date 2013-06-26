@@ -1,0 +1,491 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>beltdriv – Belt Drives &mdash; HamCalc 2.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/agogo.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '2.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="HamCalc 2.1 documentation" href="../../index.html" />
+    <link rel="up" title="construction – Construction and Mechanical" href="index.html" />
+    <link rel="next" title="math – Math, Physics, Units Conversion" href="../math/index.html" />
+    <link rel="prev" title="beamsect – BEAMS, Properties of (Start new beam design here)" href="beamsect.html" /> 
+  </head>
+  <body>
+    <div class="header-wrapper">
+      <div class="header">
+        <div class="headertitle"><a
+          href="../../index.html">HamCalc 2.1 documentation</a></div>
+        <div class="rel">
+          <a href="beamsect.html" title="beamsect – BEAMS, Properties of (Start new beam design here)"
+             accesskey="P">previous</a> |
+          <a href="../math/index.html" title="math – Math, Physics, Units Conversion"
+             accesskey="N">next</a> |
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a>
+        </div>
+       </div>
+    </div>
+
+    <div class="content-wrapper">
+      <div class="content">
+        <div class="document">
+            
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="beltdriv-belt-drives">
+<h1>beltdriv &#8211;  Belt Drives<a class="headerlink" href="#beltdriv-belt-drives" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="legacy-output">
+<h2>Legacy Output<a class="headerlink" href="#legacy-output" title="Permalink to this headline">¶</a></h2>
+<p>Intro and Menu:</p>
+<div class="highlight-python"><pre>BELT DRIVES (V-belts/Gear belts)                        by George Murphy VE3ERP
+
+  Press number in &lt; &gt; to select:
+
+  &lt; 1 &gt;  Pulleys known
+  &lt; 2 &gt;  Pulleys unknown, R.P.M.&#x27;s known
+
+  &lt; 0 &gt;  Exit</pre>
+</div>
+<p>Sample Output:</p>
+<div class="highlight-python"><pre>ENTER: Pitch dia. - Pulley A  (in.)...? 5
+ENTER: Pitch dia. - Pulley B  (in.)...? 2.5
+Pitch diameter - small pulley.......     2.500
+Pitch diameter - large pulley.......     5.000
+Minimum c.c.(in.)...................     4.250
+Ideal   c.c.(in.)(V-belt drives)....     6.250
+ENTER: Desired c.c.distance (in.)...? 8
+Desired c.c.(in.)...................     8.000
+Design Belt length (in.)............    16.405
+ENTER: Nearest standard belt (in.)..? 17
+BELT TOO SHORT - Try a longer belt! ( Press SPACE BAR to continue )</pre>
+</div>
+</div>
+<div class="section" id="analysis">
+<h2>Analysis<a class="headerlink" href="#analysis" title="Permalink to this headline">¶</a></h2>
+<p>There are several calculations here: Pulley Size (from RPM),
+Belt Size (from pulley size) and tension/torque.</p>
+<p>Menu Item &#8220;1&#8221; computes belt size from pulley sizes. This is
+a piece of the larger calculation.</p>
+<blockquote>
+<div><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">E:</th><td class="field-body">Small Pulley Diameter</td>
+</tr>
+<tr class="field-even field"><th class="field-name">D:</th><td class="field-body">Large Pulley Diameter</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">I:</th><td class="field-body">Mimumum c.c.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">G:</th><td class="field-body">Ideal c.c. (V-belt drives)</td>
+</tr>
+</tbody>
+</table>
+<div class="math">
+<p><img src="../../_images/math/4f412301627fddf186d22d33e49faa3e270b3251.png" alt="R &amp;= D/E \\
+&amp; \begin{cases}
+G &amp;= (D+E)/2+E \text{ if $R &lt; 3$} \\
+G &amp;= 2*D \text{ if $R \geq 3$}
+\end{cases} \\
+I &amp;= \frac{D+E}{2}+0.5"/></p>
+</div><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">C:</th><td class="field-body">Desired c.c.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">M:</th><td class="field-body">Design Belt length</td>
+</tr>
+</tbody>
+</table>
+<div class="math">
+<p><img src="../../_images/math/f79bc015b5c1f48736fb63325dc923df57f23cfe.png" alt="V &amp;= \frac{\pi}{2}(D+E) \\
+W &amp;= \frac{(D-E)^2}{4C} \\
+M &amp;= 2C+V+W"/></p>
+</div><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">L:</th><td class="field-body">Nearest standard belt</td>
+</tr>
+<tr class="field-even field"><th class="field-name">C:</th><td class="field-body">Actual  c.c.</td>
+</tr>
+</tbody>
+</table>
+<div class="math">
+<p><img src="../../_images/math/1517c6ef4a780676280d42c3eb6901e1b33cd3d8.png" alt="F &amp;= 4L-2\pi(D+E) \\
+H &amp;= 32(D-E)^2 \\
+\text{if } &amp; F^2&lt;H \text{ belt is too short} \\
+C &amp;= \frac{F+\sqrt{F^2-H}}{16} \\
+\text{if } &amp; C &lt; I \text{ belt is too short}"/></p>
+</div><p>Since RPM&#8217;s aren&#8217;t known, nothing more is computed.</p>
+</div></blockquote>
+<p>Menu Item &#8220;2&#8221; computes pulley sizes, belt length, and torque given
+RPM&#8217;s. This is the full calculation.</p>
+<blockquote>
+<div><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">X:</th><td class="field-body">Known R.P.M.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Y:</th><td class="field-body">Sought R.P.M.</td>
+</tr>
+</tbody>
+</table>
+<p>Given a collection, <img class="math" src="../../_images/math/38476ffcdba56bd2f24c9587211216be1c4ba195.png" alt="\lbrace A_i | 0 \leq i &lt; n\rbrace"/>, of <em>n</em>
+pitch sizes, we have a number of alternative wheel combinations.</p>
+<div class="math">
+<p><img src="../../_images/math/df3b110b431b0840dc340c9c7e270bde86a0a005.png" alt="P_i &amp;= \frac{A_i}{Y/X} \\
+Q_i &amp;= A_i\times(Y/X)"/></p>
+</div><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">W:</th><td class="field-body">Selected Pulley, from the <img class="math" src="../../_images/math/2744600189f7f1df31756f2022b2d5212ef1c767.png" alt="A_i"/> collection</td>
+</tr>
+<tr class="field-even field"><th class="field-name">V:</th><td class="field-body">Calculated Pulley, either <img class="math" src="../../_images/math/e86919caff4a26af2c8867c56bcd9134bfd241ac.png" alt="P_i"/> or <img class="math" src="../../_images/math/a1ef6fb9bb3f4c7cde39e9fe8ef9cd72dddbc484.png" alt="Q_i"/></td>
+</tr>
+</tbody>
+</table>
+<p>We need to replace <em>V</em> with a standard-sized pulley
+close to the computed size, <img class="math" src="../../_images/math/16ea8a0973f9e6ae4d6ab96ebe246b0a8b015700.png" alt="V^\prime"/>.</p>
+<p>There are four cases that can occur. A simple swap of two
+values can slightly simplify this.</p>
+<ul class="simple">
+<li><em>X</em> RPM is larger, target <em>Y</em> is smaller: we&#8217;re reducing RPM.<ul>
+<li>Large pulley is standard (<em>W</em>) and small is computed (<em>V</em>):
+Small pulley at <em>X</em> RPM, large pulley at <img class="math" src="../../_images/math/8a60f488c5b1f43b2e198603f5046cc3e8e7c95f.png" alt="Y^\prime=XV/W"/>.</li>
+<li>Small pulley is standard (<em>W</em>) and large is computed (<em>V</em>):
+Small pulley at <em>X</em> RPM, large pulley at <img class="math" src="../../_images/math/8123e65edd0c55608847493bd1bef1a8ae9d6112.png" alt="Y^\prime=XW/V"/>.</li>
+</ul>
+</li>
+<li><em>X</em> RPM is smaller, target <em>Y</em> is larger: we&#8217;re increasing RPM.<ul>
+<li>Large pulley is standard (<em>W</em>) and small is computed (<em>V</em>):
+Large pulley at <em>X</em> RPM, small pulley at <img class="math" src="../../_images/math/8123e65edd0c55608847493bd1bef1a8ae9d6112.png" alt="Y^\prime=XW/V"/>.</li>
+<li>Small pulley is standard (W) and large is computed (V)
+Large pulley at <em>X</em> RPM, small pulley at <img class="math" src="../../_images/math/8a60f488c5b1f43b2e198603f5046cc3e8e7c95f.png" alt="Y^\prime=XV/W"/>.</li>
+</ul>
+</li>
+</ul>
+<p>This sets <em>D</em> and <em>E</em> for the large and small pulleys, as well as
+the calculated value of <em>Y</em>, <img class="math" src="../../_images/math/fd65e8d78b41adc34a10c862fb910d7cdccd6f07.png" alt="Y^\prime"/>.</p>
+<p>From here, calculation one (above) for belt length is done based
+on pulley sizes.</p>
+<p>Finally, since <tt class="docutils literal"><span class="pre">X</span></tt> and <img class="math" src="../../_images/math/fd65e8d78b41adc34a10c862fb910d7cdccd6f07.png" alt="Y^\prime"/> are known from RPM calculations,
+and <tt class="docutils literal"><span class="pre">D</span></tt> and <tt class="docutils literal"><span class="pre">E</span></tt> are known from pulley sizing
+then the tension, speed and torque can be computed.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">HP:</th><td class="field-body">Horsepower</td>
+</tr>
+<tr class="field-even field"><th class="field-name">VL:</th><td class="field-body">Velocity on small pulley</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">TN:</th><td class="field-body">Tension (lbs.) on belt(s)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">TE:</th><td class="field-body">In./lb. torque - small pulley shaft</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">TD:</th><td class="field-body">In./lb. torque - large pulley shaft</td>
+</tr>
+</tbody>
+</table>
+<div class="math">
+<p><img src="../../_images/math/bc42f4403ac9b1e59a48f6bd7d9aae7ad25e6174.png" alt="V_L &amp;= 0.2618 E X \\
+T_N &amp;= \frac{33000 HP}{V_L} \\
+T_E &amp;= \frac{T_N E}{2} \\
+T_D &amp;= \frac{T_N D}{2}"/></p>
+</div></div></blockquote>
+</div>
+<div class="section" id="module-hamcalc.construction.beltdriv">
+<span id="implementation"></span><h2>Implementation<a class="headerlink" href="#module-hamcalc.construction.beltdriv" title="Permalink to this headline">¶</a></h2>
+<p>hamcalc.construction.beltdriv</p>
+<p>This has several calculation functions for various parts
+of the belt design process.</p>
+<p>Test Case for <a class="reference internal" href="#hamcalc.construction.beltdriv.pulley_choice_iter" title="hamcalc.construction.beltdriv.pulley_choice_iter"><tt class="xref py py-func docutils literal"><span class="pre">pulley_choice_iter()</span></tt></a>.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">hamcalc.construction.beltdriv</span> <span class="kn">as</span> <span class="nn">belt</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">choices</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span> <span class="n">belt</span><span class="o">.</span><span class="n">pulley_choice_iter</span><span class="p">(</span> <span class="mi">1700</span><span class="p">,</span> <span class="mi">3500</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mf">4.5</span> <span class="p">)</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="p">[</span> <span class="p">(</span> <span class="nb">round</span><span class="p">(</span><span class="n">d</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span> <span class="nb">round</span><span class="p">(</span><span class="n">e</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span> <span class="p">)</span> <span class="k">for</span> <span class="n">d</span><span class="p">,</span><span class="n">e</span> <span class="ow">in</span> <span class="n">choices</span> <span class="p">]</span>
+<span class="go">[(7, 3.4), (14.4, 7), (5, 2.4), (10.3, 5), (4.5, 2.2), (9.3, 4.5)]</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">belt</span><span class="o">.</span><span class="n">design_pulley_distances</span><span class="p">(</span> <span class="mf">9.5</span><span class="p">,</span> <span class="mf">4.5</span> <span class="p">)</span>
+<span class="go">(7.5, 11.5)</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">l</span><span class="o">=</span> <span class="n">belt</span><span class="o">.</span><span class="n">design_belt_length</span><span class="p">(</span> <span class="mf">9.5</span><span class="p">,</span> <span class="mf">4.5</span><span class="p">,</span> <span class="mi">9</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">l</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="go">40.7</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">c</span><span class="o">=</span> <span class="n">belt</span><span class="o">.</span><span class="n">final_pulley_distance</span><span class="p">(</span> <span class="mf">9.5</span><span class="p">,</span> <span class="mf">4.5</span><span class="p">,</span> <span class="mi">42</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span> <span class="n">c</span><span class="p">,</span> <span class="mi">1</span> <span class="p">)</span>
+<span class="go">9.7</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">V</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">T_E</span><span class="p">,</span> <span class="n">T_D</span> <span class="o">=</span> <span class="n">belt</span><span class="o">.</span><span class="n">tension_torque</span><span class="p">(</span> <span class="mf">9.5</span><span class="p">,</span> <span class="mf">4.5</span><span class="p">,</span> <span class="mi">1700</span><span class="p">,</span> <span class="mi">80</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">V</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+<span class="go">2002.8</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">T</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+<span class="go">1318.2</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">T_E</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+<span class="go">2965.9</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">T_D</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+<span class="go">6261.3</span>
+</pre></div>
+</div>
+<dl class="exception">
+<dt id="hamcalc.construction.beltdriv.BeltTooShort">
+<em class="property">exception </em><tt class="descclassname">hamcalc.construction.beltdriv.</tt><tt class="descname">BeltTooShort</tt><a class="reference internal" href="../../_modules/hamcalc/construction/beltdriv.html#BeltTooShort"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.construction.beltdriv.BeltTooShort" title="Permalink to this definition">¶</a></dt>
+<dd><p>This exception is raised when a selected belt
+can&#8217;t fit the minimum belt length requirements.</p>
+<p><a class="reference internal" href="#hamcalc.construction.beltdriv.design_belt_length" title="hamcalc.construction.beltdriv.design_belt_length"><tt class="xref py py-func docutils literal"><span class="pre">design_belt_length()</span></tt></a> defines the minimum.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="hamcalc.construction.beltdriv.design_belt_length">
+<tt class="descclassname">hamcalc.construction.beltdriv.</tt><tt class="descname">design_belt_length</tt><big>(</big><em>D</em>, <em>E</em>, <em>C</em><big>)</big><a class="reference internal" href="../../_modules/hamcalc/construction/beltdriv.html#design_belt_length"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.construction.beltdriv.design_belt_length" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given pulley sizes D and E and desired
+center-to-center distance, C, compute the required
+belt length.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>D</strong> &#8211; larger pitch diameter</li>
+<li><strong>E</strong> &#8211; smaller pitch diameter</li>
+<li><strong>C</strong> &#8211; desired center-to-center distance</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">design belt length. This can be used
+to select a standard (or available) belt length.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="hamcalc.construction.beltdriv.design_pulley_distances">
+<tt class="descclassname">hamcalc.construction.beltdriv.</tt><tt class="descname">design_pulley_distances</tt><big>(</big><em>D</em>, <em>E</em><big>)</big><a class="reference internal" href="../../_modules/hamcalc/construction/beltdriv.html#design_pulley_distances"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.construction.beltdriv.design_pulley_distances" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given pulley sizes D and E, compute
+minimum and ideal center-to-center distance.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>D</strong> &#8211; larger pitch diameter</li>
+<li><strong>E</strong> &#8211; smaller pitch diameter</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Pair of minimum and ideal distances.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="hamcalc.construction.beltdriv.final_pulley_distance">
+<tt class="descclassname">hamcalc.construction.beltdriv.</tt><tt class="descname">final_pulley_distance</tt><big>(</big><em>D</em>, <em>E</em>, <em>L</em><big>)</big><a class="reference internal" href="../../_modules/hamcalc/construction/beltdriv.html#final_pulley_distance"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.construction.beltdriv.final_pulley_distance" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given pulley sizes D and E and actual belt
+length, L, compute the required center-to-center
+distance.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>D</strong> &#8211; larger pitch diameter</li>
+<li><strong>E</strong> &#8211; smaller pitch diameter</li>
+<li><strong>L</strong> &#8211; available belt length.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">center to center distance.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Rauses :</th><td class="field-body"><p class="first last">BeltTooShort if the belt can&#8217;t be fit.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="hamcalc.construction.beltdriv.pulley_choice_iter">
+<tt class="descclassname">hamcalc.construction.beltdriv.</tt><tt class="descname">pulley_choice_iter</tt><big>(</big><em>X</em>, <em>Y</em>, <em>*pitches</em><big>)</big><a class="reference internal" href="../../_modules/hamcalc/construction/beltdriv.html#pulley_choice_iter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.construction.beltdriv.pulley_choice_iter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given X RPM and Y RPM, and a collection
+of wheel pitches, compute a list of potential.
+wheel sizes that produce the desired RPM&#8217;s.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>X</strong> &#8211; Known RPM</li>
+<li><strong>Y</strong> &#8211; Sought RPM</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Iterates over a sequence of pulley pairs.
+This can be used to select a pulley close
+to a standard (or available) size.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="hamcalc.construction.beltdriv.tension_torque">
+<tt class="descclassname">hamcalc.construction.beltdriv.</tt><tt class="descname">tension_torque</tt><big>(</big><em>D</em>, <em>E</em>, <em>X</em>, <em>HP</em><big>)</big><a class="reference internal" href="../../_modules/hamcalc/construction/beltdriv.html#tension_torque"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.construction.beltdriv.tension_torque" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given pulley sizes D and E, RPM of X,
+and Horsepower of HP, compute velocity, tension on belt,
+and torque on each pulley.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>D</strong> &#8211; larger pitch diameter</li>
+<li><strong>E</strong> &#8211; smaller pitch diameter</li>
+<li><strong>X</strong> &#8211; Known RPM</li>
+<li><strong>HP</strong> &#8211; Horsepower</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Tuple with Velocity, Tension,  Torque on small
+wheel, Torque on large wheel</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+        </div>
+        <div class="sidebar">
+          <h3>Table Of Contents</h3>
+          <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../background.html">Background</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../legacy.html">The HamCalc Legacy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../python_architecture.html">Python Architecture</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Python Modules</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../lib.html">lib &#8211; Supporting Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../radio/index.html">radio &#8211; Radio Design and Engineering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ham.html">ham &#8211; Ham Radio Operations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../electronics/index.html">electronics &#8211; General Electronics</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">construction &#8211; Construction and Mechanical</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="arch.html">arch &#8211; Arch Calculator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="bend.html">bend &#8211; Bend Allowance, Metals</a></li>
+<li class="toctree-l3"><a class="reference internal" href="brick.html">brick &#8211; Masonry Estimator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="conecalc.html">conecalc &#8211; Cone Calculator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="diamfind.html">diamfind &#8211; Diameter Finder</a></li>
+<li class="toctree-l3"><a class="reference internal" href="guywires.html">guywires &#8211; Guy Wires for Antenna Towers/Masts</a></li>
+<li class="toctree-l3"><a class="reference internal" href="nmbrsize.html">nmbrsize &#8211; Numbered Drills/Screws/Taps/Gauges</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pipesize.html">pipesize &#8211; Pipe Sizes, ANSI Standard</a></li>
+<li class="toctree-l3"><a class="reference internal" href="survey.html">survey &#8211; Surveyor&#8217;s Calculator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="wirecond.html">wirecond &#8211; Wires in Conduit</a></li>
+<li class="toctree-l3"><a class="reference internal" href="wiremesh.html">wiremesh &#8211; Wire Mesh Screens, Wind Loads</a></li>
+<li class="toctree-l3"><a class="reference internal" href="beamdefl.html">beamdefl &#8211; BEAMS, Deflection in</a></li>
+<li class="toctree-l3"><a class="reference internal" href="beamsect.html">beamsect &#8211; BEAMS, Properties of (Start new beam design here)</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="">beltdriv &#8211;  Belt Drives</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../math/index.html">math &#8211; Math, Physics, Units Conversion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../navigation/index.html">navigation &#8211; Navigation and Astronomy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../calendar/index.html">calendar &#8211; Calendrical Calculations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../audio_photo.html">audio_photo &#8211; Audio, Sound and Photography</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../software.html">software &#8211; Software Engineering, Programming and Computers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../other/index.html">other &#8211; including Finance and Nutrition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../stdio.html">STDIO Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../rest.html">RESTful Web Services Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../cli.html">Command-Line Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../gui.html">GUI Interface</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../todo.html">The To Do List</a></li>
+</ul>
+
+          <h3 style="margin-top: 1.5em;">Search</h3>
+          <form class="search" action="../../search.html" method="get">
+            <input type="text" name="q" />
+            <input type="submit" value="Go" />
+            <input type="hidden" name="check_keywords" value="yes" />
+            <input type="hidden" name="area" value="default" />
+          </form>
+          <p class="searchtip" style="font-size: 90%">
+            Enter search terms or a module, class or function name.
+          </p>
+        </div>
+        <div class="clearer"></div>
+      </div>
+    </div>
+
+    <div class="footer-wrapper">
+      <div class="footer">
+        <div class="left">
+          <a href="beamsect.html" title="beamsect – BEAMS, Properties of (Start new beam design here)"
+             >previous</a> |
+          <a href="../math/index.html" title="math – Math, Physics, Units Conversion"
+             >next</a> |
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |
+          <a href="../../genindex.html" title="General Index"
+             >index</a>
+            <br/>
+            <a href="../../_sources/python/construction/beltdriv.txt"
+               rel="nofollow">Show Source</a>
+        </div>
+
+        <div class="right">
+          
+    <div class="footer">
+        &copy; Copyright 2013, S.Lott.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2b1.
+    </div>
+        </div>
+        <div class="clearer"></div>
+      </div>
+    </div>
+
+  </body>
+</html>

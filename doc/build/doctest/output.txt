@@ -1,4 +1,4 @@
-Results of doctest builder run on 2013-06-26 08:49:37
+Results of doctest builder run on 2013-06-26 16:32:15
 =====================================================
 
 Document: python/math/baromtr
@@ -17,12 +17,12 @@ Document: python/math/polygon
 11 passed and 0 failed.
 Test passed.
 
-Document: python/math/propcirc
-------------------------------
+Document: python/navigation/sunup
+---------------------------------
 1 items passed all tests:
-  18 tests in default
-18 tests in 1 items.
-18 passed and 0 failed.
+  58 tests in default
+58 tests in 1 items.
+58 passed and 0 failed.
 Test passed.
 
 Document: python/math/quadrat
@@ -41,14 +41,6 @@ Document: python/electronics/awgexact
 8 passed and 0 failed.
 Test passed.
 
-Document: python/math/fibon
----------------------------
-1 items passed all tests:
-  19 tests in default
-19 tests in 1 items.
-19 passed and 0 failed.
-Test passed.
-
 Document: python/math/trig
 --------------------------
 1 items passed all tests:
@@ -65,28 +57,12 @@ Document: python/navigation/gridsq
 35 passed and 0 failed.
 Test passed.
 
-Document: python/math/centrif
------------------------------
+Document: python/construction/beltdriv
+--------------------------------------
 1 items passed all tests:
   13 tests in default
 13 tests in 1 items.
 13 passed and 0 failed.
-Test passed.
-
-Document: python/navigation/sunup
----------------------------------
-1 items passed all tests:
-  58 tests in default
-58 tests in 1 items.
-58 passed and 0 failed.
-Test passed.
-
-Document: python/construction/wiremesh
---------------------------------------
-1 items passed all tests:
-  15 tests in default
-15 tests in 1 items.
-15 passed and 0 failed.
 Test passed.
 
 Document: python/construction/guywires
@@ -103,6 +79,14 @@ Document: python/construction/conecalc
   65 tests in default
 65 tests in 1 items.
 65 passed and 0 failed.
+Test passed.
+
+Document: python/math/centrif
+-----------------------------
+1 items passed all tests:
+  13 tests in default
+13 tests in 1 items.
+13 passed and 0 failed.
 Test passed.
 
 Document: python/math/curvefit
@@ -129,20 +113,20 @@ Document: python/math/accelr
 9 passed and 0 failed.
 Test passed.
 
-Document: python/math/solutri
------------------------------
-1 items passed all tests:
-  10 tests in default
-10 tests in 1 items.
-10 passed and 0 failed.
-Test passed.
-
 Document: python/math/equiv
 ---------------------------
 1 items passed all tests:
   48 tests in default
 48 tests in 1 items.
 48 passed and 0 failed.
+Test passed.
+
+Document: python/math/involute
+------------------------------
+1 items passed all tests:
+   7 tests in default
+7 tests in 1 items.
+7 passed and 0 failed.
 Test passed.
 
 Document: python/math/primenos
@@ -185,12 +169,20 @@ Document: python/navigation/pathfind
 31 passed and 0 failed.
 Test passed.
 
-Document: python/construction/beamdefl
+Document: python/math/solutri
+-----------------------------
+1 items passed all tests:
+  10 tests in default
+10 tests in 1 items.
+10 passed and 0 failed.
+Test passed.
+
+Document: python/construction/wiremesh
 --------------------------------------
 1 items passed all tests:
- 104 tests in default
-104 tests in 1 items.
-104 passed and 0 failed.
+  15 tests in default
+15 tests in 1 items.
+15 passed and 0 failed.
 Test passed.
 
 Document: python/construction/beamsect
@@ -201,20 +193,20 @@ Document: python/construction/beamsect
 60 passed and 0 failed.
 Test passed.
 
-Document: python/math/involute
-------------------------------
-1 items passed all tests:
-   7 tests in default
-7 tests in 1 items.
-7 passed and 0 failed.
-Test passed.
-
 Document: python/math/speedtd
 -----------------------------
 1 items passed all tests:
    3 tests in default
 3 tests in 1 items.
 3 passed and 0 failed.
+Test passed.
+
+Document: python/math/fibon
+---------------------------
+1 items passed all tests:
+  19 tests in default
+19 tests in 1 items.
+19 passed and 0 failed.
 Test passed.
 
 Document: python/navigation/satorbit
@@ -231,6 +223,22 @@ Document: python/lib
    9 tests in default
 9 tests in 1 items.
 9 passed and 0 failed.
+Test passed.
+
+Document: python/math/propcirc
+------------------------------
+1 items passed all tests:
+  18 tests in default
+18 tests in 1 items.
+18 passed and 0 failed.
+Test passed.
+
+Document: python/construction/beamdefl
+--------------------------------------
+1 items passed all tests:
+ 104 tests in default
+104 tests in 1 items.
+104 passed and 0 failed.
 Test passed.
 
 Document: python/math/deciconv
@@ -259,7 +267,7 @@ Test passed.
 
 Doctest summary
 ===============
-  802 tests
+  815 tests
     0 failures in tests
     0 failures in setup code
     0 failures in cleanup code

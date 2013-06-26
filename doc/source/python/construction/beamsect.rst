@@ -207,5 +207,8 @@ T-Section Built-Up Beam
 Implementation
 ~~~~~~~~~~~~~~~~~
 
+This imports :program:`beamdefl` to handle deflection
+calculations based on beam design.
+
 ..  automodule:: hamcalc.construction.beamsect
     :members:

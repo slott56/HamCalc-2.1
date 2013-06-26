@@ -27,8 +27,8 @@ index, either.
 
     beamdefl
     beamsect
+    beltdriv
 
--   "beltdriv", "Belt Drives"
 -   "chain", "Chain Drives"
 -   "cyl", "Cylinders - Air & Hydraulic"
 -   "gearing", "Gears & gearing"

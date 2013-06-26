@@ -47,8 +47,8 @@ class Mechanics_Menu( Program_Menu ):
         super().process()
 
 def run():
-    rjd= Mechanics_Menu()
-    rjd.process()
+    mech= Mechanics_Menu()
+    mech.process()
 
 if __name__ == "__main__":
     run()

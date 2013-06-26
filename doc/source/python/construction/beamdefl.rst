@@ -358,8 +358,8 @@ Calculations::
 Implementation
 ~~~~~~~~~~~~~~
 
-Note that this may be used by :program:`beamsect`, as well
-as used by :program:`beamdefl`.
+Note that this may be used by :program:`beamsect` and :program:`beamdefl`
+will both share this module.
 
 ..  automodule:: hamcalc.construction.beamdefl
     :members:
