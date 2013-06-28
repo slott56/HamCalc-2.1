@@ -29,8 +29,9 @@ index, either.
     beamsect
     beltdriv
     chain
+    cyl
 
--   "cyl", "Cylinders - Air & Hydraulic"
+
 -   "gearing", "Gears & gearing"
 -   "binhop", "Hoppered Bins & Tanks"
 -   "shaft", "Shafting"

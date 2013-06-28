@@ -1,4 +1,4 @@
-Results of doctest builder run on 2013-06-28 10:19:02
+Results of doctest builder run on 2013-06-28 17:32:03
 =====================================================
 
 Document: python/math/baromtr
@@ -31,6 +31,14 @@ Document: python/math/quadrat
   10 tests in default
 10 tests in 1 items.
 10 passed and 0 failed.
+Test passed.
+
+Document: python/construction/cyl
+---------------------------------
+1 items passed all tests:
+  14 tests in default
+14 tests in 1 items.
+14 passed and 0 failed.
 Test passed.
 
 Document: python/electronics/awgexact
@@ -177,6 +185,41 @@ Document: python/math/decifrac
 7 passed and 0 failed.
 Test passed.
 
+Document: python/stdio
+----------------------
+**********************************************************************
+File "python/stdio.rst", line 15, in default
+Failed example:
+    z=input_int("ENTER Value? ")
+Exception raised:
+    Traceback (most recent call last):
+      File "/Library/Frameworks/Python.framework/Versions/3.2/lib/python3.2/doctest.py", line 1288, in __run
+        compileflags, 1), test.globs)
+      File "<doctest default[1]>", line 1, in <module>
+        z=input_int("ENTER Value? ")
+      File "/Users/slott/github/local/HamCalc-2.1/python/hamcalc/stdio/__init__.py", line 47, in input_int
+        return input_convert( prompt, int )
+      File "/Users/slott/github/local/HamCalc-2.1/python/hamcalc/stdio/__init__.py", line 34, in input_convert
+        raw= input( prompt )
+    TypeError: bad argument type for built-in operation
+**********************************************************************
+File "python/stdio.rst", line 19, in default
+Failed example:
+    z
+Exception raised:
+    Traceback (most recent call last):
+      File "/Library/Frameworks/Python.framework/Versions/3.2/lib/python3.2/doctest.py", line 1288, in __run
+        compileflags, 1), test.globs)
+      File "<doctest default[2]>", line 1, in <module>
+        z
+    NameError: name 'z' is not defined
+**********************************************************************
+1 items had failures:
+   2 of   3 in default
+3 tests in 1 items.
+1 passed and 2 failed.
+***Test Failed*** 2 failures.
+
 Document: python/math/solutri
 -----------------------------
 1 items passed all tests:
@@ -275,7 +318,7 @@ Test passed.
 
 Doctest summary
 ===============
-  851 tests
-    0 failures in tests
+  868 tests
+    2 failures in tests
     0 failures in setup code
     0 failures in cleanup code

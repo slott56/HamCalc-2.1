@@ -63,6 +63,18 @@ There are four subgroups of stdio programs.
     they depend (deeply) on GW Basic Graphics, MS-DOS and legacy
     hardware.
 
+__main__
+----------------
+
+..  automodule:: hamcalc.stdio.__main__
+    :members:
+
+__init__
+-----------------
+
+..  automodule:: hamcalc.stdio.__init__
+    :members:
+
 Intro
 ----------------
 

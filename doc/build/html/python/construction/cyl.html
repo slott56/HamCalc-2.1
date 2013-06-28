@@ -1,0 +1,346 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>cyl – Cylinders, Air &amp; Hydraulic &mdash; HamCalc 2.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/agogo.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '2.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="HamCalc 2.1 documentation" href="../../index.html" />
+    <link rel="up" title="construction – Construction and Mechanical" href="index.html" />
+    <link rel="next" title="math – Math, Physics, Units Conversion" href="../math/index.html" />
+    <link rel="prev" title="chain – Chain Drives" href="chain.html" /> 
+  </head>
+  <body>
+    <div class="header-wrapper">
+      <div class="header">
+        <div class="headertitle"><a
+          href="../../index.html">HamCalc 2.1 documentation</a></div>
+        <div class="rel">
+          <a href="chain.html" title="chain – Chain Drives"
+             accesskey="P">previous</a> |
+          <a href="../math/index.html" title="math – Math, Physics, Units Conversion"
+             accesskey="N">next</a> |
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a>
+        </div>
+       </div>
+    </div>
+
+    <div class="content-wrapper">
+      <div class="content">
+        <div class="document">
+            
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="cyl-cylinders-air-hydraulic">
+<h1>cyl &#8211; Cylinders, Air &amp; Hydraulic<a class="headerlink" href="#cyl-cylinders-air-hydraulic" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="legacy-output">
+<h2>Legacy Output<a class="headerlink" href="#legacy-output" title="Permalink to this headline">¶</a></h2>
+<p>TBD</p>
+</div>
+<div class="section" id="analysis">
+<h2>Analysis<a class="headerlink" href="#analysis" title="Permalink to this headline">¶</a></h2>
+<p>This is a <strong>Solver</strong> for a number of features of
+a cylinder.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">P:</th><td class="field-body"><p class="first">PSI</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">A:</th><td class="field-body"><p class="first">Cylinder Area, based on diameter, <em>C</em>.</p>
+<p><img class="math" src="../../_images/math/94ba48de05ea4c64796fe7d2c68d2bce7d8e6be4.png" alt="A = \pi \left(\frac{C}{2}\right)^2"/></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">O:</th><td class="field-body"><p class="first">Lbs. Push</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">D:</th><td class="field-body"><p class="first">Rod Area, based on diameter, <em>R</em>.</p>
+<p><img class="math" src="../../_images/math/0c50f903b9ddf018fe6bb2b858c8cb34dc7b234c.png" alt="D = \pi \left(\frac{R}{2}\right)^2"/></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">I:</th><td class="field-body"><p class="first">Lbs. Pull</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">B:</th><td class="field-body"><p class="first last">The cylinder outside the rod.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p>Rule 1 <img class="math" src="../../_images/math/d5635238c880428607509f0e32a6b714cd9482ee.png" alt="A = B + D"/> in all three forms.</p>
+<div class="highlight-python"><pre>480 IF A*D THEN B=A-D
+540 IF A*B THEN D=A-B
+550 IF B*D THEN A=B+D</pre>
+</div>
+<p>Rule 2 <img class="math" src="../../_images/math/a18c92344baeeb58301eef1d6a0046b70ad65cbc.png" alt="O = AP"/>, <img class="math" src="../../_images/math/07971fcb32ecaf720d3e679711f284cf8aaedc3d.png" alt="P=O/A"/> and <img class="math" src="../../_images/math/c59764a8514acfb2413290063285431012138171.png" alt="A=O/P"/>.</p>
+<div class="highlight-python"><pre>560 IF A*P THEN O=A*P
+570 IF A*O THEN P=O/A
+580 IF A=0 AND (P*O&gt;0) THEN A=O/P</pre>
+</div>
+<p>Rule 3 <img class="math" src="../../_images/math/fb50d9a51c5c27da180abe556b4d323ffbd305ef.png" alt="I = BP"/>, <img class="math" src="../../_images/math/a45c5193fb074aa583544103f8b996e739f651ce.png" alt="P=I/B"/> and <img class="math" src="../../_images/math/6df9ce9112f7a30e95ee3349f607ece51b81cd3f.png" alt="B=I/P"/>.</p>
+<div class="highlight-python"><pre>590 IF B*P THEN I=B*P
+600 IF B*I THEN P=I/B
+610 IF B=0 AND (P*I&gt;0) THEN B=I/P</pre>
+</div>
+<p>Rule 4: Diameter, <em>C</em>.</p>
+<p>Once <em>A</em>, <em>P</em> and <em>O</em> are known, then a cylinder diameter, <em>Z</em>,
+can be computed.</p>
+<div class="math">
+<p><img src="../../_images/math/61341029f4155b434c7bd3bcc10cc276a5fc4a91.png" alt="Z = 2 \sqrt{\dfrac{A}{\pi}}"/></p>
+</div><p>This next part is quirky. <em>W</em> is initially zero. After the
+user is prompted, the calculation is rerun with <em>A</em> set and
+all other variables not set.</p>
+<p>If the computed diameter <em>Z</em> is not equal to <em>W</em>, then.</p>
+<blockquote>
+<div><p>The user is prompted for <em>W</em>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">W:</th><td class="field-body">Next standard dia.</td>
+</tr>
+</tbody>
+</table>
+<p>Then <em>A</em>, <em>B</em>, <em>D</em> and <em>I</em> are all computed from <em>W</em>.</p>
+<div class="math">
+<p><img src="../../_images/math/37dd187e1c46422c02051655c5a570714e414780.png" alt="A &amp;= \pi\left(\frac{W}{2}\right)^2 \\
+B &amp;= 0 \\
+D &amp;= 0 \\
+I &amp;= 0"/></p>
+</div><p>The calculation is rerun, prompting user for values
+of B, D and I.</p>
+</div></blockquote>
+<p>If <img class="math" src="../../_images/math/153e812ed24368ca57bf751c1da1a814f9d8f099.png" alt="W = Z"/>, then the user has been already been prompted once,
+<em>W</em> is a standard diameter and so is <em>Z</em>.  <em>C</em> is set to the computed diameter, <em>Z</em>.</p>
+<p>If <em>B</em> is not known yet and the user wants to set pull pounds,
+then, <em>I</em> is set to 1e-06 and the rules are re-evaluated.</p>
+<p>Final Display:</p>
+<p>If the user wants displacement, their prompted for stroke length.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">S:</th><td class="field-body">Stroke (in.)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">V:</th><td class="field-body">Displacement Volume, <img class="math" src="../../_images/math/670fbcaebb3ac97f93e6041bdfe6d36c38aa4cc1.png" alt="V = SA"/>.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="module-hamcalc.construction.cyl">
+<span id="implementation"></span><h2>Implementation<a class="headerlink" href="#module-hamcalc.construction.cyl" title="Permalink to this headline">¶</a></h2>
+<p>hamcalc.construction.cyl</p>
+<p>AIR &amp; HYDRAULIC CYLINDERS</p>
+<p>This is a <strong>Solver</strong> for various attributes
+of a cylinder.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">P:</th><td class="field-body"><p class="first">PSI</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">A:</th><td class="field-body"><p class="first">Cylinder Area, based on input diameter, <em>C</em>.</p>
+<p><img class="math" src="../../_images/math/94ba48de05ea4c64796fe7d2c68d2bce7d8e6be4.png" alt="A = \pi \left(\frac{C}{2}\right)^2"/></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">O:</th><td class="field-body"><p class="first">Lbs. Push</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">D:</th><td class="field-body"><p class="first">Rod Area, based on input diameter, <em>R</em>.</p>
+<p><img class="math" src="../../_images/math/0c50f903b9ddf018fe6bb2b858c8cb34dc7b234c.png" alt="D = \pi \left(\frac{R}{2}\right)^2"/></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">I:</th><td class="field-body"><p class="first">Lbs. Pull</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">B:</th><td class="field-body"><p class="first last">The cylinder outside the rod.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p>Additionally it computes volumne, <em>V</em>,
+from stroke <em>S</em>, and area, <em>A</em>.</p>
+<p>Test Cases</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">hamcalc.construction.cyl</span> <span class="kn">as</span> <span class="nn">cyl</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">math</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cylinder</span> <span class="o">=</span> <span class="n">cyl</span><span class="o">.</span><span class="n">Cylinder</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">C</span> <span class="o">=</span> <span class="mi">3</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">A</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="p">(</span><span class="n">C</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">R</span> <span class="o">=</span> <span class="o">.</span><span class="mi">25</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">D</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="p">(</span><span class="n">R</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">c</span><span class="o">=</span> <span class="n">cylinder</span><span class="p">(</span> <span class="n">A</span><span class="o">=</span><span class="n">A</span><span class="p">,</span> <span class="n">P</span><span class="o">=</span><span class="mi">90</span><span class="p">,</span> <span class="n">D</span><span class="o">=</span><span class="n">D</span><span class="p">,</span> <span class="n">S</span><span class="o">=</span><span class="mi">18</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">A</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">7.069</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">D</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">0.049</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">B</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">7.019</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">I</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">631.755</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">O</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">636.173</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">V</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">127.235</span>
+</pre></div>
+</div>
+<dl class="class">
+<dt id="hamcalc.construction.cyl.Cylinder">
+<em class="property">class </em><tt class="descclassname">hamcalc.construction.cyl.</tt><tt class="descname">Cylinder</tt><a class="reference internal" href="../../_modules/hamcalc/construction/cyl.html#Cylinder"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.construction.cyl.Cylinder" title="Permalink to this definition">¶</a></dt>
+<dd><p>Solve cylinder design problems.</p>
+<dl class="method">
+<dt id="hamcalc.construction.cyl.Cylinder.solve">
+<tt class="descname">solve</tt><big>(</big><em>args</em><big>)</big><a class="reference internal" href="../../_modules/hamcalc/construction/cyl.html#Cylinder.solve"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.construction.cyl.Cylinder.solve" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>A</strong> &#8211; Overall area</li>
+<li><strong>D</strong> &#8211; Rod area</li>
+<li><strong>O</strong> &#8211; push force in lbs</li>
+<li><strong>I</strong> &#8211; pull force in lbs</li>
+<li><strong>P</strong> &#8211; PSI.</li>
+<li><strong>S</strong> &#8211; Stroke distance</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p>Returns an dictionary with all values
+filled in, including <tt class="docutils literal"><span class="pre">V</span></tt>, volume.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="quirks">
+<h2>Quirks<a class="headerlink" href="#quirks" title="Permalink to this headline">¶</a></h2>
+<p>As with other solvers, this makes multiple passes through
+the rules. In this case, it&#8217;s just two passes.</p>
+<p>Also, there&#8217;s comparisons against the value of <tt class="docutils literal"><span class="pre">W</span></tt>, before
+it&#8217;s set by an <strong>INPUT</strong> statement.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+        </div>
+        <div class="sidebar">
+          <h3>Table Of Contents</h3>
+          <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../background.html">Background</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../legacy.html">The HamCalc Legacy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../python_architecture.html">Python Architecture</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Python Modules</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../lib.html">lib &#8211; Supporting Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../radio/index.html">radio &#8211; Radio Design and Engineering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ham.html">ham &#8211; Ham Radio Operations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../electronics/index.html">electronics &#8211; General Electronics</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">construction &#8211; Construction and Mechanical</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="arch.html">arch &#8211; Arch Calculator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="bend.html">bend &#8211; Bend Allowance, Metals</a></li>
+<li class="toctree-l3"><a class="reference internal" href="brick.html">brick &#8211; Masonry Estimator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="conecalc.html">conecalc &#8211; Cone Calculator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="diamfind.html">diamfind &#8211; Diameter Finder</a></li>
+<li class="toctree-l3"><a class="reference internal" href="guywires.html">guywires &#8211; Guy Wires for Antenna Towers/Masts</a></li>
+<li class="toctree-l3"><a class="reference internal" href="nmbrsize.html">nmbrsize &#8211; Numbered Drills/Screws/Taps/Gauges</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pipesize.html">pipesize &#8211; Pipe Sizes, ANSI Standard</a></li>
+<li class="toctree-l3"><a class="reference internal" href="survey.html">survey &#8211; Surveyor&#8217;s Calculator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="wirecond.html">wirecond &#8211; Wires in Conduit</a></li>
+<li class="toctree-l3"><a class="reference internal" href="wiremesh.html">wiremesh &#8211; Wire Mesh Screens, Wind Loads</a></li>
+<li class="toctree-l3"><a class="reference internal" href="beamdefl.html">beamdefl &#8211; BEAMS, Deflection in</a></li>
+<li class="toctree-l3"><a class="reference internal" href="beamsect.html">beamsect &#8211; BEAMS, Properties of (Start new beam design here)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="beltdriv.html">beltdriv &#8211;  Belt Drives</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chain.html">chain &#8211; Chain Drives</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="">cyl &#8211; Cylinders, Air &amp; Hydraulic</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../math/index.html">math &#8211; Math, Physics, Units Conversion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../navigation/index.html">navigation &#8211; Navigation and Astronomy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../calendar/index.html">calendar &#8211; Calendrical Calculations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../audio_photo.html">audio_photo &#8211; Audio, Sound and Photography</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../software.html">software &#8211; Software Engineering, Programming and Computers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../other/index.html">other &#8211; including Finance and Nutrition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../stdio.html">STDIO Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../rest.html">RESTful Web Services Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../cli.html">Command-Line Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../gui.html">GUI Interface</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../todo.html">The To Do List</a></li>
+</ul>
+
+          <h3 style="margin-top: 1.5em;">Search</h3>
+          <form class="search" action="../../search.html" method="get">
+            <input type="text" name="q" />
+            <input type="submit" value="Go" />
+            <input type="hidden" name="check_keywords" value="yes" />
+            <input type="hidden" name="area" value="default" />
+          </form>
+          <p class="searchtip" style="font-size: 90%">
+            Enter search terms or a module, class or function name.
+          </p>
+        </div>
+        <div class="clearer"></div>
+      </div>
+    </div>
+
+    <div class="footer-wrapper">
+      <div class="footer">
+        <div class="left">
+          <a href="chain.html" title="chain – Chain Drives"
+             >previous</a> |
+          <a href="../math/index.html" title="math – Math, Physics, Units Conversion"
+             >next</a> |
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |
+          <a href="../../genindex.html" title="General Index"
+             >index</a>
+            <br/>
+            <a href="../../_sources/python/construction/cyl.txt"
+               rel="nofollow">Show Source</a>
+        </div>
+
+        <div class="right">
+          
+    <div class="footer">
+        &copy; Copyright 2013, S.Lott.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2b1.
+    </div>
+        </div>
+        <div class="clearer"></div>
+      </div>
+    </div>
+
+  </body>
+</html>
