@@ -200,7 +200,7 @@ T-Section Built-Up Beam
         Q_1 &= D^2 \times T+S^2 \times (B-T) \\
         Q_2 &= 2 \times (B \times S+H \times T) \\
         Y &= D-Q_1/Q_2 \\
-        I &= \dfrac{T \times Y^3+B \times (D-Y)^3 - (B-T) \times (D-Y-S)^3}{3} \\
+        I &= \dfrac{1}{3} \left[ T \times Y^3+B \times (D-Y)^3 - (B-T) \times (D-Y-S)^3 \right] \\
         Z &= \dfrac{I}{Y} \\
         K &= \sqrt{\dfrac{I}{A}}
 

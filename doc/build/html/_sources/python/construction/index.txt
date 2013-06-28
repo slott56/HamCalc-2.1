@@ -28,8 +28,8 @@ index, either.
     beamdefl
     beamsect
     beltdriv
+    chain
 
--   "chain", "Chain Drives"
 -   "cyl", "Cylinders - Air & Hydraulic"
 -   "gearing", "Gears & gearing"
 -   "binhop", "Hoppered Bins & Tanks"

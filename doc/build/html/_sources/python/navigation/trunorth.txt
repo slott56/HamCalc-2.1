@@ -73,7 +73,7 @@ In the following, *D* is the date, in days starting at zero on January 1.
     A &= W \times (D+10) \\
     B &= A+(360/\pi) \times 0.0167 \times \sin(W \times (D-2)) = A + 1.914 \times \sin( W \times (D-2) ) \\
     C &= \left( A - \arctan \frac{\tan B}{\cos 23.44} \right) /180 \\
-    EoT &= 720 \times (C - \lfloor C + \frac{1}{2} \rfloor)
+    EoT &= 720 \times \left( C - \left\lfloor C + \frac{1}{2} \right\rfloor \right)
 
 Here's the note on the sign.
 

@@ -56,7 +56,7 @@ Inserting the definition of *C* and *M*, this becomes,
 ..  math::
 
     \lambda &= ( M + 102.9372 + 1.9148 \sin M + 0.0200 \sin 2M + 0.0003 \sin 3M + 180 ) \mod 360 = \lbrace 0, 90, 180, 270 \rbrace \\
-    M &=  [ 357.5291 + 0.98560028 \times ( J^{*} - 2451545)] \mod 360
+    M &=  \left[ 357.5291 + 0.98560028 \times ( J^{*} - 2451545) \right] \mod 360
 
 Therefore, we're solving for :math:`J^{*}` values: the dates on which
 :math:`\lambda  \in \lbrace 0, 90, 180, 270 \rbrace`.

@@ -1,0 +1,173 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>hamcalc.construction.chain &mdash; HamCalc 2.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../../_static/agogo.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '2.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="top" title="HamCalc 2.1 documentation" href="../../../index.html" />
+    <link rel="up" title="Module code" href="../../index.html" /> 
+  </head>
+  <body>
+    <div class="header-wrapper">
+      <div class="header">
+        <div class="headertitle"><a
+          href="../../../index.html">HamCalc 2.1 documentation</a></div>
+        <div class="rel">
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a>
+        </div>
+       </div>
+    </div>
+
+    <div class="content-wrapper">
+      <div class="content">
+        <div class="document">
+            
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for hamcalc.construction.chain</h1><div class="highlight"><pre>
+<span class="sd">&quot;&quot;&quot;hamcalc.construction.chain</span>
+
+<span class="sd">This has several calculation functions for various parts</span>
+<span class="sd">of the belt design process.</span>
+
+<span class="sd">Plus definitions of tensile strebgth for some common chain pitches.</span>
+
+<span class="sd">The materials are a module global, :data:`material`.</span>
+
+<span class="sd">..  csv-table::</span>
+
+<span class="sd">    name,pitch,TS</span>
+<span class="sd">    25,.25,925</span>
+<span class="sd">    35,.375,2100</span>
+<span class="sd">    40,.5,3700</span>
+<span class="sd">    50,.625,6100</span>
+<span class="sd">    60,.75,8500</span>
+<span class="sd">    80,1,14500</span>
+<span class="sd">    100,1.25,24000</span>
+<span class="sd">    120,1.5,34000</span>
+<span class="sd">    140,1.75,46000</span>
+<span class="sd">    160,2,58000</span>
+<span class="sd">    180,2.25,80000</span>
+<span class="sd">    200,2.5,95000</span>
+<span class="sd">    240,3,130000</span>
+<span class="sd">    500,3,1E7</span>
+
+<span class="sd">Test Cases for Materials</span>
+
+<span class="sd">&gt;&gt;&gt; import hamcalc.construction.chain as chain</span>
+<span class="sd">&gt;&gt;&gt; chain.material[&quot;25&quot;]</span>
+<span class="sd">Material(name=&#39;25&#39;, P=.25, TS=925)</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">hamcalc.lib</span> <span class="kn">import</span> <span class="n">Solver</span><span class="p">,</span> <span class="n">NoSolutionError</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">namedtuple</span><span class="p">,</span> <span class="n">OrderedDict</span>
+<span class="kn">import</span> <span class="nn">math</span>
+
+<span class="k">def</span> <span class="nf">intro</span><span class="p">():</span>
+    <span class="k">return</span> <span class="s">&quot;&quot;&quot;</span><span class="se">\</span>
+<span class="s">TRANSMISSION CHAIN                                      by George Murphy VE3ERP</span>
+<span class="s">&quot;&quot;&quot;</span>
+
+<span class="n">Chain</span><span class="o">=</span> <span class="n">namedtuple</span><span class="p">(</span> <span class="s">&quot;Chain&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s">&quot;name&quot;</span><span class="p">,</span><span class="s">&quot;P&quot;</span><span class="p">,</span><span class="s">&quot;TS&quot;</span><span class="p">]</span> <span class="p">)</span>
+
+<span class="n">chain_list</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="n">Chain</span><span class="p">(</span><span class="s">&quot;25&quot;</span><span class="p">,</span> <span class="o">.</span><span class="mi">25</span><span class="p">,</span> <span class="mi">925</span><span class="p">),</span>
+    <span class="n">Chain</span><span class="p">(</span><span class="s">&quot;35&quot;</span><span class="p">,</span> <span class="o">.</span><span class="mi">375</span><span class="p">,</span> <span class="mi">2100</span><span class="p">),</span>
+    <span class="n">Chain</span><span class="p">(</span><span class="s">&quot;40&quot;</span><span class="p">,</span> <span class="o">.</span><span class="mi">5</span><span class="p">,</span> <span class="mi">3700</span><span class="p">),</span>
+    <span class="n">Chain</span><span class="p">(</span><span class="s">&quot;50&quot;</span><span class="p">,</span> <span class="o">.</span><span class="mi">625</span><span class="p">,</span> <span class="mi">6100</span><span class="p">),</span>
+    <span class="n">Chain</span><span class="p">(</span><span class="s">&quot;60&quot;</span><span class="p">,</span> <span class="o">.</span><span class="mi">75</span><span class="p">,</span> <span class="mi">8500</span><span class="p">),</span>
+    <span class="n">Chain</span><span class="p">(</span><span class="s">&quot;80&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">14500</span><span class="p">),</span>
+    <span class="n">Chain</span><span class="p">(</span><span class="s">&quot;100&quot;</span><span class="p">,</span> <span class="mf">1.25</span><span class="p">,</span> <span class="mi">24000</span><span class="p">),</span>
+    <span class="n">Chain</span><span class="p">(</span><span class="s">&quot;120&quot;</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">,</span> <span class="mi">34000</span><span class="p">),</span>
+    <span class="n">Chain</span><span class="p">(</span><span class="s">&quot;140&quot;</span><span class="p">,</span> <span class="mf">1.75</span><span class="p">,</span> <span class="mi">46000</span><span class="p">),</span>
+    <span class="n">Chain</span><span class="p">(</span><span class="s">&quot;160&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">58000</span><span class="p">),</span>
+    <span class="n">Chain</span><span class="p">(</span><span class="s">&quot;180&quot;</span><span class="p">,</span> <span class="mf">2.25</span><span class="p">,</span> <span class="mi">80000</span><span class="p">),</span>
+    <span class="n">Chain</span><span class="p">(</span><span class="s">&quot;200&quot;</span><span class="p">,</span> <span class="mf">2.5</span><span class="p">,</span> <span class="mi">95000</span><span class="p">),</span>
+    <span class="n">Chain</span><span class="p">(</span><span class="s">&quot;240&quot;</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">130000</span><span class="p">),</span>
+    <span class="n">Chain</span><span class="p">(</span><span class="s">&quot;500&quot;</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mf">1E7</span><span class="p">),</span>
+<span class="p">]</span>
+
+<span class="n">material</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">(</span>
+    <span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">name</span><span class="p">,</span><span class="n">m</span><span class="p">)</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">chain_list</span>
+<span class="p">)</span>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+        </div>
+        <div class="sidebar">
+          <h3>Table Of Contents</h3>
+          <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../background.html">Background</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../legacy.html">The HamCalc Legacy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../python_architecture.html">Python Architecture</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../python/index.html">Python Modules</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../todo.html">The To Do List</a></li>
+</ul>
+
+          <h3 style="margin-top: 1.5em;">Search</h3>
+          <form class="search" action="../../../search.html" method="get">
+            <input type="text" name="q" />
+            <input type="submit" value="Go" />
+            <input type="hidden" name="check_keywords" value="yes" />
+            <input type="hidden" name="area" value="default" />
+          </form>
+          <p class="searchtip" style="font-size: 90%">
+            Enter search terms or a module, class or function name.
+          </p>
+        </div>
+        <div class="clearer"></div>
+      </div>
+    </div>
+
+    <div class="footer-wrapper">
+      <div class="footer">
+        <div class="left">
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |
+          <a href="../../../genindex.html" title="General Index"
+             >index</a>
+        </div>
+
+        <div class="right">
+          
+    <div class="footer">
+        &copy; Copyright 2013, S.Lott.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2b1.
+    </div>
+        </div>
+        <div class="clearer"></div>
+      </div>
+    </div>
+
+  </body>
+</html>

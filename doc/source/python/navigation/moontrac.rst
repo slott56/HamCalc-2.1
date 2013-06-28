@@ -248,8 +248,8 @@ Position of the Moon
 
     ..  math::
 
-        xv &= r \cos(v) = a ( \cos(E) - e ) \\
-        yv &= r \sin(v) = a ( \sqrt{1 - e^2} \sin(E) ) \\
+        xv &= r \cos(v) = a \left( \cos(E) - e \right) \\
+        yv &= r \sin(v) = a \left( \sqrt{1 - e^2} \sin(E) \right) \\
         v &= \arctan \frac{ yv }{ xv } \\
         r &= \sqrt{ xv^2 + yv^2 }
 

@@ -49,8 +49,8 @@ class BeltTooShort( Exception ):
 
 def pulley_choice_iter( X, Y, *pitches ):
     """Given X RPM and Y RPM, and a collection
-    of wheel pitches, compute a list of potential.
-    wheel sizes that produce the desired RPM's.
+    of wheel pitches, compute
+    a list of potential wheel sizes that produce the desired RPM's.
 
     :param X: Known RPM
     :param Y: Sought RPM
@@ -83,8 +83,8 @@ def design_pulley_distances( D, E ):
 
 def design_belt_length( D, E, C ):
     """Given pulley sizes D and E and desired
-    center-to-center distance, C, compute the required
-    belt length.
+    center-to-center distance, C, compute
+    the required belt length.
 
     :param D: larger pitch diameter
     :param E: smaller pitch diameter
@@ -101,8 +101,8 @@ def design_belt_length( D, E, C ):
 
 def final_pulley_distance( D, E, L ):
     """Given pulley sizes D and E and actual belt
-    length, L, compute the required center-to-center
-    distance.
+    length, L, compute
+    the required center-to-center distance.
 
     :param D: larger pitch diameter
     :param E: smaller pitch diameter
@@ -124,8 +124,8 @@ def final_pulley_distance( D, E, L ):
 
 def tension_torque( D, E, X, HP ):
     """Given pulley sizes D and E, RPM of X,
-    and Horsepower of HP, compute velocity, tension on belt,
-    and torque on each pulley.
+    and Horsepower of HP, compute
+    velocity, tension on belt, and torque on each pulley.
 
     :param D: larger pitch diameter
     :param E: smaller pitch diameter

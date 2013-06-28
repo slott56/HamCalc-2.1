@@ -153,7 +153,7 @@ What's left is deriving *R* from the remaining four variables, *A*, *C*, *AC* an
 
     ..  math::
 
-        B = R (1 - \cos \frac{A_c}{2R})
+        B = R \left( 1 - \cos \frac{A_c}{2R} \right)
 
     An approximation looks sensible. There are two in the legacy program for
     determining *A*. A similar approximation may be able to determine *R*.
@@ -228,7 +228,7 @@ When *A* measured in degrees it's :math:`A_c = 2\pi R \frac{A}{360}`.
 
 ..  math::
 
-    B = R (1 - \cos \frac{A}{2})
+    B = R \left(1 - \cos \frac{A}{2} \right)
 
 Bonus value: area of sector.
 

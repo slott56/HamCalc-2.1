@@ -20,7 +20,7 @@ There are four subgroups of stdio programs.
 
 -   Special Importable Modules.
 
-    These are modules with a proper "main/import" switch block of code.
+    These are a few modules with a proper "main/import" switch block of code.
     They can be imported and reused.
 
     -   The :mod:`hamlcalc.stdio.intro`, :mod:`hamlcalc.stdio.menu`.

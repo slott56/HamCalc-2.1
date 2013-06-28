@@ -15,6 +15,8 @@ Intro and Menu::
 
       < 0 >  Exit
 
+The following is incomplete.
+
 Sample Output::
 
     ENTER: Pitch dia. - Pulley A  (in.)...? 5
@@ -95,8 +97,8 @@ RPM's. This is the full calculation.
     We need to replace *V* with a standard-sized pulley
     close to the computed size, :math:`V^\prime`.
 
-    There are four cases that can occur. A simple swap of two
-    values can slightly simplify this.
+    There are four cases that can occur. Avoiding any swapping
+    of large and small values greatly simplifies this.
 
     -   *X* RPM is larger, target *Y* is smaller: we're reducing RPM.
 

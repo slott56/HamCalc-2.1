@@ -176,7 +176,7 @@ Longitude
 
 ..  math::
 
-    lon_2 = [lon_1+\Delta lon+\pi \pmod {2 \pi} ] - \pi
+    lon_2 = \left[ lon_1+\Delta lon+\pi \pmod {2 \pi} \right] - \pi
 
 
 where ln is natural log

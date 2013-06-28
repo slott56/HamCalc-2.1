@@ -1,0 +1,748 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>chain – Chain Drives &mdash; HamCalc 2.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/agogo.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '2.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="HamCalc 2.1 documentation" href="../../index.html" />
+    <link rel="up" title="construction – Construction and Mechanical" href="index.html" />
+    <link rel="next" title="math – Math, Physics, Units Conversion" href="../math/index.html" />
+    <link rel="prev" title="beltdriv – Belt Drives" href="beltdriv.html" /> 
+  </head>
+  <body>
+    <div class="header-wrapper">
+      <div class="header">
+        <div class="headertitle"><a
+          href="../../index.html">HamCalc 2.1 documentation</a></div>
+        <div class="rel">
+          <a href="beltdriv.html" title="beltdriv – Belt Drives"
+             accesskey="P">previous</a> |
+          <a href="../math/index.html" title="math – Math, Physics, Units Conversion"
+             accesskey="N">next</a> |
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a>
+        </div>
+       </div>
+    </div>
+
+    <div class="content-wrapper">
+      <div class="content">
+        <div class="document">
+            
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="chain-chain-drives">
+<h1>chain &#8211; Chain Drives<a class="headerlink" href="#chain-chain-drives" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="legacy-output">
+<h2>Legacy Output<a class="headerlink" href="#legacy-output" title="Permalink to this headline">¶</a></h2>
+<p>The following is incomplete.</p>
+<div class="highlight-python"><pre> No. of teeth in sprocket A ..........? 59
+ No. of teeth in sprocket B ..........? 28
+ ENTER: Chain No., or pitch in decimal inches ...? 25
+Chain Number ..............    25
+Chain pitch   (inches).....     0.250
+SMALL SPROCKET-No.teeth....    28
+              -Pitch dia...     2.233
+LARGE SPROCKET-No.teeth ...    59
+              -Pitch dia...     4.697
+Ratio .....................     2.107:1
+Minimum c.c.  (inches).....     3.715
+( Press [ ENTER ] if not applicable )
+ENTER desired approx. c.c. ........? 36
+
+
+
+Desired c.c.  (inches).....    36.000</pre>
+</div>
+</div>
+<div class="section" id="analysis">
+<h2>Analysis<a class="headerlink" href="#analysis" title="Permalink to this headline">¶</a></h2>
+<p>Chain data appears to be an integer code, the pitch measurement, and
+the tensile strength.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="33%" />
+<col width="33%" />
+<col width="33%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td>code</td>
+<td>pitch</td>
+<td>TS</td>
+</tr>
+<tr class="row-even"><td>25</td>
+<td>.25</td>
+<td>925</td>
+</tr>
+<tr class="row-odd"><td>35</td>
+<td>.375</td>
+<td>2100</td>
+</tr>
+<tr class="row-even"><td>40</td>
+<td>.5</td>
+<td>3700</td>
+</tr>
+<tr class="row-odd"><td>50</td>
+<td>.625</td>
+<td>6100</td>
+</tr>
+<tr class="row-even"><td>60</td>
+<td>.75</td>
+<td>8500</td>
+</tr>
+<tr class="row-odd"><td>80</td>
+<td>1</td>
+<td>14500</td>
+</tr>
+<tr class="row-even"><td>100</td>
+<td>1.25</td>
+<td>24000</td>
+</tr>
+<tr class="row-odd"><td>120</td>
+<td>1.5</td>
+<td>34000</td>
+</tr>
+<tr class="row-even"><td>140</td>
+<td>1.75</td>
+<td>46000</td>
+</tr>
+<tr class="row-odd"><td>160</td>
+<td>2</td>
+<td>58000</td>
+</tr>
+<tr class="row-even"><td>180</td>
+<td>2.25</td>
+<td>80000</td>
+</tr>
+<tr class="row-odd"><td>200</td>
+<td>2.5</td>
+<td>95000</td>
+</tr>
+<tr class="row-even"><td>240</td>
+<td>3</td>
+<td>130000</td>
+</tr>
+<tr class="row-odd"><td>500</td>
+<td>3</td>
+<td>1E7</td>
+</tr>
+</tbody>
+</table>
+<p>There are several calculations here: Sprocket Size (from RPM),
+Chain Size (from sprocket size) and tension/torque.</p>
+<p>Menu Item &#8220;1&#8221; computes chain data from sprocket sizes. This is
+a piece of the larger calculation. Lines 1520-1670.</p>
+<blockquote>
+<div><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">X:</th><td class="field-body">No. of teeth in sprocket A</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Y:</th><td class="field-body">No. of teeth in sprocket B</td>
+</tr>
+</tbody>
+</table>
+<div class="math">
+<p><img src="../../_images/math/1bb466bdee43f1cfe75fd560f571e5a4895cb27a.png" alt="A &amp;= \max(X,Y) \\
+B &amp;= \min(X,Y) \\
+R &amp;= X/Y"/></p>
+</div><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">NO:</th><td class="field-body">Chain Code</td>
+</tr>
+<tr class="field-even field"><th class="field-name">P:</th><td class="field-body">Chain pitch</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">TS:</th><td class="field-body">Chain Tensile Strength</td>
+</tr>
+</tbody>
+</table>
+<p>Lines 1680-2240  display the report
+and compute center-to-center spacing.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">I:</th><td class="field-body">Small Sprocket Pitch Diameter</td>
+</tr>
+<tr class="field-even field"><th class="field-name">S:</th><td class="field-body">Large Sprocket Pitch Diameter.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">V_1:</th><td class="field-body">Minimum c.c. (inches)</td>
+</tr>
+</tbody>
+</table>
+<div class="math">
+<p><img src="../../_images/math/86e97792b59dfabdeb5f6fd0ff1d94d0c6e19d92.png" alt="I &amp;= P/\sin \left(\frac{\pi}{B} \right) \\
+S &amp;= P/\sin \left(\frac{\pi}{A} \right) \\
+V_1 &amp;= (I+S)/2+P"/></p>
+</div><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">V_2:</th><td class="field-body">Desired approx. c.c.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">C:</th><td class="field-body">Actual  c.c.  (inches)</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">L:</th><td class="field-body">Chain length  (pitches)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">P*L:</th><td class="field-body">Chain length  (inches)</td>
+</tr>
+</tbody>
+</table>
+<div class="math">
+<p><img src="../../_images/math/3c16ec3c6f3c5f9efab3d7502cf3782822bc11de.png" alt="N &amp;= V_2 / P \\
+L &amp;= \left\lfloor 2N+\frac{A}{2}+\frac{B}{2}+\frac{\left[(A-B)/(2 \pi)\right]^2}{N} \right\rfloor \\
+L &amp;= 2 \left\lfloor (5L+5)/10 \right\rfloor"/></p>
+</div><p>while <img class="math" src="../../_images/math/200b17fe62c92197fbe6e78e1cf472a9d84fd523.png" alt="C &lt; V_1"/>:</p>
+<blockquote>
+<div><div class="math">
+<p><img src="../../_images/math/6d21c11d5177d78e6bac273021e46be4a491caa8.png" alt="L &amp;\gets L + 2 \\
+T &amp;= 2L-A-B \\
+U &amp;= 0.81(A-B)^2 \\
+C &amp;= \dfrac{P}{8}(T+\sqrt{T^2-U})"/></p>
+</div></div></blockquote>
+</div></blockquote>
+<p>Menu Item &#8220;2&#8221; computes sprocket and chain data from shaft speeds.
+This is lines 550-1500. Then it jumps to 1680 to display the report
+and compute center-to-center spacing.</p>
+<blockquote>
+<div><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">X:</th><td class="field-body">RPM Sprocket A</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Y:</th><td class="field-body">RPM Sprocket B</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">W:</th><td class="field-body">Minimum teeth, small sprocket</td>
+</tr>
+</tbody>
+</table>
+<div class="math">
+<p><img src="../../_images/math/c4960b1d34574ba0eddf9016cf8403a76fc16c3f.png" alt="K &amp;= X \\
+J &amp;= Y \\
+W_1 &amp;= W"/></p>
+</div><p>While <img class="math" src="../../_images/math/b630dbe1a6b54f7217bc9a83ad53f31a824ed005.png" alt="Z &lt; 120"/>:</p>
+<blockquote>
+<div><div class="math">
+<p><img src="../../_images/math/29288286bf485c9bb008420bcb24bc0b3b38f486.png" alt="Z &amp;= \left\lceil W \times K / J \right\rceil \\
+A_W &amp;= \left\langle W, Z, \text{`*' if $W \times X = Y \times Z$ else `'} \right\rangle \\
+W &amp;\gets W + 1"/></p>
+</div></div></blockquote>
+<p>After computing the various combinations, this is the number
+of rows to display.</p>
+<p>[Note the quirky reuse of <em>Y</em>.]</p>
+<div class="math">
+<p><img src="../../_images/math/524450a018adf498ae7fab3bf15af7d4dd48d1e6.png" alt="Y^\prime = \left\lfloor \frac{W - W_1}{6} \right\rfloor + 1"/></p>
+</div><p>Display the various formatted <img class="math" src="../../_images/math/cc3da5d6e52078a17fef66bc6069ef62f9c78028.png" alt="\lbrace A_Z | W_1 \leq Z \leq W \rbrace"/>
+values in a six-column display.</p>
+<p>After this display, then the small sprocket, <em>B</em>, is chosen.
+From this, the large sprocket, <em>A</em>, is calculated.</p>
+<div class="math">
+<p><img src="../../_images/math/69df7e4d2580cfb749e39b798e3993b2354b8ccd.png" alt="A &amp;= \left\lfloor \frac{10*K*B/J+5}{10} \right\rfloor  \\
+R &amp;= A/B \\
+E &amp;= J \times R \\
+D &amp;= K/R"/></p>
+</div><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">E:</th><td class="field-body">RPM (a) X</td>
+</tr>
+<tr class="field-even field"><th class="field-name">J:</th><td class="field-body">RPM (a) Y</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">K:</th><td class="field-body">RPM (b) X</td>
+</tr>
+<tr class="field-even field"><th class="field-name">D:</th><td class="field-body">RPM (b) YY</td>
+</tr>
+</tbody>
+</table>
+<p>Pick either (a) or (b).</p>
+<p>[Note the possible bug in using <em>YY</em>.]</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">H:</th><td class="field-body">Drive horsepower</td>
+</tr>
+</tbody>
+</table>
+<p>Compute number of strands of various types of chain.
+Lines 1270 to 1500. This code is quirky.</p>
+<p>The variable <em>CH</em> starts at zero.</p>
+<p>Line 1280.</p>
+<p>If <em>CH</em> is greater than zero, this isn&#8217;t a real
+search, instead it simply computes <em>SP</em> and <em>Q</em>
+for the currently found size of chain.</p>
+<p>This section appears to simply step through each size of chain
+looking for a size where the tensile strength is not
+exceeded.</p>
+<p>This uses <img class="math" src="../../_images/math/4e66c5fe8ce6792f67696a1a866d32b928363e3a.png" alt="\frac{D+J}{2}"/> as the RPM&#8217;s
+to design for. Why an average? Why not the larger of
+<em>D</em> or <em>J</em> (which is generally <em>J</em>)?</p>
+<p>For <em>SN</em>, <em>P</em>, <em>TS</em> in each size of chain:</p>
+<blockquote>
+<div><div class="math">
+<p><img src="../../_images/math/03a5f82761e9f5236058ec3f06159a8a4f3c49ef.png" alt="Y^\prime &amp;= (D+J)/2 \\
+SP &amp;= A \times P \times Y^\prime/60 \\
+Q &amp;= 6600 H/SP \\
+&amp; \text{if $Q \times 1.1 \leq TS$: break}"/></p>
+</div></div></blockquote>
+<p>This has located the smallest size of chain that will work.
+<em>SN</em> is the code, <em>P</em> is the pitch and <em>TS</em> is the tensile
+strength.</p>
+<p>If <em>CH</em> is 2, it does not compute the number of strands.
+It jumps to 1680 to produce the final report.</p>
+<div class="math">
+<p><img src="../../_images/math/bc10de6dd7ae446273eeee439ed98c64afbb05fa.png" alt="NS &amp;= \left\lfloor \frac{Q}{TS} \right\rfloor + 1 \\
+&amp; \text{if $NS \times TS &lt; 1.1 \times Q$:} NS \gets NS + 1"/></p>
+</div><p>If necessary, two strands may be required. This isn&#8217;t a loop,
+so the answer to the number of strands is either one or two.</p>
+<p>However.  During the initial <em>CH</em> = 0 pass, if SN is not 500 (the largest size)
+then the number of strands is reset to 1. Weirdly. See line 1370.</p>
+<p>The user is given a menu of two items.</p>
+<ul class="simple">
+<li><strong>space</strong>. Set <em>CH</em> to 2, goes back to line 1280. This recomputes
+the current chain size, <em>SP</em> and <em>Q</em>.</li>
+<li><strong>zero</strong>. Set <em>CH</em> to 1, go to line 1510 to accept manual
+input of a chain size. This does the menu item 1 calculation.</li>
+</ul>
+<p>Then jump to 1680 to display the report
+and compute center-to-center spacing.</p>
+</div></blockquote>
+</div>
+<div class="section" id="module-hamcalc.construction.chain">
+<span id="implementation"></span><h2>Implementation<a class="headerlink" href="#module-hamcalc.construction.chain" title="Permalink to this headline">¶</a></h2>
+<p>hamcalc.construction.chain</p>
+<p>This has several calculation functions for various parts
+of the belt design process.</p>
+<p>Plus definitions of tensile strebgth for some common chain pitches.</p>
+<p>The materials are a module global, <tt class="xref py py-data docutils literal"><span class="pre">material</span></tt>.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="33%" />
+<col width="33%" />
+<col width="33%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td>name</td>
+<td>pitch</td>
+<td>TS</td>
+</tr>
+<tr class="row-even"><td>25</td>
+<td>.25</td>
+<td>925</td>
+</tr>
+<tr class="row-odd"><td>35</td>
+<td>.375</td>
+<td>2100</td>
+</tr>
+<tr class="row-even"><td>40</td>
+<td>.5</td>
+<td>3700</td>
+</tr>
+<tr class="row-odd"><td>50</td>
+<td>.625</td>
+<td>6100</td>
+</tr>
+<tr class="row-even"><td>60</td>
+<td>.75</td>
+<td>8500</td>
+</tr>
+<tr class="row-odd"><td>80</td>
+<td>1</td>
+<td>14500</td>
+</tr>
+<tr class="row-even"><td>100</td>
+<td>1.25</td>
+<td>24000</td>
+</tr>
+<tr class="row-odd"><td>120</td>
+<td>1.5</td>
+<td>34000</td>
+</tr>
+<tr class="row-even"><td>140</td>
+<td>1.75</td>
+<td>46000</td>
+</tr>
+<tr class="row-odd"><td>160</td>
+<td>2</td>
+<td>58000</td>
+</tr>
+<tr class="row-even"><td>180</td>
+<td>2.25</td>
+<td>80000</td>
+</tr>
+<tr class="row-odd"><td>200</td>
+<td>2.5</td>
+<td>95000</td>
+</tr>
+<tr class="row-even"><td>240</td>
+<td>3</td>
+<td>130000</td>
+</tr>
+<tr class="row-odd"><td>500</td>
+<td>3</td>
+<td>1E7</td>
+</tr>
+</tbody>
+</table>
+<p>Test Cases for Materials</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">hamcalc.construction.chain</span> <span class="kn">as</span> <span class="nn">chain</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">chain</span><span class="o">.</span><span class="n">material</span><span class="p">[</span><span class="s">&quot;25&quot;</span><span class="p">]</span>
+<span class="go">Chain(name=&#39;25&#39;, P=0.25, TS=925)</span>
+</pre></div>
+</div>
+<p>Test Cases for <a class="reference internal" href="#hamcalc.construction.chain.design_sprocket_distances" title="hamcalc.construction.chain.design_sprocket_distances"><tt class="xref py py-func docutils literal"><span class="pre">design_sprocket_distances()</span></tt></a> and <a class="reference internal" href="#hamcalc.construction.chain.final_sprocket_distance" title="hamcalc.construction.chain.final_sprocket_distance"><tt class="xref py py-func docutils literal"><span class="pre">final_sprocket_distance()</span></tt></a></p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">hamcalc.construction.chain</span> <span class="kn">as</span> <span class="nn">chain</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">V_1</span><span class="p">,</span> <span class="n">I</span><span class="p">,</span> <span class="n">S</span><span class="p">,</span> <span class="n">R</span><span class="o">=</span> <span class="n">chain</span><span class="o">.</span><span class="n">design_sprocket_distances</span><span class="p">(</span> <span class="mi">59</span><span class="p">,</span> <span class="mi">28</span><span class="p">,</span> <span class="n">chain</span><span class="o">.</span><span class="n">material</span><span class="p">[</span><span class="s">&quot;25&quot;</span><span class="p">]</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span> <span class="n">V_1</span><span class="p">,</span> <span class="mi">3</span> <span class="p">)</span>
+<span class="go">3.715</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span> <span class="n">I</span><span class="p">,</span> <span class="mi">3</span> <span class="p">)</span>
+<span class="go">2.233</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span> <span class="n">S</span><span class="p">,</span> <span class="mi">3</span> <span class="p">)</span>
+<span class="go">4.697</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span> <span class="n">R</span><span class="p">,</span> <span class="mi">3</span> <span class="p">)</span>
+<span class="go">2.107</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">C</span><span class="p">,</span> <span class="n">L</span><span class="p">,</span> <span class="n">L_P</span> <span class="o">=</span> <span class="n">chain</span><span class="o">.</span><span class="n">final_sprocket_distance</span><span class="p">(</span> <span class="mi">59</span><span class="p">,</span> <span class="mi">28</span><span class="p">,</span> <span class="n">chain</span><span class="o">.</span><span class="n">material</span><span class="p">[</span><span class="s">&quot;25&quot;</span><span class="p">],</span> <span class="mi">4</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span> <span class="n">C</span><span class="p">,</span> <span class="mi">3</span> <span class="p">)</span>
+<span class="go">4.128</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span> <span class="n">L</span><span class="p">,</span> <span class="mi">3</span> <span class="p">)</span>
+<span class="go">78</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span> <span class="n">L_P</span><span class="p">,</span> <span class="mi">3</span> <span class="p">)</span>
+<span class="go">19.5</span>
+</pre></div>
+</div>
+<p>Test Cases for <a class="reference internal" href="#hamcalc.construction.chain.sprocket_choice_iter" title="hamcalc.construction.chain.sprocket_choice_iter"><tt class="xref py py-func docutils literal"><span class="pre">sprocket_choice_iter()</span></tt></a></p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">hamcalc.construction.chain</span> <span class="kn">as</span> <span class="nn">chain</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">choices</span><span class="o">=</span> <span class="p">[</span> <span class="n">row</span> <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">chain</span><span class="o">.</span><span class="n">sprocket_choice_iter</span><span class="p">(</span> <span class="mi">3500</span><span class="p">,</span> <span class="mi">1700</span><span class="p">,</span> <span class="mi">24</span> <span class="p">)</span> <span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">choices</span><span class="p">)</span>
+<span class="go">35</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">even</span> <span class="o">=</span> <span class="p">[</span> <span class="n">c</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">choices</span> <span class="k">if</span> <span class="n">c</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">even</span>
+<span class="go">[(34, 70, True), (51, 105, True)]</span>
+</pre></div>
+</div>
+<p>Test Cases for <a class="reference internal" href="#hamcalc.construction.chain.design_sprocket_size" title="hamcalc.construction.chain.design_sprocket_size"><tt class="xref py py-func docutils literal"><span class="pre">design_sprocket_size()</span></tt></a></p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">hamcalc.construction.chain</span> <span class="kn">as</span> <span class="nn">chain</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">factors</span> <span class="o">=</span> <span class="n">chain</span><span class="o">.</span><span class="n">design_sprocket_size</span><span class="p">(</span> <span class="mi">3500</span><span class="p">,</span> <span class="mi">1700</span><span class="p">,</span> <span class="mi">51</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">factors</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="go">(105, 51)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">factors</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">2.059</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">tuple</span><span class="p">(</span> <span class="nb">round</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">factors</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="p">)</span>
+<span class="go">(3500.0, 1700)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">tuple</span><span class="p">(</span> <span class="nb">round</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">factors</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="p">)</span>
+<span class="go">(3500, 1700.0)</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">factors</span> <span class="o">=</span> <span class="n">chain</span><span class="o">.</span><span class="n">design_sprocket_size</span><span class="p">(</span> <span class="mi">3500</span><span class="p">,</span> <span class="mi">1700</span><span class="p">,</span> <span class="mi">26</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">factors</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="go">(54, 26)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">factors</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">2.077</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">tuple</span><span class="p">(</span> <span class="nb">round</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">factors</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="p">)</span>
+<span class="go">(3530.769, 1700)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">tuple</span><span class="p">(</span> <span class="nb">round</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">factors</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="p">)</span>
+<span class="go">(3500, 1685.185)</span>
+</pre></div>
+</div>
+<p>Test Cases for <a class="reference internal" href="#hamcalc.construction.chain.design_chain_iter" title="hamcalc.construction.chain.design_chain_iter"><tt class="xref py py-func docutils literal"><span class="pre">design_chain_iter()</span></tt></a></p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">hamcalc.construction.chain</span> <span class="kn">as</span> <span class="nn">chain</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">chains</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span> <span class="n">chain</span><span class="o">.</span><span class="n">design_chain_iter</span><span class="p">(</span> <span class="mi">54</span><span class="p">,</span> <span class="mi">26</span><span class="p">,</span> <span class="mf">3530.769</span><span class="p">,</span> <span class="mi">1700</span><span class="p">,</span> <span class="mi">80</span> <span class="p">)</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">chains</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="go">(Chain(name=&#39;35&#39;, P=0.375, TS=2100), 1)</span>
+</pre></div>
+</div>
+<dl class="class">
+<dt id="hamcalc.construction.chain.Chain">
+<em class="property">class </em><tt class="descclassname">hamcalc.construction.chain.</tt><tt class="descname">Chain</tt><a class="headerlink" href="#hamcalc.construction.chain.Chain" title="Permalink to this definition">¶</a></dt>
+<dd><p>Chain(name, P, TS)</p>
+<dl class="attribute">
+<dt id="hamcalc.construction.chain.Chain.P">
+<tt class="descname">P</tt><a class="headerlink" href="#hamcalc.construction.chain.Chain.P" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 1</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="hamcalc.construction.chain.Chain.TS">
+<tt class="descname">TS</tt><a class="headerlink" href="#hamcalc.construction.chain.Chain.TS" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 2</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="hamcalc.construction.chain.Chain.name">
+<tt class="descname">name</tt><a class="headerlink" href="#hamcalc.construction.chain.Chain.name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 0</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="hamcalc.construction.chain.design_chain_iter">
+<tt class="descclassname">hamcalc.construction.chain.</tt><tt class="descname">design_chain_iter</tt><big>(</big><em>A</em>, <em>B</em>, <em>X</em>, <em>Y</em>, <em>H</em><big>)</big><a class="headerlink" href="#hamcalc.construction.chain.design_chain_iter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given sprocket teeth counts, A and B,
+and an RPM values, X and Y,
+and drive horsepower, H, compute
+the minimimal chain and, possibly, the number of chain strands.
+Generally, the first value is all that&#8217;s required.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>A</strong> &#8211; larger sprocket teeth</li>
+<li><strong>B</strong> &#8211; smaller sprocket teeth</li>
+<li><strong>X</strong> &#8211; larger sprocket RPM</li>
+<li><strong>Y</strong> &#8211; smaller sprocket RPM</li>
+<li><strong>H</strong> &#8211; Drive horsepower</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Iterates over a sequence of
+acceptable chain and number of strands.
+Strands is usually 1 but may be 2.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="hamcalc.construction.chain.design_sprocket_distances">
+<tt class="descclassname">hamcalc.construction.chain.</tt><tt class="descname">design_sprocket_distances</tt><big>(</big><em>X</em>, <em>Y</em>, <em>chain</em><big>)</big><a class="headerlink" href="#hamcalc.construction.chain.design_sprocket_distances" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given sprocket teeth counts X and Y, and a particular
+chain description, compute
+minimum center-to-center distance.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>X</strong> &#8211; larger sprocket teeth</li>
+<li><strong>Y</strong> &#8211; smaller sprocket teeth</li>
+<li><strong>chain</strong> &#8211; instance of <a class="reference internal" href="#hamcalc.construction.chain.Chain" title="hamcalc.construction.chain.Chain"><tt class="xref py py-class docutils literal"><span class="pre">hamcalc.construction.chain.Chain</span></tt></a></li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">4-tuple with
+minimum distance between sprockets, pitch diameter of both sprockets,
+and the ratio.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="hamcalc.construction.chain.design_sprocket_size">
+<tt class="descclassname">hamcalc.construction.chain.</tt><tt class="descname">design_sprocket_size</tt><big>(</big><em>X</em>, <em>Y</em>, <em>B</em><big>)</big><a class="headerlink" href="#hamcalc.construction.chain.design_sprocket_size" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given sprocket RPM values X and Y, and a particular
+small sprocket size, B, compute
+the A sprocket size, as well as the actual ratio
+and final RPM combinations.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>X</strong> &#8211; larger sprocket RPM</li>
+<li><strong>Y</strong> &#8211; smaller sprocket RPM</li>
+<li><strong>B</strong> &#8211; Small sprocket size in  number of teeth</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">4-tuple with (A,B) sprocket sizes,
+the actual ratio, plus the design (X,Y) RPM pair
+and an alternate design (X,Y) RPM pair.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="hamcalc.construction.chain.final_sprocket_distance">
+<tt class="descclassname">hamcalc.construction.chain.</tt><tt class="descname">final_sprocket_distance</tt><big>(</big><em>X</em>, <em>Y</em>, <em>chain</em>, <em>V_2</em><big>)</big><a class="headerlink" href="#hamcalc.construction.chain.final_sprocket_distance" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given sprocket teeth counts X and Y, a particular
+chain description, and a desired distance, V_2, compute
+required center-to-center distance.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>X</strong> &#8211; larger sprocket teeth</li>
+<li><strong>Y</strong> &#8211; smaller sprocket teeth</li>
+<li><strong>chain</strong> &#8211; instance of <a class="reference internal" href="#hamcalc.construction.chain.Chain" title="hamcalc.construction.chain.Chain"><tt class="xref py py-class docutils literal"><span class="pre">hamcalc.construction.chain.Chain</span></tt></a></li>
+<li><strong>V_2</strong> &#8211; Desired center-to-center distance</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">2-tuple with center to center distance, chain length in pitches and inches</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="hamcalc.construction.chain.sprocket_choice_iter">
+<tt class="descclassname">hamcalc.construction.chain.</tt><tt class="descname">sprocket_choice_iter</tt><big>(</big><em>X</em>, <em>Y</em>, <em>W=17</em><big>)</big><a class="headerlink" href="#hamcalc.construction.chain.sprocket_choice_iter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given sprocket RPM values X and Y, and a particular
+mimumum sprocket size, W, yield
+alternative sprocket pairs for the requested ratio.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>X</strong> &#8211; larger sprocket RPM</li>
+<li><strong>Y</strong> &#8211; smaller sprocket RPM</li>
+<li><strong>W</strong> &#8211; small sprocket minimum number of teeth.
+Less than 17 teeth is not recommended.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Sequence of triples with two sprocket sizes and
+a boolean flag to indicate that this is an exact
+match with the given RPM values.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="quirks">
+<h2>Quirks<a class="headerlink" href="#quirks" title="Permalink to this headline">¶</a></h2>
+<p>Exit isn&#8217;t menu item 0. Also, there are a extra
+RESTORE&#8217;s.</p>
+<p>The region from 1270 to 1500 has a peculiar looping structure,
+and uses a <em>CH</em> status variable to invoke parts of the
+calculation as a kind of subroutine.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+        </div>
+        <div class="sidebar">
+          <h3>Table Of Contents</h3>
+          <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../background.html">Background</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../legacy.html">The HamCalc Legacy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../python_architecture.html">Python Architecture</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Python Modules</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../lib.html">lib &#8211; Supporting Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../radio/index.html">radio &#8211; Radio Design and Engineering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ham.html">ham &#8211; Ham Radio Operations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../electronics/index.html">electronics &#8211; General Electronics</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">construction &#8211; Construction and Mechanical</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="arch.html">arch &#8211; Arch Calculator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="bend.html">bend &#8211; Bend Allowance, Metals</a></li>
+<li class="toctree-l3"><a class="reference internal" href="brick.html">brick &#8211; Masonry Estimator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="conecalc.html">conecalc &#8211; Cone Calculator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="diamfind.html">diamfind &#8211; Diameter Finder</a></li>
+<li class="toctree-l3"><a class="reference internal" href="guywires.html">guywires &#8211; Guy Wires for Antenna Towers/Masts</a></li>
+<li class="toctree-l3"><a class="reference internal" href="nmbrsize.html">nmbrsize &#8211; Numbered Drills/Screws/Taps/Gauges</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pipesize.html">pipesize &#8211; Pipe Sizes, ANSI Standard</a></li>
+<li class="toctree-l3"><a class="reference internal" href="survey.html">survey &#8211; Surveyor&#8217;s Calculator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="wirecond.html">wirecond &#8211; Wires in Conduit</a></li>
+<li class="toctree-l3"><a class="reference internal" href="wiremesh.html">wiremesh &#8211; Wire Mesh Screens, Wind Loads</a></li>
+<li class="toctree-l3"><a class="reference internal" href="beamdefl.html">beamdefl &#8211; BEAMS, Deflection in</a></li>
+<li class="toctree-l3"><a class="reference internal" href="beamsect.html">beamsect &#8211; BEAMS, Properties of (Start new beam design here)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="beltdriv.html">beltdriv &#8211;  Belt Drives</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="">chain &#8211; Chain Drives</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../math/index.html">math &#8211; Math, Physics, Units Conversion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../navigation/index.html">navigation &#8211; Navigation and Astronomy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../calendar/index.html">calendar &#8211; Calendrical Calculations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../audio_photo.html">audio_photo &#8211; Audio, Sound and Photography</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../software.html">software &#8211; Software Engineering, Programming and Computers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../other/index.html">other &#8211; including Finance and Nutrition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../stdio.html">STDIO Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../rest.html">RESTful Web Services Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../cli.html">Command-Line Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../gui.html">GUI Interface</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../todo.html">The To Do List</a></li>
+</ul>
+
+          <h3 style="margin-top: 1.5em;">Search</h3>
+          <form class="search" action="../../search.html" method="get">
+            <input type="text" name="q" />
+            <input type="submit" value="Go" />
+            <input type="hidden" name="check_keywords" value="yes" />
+            <input type="hidden" name="area" value="default" />
+          </form>
+          <p class="searchtip" style="font-size: 90%">
+            Enter search terms or a module, class or function name.
+          </p>
+        </div>
+        <div class="clearer"></div>
+      </div>
+    </div>
+
+    <div class="footer-wrapper">
+      <div class="footer">
+        <div class="left">
+          <a href="beltdriv.html" title="beltdriv – Belt Drives"
+             >previous</a> |
+          <a href="../math/index.html" title="math – Math, Physics, Units Conversion"
+             >next</a> |
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |
+          <a href="../../genindex.html" title="General Index"
+             >index</a>
+            <br/>
+            <a href="../../_sources/python/construction/chain.txt"
+               rel="nofollow">Show Source</a>
+        </div>
+
+        <div class="right">
+          
+    <div class="footer">
+        &copy; Copyright 2013, S.Lott.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2b1.
+    </div>
+        </div>
+        <div class="clearer"></div>
+      </div>
+    </div>
+
+  </body>
+</html>

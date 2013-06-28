@@ -51,12 +51,12 @@ The unit of construction is brick plus joint (*J*) on each side.
 :math:`U=(L+J)\times(H+J)`.
 
 Bricks per course *B_C* is the length (*A*) divided by the brick length plus joint.
-:math:`B_C = \lceil \frac{A}{L+J} \rceil`.
+:math:`B_C = \left\lceil \dfrac{A}{L+J} \right\rceil`.
 
 Total number of bricks, *N* is total area/unit size. :math:`N=\frac{AB}{U}`.
 
 Number of courses, *N_C* is the height (*B*) divided by the brick height plus joint.
-:math:`N_C = \lfloor \frac{B}{H+J} \rfloor`.
+:math:`N_C = \left\lfloor \dfrac{B}{H+J} \right\rfloor`.
 
 Plus unit conversions between inches and millimeters, square meters
 and square feet.
