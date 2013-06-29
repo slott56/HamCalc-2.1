@@ -5,7 +5,7 @@
 "SOLSTICES","","","SEASONS"
 """
 import hamcalc.navigation.solar as solar
-from hamcalc.lib import AttrDict
+from hamcalc.stdio import *
 import datetime
 
 introduction= "SEASONS                                                 by George Murphy VE3ERP"
@@ -56,7 +56,7 @@ def bisection( lat, lon, low, high, G ):
     return mid
 
 def report( latitude, longitude, date_time, tz ):
-    details = solar.Position_Sun( lat, lon, date_time )
+    details = solar.Position_Sun( latitude, longitude, date_time )
     rise, transit, set = solar.rise_transit_set( latitude, longitude, date_time )
     az_r, el_r= solar.azimuth_elevation( latitude, longitude, rise )
     az_s, el_s= solar.azimuth_elevation( latitude, longitude, set )
@@ -71,20 +71,10 @@ def report( latitude, longitude, date_time, tz ):
 def find_dates():
     location= input( "Name of your location.......? " )
     if len(location) == 0: return
-    latitude= None
-    while latitude is None:
-        lat_raw= input( "ENTER: Your latitude  (XX.X degrees, minus if SOUTH).....? " )
-        try:
-            latitude= float(lat_raw)
-        except ValueError:
-            pass
-    longitude= None
-    while longitude is None:
-        lon_raw= input( "ENTER: Your longitude (XX.X degrees, minus if EAST)......? " )
-        try:
-            longitude= -float(lon_raw)
-        except ValueError:
-            pass
+    latitude= input_float( "ENTER: Your latitude  (XX.X degrees, minus if SOUTH).....? " )
+    if latitude is None: return
+    longitude= input_float( "ENTER: Your longitude (XX.X degrees, minus if EAST)......? " )
+    if longitude is None: return
     print(" (1) Atlantic" )
     print(" (2) Eastern" )
     print(" (3) Central" )
@@ -105,13 +95,8 @@ def find_dates():
                 '5': solar.Pacific }[tz_choice]
             except KeyError:
                 pass
-    year = None
-    while year is None:
-        year_raw = input( "ENTER: Year to be used in calculations (yyyy)............? " )
-        try:
-            year= int(year_raw)
-        except ValueError:
-            pass
+    year = input_int( "ENTER: Year to be used in calculations (yyyy)............? " )
+    if year is None: return
 
     # Search for  ``P`` values of 0, 90, 180, 270 within the given year.
 

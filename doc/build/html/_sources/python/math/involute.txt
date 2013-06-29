@@ -38,7 +38,7 @@ The program asks for "Radius OE", :math:`\overline{OE}`, and computes
 
     ..  math::
 
-        \frac{\pi^2}{2} \overline{OE}
+        \frac{\pi^2}{2} \times \overline{OE}
 
 It then asks for angle "phi" and computes "Values for point C".
 

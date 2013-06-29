@@ -5,6 +5,7 @@
 """
 
 import hamcalc.electronics.awgexact as awgexact
+from hamcalc.stdio import *
 import string
 import runpy
 
@@ -29,37 +30,24 @@ def table():
 """ )
 
 def inch_to_awg():
-    try:
-        raw= input( "ENTER: Wire diameter (inches) or 0 to quit....? " )
-        d= float(raw)
-        if d == 0.0: return
-    except ValueError as e:
-        print( e )
-        return
-    inch= d
+    inch= input_float("ENTER: Wire diameter (inches) or 0 to quit....? ")
+    if inch is None: return
     diameter= awgexact.INCH.to_std( inch )
     awg= awgexact.AWG.from_std( diameter )
     mm= awgexact.MM.from_std( diameter)
     print( "{0:8.7f} in. ({1:3.2f}mm) diameter = AWG {2}".format( inch, mm, awg ) )
 
 def mm_to_awg():
-    try:
-        raw= input( "ENTER: Wire diameter (mm) or 0 to quit....? " )
-        d= float(raw)
-        if d == 0.0: return
-    except ValueError as e:
-        print( e )
-        return
-    mm= d
+    mm= input_float( "ENTER: Wire diameter (mm) or 0 to quit....? " )
+    if mm is None: return
     diameter= awgexact.MM.to_std( mm )
     awg= awgexact.AWG.from_std( diameter )
     inch= awgexact.INCH.from_std( diameter )
     print( "{0:8.7f} in. ({1:3.2f}mm) diameter = AWG {2}".format(inch, mm, awg) )
 
 def awg_to_inch_mm():
-    raw= input( "ENTER: Any AWG value, #0000 to #40...? " )
-    if len(raw) == 0: return
-    awg= raw
+    awg= input_float( "ENTER: Any AWG value, #0000 to #40...? " )
+    if awg is None: return
     diameter= awgexact.AWG.to_std( raw )
     inch= awgexact.INCH.from_std( diameter )
     mm= awgexact.MM.from_std( diameter )

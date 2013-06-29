@@ -1,22 +1,21 @@
-"""Decimal numbers to degrees/minutes/seconds
+"""Decimal numbers to deg/min/sec
 
 "DECIMAL/SEXIGESIMAL CONVERSION","","","DECICONV"
 "HOURS",", conversion",", decimal to clock display","DECICONV"
 """
 
 import hamcalc.math.deciconv as deciconv
+from hamcalc.stdio import *
 
 def hours_to_sexagesimal():
-    hrs_raw= input( "ENTER: Decimal hours (or 0 to quit).....?" )
-    if len(hrs_raw) == 0: return
-    hrs= float( hrs_raw )
+    hrs= input_float( "ENTER: Decimal hours (or 0 to quit).....?" )
+    if hrs is None: return
     text= deciconv.HR_MIN_SEC.from_std( deciconv.HOUR.to_std( hrs ) )
     print( "     {0:8.4f} decimal hours = {1:s} (hrs:min:sec)".format( hrs, text ) )
 
 def degrees_to_sexagesimal():
-    deg_raw= input( "ENTER: Decimal degrees (or 0 to quit).....?" )
-    if len(deg_raw) == 0: return
-    deg= float( deg_raw )
+    deg= input_float( "ENTER: Decimal degrees (or 0 to quit).....?" )
+    if deg is None: return
     text= deciconv.DEG_MIN_SEC.from_std( deciconv.DEGREE.to_std( deg ) )
     print( "     {0:8.4f} decimal degrees = {1:s} (deg min sec)".format( deg, text ) )
 

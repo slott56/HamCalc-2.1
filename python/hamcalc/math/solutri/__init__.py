@@ -41,7 +41,7 @@ from hamcalc.lib import AttrDict, Solver, NoSolutionError
 import math
 
 def intro():
-    return "    SOLUTION OF TRIANGLES                                   by George Murphy VE3ERP"
+    return "SOLUTION OF TRIANGLES                                   by George Murphy VE3ERP"
 
 class Triangle( Solver ):
     """Solver for Triangle problems.

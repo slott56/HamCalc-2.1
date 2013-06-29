@@ -6,27 +6,30 @@
 
 import hamcalc.math.propcirc as propcirc
 import math
+from hamcalc.stdio import *
+
+def radians( x ):
+    return math.radians(x) if x is not None else None
 
 def solve():
     args = dict()
 
     requests= [
-        ("R", " ENTER: Radius of circle ", float),
-        ("D", " ENTER: Diameter of circle ", float ),
-        ("C", " ENTER: Cicumference of circle ", float),
-        ("A", " ENTER: Area of circle ", float),
-        ("angle", " ENTER: Angle between radials ", lambda a: math.radians(float(a)) ),
-        ("L_C", " ENTER: Length of chord AB ", float),
-        ("L_A", " ENTER: Length of arc AB ", float),
-        ("G", " ENTER: Height if segment ", float),
+        ("R", "ENTER: Radius of circle ", input_float),
+        ("D", "ENTER: Diameter of circle ", input_float ),
+        ("C", "ENTER: Cicumference of circle ", input_float),
+        ("A", "ENTER: Area of circle ", input_float),
+        ("angle", "ENTER: Angle between radials ", lambda a: radians(input_float(a)) ),
+        ("L_C", "ENTER: Length of chord AB ", input_float),
+        ("L_A", "ENTER: Length of arc AB ", input_float),
+        ("G", "ENTER: Height if segment ", input_float),
     ]
-    for variable, prompt, conversion in requests:
+    for variable, prompt, input_func in requests:
         if variable not in args:
-            raw= input( prompt )
-            if raw:
-                args[variable]= conversion(raw)
+            raw= input_func( prompt )
+            if raw is not None:
+                args[variable]= raw
                 args= propcirc.circle( **args )
-
     print()
     reports = [
         ("Radius / Length of radials", "R", " units", float),

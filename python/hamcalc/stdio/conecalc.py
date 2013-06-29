@@ -3,6 +3,7 @@
 "CONE CALCULATOR","","","CONECALC"
 """
 import hamcalc.construction.conecalc as conecalc
+from hamcalc.stdio import *
 from collections import defaultdict
 
 picture= """\
@@ -16,16 +17,8 @@ y│         │A
 
 
 def cone_to_sheet():
-    d_raw= input(" ENTER: cone base diameter...............D=? " )
-    try:
-        D= float(d_raw)
-    except ValueError:
-        return
-    h_raw= input(" ENTER: cone height......................H=? " )
-    try:
-        H= float(h_raw)
-    except ValueError:
-        return
+    D= input_float(" ENTER: cone base diameter...............D=? " )
+    H= input_float(" ENTER: cone height......................H=? " )
     results= conecalc.cone( D=D, H=H )
 
     template="""\
@@ -47,16 +40,9 @@ Pattern sheet ........... (A) {A:7.3f} x (B) {B:7.3f}
 
 def sheet_to_cone():
     print( picture )
-    a_raw= input(" ENTER: smaller dimension of the sheet .......A=? " )
-    try:
-        A= float(a_raw)
-    except ValueError:
-        return
-    b_raw= input(" ENTER: larger dimension of the sheet ........B=? " )
-    try:
-        B= float(b_raw)
-    except ValueError:
-        return
+    A= input_float(" ENTER: smaller dimension of the sheet .......A=? " )
+    B= input_float(" ENTER: larger dimension of the sheet ........B=? " )
+
     report= [ defaultdict( str ) for d in range(6) ]
     results= conecalc.cone( A=A, B=B )
     report[results.next] = results
@@ -101,25 +87,11 @@ trunc_intro="""\
 
 def truncated_cone_to_sheet():
     print( trunc_intro )
-    d_b_raw= input( "ENTER: diameter at large end...........? ")
-    try:
-        D_B = float( d_b_raw )
-    except ValueError:
-        return
-    d_t_raw= input( "ENTER: diameter at small end...........? ")
-    try:
-        D_T = float( d_t_raw )
-    except ValueError:
-        return
-    h_raw= input( "ENTER: length between ends.............? ")
-    try:
-        H = float( h_raw )
-    except ValueError:
-        return
-
-    if D_B < D_T:
-        D_B, D_T = D_T, D_B
-    assert D_B >= D_T
+    D_B= input_float( "ENTER: diameter at large end...........? ")
+    D_T= input_float( "ENTER: diameter at small end...........? ")
+    if D_B is None or D_T is None: return
+    D_B, D_T = max( D_B, D_T ), min( D_B, D_T )
+    H= input_float( "ENTER: length between ends.............? ")
     results= conecalc.truncated_cone( D_B=D_B, D_T=D_T, H=H )
 
     template= """\

@@ -5,26 +5,17 @@
 """
 
 import hamcalc.math.accelr as accelr
-from hamcalc.lib import AttrDict
+from hamcalc.stdio import *
 
 def solve():
     """Gather Inputs for Acceleration/Force Problems."""
-    m= input( "ENTER: Mass of moving object in kg? " )
-    d= input( "ENTER: Displacement in metres ? " )
-    t= input( "ENTER: Duration of motion in seconds ? " )
-    v_o= input( "ENTER: Velocity at START of acceleration (metres/second)? " )
-    v_f= input( "ENTER: Velocity at END of acceleration (metres/second)? " )
+    m= input_float( "ENTER: Mass of moving object in kg? " )
+    d= input_float( "ENTER: Displacement in metres ? " )
+    t= input_float( "ENTER: Duration of motion in seconds ? " )
+    v_o= input_float( "ENTER: Velocity at START of acceleration (metres/second)? " )
+    v_f= input_float( "ENTER: Velocity at END of acceleration (metres/second)? " )
 
-    args = AttrDict()
-    try:
-        if m: args.m= float(m)
-        if d: args.d= float(d)
-        if t: args.t= float(t)
-        if v_o: args.v_o= float(v_o)
-        if v_f: args.v_f= float(v_f)
-        display( **args )
-    except ValueError as e:
-        print( e )
+    display( m=m, d=d, t=t, v_o=v_o, v_f=v_f )
 
 def display( **args_r ):
     """Compute and display results."""

@@ -106,6 +106,70 @@ they depend (deeply) on GW Basic Graphics, MS-DOS and legacy
 hardware.</p>
 </li>
 </ul>
+<div class="section" id="module-hamcalc.stdio.__main__">
+<span id="main"></span><h2>__main__<a class="headerlink" href="#module-hamcalc.stdio.__main__" title="Permalink to this headline">¶</a></h2>
+<p>HamCalc Main Program.</p>
+<p>This runs the <a class="reference internal" href="#module-hamcalc.stdio.intro" title="hamcalc.stdio.intro"><tt class="xref py py-mod docutils literal"><span class="pre">hamcalc.stdio.intro</span></tt></a> module.</p>
+</div>
+<div class="section" id="module-hamcalc.stdio.__init__">
+<span id="init"></span><h2>__init__<a class="headerlink" href="#module-hamcalc.stdio.__init__" title="Permalink to this headline">¶</a></h2>
+<p>HamCalc STDIO Applications.</p>
+<p>Plus some utility functions to emulate some of the GW-basic quirks.</p>
+<dl class="function">
+<dt id="hamcalc.stdio.__init__.input_convert">
+<tt class="descclassname">hamcalc.stdio.__init__.</tt><tt class="descname">input_convert</tt><big>(</big><em>prompt=''</em>, <em>convert=&lt;class 'str'&gt;</em><big>)</big><a class="reference internal" href="../_modules/hamcalc/stdio/__init__.html#input_convert"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.stdio.__init__.input_convert" title="Permalink to this definition">¶</a></dt>
+<dd><p>Distinguish between kinds of input.</p>
+<ol class="arabic simple">
+<li>Valid value of the given type (int, float, str, etc.)</li>
+<li>No input; a <tt class="docutils literal"><span class="pre">None</span></tt> is returned.</li>
+</ol>
+<p>Other exceptions (e.g., EOF) are left as proper
+exceptions.</p>
+<p>The objective is to emulate elements of quirky
+GW-Basic behavior. But not <strong>all</strong> of the quirks.
+The legacy programs treated &#8220;0&#8221; ambiguously.
+It could be &#8220;no input&#8221; or it could be an input
+value of 0. In a few cases, special 1E-6 values
+were used to be &#8220;effectively zero&#8221;.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>prompt</strong> &#8211; the prompt string</li>
+<li><strong>convert</strong> &#8211; the conversion function to apply</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="hamcalc.stdio.__init__.input_float">
+<tt class="descclassname">hamcalc.stdio.__init__.</tt><tt class="descname">input_float</tt><big>(</big><em>prompt=''</em><big>)</big><a class="reference internal" href="../_modules/hamcalc/stdio/__init__.html#input_float"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.stdio.__init__.input_float" title="Permalink to this definition">¶</a></dt>
+<dd><p>Input a floating-point value.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="hamcalc.stdio.__init__.input_int">
+<tt class="descclassname">hamcalc.stdio.__init__.</tt><tt class="descname">input_int</tt><big>(</big><em>prompt=''</em><big>)</big><a class="reference internal" href="../_modules/hamcalc/stdio/__init__.html#input_int"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.stdio.__init__.input_int" title="Permalink to this definition">¶</a></dt>
+<dd><p>Input an integer value.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="hamcalc.stdio.__init__.input_list_float">
+<tt class="descclassname">hamcalc.stdio.__init__.</tt><tt class="descname">input_list_float</tt><big>(</big><em>prompt=''</em><big>)</big><a class="headerlink" href="#hamcalc.stdio.__init__.input_list_float" title="Permalink to this definition">¶</a></dt>
+<dd><p>Input a comma-separated list of float values.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="hamcalc.stdio.__init__.input_list_int">
+<tt class="descclassname">hamcalc.stdio.__init__.</tt><tt class="descname">input_list_int</tt><big>(</big><em>prompt=''</em><big>)</big><a class="headerlink" href="#hamcalc.stdio.__init__.input_list_int" title="Permalink to this definition">¶</a></dt>
+<dd><p>Input a comma-separated list of integer values.</p>
+</dd></dl>
+
+</div>
 <div class="section" id="module-hamcalc.stdio.intro">
 <span id="intro"></span><h2>Intro<a class="headerlink" href="#module-hamcalc.stdio.intro" title="Permalink to this headline">¶</a></h2>
 <p>Intro.</p>
@@ -636,6 +700,8 @@ only.</p>
 <li class="toctree-l2"><a class="reference internal" href="software.html">software &#8211; Software Engineering, Programming and Computers</a></li>
 <li class="toctree-l2"><a class="reference internal" href="other/index.html">other &#8211; including Finance and Nutrition</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="">STDIO Interface</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#module-hamcalc.stdio.__main__">__main__</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-hamcalc.stdio.__init__">__init__</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#module-hamcalc.stdio.intro">Intro</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#module-hamcalc.stdio.menu">Menu</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#id1">RJD</a></li>

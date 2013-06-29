@@ -2,6 +2,7 @@
 """
 import hamcalc.navigation.lunar as lunar
 from hamcalc.navigation.solar.timezone import utc, FixedOffset
+from hamcalc.stdio import *
 import datetime
 
 introduction="""\
@@ -27,37 +28,19 @@ edited for HAMCALC by George Murphy VE3ERP
 
 def moontrack():
 
-    latitude= None
-    while latitude is None:
-        lat_raw= input( "ENTER: Latitude, in decimal degrees (minus if south)...? " )
-        try:
-            latitude= float( lat_raw )
-        except ValueError:
-            pass
-    longitude= None
-    while longitude is None:
-        lon_raw= input( "ENTER: Longitude, in decimal degrees (minus if west)...? " )
-        try:
-            longitude= float( lon_raw )
-        except ValueError:
-            pass
+    latitude= input_float( "ENTER: Latitude, in decimal degrees (minus if south)...? " )
+    longitude= input_float( "ENTER: Longitude, in decimal degrees (minus if west)...? " )
+    if latitude is None or longitude is None: return
 
     tz_offset_hr= longitude/15
     tz= FixedOffset( tz_offset_hr*60 )
     print( "Location..............  {0:5.1f}°N {1:5.1f}°W.   UTC {2:.2f} hours".format( latitude, longitude, tz_offset_hr ) )
 
-    date_time= None
-    while date_time is None:
-        try:
-            yr_raw= input( "ENTER: Year...........? " )
-            yr= int(yr_raw)
-            mon_raw= input( "ENTER: Month no. .....? " )
-            mon= int(mon_raw)
-            day_raw= input( "ENTER: Day no. .......? " )
-            day= int(day_raw)
-            date_time= datetime.datetime( yr, mon, day, tzinfo=tz )
-        except ValueError:
-            pass
+    yr= input_int( "ENTER: Year...........? " )
+    mon= input_int( "ENTER: Month no. .....? " )
+    day= input_int( "ENTER: Day no. .......? " )
+    if yr is None or mon is None or day is None: return
+    date_time= datetime.datetime( yr, mon, day, tzinfo=tz )
     print( "Date (y/m/d).......... {0}".format(date_time.date()) )
 
     display( latitude, longitude, tz_offset_hr, tz, date_time )

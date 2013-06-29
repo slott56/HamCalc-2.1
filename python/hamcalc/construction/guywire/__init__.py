@@ -150,6 +150,7 @@ class GuyWire( Solver ):
             TOP= args.H-args.R*math.tan( args.theta_r*(args.N-1) )
             while TOP > args.J:
                 args.N += 1
+                TOP= args.H-args.R*math.tan( args.theta_r*(args.N-1) )
             args.A_I_r = args.theta_r/args.N
             args.theta_d = math.degrees( args.theta_r )
             args.A_I_d = math.degrees( args.A_I_r )

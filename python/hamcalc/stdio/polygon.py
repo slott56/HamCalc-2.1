@@ -1,6 +1,7 @@
 """Polygon Dimensions"""
 
 import hamcalc.math.polygon as polygon
+from hamcalc.stdio import *
 import math
 
 print( polygon.intro() )
@@ -19,10 +20,8 @@ arg_names = {
 
 N = None
 while True:
-    N_raw= input( "ENTER:  {0}? ".format(arg_names["N"]) )
-    if len(N_raw) == 0: break
-    N= int( N_raw )
-    if N == 0: break
+    N= input_int( "ENTER:  {0}? ".format(arg_names["N"]) )
+    if N is None: break
     if N < 3: continue
     print(" Press number in < > for known dimension:")
     print("   <1> {0}".format( arg_names["H"]) )
@@ -30,13 +29,13 @@ while True:
     print("   <3> {0}".format( arg_names["S"]) )
     Z = input( "CHOICE? " )
     if Z == "1":
-        H= float( input( "ENTER: {0}? ".format(arg_names["H"]) ) )
+        H= input_float( "ENTER: {0}? ".format(arg_names["H"]) )
         args= dict( N=N, H=H )
     elif Z == "2":
-        R = float( iinput( "ENTER: {0}? ".format(arg_names["R"]) ) )
+        R = input_float( "ENTER: {0}? ".format(arg_names["R"]) )
         args= dict( N=N, R=R )
     elif Z == "3":
-        S = float( input( "ENTER: {0}? ".format(arg_names["S"]) ) )
+        S = input_float( "ENTER: {0}? ".format(arg_names["S"]) )
         args= dict( N=N, S=S )
     args= polygon.polygon( **args )
     for var in 'N', 'H', 'R', 'A', 'S', 'P', 'D', 'E', 'A_P':

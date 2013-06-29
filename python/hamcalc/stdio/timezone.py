@@ -6,6 +6,7 @@
 import re
 import datetime
 from hamcalc.navigation.solar.timezone import utc, FixedOffset
+from hamcalc.stdio import *
 
 # The HamCalc Zones
 zone_data="""\
@@ -67,16 +68,11 @@ def show_lon( lat ):
         return "{0:5.1f}°E".format( abs(lat)%180 )
 
 print( introduction )
-ref_raw= None
-while ref_raw != '':
-    ref_raw= input( " ENTER: Reference time in UTC (e.g. 0517, 1625, etc.)....? " )
-    if len(ref_raw) == 0: break
-    try:
-        ref_int= int(ref_raw)
-        hr, min = divmod( ref_int, 100 )
-        ref_time= datetime.time( hour=hr, minute=min, tzinfo=utc )
-    except ValueError:
-        continue
+
+ref_int= input_int( " ENTER: Reference time in UTC (e.g. 0517, 1625, etc.)....? " )
+while ref_int is not None:
+    hr, min = divmod( ref_int, 100 )
+    ref_time= datetime.time( hour=hr, minute=min, tzinfo=utc )
     ref_date_time= datetime.datetime.combine( datetime.datetime.now().date(), ref_time )
     day_num = ref_date_time.toordinal()
     for i, tz_name in enumerate( reversed( zones ) ):
@@ -88,3 +84,4 @@ while ref_raw != '':
         print( "{0:7s} {1:7s} UTC {2:+3d} {4:9s} in {5:s}".format(
             show_lon(lon-7.5), show_lon(lon+7.5), hr, ref_date_time.astimezone(local).strftime("%H:%M"), day,
             tz_name ) )
+    ref_int= input_int( " ENTER: Reference time in UTC (e.g. 0517, 1625, etc.)....? " )

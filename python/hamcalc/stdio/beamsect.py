@@ -6,6 +6,7 @@
 import hamcalc.construction.beamsect as beamsect
 import hamcalc.stdio.beamdefl as beamdefl
 from hamcalc.lib import AttrDict, NoSolutionError
+from hamcalc.stdio import *
 import string
 
 class Section:
@@ -29,15 +30,9 @@ class Section:
         """Gather missing input values.
         Uses :data:`variables` for the list of variables to gather.
         """
-        try:
-            for var, prompt in self.variables:
-                if var not in self.args:
-                    raw = input( "ENTER {0:.<32s}? ".format(prompt) )
-                    if raw:
-                        self.args[var]= float(raw)
-        except ValueError as e:
-            print( e )
-            raise
+        for var, prompt in self.variables:
+            if var not in self.args:
+                self.args[var] = input_float( "ENTER {0:.<32s}? ".format(prompt) )
     def display( self ):
         """Display the results of the calculation."""
         try:

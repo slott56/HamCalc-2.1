@@ -7,6 +7,7 @@
 import hamcalc.math.equiv as equiv
 import hamcalc.math.deciconv as deciconv
 import hamcalc.math.speedtd as speedtd
+from hamcalc.stdio import *
 import string
 import runpy
 
@@ -40,18 +41,12 @@ def solve_fvd(D, d_unit, T, t_unit):
         rd_unit= equiv.MPG
 
     # fuel rate per distance
-    rd_raw= input( "ENTER fuel rate {0}? ".format( rd_unit.name ) )
+    R= input_float( "ENTER fuel rate {0}? ".format( rd_unit.name ) )
     # fuel rate per hour?
     # total fuel
-    v_raw= input( "ENTER fuel volume {0}? ".format( v_unit.name ) )
+    V= input_float( "ENTER fuel volume {0}? ".format( v_unit.name ) )
 
-    rvd_args= dict()
-    rvd_args['D']= D
-    rvd_args['T']= equiv.HOUR.from_std(t_unit.to_std(T))
-    if len(rd_raw) != 0: rvd_args['R']= float(rd_raw)
-    if len(v_raw) != 0: rvd_args['V']= float(v_raw)
-
-    rvd= speedtd.fuel_volume_distance( **rvd_args )
+    rvd= speedtd.fuel_volume_distance( D=D, T=T, R=R, V=V )
 
     print( "Fuel Efficiency {0:6.2f} {1}".format(rvd.R, rd_unit.name) )
     print( "Fuel Required   {0:6.2f} {1}".format(rvd.V, v_unit.name) )
@@ -65,16 +60,11 @@ def solve_dst():
     else:
         s_unit_name= "{0}/{1}".format(d_unit.name,t_unit.name)
 
-    d_raw= input( "ENTER Distance ({0})? ".format(d_unit.name) )
-    s_raw= input( "ENTER Speed ({0})? ".format(s_unit_name) )
-    t_raw= input( "ENER Time ({0})? ".format(t_unit.name) )
+    D= input_float( "ENTER Distance ({0})? ".format(d_unit.name) )
+    S= input_float( "ENTER Speed ({0})? ".format(s_unit_name) )
+    T= input_float( "ENER Time ({0})? ".format(t_unit.name) )
 
-    dst_args= dict()
-    if len(d_raw) != 0: dst_args['D']= float(d_raw)
-    if len(s_raw) != 0: dst_args['S']= float(s_raw)
-    if len(t_raw) != 0: dst_args['T']= float(t_raw)
-
-    dst= speedtd.speed_time_distance( **dst_args )
+    dst= speedtd.speed_time_distance( D=D, S=S, T=T )
     tm= t_unit.to_std( dst.T )
     hrs= equiv.HOUR.from_std( tm )
     hms= deciconv.HR_MIN_SEC.from_std( hrs )

@@ -4,6 +4,7 @@
 "CARTESIAN/POLAR PLOT ROTATOR","","","ROTAPLOT"
 """
 import hamcalc.math.rotaplot as rotaplot
+from hamcalc.stdio import *
 import math
 
 heading= """\
@@ -18,9 +19,8 @@ def report( x1, y1, x2, y2, r, theta, theta_2 ):
 def rotate(p):
     print( " To rotate plotted coordinates about " )
     print( " the junction * of the X and Y axis: " )
-    d_raw= input( "ENTER: Rotation in degrees (minus if counter-clockwise) ?" )
-    if len(d_raw) == 0: return
-    d= float(d_raw)
+    d= input_float( "ENTER: Rotation in degrees (minus if counter-clockwise) ?" )
+    if d is None: return
     d_text= "° counter-clockwise " if d < 0 else "° clockwise "
     offset= math.radians( d )
     print( "Rotation = {0}{1}".format( abs(d), d_text ) )
@@ -30,18 +30,16 @@ def rotate(p):
     points= []
     while True:
         if p == '2':
-            r_raw= input( "ENTER: Vector length? " )
-            if len(r_raw) == 0: break
-            theta_raw= input( "ENTER: Angle? " )
-            if len(theta_raw) == 0: break
-            r, theta= float(r_raw), float(theta_raw)
+            r= input_float( "ENTER: Vector length? " )
+            if r is None: break
+            theta= input_float( "ENTER: Angle? " )
+            if theta is None: break
             x1, y1 = rotaplot.polar_to_cartesian( r, theta )
         elif p == '1':
-            x_raw= input( "ENTER: x? " )
-            if len(x_raw) == 0: break
-            y_raw= input( "ENTER: y? " )
-            if len(y_raw) == 0: break
-            x1, y1 = float(x_raw), float(y_raw)
+            x1= input_float( "ENTER: x? " )
+            if x1 is None: break
+            y1= input_float( "ENTER: y? " )
+            if y1 is None: break
             r, theta = rotaplot.cartesian_to_polar( x1, y1 )
         _, theta_2 = rotaplot.rotate( r, theta, offset )
         x2, y2 = rotaplot.polar_to_cartesian( r, theta_2 )

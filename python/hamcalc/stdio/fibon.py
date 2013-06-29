@@ -14,7 +14,7 @@ def pairs( iterable ):
 def progressive():
     try:
         b= int( input( "ENTER: first number in progressive series? " ) )
-    except:
+    except ValueError as e:
         b= 1
     print( "{0:<16s}{1:<30s}{2:<20s}{3:s}".format(
         " N (number)", " R (ratio N/previous N)",
@@ -26,7 +26,7 @@ def progressive():
         print( "{0:10d}      {1:10g}                    {2:10g}          {3:10g}".format(c, r, p, d) )
 
 def regressive():
-    """..   todo:: Finish this."""
+    """..   todo:: Does this even make sense?"""
     pass
 
 print( fibon.intro() )

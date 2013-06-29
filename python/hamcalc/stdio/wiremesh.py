@@ -9,26 +9,12 @@ from hamcalc.lib import convert
 from hamcalc.math.equiv import INCH, MILLIMETRE, SQ_METRE, SQ_FOOT
 from hamcalc.math.centrif import KILOGRAM, POUND_MASS
 from hamcalc.navigation.satorbit import KPH, MPH, MPM, KNOT, MPS
+from hamcalc.stdio import *
 
 def solve():
-    a_raw= input("ENTER: c.c. Distance across mesh opening.......(in.)? ")
-    try:
-        A= float(a_raw)
-    except ValueError as e:
-        print( e )
-        return
-    d_raw= input("ENTER: Wire diameter...........................(in.)? ")
-    try:
-        D= float(d_raw)
-    except ValueError as e:
-        print( e )
-        return
-    sa_raw=input("ENTER: Screen area.............................(ft²)? ")
-    try:
-        SA= float(sa_raw)
-    except ValueError as e:
-        print( e )
-        return
+    A= input_float("ENTER: c.c. Distance across mesh opening.......(in.)? ")
+    D= input_float("ENTER: Wire diameter...........................(in.)? ")
+    SA=input_float("ENTER: Screen area.............................(ft²)? ")
     template = """\
 ENTER: {0:.<45s} {1:8.3f} in. {2:8.1f} mm
 ENTER: {3:.<45s} {4:8.3f} in. {5:8.1f} mm
@@ -63,7 +49,7 @@ def display( A, D, SA ):
     detail= "   @ {W_k:2.0f} knots = {W_mph:2.0f} mph = {W_kph:3.0f} km/hr = Beaufort {W_b:2.0f}...  {Y_lb:6.1f} lb.   {Y_n:6.1f} kg"
     for x in range(1,12):
         k = (x+1)*5
-        f = wiremesh.force( A=.25, D=.0625, SA=12, W_k= k )
+        f = wiremesh.force( A=A, D=D, SA=SA, W_k= k )
         print( detail.format(**f) )
 
 print( wiremesh.intro() )

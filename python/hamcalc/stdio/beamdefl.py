@@ -5,6 +5,7 @@
 """
 import hamcalc.construction.beamdefl as beamdefl
 from hamcalc.lib import AttrDict, NoSolutionError
+from hamcalc.stdio import *
 import string
 
 class Deflection:
@@ -44,15 +45,9 @@ class Deflection:
         """Gather missing input values.
         Uses :data:`variables` for the list of variables to gather.
         """
-        try:
-            for var, prompt in self.variables:
-                if var not in self.args:
-                    raw = input( "ENTER {0:.<32s}? ".format(prompt) )
-                    if raw:
-                        self.args[var]= float(raw)
-        except ValueError as e:
-            print( e )
-            raise
+        for var, prompt in self.variables:
+            if var not in self.args:
+                self.args[var] = input_float( "ENTER {0:.<32s}? ".format(prompt) )
 
     def display( self ):
         """Display the results of the calculation."""
@@ -199,8 +194,8 @@ def pick_material():
         if z == 'z': return
         position= menu.find(z)
     if position == len(beamdefl.material):
-        name= input( "Name" )
-        e= float( input( "Elasticity" ) )
+        name= input_str( "Name" )
+        e= input_float( "Elasticity" )
         material= beamdefl.Material( name, e, 0 )
     else:
         name= list(beamdefl.material.keys())[position]
@@ -235,6 +230,7 @@ def pick_beam_model():
     models= []
     while len(models) != 1:
         z= input( "ENTER beam? " ).lower()
+        if z == ' ': continue
         models= [ model for label, model in model_list if label == z ]
     return models[0]
 

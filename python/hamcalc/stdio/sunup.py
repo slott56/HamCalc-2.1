@@ -2,6 +2,7 @@
 
 """
 import hamcalc.navigation.solar as solar
+from hamcalc.stdio import *
 import datetime
 
 introduction= "SUNUP/SUNDOWN                                            by George Murphy VE3ERP"
@@ -9,20 +10,10 @@ introduction= "SUNUP/SUNDOWN                                            by Georg
 def create_table():
     location= input( "Name of your location.......? " )
     if len(location) == 0: return
-    latitude= None
-    while latitude is None:
-        lat_raw= input( "ENTER: Your latitude  (XX.X degrees, minus if SOUTH).....? " )
-        try:
-            latitude= float(lat_raw)
-        except ValueError:
-            pass
-    longitude= None
-    while longitude is None:
-        lon_raw= input( "ENTER: Your longitude (XX.X degrees, minus if EAST)......? " )
-        try:
-            longitude= -float(lon_raw)
-        except ValueError:
-            pass
+    latitude= input_float( "ENTER: Your latitude  (XX.X degrees, minus if SOUTH).....? " )
+    if latitude is None: return
+    longitude= input_float( "ENTER: Your longitude (XX.X degrees, minus if EAST)......? " )
+    if longitude is None: return
     print(" (1) Atlantic" )
     print(" (2) Eastern" )
     print(" (3) Central" )
@@ -44,34 +35,23 @@ def create_table():
             except KeyError:
                 pass
 
-    year = None
-    while year is None:
-        year_raw = input( "ENTER: Year to be used in calculations (yyyy)............? " )
-        try:
-            year= int(year_raw)
-        except ValueError:
-            pass
+    year = input_int( "ENTER: Year to be used in calculations (yyyy)............? " )
+    if year is None: return
+
     start= None
     while start is None:
-        md_start = input( "ENTER: First date? (No. of Month, Day)...................? " )
-        try:
-            month_start, day_start = map( int, md_start.split(",") )
-            start= datetime.datetime( year, month_start, day_start, tzinfo=tz )
-        except ValueError:
-            pass
+        month_start, day_start = input_list_int( "ENTER: First date? (No. of Month, Day)...................? ", count=2 )
+        if month_start is None or day_start is None: continue
+        start= datetime.datetime( year, month_start, day_start, tzinfo=tz )
+
     end = None
     while end is None:
-        md_end = input( "ENTER: Last date?  (No. of Month, Day)...................? " )
-        try:
-            month_end, day_end = map( int, md_end.split(",") )
-            end= datetime.datetime( year, month_end, day_end, tzinfo=tz )
-        except ValueError:
-            pass
-    increment= None
-    increment_raw = input( "ENTER: Increment in days.................................? " )
-    try:
-        increment= int(increment_raw)
-    except ValueError:
+        month_end, day_end = input_list_int( "ENTER: Last date?  (No. of Month, Day)...................? ", count=2 )
+        if month_end is None or day_end is None: continue
+        end= datetime.datetime( year, month_end, day_end, tzinfo=tz )
+
+    increment = input_int( "ENTER: Increment in days.................................? " )
+    if increment is None:
         increment= 1
     if end < start:
         start, end = end, start

@@ -1,6 +1,7 @@
 """Trigonometric functions
 """
 import hamcalc.math.trig as trig
+from hamcalc.stdio import *
 import math
 import runpy
 
@@ -42,49 +43,49 @@ while z != 'z':
     print("   <z> to EXIT program")
     z= input( "Choice? " )
     if z == 'a':
-        angle_raw= input( "ENTER: Angle, in degrees minutes and seconds? " )
-        if len(angle_raw) == 0: continue
+        angle_raw= input_float( "ENTER: Angle, in degrees minutes and seconds? " )
+        if angle_raw is None: continue
         angle= trig.DEG_MIN_SEC.to_std( angle_raw )
         functions( angle )
     elif z == 'b':
-        angle_raw= input( "ENTER: Angle, in degrees? " )
-        if len(angle_raw) == 0: continue
+        angle_raw= input_float( "ENTER: Angle, in degrees? " )
+        if angle_raw is None: continue
         angle= trig.DEGREE.to_std( float(angle_raw) )
         functions( angle )
     elif z == 'c':
-        angle_raw= input( "ENTER: Angle, in radians? " )
-        if len(angle_raw) == 0: continue
+        angle_raw= input_float( "ENTER: Angle, in radians? " )
+        if angle_raw is None: continue
         angle= trig.RADIAN.to_std( float(angle_raw) )
         functions( angle )
     elif z == 'd':
-        value_raw= input( "ENTER: Value of Sine (range 0-1)? " )
-        if len(value_raw) == 0: continue
+        value_raw= input_float( "ENTER: Value of Sine (range 0-1)? " )
+        if value_raw is None: continue
         angle= math.asin( float(value_raw) )
         functions( angle )
     elif z == 'e':
-        value_raw= input( "ENTER: Value of Cosine (range 0-1)? " )
-        if len(value_raw) == 0: continue
+        value_raw= input_float( "ENTER: Value of Cosine (range 0-1)? " )
+        if value_raw is None: continue
         angle= math.acos( float(value_raw) )
         functions( angle )
     elif z == 'f':
-        value_raw= input( "ENTER: Value of Tangent (range 0-∞)? " )
-        if len(value_raw) == 0: continue
+        value_raw= input_float( "ENTER: Value of Tangent (range 0-∞)? " )
+        if value_raw is None: continue
         angle= math.atan( float(value_raw) )
         functions( angle )
     elif z == 'g':
-        value_raw= input( "ENTER: Value of Cotangent (range 0-∞)? " )
-        if len(value_raw) == 0: continue
+        value_raw= input_float( "ENTER: Value of Cotangent (range 0-∞)? " )
+        if value_raw is None: continue
         angle= math.atan2( 1, float(value_raw) )
         functions( angle )
     elif z == 'h':
-        value_raw= input( "ENTER: Value of Secant (range 0-∞)? " )
-        if len(value_raw) == 0: continue
+        value_raw= input_float( "ENTER: Value of Secant (range 0-∞)? " )
+        if value_raw is None: continue
         z= 1/float(value_raw)
         angle= math.pi/2-math.atan2(z,math.sqrt(1-z**2))
         functions( angle )
     elif z == 'i':
-        value_raw= input( "ENTER: Value of Cosecant (range 0-∞)? " )
-        if len(value_raw) == 0: continue
+        value_raw= input_float( "ENTER: Value of Cosecant (range 0-∞)? " )
+        if value_raw is None: continue
         z= 1/float(value_raw)
         angle= math.atan2(z,math.sqrt(1-z**2))
         functions( angle )

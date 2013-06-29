@@ -16,10 +16,14 @@ Test Cases
 >>> math.degrees( i.COE )
 73.29078877349203
 
+>>> involute.involute( radius=12, phi=math.radians(60) )
+math domain error computing sqrt(  6.382**2- 12.000**2)
+{'diameter': 24, 'phi': 1.0471975511965976, 'CO': 6.38173659497964, 'baseline': 37.69911184307752, 'COE': nan, 'OCE': nan, 'CE': nan, 'radius': 12, 'C_Y': -4.882796185405304, 'C_X': 4.109119538233676, 'involute': 59.21762640653615}
 """
 __version__ = "2.1"
 
 from hamcalc.lib import AttrDict
+import cmath
 import math
 
 def involute( radius, phi=None ):
@@ -56,7 +60,12 @@ def involute( radius, phi=None ):
         args.C_X= args.radius*(math.sin(phi)-phi*math.cos(phi))
         args.C_Y= args.radius*(math.cos(phi)-phi*math.sin(phi))
         args.CO= math.sqrt( args.C_X**2 + args.C_Y**2 )
-        args.CE= math.sqrt( args.CO**2 - args.radius**2 )
+        try:
+            args.CE= math.sqrt( args.CO**2 - args.radius**2 )
+        except ValueError as e:
+            print( "{0} computing sqrt({CO:7.3f}**2-{radius:7.3f}**2)".format(e,**args) )
+            args.CE = args.COE = args.OCE = float("NaN")
+            return args
         args.OCE = math.atan2( args.radius, args.CE )
         args.COE = math.pi/2-args.OCE
 

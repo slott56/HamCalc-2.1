@@ -2,6 +2,7 @@
 """
 import hamcalc.construction.guywire as guywire
 from hamcalc.math.equiv import FOOT, METRE
+from hamcalc.stdio import *
 
 def design():
     print( "   < 1 >  Metric" )
@@ -23,17 +24,9 @@ def design():
     J= guywire.J_Factor[labels[tp]]
     if J is None:
         # "Other": prompt for J
-        J_raw= input( " ENTER: Maximum vertical distance between guy wire sets ({0})? ".format(unit.name) )
-        try:
-            J= float(J_raw)
-        except ValueError:
-            pass
+        J= input_float( " ENTER: Maximum vertical distance between guy wire sets ({0})? ".format(unit.name) )
 
-    H_raw= input( " ENTER: Height of {0}................({1})? ".format(labels[tp],unit.name) )
-    try:
-        H= float(H_raw)
-    except ValueError:
-        return
+    H= input_float( " ENTER: Height of {0}................({1})? ".format(labels[tp],unit.name) )
 
     minimum, recommended= guywire.minimim_recommended( H )
 
@@ -43,17 +36,12 @@ def design():
 """
     print( template_1.format( unit, minimum, recommended ) )
 
-    R_raw= input( " ENTER: Your choice of distance to anchor points ({0}).......? ".format(unit.name) )
-    try:
-        R= float(R_raw)
-    except ValueError:
-        pass
+    R= input_float( " ENTER: Your choice of distance to anchor points ({0}).......? ".format(unit.name) )
 
     display( unit, H, R, J )
 
 def display( unit, H, R, J ):
-    args= dict( H=H, R=R, J=J, unit=unit )
-    args = guywire.guywire_f( **args )
+    args = guywire.guywire_f( H=H, R=R, J=J, unit=unit )
 
     summary= """\
        Number of guy wire sets............................... {N:3d}

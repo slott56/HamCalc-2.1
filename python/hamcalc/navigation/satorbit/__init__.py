@@ -6,9 +6,9 @@ Test Cases for Orbital Details
 
 >>> import hamcalc.navigation.satorbit as satorbit
 >>> satorbit.orbit( 88, 10.1, 10.2 )
-{'cone_diameter': 1762.2173168121756, 'fq_up': 10.1, 'speed_mph': 17407.307854142113, 'fq_down': 10.2, 'altitude': 100.0, 'doppler_shift': 0.004999999999999982, 'speed_mpm': 290.1217975690352, 'period': 88, 'radio_horizon': 881.1086584060878, 'signal_time': 0.001075268817204301, 'radius': 4063.34, 'apex_angle': 154.5246143812527}
+{'cone_diameter': 1762.2173168121756, 'radio_horizon': 881.1086584060878, 'speed_mph': 17407.307854142113, 'fq_down': 10.2, 'altitude': 100.0, 'doppler_shift': 0.004999999999999982, 'speed_mpm': 290.1217975690352, 'period': 88, 'fq_up': 10.1, 'signal_time': 0.001075268817204301, 'radius': 4063.34, 'apex_angle': 154.5246143812527}
 >>> satorbit.orbit( 144, 10.1, 10.2 )
-{'cone_diameter': 6306.827741575378, 'fq_up': 10.1, 'speed_mph': 14826.58944898434, 'fq_down': 10.2, 'altitude': 1699.9999999999957, 'doppler_shift': 0.004999999999999982, 'speed_mpm': 247.10982414973898, 'period': 144, 'radio_horizon': 3153.413870787689, 'signal_time': 0.01827956989247307, 'radius': 5663.339999999996, 'apex_angle': 88.82573493359294}
+{'cone_diameter': 6306.827741575378, 'radio_horizon': 3153.413870787689, 'speed_mph': 14826.58944898434, 'fq_down': 10.2, 'altitude': 1699.9999999999957, 'doppler_shift': 0.004999999999999982, 'speed_mpm': 247.10982414973898, 'period': 144, 'fq_up': 10.1, 'signal_time': 0.01827956989247307, 'radius': 5663.339999999996, 'apex_angle': 88.82573493359294}
 
 Test Cases for Units
 

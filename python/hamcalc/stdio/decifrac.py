@@ -2,6 +2,7 @@
 """
 
 import hamcalc.math.decifrac as decifrac
+from hamcalc.stdio import *
 
 def fraction_to_decimal():
     ft_in_raw= input( "ENTER: number of whole feet and inches [f'- i n/d\"]...? " )
@@ -24,13 +25,11 @@ def decimal_to_fraction():
     if len(unit_raw) == 0: return
     unit= { '1': decifrac.INCH, '2': decifrac.FOOT,
         '3': decifrac.MILLIMETRE, '4': decifrac.CENTIMETRE, '5': decifrac.METRE }[unit_raw]
-    measure_raw= input( "ENTER: dimension (in {0}) to be converted........?".format(unit.__doc__) )
-    if len(measure_raw) == 0: return
-    measure_num= float( measure_raw )
-    if measure_num == 0: return
-    measure= unit.to_std( measure_num )
+    measure_raw= input_float( "ENTER: dimension (in {0}) to be converted........?".format(unit.__doc__) )
+    if measure_raw is None: return
+    measure= unit.to_std( measure_raw )
     text= decifrac.FOOT_INCH_FRAC.from_std( measure )
-    print( "     {0:8.3f} {1} = {2:s}".format( measure_num, unit.__doc__, text ) )
+    print( "     {0:8.3f} {1} = {2:s}".format( measure_raw, unit.__doc__, text ) )
     f, i, n, d= decifrac.FOOT_INCH_FRAC_TUPLE.from_std( measure )
     if d==128:
         # Couldn't reduce. Check for nearby values.

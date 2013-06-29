@@ -5,24 +5,15 @@
 """
 import hamcalc.navigation.satorbit as satorbit
 from hamcalc.math.equiv import MILE, KILOMETRE
+from hamcalc.stdio import *
 
 def orbit( unit_dist, unit_speed_1, unit_speed_2 ):
-    period= None
-    while period is None:
-        try:
-            pd_raw= input( " ENTER: Period (time for single orbit) (87-157 min.) ? " )
-            period= float(pd_raw)
-        except ValueError:
-            pass
+    period= input_float( " ENTER: Period (time for single orbit) (87-157 min.) ? " )
+    if period is None: return
     fq_up = fq_down = None
     while fq_up  is None or fq_down is None:
-        try:
-            fq_up_raw= input( " ENTER: UPLINK frequency (MHz).......................? " )
-            fq_up= float( fq_up_raw )
-            fq_dn_raw= input( " ENTER: DOWNLINK frequency (MHz).....................? " )
-            fq_down= float( fq_dn_raw )
-        except ValueError:
-            pass
+        fq_up= input_float( " ENTER: UPLINK frequency (MHz).......................? " )
+        fq_down= input_float( " ENTER: DOWNLINK frequency (MHz).....................? " )
     details= satorbit.orbit( period, fq_up, fq_down )
     altitude= MILE.to_std(details.altitude)
     print( "    Satellite altitude........................... {0:7.0f} {1}".

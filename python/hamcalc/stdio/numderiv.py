@@ -26,9 +26,11 @@ anti_logs= [
     ]
 
 def eval_functions( prompt, func_list ):
-    n_raw= input( prompt )
-    if len(n_raw) == 0: return
-    n= float(n_raw)
+    try:
+        n= float( input( prompt ) )
+    except ValueError as e:
+        print( e )
+        return
     print( " Functions of {0:f}".format(n) )
     for name, func in func_list:
         try:
@@ -38,13 +40,12 @@ def eval_functions( prompt, func_list ):
         print( "{0:.<40s} {1:f}".format( name, value ) )
 
 def logs():
-    b_raw= input( "ENTER: Value of Base? " )
-    if len(b_raw) == 0: return
-    b= float(b_raw)
-    n_raw= input( "ENTER: Number (or 0 to quit)? " )
-    if len(n_raw) == 0: return
-    n= float(n_raw)
-    if n == 0: return
+    try:
+        b= float( input( "ENTER: Value of Base? " ) )
+        n= float( input( "ENTER: Number (or 0 to quit)? " ) )
+    except ValueError as e:
+        print( e )
+        return
     value= math.log( n, b )
     print( "log {0:f} (base {1:f})= {2:f}".format( n, b, value ) )
 

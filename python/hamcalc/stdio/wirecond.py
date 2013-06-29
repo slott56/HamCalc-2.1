@@ -1,31 +1,15 @@
 """Wires in Conduit
 """
 import hamcalc.construction.wirecond as wirecond
-from hamcalc.lib import AttrDict
+from hamcalc.stdio import *
 
 def solve():
 
-    params= AttrDict()
+    ID= input_float(" ENTER: conduit inside diameter? " )
+    OD= input_float(" ENTER: wire/cable outside diameter? " )
+    NW= input_float(" ENTER: number of wires/cables? " )
 
-    id_raw= input(" ENTER: conduit inside diameter? " )
-    try:
-        params.ID= float(id_raw)
-    except ValueError:
-        pass
-
-    od_raw= input(" ENTER: wire/cable outside diameter? " )
-    try:
-        params.OD= float(od_raw)
-    except ValueError:
-        pass
-
-    nw_raw= input(" ENTER: number of wires/cables? " )
-    try:
-        params.NW= float(nw_raw)
-    except ValueError:
-        pass
-
-    result= wirecond.conduit( **params )
+    result= wirecond.conduit( ID=ID, OD=OD, NW=NW )
 
     print()
     print( "WIRES/CABLES PACKED IN A CONDUIT" )

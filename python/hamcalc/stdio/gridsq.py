@@ -7,6 +7,7 @@ import hamcalc.math.trig as trig
 import hamcalc.navigation.gridsq as gridsq
 import hamcalc.navigation.distance as distance
 import hamcalc.navigation.solar as solar
+from hamcalc.stdio import *
 import datetime
 
 def grid_square():
@@ -18,13 +19,9 @@ def grid_square():
         if mode == 'q':
             return
         elif mode == 'c':
-            try:
-                lat_raw= input( "ENTER: Latitude in decimal degrees (+° if North, -° if South)? " )
-                lat= float( lat_raw )
-                lon_raw= input( "ENTER: Longitude in decimal degrees (+° if East, -° if West)? " )
-                lon= float( lon_raw )
-            except ValueError:
-                pass
+            lat= input_float( "ENTER: Latitude in decimal degrees (+° if North, -° if South)? " )
+            lon= input_float( "ENTER: Longitude in decimal degrees (+° if East, -° if West)? " )
+            if lat is None or lon is None: return
             grid= gridsq.latlon_2_grid( lat, lon )
             home= grid
             lat_home, lon_home= lat, lon
@@ -53,13 +50,9 @@ def grid_square():
         if mode == 'q':
             break
         elif mode == 'c':
-            try:
-                lat_raw= input( "ENTER: Latitude in decimal degrees (+° if North, -° if South)? " )
-                lat= float( lat_raw )
-                lon_raw= input( "ENTER: Longitude in decimal degrees (+° if East, -° if West)? " )
-                lon= float( lon_raw )
-            except ValueError:
-                continue
+            lat= input_float( "ENTER: Latitude in decimal degrees (+° if North, -° if South)? " )
+            lon= input_float( "ENTER: Longitude in decimal degrees (+° if East, -° if West)? " )
+            if lat is None or lon is None: return
             grid= gridsq.latlon_2_grid( lat, lon )
         elif mode == 'g':
             grid= input( "ENTER: Grid square code (enter 2, 4, or all 6 characters)? " )

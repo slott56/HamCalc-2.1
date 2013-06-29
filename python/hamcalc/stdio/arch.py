@@ -1,32 +1,24 @@
 """Arch Calculator
 """
 import hamcalc.construction.arch as arch
-from hamcalc.lib import AttrDict
+from hamcalc.stdio import *
 
 def solve():
     """Gather Inputs for Arch Problems."""
     print( "All dimensions in ANY identical units of measure:" )
 
-    r_raw= input( " ENTER: Radii XA, XH, XB? " )
-    a_d_raw= input( " ENTER: Angle AXB in degrees? " )
-    c_raw= input( " ENTER: Chord AB? " )
-    a_c_raw= input( " ENTER: Curved arch AHB? " )
-    b_raw= input( " ENTER: Segment height CH? " )
+    R= input_float( "ENTER: Radii XA, XH, XB? " )
+    A_d= input_float( "ENTER: Angle AXB in degrees? " )
+    C= input_float( "ENTER: Chord AB? " )
+    A_C= input_float( "ENTER: Curved arch AHB? " )
+    B= input_float( "ENTER: Segment height CH? " )
 
-    args = AttrDict()
-    try:
-        if r_raw: args.R= float(r_raw)
-        if a_d_raw: args.A_d= float(a_d_raw)
-        if c_raw: args.C = float(c_raw)
-        if a_c_raw: args.A_C = float(a_c_raw)
-        if b_raw: args.B= float(b_raw)
-        display( **args )
-    except ValueError as e:
-        print( e )
+    display( R=R, A_d=A_d, C=C, A_C=A_C, B=B )
 
 def display( **args_r ):
     """Compute and display results."""
     results= arch.arch( **args_r )
+    print( results )
 
     print("ARCH CALCULATION")
     print()

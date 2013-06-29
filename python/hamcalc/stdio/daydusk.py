@@ -4,7 +4,7 @@
 """
 import hamcalc.navigation.solar as solar
 from hamcalc.navigation.solar.timezone import FixedOffset, utc
-from hamcalc.lib import AttrDict
+from hamcalc.stdio import *
 import datetime
 import runpy
 
@@ -33,20 +33,9 @@ def get_lat_lon_tz_date():
     Get latitude, longitude, timezone and date.
     """
 
-    latitude= None
-    while latitude is None:
-        lat_raw= input( "ENTER: Latitude, in decimal degrees (minus if south)...? " )
-        try:
-            latitude= float( lat_raw )
-        except ValueError:
-            pass
-    longitude= None
-    while longitude is None:
-        lon_raw= input( "ENTER: Longitude, in decimal degrees (minus if west)...? " )
-        try:
-            longitude= float( lon_raw )
-        except ValueError:
-            pass
+    latitude= input_float( "ENTER: Latitude, in decimal degrees (minus if south)...? " )
+    longitude= input_float( "ENTER: Longitude, in decimal degrees (minus if west)...? " )
+    if latitude is None or longitude is None: return
 
     print(" (1) Atlantic" )
     print(" (2) Eastern" )
@@ -70,18 +59,13 @@ def get_lat_lon_tz_date():
                 pass
     print( "Location..............  {0:5.1f}°N {1:5.1f}°W.   UTC {2:.2f} hours".format( latitude, longitude, tz.stdoffset.total_seconds()/3600 ) )
 
-    date_time= None
-    while date_time is None:
-        try:
-            yr_raw= input( "ENTER: Year...........? " )
-            yr= int(yr_raw)
-            mon_raw= input( "ENTER: Month no. .....? " )
-            mon= int(mon_raw)
-            day_raw= input( "ENTER: Day no. .......? " )
-            day= int(day_raw)
-            date_time= datetime.datetime( yr, mon, day, tzinfo=tz )
-        except ValueError:
-            pass
+    yr= input_int( "ENTER: Year...........? " )
+    if yr is None: return
+    mon= input_int( "ENTER: Month no. .....? " )
+    if mon is None: return
+    day= input_int( "ENTER: Day no. .......? " )
+    if day is None: return
+    date_time= datetime.datetime( yr, mon, day, tzinfo=tz )
     print( "Date (y/m/d).......... {0}".format(date_time.date()) )
     return  latitude, longitude, tz, date_time
 
@@ -121,7 +105,7 @@ def run():
         z= input( "CHOICE? " )
         if z == '1':
             lat, lon, tz, date = get_lat_lon_tz_date()
-            display( latitude, longitude, tz, date_time )
+            display( lat, lon, tz, date )
         elif z == '2':
             runpy.run_module( 'hamcalc.stdio.riseset' )
 

@@ -1,24 +1,19 @@
 """Bend Allowance, Metals
 """
 from hamcalc.math.equiv import INCH, MILLIMETRE
+from hamcalc.stdio import *
 import math
 
 def bend( unit ):
-    t_raw= input(" ENTER: Material thickness ({0}.)....................T=? ".format(unit.name) )
-    try:
-        T= unit.to_std( float(t_raw) )
-    except ValueError:
-        return
-    r_raw= input(" ENTER: Inside radius to face of material ({0}.).....R=? ".format(unit.name) )
-    try:
-        R= unit.to_std( float(r_raw) )
-    except ValueError:
-        return
-    l_raw= input(" ENTER: Included angle of bend (degrees)............L=? " )
-    try:
-        L= float(l_raw)
-    except ValueError:
-        return
+    t_raw= input_float("ENTER: Material thickness ({0}.)....................T=? ".format(unit.name) )
+    if t_raw is None: return
+    T= unit.to_std( t_raw )
+
+    r_raw= input_float("ENTER: Inside radius to face of material ({0}.).....R=? ".format(unit.name) )
+    if r_raw is None: return
+    R= unit.to_std( float(r_raw) )
+
+    L= input_float("ENTER: Included angle of bend (degrees)............L=? " )
     display( T, R, L )
 
 def display( T, R, L ):
@@ -72,9 +67,9 @@ BEND ALLOWANCE, Metal                                   By George Murphy VE3ERP
 print( introduction )
 z=None
 while z != '0':
-    print( " (1) Run program with dimensions in millimetres" )
-    print( " (2) Run program with dimensions in inches" )
-    print( " (0) EXIT" )
+    print( "( 1 ) Run program with dimensions in millimetres" )
+    print( "( 2 ) Run program with dimensions in inches" )
+    print( "( 0 ) EXIT" )
     z= input( "CHOICE? " )
     if z == "1":
         bend( MILLIMETRE )

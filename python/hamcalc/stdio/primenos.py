@@ -4,14 +4,13 @@
 """
 
 import hamcalc.math.primenos as primenos
+from hamcalc.stdio import *
 
 def primes_in_range():
-    first_raw= input(" ENTER: From first number...? " )
-    if len(first_raw) == 0: return
-    last_raw= input(" ENTER:   To last number....? " )
-    if len(last_raw) == 0: return
-    first= int(first_raw)
-    last= int(last_raw)
+    first= input_int(" ENTER: From first number...? " )
+    if first is None: return
+    last= input_int(" ENTER:   To last number....? " )
+    if last is None: return
     primes= list( primenos.sieve_range_iter( first, last+1 ) )
     for i in range(0,len(primes),8):
         for n in primes[i:i+8]:
@@ -19,9 +18,8 @@ def primes_in_range():
         print()
 
 def prime_factors():
-    number_raw= input( " ENTER: Number to be resolved in primes? " )
-    if len(number_raw) == 0: return
-    number= int(number_raw)
+    number= input_int( " ENTER: Number to be resolved in primes? " )
+    if number is None: return
     factors= list( primenos.factor(number) )
     factor_str= " x ".join(map(str,factors))
     print( " Prime factors of {0} = {1}".format(number,factor_str) )

@@ -6,6 +6,7 @@
 """
 import hamcalc.navigation.distance as distance
 import hamcalc.stdio.latlong as latlong
+from hamcalc.stdio import *
 from hamcalc.math.equiv import MILE, NAUTICAL_MILE, KILOMETRE, METRE
 import runpy
 
@@ -58,16 +59,12 @@ def get_point( label, database ):
     target= None
     latitude= longitude= None
     while latitude is None and target is None:
-        print( " (ENTER nothing to search lat-long database.)" )
-        lat_raw= input( " ENTER: Latitude (minus if South) of {0} ? ".format(label) )
-        if len(lat_raw) == 0:
+        print( "(ENTER nothing to search lat-long database.)" )
+        latitude= input_float( "ENTER: Latitude (minus if South) of {0} ? ".format(label) )
+        if latitude is None:
             target= latlong.search_place(database)
-        else:
-            latitude= float( lat_raw )
     if target is None:
-        while longitude is None:
-            lon_raw= input( " ENTER: Longitude (minus if West) of {0} ? ".format(label))
-            longitude= float( lon_raw )
+        longitude= input_float( "ENTER: Longitude (minus if West) of {0} ? ".format(label))
     else:
         latitude, longitude = target.latitude, target.longitude
     return latitude, longitude

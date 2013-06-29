@@ -7,9 +7,9 @@
 """
 
 import hamcalc.electronics.decibel as decibel
+from hamcalc.stdio import *
 
 def solve_2():
-    args = dict()
     print( """\
    Press number in < > to select factor you want to FIND :
 
@@ -33,19 +33,21 @@ def solve_2():
     elif option in ( '4', '5', '6' ):
         solver= decibel.voltage
         domain= "Voltage"
-        solve_for = {'3': 'f_1', '5': 'f_2', '6': 'db'}[option]
+        solve_for = {'4': 'f_1', '5': 'f_2', '6': 'db'}[option]
     elif option in ( '7', '8', '9' ):
         solver= decibel.current
         domain= "Current"
         solve_for = {'7': 'f_1', '8': 'f_2', '9': 'db'}[option]
-    if solve_for != 'f_1':
-        args['f_1'] = float( input( "{0} in (source)".format(domain) ) )
-    if solve_for != 'f_2':
-        args['f_2'] = float( input( "{0} out (load)".format(domain) ) )
-    if solve_for != 'db':
-        args['db'] = float( input( "{0} db gain/loss".format(domain) ) )
 
-    args= solver( **args )
+    f_1 = f_2 = db = None
+    if solve_for != 'f_1':
+        f_1 = input_float( "{0} in (source)?  ".format(domain) )
+    if solve_for != 'f_2':
+        f_2 = input_float( "{0} out (load)?   ".format(domain) )
+    if solve_for != 'db':
+        db =  input_float( "{0} db gain/loss? ".format(domain) )
+
+    args= solver( f_1=f_1, f_2=f_2, db=db )
 
     print( "{0:20s} in (source): {1.f_1:8.3f}".format( domain, args ) )
     print( "{0:20s} out (load):  {1.f_2:8.3f}".format( domain, args ) )

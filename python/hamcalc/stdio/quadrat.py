@@ -4,16 +4,15 @@
 "QUADRATIC EQUATIONS","","","QUADRAT"
 """
 import hamcalc.math.quadrat as quadratic
-
+from hamcalc.stdio import *
 
 def solve():
-    a_raw= input( "ENTER: Value of a? " )
-    if len(a_raw) == 0: return
-    b_raw= input( "ENTER: Value of b? " )
-    if len(b_raw) == 0: return
-    c_raw= input( "ENTER: Value of c? " )
-    if len(c_raw) == 0: return
-    a, b, c = float(a_raw), float(b_raw), float(c_raw)
+    a= input_float( "ENTER: Value of a? " )
+    if a is None: return
+    b= input_float( "ENTER: Value of b? " )
+    if b is None: return
+    c= input_float( "ENTER: Value of c? " )
+    if c is None: return
     roots= quadratic.solve( a, b, c )
     print( "{0!s}x² + {1!s}x + {2!s}= 0".format(a,b,c) )
     print( "x = {0!s} or {1!s}".format( *roots ) )

@@ -4,22 +4,14 @@
 "CHAIN DRIVES","","","MECHMENU"
 """
 import hamcalc.construction.chain as chain
+from hamcalc.stdio import *
 
 def chain_design( X=None, Y=None, A=None, B=None, M=None ):
     if A is None:
-        try:
-            a_raw= input( "No. of teeth in sprocket A ..........? " )
-            A= int(a_raw)
-        except ValueError as e:
-            print( e )
-            return
+        A= input_int( "No. of teeth in sprocket A ..........? " )
     if B is None:
-        try:
-            b_raw= input( "No. of teeth in sprocket B ..........? " )
-            B= int(b_raw)
-        except ValueError as e:
-            print( e )
-            return
+        B= input_int( "No. of teeth in sprocket B ..........? " )
+    if A is None or B is None: return
     A, B = max(A,B), min(A,B)
     while M is None:
         c_raw= input( "ENTER: Chain No., or pitch in decimal inches ...? " )
@@ -54,12 +46,8 @@ def chain_design( X=None, Y=None, A=None, B=None, M=None ):
     print( "Minimum c.c.  (inches)..... {0:10,.3f}".format(V_1) )
 
     # Get desired center-to-center distance.
-    v_2_raw= input( "ENTER desired approx. c.c. ........? " )
-    try:
-        V_2= float(v_2_raw)
-    except ValueError as e:
-        print( e )
-        return
+    V_2= input_float( "ENTER desired approx. c.c. ........? " )
+    if V_2 is None: return
 
     C, L, L_P = chain.final_sprocket_distance( A, B, M, V_2 )
     print( "Actual  c.c.  (inches)..... {0:10,.3f}".format(C) )
@@ -67,14 +55,9 @@ def chain_design( X=None, Y=None, A=None, B=None, M=None ):
     print( "Chain length  (pitches).... {0:10,.3f}".format(L) )
 
 def sprocket_design():
-    try:
-        x_raw= input( "RPM Sprocket A ..................? " )
-        X= float(x_raw)
-        y_raw= input( "RPM Sprocket B ..................? " )
-        Y= float(y_raw)
-    except ValueError as e:
-        print( e )
-        return
+    X= input_float( "RPM Sprocket A ..................? " )
+    Y= input_float( "RPM Sprocket B ..................? " )
+    if X is None or Y is None: return
     X, Y = max(X,Y), min(X,Y)
     if X/Y >= 6:
         print( "Ratio greater than 6:1 not recommended !" )
@@ -83,12 +66,7 @@ def sprocket_design():
         print( "{0:10,.3f} {1:10,.3f} {2:10,.3f}".format( Y, Y*Z, X ) )
         print( "Double {0:6.3f}:1 reduction".format(Z) )
         return
-    try:
-        w_raw= input( "Minimum teeth, small sprocket ...? " )
-        W= int( w_raw )
-    except ValueError as e:
-        print( e )
-        return
+    W= input_int( "Minimum teeth, small sprocket ...? " )
     if W < 17:
         print( "Less than 17 teeth not advised" )
     choices= [ row for row in chain.sprocket_choice_iter( X, Y, W ) ]
@@ -96,12 +74,7 @@ def sprocket_design():
         print( "{0:4d}&{1:4d}{2:s}".format(a, b, "*" if exact else "") )
     confirm = '0'
     while confirm == '0':
-        try:
-            b_raw= input( "Choose a small sprocket ... how many teeth? " )
-            B= int( b_raw )
-        except ValueError as e:
-            print( e )
-            return
+        B= input_int( "Choose a small sprocket ... how many teeth? " )
         if B < 17:
             print( "Less than 17 teeth not advised" )
         A_B, R, E_J, K_D = chain.design_sprocket_size( X, Y, B )
@@ -125,15 +98,12 @@ def sprocket_design():
             X, Y = K, D
     else:
         X, Y = E, J
-    try:
-        h_raw= input( "ENTER: Drive horsepower.....? " )
-        if len(h_raw) == 0:
-            chain_design( X, Y, A, B )
-            return
-        H= float(h_raw)
-    except ValueError as e:
-        print( e )
+
+    H= input_float( "ENTER: Drive horsepower.....? " )
+    if H is None:
+        chain_design( X, Y, A, B )
         return
+
     chains = list( chain.design_chain_iter( A, B, X, Y, H ) )
 
     confirm= '0'

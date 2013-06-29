@@ -5,6 +5,7 @@
 """
 
 import hamcalc.math.baromtr as baromtr
+from hamcalc.stdio import *
 import string
 
 def table():
@@ -46,7 +47,8 @@ def equivalents():
     u= None
     while u not in units:
         u= input( "Enter letter in < > to select an atmospheric pressure unit: " )
-    value= float( input( "Enter value [{0:s}]: ".format(units[u].name) ) )
+    value= input_float( "Enter value [{0:s}]: ".format(units[u].name) )
+    if value is None: return
     display( units[u].to_std( value ) )
 
 print( baromtr.intro() )

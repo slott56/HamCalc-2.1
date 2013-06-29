@@ -1,35 +1,24 @@
 """Masonry Estimator
 """
 from hamcalc.math.equiv import INCH, MILLIMETRE, SQ_METRE, SQ_FOOT
+from hamcalc.stdio import *
 import math
 
 def brick( d_unit, a_unit ):
-    a_raw= input(" ENTER: Panel length ({0}.)....................A=? ".format(d_unit.name) )
-    try:
-        A= d_unit.to_std( float(a_raw) )
-    except ValueError:
-        return
-    b_raw= input(" ENTER: Panel height ({0}.)....................B=? ".format(d_unit.name) )
-    try:
-        B= d_unit.to_std( float(b_raw) )
-    except ValueError:
-        return
+    a_raw= input_float(" ENTER: Panel length ({0}.)....................A=? ".format(d_unit.name) )
+    A= d_unit.to_std( a_raw )
 
-    l_raw= input(" ENTER: Brick/block length ({0}.)..............L=? ".format(d_unit.name) )
-    try:
-        L= d_unit.to_std( float(l_raw) )
-    except ValueError:
-        return
-    h_raw= input(" ENTER: Brick/block height ({0}.)..............H=? ".format(d_unit.name) )
-    try:
-        H= d_unit.to_std( float(h_raw) )
-    except ValueError:
-        return
-    j_raw= input(" ENTER: Width of mortar joints ({0}.)..........J=? ".format(d_unit.name) )
-    try:
-        J= d_unit.to_std( float(j_raw) )
-    except ValueError:
-        return
+    b_raw= input_float(" ENTER: Panel height ({0}.)....................B=? ".format(d_unit.name) )
+    B= d_unit.to_std( b_raw )
+
+    l_raw= input_float(" ENTER: Brick/block length ({0}.)..............L=? ".format(d_unit.name) )
+    L= d_unit.to_std( l_raw )
+
+    h_raw= input_float(" ENTER: Brick/block height ({0}.)..............H=? ".format(d_unit.name) )
+    H= d_unit.to_std( h_raw )
+
+    j_raw= input_float(" ENTER: Width of mortar joints ({0}.)..........J=? ".format(d_unit.name) )
+    J= d_unit.to_std( j_raw )
 
     display( d_unit, a_unit, A, B, L, H, J )
 

@@ -5,7 +5,6 @@
 import hamcalc.navigation.solar as solar
 from hamcalc.navigation.solar.timezone import utc
 from hamcalc.stdio.daydusk import get_lat_lon_tz_date
-from hamcalc.lib import AttrDict
 import datetime
 import runpy
 import math

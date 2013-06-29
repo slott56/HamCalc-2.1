@@ -4,6 +4,7 @@
 """
 import hamcalc.math.curvefit as curvefit
 from hamcalc.stdio.graphs import Graph
+from hamcalc.stdio import *
 from turtle import *
 
 class CurveFit_Problem:

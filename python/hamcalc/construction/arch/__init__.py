@@ -172,18 +172,26 @@ Test Cases
 Here's an incomplete example, showing how things can't be computed
 from an incomplete set of parameters.
 
+>>> import hamcalc.lib
 >>> c= arch.arch( R=13 )
->>> c.A_d is None
+Traceback (most recent call last):
+   ...
+hamcalc.lib.NoSolutionError:  ("Can't compute", {'R': 13, 'D': 26, 'AR': 530.929158456675, 'C_F': 81.68140899333463})
+>>> try:
+...    c= arch.arch( R=13 )
+... except hamcalc.lib.NoSolutionError as e:
+...    msg, args = e.args
+>>> args.A_d is None
 True
->>> c.B is None
+>>> args.B is None
 True
->>> c.C is None
+>>> args.C is None
 True
->>> c.A_C is None
+>>> args.A_C is None
 True
->>> round( c.R, 3 )
+>>> round( args.R, 3 )
 13
->>> round( c.C_F, 3 )
+>>> round( args.C_F, 3 )
 81.681
 
 """
@@ -299,7 +307,8 @@ class Arch( Solver ):
             elif 'A_r' not in args and 'A_C' in args and 'C' in args:
                 args.A_r= arc_chord_2_angle( args.A_C, args.C )
             else:
-                break # Nothing more to do.
+                raise NoSolutionError( "Can't compute", args )
+                # break # Nothing more to do.
         return args
 
 arch = Arch()

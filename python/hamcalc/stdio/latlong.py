@@ -3,12 +3,13 @@
 "LATITUDE & LONGITUDE DATA BASE","","","LATLONG"
 "TIME ZONES",", of various locations","","LATLONG"
 """
+import hamcalc.navigation.distance as distance
+from hamcalc.stdio import *
 import csv
 import os
 from collections import namedtuple
 import re
 import string
-import hamcalc.navigation.distance as distance
 
 introduction="""
                     LATITUDE and LONGITUDE DATA BASE
@@ -75,20 +76,9 @@ def add_data( data ):
     """Add a new Place to the database."""
     city= input( " ENTER: City or town...................? " )
     country= input( " ENTER: Province, State or Country.....? " )
-    latitude= None
-    while latitude is None:
-        try:
-            lat_raw= input( " ENTER: Latitude (minus if South)......? " )
-            latitude= float(lat_raw)
-        except ValueError:
-            pass
-    longitude= None
-    while longitude is None:
-        try:
-            lon_raw= input( " ENTER: Longitude (minus if West)......? " )
-            longitude= float(lon_raw)
-        except ValueError:
-            pass
+    latitude= input_float( " ENTER: Latitude (minus if South)......? " )
+    longitude= input_float( " ENTER: Longitude (minus if West)......? " )
+    if latitude is None or longitude is None: return
     place= Place( city, country, latitude, longitude )
     print( "Adding", format_place( place ) )
     data.append( place )
@@ -162,16 +152,9 @@ def pick_from( matches ):
 
 def search_lat_lon( data ):
     """Returns the Place that matches a lat-lon query."""
-    lat_raw= input( " ENTER: Latitude (minus if South)......? " )
-    try:
-        lat= float(lat_raw)
-    except ValueError:
-        return
-    lon_raw= input( " ENTER: Longitude (minus if West)......? " )
-    try:
-        lon= float(lon_raw)
-    except ValueError:
-        return
+    lat= input_float( " ENTER: Latitude (minus if South)......? " )
+    lon= input_float( " ENTER: Longitude (minus if West)......? " )
+    if lat is None or lon is None: return
     # Sort into order by distance between lat, lon and item in database.
     by_distance= list( sorted( data, key=lambda i:
     distance.great_circle_distance(i.latitude, i.longitude, lat, lon) ) )

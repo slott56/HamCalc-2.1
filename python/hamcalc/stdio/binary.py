@@ -3,16 +3,15 @@
 "BINARY NUMBERS","","","BINARY"
 """
 
-from hamcalc.math.binary import binary
+import hamcalc.math.binary as binary
+from hamcalc.stdio import *
 
 print( binary.intro() )
 
 while True:
-    w0_raw= input( "ENTER: Decimal number to be converted or 0 to Quit? " )
-    if len(w0_raw) == 0: break
-    w0= int(w0_raw)
-    if w0 == 0: break
-    bits= binary( w0 )
+    w0= input_int( "ENTER: Decimal number to be converted [empty input to quit]? " )
+    if w0 is None: break
+    bits= binary.binary( w0 )
     print( "24 bit Binary representation of {0:d}".format(w0) )
     for b in bits:
         print( b, end='' )

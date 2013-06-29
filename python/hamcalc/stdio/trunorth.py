@@ -5,6 +5,7 @@
 """
 import hamcalc.navigation.solar as solar
 from hamcalc.navigation.solar.timezone import utc, FixedOffset
+from hamcalc.stdio import *
 import datetime
 
 introduction="""\
@@ -69,12 +70,7 @@ def display( longitude ):
     print()
 
 print( introduction )
-long_raw= None
-while long_raw != '':
-    long_raw= input( "ENTER: Your longitude in decimal degrees: " )
-    if len(long_raw) == 0: break
-    try:
-        longitude= float(long_raw)
-    except ValueError:
-        continue
+longitude= input_float( "ENTER: Your longitude in decimal degrees: " )
+while longitude is not None:
     display( longitude )
+    longitude= input_float( "ENTER: Your longitude in decimal degrees: " )

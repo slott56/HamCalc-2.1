@@ -3,6 +3,7 @@
 "UNIT VALUE COMPARATOR","","","UNITVALU"
 """
 import string
+from hamcalc.stdio import *
 
 introduction = """\
  UNIT VALUE COMPARATOR                                   by George Murphy VE3ERP
@@ -32,11 +33,10 @@ def gather( unit, value ):
     while True:
         item= string.ascii_uppercase[count]
         print( "Item {0}: ".format(item) )
-        u_raw = input( "ENTER: Number of ({0}) units? ".format(unit) )
-        if len(u_raw) == 0: break
-        v_raw = input( "ENTER: Value ({0})? ".format(value) )
-        if len(v_raw) == 0: break
-        u, v = float(u_raw), float(v_raw)
+        u = input_float( "ENTER: Number of ({0}) units? ".format(unit) )
+        if u is None: break
+        v = input_float( "ENTER: Value ({0})? ".format(value) )
+        if v is None: break
         uv_list.append( (item,u,v) )
         print( "{0:4s} {1:12f} {2:12f} = {3:12f}".format(item,v,u,v/u) )
         count += 1

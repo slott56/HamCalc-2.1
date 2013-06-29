@@ -78,7 +78,7 @@ from the diagram.</p>
 </div></li>
 <li><p class="first">&#8220;Involute ACD&#8221;</p>
 <div class="math">
-<p><img src="../../_images/math/19f8a67540a593712b2866e04c4e586f1c04c00f.png" alt="\frac{\pi^2}{2} \overline{OE}"/></p>
+<p><img src="../../_images/math/50e38a258bc94adb6a8700efffd98de41b2aa5a4.png" alt="\frac{\pi^2}{2} \times \overline{OE}"/></p>
 </div></li>
 </ul>
 <p>It then asks for angle &#8220;phi&#8221; and computes &#8220;Values for point C&#8221;.</p>
@@ -113,6 +113,11 @@ a = \angle OCE = \arctan \frac{\overline{OE}}{\overline{CE}}"/></p>
 <span class="go">16.70921122650797</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">math</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span> <span class="n">i</span><span class="o">.</span><span class="n">COE</span> <span class="p">)</span>
 <span class="go">73.29078877349203</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">involute</span><span class="o">.</span><span class="n">involute</span><span class="p">(</span> <span class="n">radius</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">phi</span><span class="o">=</span><span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="mi">60</span><span class="p">)</span> <span class="p">)</span>
+<span class="go">math domain error computing sqrt(  6.382**2- 12.000**2)</span>
+<span class="go">{&#39;diameter&#39;: 24, &#39;phi&#39;: 1.0471975511965976, &#39;CO&#39;: 6.38173659497964, &#39;baseline&#39;: 37.69911184307752, &#39;COE&#39;: nan, &#39;OCE&#39;: nan, &#39;CE&#39;: nan, &#39;radius&#39;: 12, &#39;C_Y&#39;: -4.882796185405304, &#39;C_X&#39;: 4.109119538233676, &#39;involute&#39;: 59.21762640653615}</span>
 </pre></div>
 </div>
 <dl class="function">

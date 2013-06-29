@@ -50,9 +50,11 @@ class Unit:
     name= "" # Abbreviation of the unit's name.
     @classmethod
     def to_std( class_, value ):
+        if value is None: return None
         return value/class_.factor
     @classmethod
     def from_std( class_, value ):
+        if value is None: return None
         return value*class_.factor
 
 class UnitMeta(type):
@@ -103,20 +105,19 @@ def convert( value, unit, *to ):
 class AttrDict( dict ):
     """Mixin attribute access to a dictionary.
 
-    We can use this to "wrap" an argument dictionay and make access slightly more pleasant.
+    We use this to "wrap" an argument dictionay and make access
+    slightly more pleasant.
 
-    The requirement that the keys be valid Python variable names is
-    trivially met when this is used for ``**args`` in a function.
+    This class requires each keys be a valid Python variable name.
+    This is trivially met when this is initialized
+    with the ``**args`` of a function.
 
-    ::
+    Also, this class won't set a value to ``None``. Setting
+    a key's value to ``None`` is the same as deleting it from
+    the collection of arguments.  This allows the variable
+    to work politely with :func:`hamcalc.stdio.input_convert`.
 
-        def function( **args ):
-            args= AttrDict( args )
-            if args.d is None and args.r is not None and args.t is not None:
-                args.d = args.r * args.t
-            return args
-
-    Or
+    Typical use
 
     ::
 
@@ -142,12 +143,40 @@ class AttrDict( dict ):
     8
     >>> args['sum']
     8
+    >>> args.arg1= None
+    >>> 'arg1' in args
+    False
+    >>> args.unused= None
+    >>> 'usused' in args
+    False
+
+    >>> a2= AttrDict( dict( a=7, b=None, c=11 ) )
+    >>> 'a' in a2
+    True
+    >>> 'b' in a2
+    False
 
     """
+    def __init__( self, *args, **kw ):
+        super().__init__()
+        if len(args) == 1:
+            adict= args[0]
+            for k in adict:
+                if adict[k] is not None:
+                    self[k]= adict[k]
+        for k in kw:
+            if kw[k] is not None:
+                self[k]= kw[k]
     def __getattr__( self, name ):
         return self.get(name,None)
     def __setattr__( self, name, value ):
-        self[name]= value
+        if value is None:
+            try:
+                del self[name]
+            except KeyError as e:
+                pass # Never existed, that's okay.
+        else:
+            self[name]= value
 
 class NoSolutionError( Exception ):
     """A :class:`Solver` could not find a proper solution."""

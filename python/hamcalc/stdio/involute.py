@@ -5,6 +5,7 @@
 """
 from hamcalc.stdio.gwgraphics import GWGraphics
 from hamcalc.math.involute import involute
+from hamcalc.stdio import *
 import math
 import sys
 
@@ -58,7 +59,7 @@ def diagram():
     g.display( "Involute of a Circle" )
 
 diagram()
-r = float( input( "ENTER: Radius OE.........? " ) )
+r = input_float( "ENTER: Radius OE.........? " )
 args = involute( radius=r )
 print( args )
 print( "Radius OE=     {0:11,.3f}".format(args.radius) )
@@ -66,9 +67,8 @@ print( "Diameter AB=   {0:11,.3f}".format(args.diameter) )
 print( "Base Line BD=  {0:11,.3f}".format(args.baseline) )
 print( "Involute ACD=  {0:11,.3f}".format(args.involute) )
 while True:
-    phi_raw = input( "ENTER: angle φ°? " )
-    if len(phi_raw) == 0: break
-    phi = float( phi_raw )
+    phi = input_float( "ENTER: angle φ°? " )
+    if phi is None: break
     args= involute( radius=r, phi=math.radians(phi) )
     print( "Values for point C are:   " )
     print( "-----------------------   " )

@@ -13,9 +13,9 @@ introduction = """\
 
 
 def solve():
-    r_1= float( input( " ENTER: speed of one of the entities? " ) )
-    w= float( input( " ENTER: Time delay between launches? " ) )
-    r_2= float( input( " ENTER: speed of the other entity? " ) )
+    r_1= float( input( "ENTER: speed of one of the entities? " ) )
+    w= float( input( "ENTER: Time delay between launches? " ) )
+    r_2= float( input( "ENTER: speed of the other entity? " ) )
 
     if r_1 < r_2:
         pass

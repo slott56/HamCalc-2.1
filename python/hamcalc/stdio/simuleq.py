@@ -3,6 +3,7 @@
 "SIMULTANEOUS EQUATION CALCULATOR","","","SIMULEQ"
 """
 from hamcalc.math.curvefit import gauss
+from hamcalc.stdio import *
 import string
 
 introduction= """\
@@ -22,21 +23,14 @@ def solve( n ):
     for eq in range(n):
         row= []
         for v in range(n):
-            raw = ''
-            while len(raw) == 0:
-                raw= input( coef_name[eq*(n+1)+v] + "? " )
-                if len(raw) == 0: continue
-                try:
-                    row.append( float(raw) )
-                except ValueError:
-                    raw= ''
-        raw= ''
-        while len(raw) == 0:
-            raw= input( coef_name[eq*(n+1)+n] + "? " )
-            try:
-                row.append( float(raw) )
-            except ValueError:
-                raw= ''
+            raw= None
+            while raw is None:
+                raw= input_float( coef_name[eq*(n+1)+v] + "? " )
+            row.append( raw )
+        raw= None
+        while raw is None:
+            raw= input_float( coef_name[eq*(n+1)+n] + "? " )
+        row.append( raw )
         matrix.append( row )
 
     for row in matrix:

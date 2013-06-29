@@ -28,19 +28,14 @@ Any unit of measure can be used. Results will be in the same units.
 """
 
     print( prompt )
-    dots_raw= input( "ENTER: number of dots............................? ")
     try:
-        N= float(dots_raw)
-    except ValueError:
-        return
-    length_raw= input( "ENTER: distance between first and last dot.......? ")
-    try:
-        L= float(length_raw)
-    except ValueError:
+        N= float( input( "ENTER: number of dots............................? ") )
+        L= float( input( "ENTER: distance between first and last dot.......? ") )
+    except ValueError as e:
+        print( e )
         return
     D= L/(math.pi*(N-1))
     print( "Diameter of object = {:7.3f}".format(D) )
-
 
 print( introduction )
 

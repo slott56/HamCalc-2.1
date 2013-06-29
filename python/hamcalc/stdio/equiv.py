@@ -8,6 +8,7 @@
 """
 
 import hamcalc.math.equiv as equiv
+from hamcalc.stdio import *
 import runpy
 from collections import Callable
 
@@ -43,9 +44,8 @@ class Equivalence( Callable ):
             return
 
     def handle_value( self, unit ):
-        value_raw= input( "ENTER: How many {0.__doc__}...? ".format(unit) )
-        if len(value_raw) == 0: return
-        value= float( value_raw )
+        value= input_float( "ENTER: How many {0.__doc__}...? ".format(unit) )
+        if value is None: return
         measure= unit.to_std( value )
         return measure
 
@@ -61,9 +61,8 @@ class Frequency_Wavelength( Equivalence ):
         self.wavelength= len(unit_list)
         print( "  ( {0:d} )  {1:.<20s}({2:s})".format( self.wavelength, "Wavelength", "m" ) )
     def handle_alt_units( self ):
-        value_raw= input( "ENTER: How many {0}...? ".format("Wavelength") )
-        if len(value_raw) == 0: return
-        value= float( value_raw )
+        value= input_float( "ENTER: How many {0}...? ".format("Wavelength") )
+        if value is None: return
         args= equiv.freq_wavelength( l=value )
         measure= equiv.HERTZ.to_std( args.f )
         return measure
