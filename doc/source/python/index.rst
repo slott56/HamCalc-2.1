@@ -3,13 +3,14 @@ Python Modules
 ###############
 
 These are the various HamCalc core calculation packages.
+These are in order of importance.
 
 ..  toctree::
     :maxdepth: 2
 
     lib
     radio/index
-    ham
+    ham/index
     electronics/index
     construction/index
     math/index

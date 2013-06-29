@@ -25,7 +25,7 @@
     <script type="text/javascript" src="../../_static/doctools.js"></script>
     <link rel="top" title="HamCalc 2.1 documentation" href="../../index.html" />
     <link rel="up" title="construction – Construction and Mechanical" href="index.html" />
-    <link rel="next" title="math – Math, Physics, Units Conversion" href="../math/index.html" />
+    <link rel="next" title="cyl – Cylinders, Air &amp; Hydraulic" href="cyl.html" />
     <link rel="prev" title="beltdriv – Belt Drives" href="beltdriv.html" /> 
   </head>
   <body>
@@ -36,7 +36,7 @@
         <div class="rel">
           <a href="beltdriv.html" title="beltdriv – Belt Drives"
              accesskey="P">previous</a> |
-          <a href="../math/index.html" title="math – Math, Physics, Units Conversion"
+          <a href="cyl.html" title="cyl – Cylinders, Air &amp; Hydraulic"
              accesskey="N">next</a> |
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |
@@ -55,10 +55,11 @@
           <div class="body">
             
   <div class="section" id="chain-chain-drives">
-<h1>chain &#8211; Chain Drives<a class="headerlink" href="#chain-chain-drives" title="Permalink to this headline">¶</a></h1>
+<span id="construction-chain"></span><h1>chain &#8211; Chain Drives<a class="headerlink" href="#chain-chain-drives" title="Permalink to this headline">¶</a></h1>
+<p>See <a class="reference internal" href="beltdriv.html#construction-beltdriv"><em>beltdriv &#8211;  Belt Drives</em></a>, and <a class="reference internal" href="gearing.html#construction-gearing"><em>gearing &#8211; Gears &amp; Gearing</em></a>.</p>
 <div class="section" id="legacy-output">
 <h2>Legacy Output<a class="headerlink" href="#legacy-output" title="Permalink to this headline">¶</a></h2>
-<p>The following is incomplete.</p>
+<p>The following is incomplete. But it gives a flavor.</p>
 <div class="highlight-python"><pre> No. of teeth in sprocket A ..........? 59
  No. of teeth in sprocket B ..........? 28
  ENTER: Chain No., or pitch in decimal inches ...? 25
@@ -420,22 +421,22 @@ of the belt design process.</p>
 </div>
 <p>Test Cases for <a class="reference internal" href="#hamcalc.construction.chain.design_sprocket_distances" title="hamcalc.construction.chain.design_sprocket_distances"><tt class="xref py py-func docutils literal"><span class="pre">design_sprocket_distances()</span></tt></a> and <a class="reference internal" href="#hamcalc.construction.chain.final_sprocket_distance" title="hamcalc.construction.chain.final_sprocket_distance"><tt class="xref py py-func docutils literal"><span class="pre">final_sprocket_distance()</span></tt></a></p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">hamcalc.construction.chain</span> <span class="kn">as</span> <span class="nn">chain</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">V_1</span><span class="p">,</span> <span class="n">I</span><span class="p">,</span> <span class="n">S</span><span class="p">,</span> <span class="n">R</span><span class="o">=</span> <span class="n">chain</span><span class="o">.</span><span class="n">design_sprocket_distances</span><span class="p">(</span> <span class="mi">59</span><span class="p">,</span> <span class="mi">28</span><span class="p">,</span> <span class="n">chain</span><span class="o">.</span><span class="n">material</span><span class="p">[</span><span class="s">&quot;25&quot;</span><span class="p">]</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">V_1</span><span class="p">,</span> <span class="n">I</span><span class="p">,</span> <span class="n">S</span><span class="p">,</span> <span class="n">R</span><span class="o">=</span> <span class="n">chain</span><span class="o">.</span><span class="n">design_sprocket_distances</span><span class="p">(</span> <span class="mi">59</span><span class="p">,</span> <span class="mi">28</span><span class="p">,</span> <span class="n">chain</span><span class="o">.</span><span class="n">material</span><span class="p">[</span><span class="s">&quot;35&quot;</span><span class="p">]</span> <span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span> <span class="n">V_1</span><span class="p">,</span> <span class="mi">3</span> <span class="p">)</span>
-<span class="go">3.715</span>
+<span class="go">5.573</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span> <span class="n">I</span><span class="p">,</span> <span class="mi">3</span> <span class="p">)</span>
-<span class="go">2.233</span>
+<span class="go">3.349</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span> <span class="n">S</span><span class="p">,</span> <span class="mi">3</span> <span class="p">)</span>
-<span class="go">4.697</span>
+<span class="go">7.046</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span> <span class="n">R</span><span class="p">,</span> <span class="mi">3</span> <span class="p">)</span>
 <span class="go">2.107</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">C</span><span class="p">,</span> <span class="n">L</span><span class="p">,</span> <span class="n">L_P</span> <span class="o">=</span> <span class="n">chain</span><span class="o">.</span><span class="n">final_sprocket_distance</span><span class="p">(</span> <span class="mi">59</span><span class="p">,</span> <span class="mi">28</span><span class="p">,</span> <span class="n">chain</span><span class="o">.</span><span class="n">material</span><span class="p">[</span><span class="s">&quot;25&quot;</span><span class="p">],</span> <span class="mi">4</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">C</span><span class="p">,</span> <span class="n">L</span><span class="p">,</span> <span class="n">L_P</span> <span class="o">=</span> <span class="n">chain</span><span class="o">.</span><span class="n">final_sprocket_distance</span><span class="p">(</span> <span class="mi">59</span><span class="p">,</span> <span class="mi">28</span><span class="p">,</span> <span class="n">chain</span><span class="o">.</span><span class="n">material</span><span class="p">[</span><span class="s">&quot;35&quot;</span><span class="p">],</span> <span class="mi">6</span> <span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span> <span class="n">C</span><span class="p">,</span> <span class="mi">3</span> <span class="p">)</span>
-<span class="go">4.128</span>
+<span class="go">6.193</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span> <span class="n">L</span><span class="p">,</span> <span class="mi">3</span> <span class="p">)</span>
 <span class="go">78</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span> <span class="n">L_P</span><span class="p">,</span> <span class="mi">3</span> <span class="p">)</span>
-<span class="go">19.5</span>
+<span class="go">29.25</span>
 </pre></div>
 </div>
 <p>Test Cases for <a class="reference internal" href="#hamcalc.construction.chain.sprocket_choice_iter" title="hamcalc.construction.chain.sprocket_choice_iter"><tt class="xref py py-func docutils literal"><span class="pre">sprocket_choice_iter()</span></tt></a></p>
@@ -477,6 +478,17 @@ of the belt design process.</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">chains</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span> <span class="n">chain</span><span class="o">.</span><span class="n">design_chain_iter</span><span class="p">(</span> <span class="mi">54</span><span class="p">,</span> <span class="mi">26</span><span class="p">,</span> <span class="mf">3530.769</span><span class="p">,</span> <span class="mi">1700</span><span class="p">,</span> <span class="mi">80</span> <span class="p">)</span> <span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">chains</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 <span class="go">(Chain(name=&#39;35&#39;, P=0.375, TS=2100), 1)</span>
+</pre></div>
+</div>
+<p>Test Cases for <a class="reference internal" href="#hamcalc.construction.chain.tension_torque" title="hamcalc.construction.chain.tension_torque"><tt class="xref py py-func docutils literal"><span class="pre">tension_torque()</span></tt></a></p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">hamcalc.construction.chain</span> <span class="kn">as</span> <span class="nn">chain</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Q</span><span class="p">,</span> <span class="n">T_A</span><span class="p">,</span> <span class="n">T_B</span> <span class="o">=</span> <span class="n">chain</span><span class="o">.</span><span class="n">tension_torque</span><span class="p">(</span> <span class="mi">54</span><span class="p">,</span> <span class="mi">26</span><span class="p">,</span> <span class="mf">3530.769</span><span class="p">,</span> <span class="mi">1700</span><span class="p">,</span> <span class="mi">80</span><span class="p">,</span> <span class="n">chain</span><span class="o">.</span><span class="n">material</span><span class="p">[</span><span class="s">&quot;35&quot;</span><span class="p">]</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">Q</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">920.261</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">T_A</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">2967.573</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">T_B</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">1431.506</span>
 </pre></div>
 </div>
 <dl class="class">
@@ -638,6 +650,31 @@ match with the given RPM values.</p>
 </table>
 </dd></dl>
 
+<dl class="function">
+<dt id="hamcalc.construction.chain.tension_torque">
+<tt class="descclassname">hamcalc.construction.chain.</tt><tt class="descname">tension_torque</tt><big>(</big><em>A</em>, <em>B</em>, <em>X</em>, <em>Y</em>, <em>H</em>, <em>M</em><big>)</big><a class="headerlink" href="#hamcalc.construction.chain.tension_torque" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given sprocket teeth counts, A and B,
+and an RPM values, X and Y,
+and drive horsepower, H, compute
+tension overall and torque at each sprocket.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>A</strong> &#8211; larger sprocket teeth</li>
+<li><strong>B</strong> &#8211; smaller sprocket teeth</li>
+<li><strong>X</strong> &#8211; larger sprocket RPM</li>
+<li><strong>Y</strong> &#8211; smaller sprocket RPM</li>
+<li><strong>H</strong> &#8211; Drive horsepower</li>
+<li><strong>M</strong> &#8211; Chain material object.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
 </div>
 <div class="section" id="quirks">
 <h2>Quirks<a class="headerlink" href="#quirks" title="Permalink to this headline">¶</a></h2>
@@ -665,7 +702,7 @@ calculation as a kind of subroutine.</p>
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html">Python Modules</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../lib.html">lib &#8211; Supporting Library</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../radio/index.html">radio &#8211; Radio Design and Engineering</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../ham.html">ham &#8211; Ham Radio Operations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ham/index.html">ham &#8211; Ham Radio Operations</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../electronics/index.html">electronics &#8211; General Electronics</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="index.html">construction &#8211; Construction and Mechanical</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="arch.html">arch &#8211; Arch Calculator</a></li>
@@ -683,6 +720,8 @@ calculation as a kind of subroutine.</p>
 <li class="toctree-l3"><a class="reference internal" href="beamsect.html">beamsect &#8211; BEAMS, Properties of (Start new beam design here)</a></li>
 <li class="toctree-l3"><a class="reference internal" href="beltdriv.html">beltdriv &#8211;  Belt Drives</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="">chain &#8211; Chain Drives</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cyl.html">cyl &#8211; Cylinders, Air &amp; Hydraulic</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gearing.html">gearing &#8211; Gears &amp; Gearing</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../math/index.html">math &#8211; Math, Physics, Units Conversion</a></li>
@@ -722,7 +761,7 @@ calculation as a kind of subroutine.</p>
         <div class="left">
           <a href="beltdriv.html" title="beltdriv – Belt Drives"
              >previous</a> |
-          <a href="../math/index.html" title="math – Math, Physics, Units Conversion"
+          <a href="cyl.html" title="cyl – Cylinders, Air &amp; Hydraulic"
              >next</a> |
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |

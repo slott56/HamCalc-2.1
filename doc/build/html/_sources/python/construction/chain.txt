@@ -1,10 +1,14 @@
+..  _construction.chain:
+
 chain -- Chain Drives
 ------------------------
+
+See :ref:`construction.beltdriv`, and :ref:`construction.gearing`.
 
 Legacy Output
 ~~~~~~~~~~~~~~
 
-The following is incomplete.
+The following is incomplete. But it gives a flavor.
 
 ::
 

@@ -103,7 +103,6 @@ Test Cases for :func:`tension_torque`
 1431.506
 
 """
-from hamcalc.lib import Solver, NoSolutionError
 from collections import namedtuple, OrderedDict
 import math
 

@@ -223,18 +223,26 @@
 <span class="sd">Here&#39;s an incomplete example, showing how things can&#39;t be computed</span>
 <span class="sd">from an incomplete set of parameters.</span>
 
+<span class="sd">&gt;&gt;&gt; import hamcalc.lib</span>
 <span class="sd">&gt;&gt;&gt; c= arch.arch( R=13 )</span>
-<span class="sd">&gt;&gt;&gt; c.A_d is None</span>
+<span class="sd">Traceback (most recent call last):</span>
+<span class="sd">   ...</span>
+<span class="sd">hamcalc.lib.NoSolutionError:  (&quot;Can&#39;t compute&quot;, {&#39;R&#39;: 13, &#39;D&#39;: 26, &#39;AR&#39;: 530.929158456675, &#39;C_F&#39;: 81.68140899333463})</span>
+<span class="sd">&gt;&gt;&gt; try:</span>
+<span class="sd">...    c= arch.arch( R=13 )</span>
+<span class="sd">... except hamcalc.lib.NoSolutionError as e:</span>
+<span class="sd">...    msg, args = e.args</span>
+<span class="sd">&gt;&gt;&gt; args.A_d is None</span>
 <span class="sd">True</span>
-<span class="sd">&gt;&gt;&gt; c.B is None</span>
+<span class="sd">&gt;&gt;&gt; args.B is None</span>
 <span class="sd">True</span>
-<span class="sd">&gt;&gt;&gt; c.C is None</span>
+<span class="sd">&gt;&gt;&gt; args.C is None</span>
 <span class="sd">True</span>
-<span class="sd">&gt;&gt;&gt; c.A_C is None</span>
+<span class="sd">&gt;&gt;&gt; args.A_C is None</span>
 <span class="sd">True</span>
-<span class="sd">&gt;&gt;&gt; round( c.R, 3 )</span>
+<span class="sd">&gt;&gt;&gt; round( args.R, 3 )</span>
 <span class="sd">13</span>
-<span class="sd">&gt;&gt;&gt; round( c.C_F, 3 )</span>
+<span class="sd">&gt;&gt;&gt; round( args.C_F, 3 )</span>
 <span class="sd">81.681</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
@@ -350,7 +358,8 @@
             <span class="k">elif</span> <span class="s">&#39;A_r&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">args</span> <span class="ow">and</span> <span class="s">&#39;A_C&#39;</span> <span class="ow">in</span> <span class="n">args</span> <span class="ow">and</span> <span class="s">&#39;C&#39;</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
                 <span class="n">args</span><span class="o">.</span><span class="n">A_r</span><span class="o">=</span> <span class="n">arc_chord_2_angle</span><span class="p">(</span> <span class="n">args</span><span class="o">.</span><span class="n">A_C</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">C</span> <span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="k">break</span> <span class="c"># Nothing more to do.</span>
+                <span class="k">raise</span> <span class="n">NoSolutionError</span><span class="p">(</span> <span class="s">&quot;Can&#39;t compute&quot;</span><span class="p">,</span> <span class="n">args</span> <span class="p">)</span>
+                <span class="c"># break # Nothing more to do.</span>
         <span class="k">return</span> <span class="n">args</span>
 </div></div>
 <span class="n">arch</span> <span class="o">=</span> <span class="n">Arch</span><span class="p">()</span>

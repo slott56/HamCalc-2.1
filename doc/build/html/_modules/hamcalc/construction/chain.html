@@ -80,7 +80,78 @@
 
 <span class="sd">&gt;&gt;&gt; import hamcalc.construction.chain as chain</span>
 <span class="sd">&gt;&gt;&gt; chain.material[&quot;25&quot;]</span>
-<span class="sd">Material(name=&#39;25&#39;, P=.25, TS=925)</span>
+<span class="sd">Chain(name=&#39;25&#39;, P=0.25, TS=925)</span>
+
+<span class="sd">Test Cases for :func:`design_sprocket_distances` and :func:`final_sprocket_distance`</span>
+
+<span class="sd">&gt;&gt;&gt; import hamcalc.construction.chain as chain</span>
+<span class="sd">&gt;&gt;&gt; V_1, I, S, R= chain.design_sprocket_distances( 59, 28, chain.material[&quot;35&quot;] )</span>
+<span class="sd">&gt;&gt;&gt; round( V_1, 3 )</span>
+<span class="sd">5.573</span>
+<span class="sd">&gt;&gt;&gt; round( I, 3 )</span>
+<span class="sd">3.349</span>
+<span class="sd">&gt;&gt;&gt; round( S, 3 )</span>
+<span class="sd">7.046</span>
+<span class="sd">&gt;&gt;&gt; round( R, 3 )</span>
+<span class="sd">2.107</span>
+<span class="sd">&gt;&gt;&gt; C, L, L_P = chain.final_sprocket_distance( 59, 28, chain.material[&quot;35&quot;], 6 )</span>
+<span class="sd">&gt;&gt;&gt; round( C, 3 )</span>
+<span class="sd">6.193</span>
+<span class="sd">&gt;&gt;&gt; round( L, 3 )</span>
+<span class="sd">78</span>
+<span class="sd">&gt;&gt;&gt; round( L_P, 3 )</span>
+<span class="sd">29.25</span>
+
+<span class="sd">Test Cases for :func:`sprocket_choice_iter`</span>
+
+<span class="sd">&gt;&gt;&gt; import hamcalc.construction.chain as chain</span>
+<span class="sd">&gt;&gt;&gt; choices= [ row for row in chain.sprocket_choice_iter( 3500, 1700, 24 ) ]</span>
+<span class="sd">&gt;&gt;&gt; len(choices)</span>
+<span class="sd">35</span>
+<span class="sd">&gt;&gt;&gt; even = [ c for c in choices if c[2] ]</span>
+<span class="sd">&gt;&gt;&gt; even</span>
+<span class="sd">[(34, 70, True), (51, 105, True)]</span>
+
+<span class="sd">Test Cases for :func:`design_sprocket_size`</span>
+
+<span class="sd">&gt;&gt;&gt; import hamcalc.construction.chain as chain</span>
+<span class="sd">&gt;&gt;&gt; factors = chain.design_sprocket_size( 3500, 1700, 51 )</span>
+<span class="sd">&gt;&gt;&gt; factors[0]</span>
+<span class="sd">(105, 51)</span>
+<span class="sd">&gt;&gt;&gt; round(factors[1],3)</span>
+<span class="sd">2.059</span>
+<span class="sd">&gt;&gt;&gt; tuple( round(x,3) for x in factors[2] )</span>
+<span class="sd">(3500.0, 1700)</span>
+<span class="sd">&gt;&gt;&gt; tuple( round(x,3) for x in factors[3] )</span>
+<span class="sd">(3500, 1700.0)</span>
+
+<span class="sd">&gt;&gt;&gt; factors = chain.design_sprocket_size( 3500, 1700, 26 )</span>
+<span class="sd">&gt;&gt;&gt; factors[0]</span>
+<span class="sd">(54, 26)</span>
+<span class="sd">&gt;&gt;&gt; round(factors[1],3)</span>
+<span class="sd">2.077</span>
+<span class="sd">&gt;&gt;&gt; tuple( round(x,3) for x in factors[2] )</span>
+<span class="sd">(3530.769, 1700)</span>
+<span class="sd">&gt;&gt;&gt; tuple( round(x,3) for x in factors[3] )</span>
+<span class="sd">(3500, 1685.185)</span>
+
+<span class="sd">Test Cases for :func:`design_chain_iter`</span>
+
+<span class="sd">&gt;&gt;&gt; import hamcalc.construction.chain as chain</span>
+<span class="sd">&gt;&gt;&gt; chains = list( chain.design_chain_iter( 54, 26, 3530.769, 1700, 80 ) )</span>
+<span class="sd">&gt;&gt;&gt; chains[0]</span>
+<span class="sd">(Chain(name=&#39;35&#39;, P=0.375, TS=2100), 1)</span>
+
+<span class="sd">Test Cases for :func:`tension_torque`</span>
+
+<span class="sd">&gt;&gt;&gt; import hamcalc.construction.chain as chain</span>
+<span class="sd">&gt;&gt;&gt; Q, T_A, T_B = chain.tension_torque( 54, 26, 3530.769, 1700, 80, chain.material[&quot;35&quot;] )</span>
+<span class="sd">&gt;&gt;&gt; round(Q,3)</span>
+<span class="sd">920.261</span>
+<span class="sd">&gt;&gt;&gt; round(T_A,3)</span>
+<span class="sd">2967.573</span>
+<span class="sd">&gt;&gt;&gt; round(T_B,3)</span>
+<span class="sd">1431.506</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">from</span> <span class="nn">hamcalc.lib</span> <span class="kn">import</span> <span class="n">Solver</span><span class="p">,</span> <span class="n">NoSolutionError</span>
@@ -95,25 +166,154 @@
 <span class="n">Chain</span><span class="o">=</span> <span class="n">namedtuple</span><span class="p">(</span> <span class="s">&quot;Chain&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s">&quot;name&quot;</span><span class="p">,</span><span class="s">&quot;P&quot;</span><span class="p">,</span><span class="s">&quot;TS&quot;</span><span class="p">]</span> <span class="p">)</span>
 
 <span class="n">chain_list</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="n">Chain</span><span class="p">(</span><span class="s">&quot;25&quot;</span><span class="p">,</span> <span class="o">.</span><span class="mi">25</span><span class="p">,</span> <span class="mi">925</span><span class="p">),</span>
-    <span class="n">Chain</span><span class="p">(</span><span class="s">&quot;35&quot;</span><span class="p">,</span> <span class="o">.</span><span class="mi">375</span><span class="p">,</span> <span class="mi">2100</span><span class="p">),</span>
-    <span class="n">Chain</span><span class="p">(</span><span class="s">&quot;40&quot;</span><span class="p">,</span> <span class="o">.</span><span class="mi">5</span><span class="p">,</span> <span class="mi">3700</span><span class="p">),</span>
-    <span class="n">Chain</span><span class="p">(</span><span class="s">&quot;50&quot;</span><span class="p">,</span> <span class="o">.</span><span class="mi">625</span><span class="p">,</span> <span class="mi">6100</span><span class="p">),</span>
-    <span class="n">Chain</span><span class="p">(</span><span class="s">&quot;60&quot;</span><span class="p">,</span> <span class="o">.</span><span class="mi">75</span><span class="p">,</span> <span class="mi">8500</span><span class="p">),</span>
-    <span class="n">Chain</span><span class="p">(</span><span class="s">&quot;80&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">14500</span><span class="p">),</span>
+    <span class="n">Chain</span><span class="p">(</span><span class="s">&quot;25&quot;</span><span class="p">,</span>   <span class="o">.</span><span class="mi">25</span><span class="p">,</span>   <span class="mi">925</span><span class="p">),</span>
+    <span class="n">Chain</span><span class="p">(</span><span class="s">&quot;35&quot;</span><span class="p">,</span>   <span class="o">.</span><span class="mi">375</span><span class="p">,</span> <span class="mi">2100</span><span class="p">),</span>
+    <span class="n">Chain</span><span class="p">(</span><span class="s">&quot;40&quot;</span><span class="p">,</span>   <span class="o">.</span><span class="mi">5</span><span class="p">,</span>   <span class="mi">3700</span><span class="p">),</span>
+    <span class="n">Chain</span><span class="p">(</span><span class="s">&quot;50&quot;</span><span class="p">,</span>   <span class="o">.</span><span class="mi">625</span><span class="p">,</span> <span class="mi">6100</span><span class="p">),</span>
+    <span class="n">Chain</span><span class="p">(</span><span class="s">&quot;60&quot;</span><span class="p">,</span>   <span class="o">.</span><span class="mi">75</span><span class="p">,</span>  <span class="mi">8500</span><span class="p">),</span>
+    <span class="n">Chain</span><span class="p">(</span><span class="s">&quot;80&quot;</span><span class="p">,</span>  <span class="mi">1</span><span class="p">,</span>    <span class="mi">14500</span><span class="p">),</span>
     <span class="n">Chain</span><span class="p">(</span><span class="s">&quot;100&quot;</span><span class="p">,</span> <span class="mf">1.25</span><span class="p">,</span> <span class="mi">24000</span><span class="p">),</span>
-    <span class="n">Chain</span><span class="p">(</span><span class="s">&quot;120&quot;</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">,</span> <span class="mi">34000</span><span class="p">),</span>
+    <span class="n">Chain</span><span class="p">(</span><span class="s">&quot;120&quot;</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">,</span>  <span class="mi">34000</span><span class="p">),</span>
     <span class="n">Chain</span><span class="p">(</span><span class="s">&quot;140&quot;</span><span class="p">,</span> <span class="mf">1.75</span><span class="p">,</span> <span class="mi">46000</span><span class="p">),</span>
-    <span class="n">Chain</span><span class="p">(</span><span class="s">&quot;160&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">58000</span><span class="p">),</span>
+    <span class="n">Chain</span><span class="p">(</span><span class="s">&quot;160&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span>    <span class="mi">58000</span><span class="p">),</span>
     <span class="n">Chain</span><span class="p">(</span><span class="s">&quot;180&quot;</span><span class="p">,</span> <span class="mf">2.25</span><span class="p">,</span> <span class="mi">80000</span><span class="p">),</span>
-    <span class="n">Chain</span><span class="p">(</span><span class="s">&quot;200&quot;</span><span class="p">,</span> <span class="mf">2.5</span><span class="p">,</span> <span class="mi">95000</span><span class="p">),</span>
-    <span class="n">Chain</span><span class="p">(</span><span class="s">&quot;240&quot;</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">130000</span><span class="p">),</span>
-    <span class="n">Chain</span><span class="p">(</span><span class="s">&quot;500&quot;</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mf">1E7</span><span class="p">),</span>
+    <span class="n">Chain</span><span class="p">(</span><span class="s">&quot;200&quot;</span><span class="p">,</span> <span class="mf">2.5</span><span class="p">,</span>  <span class="mi">95000</span><span class="p">),</span>
+    <span class="n">Chain</span><span class="p">(</span><span class="s">&quot;240&quot;</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span>   <span class="mi">130000</span><span class="p">),</span>
+    <span class="n">Chain</span><span class="p">(</span><span class="s">&quot;500&quot;</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span>      <span class="mf">1E7</span><span class="p">),</span>
 <span class="p">]</span>
 
 <span class="n">material</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">(</span>
     <span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">name</span><span class="p">,</span><span class="n">m</span><span class="p">)</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">chain_list</span>
 <span class="p">)</span>
+
+
+<div class="viewcode-block" id="design_sprocket_distances"><a class="viewcode-back" href="../../../python/construction/chain.html#hamcalc.construction.chain.design_sprocket_distances">[docs]</a><span class="k">def</span> <span class="nf">design_sprocket_distances</span><span class="p">(</span> <span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">chain</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Given sprocket teeth counts X and Y, and a particular</span>
+<span class="sd">    chain description, compute</span>
+<span class="sd">    minimum center-to-center distance.</span>
+
+<span class="sd">    :param X: larger sprocket teeth</span>
+<span class="sd">    :param Y: smaller sprocket teeth</span>
+<span class="sd">    :param chain: instance of :class:`hamcalc.construction.chain.Chain`</span>
+<span class="sd">    :returns: 4-tuple with</span>
+<span class="sd">        minimum distance between sprockets, pitch diameter of both sprockets,</span>
+<span class="sd">        and the ratio.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">A</span><span class="p">,</span> <span class="n">B</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span> <span class="n">X</span><span class="p">,</span> <span class="n">Y</span> <span class="p">),</span> <span class="nb">min</span><span class="p">(</span> <span class="n">X</span><span class="p">,</span> <span class="n">Y</span> <span class="p">)</span>
+    <span class="n">R</span> <span class="o">=</span> <span class="n">X</span> <span class="o">/</span> <span class="n">Y</span>
+    <span class="n">I</span> <span class="o">=</span> <span class="n">chain</span><span class="o">.</span><span class="n">P</span> <span class="o">/</span> <span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="n">B</span> <span class="p">)</span>
+    <span class="n">S</span> <span class="o">=</span> <span class="n">chain</span><span class="o">.</span><span class="n">P</span> <span class="o">/</span> <span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="n">A</span> <span class="p">)</span>
+    <span class="n">V_1</span> <span class="o">=</span> <span class="p">(</span><span class="n">I</span><span class="o">+</span><span class="n">S</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span> <span class="o">+</span> <span class="n">chain</span><span class="o">.</span><span class="n">P</span>
+    <span class="k">return</span> <span class="n">V_1</span><span class="p">,</span> <span class="n">I</span><span class="p">,</span> <span class="n">S</span><span class="p">,</span> <span class="n">R</span>
+</div>
+<div class="viewcode-block" id="final_sprocket_distance"><a class="viewcode-back" href="../../../python/construction/chain.html#hamcalc.construction.chain.final_sprocket_distance">[docs]</a><span class="k">def</span> <span class="nf">final_sprocket_distance</span><span class="p">(</span> <span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">chain</span><span class="p">,</span> <span class="n">V_2</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Given sprocket teeth counts X and Y, a particular</span>
+<span class="sd">    chain description, and a desired distance, V_2, compute</span>
+<span class="sd">    required center-to-center distance.</span>
+
+<span class="sd">    :param X: larger sprocket teeth</span>
+<span class="sd">    :param Y: smaller sprocket teeth</span>
+<span class="sd">    :param chain: instance of :class:`hamcalc.construction.chain.Chain`</span>
+<span class="sd">    :param V_2: Desired center-to-center distance</span>
+<span class="sd">    :returns: 2-tuple with center to center distance, chain length in pitches and inches</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">A</span><span class="p">,</span> <span class="n">B</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span> <span class="n">X</span><span class="p">,</span> <span class="n">Y</span> <span class="p">),</span> <span class="nb">min</span><span class="p">(</span> <span class="n">X</span><span class="p">,</span> <span class="n">Y</span> <span class="p">)</span>
+    <span class="n">N</span> <span class="o">=</span> <span class="n">V_2</span> <span class="o">/</span> <span class="n">chain</span><span class="o">.</span><span class="n">P</span>
+    <span class="n">L</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span> <span class="mi">2</span><span class="o">*</span><span class="n">N</span> <span class="o">+</span> <span class="n">A</span><span class="o">/</span><span class="mi">2</span> <span class="o">+</span> <span class="n">B</span><span class="o">/</span><span class="mi">2</span> <span class="o">+</span> <span class="p">((</span><span class="n">A</span><span class="o">-</span><span class="n">B</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">math</span><span class="o">.</span><span class="n">pi</span><span class="p">))</span><span class="o">**</span><span class="mi">2</span><span class="o">/</span><span class="n">N</span> <span class="p">)</span>
+    <span class="n">L</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="nb">int</span><span class="p">(</span> <span class="p">(</span><span class="mi">5</span><span class="o">*</span><span class="n">L</span><span class="o">+</span><span class="mi">5</span><span class="p">)</span><span class="o">/</span><span class="mi">10</span> <span class="p">)</span> <span class="o">-</span> <span class="mi">2</span>
+    <span class="n">C</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">V_1</span><span class="p">,</span> <span class="n">I</span><span class="p">,</span> <span class="n">S</span><span class="p">,</span> <span class="n">R</span> <span class="o">=</span> <span class="n">design_sprocket_distances</span><span class="p">(</span> <span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">chain</span> <span class="p">)</span>
+    <span class="k">while</span> <span class="n">C</span> <span class="o">&lt;</span> <span class="n">V_1</span><span class="p">:</span>
+        <span class="n">L</span> <span class="o">+=</span> <span class="mi">2</span>
+        <span class="n">T</span> <span class="o">=</span> <span class="mi">2</span><span class="o">*</span><span class="n">L</span> <span class="o">-</span> <span class="n">A</span> <span class="o">-</span> <span class="n">B</span>
+        <span class="n">U</span> <span class="o">=</span> <span class="mf">0.81</span> <span class="o">*</span> <span class="p">(</span><span class="n">A</span><span class="o">-</span><span class="n">B</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span>
+        <span class="n">C</span> <span class="o">=</span> <span class="n">chain</span><span class="o">.</span><span class="n">P</span><span class="o">/</span><span class="mi">8</span> <span class="o">*</span> <span class="p">(</span><span class="n">T</span> <span class="o">+</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">T</span><span class="o">**</span><span class="mi">2</span><span class="o">-</span><span class="n">U</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">C</span><span class="p">,</span> <span class="n">L</span><span class="p">,</span> <span class="n">L</span><span class="o">*</span><span class="n">chain</span><span class="o">.</span><span class="n">P</span>
+</div>
+<div class="viewcode-block" id="sprocket_choice_iter"><a class="viewcode-back" href="../../../python/construction/chain.html#hamcalc.construction.chain.sprocket_choice_iter">[docs]</a><span class="k">def</span> <span class="nf">sprocket_choice_iter</span><span class="p">(</span> <span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">W</span><span class="o">=</span><span class="mi">17</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Given sprocket RPM values X and Y, and a particular</span>
+<span class="sd">    mimumum sprocket size, W, yield</span>
+<span class="sd">    alternative sprocket pairs for the requested ratio.</span>
+
+<span class="sd">    :param X: larger sprocket RPM</span>
+<span class="sd">    :param Y: smaller sprocket RPM</span>
+<span class="sd">    :param W: small sprocket minimum number of teeth.</span>
+<span class="sd">        Less than 17 teeth is not recommended.</span>
+<span class="sd">    :returns: Sequence of triples with two sprocket sizes and</span>
+<span class="sd">        a boolean flag to indicate that this is an exact</span>
+<span class="sd">        match with the given RPM values.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">K</span><span class="p">,</span> <span class="n">J</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span> <span class="n">X</span><span class="p">,</span> <span class="n">Y</span> <span class="p">),</span> <span class="nb">min</span><span class="p">(</span> <span class="n">X</span><span class="p">,</span> <span class="n">Y</span> <span class="p">)</span>
+    <span class="n">Z</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span> <span class="n">W</span> <span class="o">*</span> <span class="n">K</span> <span class="o">/</span> <span class="n">J</span> <span class="o">+</span> <span class="o">.</span><span class="mi">5</span> <span class="p">)</span>
+    <span class="k">while</span> <span class="n">Z</span> <span class="o">&lt;</span> <span class="mi">120</span><span class="p">:</span>
+        <span class="k">yield</span> <span class="n">W</span><span class="p">,</span> <span class="n">Z</span><span class="p">,</span> <span class="n">W</span><span class="o">*</span><span class="n">K</span> <span class="o">==</span> <span class="n">Z</span><span class="o">*</span><span class="n">J</span>
+        <span class="n">W</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="n">Z</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span> <span class="n">W</span> <span class="o">*</span> <span class="n">K</span> <span class="o">/</span> <span class="n">J</span> <span class="o">+</span> <span class="o">.</span><span class="mi">5</span> <span class="p">)</span>
+</div>
+<div class="viewcode-block" id="design_sprocket_size"><a class="viewcode-back" href="../../../python/construction/chain.html#hamcalc.construction.chain.design_sprocket_size">[docs]</a><span class="k">def</span> <span class="nf">design_sprocket_size</span><span class="p">(</span> <span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">B</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Given sprocket RPM values X and Y, and a particular</span>
+<span class="sd">    small sprocket size, B, compute</span>
+<span class="sd">    the A sprocket size, as well as the actual ratio</span>
+<span class="sd">    and final RPM combinations.</span>
+
+<span class="sd">    :param X: larger sprocket RPM</span>
+<span class="sd">    :param Y: smaller sprocket RPM</span>
+<span class="sd">    :param B: Small sprocket size in  number of teeth</span>
+<span class="sd">    :returns: 4-tuple with (A,B) sprocket sizes,</span>
+<span class="sd">        the actual ratio, plus the design (X,Y) RPM pair</span>
+<span class="sd">        and an alternate design (X,Y) RPM pair.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">K</span><span class="p">,</span> <span class="n">J</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span> <span class="n">X</span><span class="p">,</span> <span class="n">Y</span> <span class="p">),</span> <span class="nb">min</span><span class="p">(</span> <span class="n">X</span><span class="p">,</span> <span class="n">Y</span> <span class="p">)</span>
+    <span class="n">A</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span> <span class="p">(</span><span class="mi">10</span><span class="o">*</span><span class="n">K</span><span class="o">*</span><span class="n">B</span><span class="o">/</span><span class="n">J</span><span class="o">+</span><span class="mi">5</span><span class="p">)</span><span class="o">/</span><span class="mi">10</span> <span class="p">)</span>
+    <span class="n">R</span> <span class="o">=</span> <span class="n">A</span><span class="o">/</span><span class="n">B</span>
+    <span class="n">E</span> <span class="o">=</span> <span class="n">J</span><span class="o">*</span><span class="n">R</span>
+    <span class="n">D</span> <span class="o">=</span> <span class="n">K</span><span class="o">/</span><span class="n">R</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">),</span> <span class="n">R</span><span class="p">,</span> <span class="p">(</span><span class="n">E</span><span class="p">,</span> <span class="n">J</span><span class="p">),</span> <span class="p">(</span><span class="n">K</span><span class="p">,</span> <span class="n">D</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="design_chain_iter"><a class="viewcode-back" href="../../../python/construction/chain.html#hamcalc.construction.chain.design_chain_iter">[docs]</a><span class="k">def</span> <span class="nf">design_chain_iter</span><span class="p">(</span> <span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">H</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Given sprocket teeth counts, A and B,</span>
+<span class="sd">    and an RPM values, X and Y,</span>
+<span class="sd">    and drive horsepower, H, compute</span>
+<span class="sd">    the minimimal chain and, possibly, the number of chain strands.</span>
+<span class="sd">    Generally, the first value is all that&#39;s required.</span>
+
+<span class="sd">    :param A: larger sprocket teeth</span>
+<span class="sd">    :param B: smaller sprocket teeth</span>
+<span class="sd">    :param X: larger sprocket RPM</span>
+<span class="sd">    :param Y: smaller sprocket RPM</span>
+<span class="sd">    :param H: Drive horsepower</span>
+<span class="sd">    :returns: Iterates over a sequence of</span>
+<span class="sd">        acceptable chain and number of strands.</span>
+<span class="sd">        Strands is usually 1 but may be 2.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">chain_list</span><span class="p">:</span>
+        <span class="n">SP</span> <span class="o">=</span> <span class="n">A</span> <span class="o">*</span> <span class="n">c</span><span class="o">.</span><span class="n">P</span> <span class="o">*</span> <span class="n">Y</span><span class="o">/</span><span class="mi">60</span>
+        <span class="n">Q</span> <span class="o">=</span> <span class="mi">6600</span><span class="o">*</span><span class="n">H</span><span class="o">/</span><span class="n">SP</span>
+        <span class="k">if</span> <span class="n">Q</span><span class="o">*</span><span class="mf">1.1</span> <span class="o">&lt;=</span> <span class="n">c</span><span class="o">.</span><span class="n">TS</span><span class="p">:</span>
+            <span class="n">NS</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span> <span class="n">Q</span><span class="o">/</span><span class="n">c</span><span class="o">.</span><span class="n">TS</span> <span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
+            <span class="k">if</span> <span class="n">NS</span> <span class="o">*</span> <span class="n">c</span><span class="o">.</span><span class="n">TS</span> <span class="o">&lt;</span> <span class="mf">1.1</span> <span class="o">*</span> <span class="n">Q</span><span class="p">:</span> <span class="n">NS</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="k">yield</span> <span class="n">c</span><span class="p">,</span> <span class="n">NS</span>
+</div>
+<div class="viewcode-block" id="tension_torque"><a class="viewcode-back" href="../../../python/construction/chain.html#hamcalc.construction.chain.tension_torque">[docs]</a><span class="k">def</span> <span class="nf">tension_torque</span><span class="p">(</span> <span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">H</span><span class="p">,</span> <span class="n">M</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Given sprocket teeth counts, A and B,</span>
+<span class="sd">    and an RPM values, X and Y,</span>
+<span class="sd">    and drive horsepower, H, compute</span>
+<span class="sd">    tension overall and torque at each sprocket.</span>
+
+<span class="sd">    :param A: larger sprocket teeth</span>
+<span class="sd">    :param B: smaller sprocket teeth</span>
+<span class="sd">    :param X: larger sprocket RPM</span>
+<span class="sd">    :param Y: smaller sprocket RPM</span>
+<span class="sd">    :param H: Drive horsepower</span>
+<span class="sd">    :param M: Chain material object.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">I</span> <span class="o">=</span> <span class="n">M</span><span class="o">.</span><span class="n">P</span> <span class="o">/</span> <span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="n">B</span> <span class="p">)</span>
+    <span class="n">S</span> <span class="o">=</span> <span class="n">M</span><span class="o">.</span><span class="n">P</span> <span class="o">/</span> <span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="n">A</span> <span class="p">)</span>
+    <span class="n">SP</span> <span class="o">=</span> <span class="n">A</span> <span class="o">*</span> <span class="n">M</span><span class="o">.</span><span class="n">P</span> <span class="o">*</span> <span class="n">Y</span><span class="o">/</span><span class="mi">60</span>
+    <span class="n">Q</span><span class="o">=</span><span class="mi">6600</span><span class="o">*</span><span class="n">H</span><span class="o">/</span><span class="n">SP</span>
+    <span class="n">T_B</span><span class="o">=</span><span class="n">Q</span><span class="o">*</span><span class="n">I</span><span class="o">/</span><span class="mi">2</span>
+    <span class="n">T_A</span><span class="o">=</span><span class="n">Q</span><span class="o">*</span><span class="n">S</span><span class="o">/</span><span class="mi">2</span>
+    <span class="k">return</span> <span class="n">Q</span><span class="p">,</span> <span class="n">T_A</span><span class="p">,</span> <span class="n">T_B</span></div>
 </pre></div>
 
           </div>

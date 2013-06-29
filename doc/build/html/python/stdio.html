@@ -68,6 +68,8 @@ Most of these wrap a calculation module; the calculation module has
 all relevant documentation.</p>
 <p>A few of these are stand-alone programs that don&#8217;t even have a calculation
 module.</p>
+<p>Most of these cannot be imported, either. They&#8217;re designed
+to be relatively simple Python scripts.</p>
 </li>
 <li><p class="first">Special Importable Modules.</p>
 <p>These are a few modules with a proper &#8220;main/import&#8221; switch block of code.
@@ -121,16 +123,23 @@ hardware.</p>
 <dd><p>Distinguish between kinds of input.</p>
 <ol class="arabic simple">
 <li>Valid value of the given type (int, float, str, etc.)</li>
-<li>No input; a <tt class="docutils literal"><span class="pre">None</span></tt> is returned.</li>
+<li>No input &#8211; simply hitting enter &#8211; a <tt class="docutils literal"><span class="pre">None</span></tt> is returned.
+An exception is <strong>not</strong> raised, because this is
+legitimate user behavior that is handled politely
+by <a class="reference internal" href="lib.html#hamcalc.lib.AttrDict" title="hamcalc.lib.AttrDict"><tt class="xref py py-class docutils literal"><span class="pre">hamcalc.lib.AttrDict</span></tt></a>.</li>
 </ol>
-<p>Other exceptions (e.g., EOF) are left as proper
+<p>Invalid values (i.e., <tt class="xref py py-exc docutils literal"><span class="pre">ValueError</span></tt> from
+the conversion function) are handled here by
+reprompting for the input.</p>
+<p>Other exceptions (e.g., <tt class="xref py py-exc docutils literal"><span class="pre">EOFError</span></tt>) are left as proper
 exceptions.</p>
-<p>The objective is to emulate elements of quirky
+<p>The objective here is to emulate <strong>aspects</strong> of quirky
 GW-Basic behavior. But not <strong>all</strong> of the quirks.
-The legacy programs treated &#8220;0&#8221; ambiguously.
-It could be &#8220;no input&#8221; or it could be an input
+Legacy programs often &#8220;0&#8221; input ambiguously.
+It could be the result of &#8220;no input&#8221; or it could be an input
 value of 0. In a few cases, special 1E-6 values
-were used to be &#8220;effectively zero&#8221;.</p>
+were used to be &#8220;effectively zero&#8221; to distinguish
+no input from an actual zero.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -159,13 +168,13 @@ were used to be &#8220;effectively zero&#8221;.</p>
 
 <dl class="function">
 <dt id="hamcalc.stdio.__init__.input_list_float">
-<tt class="descclassname">hamcalc.stdio.__init__.</tt><tt class="descname">input_list_float</tt><big>(</big><em>prompt=''</em><big>)</big><a class="headerlink" href="#hamcalc.stdio.__init__.input_list_float" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">hamcalc.stdio.__init__.</tt><tt class="descname">input_list_float</tt><big>(</big><em>prompt=''</em>, <em>count=2</em><big>)</big><a class="headerlink" href="#hamcalc.stdio.__init__.input_list_float" title="Permalink to this definition">¶</a></dt>
 <dd><p>Input a comma-separated list of float values.</p>
 </dd></dl>
 
 <dl class="function">
 <dt id="hamcalc.stdio.__init__.input_list_int">
-<tt class="descclassname">hamcalc.stdio.__init__.</tt><tt class="descname">input_list_int</tt><big>(</big><em>prompt=''</em><big>)</big><a class="headerlink" href="#hamcalc.stdio.__init__.input_list_int" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">hamcalc.stdio.__init__.</tt><tt class="descname">input_list_int</tt><big>(</big><em>prompt=''</em>, <em>count=2</em><big>)</big><a class="headerlink" href="#hamcalc.stdio.__init__.input_list_int" title="Permalink to this definition">¶</a></dt>
 <dd><p>Input a comma-separated list of integer values.</p>
 </dd></dl>
 
@@ -690,7 +699,7 @@ only.</p>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">Python Modules</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="lib.html">lib &#8211; Supporting Library</a></li>
 <li class="toctree-l2"><a class="reference internal" href="radio/index.html">radio &#8211; Radio Design and Engineering</a></li>
-<li class="toctree-l2"><a class="reference internal" href="ham.html">ham &#8211; Ham Radio Operations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ham/index.html">ham &#8211; Ham Radio Operations</a></li>
 <li class="toctree-l2"><a class="reference internal" href="electronics/index.html">electronics &#8211; General Electronics</a></li>
 <li class="toctree-l2"><a class="reference internal" href="construction/index.html">construction &#8211; Construction and Mechanical</a></li>
 <li class="toctree-l2"><a class="reference internal" href="math/index.html">math &#8211; Math, Physics, Units Conversion</a></li>

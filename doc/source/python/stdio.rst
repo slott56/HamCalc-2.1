@@ -18,6 +18,9 @@ There are four subgroups of stdio programs.
     A few of these are stand-alone programs that don't even have a calculation
     module.
 
+    Most of these cannot be imported, either. They're designed
+    to be relatively simple Python scripts.
+
 -   Special Importable Modules.
 
     These are a few modules with a proper "main/import" switch block of code.

@@ -101,9 +101,11 @@
     <span class="n">name</span><span class="o">=</span> <span class="s">&quot;&quot;</span> <span class="c"># Abbreviation of the unit&#39;s name.</span>
     <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">to_std</span><span class="p">(</span> <span class="n">class_</span><span class="p">,</span> <span class="n">value</span> <span class="p">):</span>
+        <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span> <span class="k">return</span> <span class="bp">None</span>
         <span class="k">return</span> <span class="n">value</span><span class="o">/</span><span class="n">class_</span><span class="o">.</span><span class="n">factor</span>
     <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_std</span><span class="p">(</span> <span class="n">class_</span><span class="p">,</span> <span class="n">value</span> <span class="p">):</span>
+        <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span> <span class="k">return</span> <span class="bp">None</span>
         <span class="k">return</span> <span class="n">value</span><span class="o">*</span><span class="n">class_</span><span class="o">.</span><span class="n">factor</span>
 </div>
 <div class="viewcode-block" id="UnitMeta"><a class="viewcode-back" href="../../python/lib.html#hamcalc.lib.UnitMeta">[docs]</a><span class="k">class</span> <span class="nc">UnitMeta</span><span class="p">(</span><span class="nb">type</span><span class="p">):</span>
@@ -154,20 +156,19 @@
 <div class="viewcode-block" id="AttrDict"><a class="viewcode-back" href="../../python/lib.html#hamcalc.lib.AttrDict">[docs]</a><span class="k">class</span> <span class="nc">AttrDict</span><span class="p">(</span> <span class="nb">dict</span> <span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Mixin attribute access to a dictionary.</span>
 
-<span class="sd">    We can use this to &quot;wrap&quot; an argument dictionay and make access slightly more pleasant.</span>
+<span class="sd">    We use this to &quot;wrap&quot; an argument dictionay and make access</span>
+<span class="sd">    slightly more pleasant.</span>
 
-<span class="sd">    The requirement that the keys be valid Python variable names is</span>
-<span class="sd">    trivially met when this is used for ``**args`` in a function.</span>
+<span class="sd">    This class requires each keys be a valid Python variable name.</span>
+<span class="sd">    This is trivially met when this is initialized</span>
+<span class="sd">    with the ``**args`` of a function.</span>
 
-<span class="sd">    ::</span>
+<span class="sd">    Also, this class won&#39;t set a value to ``None``. Setting</span>
+<span class="sd">    a key&#39;s value to ``None`` is the same as deleting it from</span>
+<span class="sd">    the collection of arguments.  This allows the variable</span>
+<span class="sd">    to work politely with :func:`hamcalc.stdio.input_convert`.</span>
 
-<span class="sd">        def function( **args ):</span>
-<span class="sd">            args= AttrDict( args )</span>
-<span class="sd">            if args.d is None and args.r is not None and args.t is not None:</span>
-<span class="sd">                args.d = args.r * args.t</span>
-<span class="sd">            return args</span>
-
-<span class="sd">    Or</span>
+<span class="sd">    Typical use</span>
 
 <span class="sd">    ::</span>
 
@@ -193,12 +194,40 @@
 <span class="sd">    8</span>
 <span class="sd">    &gt;&gt;&gt; args[&#39;sum&#39;]</span>
 <span class="sd">    8</span>
+<span class="sd">    &gt;&gt;&gt; args.arg1= None</span>
+<span class="sd">    &gt;&gt;&gt; &#39;arg1&#39; in args</span>
+<span class="sd">    False</span>
+<span class="sd">    &gt;&gt;&gt; args.unused= None</span>
+<span class="sd">    &gt;&gt;&gt; &#39;usused&#39; in args</span>
+<span class="sd">    False</span>
+
+<span class="sd">    &gt;&gt;&gt; a2= AttrDict( dict( a=7, b=None, c=11 ) )</span>
+<span class="sd">    &gt;&gt;&gt; &#39;a&#39; in a2</span>
+<span class="sd">    True</span>
+<span class="sd">    &gt;&gt;&gt; &#39;b&#39; in a2</span>
+<span class="sd">    False</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span> <span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">__init__</span><span class="p">()</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">args</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">adict</span><span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">adict</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">adict</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">=</span> <span class="n">adict</span><span class="p">[</span><span class="n">k</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">kw</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">kw</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+                <span class="bp">self</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">=</span> <span class="n">kw</span><span class="p">[</span><span class="n">k</span><span class="p">]</span>
     <span class="k">def</span> <span class="nf">__getattr__</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">name</span> <span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">name</span><span class="p">,</span><span class="bp">None</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">__setattr__</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span> <span class="p">):</span>
-        <span class="bp">self</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">=</span> <span class="n">value</span>
+        <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="k">del</span> <span class="bp">self</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
+            <span class="k">except</span> <span class="ne">KeyError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="k">pass</span> <span class="c"># Never existed, that&#39;s okay.</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">=</span> <span class="n">value</span>
 </div>
 <div class="viewcode-block" id="NoSolutionError"><a class="viewcode-back" href="../../python/lib.html#hamcalc.lib.NoSolutionError">[docs]</a><span class="k">class</span> <span class="nc">NoSolutionError</span><span class="p">(</span> <span class="ne">Exception</span> <span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;A :class:`Solver` could not find a proper solution.&quot;&quot;&quot;</span>

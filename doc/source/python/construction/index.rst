@@ -30,9 +30,13 @@ index, either.
     beltdriv
     chain
     cyl
+    gearing
 
+Note that there are strong similarities between :program:`beltdriv`,
+:program:`chain`, :program:`gearing` and :program:`shaft`.
+You'd almost think there's a common superclass
+of some kind.
 
--   "gearing", "Gears & gearing"
 -   "binhop", "Hoppered Bins & Tanks"
 -   "shaft", "Shafting"
 -   "stairs", "Stairs, Ladders & Ramps"

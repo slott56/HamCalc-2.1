@@ -1,5 +1,9 @@
+..  _construction.beltdriv:
+
 beltdriv --  Belt Drives
 -------------------------
+
+See :ref:`construction.chain`, and :ref:`construction.gearing`.
 
 Legacy Output
 ~~~~~~~~~~~~~~~
