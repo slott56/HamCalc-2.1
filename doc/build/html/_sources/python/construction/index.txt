@@ -31,13 +31,15 @@ index, either.
     chain
     cyl
     gearing
+    binhop
+    binvol
 
 Note that there are strong similarities between :program:`beltdriv`,
 :program:`chain`, :program:`gearing` and :program:`shaft`.
 You'd almost think there's a common superclass
 of some kind.
 
--   "binhop", "Hoppered Bins & Tanks"
+
 -   "shaft", "Shafting"
 -   "stairs", "Stairs, Ladders & Ramps"
 -   "torque", "Torque & Horsepower"

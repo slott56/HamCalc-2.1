@@ -1,0 +1,599 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>binhop – Hoppered Bins &amp; Tanks &mdash; HamCalc 2.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/agogo.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '2.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="HamCalc 2.1 documentation" href="../../index.html" />
+    <link rel="up" title="construction – Construction and Mechanical" href="index.html" />
+    <link rel="next" title="binvol – Hoppered Bin Design" href="binvol.html" />
+    <link rel="prev" title="gearing – Gears &amp; Gearing" href="gearing.html" /> 
+  </head>
+  <body>
+    <div class="header-wrapper">
+      <div class="header">
+        <div class="headertitle"><a
+          href="../../index.html">HamCalc 2.1 documentation</a></div>
+        <div class="rel">
+          <a href="gearing.html" title="gearing – Gears &amp; Gearing"
+             accesskey="P">previous</a> |
+          <a href="binvol.html" title="binvol – Hoppered Bin Design"
+             accesskey="N">next</a> |
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a>
+        </div>
+       </div>
+    </div>
+
+    <div class="content-wrapper">
+      <div class="content">
+        <div class="document">
+            
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="binhop-hoppered-bins-tanks">
+<h1>binhop &#8211; Hoppered Bins &amp; Tanks<a class="headerlink" href="#binhop-hoppered-bins-tanks" title="Permalink to this headline">¶</a></h1>
+<p>Quirk: This program may chain to <strong class="program">binvol</strong>, a program
+which doesn&#8217;t appear on any menu.</p>
+<div class="section" id="legacy-output">
+<h2>Legacy Output<a class="headerlink" href="#legacy-output" title="Permalink to this headline">¶</a></h2>
+<p>Introduction:</p>
+<div class="highlight-python"><pre>HOPPERED BIN ANALYSIS                                  by George Murphy, VE3ERP
+
+
+  │«─ F ─»│
+  ┌───────┐«─┐«─┐
+  │  bin  │  J  │
+  └───────┤«─┤  │
+   \hopper│  H  M
+    \     │  │  │
+     └────┘──┘«─┘
+   ─»│ D  │«─
+
+ This program calculates dimensions and cubic capacity of hoppered rectangular
+ or round bins and tanks. Dimensions can be entered in any units of measure,
+ bearing in mind that the calculated results will be in the same units.
+
+ To analyze an existing bin......press 1
+ To design a new bin.............press 2
+ To EXIT.........................press 0</pre>
+</div>
+<p>Menu item 2 runs the <strong class="program">binvol</strong> program.</p>
+<p>Note that the following sample output has an error in it.</p>
+<p>Sample Output:</p>
+<div class="highlight-python"><pre>  Press number in ( ) to indicate shape of bin:        (1) Round
+                                                       (2) Rectangular
+ENTER: Outlet D..................width =? 3
+ENTER: Outlet D.................length =? 8
+Press number in ( ) to indicate hopper discharge:      (1) Side draw
+                                                       (2) Center draw
+ENTER: Hopper height H.................=? 12
+ENTER: Bin width F.....................=? 12
+ENTER: Bin length F....................=? 12
+ENTER: Bin wall height J...............=? 12
+ RECTANGULAR BIN, CENTER DRAW HOPPER
+
+
+  │«─ F ─»│
+  ┌───────┐«─┐«─┐
+  │  bin  │  J  │
+  └───────┤«─┤  │
+   \hopper│  H  M
+    \     │  │  │
+     └────┘──┘«─┘
+   ─»│ D  │«─
+
+ Bin width .....................F=       12.000
+ Bin length ....................G=       12.000
+ Bin wall height ...............J=       12.000
+ Hopper height .................H=       12.000
+ Overall height ................M=       24.000
+ Outlet width ..................D=        3.000
+ Outlet length .................D=        8.000
+ Bin cross-section area ..........      144.000
+ Cubic capacity ..................     1728.018
+ Min. hopper slope 69.4°
+ Want to change hopper height and slope angle?  (y/n)</pre>
+</div>
+</div>
+<div class="section" id="analysis">
+<h2>Analysis<a class="headerlink" href="#analysis" title="Permalink to this headline">¶</a></h2>
+<p>This is actually two simple calculators:</p>
+<ul class="simple">
+<li>Rectangular bins</li>
+<li>Cylindrical bins</li>
+</ul>
+<p>Each bin has an optional consideration for side draw vs. center draw.
+This appears to be a plug-in strategy object or mixin.</p>
+<p>While there is some overlap between the two calculators, what&#8217;s
+common is more the broad outline than the details.</p>
+<div class="section" id="rectangular">
+<h3>Rectangular<a class="headerlink" href="#rectangular" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">D:</th><td class="field-body">Outlet width D</td>
+</tr>
+<tr class="field-even field"><th class="field-name">E:</th><td class="field-body">Outlet length D</td>
+</tr>
+</tbody>
+</table>
+<p>Center draw vs. side draw choice.</p>
+<div class="math">
+<p><img src="../../_images/math/d5220d02f1ec4ca29ca9db8daaf0ee46e80049df.png" alt="V = D \times E"/></p>
+</div><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">X:</th><td class="field-body">Bin cross-section area</td>
+</tr>
+<tr class="field-even field"><th class="field-name">H:</th><td class="field-body">Hopper height H</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">F:</th><td class="field-body">Bin width F</td>
+</tr>
+<tr class="field-even field"><th class="field-name">G:</th><td class="field-body">Bin length F</td>
+</tr>
+</tbody>
+</table>
+<div class="math">
+<p><img src="../../_images/math/cd9f024276129c5e1b0bcc1e3dd2003e493ce579.png" alt="X = F \times G"/></p>
+</div><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">J:</th><td class="field-body">Bin wall height J</td>
+</tr>
+</tbody>
+</table>
+<div class="math">
+<p><img src="../../_images/math/e0a0887bdf4a2e1b7d2f9a3499e654f8c3b43bbd.png" alt="Z &amp;= \dfrac{H}{3}(V+X+\sqrt{VX})+XJ \\
+M &amp;= H + J \\
+N &amp;= \begin{cases}
+    \arctan \left(\dfrac{H}{F-D}\right) \dfrac{180}{\pi} &amp;\text{if side} \\
+    \arctan \left(\dfrac{2H}{F-D}\right) \dfrac{180}{\pi} &amp;\text{if center}
+\end{cases}"/></p>
+</div><p>Display.</p>
+</div>
+<div class="section" id="cylindrical">
+<h3>Cylindrical<a class="headerlink" href="#cylindrical" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">D:</th><td class="field-body">Outlet diameter D</td>
+</tr>
+</tbody>
+</table>
+<p>Center draw vs. side draw choice.</p>
+<div class="math">
+<p><img src="../../_images/math/697aa889df1032f53b5dffdda0a1e85933ade302.png" alt="V = \pi \left(\dfrac{D}{2}\right)^2"/></p>
+</div><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">H:</th><td class="field-body">Hopper height H</td>
+</tr>
+<tr class="field-even field"><th class="field-name">F:</th><td class="field-body">Bin Diameter F</td>
+</tr>
+</tbody>
+</table>
+<div class="math">
+<p><img src="../../_images/math/d94c7c96f1f34516271838f6716322e9c4399eba.png" alt="X = \pi \left(\dfrac{F}{2}\right)^2"/></p>
+</div><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">J:</th><td class="field-body">Bin wall height J</td>
+</tr>
+</tbody>
+</table>
+<div class="math">
+<p><img src="../../_images/math/e0a0887bdf4a2e1b7d2f9a3499e654f8c3b43bbd.png" alt="Z &amp;= \dfrac{H}{3}(V+X+\sqrt{VX})+XJ \\
+M &amp;= H + J \\
+N &amp;= \begin{cases}
+    \arctan \left(\dfrac{H}{F-D}\right) \dfrac{180}{\pi} &amp;\text{if side} \\
+    \arctan \left(\dfrac{2H}{F-D}\right) \dfrac{180}{\pi} &amp;\text{if center}
+\end{cases}"/></p>
+</div><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">X:</th><td class="field-body">Bin cross-section area</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Z:</th><td class="field-body">Cubic Capacity</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">N:</th><td class="field-body">Minimum hopper slope</td>
+</tr>
+</tbody>
+</table>
+<p>Display.</p>
+</div>
+</div>
+<div class="section" id="module-hamcalc.construction.binhop">
+<span id="implementation"></span><h2>Implementation<a class="headerlink" href="#module-hamcalc.construction.binhop" title="Permalink to this headline">¶</a></h2>
+<p>hamcalc.construction.binhop</p>
+<p>Calculate volumes of hoppered bins.</p>
+<p>There are two functions defined:</p>
+<dl class="function">
+<dt id="hamcalc.construction.binhop.rectangular">
+<tt class="descclassname">hamcalc.construction.binhop.</tt><tt class="descname">rectangular</tt><big>(</big><em>D</em>, <em>E</em>, <em>F</em>, <em>G</em>, <em>H</em>, <em>J</em><big>)</big><a class="headerlink" href="#hamcalc.construction.binhop.rectangular" title="Permalink to this definition">¶</a></dt>
+<dd><p>Skeleton function to compute rectangular bin volumes.
+This requires the <tt class="xref py py-data docutils literal"><span class="pre">draw</span></tt> variable set to a proper
+instance of <a class="reference internal" href="#hamcalc.construction.binhop.Side" title="hamcalc.construction.binhop.Side"><tt class="xref py py-class docutils literal"><span class="pre">Side</span></tt></a> or <a class="reference internal" href="#hamcalc.construction.binhop.Center" title="hamcalc.construction.binhop.Center"><tt class="xref py py-class docutils literal"><span class="pre">Center</span></tt></a> before
+any calculation can be done. See <a class="reference internal" href="#hamcalc.construction.binhop.Draw" title="hamcalc.construction.binhop.Draw"><tt class="xref py py-class docutils literal"><span class="pre">Draw</span></tt></a> below.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>D</strong> &#8211; Outlet width D</li>
+<li><strong>E</strong> &#8211; Outlet length D</li>
+<li><strong>F</strong> &#8211; Bin width F</li>
+<li><strong>G</strong> &#8211; Bin length F</li>
+<li><strong>H</strong> &#8211; Hopper height H</li>
+<li><strong>J</strong> &#8211; Bin wall height J</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><p><a class="reference internal" href="../lib.html#hamcalc.lib.AttrDict" title="hamcalc.lib.AttrDict"><tt class="xref py py-class docutils literal"><span class="pre">hamcalc.lib.AttrDict</span></tt></a> with additional items.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">V:</th><td class="field-body">Hopper Area</td>
+</tr>
+<tr class="field-even field"><th class="field-name">X:</th><td class="field-body">Bin Cross-section Area</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Z:</th><td class="field-body">Total Volume</td>
+</tr>
+<tr class="field-even field"><th class="field-name">N:</th><td class="field-body">Min Hopper Slope</td>
+</tr>
+</tbody>
+</table>
+</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="hamcalc.construction.binhop.cylindrical">
+<tt class="descclassname">hamcalc.construction.binhop.</tt><tt class="descname">cylindrical</tt><big>(</big><em>D</em>, <em>F</em>, <em>H</em>, <em>J</em><big>)</big><a class="headerlink" href="#hamcalc.construction.binhop.cylindrical" title="Permalink to this definition">¶</a></dt>
+<dd><p>Skeleton function to compute cylindrical bin volumes.
+This requires the <tt class="xref py py-data docutils literal"><span class="pre">draw</span></tt> variable set to a proper
+instance of <a class="reference internal" href="#hamcalc.construction.binhop.Side" title="hamcalc.construction.binhop.Side"><tt class="xref py py-class docutils literal"><span class="pre">Side</span></tt></a> or <a class="reference internal" href="#hamcalc.construction.binhop.Center" title="hamcalc.construction.binhop.Center"><tt class="xref py py-class docutils literal"><span class="pre">Center</span></tt></a> before
+any calculation can be done. See <a class="reference internal" href="#hamcalc.construction.binhop.Draw" title="hamcalc.construction.binhop.Draw"><tt class="xref py py-class docutils literal"><span class="pre">Draw</span></tt></a> below.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>D</strong> &#8211; Outlet Diameter D</li>
+<li><strong>F</strong> &#8211; Bin Diameter F</li>
+<li><strong>H</strong> &#8211; Hopper height H</li>
+<li><strong>J</strong> &#8211; Bin wall height J</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><p><a class="reference internal" href="../lib.html#hamcalc.lib.AttrDict" title="hamcalc.lib.AttrDict"><tt class="xref py py-class docutils literal"><span class="pre">hamcalc.lib.AttrDict</span></tt></a> with additional items.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">V:</th><td class="field-body">Hopper Area</td>
+</tr>
+<tr class="field-even field"><th class="field-name">X:</th><td class="field-body">Bin Cross-section Area</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Z:</th><td class="field-body">Total Volume</td>
+</tr>
+<tr class="field-even field"><th class="field-name">N:</th><td class="field-body">Min Hopper Slope</td>
+</tr>
+</tbody>
+</table>
+</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<p>Test Case:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">hamcalc.construction.binhop</span> <span class="kn">as</span> <span class="nn">binhop</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">rect</span> <span class="o">=</span> <span class="n">binhop</span><span class="o">.</span><span class="n">Rectangular</span><span class="p">(</span> <span class="n">draw</span><span class="o">=</span><span class="n">binhop</span><span class="o">.</span><span class="n">Center</span><span class="p">()</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">bin</span><span class="o">=</span> <span class="n">rect</span><span class="p">(</span> <span class="n">D</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">E</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">H</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">F</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">G</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">J</span><span class="o">=</span><span class="mi">12</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">bin</span><span class="o">.</span><span class="n">X</span>
+<span class="go">144</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">bin</span><span class="o">.</span><span class="n">V</span>
+<span class="go">24</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="nb">bin</span><span class="o">.</span><span class="n">N</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+<span class="go">69.4</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="nb">bin</span><span class="o">.</span><span class="n">Z</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">2635.151</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">rect</span><span class="o">.</span><span class="n">name</span><span class="p">()</span>
+<span class="go">&#39;Rectangular Bin, Center Draw Hopper&#39;</span>
+</pre></div>
+</div>
+<dl class="class">
+<dt id="hamcalc.construction.binhop.Center">
+<em class="property">class </em><tt class="descclassname">hamcalc.construction.binhop.</tt><tt class="descname">Center</tt><a class="reference internal" href="../../_modules/hamcalc/construction/binhop.html#Center"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.construction.binhop.Center" title="Permalink to this definition">¶</a></dt>
+<dd><p>Center Draw calculation.
+This is the <tt class="docutils literal"><span class="pre">.draw</span></tt> attribute of a <a class="reference internal" href="#hamcalc.construction.binhop.Hopper" title="hamcalc.construction.binhop.Hopper"><tt class="xref py py-class docutils literal"><span class="pre">Hopper</span></tt></a>.</p>
+<dl class="method">
+<dt id="hamcalc.construction.binhop.Center.angle">
+<tt class="descname">angle</tt><big>(</big><em>args</em><big>)</big><a class="reference internal" href="../../_modules/hamcalc/construction/binhop.html#Center.angle"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.construction.binhop.Center.angle" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the center-fed hopper angle.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>D</strong> &#8211; Outlet diameter D</li>
+<li><strong>H</strong> &#8211; Hopper height H</li>
+<li><strong>F</strong> &#8211; Bin Diameter F</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="hamcalc.construction.binhop.Cylindrical">
+<em class="property">class </em><tt class="descclassname">hamcalc.construction.binhop.</tt><tt class="descname">Cylindrical</tt><big>(</big><em>draw=None</em><big>)</big><a class="reference internal" href="../../_modules/hamcalc/construction/binhop.html#Cylindrical"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.construction.binhop.Cylindrical" title="Permalink to this definition">¶</a></dt>
+<dd><p>Cylindrical Hopper.</p>
+<dl class="method">
+<dt id="hamcalc.construction.binhop.Cylindrical.bin_section">
+<tt class="descname">bin_section</tt><big>(</big><em>args</em><big>)</big><a class="reference internal" href="../../_modules/hamcalc/construction/binhop.html#Cylindrical.bin_section"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.construction.binhop.Cylindrical.bin_section" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bin cross section area.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>F</strong> &#8211; Bin diameter D</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="hamcalc.construction.binhop.Cylindrical.hopper_section">
+<tt class="descname">hopper_section</tt><big>(</big><em>args</em><big>)</big><a class="reference internal" href="../../_modules/hamcalc/construction/binhop.html#Cylindrical.hopper_section"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.construction.binhop.Cylindrical.hopper_section" title="Permalink to this definition">¶</a></dt>
+<dd><p>Hopper cross section area.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>D</strong> &#8211; Outlet diameter D</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="hamcalc.construction.binhop.Draw">
+<em class="property">class </em><tt class="descclassname">hamcalc.construction.binhop.</tt><tt class="descname">Draw</tt><a class="reference internal" href="../../_modules/hamcalc/construction/binhop.html#Draw"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.construction.binhop.Draw" title="Permalink to this definition">¶</a></dt>
+<dd><p>Strategy class definition for draw placement.</p>
+<p>A subclass instance is attached to the <a class="reference internal" href="#hamcalc.construction.binhop.Hopper" title="hamcalc.construction.binhop.Hopper"><tt class="xref py py-class docutils literal"><span class="pre">Hopper</span></tt></a> instance.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">rectangular</span><span class="o">.</span><span class="n">draw</span> <span class="o">=</span> <span class="n">Center</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>or</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">solver</span><span class="o">=</span> <span class="n">Cylindrical</span><span class="p">(</span> <span class="n">draw</span><span class="o">=</span><span class="n">Side</span><span class="p">()</span> <span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="class">
+<dt id="hamcalc.construction.binhop.Hopper">
+<em class="property">class </em><tt class="descclassname">hamcalc.construction.binhop.</tt><tt class="descname">Hopper</tt><big>(</big><em>draw=None</em><big>)</big><a class="reference internal" href="../../_modules/hamcalc/construction/binhop.html#Hopper"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.construction.binhop.Hopper" title="Permalink to this definition">¶</a></dt>
+<dd><p>Abstract superclass for hopper solvers.
+A subclass must handle the proper geometry of the hopper.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="hamcalc.construction.binhop.Rectangular">
+<em class="property">class </em><tt class="descclassname">hamcalc.construction.binhop.</tt><tt class="descname">Rectangular</tt><big>(</big><em>draw=None</em><big>)</big><a class="reference internal" href="../../_modules/hamcalc/construction/binhop.html#Rectangular"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.construction.binhop.Rectangular" title="Permalink to this definition">¶</a></dt>
+<dd><p>Rectangular Hopper.</p>
+<dl class="method">
+<dt id="hamcalc.construction.binhop.Rectangular.bin_section">
+<tt class="descname">bin_section</tt><big>(</big><em>args</em><big>)</big><a class="reference internal" href="../../_modules/hamcalc/construction/binhop.html#Rectangular.bin_section"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.construction.binhop.Rectangular.bin_section" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bin cross section area.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>F</strong> &#8211; Bin width F</li>
+<li><strong>G</strong> &#8211; Bin length F</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="hamcalc.construction.binhop.Rectangular.hopper_section">
+<tt class="descname">hopper_section</tt><big>(</big><em>args</em><big>)</big><a class="reference internal" href="../../_modules/hamcalc/construction/binhop.html#Rectangular.hopper_section"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.construction.binhop.Rectangular.hopper_section" title="Permalink to this definition">¶</a></dt>
+<dd><p>Hopper cross section area.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>D</strong> &#8211; Outlet width D</li>
+<li><strong>E</strong> &#8211; Outlet length D</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="hamcalc.construction.binhop.Side">
+<em class="property">class </em><tt class="descclassname">hamcalc.construction.binhop.</tt><tt class="descname">Side</tt><a class="reference internal" href="../../_modules/hamcalc/construction/binhop.html#Side"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.construction.binhop.Side" title="Permalink to this definition">¶</a></dt>
+<dd><p>Side draw calculation.
+This is the <tt class="docutils literal"><span class="pre">.draw</span></tt> attribute of a <a class="reference internal" href="#hamcalc.construction.binhop.Hopper" title="hamcalc.construction.binhop.Hopper"><tt class="xref py py-class docutils literal"><span class="pre">Hopper</span></tt></a>.</p>
+<dl class="method">
+<dt id="hamcalc.construction.binhop.Side.angle">
+<tt class="descname">angle</tt><big>(</big><em>args</em><big>)</big><a class="reference internal" href="../../_modules/hamcalc/construction/binhop.html#Side.angle"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.construction.binhop.Side.angle" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the side-fed hopper angle.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>D</strong> &#8211; Outlet diameter D</li>
+<li><strong>H</strong> &#8211; Hopper height H</li>
+<li><strong>F</strong> &#8211; Bin Diameter F</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="quirks">
+<h2>Quirks<a class="headerlink" href="#quirks" title="Permalink to this headline">¶</a></h2>
+<p>Lines 1050 to 1170 seem inaccessible and unused.
+This may be code from an earlier version of <strong class="program">binvol</strong>, or
+perhaps a version of <strong class="program">binhop</strong> that was some kind of <strong>Solver</strong>.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+        </div>
+        <div class="sidebar">
+          <h3>Table Of Contents</h3>
+          <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../background.html">Background</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../legacy.html">The HamCalc Legacy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../python_architecture.html">Python Architecture</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Python Modules</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../lib.html">lib &#8211; Supporting Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../radio/index.html">radio &#8211; Radio Design and Engineering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ham/index.html">ham &#8211; Ham Radio Operations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../electronics/index.html">electronics &#8211; General Electronics</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">construction &#8211; Construction and Mechanical</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="arch.html">arch &#8211; Arch Calculator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="bend.html">bend &#8211; Bend Allowance, Metals</a></li>
+<li class="toctree-l3"><a class="reference internal" href="brick.html">brick &#8211; Masonry Estimator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="conecalc.html">conecalc &#8211; Cone Calculator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="diamfind.html">diamfind &#8211; Diameter Finder</a></li>
+<li class="toctree-l3"><a class="reference internal" href="guywires.html">guywires &#8211; Guy Wires for Antenna Towers/Masts</a></li>
+<li class="toctree-l3"><a class="reference internal" href="nmbrsize.html">nmbrsize &#8211; Numbered Drills/Screws/Taps/Gauges</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pipesize.html">pipesize &#8211; Pipe Sizes, ANSI Standard</a></li>
+<li class="toctree-l3"><a class="reference internal" href="survey.html">survey &#8211; Surveyor&#8217;s Calculator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="wirecond.html">wirecond &#8211; Wires in Conduit</a></li>
+<li class="toctree-l3"><a class="reference internal" href="wiremesh.html">wiremesh &#8211; Wire Mesh Screens, Wind Loads</a></li>
+<li class="toctree-l3"><a class="reference internal" href="beamdefl.html">beamdefl &#8211; BEAMS, Deflection in</a></li>
+<li class="toctree-l3"><a class="reference internal" href="beamsect.html">beamsect &#8211; BEAMS, Properties of (Start new beam design here)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="beltdriv.html">beltdriv &#8211;  Belt Drives</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chain.html">chain &#8211; Chain Drives</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cyl.html">cyl &#8211; Cylinders, Air &amp; Hydraulic</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gearing.html">gearing &#8211; Gears &amp; Gearing</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="">binhop &#8211; Hoppered Bins &amp; Tanks</a></li>
+<li class="toctree-l3"><a class="reference internal" href="binvol.html">binvol &#8211; Hoppered Bin Design</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../math/index.html">math &#8211; Math, Physics, Units Conversion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../navigation/index.html">navigation &#8211; Navigation and Astronomy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../calendar/index.html">calendar &#8211; Calendrical Calculations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../audio_photo.html">audio_photo &#8211; Audio, Sound and Photography</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../software.html">software &#8211; Software Engineering, Programming and Computers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../other/index.html">other &#8211; including Finance and Nutrition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../stdio.html">STDIO Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../rest.html">RESTful Web Services Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../cli.html">Command-Line Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../gui.html">GUI Interface</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../todo.html">The To Do List</a></li>
+</ul>
+
+          <h3 style="margin-top: 1.5em;">Search</h3>
+          <form class="search" action="../../search.html" method="get">
+            <input type="text" name="q" />
+            <input type="submit" value="Go" />
+            <input type="hidden" name="check_keywords" value="yes" />
+            <input type="hidden" name="area" value="default" />
+          </form>
+          <p class="searchtip" style="font-size: 90%">
+            Enter search terms or a module, class or function name.
+          </p>
+        </div>
+        <div class="clearer"></div>
+      </div>
+    </div>
+
+    <div class="footer-wrapper">
+      <div class="footer">
+        <div class="left">
+          <a href="gearing.html" title="gearing – Gears &amp; Gearing"
+             >previous</a> |
+          <a href="binvol.html" title="binvol – Hoppered Bin Design"
+             >next</a> |
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |
+          <a href="../../genindex.html" title="General Index"
+             >index</a>
+            <br/>
+            <a href="../../_sources/python/construction/binhop.txt"
+               rel="nofollow">Show Source</a>
+        </div>
+
+        <div class="right">
+          
+    <div class="footer">
+        &copy; Copyright 2013, S.Lott.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2b1.
+    </div>
+        </div>
+        <div class="clearer"></div>
+      </div>
+    </div>
+
+  </body>
+</html>

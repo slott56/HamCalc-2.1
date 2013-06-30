@@ -56,13 +56,37 @@
 <span class="sd">&gt;&gt;&gt; import hamcalc.construction.gearing as gearing</span>
 <span class="sd">&gt;&gt;&gt; D, E, C, R = gearing.design_gear_distances( P=35, A=92, B=189 )</span>
 <span class="sd">&gt;&gt;&gt; round(D,3)</span>
-<span class="sd">2.343</span>
+<span class="sd">2.629</span>
 <span class="sd">&gt;&gt;&gt; round(E,3)</span>
-<span class="sd">4.829</span>
+<span class="sd">5.4</span>
 <span class="sd">&gt;&gt;&gt; round(C,3)</span>
-<span class="sd">4.01</span>
+<span class="sd">4.014</span>
 <span class="sd">&gt;&gt;&gt; round(R,3)</span>
-<span class="sd">2.061</span>
+<span class="sd">2.054</span>
+
+<span class="sd">&gt;&gt;&gt; import hamcalc.construction.gearing as gearing</span>
+<span class="sd">&gt;&gt;&gt; choices= list( gearing.design_teeth_iter( P=35, K=3500, S=1700, C=4 ) )</span>
+<span class="sd">&gt;&gt;&gt; len(choices)</span>
+<span class="sd">9</span>
+<span class="sd">&gt;&gt;&gt; choices[0][0]</span>
+<span class="sd">88</span>
+<span class="sd">&gt;&gt;&gt; choices[0][1]</span>
+<span class="sd">181</span>
+<span class="sd">&gt;&gt;&gt; round(choices[0][2],3)</span>
+<span class="sd">3.843</span>
+<span class="sd">&gt;&gt;&gt; round(choices[0][3],2)</span>
+<span class="sd">1701.66</span>
+<span class="sd">&gt;&gt;&gt; round(choices[4][3],2)</span>
+<span class="sd">1703.7</span>
+<span class="sd">&gt;&gt;&gt; round(choices[8][3],2)</span>
+<span class="sd">1696.97</span>
+
+<span class="sd">&gt;&gt;&gt; import hamcalc.construction.gearing as gearing</span>
+<span class="sd">&gt;&gt;&gt; torque= gearing.torque( 80, 3500, 1703.7 )</span>
+<span class="sd">&gt;&gt;&gt; round(torque[0])</span>
+<span class="sd">1441</span>
+<span class="sd">&gt;&gt;&gt; round(torque[1])</span>
+<span class="sd">2959</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
 
@@ -94,10 +118,29 @@
     <span class="n">R</span> <span class="o">=</span> <span class="n">A</span><span class="o">/</span><span class="n">B</span> <span class="k">if</span> <span class="n">A</span><span class="o">/</span><span class="n">B</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="k">else</span> <span class="n">B</span><span class="o">/</span><span class="n">A</span>
     <span class="k">return</span> <span class="n">D</span><span class="p">,</span> <span class="n">E</span><span class="p">,</span> <span class="n">C</span><span class="p">,</span> <span class="n">R</span>
 </div>
+<div class="viewcode-block" id="design_from_A"><a class="viewcode-back" href="../../../python/construction/gearing.html#hamcalc.construction.gearing.design_from_A">[docs]</a><span class="k">def</span> <span class="nf">design_from_A</span><span class="p">(</span> <span class="n">P</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">K</span><span class="p">,</span> <span class="n">S</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Given a Diametrical Pitch, *P*,</span>
+<span class="sd">    a gear size *A*, and</span>
+<span class="sd">    pair of RPMs, *K* and *S* compute the other gear&#39;s</span>
+<span class="sd">    information.</span>
+
+<span class="sd">    :param P: Diametrical pitch, must not be zero</span>
+<span class="sd">    :param A: No. of teeth - Gear A</span>
+<span class="sd">    :param K: Known RPM</span>
+<span class="sd">    :param S: Known RPM</span>
+<span class="sd">    :return: A, B, C and S: given A, calculated B,</span>
+<span class="sd">        center-to-center, *C* and RPM, *S*.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">R</span> <span class="o">=</span> <span class="n">K</span><span class="o">/</span><span class="n">S</span>
+    <span class="n">B</span><span class="o">=</span> <span class="nb">int</span><span class="p">(</span> <span class="n">A</span><span class="o">*</span><span class="n">R</span> <span class="o">+.</span><span class="mi">5</span> <span class="p">)</span>
+    <span class="n">C_alt</span><span class="o">=</span> <span class="p">(</span><span class="n">A</span><span class="o">+</span><span class="n">B</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">P</span><span class="p">)</span>
+    <span class="n">S_alt</span><span class="o">=</span> <span class="n">A</span><span class="o">*</span><span class="n">K</span><span class="o">/</span><span class="n">B</span>
+    <span class="k">return</span> <span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">,</span> <span class="n">C_alt</span><span class="p">,</span> <span class="n">S_alt</span>
+</div>
 <div class="viewcode-block" id="design_teeth_iter"><a class="viewcode-back" href="../../../python/construction/gearing.html#hamcalc.construction.gearing.design_teeth_iter">[docs]</a><span class="k">def</span> <span class="nf">design_teeth_iter</span><span class="p">(</span> <span class="n">P</span><span class="p">,</span> <span class="n">K</span><span class="p">,</span> <span class="n">S</span><span class="p">,</span> <span class="n">C</span><span class="p">,</span> <span class="n">offset</span><span class="o">=</span><span class="mi">4</span> <span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Given a Diametrical Pitch, *P*, plus two gear RPM&#39;s</span>
 <span class="sd">    *K*, and *S*, as well as a desired Center-to-center</span>
-<span class="sd">    distance, compute</span>
+<span class="sd">    distance, *C*, compute</span>
 <span class="sd">    suggested gear sizes and center-to-center spacing.</span>
 
 <span class="sd">    :param P: Diametrical pitch, must not be zero</span>
@@ -109,15 +152,29 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">K</span><span class="p">,</span> <span class="n">S</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span> <span class="n">K</span><span class="p">,</span> <span class="n">S</span> <span class="p">),</span> <span class="nb">min</span><span class="p">(</span> <span class="n">K</span><span class="p">,</span> <span class="n">S</span> <span class="p">)</span>
     <span class="n">R</span> <span class="o">=</span> <span class="n">K</span><span class="o">/</span><span class="n">S</span>
-    <span class="n">A</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span> <span class="mi">2</span><span class="o">*</span><span class="n">P</span><span class="o">*</span><span class="n">C</span><span class="o">/</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="n">R</span><span class="p">)</span> <span class="o">+</span> <span class="o">.</span><span class="mi">5</span> <span class="p">)</span>
+    <span class="n">A</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span> <span class="mi">2</span><span class="o">*</span><span class="n">P</span><span class="o">*</span><span class="n">C</span><span class="o">/</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="n">R</span><span class="p">)</span> <span class="o">+.</span><span class="mi">5</span> <span class="p">)</span>
     <span class="k">if</span> <span class="n">A</span> <span class="o">&lt;</span> <span class="mi">8</span><span class="p">:</span>
         <span class="k">raise</span> <span class="n">GearTooSmall</span>
     <span class="k">for</span> <span class="n">Y</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">A</span><span class="o">-</span><span class="n">offset</span><span class="p">,</span><span class="n">A</span><span class="o">+</span><span class="n">offset</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
-        <span class="n">A</span><span class="o">=</span> <span class="n">Y</span>
-        <span class="n">B</span><span class="o">=</span> <span class="nb">int</span><span class="p">(</span> <span class="n">A</span><span class="o">*</span><span class="n">R</span> <span class="o">+.</span><span class="mi">5</span> <span class="p">)</span>
-        <span class="n">C</span><span class="o">=</span> <span class="nb">int</span><span class="p">(</span> <span class="p">(</span><span class="n">A</span><span class="o">+</span><span class="n">B</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">P</span><span class="p">)</span> <span class="o">+.</span><span class="mi">5</span> <span class="p">)</span>
-        <span class="n">S_alt</span><span class="o">=</span> <span class="n">B</span><span class="o">*</span><span class="n">S</span><span class="o">/</span><span class="n">A</span>
-        <span class="k">yield</span> <span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">,</span> <span class="n">C</span><span class="p">,</span> <span class="n">S_alt</span></div>
+        <span class="k">yield</span> <span class="n">design_from_A</span><span class="p">(</span> <span class="n">P</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">K</span><span class="p">,</span> <span class="n">S</span> <span class="p">)</span>
+        <span class="c">#B= int( Y*R +.5 )</span>
+        <span class="c">#C_alt= (Y+B)/(2*P)</span>
+        <span class="c">#S_alt= Y*K/B</span>
+        <span class="c">#yield Y, B, C_alt, S_alt</span>
+</div>
+<div class="viewcode-block" id="torque"><a class="viewcode-back" href="../../../python/construction/gearing.html#hamcalc.construction.gearing.torque">[docs]</a><span class="k">def</span> <span class="nf">torque</span><span class="p">(</span> <span class="n">H</span><span class="p">,</span> <span class="n">K</span><span class="p">,</span> <span class="n">S</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Given two gear RPM&#39;s</span>
+<span class="sd">    *K*, and *S*, as well as horsepower rating, *H*, compute</span>
+<span class="sd">    torque on each gear.</span>
+
+<span class="sd">    :param K: Known RPM</span>
+<span class="sd">    :param S: Sought RPM</span>
+<span class="sd">    :param H: Horsepower</span>
+<span class="sd">    :returns: torque on each gear as a 2-tuple.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">I</span><span class="o">=</span><span class="mi">63025</span><span class="o">*</span><span class="n">H</span><span class="o">/</span><span class="n">K</span>
+    <span class="n">J</span><span class="o">=</span><span class="mi">63025</span><span class="o">*</span><span class="n">H</span><span class="o">/</span><span class="n">S</span>
+    <span class="k">return</span> <span class="n">I</span><span class="p">,</span> <span class="n">J</span></div>
 </pre></div>
 
           </div>
