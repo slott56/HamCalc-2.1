@@ -25,7 +25,7 @@
     <script type="text/javascript" src="../../_static/doctools.js"></script>
     <link rel="top" title="HamCalc 2.1 documentation" href="../../index.html" />
     <link rel="up" title="construction – Construction and Mechanical" href="index.html" />
-    <link rel="next" title="math – Math, Physics, Units Conversion" href="../math/index.html" />
+    <link rel="next" title="binhop – Hoppered Bins &amp; Tanks" href="binhop.html" />
     <link rel="prev" title="cyl – Cylinders, Air &amp; Hydraulic" href="cyl.html" /> 
   </head>
   <body>
@@ -36,7 +36,7 @@
         <div class="rel">
           <a href="cyl.html" title="cyl – Cylinders, Air &amp; Hydraulic"
              accesskey="P">previous</a> |
-          <a href="../math/index.html" title="math – Math, Physics, Units Conversion"
+          <a href="binhop.html" title="binhop – Hoppered Bins &amp; Tanks"
              accesskey="N">next</a> |
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |
@@ -232,11 +232,64 @@ can be displayed, including shaft torque.</p>
 <span class="go">2.054</span>
 </pre></div>
 </div>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">hamcalc.construction.gearing</span> <span class="kn">as</span> <span class="nn">gearing</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">choices</span><span class="o">=</span> <span class="nb">list</span><span class="p">(</span> <span class="n">gearing</span><span class="o">.</span><span class="n">design_teeth_iter</span><span class="p">(</span> <span class="n">P</span><span class="o">=</span><span class="mi">35</span><span class="p">,</span> <span class="n">K</span><span class="o">=</span><span class="mi">3500</span><span class="p">,</span> <span class="n">S</span><span class="o">=</span><span class="mi">1700</span><span class="p">,</span> <span class="n">C</span><span class="o">=</span><span class="mi">4</span> <span class="p">)</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">choices</span><span class="p">)</span>
+<span class="go">9</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">choices</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+<span class="go">88</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">choices</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+<span class="go">181</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">choices</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">2</span><span class="p">],</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">3.843</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">choices</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">3</span><span class="p">],</span><span class="mi">2</span><span class="p">)</span>
+<span class="go">1701.66</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">choices</span><span class="p">[</span><span class="mi">4</span><span class="p">][</span><span class="mi">3</span><span class="p">],</span><span class="mi">2</span><span class="p">)</span>
+<span class="go">1703.7</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">choices</span><span class="p">[</span><span class="mi">8</span><span class="p">][</span><span class="mi">3</span><span class="p">],</span><span class="mi">2</span><span class="p">)</span>
+<span class="go">1696.97</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">hamcalc.construction.gearing</span> <span class="kn">as</span> <span class="nn">gearing</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">torque</span><span class="o">=</span> <span class="n">gearing</span><span class="o">.</span><span class="n">torque</span><span class="p">(</span> <span class="mi">80</span><span class="p">,</span> <span class="mi">3500</span><span class="p">,</span> <span class="mf">1703.7</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">torque</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="go">1441</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">torque</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+<span class="go">2959</span>
+</pre></div>
+</div>
 <dl class="exception">
 <dt id="hamcalc.construction.gearing.GearTooSmall">
 <em class="property">exception </em><tt class="descclassname">hamcalc.construction.gearing.</tt><tt class="descname">GearTooSmall</tt><a class="reference internal" href="../../_modules/hamcalc/construction/gearing.html#GearTooSmall"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.construction.gearing.GearTooSmall" title="Permalink to this definition">¶</a></dt>
 <dd><p>This exception is raised when a selected gear pair
 can&#8217;t fit the minimum gear teeth requirements.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="hamcalc.construction.gearing.design_from_A">
+<tt class="descclassname">hamcalc.construction.gearing.</tt><tt class="descname">design_from_A</tt><big>(</big><em>P</em>, <em>A</em>, <em>K</em>, <em>S</em><big>)</big><a class="reference internal" href="../../_modules/hamcalc/construction/gearing.html#design_from_A"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.construction.gearing.design_from_A" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given a Diametrical Pitch, <em>P</em>,
+a gear size <em>A</em>, and
+pair of RPMs, <em>K</em> and <em>S</em> compute the other gear&#8217;s
+information.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>P</strong> &#8211; Diametrical pitch, must not be zero</li>
+<li><strong>A</strong> &#8211; No. of teeth - Gear A</li>
+<li><strong>K</strong> &#8211; Known RPM</li>
+<li><strong>S</strong> &#8211; Known RPM</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">A, B, C and S: given A, calculated B,
+center-to-center, <em>C</em> and RPM, <em>S</em>.</p>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="function">
@@ -269,13 +322,13 @@ center-to-center distance and actual ratio.</p>
 <tt class="descclassname">hamcalc.construction.gearing.</tt><tt class="descname">design_teeth_iter</tt><big>(</big><em>P</em>, <em>K</em>, <em>S</em>, <em>C</em>, <em>offset=4</em><big>)</big><a class="reference internal" href="../../_modules/hamcalc/construction/gearing.html#design_teeth_iter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.construction.gearing.design_teeth_iter" title="Permalink to this definition">¶</a></dt>
 <dd><p>Given a Diametrical Pitch, <em>P</em>, plus two gear RPM&#8217;s
 <em>K</em>, and <em>S</em>, as well as a desired Center-to-center
-distance, compute
+distance, <em>C</em>, compute
 suggested gear sizes and center-to-center spacing.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>P</strong> &#8211; Diametrical pitch, must not be zero</li>
 <li><strong>K</strong> &#8211; Known RPM</li>
 <li><strong>S</strong> &#8211; Sought RPM</li>
@@ -283,12 +336,36 @@ suggested gear sizes and center-to-center spacing.</p>
 </ul>
 </td>
 </tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">4-tuples of A, B teeth count, C c-to-c distance and S,
+RPM &#8220;sought&#8221;.</p>
+</td>
+</tr>
 </tbody>
 </table>
-<dl class="docutils">
-<dt>yields 4-tuples of A, B teeth count, C c-to-c distance and S,</dt>
-<dd>RPM &#8220;sought&#8221;.</dd>
-</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="hamcalc.construction.gearing.torque">
+<tt class="descclassname">hamcalc.construction.gearing.</tt><tt class="descname">torque</tt><big>(</big><em>H</em>, <em>K</em>, <em>S</em><big>)</big><a class="reference internal" href="../../_modules/hamcalc/construction/gearing.html#torque"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.construction.gearing.torque" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given two gear RPM&#8217;s
+<em>K</em>, and <em>S</em>, as well as horsepower rating, <em>H</em>, compute
+torque on each gear.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>K</strong> &#8211; Known RPM</li>
+<li><strong>S</strong> &#8211; Sought RPM</li>
+<li><strong>H</strong> &#8211; Horsepower</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">torque on each gear as a 2-tuple.</p>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 </div>
@@ -346,6 +423,8 @@ And there are three overlapping lines of code (340, 350 and 360).</p>
 <li class="toctree-l3"><a class="reference internal" href="chain.html">chain &#8211; Chain Drives</a></li>
 <li class="toctree-l3"><a class="reference internal" href="cyl.html">cyl &#8211; Cylinders, Air &amp; Hydraulic</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="">gearing &#8211; Gears &amp; Gearing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="binhop.html">binhop &#8211; Hoppered Bins &amp; Tanks</a></li>
+<li class="toctree-l3"><a class="reference internal" href="binvol.html">binvol &#8211; Hoppered Bin Design</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../math/index.html">math &#8211; Math, Physics, Units Conversion</a></li>
@@ -385,7 +464,7 @@ And there are three overlapping lines of code (340, 350 and 360).</p>
         <div class="left">
           <a href="cyl.html" title="cyl – Cylinders, Air &amp; Hydraulic"
              >previous</a> |
-          <a href="../math/index.html" title="math – Math, Physics, Units Conversion"
+          <a href="binhop.html" title="binhop – Hoppered Bins &amp; Tanks"
              >next</a> |
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |

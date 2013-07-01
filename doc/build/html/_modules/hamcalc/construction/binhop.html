@@ -51,9 +51,23 @@
   <h1>Source code for hamcalc.construction.binhop</h1><div class="highlight"><pre>
 <span class="sd">&quot;&quot;&quot;hamcalc.construction.binhop</span>
 
-<span class="sd">Calculate volumes of hoppered bins.</span>
+<span class="sd">Calculate volumes of hoppered bins as well as support design of bins.</span>
 
-<span class="sd">There are two functions defined:</span>
+<span class="sd">Analysis</span>
+<span class="sd">----------</span>
+
+<span class="sd">There are two functions defined from :class:`Rectangular`</span>
+<span class="sd">and :class:`Cylindrical`. These functions don&#39;t have the</span>
+<span class="sd">:data:`draw` variable set, so there&#39;s a two-step use case.</span>
+
+<span class="sd">1.  Set :data:`draw`.</span>
+
+<span class="sd">2.  Calculate.</span>
+
+<span class="sd">Example::</span>
+
+<span class="sd">    rectangular.draw= Center()</span>
+<span class="sd">    rectangular( D=3, E=8, H=12, F=12, G=12, J=12 )</span>
 
 <span class="sd">..  function:: rectangular( D, E, F, G, H, J )</span>
 
@@ -95,7 +109,7 @@
 <span class="sd">        :Z: Total Volume</span>
 <span class="sd">        :N: Min Hopper Slope</span>
 
-<span class="sd">Test Case:</span>
+<span class="sd">Test Case for analysis:</span>
 
 <span class="sd">&gt;&gt;&gt; import hamcalc.construction.binhop as binhop</span>
 <span class="sd">&gt;&gt;&gt; rect = binhop.Rectangular( draw=binhop.Center() )</span>
@@ -111,11 +125,43 @@
 <span class="sd">&gt;&gt;&gt; rect.name()</span>
 <span class="sd">&#39;Rectangular Bin, Center Draw Hopper&#39;</span>
 
+<span class="sd">Design</span>
+<span class="sd">--------</span>
+
+<span class="sd">The :func:`design_hopper` and :func:`design_final` functions</span>
+<span class="sd">support design. These require a :class:`Shape` object,</span>
+<span class="sd">either :class:`Square` or :class:`Circle`.</span>
+
+<span class="sd">Test Case for design:</span>
+
+<span class="sd">&gt;&gt;&gt; import hamcalc.construction.binhop as binhop</span>
+<span class="sd">&gt;&gt;&gt; result= binhop.design_hopper( binhop.Square(), V=2900, N=70, D=5 )</span>
+<span class="sd">&gt;&gt;&gt; round(result.V_H)</span>
+<span class="sd">2900</span>
+<span class="sd">&gt;&gt;&gt; round(result.F,3)</span>
+<span class="sd">18.622</span>
+<span class="sd">&gt;&gt;&gt; round(result.H,3)</span>
+<span class="sd">18.714</span>
+
+<span class="sd">&gt;&gt;&gt; final= binhop.design_final( binhop.Square(), V=2900, N=70, D=5, M=36, H=18.714, F=18.622, V_H=2900 )</span>
+<span class="sd">&gt;&gt;&gt; round(final.V_T)</span>
+<span class="sd">2900</span>
+<span class="sd">&gt;&gt;&gt; round(final.V_H)</span>
+<span class="sd">2567</span>
+<span class="sd">&gt;&gt;&gt; round(final.V_B)</span>
+<span class="sd">333</span>
+<span class="sd">&gt;&gt;&gt; round(final.J,3)</span>
+<span class="sd">1.041</span>
+<span class="sd">&gt;&gt;&gt; round(final.H,3)</span>
+<span class="sd">17.714</span>
+
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="kn">from</span> <span class="nn">hamcalc.lib</span> <span class="kn">import</span> <span class="n">Solver</span>
+<span class="kn">from</span> <span class="nn">hamcalc.lib</span> <span class="kn">import</span> <span class="n">Solver</span><span class="p">,</span> <span class="n">AttrDict</span>
+<span class="kn">from</span> <span class="nn">hamcalc.math.propcirc</span> <span class="kn">import</span> <span class="n">bisection</span>
 <span class="kn">import</span> <span class="nn">math</span>
 
-<span class="n">introduction</span><span class="o">=</span> <span class="s">&quot;&quot;&quot;</span><span class="se">\</span>
+<span class="n">introduction</span><span class="o">=</span> <span class="p">{}</span>
+<span class="n">introduction</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">=</span> <span class="s">&quot;&quot;&quot;</span><span class="se">\</span>
 <span class="s">HOPPERED BIN ANALYSIS                                  by George Murphy, VE3ERP</span>
 
 
@@ -133,8 +179,27 @@
 <span class="s"> bearing in mind that the calculated results will be in the same units.</span>
 <span class="s">&quot;&quot;&quot;</span>
 
-<span class="k">def</span> <span class="nf">intro</span><span class="p">():</span>
-    <span class="k">return</span> <span class="n">introduction</span>
+<span class="n">introduction</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">=</span> <span class="s">&quot;&quot;&quot;</span><span class="se">\</span>
+<span class="s">HOPPERED BIN DESIGN                                            by George Murphy</span>
+
+
+<span class="s">     │«─── F ───»│</span>
+<span class="s">  ┌─»┌───────────┐«─┐</span>
+<span class="s">  │  │    bin    │  J</span>
+<span class="s">  │  └───────────┘«─┤</span>
+<span class="s">  M   \         /   │</span>
+<span class="s">  │    \hopper /    H</span>
+<span class="s">  │     \     /     │</span>
+<span class="s">  └─────»└───┘«─────┘</span>
+<span class="s">         │«D»│</span>
+
+<span class="s"> This program calculates dimensions of hoppered bins and tanks of any cubic</span>
+<span class="s"> capcacity. Dimensions can be entered in any units of measure, bearing in mind</span>
+<span class="s"> that the calculated results will be in the same units.</span>
+<span class="s">&quot;&quot;&quot;</span>
+
+<span class="k">def</span> <span class="nf">intro</span><span class="p">(</span> <span class="n">op</span><span class="o">=</span><span class="mi">1</span> <span class="p">):</span>
+    <span class="k">return</span> <span class="n">introduction</span><span class="p">[</span><span class="n">op</span><span class="p">]</span>
 
 <div class="viewcode-block" id="Draw"><a class="viewcode-back" href="../../../python/construction/binhop.html#hamcalc.construction.binhop.Draw">[docs]</a><span class="k">class</span> <span class="nc">Draw</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Strategy class definition for draw placement.</span>
@@ -199,7 +264,7 @@
         <span class="k">return</span> <span class="n">args</span>
 </div>
 <div class="viewcode-block" id="Rectangular"><a class="viewcode-back" href="../../../python/construction/binhop.html#hamcalc.construction.binhop.Rectangular">[docs]</a><span class="k">class</span> <span class="nc">Rectangular</span><span class="p">(</span> <span class="n">Hopper</span> <span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Rectangular Hopper.&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;Rectangular Hopper analysis.&quot;&quot;&quot;</span>
 <div class="viewcode-block" id="Rectangular.hopper_section"><a class="viewcode-back" href="../../../python/construction/binhop.html#hamcalc.construction.binhop.Rectangular.hopper_section">[docs]</a>    <span class="k">def</span> <span class="nf">hopper_section</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">args</span> <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Hopper cross section area.</span>
 
@@ -216,7 +281,7 @@
         <span class="k">return</span> <span class="n">args</span><span class="o">.</span><span class="n">F</span> <span class="o">*</span> <span class="n">args</span><span class="o">.</span><span class="n">G</span>
 </div></div>
 <div class="viewcode-block" id="Cylindrical"><a class="viewcode-back" href="../../../python/construction/binhop.html#hamcalc.construction.binhop.Cylindrical">[docs]</a><span class="k">class</span> <span class="nc">Cylindrical</span><span class="p">(</span> <span class="n">Hopper</span> <span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Cylindrical Hopper.&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;Cylindrical Hopper analysis.&quot;&quot;&quot;</span>
 <div class="viewcode-block" id="Cylindrical.hopper_section"><a class="viewcode-back" href="../../../python/construction/binhop.html#hamcalc.construction.binhop.Cylindrical.hopper_section">[docs]</a>    <span class="k">def</span> <span class="nf">hopper_section</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">args</span> <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Hopper cross section area.</span>
 
@@ -232,6 +297,94 @@
 </div></div>
 <span class="n">rectangular</span><span class="o">=</span> <span class="n">Rectangular</span><span class="p">()</span>
 <span class="n">cylindrical</span><span class="o">=</span> <span class="n">Cylindrical</span><span class="p">()</span>
+
+<div class="viewcode-block" id="Shape"><a class="viewcode-back" href="../../../python/construction/binhop.html#hamcalc.construction.binhop.Shape">[docs]</a><span class="k">class</span> <span class="nc">Shape</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;A shape for hopper design purposes.</span>
+<span class="sd">    An instance is provided to :func:`design_hopper`</span>
+<span class="sd">    or :func:`design_final`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="Shape.volume"><a class="viewcode-back" href="../../../python/construction/binhop.html#hamcalc.construction.binhop.Shape.volume">[docs]</a>    <span class="k">def</span> <span class="nf">volume</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">args</span> <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Compute Hopper Volume, V_H, from H, N and D.&quot;&quot;&quot;</span>
+        <span class="k">pass</span></div>
+<div class="viewcode-block" id="Shape.area"><a class="viewcode-back" href="../../../python/construction/binhop.html#hamcalc.construction.binhop.Shape.area">[docs]</a>    <span class="k">def</span> <span class="nf">area</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">args</span> <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Compute area, A, from diameter (or size), D, H, and angle, N.&quot;&quot;&quot;</span>
+        <span class="k">pass</span></div>
+<div class="viewcode-block" id="Shape.height"><a class="viewcode-back" href="../../../python/construction/binhop.html#hamcalc.construction.binhop.Shape.height">[docs]</a>    <span class="k">def</span> <span class="nf">height</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">args</span> <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Compute total height, K, and many other things,</span>
+<span class="sd">        from D, H and N.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">volume</span><span class="p">(</span> <span class="n">args</span> <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">area</span><span class="p">(</span> <span class="n">args</span> <span class="p">)</span>
+        <span class="n">args</span><span class="o">.</span><span class="n">V_B</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">V</span> <span class="o">-</span> <span class="n">args</span><span class="o">.</span><span class="n">V_H</span>
+        <span class="n">args</span><span class="o">.</span><span class="n">J</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">V_B</span> <span class="o">/</span> <span class="n">args</span><span class="o">.</span><span class="n">A</span>
+        <span class="n">args</span><span class="o">.</span><span class="n">K</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">H</span> <span class="o">+</span> <span class="n">args</span><span class="o">.</span><span class="n">J</span>
+        <span class="n">args</span><span class="o">.</span><span class="n">V_T</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">V_H</span> <span class="o">+</span> <span class="n">args</span><span class="o">.</span><span class="n">V_B</span>
+        <span class="k">return</span> <span class="n">args</span>
+</div></div>
+<div class="viewcode-block" id="Square"><a class="viewcode-back" href="../../../python/construction/binhop.html#hamcalc.construction.binhop.Square">[docs]</a><span class="k">class</span> <span class="nc">Square</span><span class="p">(</span> <span class="n">Shape</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Design a square-shaped bin and hopper.&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="Square.volume"><a class="viewcode-back" href="../../../python/construction/binhop.html#hamcalc.construction.binhop.Square.volume">[docs]</a>    <span class="k">def</span> <span class="nf">volume</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">args</span> <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Compute Hopper Volume, V_H, from H, N and D.&quot;&quot;&quot;</span>
+        <span class="n">E</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">H</span><span class="o">/</span><span class="n">math</span><span class="o">.</span><span class="n">tan</span><span class="p">(</span> <span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">N</span><span class="p">)</span> <span class="p">)</span>
+        <span class="n">args</span><span class="o">.</span><span class="n">F</span> <span class="o">=</span> <span class="mi">2</span><span class="o">*</span><span class="n">E</span> <span class="o">+</span> <span class="n">args</span><span class="o">.</span><span class="n">D</span>
+        <span class="n">args</span><span class="o">.</span><span class="n">V_H</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">H</span><span class="o">/</span><span class="mi">3</span><span class="o">*</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">F</span><span class="o">**</span><span class="mi">2</span><span class="o">+</span><span class="n">args</span><span class="o">.</span><span class="n">D</span><span class="o">**</span><span class="mi">2</span><span class="o">+</span><span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">F</span><span class="o">**</span><span class="mi">2</span><span class="o">*</span><span class="n">args</span><span class="o">.</span><span class="n">D</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">args</span></div>
+<div class="viewcode-block" id="Square.area"><a class="viewcode-back" href="../../../python/construction/binhop.html#hamcalc.construction.binhop.Square.area">[docs]</a>    <span class="k">def</span> <span class="nf">area</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">args</span> <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Compute bin area, A, from bin size, F.&quot;&quot;&quot;</span>
+        <span class="n">args</span><span class="o">.</span><span class="n">A</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">F</span><span class="o">**</span><span class="mi">2</span>
+        <span class="k">return</span> <span class="n">args</span>
+</div></div>
+<div class="viewcode-block" id="Circle"><a class="viewcode-back" href="../../../python/construction/binhop.html#hamcalc.construction.binhop.Circle">[docs]</a><span class="k">class</span> <span class="nc">Circle</span><span class="p">(</span> <span class="n">Shape</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Design a circular bin and hopper.&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="Circle.volume"><a class="viewcode-back" href="../../../python/construction/binhop.html#hamcalc.construction.binhop.Circle.volume">[docs]</a>    <span class="k">def</span> <span class="nf">volume</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">args</span> <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Compute Hopper Volume, V_H, from H, N and D.&quot;&quot;&quot;</span>
+        <span class="n">E</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">H</span><span class="o">/</span><span class="n">math</span><span class="o">.</span><span class="n">tan</span><span class="p">(</span> <span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">N</span><span class="p">)</span> <span class="p">)</span>
+        <span class="n">args</span><span class="o">.</span><span class="n">F</span> <span class="o">=</span> <span class="mi">2</span><span class="o">*</span><span class="n">E</span> <span class="o">+</span> <span class="n">args</span><span class="o">.</span><span class="n">D</span>
+        <span class="n">args</span><span class="o">.</span><span class="n">V_H</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">12</span><span class="o">*</span><span class="n">args</span><span class="o">.</span><span class="n">H</span><span class="o">*</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">F</span><span class="o">**</span><span class="mi">2</span><span class="o">+</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">F</span><span class="o">*</span><span class="n">args</span><span class="o">.</span><span class="n">D</span><span class="p">)</span><span class="o">+</span><span class="n">args</span><span class="o">.</span><span class="n">D</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">args</span></div>
+<div class="viewcode-block" id="Circle.area"><a class="viewcode-back" href="../../../python/construction/binhop.html#hamcalc.construction.binhop.Circle.area">[docs]</a>    <span class="k">def</span> <span class="nf">area</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">args</span> <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Compute bin area, A, from bin size, F.&quot;&quot;&quot;</span>
+        <span class="n">args</span><span class="o">.</span><span class="n">A</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span><span class="o">*</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">F</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span>
+        <span class="k">return</span> <span class="n">args</span>
+</div></div>
+<div class="viewcode-block" id="design_hopper"><a class="viewcode-back" href="../../../python/construction/binhop.html#hamcalc.construction.binhop.design_hopper">[docs]</a><span class="k">def</span> <span class="nf">design_hopper</span><span class="p">(</span> <span class="n">shape</span><span class="p">,</span> <span class="o">**</span><span class="n">args</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Given a shape (Square or Circle),</span>
+<span class="sd">    and some parameters, initial design with</span>
+<span class="sd">    minimum height, H, for the hopper.</span>
+
+<span class="sd">    :param V: target volume</span>
+<span class="sd">    :param N: given angle</span>
+<span class="sd">    :param D: given size or diameter</span>
+<span class="sd">    :returns: dict with design parameters added.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">args</span><span class="o">=</span> <span class="n">AttrDict</span><span class="p">(</span> <span class="n">args</span> <span class="p">)</span>
+    <span class="k">def</span> <span class="nf">hopper_vol_from_h</span><span class="p">(</span> <span class="n">H</span> <span class="p">):</span>
+        <span class="n">args</span><span class="o">.</span><span class="n">H</span> <span class="o">=</span> <span class="n">H</span>
+        <span class="n">shape</span><span class="o">.</span><span class="n">volume</span><span class="p">(</span> <span class="n">args</span> <span class="p">)</span>
+        <span class="k">return</span> <span class="n">args</span><span class="o">.</span><span class="n">V</span> <span class="o">-</span> <span class="n">args</span><span class="o">.</span><span class="n">V_H</span>
+    <span class="c"># In principle, we should develop a rational upper limit.</span>
+    <span class="c"># The overall volume, though, is a good estimator for the</span>
+    <span class="c"># upper bound.</span>
+    <span class="n">args</span><span class="o">.</span><span class="n">H</span> <span class="o">=</span> <span class="n">bisection</span><span class="p">(</span> <span class="n">hopper_vol_from_h</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">V</span> <span class="p">)</span>
+    <span class="k">return</span> <span class="n">args</span>
+</div>
+<div class="viewcode-block" id="design_final"><a class="viewcode-back" href="../../../python/construction/binhop.html#hamcalc.construction.binhop.design_final">[docs]</a><span class="k">def</span> <span class="nf">design_final</span><span class="p">(</span> <span class="n">shape</span><span class="p">,</span> <span class="o">**</span><span class="n">args</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Given a shape (Square or Circle),</span>
+<span class="sd">    and some parameters, final design.</span>
+
+<span class="sd">    :param V: target volume</span>
+<span class="sd">    :param N: given angle</span>
+<span class="sd">    :param D: given size or diameter</span>
+<span class="sd">    :param M: hopper height, larger than the minimum</span>
+<span class="sd">    :returns: dict with design parameters added.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">args</span><span class="o">=</span> <span class="n">AttrDict</span><span class="p">(</span> <span class="n">args</span> <span class="p">)</span>
+    <span class="k">def</span> <span class="nf">height_from_h</span><span class="p">(</span> <span class="n">H</span> <span class="p">):</span>
+        <span class="n">args</span><span class="o">.</span><span class="n">H</span> <span class="o">=</span> <span class="n">H</span>
+        <span class="n">shape</span><span class="o">.</span><span class="n">height</span><span class="p">(</span> <span class="n">args</span> <span class="p">)</span>
+        <span class="k">return</span> <span class="n">args</span><span class="o">.</span><span class="n">K</span> <span class="o">-</span> <span class="n">args</span><span class="o">.</span><span class="n">M</span>
+    <span class="n">args</span><span class="o">.</span><span class="n">H</span> <span class="o">=</span> <span class="n">bisection</span><span class="p">(</span> <span class="n">height_from_h</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">M</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">H</span><span class="o">-</span><span class="mi">1</span> <span class="p">)</span>
+    <span class="k">return</span> <span class="n">args</span></div>
 </pre></div>
 
           </div>

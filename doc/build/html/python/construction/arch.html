@@ -348,18 +348,26 @@ second, comute all remaining derived values from the essential values.</p>
 </div>
 <p>Here&#8217;s an incomplete example, showing how things can&#8217;t be computed
 from an incomplete set of parameters.</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">c</span><span class="o">=</span> <span class="n">arch</span><span class="o">.</span><span class="n">arch</span><span class="p">(</span> <span class="n">R</span><span class="o">=</span><span class="mi">13</span> <span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">c</span><span class="o">.</span><span class="n">A_d</span> <span class="ow">is</span> <span class="bp">None</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">hamcalc.lib</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">c</span><span class="o">=</span> <span class="n">arch</span><span class="o">.</span><span class="n">arch</span><span class="p">(</span> <span class="n">R</span><span class="o">=</span><span class="mi">13</span> <span class="p">)</span>
+<span class="gt">Traceback (most recent call last):</span>
+   <span class="c">...</span>
+<span class="gr">hamcalc.lib.NoSolutionError</span>: <span class="n"> (&quot;Can&#39;t compute&quot;, {&#39;R&#39;: 13, &#39;D&#39;: 26, &#39;AR&#39;: 530.929158456675, &#39;C_F&#39;: 81.68140899333463})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">try</span><span class="p">:</span>
+<span class="gp">... </span>   <span class="n">c</span><span class="o">=</span> <span class="n">arch</span><span class="o">.</span><span class="n">arch</span><span class="p">(</span> <span class="n">R</span><span class="o">=</span><span class="mi">13</span> <span class="p">)</span>
+<span class="gp">... </span><span class="k">except</span> <span class="n">hamcalc</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">NoSolutionError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+<span class="gp">... </span>   <span class="n">msg</span><span class="p">,</span> <span class="n">args</span> <span class="o">=</span> <span class="n">e</span><span class="o">.</span><span class="n">args</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">args</span><span class="o">.</span><span class="n">A_d</span> <span class="ow">is</span> <span class="bp">None</span>
 <span class="go">True</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">c</span><span class="o">.</span><span class="n">B</span> <span class="ow">is</span> <span class="bp">None</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">args</span><span class="o">.</span><span class="n">B</span> <span class="ow">is</span> <span class="bp">None</span>
 <span class="go">True</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">c</span><span class="o">.</span><span class="n">C</span> <span class="ow">is</span> <span class="bp">None</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">args</span><span class="o">.</span><span class="n">C</span> <span class="ow">is</span> <span class="bp">None</span>
 <span class="go">True</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">c</span><span class="o">.</span><span class="n">A_C</span> <span class="ow">is</span> <span class="bp">None</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">args</span><span class="o">.</span><span class="n">A_C</span> <span class="ow">is</span> <span class="bp">None</span>
 <span class="go">True</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span> <span class="n">c</span><span class="o">.</span><span class="n">R</span><span class="p">,</span> <span class="mi">3</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span> <span class="n">args</span><span class="o">.</span><span class="n">R</span><span class="p">,</span> <span class="mi">3</span> <span class="p">)</span>
 <span class="go">13</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span> <span class="n">c</span><span class="o">.</span><span class="n">C_F</span><span class="p">,</span> <span class="mi">3</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span> <span class="n">args</span><span class="o">.</span><span class="n">C_F</span><span class="p">,</span> <span class="mi">3</span> <span class="p">)</span>
 <span class="go">81.681</span>
 </pre></div>
 </div>
@@ -436,7 +444,7 @@ There are only five unknowns.</p>
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html">Python Modules</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../lib.html">lib &#8211; Supporting Library</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../radio/index.html">radio &#8211; Radio Design and Engineering</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../ham.html">ham &#8211; Ham Radio Operations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ham/index.html">ham &#8211; Ham Radio Operations</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../electronics/index.html">electronics &#8211; General Electronics</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="index.html">construction &#8211; Construction and Mechanical</a><ul class="current">
 <li class="toctree-l3 current"><a class="current reference internal" href="">arch &#8211; Arch Calculator</a></li>
@@ -452,6 +460,12 @@ There are only five unknowns.</p>
 <li class="toctree-l3"><a class="reference internal" href="wiremesh.html">wiremesh &#8211; Wire Mesh Screens, Wind Loads</a></li>
 <li class="toctree-l3"><a class="reference internal" href="beamdefl.html">beamdefl &#8211; BEAMS, Deflection in</a></li>
 <li class="toctree-l3"><a class="reference internal" href="beamsect.html">beamsect &#8211; BEAMS, Properties of (Start new beam design here)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="beltdriv.html">beltdriv &#8211;  Belt Drives</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chain.html">chain &#8211; Chain Drives</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cyl.html">cyl &#8211; Cylinders, Air &amp; Hydraulic</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gearing.html">gearing &#8211; Gears &amp; Gearing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="binhop.html">binhop &#8211; Hoppered Bins &amp; Tanks</a></li>
+<li class="toctree-l3"><a class="reference internal" href="binvol.html">binvol &#8211; Hoppered Bin Design</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../math/index.html">math &#8211; Math, Physics, Units Conversion</a></li>
