@@ -96,7 +96,8 @@ def design_teeth_iter( P, K, S, C, offset=4 ):
     :param K: Known RPM
     :param S: Sought RPM
     :param C: Desired c.c. distance (in.)
-    yields 4-tuples of A, B teeth count, C c-to-c distance and S,
+
+    :returns: 4-tuples of A, B teeth count, C c-to-c distance and S,
         RPM "sought".
     """
     K, S = max( K, S ), min( K, S )

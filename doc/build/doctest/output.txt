@@ -1,4 +1,4 @@
-Results of doctest builder run on 2013-06-30 15:47:30
+Results of doctest builder run on 2013-07-01 07:50:40
 =====================================================
 
 Document: python/math/baromtr
@@ -132,9 +132,9 @@ Test passed.
 Document: python/construction/binhop
 ------------------------------------
 1 items passed all tests:
-   8 tests in default
-8 tests in 1 items.
-8 passed and 0 failed.
+  19 tests in default
+19 tests in 1 items.
+19 passed and 0 failed.
 Test passed.
 
 Document: python/math/involute
@@ -299,7 +299,7 @@ Test passed.
 
 Doctest summary
 ===============
-  902 tests
+  913 tests
     0 failures in tests
     0 failures in setup code
     0 failures in cleanup code

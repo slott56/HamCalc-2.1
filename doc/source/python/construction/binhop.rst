@@ -1,8 +1,13 @@
+..  _construction.binhop:
+
 binhop -- Hoppered Bins & Tanks
 ---------------------------------
 
-Quirk: This program may chain to :program:`binvol`, a program
+Quirk: The legacy program chained to :program:`binvol`, a program
 which doesn't appear on any menu.
+
+We'll merge :ref:`construction.binvol` into this program's
+implementation.
 
 Legacy Output
 ~~~~~~~~~~~~~~~~
@@ -30,6 +35,9 @@ Introduction::
      To EXIT.........................press 0
 
 Menu item 2 runs the :program:`binvol` program.
+
+Note that this diagram isn't the same as the center-draw diagram
+in ref:`construction.binvol`.
 
 Note that the following sample output has an error in it.
 
@@ -160,6 +168,9 @@ Display.
 
 Implementation
 ~~~~~~~~~~~~~~~
+
+This is the implementation for this program, as well as
+:ref:`construction.binvol`.
 
 ..  automodule:: hamcalc.construction.binhop
     :members:

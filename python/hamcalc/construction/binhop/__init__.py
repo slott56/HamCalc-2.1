@@ -1,8 +1,22 @@
 """hamcalc.construction.binhop
 
-Calculate volumes of hoppered bins.
+Calculate volumes of hoppered bins as well as support design of bins.
 
-There are two functions defined:
+Analysis
+----------
+
+There are two functions defined from :class:`Rectangular`
+and :class:`Cylindrical`. These functions don't have the
+:data:`draw` variable set, so there's a two-step use case.
+
+1.  Set :data:`draw`.
+
+2.  Calculate.
+
+Example::
+
+    rectangular.draw= Center()
+    rectangular( D=3, E=8, H=12, F=12, G=12, J=12 )
 
 ..  function:: rectangular( D, E, F, G, H, J )
 
@@ -44,7 +58,7 @@ There are two functions defined:
         :Z: Total Volume
         :N: Min Hopper Slope
 
-Test Case:
+Test Case for analysis:
 
 >>> import hamcalc.construction.binhop as binhop
 >>> rect = binhop.Rectangular( draw=binhop.Center() )
@@ -60,11 +74,43 @@ Test Case:
 >>> rect.name()
 'Rectangular Bin, Center Draw Hopper'
 
+Design
+--------
+
+The :func:`design_hopper` and :func:`design_final` functions
+support design. These require a :class:`Shape` object,
+either :class:`Square` or :class:`Circle`.
+
+Test Case for design:
+
+>>> import hamcalc.construction.binhop as binhop
+>>> result= binhop.design_hopper( binhop.Square(), V=2900, N=70, D=5 )
+>>> round(result.V_H)
+2900
+>>> round(result.F,3)
+18.622
+>>> round(result.H,3)
+18.714
+
+>>> final= binhop.design_final( binhop.Square(), V=2900, N=70, D=5, M=36, H=18.714, F=18.622, V_H=2900 )
+>>> round(final.V_T)
+2900
+>>> round(final.V_H)
+2567
+>>> round(final.V_B)
+333
+>>> round(final.J,3)
+1.041
+>>> round(final.H,3)
+17.714
+
 """
-from hamcalc.lib import Solver
+from hamcalc.lib import Solver, AttrDict
+from hamcalc.math.propcirc import bisection
 import math
 
-introduction= """\
+introduction= {}
+introduction[1]= """\
 HOPPERED BIN ANALYSIS                                  by George Murphy, VE3ERP
 
 
@@ -82,8 +128,27 @@ HOPPERED BIN ANALYSIS                                  by George Murphy, VE3ERP
  bearing in mind that the calculated results will be in the same units.
 """
 
-def intro():
-    return introduction
+introduction[2]= """\
+HOPPERED BIN DESIGN                                            by George Murphy
+
+
+     │«─── F ───»│
+  ┌─»┌───────────┐«─┐
+  │  │    bin    │  J
+  │  └───────────┘«─┤
+  M   \         /   │
+  │    \hopper /    H
+  │     \     /     │
+  └─────»└───┘«─────┘
+         │«D»│
+
+ This program calculates dimensions of hoppered bins and tanks of any cubic
+ capcacity. Dimensions can be entered in any units of measure, bearing in mind
+ that the calculated results will be in the same units.
+"""
+
+def intro( op=1 ):
+    return introduction[op]
 
 class Draw:
     """Strategy class definition for draw placement.
@@ -148,7 +213,7 @@ class Hopper( Solver ):
         return args
 
 class Rectangular( Hopper ):
-    """Rectangular Hopper."""
+    """Rectangular Hopper analysis."""
     def hopper_section( self, args ):
         """Hopper cross section area.
 
@@ -165,7 +230,7 @@ class Rectangular( Hopper ):
         return args.F * args.G
 
 class Cylindrical( Hopper ):
-    """Cylindrical Hopper."""
+    """Cylindrical Hopper analysis."""
     def hopper_section( self, args ):
         """Hopper cross section area.
 
@@ -181,3 +246,91 @@ class Cylindrical( Hopper ):
 
 rectangular= Rectangular()
 cylindrical= Cylindrical()
+
+class Shape:
+    """A shape for hopper design purposes.
+    An instance is provided to :func:`design_hopper`
+    or :func:`design_final`.
+    """
+    def volume( self, args ):
+        """Compute Hopper Volume, V_H, from H, N and D."""
+        pass
+    def area( self, args ):
+        """Compute area, A, from diameter (or size), D, H, and angle, N."""
+        pass
+    def height( self, args ):
+        """Compute total height, K, and many other things,
+        from D, H and N.
+        """
+        self.volume( args )
+        self.area( args )
+        args.V_B = args.V - args.V_H
+        args.J = args.V_B / args.A
+        args.K = args.H + args.J
+        args.V_T = args.V_H + args.V_B
+        return args
+
+class Square( Shape ):
+    """Design a square-shaped bin and hopper."""
+    def volume( self, args ):
+        """Compute Hopper Volume, V_H, from H, N and D."""
+        E = args.H/math.tan( math.radians(args.N) )
+        args.F = 2*E + args.D
+        args.V_H = args.H/3*(args.F**2+args.D**2+math.sqrt(args.F**2*args.D**2))
+        return args
+    def area( self, args ):
+        """Compute bin area, A, from bin size, F."""
+        args.A = args.F**2
+        return args
+
+class Circle( Shape ):
+    """Design a circular bin and hopper."""
+    def volume( self, args ):
+        """Compute Hopper Volume, V_H, from H, N and D."""
+        E = args.H/math.tan( math.radians(args.N) )
+        args.F = 2*E + args.D
+        args.V_H = math.pi/12*args.H*(args.F**2+(args.F*args.D)+args.D**2)
+        return args
+    def area( self, args ):
+        """Compute bin area, A, from bin size, F."""
+        args.A = math.pi*(args.F/2)**2
+        return args
+
+def design_hopper( shape, **args ):
+    """Given a shape (Square or Circle),
+    and some parameters, initial design with
+    minimum height, H, for the hopper.
+
+    :param V: target volume
+    :param N: given angle
+    :param D: given size or diameter
+    :returns: dict with design parameters added.
+    """
+    args= AttrDict( args )
+    def hopper_vol_from_h( H ):
+        args.H = H
+        shape.volume( args )
+        return args.V - args.V_H
+    # In principle, we should develop a rational upper limit.
+    # The overall volume, though, is a good estimator for the
+    # upper bound.
+    args.H = bisection( hopper_vol_from_h, 0, args.V )
+    return args
+
+def design_final( shape, **args ):
+    """Given a shape (Square or Circle),
+    and some parameters, final design.
+
+    :param V: target volume
+    :param N: given angle
+    :param D: given size or diameter
+    :param M: hopper height, larger than the minimum
+    :returns: dict with design parameters added.
+    """
+    args= AttrDict( args )
+    def height_from_h( H ):
+        args.H = H
+        shape.height( args )
+        return args.K - args.M
+    args.H = bisection( height_from_h, args.M, args.H-1 )
+    return args

@@ -55,8 +55,172 @@
           <div class="body">
             
   <div class="section" id="binvol-hoppered-bin-design">
-<h1>binvol &#8211; Hoppered Bin Design<a class="headerlink" href="#binvol-hoppered-bin-design" title="Permalink to this headline">¶</a></h1>
+<span id="construction-binvol"></span><h1>binvol &#8211; Hoppered Bin Design<a class="headerlink" href="#binvol-hoppered-bin-design" title="Permalink to this headline">¶</a></h1>
 <p>Quirk: This doesn&#8217;t appear on any menu.</p>
+<p>It makes sense, then, to simply combine this into <strong class="program">binhop</strong>.</p>
+<p>We&#8217;ll show the analysis here, but the implementation
+is in <a class="reference internal" href="binhop.html#construction-binhop"><em>binhop &#8211; Hoppered Bins &amp; Tanks</em></a>.</p>
+<div class="section" id="sample-output">
+<h2>Sample Output<a class="headerlink" href="#sample-output" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><pre>HOPPERED BIN DESIGN                                            by George Murphy
+
+     │«─── F ───»│
+  ┌─»┌───────────┐«─┐
+  │  │    bin    │  J
+  │  └───────────┘«─┤
+  M   \         /   │
+  │    \hopper /    H
+  │     \     /     │
+  └─────»└───┘«─────┘
+         │«D»│</pre>
+</div>
+<p>Note that this diagram isn&#8217;t the same as the side-draw diagram
+in ref:<cite>construction.binhop</cite>.</p>
+</div>
+<div class="section" id="analysis">
+<h2>Analysis<a class="headerlink" href="#analysis" title="Permalink to this headline">¶</a></h2>
+<p>This is actually two simple calculators:</p>
+<ul class="simple">
+<li>Rectangular bins</li>
+<li>Cylindrical bins</li>
+</ul>
+<p>In this case, the calculators differ
+by only two formulae: area and volume. This is  case where a
+design function needs a simple plug-in for the volume
+calculation based on shape.</p>
+<div class="section" id="rectangular">
+<h3>Rectangular<a class="headerlink" href="#rectangular" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">V:</th><td class="field-body">Required cubic capacity</td>
+</tr>
+<tr class="field-even field"><th class="field-name">DEG:</th><td class="field-body">Hopper slope angle (degrees)</td>
+</tr>
+</tbody>
+</table>
+<div class="math">
+<p><img src="../../_images/math/fa876c67a7166753f4a69391101a19ba720f943d.png" alt="R_{ad} = \pi D_{eg} / 180"/></p>
+</div><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">D:</th><td class="field-body">Size of hopper opening D</td>
+</tr>
+<tr class="field-even field"><th class="field-name">H:</th><td class="field-body">Hopper Height</td>
+</tr>
+</tbody>
+</table>
+<p>Locate <em>H</em> by approximation to minimize <img class="math" src="../../_images/math/34418270792105646c8ceeca7526ec13de07d771.png" alt="\lvert V-V_h \rvert"/>.</p>
+<div class="math">
+<p><img src="../../_images/math/c22b4c860abec8c0cc3c572ad2d6f10835c4d7b1.png" alt="E &amp;= \dfrac{H}{\tan(R_{ad})} \\
+F &amp;= 2E+D \\
+V_h &amp;= \dfrac{H}{3}(F^2+D^2+\sqrt{F^2 D^2})"/></p>
+</div><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">M:</th><td class="field-body">Desired height, greater than H</td>
+</tr>
+</tbody>
+</table>
+<p>Locate <em>H</em> by approximation to minimize <img class="math" src="../../_images/math/9d052d748f68117629f04c27c326613dcdb4cf65.png" alt="\lvert M-K \rvert"/>.</p>
+<div class="math">
+<p><img src="../../_images/math/a2ebb1d98369db3c4d880b104b7231981f969a8f.png" alt="E &amp;= \dfrac{H}{\tan(R_{ad})} \\
+F &amp;= 2E+D \\
+V_h &amp;= \dfrac{H}{3}(F^2+D^2+\sqrt{F^2 D^2}) \\
+A &amp;= F^2 \\
+V_b &amp;= V - V_h \\
+J &amp;= V_b / A \\
+K &amp;= H + J \\
+V_t &amp;= V_h + V_b"/></p>
+</div></div>
+<div class="section" id="cylindrical">
+<h3>Cylindrical<a class="headerlink" href="#cylindrical" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">V:</th><td class="field-body">Required cubic capacity</td>
+</tr>
+<tr class="field-even field"><th class="field-name">DEG:</th><td class="field-body">Hopper slope angle (degrees)</td>
+</tr>
+</tbody>
+</table>
+<div class="math">
+<p><img src="../../_images/math/fa876c67a7166753f4a69391101a19ba720f943d.png" alt="R_{ad} = \pi D_{eg} / 180"/></p>
+</div><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">D:</th><td class="field-body">Dia. of hopper opening D</td>
+</tr>
+<tr class="field-even field"><th class="field-name">H:</th><td class="field-body">Hopper Height</td>
+</tr>
+</tbody>
+</table>
+<p>Locate <em>H</em> by approximation: minimize <img class="math" src="../../_images/math/34418270792105646c8ceeca7526ec13de07d771.png" alt="\lvert V-V_h \rvert"/>.</p>
+<div class="math">
+<p><img src="../../_images/math/b5e54d453a65c0e67288747d4f344f44de31ce04.png" alt="E &amp;= \dfrac{H}{\tan(R_{ad})} \\
+F &amp;= 2E+D \\
+V_h &amp;= \dfrac{\pi}{12}H(F^2+(FD)+D^2)"/></p>
+</div><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">M:</th><td class="field-body">Desired height, greater than H</td>
+</tr>
+</tbody>
+</table>
+<p>Locate <em>H</em> by approximation to minimize <img class="math" src="../../_images/math/9d052d748f68117629f04c27c326613dcdb4cf65.png" alt="\lvert M-K \rvert"/>.</p>
+<div class="math">
+<p><img src="../../_images/math/21286efa458dde0d00acb7f3fca02e76155697b3.png" alt="E &amp;= \dfrac{H}{\tan(R_{ad})} \\
+F &amp;= 2E+D \\
+V_h &amp;= \dfrac{\pi}{12}H(F^2+(FD)+D^2) \\
+A &amp;= \pi \left(\dfrac{F}{2}\right)^2 \\
+V_b &amp;= V - V_h \\
+J &amp;= V_b / A \\
+K &amp;= H + J \\
+V_t &amp;= V_h + V_b"/></p>
+</div><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">A:</th><td class="field-body">Bin cross section area</td>
+</tr>
+<tr class="field-even field"><th class="field-name">F:</th><td class="field-body">Top opening</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">D:</th><td class="field-body">Bottom opening</td>
+</tr>
+<tr class="field-even field"><th class="field-name">J:</th><td class="field-body">Bin height</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">H:</th><td class="field-body">Hopper height</td>
+</tr>
+<tr class="field-even field"><th class="field-name">M:</th><td class="field-body">Overall height</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="section" id="quirks">
+<h2>Quirks<a class="headerlink" href="#quirks" title="Permalink to this headline">¶</a></h2>
+<p>Is it <em>H</em> or <em>M</em>?</p>
+<div class="highlight-python"><pre>640 PRINT &quot; Minimum height M=&quot;;H
+650 PRINT &quot; ENTER: Desired height greater than&quot;;H;:INPUT M</pre>
+</div>
+<p>Also.</p>
+<div class="highlight-python"><pre>850 GOTO 720
+860 END</pre>
+</div>
+<p>If the <strong>END</strong> can&#8217;t be executed, why is it there?</p>
+<p>This, too</p>
+<div class="highlight-python"><pre>1200 :REM&#x27;.....end
+1210 GOSUB 1240:GOTO 70
+1220 GOTO 70</pre>
+</div>
+<p>Why is line 1220 there?</p>
+</div>
 </div>
 
 
