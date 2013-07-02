@@ -562,7 +562,7 @@ We see some output.
 
 -   ``P`` is :math:`p = 1/r+1`, initially 0.
 
--   ``D`` will be a delta between ``P`` and :math:`phi`. This is not initialized
+-   ``D`` will be a delta between ``P`` and ``phi``. This is not initialized
     and GW-Basic supplies zero as a default.
 
 ::
@@ -767,7 +767,7 @@ Or, also, this, which can be useful for some Project Euler problems.
     list(until_last(fibonacci_iter(f_0=1, f_1=2), last=10000000))
 
 This API doesn't fit well with other styles of programming.
-To make this look like it's build with objects or a single function, we'll need to do a little functional composition.
+To make this look like it's built with objects or a single function, we'll need to do a little functional composition.
 
 ::
 

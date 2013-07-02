@@ -33,13 +33,12 @@ index, either.
     gearing
     binhop
     binvol
+    shaft
 
 Note that there are strong similarities between :program:`beltdriv`,
 :program:`chain`, :program:`gearing` and :program:`shaft`.
 You'd almost think there's a common superclass
 of some kind.
 
-
--   "shaft", "Shafting"
 -   "stairs", "Stairs, Ladders & Ramps"
 -   "torque", "Torque & Horsepower"

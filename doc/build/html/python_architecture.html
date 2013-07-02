@@ -479,7 +479,7 @@ We do know that <tt class="docutils literal"><span class="pre">R</span></tt> is 
 <li><tt class="docutils literal"><span class="pre">R</span></tt> will be the ratio of <tt class="docutils literal"><span class="pre">C</span></tt> and <tt class="docutils literal"><span class="pre">B</span></tt>, the previous two Fibonacci numbers. <img class="math" src="_images/math/4e329013a619df3753f6f5614c3266755777e395.png" alt="r = F_{n+1}/F{n}"/>.
 Initially, R is set to 0.</li>
 <li><tt class="docutils literal"><span class="pre">P</span></tt> is <img class="math" src="_images/math/413efdf0e39464e14bf6507be32cda20cf1feacb.png" alt="p = 1/r+1"/>, initially 0.</li>
-<li><tt class="docutils literal"><span class="pre">D</span></tt> will be a delta between <tt class="docutils literal"><span class="pre">P</span></tt> and <img class="math" src="_images/math/675fbf8048772f0df562fe66fd23bc1a18b90b56.png" alt="phi"/>. This is not initialized
+<li><tt class="docutils literal"><span class="pre">D</span></tt> will be a delta between <tt class="docutils literal"><span class="pre">P</span></tt> and <tt class="docutils literal"><span class="pre">phi</span></tt>. This is not initialized
 and GW-Basic supplies zero as a default.</li>
 </ul>
 <div class="highlight-python"><pre>660 IF N=23 THEN 700</pre>
@@ -640,7 +640,7 @@ extra zero at the front.</p>
 </pre></div>
 </div>
 <p>This API doesn&#8217;t fit well with other styles of programming.
-To make this look like it&#8217;s build with objects or a single function, we&#8217;ll need to do a little functional composition.</p>
+To make this look like it&#8217;s built with objects or a single function, we&#8217;ll need to do a little functional composition.</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">fibon_count_iter</span><span class="p">(</span> <span class="n">f_0</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">f_1</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">count</span><span class="o">=</span><span class="mi">22</span> <span class="p">):</span>
     <span class="k">return</span> <span class="n">until_count</span><span class="p">(</span><span class="n">fibonacci_iter</span><span class="p">(</span><span class="n">f_0</span><span class="p">,</span><span class="n">f_1</span><span class="p">),</span><span class="n">count</span><span class="p">)</span>
 </pre></div>
