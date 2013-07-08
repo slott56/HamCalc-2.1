@@ -347,7 +347,8 @@ Function-Oriented Implementation
 Object-Oriented Implementation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-TBD
+..  automodule:: hamcalc.construction.stairs.obj
+    :members:
 
 Quirks
 ~~~~~~~~~

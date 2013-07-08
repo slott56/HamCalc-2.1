@@ -1,0 +1,271 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>hamcalc.construction.stairs.obj &mdash; HamCalc 2.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../../../_static/hamcalc.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../',
+        VERSION:     '2.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <link rel="top" title="HamCalc 2.1 documentation" href="../../../../index.html" />
+    <link rel="up" title="hamcalc.construction.stairs" href="../stairs.html" /> 
+  </head>
+  <body>
+    <div class="header-wrapper">
+      <div class="header">
+        <div class="headertitle"><a
+          href="../../../../index.html">HamCalc 2.1 documentation</a></div>
+        <div class="rel">
+          <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |
+          <a href="../../../../genindex.html" title="General Index"
+             accesskey="I">index</a>
+        </div>
+       </div>
+    </div>
+
+    <div class="content-wrapper">
+      <div class="content">
+        <div class="document">
+            
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for hamcalc.construction.stairs.obj</h1><div class="highlight"><pre>
+<span class="sd">&quot;&quot;&quot;hamcalc.construction.stairs.obj</span>
+
+<span class="sd">Class definitions to implement stairs design.</span>
+
+<span class="sd">Note that these calculations only work in inches.</span>
+<span class="sd">The units, therefore, must all be converted from</span>
+<span class="sd">input to INCH and from INCH to desired output.</span>
+
+<span class="sd">The **Designers** involve a **Chain of Command** processing</span>
+<span class="sd">sequence where a stairwell designer may fall back to another</span>
+<span class="sd">designer.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="n">__version__</span> <span class="o">=</span> <span class="s">&quot;2.1&quot;</span>
+
+<span class="kn">import</span> <span class="nn">math</span>
+<span class="kn">from</span> <span class="nn">hamcalc.lib</span> <span class="kn">import</span> <span class="n">AttrDict</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">Callable</span>
+
+<div class="viewcode-block" id="Designer"><a class="viewcode-back" href="../../../../python/construction/stairs.html#hamcalc.construction.stairs.obj.Designer">[docs]</a><span class="k">class</span> <span class="nc">Designer</span><span class="p">(</span> <span class="n">Callable</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;The superclass for all designers.&quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">args</span> <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create a design or use the fallback.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">args</span> <span class="o">=</span> <span class="n">AttrDict</span><span class="p">(</span> <span class="n">args</span> <span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">condition</span><span class="p">():</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">fallback</span><span class="p">(</span> <span class="o">**</span><span class="n">args</span> <span class="p">)</span>
+
+<div class="viewcode-block" id="Designer.condition"><a class="viewcode-back" href="../../../../python/construction/stairs.html#hamcalc.construction.stairs.obj.Designer.condition">[docs]</a>    <span class="k">def</span> <span class="nf">condition</span><span class="p">(</span> <span class="bp">self</span> <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;A filter condition: can we provide a design?&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">True</span></div>
+<div class="viewcode-block" id="Designer.design"><a class="viewcode-back" href="../../../../python/construction/stairs.html#hamcalc.construction.stairs.obj.Designer.design">[docs]</a>    <span class="k">def</span> <span class="nf">design</span><span class="p">(</span> <span class="bp">self</span> <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create the complete design, returning a :class:`AttrDict`</span>
+<span class="sd">        with all the parameters.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span>
+</div>
+    <span class="k">def</span> <span class="nf">_stringer</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">R</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">P</span> <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Compute the stringer details for a given design.</span>
+
+<span class="sd">        :param R: rise</span>
+<span class="sd">        :param T: run</span>
+<span class="sd">        :param P: number of rungs, steps, ramps or treads</span>
+<span class="sd">        :returns: X and Y</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">X</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span> <span class="n">R</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">T</span><span class="o">**</span> <span class="mi">2</span> <span class="p">)</span>
+        <span class="n">Y</span> <span class="o">=</span> <span class="n">X</span><span class="o">*</span><span class="n">P</span>
+        <span class="k">return</span> <span class="n">X</span><span class="p">,</span> <span class="n">Y</span>
+</div>
+<div class="viewcode-block" id="Unrestricted_Risers"><a class="viewcode-back" href="../../../../python/construction/stairs.html#hamcalc.construction.stairs.obj.Unrestricted_Risers">[docs]</a><span class="k">class</span> <span class="nc">Unrestricted_Risers</span><span class="p">(</span> <span class="n">Designer</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;A Designer for Unrestricted Risers; L must be None.&quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span> <span class="bp">self</span> <span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fallback</span><span class="o">=</span> <span class="n">Vertical_Ladder</span><span class="p">()</span>
+    <span class="k">def</span> <span class="nf">condition</span><span class="p">(</span> <span class="bp">self</span> <span class="p">):</span>
+        <span class="k">return</span> <span class="s">&#39;L&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">args</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">L</span> <span class="ow">is</span> <span class="bp">None</span>
+    <span class="k">def</span> <span class="nf">design</span><span class="p">(</span> <span class="bp">self</span> <span class="p">):</span>
+        <span class="n">H</span><span class="p">,</span> <span class="n">R</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">H</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">R</span>
+        <span class="n">N</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span> <span class="n">H</span><span class="o">/</span><span class="n">R</span> <span class="o">+</span> <span class="o">.</span><span class="mi">5</span> <span class="p">)</span>
+        <span class="n">P</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">N</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">R</span> <span class="o">=</span> <span class="n">H</span><span class="o">/</span><span class="n">N</span>
+        <span class="k">while</span> <span class="n">R</span> <span class="o">&lt;</span> <span class="mi">5</span> <span class="ow">and</span> <span class="n">N</span><span class="o">-</span><span class="mi">1</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">N</span> <span class="o">-=</span> <span class="mi">1</span>
+            <span class="n">P</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">N</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+            <span class="n">R</span> <span class="o">=</span> <span class="n">H</span><span class="o">/</span><span class="n">N</span>
+        <span class="n">T</span> <span class="o">=</span> <span class="mi">20</span><span class="o">-</span><span class="mi">4</span><span class="o">*</span><span class="n">R</span><span class="o">/</span><span class="mi">3</span>
+        <span class="n">L</span> <span class="o">=</span> <span class="n">P</span><span class="o">*</span><span class="n">T</span>
+        <span class="n">A</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span> <span class="n">math</span><span class="o">.</span><span class="n">atan2</span><span class="p">(</span><span class="n">R</span><span class="p">,</span><span class="n">T</span><span class="p">)</span> <span class="p">)</span>
+        <span class="k">if</span> <span class="mf">17.35</span> <span class="o">&lt;=</span> <span class="n">A</span> <span class="o">&lt;</span> <span class="mi">33</span><span class="p">:</span>
+            <span class="n">T</span> <span class="o">=</span> <span class="mi">25</span> <span class="o">+</span> <span class="p">(</span><span class="mi">33</span><span class="o">-</span><span class="n">A</span><span class="p">)</span><span class="o">/</span><span class="mf">15.65</span> <span class="o">-</span> <span class="mi">2</span><span class="o">*</span><span class="n">R</span>
+        <span class="n">X</span><span class="p">,</span> <span class="n">Y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stringer</span><span class="p">(</span> <span class="n">R</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">P</span> <span class="p">)</span>
+        <span class="k">return</span> <span class="n">AttrDict</span><span class="p">(</span><span class="nb">locals</span><span class="p">())</span>
+</div>
+<div class="viewcode-block" id="Vertical_Ladder"><a class="viewcode-back" href="../../../../python/construction/stairs.html#hamcalc.construction.stairs.obj.Vertical_Ladder">[docs]</a><span class="k">class</span> <span class="nc">Vertical_Ladder</span><span class="p">(</span> <span class="n">Designer</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;A Designer for Vertical Ladders; L must be zero.&quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span> <span class="bp">self</span> <span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fallback</span><span class="o">=</span> <span class="n">Restricted_Risers</span><span class="p">()</span>
+    <span class="k">def</span> <span class="nf">condition</span><span class="p">(</span> <span class="bp">self</span> <span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">L</span> <span class="o">==</span> <span class="mi">0</span>
+    <span class="k">def</span> <span class="nf">design</span><span class="p">(</span> <span class="bp">self</span> <span class="p">):</span>
+        <span class="n">H</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">H</span>
+        <span class="n">P</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span> <span class="n">H</span><span class="o">/</span><span class="mf">13.5</span> <span class="o">+</span> <span class="o">.</span><span class="mi">5</span> <span class="p">)</span>
+        <span class="n">N</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">P</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">TBR</span> <span class="o">=</span> <span class="p">(</span><span class="n">H</span><span class="o">-</span><span class="mf">13.5</span><span class="o">*</span><span class="n">N</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span>
+        <span class="n">A</span> <span class="o">=</span> <span class="mi">90</span>
+        <span class="n">R</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">R</span> <span class="o">=</span> <span class="mf">13.5</span>
+        <span class="n">X</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">Y</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">L</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">return</span> <span class="n">AttrDict</span><span class="p">(</span><span class="nb">locals</span><span class="p">())</span>
+</div>
+<div class="viewcode-block" id="Restricted_Risers"><a class="viewcode-back" href="../../../../python/construction/stairs.html#hamcalc.construction.stairs.obj.Restricted_Risers">[docs]</a><span class="k">class</span> <span class="nc">Restricted_Risers</span><span class="p">(</span> <span class="n">Designer</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;A Designer for Restricted Risers; L and H define the structure.&quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span> <span class="bp">self</span> <span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fallback</span><span class="o">=</span> <span class="n">Step_Ramp</span><span class="p">()</span>
+    <span class="k">def</span> <span class="nf">condition</span><span class="p">(</span> <span class="bp">self</span> <span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">L</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span> <span class="k">return</span>
+        <span class="n">A</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span> <span class="n">math</span><span class="o">.</span><span class="n">atan2</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">H</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">L</span> <span class="p">)</span> <span class="p">)</span>
+        <span class="k">return</span> <span class="n">A</span> <span class="o">&gt;</span> <span class="mf">20.45</span>
+    <span class="k">def</span> <span class="nf">design</span><span class="p">(</span> <span class="bp">self</span> <span class="p">):</span>
+        <span class="n">H</span><span class="p">,</span> <span class="n">L</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">H</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">L</span>
+        <span class="n">A</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span> <span class="n">math</span><span class="o">.</span><span class="n">atan2</span><span class="p">(</span> <span class="n">H</span><span class="p">,</span> <span class="n">L</span> <span class="p">)</span> <span class="p">)</span>
+        <span class="n">N</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">H</span> <span class="o">//</span> <span class="mi">5</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">R</span> <span class="o">=</span> <span class="n">H</span><span class="o">/</span><span class="n">N</span>
+        <span class="n">T</span> <span class="o">=</span> <span class="mi">20</span> <span class="o">-</span> <span class="mi">4</span><span class="o">*</span><span class="n">R</span><span class="o">/</span><span class="mi">3</span>
+        <span class="k">while</span> <span class="n">T</span><span class="o">*</span><span class="n">N</span><span class="o">-</span><span class="n">T</span> <span class="o">&lt;=</span> <span class="n">L</span> <span class="ow">and</span> <span class="n">R</span> <span class="o">&gt;=</span> <span class="mi">5</span><span class="p">:</span>
+            <span class="n">N</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="n">R</span> <span class="o">=</span> <span class="n">H</span> <span class="o">/</span> <span class="n">N</span>
+            <span class="n">T</span> <span class="o">=</span> <span class="mi">20</span> <span class="o">-</span> <span class="mi">4</span><span class="o">*</span><span class="n">R</span><span class="o">/</span><span class="mi">3</span>
+        <span class="n">N</span> <span class="o">-=</span> <span class="mi">1</span>
+        <span class="n">P</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">N</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">R</span> <span class="o">=</span> <span class="n">H</span><span class="o">/</span><span class="n">N</span>
+        <span class="k">except</span> <span class="ne">ZeroDivisionError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">vertical_ladder</span><span class="p">(</span><span class="n">H</span><span class="p">,</span><span class="n">L</span><span class="p">)</span>
+        <span class="n">T</span> <span class="o">=</span> <span class="mi">20</span> <span class="o">-</span> <span class="mi">4</span><span class="o">*</span><span class="n">R</span><span class="o">/</span><span class="mi">3</span>
+        <span class="k">if</span> <span class="n">R</span> <span class="o">&gt;</span> <span class="mf">13.5</span> <span class="ow">or</span> <span class="n">T</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">vertical_ladder</span><span class="p">(</span><span class="n">H</span><span class="p">,</span><span class="n">L</span><span class="p">)</span>
+        <span class="n">X</span><span class="p">,</span> <span class="n">Y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stringer</span><span class="p">(</span> <span class="n">R</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">P</span> <span class="p">)</span>
+        <span class="k">return</span> <span class="n">AttrDict</span><span class="p">(</span><span class="nb">locals</span><span class="p">())</span>
+</div>
+<div class="viewcode-block" id="Step_Ramp"><a class="viewcode-back" href="../../../../python/construction/stairs.html#hamcalc.construction.stairs.obj.Step_Ramp">[docs]</a><span class="k">class</span> <span class="nc">Step_Ramp</span><span class="p">(</span> <span class="n">Designer</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;A Designer for Step Ramps; L and H define the structure.&quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span> <span class="bp">self</span> <span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fallback</span><span class="o">=</span> <span class="n">Inclined_Ramp</span><span class="p">()</span>
+    <span class="k">def</span> <span class="nf">condition</span><span class="p">(</span> <span class="bp">self</span> <span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">L</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span> <span class="k">return</span>
+        <span class="n">N</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">H</span> <span class="o">//</span> <span class="mi">5</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">N</span> <span class="o">&gt;</span> <span class="mi">1</span>
+    <span class="k">def</span> <span class="nf">design</span><span class="p">(</span> <span class="bp">self</span> <span class="p">):</span>
+        <span class="n">H</span><span class="p">,</span> <span class="n">L</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">H</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">L</span>
+        <span class="n">A</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span> <span class="n">math</span><span class="o">.</span><span class="n">atan2</span><span class="p">(</span> <span class="n">H</span><span class="p">,</span> <span class="n">L</span> <span class="p">)</span> <span class="p">)</span>
+        <span class="n">N</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">H</span> <span class="o">//</span> <span class="mi">5</span><span class="p">)</span>
+        <span class="n">P</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">N</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">R</span> <span class="o">=</span> <span class="n">H</span> <span class="o">/</span> <span class="n">N</span>
+        <span class="n">T</span> <span class="o">=</span> <span class="n">L</span> <span class="o">/</span> <span class="n">P</span>
+        <span class="n">X</span><span class="p">,</span> <span class="n">Y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stringer</span><span class="p">(</span> <span class="n">R</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">P</span> <span class="p">)</span>
+        <span class="k">return</span> <span class="n">AttrDict</span><span class="p">(</span><span class="nb">locals</span><span class="p">())</span>
+</div>
+<div class="viewcode-block" id="Inclined_Ramp"><a class="viewcode-back" href="../../../../python/construction/stairs.html#hamcalc.construction.stairs.obj.Inclined_Ramp">[docs]</a><span class="k">class</span> <span class="nc">Inclined_Ramp</span><span class="p">(</span> <span class="n">Designer</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;A Designer for Inclined Ramps; L and H define the structure.&quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">design</span><span class="p">(</span> <span class="bp">self</span> <span class="p">):</span>
+        <span class="n">H</span><span class="p">,</span> <span class="n">L</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">H</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">L</span>
+        <span class="n">A</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span> <span class="n">math</span><span class="o">.</span><span class="n">atan2</span><span class="p">(</span> <span class="n">H</span><span class="p">,</span> <span class="n">L</span> <span class="p">)</span> <span class="p">)</span>
+        <span class="n">N</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">H</span> <span class="o">//</span> <span class="mi">5</span><span class="p">)</span>
+        <span class="n">P</span> <span class="o">=</span> <span class="n">R</span> <span class="o">=</span> <span class="n">T</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">X</span><span class="p">,</span> <span class="n">Y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stringer</span><span class="p">(</span> <span class="n">R</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">P</span> <span class="p">)</span>
+        <span class="k">return</span> <span class="n">AttrDict</span><span class="p">(</span><span class="nb">locals</span><span class="p">())</span>
+</div>
+<div class="viewcode-block" id="stair_design"><a class="viewcode-back" href="../../../../python/construction/stairs.html#hamcalc.construction.stairs.obj.stair_design">[docs]</a><span class="k">def</span> <span class="nf">stair_design</span><span class="p">(</span> <span class="n">H</span><span class="p">,</span> <span class="n">L</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">R</span><span class="o">=</span><span class="bp">None</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;A convenience function to provide the same API as</span>
+<span class="sd">    the function implementation.</span>
+
+<span class="sd">    This creates an instance of :class:`Unrestricted_Risers`</span>
+<span class="sd">    and uses that to start the design process.</span>
+<span class="sd">    This may fallback to any of the other designers.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">designer</span><span class="o">=</span> <span class="n">Unrestricted_Risers</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">designer</span><span class="p">(</span> <span class="n">H</span><span class="o">=</span><span class="n">H</span><span class="p">,</span> <span class="n">L</span><span class="o">=</span><span class="n">L</span><span class="p">,</span> <span class="n">R</span><span class="o">=</span><span class="n">R</span> <span class="p">)</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+        </div>
+        <div class="sidebar">
+          <h3>Table Of Contents</h3>
+          <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../background.html">Background</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../legacy.html">The HamCalc Legacy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../python_architecture.html">Python Architecture</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../python/index.html">Python Modules</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../todo.html">The To Do List</a></li>
+</ul>
+
+          <h3 style="margin-top: 1.5em;">Search</h3>
+          <form class="search" action="../../../../search.html" method="get">
+            <input type="text" name="q" />
+            <input type="submit" value="Go" />
+            <input type="hidden" name="check_keywords" value="yes" />
+            <input type="hidden" name="area" value="default" />
+          </form>
+          <p class="searchtip" style="font-size: 90%">
+            Enter search terms or a module, class or function name.
+          </p>
+        </div>
+        <div class="clearer"></div>
+      </div>
+    </div>
+
+    <div class="footer-wrapper">
+      <div class="footer">
+        <div class="left">
+          <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |
+          <a href="../../../../genindex.html" title="General Index"
+             >index</a>
+        </div>
+
+        <div class="right">
+          
+    <div class="footer">
+        &copy; Copyright 2013, S.Lott.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2b1.
+    </div>
+        </div>
+        <div class="clearer"></div>
+      </div>
+    </div>
+
+  </body>
+</html>

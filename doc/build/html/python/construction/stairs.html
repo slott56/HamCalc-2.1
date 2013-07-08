@@ -493,83 +493,85 @@ A distinctive design.</p>
 <span class="go">64.0</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="module-hamcalc.construction.stairs.func">
-<span id="function-oriented-implementation"></span><h3>Function-Oriented Implementation<a class="headerlink" href="#module-hamcalc.construction.stairs.func" title="Permalink to this headline">¶</a></h3>
-<p>hamcalc.construction.stairs.func</p>
-<p>&#8216;Simple&#8217; functions to implement stairs design.</p>
+<dl class="function">
+<dt id="hamcalc.construction.stairs.handrail_height">
+<tt class="descclassname">hamcalc.construction.stairs.</tt><tt class="descname">handrail_height</tt><big>(</big><em>**args</em><big>)</big><a class="headerlink" href="#hamcalc.construction.stairs.handrail_height" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute handrail height. Requires the following arguments.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">H:</th><td class="field-body">Level-to-Level height HT</td>
-</tr>
-<tr class="field-even field"><th class="field-name">L:</th><td class="field-body">Maximum allowable spread SP</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">P:</th><td class="field-body">no. of rungs</td>
-</tr>
-<tr class="field-even field"><th class="field-name">N:</th><td class="field-body">no.of full risers</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">TBR:</th><td class="field-body">top and bottom risers</td>
-</tr>
-<tr class="field-even field"><th class="field-name">A:</th><td class="field-body">angle</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">T:</th><td class="field-body">run</td>
-</tr>
-<tr class="field-even field"><th class="field-name">R:</th><td class="field-body">rise</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">X:</th><td class="field-body">string</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Y:</th><td class="field-body">stringer</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">L:</th><td class="field-body">length</td>
-</tr>
-<tr class="field-even field"><th class="field-name">F:</th><td class="field-body">Floor Thickness, FL</td>
+<tr class="field-odd field"><th class="field-name">A :</th><td class="field-body">Angle in degrees.</td>
 </tr>
 </tbody>
 </table>
+<p>Updates args with</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">B :</th><td class="field-body">Handrail height.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
 <dl class="function">
-<dt id="hamcalc.construction.stairs.func.max_height">
-<tt class="descclassname">hamcalc.construction.stairs.func.</tt><tt class="descname">max_height</tt><big>(</big><em>unit</em><big>)</big><a class="reference internal" href="../../_modules/hamcalc/construction/stairs/func.html#max_height"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.construction.stairs.func.max_height" title="Permalink to this definition">¶</a></dt>
+<dt id="hamcalc.construction.stairs.is_ladder_inclined">
+<tt class="descclassname">hamcalc.construction.stairs.</tt><tt class="descname">is_ladder_inclined</tt><big>(</big><em>**args</em><big>)</big><a class="headerlink" href="#hamcalc.construction.stairs.is_ladder_inclined" title="Permalink to this definition">¶</a></dt>
+<dd><p>Does this design reflect an inclined ladder?</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="hamcalc.construction.stairs.is_ladder_open">
+<tt class="descclassname">hamcalc.construction.stairs.</tt><tt class="descname">is_ladder_open</tt><big>(</big><em>**args</em><big>)</big><a class="headerlink" href="#hamcalc.construction.stairs.is_ladder_open" title="Permalink to this definition">¶</a></dt>
+<dd><p>Does this design reflect an open stepladder?</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="hamcalc.construction.stairs.is_ladder_vertical">
+<tt class="descclassname">hamcalc.construction.stairs.</tt><tt class="descname">is_ladder_vertical</tt><big>(</big><em>**args</em><big>)</big><a class="headerlink" href="#hamcalc.construction.stairs.is_ladder_vertical" title="Permalink to this definition">¶</a></dt>
+<dd><p>Does this design reflect a vertical ladder?</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="hamcalc.construction.stairs.is_ramp_inclined">
+<tt class="descclassname">hamcalc.construction.stairs.</tt><tt class="descname">is_ramp_inclined</tt><big>(</big><em>**args</em><big>)</big><a class="headerlink" href="#hamcalc.construction.stairs.is_ramp_inclined" title="Permalink to this definition">¶</a></dt>
+<dd><p>Does this design reflect an inclined ramp?</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="hamcalc.construction.stairs.is_ramp_step">
+<tt class="descclassname">hamcalc.construction.stairs.</tt><tt class="descname">is_ramp_step</tt><big>(</big><em>**args</em><big>)</big><a class="headerlink" href="#hamcalc.construction.stairs.is_ramp_step" title="Permalink to this definition">¶</a></dt>
+<dd><p>Does this design reflect a step ramp?</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="hamcalc.construction.stairs.is_stairway">
+<tt class="descclassname">hamcalc.construction.stairs.</tt><tt class="descname">is_stairway</tt><big>(</big><em>**args</em><big>)</big><a class="headerlink" href="#hamcalc.construction.stairs.is_stairway" title="Permalink to this definition">¶</a></dt>
+<dd><p>Does this design reflect a stairway?</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="hamcalc.construction.stairs.max_height">
+<tt class="descclassname">hamcalc.construction.stairs.</tt><tt class="descname">max_height</tt><big>(</big><em>unit</em><big>)</big><a class="reference internal" href="../../_modules/hamcalc/construction/stairs.html#max_height"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.construction.stairs.max_height" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the maximum height for economy and residential construction.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>units</strong> &#8211; Current units (either INCH or MILLIMETRE)</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>unit</strong> &#8211; Current units (either INCH or MILLIMETRE)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">pair with maximum height for economy
+and maximum height for residential purposes.</td>
 </tr>
 </tbody>
 </table>
 </dd></dl>
 
 <dl class="function">
-<dt id="hamcalc.construction.stairs.func.stair_design">
-<tt class="descclassname">hamcalc.construction.stairs.func.</tt><tt class="descname">stair_design</tt><big>(</big><em>H</em>, <em>L=None</em>, <em>R=None</em><big>)</big><a class="reference internal" href="../../_modules/hamcalc/construction/stairs/func.html#stair_design"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.construction.stairs.func.stair_design" title="Permalink to this definition">¶</a></dt>
-<dd><p>Determine what kind of stair, ramp or ladded
-will be involved.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>H</strong> &#8211; Height</li>
-<li><strong>L</strong> &#8211; optional Length (also called &#8220;SP&#8221; or Spread).
-If omitted, this is an unrestricted stairwell.</li>
-<li><strong>R</strong> &#8211; If L is unknown, this must be the maximum step
-step height.</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">AttrDict object with complete design.</p>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="function">
-<dt id="hamcalc.construction.stairs.func.stairwell_headroom">
-<tt class="descclassname">hamcalc.construction.stairs.func.</tt><tt class="descname">stairwell_headroom</tt><big>(</big><em>**args</em><big>)</big><a class="reference internal" href="../../_modules/hamcalc/construction/stairs/func.html#stairwell_headroom"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.construction.stairs.func.stairwell_headroom" title="Permalink to this definition">¶</a></dt>
+<dt id="hamcalc.construction.stairs.stairwell_headroom">
+<tt class="descclassname">hamcalc.construction.stairs.</tt><tt class="descname">stairwell_headroom</tt><big>(</big><em>**args</em><big>)</big><a class="headerlink" href="#hamcalc.construction.stairs.stairwell_headroom" title="Permalink to this definition">¶</a></dt>
 <dd><p>Requires the following arguments.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -599,9 +601,120 @@ step height.</li>
 </dd></dl>
 
 </div>
-<div class="section" id="object-oriented-implementation">
-<h3>Object-Oriented Implementation<a class="headerlink" href="#object-oriented-implementation" title="Permalink to this headline">¶</a></h3>
-<p>TBD</p>
+<div class="section" id="module-hamcalc.construction.stairs.func">
+<span id="function-oriented-implementation"></span><h3>Function-Oriented Implementation<a class="headerlink" href="#module-hamcalc.construction.stairs.func" title="Permalink to this headline">¶</a></h3>
+<p>hamcalc.construction.stairs.func</p>
+<p>&#8216;Simple&#8217; functions to implement stairs design.</p>
+<p>Note that these calculations only work in inches.
+The units, therefore, must all be converted from
+input to INCH and from INCH to desired output.</p>
+<dl class="function">
+<dt id="hamcalc.construction.stairs.func.stair_design">
+<tt class="descclassname">hamcalc.construction.stairs.func.</tt><tt class="descname">stair_design</tt><big>(</big><em>H</em>, <em>L=None</em>, <em>R=None</em><big>)</big><a class="reference internal" href="../../_modules/hamcalc/construction/stairs/func.html#stair_design"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.construction.stairs.func.stair_design" title="Permalink to this definition">¶</a></dt>
+<dd><p>Determine what kind of stair, ramp or ladded
+will be involved.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>H</strong> &#8211; Height</li>
+<li><strong>L</strong> &#8211; optional Length (also called &#8220;SP&#8221; or Spread).
+If omitted, this is an unrestricted stairwell.</li>
+<li><strong>R</strong> &#8211; If L is unknown, this must be the maximum step
+step height.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">AttrDict object with complete design.
+:H: Level-to-Level height HT
+:L: Maximum allowable spread SP
+:P: no. of rungs
+:N: no.of full risers
+:TBR:   top and bottom risers
+:A: angle
+:T: run
+:R: rise
+:X: string
+:Y: stringer
+:L: length
+:F: Floor Thickness, FL</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-hamcalc.construction.stairs.obj">
+<span id="object-oriented-implementation"></span><h3>Object-Oriented Implementation<a class="headerlink" href="#module-hamcalc.construction.stairs.obj" title="Permalink to this headline">¶</a></h3>
+<p>hamcalc.construction.stairs.obj</p>
+<p>Class definitions to implement stairs design.</p>
+<p>Note that these calculations only work in inches.
+The units, therefore, must all be converted from
+input to INCH and from INCH to desired output.</p>
+<p>The <strong>Designers</strong> involve a <strong>Chain of Command</strong> processing
+sequence where a stairwell designer may fall back to another
+designer.</p>
+<dl class="class">
+<dt id="hamcalc.construction.stairs.obj.Designer">
+<em class="property">class </em><tt class="descclassname">hamcalc.construction.stairs.obj.</tt><tt class="descname">Designer</tt><a class="reference internal" href="../../_modules/hamcalc/construction/stairs/obj.html#Designer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.construction.stairs.obj.Designer" title="Permalink to this definition">¶</a></dt>
+<dd><p>The superclass for all designers.</p>
+<dl class="method">
+<dt id="hamcalc.construction.stairs.obj.Designer.condition">
+<tt class="descname">condition</tt><big>(</big><big>)</big><a class="reference internal" href="../../_modules/hamcalc/construction/stairs/obj.html#Designer.condition"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.construction.stairs.obj.Designer.condition" title="Permalink to this definition">¶</a></dt>
+<dd><p>A filter condition: can we provide a design?</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="hamcalc.construction.stairs.obj.Designer.design">
+<tt class="descname">design</tt><big>(</big><big>)</big><a class="reference internal" href="../../_modules/hamcalc/construction/stairs/obj.html#Designer.design"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.construction.stairs.obj.Designer.design" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create the complete design, returning a <tt class="xref py py-class docutils literal"><span class="pre">AttrDict</span></tt>
+with all the parameters.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="hamcalc.construction.stairs.obj.Inclined_Ramp">
+<em class="property">class </em><tt class="descclassname">hamcalc.construction.stairs.obj.</tt><tt class="descname">Inclined_Ramp</tt><a class="reference internal" href="../../_modules/hamcalc/construction/stairs/obj.html#Inclined_Ramp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.construction.stairs.obj.Inclined_Ramp" title="Permalink to this definition">¶</a></dt>
+<dd><p>A Designer for Inclined Ramps; L and H define the structure.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="hamcalc.construction.stairs.obj.Restricted_Risers">
+<em class="property">class </em><tt class="descclassname">hamcalc.construction.stairs.obj.</tt><tt class="descname">Restricted_Risers</tt><a class="reference internal" href="../../_modules/hamcalc/construction/stairs/obj.html#Restricted_Risers"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.construction.stairs.obj.Restricted_Risers" title="Permalink to this definition">¶</a></dt>
+<dd><p>A Designer for Restricted Risers; L and H define the structure.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="hamcalc.construction.stairs.obj.Step_Ramp">
+<em class="property">class </em><tt class="descclassname">hamcalc.construction.stairs.obj.</tt><tt class="descname">Step_Ramp</tt><a class="reference internal" href="../../_modules/hamcalc/construction/stairs/obj.html#Step_Ramp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.construction.stairs.obj.Step_Ramp" title="Permalink to this definition">¶</a></dt>
+<dd><p>A Designer for Step Ramps; L and H define the structure.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="hamcalc.construction.stairs.obj.Unrestricted_Risers">
+<em class="property">class </em><tt class="descclassname">hamcalc.construction.stairs.obj.</tt><tt class="descname">Unrestricted_Risers</tt><a class="reference internal" href="../../_modules/hamcalc/construction/stairs/obj.html#Unrestricted_Risers"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.construction.stairs.obj.Unrestricted_Risers" title="Permalink to this definition">¶</a></dt>
+<dd><p>A Designer for Unrestricted Risers; L must be None.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="hamcalc.construction.stairs.obj.Vertical_Ladder">
+<em class="property">class </em><tt class="descclassname">hamcalc.construction.stairs.obj.</tt><tt class="descname">Vertical_Ladder</tt><a class="reference internal" href="../../_modules/hamcalc/construction/stairs/obj.html#Vertical_Ladder"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.construction.stairs.obj.Vertical_Ladder" title="Permalink to this definition">¶</a></dt>
+<dd><p>A Designer for Vertical Ladders; L must be zero.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="hamcalc.construction.stairs.obj.stair_design">
+<tt class="descclassname">hamcalc.construction.stairs.obj.</tt><tt class="descname">stair_design</tt><big>(</big><em>H</em>, <em>L=None</em>, <em>R=None</em><big>)</big><a class="reference internal" href="../../_modules/hamcalc/construction/stairs/obj.html#stair_design"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.construction.stairs.obj.stair_design" title="Permalink to this definition">¶</a></dt>
+<dd><p>A convenience function to provide the same API as
+the function implementation.</p>
+<p>This creates an instance of <a class="reference internal" href="#hamcalc.construction.stairs.obj.Unrestricted_Risers" title="hamcalc.construction.stairs.obj.Unrestricted_Risers"><tt class="xref py py-class docutils literal"><span class="pre">Unrestricted_Risers</span></tt></a>
+and uses that to start the design process.
+This may fallback to any of the other designers.</p>
+</dd></dl>
+
 </div>
 </div>
 <div class="section" id="quirks">

@@ -1,4 +1,4 @@
-Results of doctest builder run on 2013-07-07 20:39:03
+Results of doctest builder run on 2013-07-08 18:02:24
 =====================================================
 
 Document: python/math/trig

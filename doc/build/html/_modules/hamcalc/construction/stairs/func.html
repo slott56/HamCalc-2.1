@@ -24,7 +24,7 @@
     <script type="text/javascript" src="../../../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../../../_static/doctools.js"></script>
     <link rel="top" title="HamCalc 2.1 documentation" href="../../../../index.html" />
-    <link rel="up" title="Module code" href="../../../index.html" /> 
+    <link rel="up" title="hamcalc.construction.stairs" href="../stairs.html" /> 
   </head>
   <body>
     <div class="header-wrapper">
@@ -204,23 +204,23 @@
     <span class="n">X</span><span class="p">,</span> <span class="n">Y</span> <span class="o">=</span> <span class="n">_stringer</span><span class="p">(</span> <span class="n">R</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">P</span> <span class="p">)</span>
     <span class="k">return</span> <span class="n">AttrDict</span><span class="p">(</span><span class="nb">locals</span><span class="p">())</span>
 
-<span class="k">def</span> <span class="nf">is_ramp_inclined</span><span class="p">(</span> <span class="o">**</span><span class="n">args</span> <span class="p">):</span>
+<div class="viewcode-block" id="is_ramp_inclined"><a class="viewcode-back" href="../../../../python/construction/stairs.html#hamcalc.construction.stairs.func.is_ramp_inclined">[docs]</a><span class="k">def</span> <span class="nf">is_ramp_inclined</span><span class="p">(</span> <span class="o">**</span><span class="n">args</span> <span class="p">):</span>
     <span class="k">return</span> <span class="n">args</span><span class="p">[</span><span class="s">&#39;P&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span>
-
-<span class="k">def</span> <span class="nf">is_ladder_vertical</span><span class="p">(</span> <span class="o">**</span><span class="n">args</span> <span class="p">):</span>
+</div>
+<div class="viewcode-block" id="is_ladder_vertical"><a class="viewcode-back" href="../../../../python/construction/stairs.html#hamcalc.construction.stairs.func.is_ladder_vertical">[docs]</a><span class="k">def</span> <span class="nf">is_ladder_vertical</span><span class="p">(</span> <span class="o">**</span><span class="n">args</span> <span class="p">):</span>
     <span class="k">return</span> <span class="n">args</span><span class="p">[</span><span class="s">&#39;A&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">90</span>
-
-<span class="k">def</span> <span class="nf">is_ladder_inclined</span><span class="p">(</span> <span class="o">**</span><span class="n">args</span> <span class="p">):</span>
+</div>
+<div class="viewcode-block" id="is_ladder_inclined"><a class="viewcode-back" href="../../../../python/construction/stairs.html#hamcalc.construction.stairs.func.is_ladder_inclined">[docs]</a><span class="k">def</span> <span class="nf">is_ladder_inclined</span><span class="p">(</span> <span class="o">**</span><span class="n">args</span> <span class="p">):</span>
     <span class="k">return</span> <span class="mi">77</span> <span class="o">&lt;=</span> <span class="n">args</span><span class="p">[</span><span class="s">&#39;A&#39;</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">90</span>
-
-<span class="k">def</span> <span class="nf">is_ladder_open</span><span class="p">(</span> <span class="o">**</span><span class="n">args</span> <span class="p">):</span>
+</div>
+<div class="viewcode-block" id="is_ladder_open"><a class="viewcode-back" href="../../../../python/construction/stairs.html#hamcalc.construction.stairs.func.is_ladder_open">[docs]</a><span class="k">def</span> <span class="nf">is_ladder_open</span><span class="p">(</span> <span class="o">**</span><span class="n">args</span> <span class="p">):</span>
     <span class="k">return</span> <span class="mf">48.37</span> <span class="o">&lt;=</span> <span class="n">args</span><span class="p">[</span><span class="s">&#39;A&#39;</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">77</span>
-
-<span class="k">def</span> <span class="nf">is_stairway</span><span class="p">(</span> <span class="o">**</span><span class="n">args</span> <span class="p">):</span>
+</div>
+<div class="viewcode-block" id="is_stairway"><a class="viewcode-back" href="../../../../python/construction/stairs.html#hamcalc.construction.stairs.func.is_stairway">[docs]</a><span class="k">def</span> <span class="nf">is_stairway</span><span class="p">(</span> <span class="o">**</span><span class="n">args</span> <span class="p">):</span>
     <span class="k">return</span> <span class="mf">20.45</span> <span class="o">&lt;=</span> <span class="n">args</span><span class="p">[</span><span class="s">&#39;A&#39;</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mf">48.37</span>
-
-<span class="k">def</span> <span class="nf">is_ramp_step</span><span class="p">(</span> <span class="o">**</span><span class="n">args</span> <span class="p">):</span>
-    <span class="k">return</span> <span class="n">args</span><span class="p">[</span><span class="s">&#39;A&#39;</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mf">20.45</span>
+</div>
+<div class="viewcode-block" id="is_ramp_step"><a class="viewcode-back" href="../../../../python/construction/stairs.html#hamcalc.construction.stairs.func.is_ramp_step">[docs]</a><span class="k">def</span> <span class="nf">is_ramp_step</span><span class="p">(</span> <span class="o">**</span><span class="n">args</span> <span class="p">):</span>
+    <span class="k">return</span> <span class="n">args</span><span class="p">[</span><span class="s">&#39;A&#39;</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mf">20.45</span></div>
 </pre></div>
 
           </div>

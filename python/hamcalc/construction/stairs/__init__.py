@@ -175,6 +175,7 @@ Test Case for Stairwell and Headroom
 __version__ = "2.1"
 
 from hamcalc.construction.stairs.func import *
+from hamcalc.math.decifrac import INCH, MILLIMETRE, FOOT, METRE, FOOT_INCH_FRAC
 
 introduction="""\
 STAIRS, LADDERS & RAMPS                                     by George C. Murphy
@@ -253,3 +254,84 @@ inclined_ramp_pic="""\
       A                B
 Inclined ramp between A & C
 """
+
+def max_height( unit ):
+    """Returns the maximum height for economy and residential construction.
+
+    :param unit: Current units (either INCH or MILLIMETRE)
+    :returns: pair with maximum height for economy
+        and maximum height for residential purposes.
+    """
+    max_economy= INCH.to_std( 7.5 )
+    max_residential= INCH.to_std( 8 )
+    return unit.from_std( max_economy ), unit.from_std( max_residential )
+
+
+def stairwell_headroom( **args ):
+    """Requires the following arguments.
+
+    :T: run
+    :R: rise
+    :N: no.of full risers
+    :F: Floor Thickness, FL
+
+    Updates args with "HR" and "SW".
+
+    :SW:    Stairwell Dimension
+    :HR:    Headroom Dimension
+    """
+    args= AttrDict( args )
+    if 'F' not in args: return args
+    try:
+        Z = min( Z for Z in range(1,args.N+1) if Z*args.R-args.F >= 75 )
+    except ValueError:
+        Z = args.N
+    args.HR = Z*args.R-args.F
+    #args.X = args.N-Z # Legacy Quirk
+    args.SW = (Z-1)*args.T
+    return args
+
+def handrail_height( **args ):
+    """Compute handrail height. Requires the following arguments.
+
+    :A: Angle in degrees.
+
+    Updates args with
+
+    :B: Handrail height.
+    """
+    args= AttrDict( args )
+    if 48 < args.A <= 90:
+        args.B = 34+(args.A-48.4)/41.6*14
+    elif 39.2 < args.A <= 48:
+        args.B = 33+(args.A-39.2)/9.2
+    elif 24 < args.A <= 39.2:
+        args.B = 33
+    else:
+        # assert A <= 24
+        args.B = 33+(24-args.A)/8
+    return args
+
+def is_ramp_inclined( **args ):
+    """Does this design reflect an inclined ramp?"""
+    return args['P'] == 0
+
+def is_ladder_vertical( **args ):
+    """Does this design reflect a vertical ladder?"""
+    return args['A'] == 90
+
+def is_ladder_inclined( **args ):
+    """Does this design reflect an inclined ladder?"""
+    return 77 <= args['A'] < 90
+
+def is_ladder_open( **args ):
+    """Does this design reflect an open stepladder?"""
+    return 48.37 <= args['A'] < 77
+
+def is_stairway( **args ):
+    """Does this design reflect a stairway?"""
+    return 20.45 <= args['A'] < 48.37
+
+def is_ramp_step( **args ):
+    """Does this design reflect a step ramp?"""
+    return args['A'] < 20.45
