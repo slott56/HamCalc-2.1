@@ -44,6 +44,8 @@ class Display_Template:
         self.headroom()
 
         print( "{B:^72s}".format( B=self.B ) )
+        print()
+        print( self.picture )
         print( )
         self.p_value()
         self.n_value()
@@ -102,6 +104,7 @@ class Display_Template:
 class Display_Ramp_Inclined( Display_Template ):
     B= "INCLINED RAMP"
     TR= None
+    picture= stairs.inclined_ramp_pic
     def p_value( self ):
         pass
     def handrail( self ):
@@ -110,6 +113,7 @@ class Display_Ramp_Inclined( Display_Template ):
 class Display_Ladder_Vertical( Display_Template ):
     B= "VERTICAL LADDER"
     TR="rungs"
+    picture= stairs.vertical_ladder_pic
     def risers_1( self ):
         pass
     def risers_2( self ):
@@ -127,16 +131,19 @@ class Display_Ladder_Vertical( Display_Template ):
 class Display_Ladder_Inclined( Display_Template ):
     B= "INCLINED LADDER"
     TR="rungs"
+    picture= stairs.inclined_ladder_pic
 
 class Display_Ladder_Open( Display_Template ):
     B= "OPEN-RISER STEPLADDER"
     TR="steps"
+    picture= stairs.stepladder_pic
     def headroom( self ):
         self.calculate_headroom()
 
 class Display_Stairway( Display_Template ):
     B= "STAIRWAY"
     TR="treads"
+    picture= stairs.stairway_pic
     def headroom( self ):
         self.calculate_headroom()
     def range_check( self ):
@@ -150,6 +157,7 @@ class Display_Stairway( Display_Template ):
 class Display_Ramp_Step( Display_Template ):
     B= "STEP RAMP"
     TR="ramps"
+    picture= stairs.step_ramp_pic
 
 class Display_Factory:
     """An object of this class is used to determine which design
@@ -206,7 +214,6 @@ def display( unit, H, L, R ):
     R_in= stairs.INCH.from_std( R )
     result= stairs.stair_design( H_in, L_in, R_in )
 
-    print( result )
     Display_Factory().choose( unit, **result ).write()
 
 print( stairs.intro() )

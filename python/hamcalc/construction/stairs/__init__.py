@@ -190,3 +190,66 @@ STAIRS, LADDERS & RAMPS                                     by George C. Murphy
 """
 def intro():
     return introduction
+
+stairway_pic="""\
+         │«── Run ──»│
+     ┌───┼──────────»╔════
+     │   │           ╚═╦══ «─┐
+   Rise  │     Riser──»║     │
+     │   │ Tread─┐     ║   Rise
+     └──»╔═══════╪═════╣
+         ╚═╦═══════════╝ «───┘
+Nosing──»│ │«── Run ──»│"
+"""
+
+stepladder_pic="""\
+      ──»│ Run │«──
+         │     ╔══════╗«─┐
+         │     ╚════╪═╝  │
+         │     Step─┘  Rise
+         │ ┌─Step        │
+Nosing──»╔═╪════╗«───────┘
+         ╚══════╝
+      ──»│      │«── 3"- 5"
+"""
+
+inclined_ladder_pic="""\
+   ──»│ Run │«──
+  ┌───┼───» ▄ «──Rung
+  │   │
+Rise  │
+  │   │
+  └─» ▄ «── Rung
+"""
+
+vertical_ladder_pic="""\
+  ┌─────» ┌─»┌─┐ Top
+  │      T└─»│▄│
+  │          │ │
+  │       ┌─»│▄│
+ HT     Rise │ │
+  │       └─»│▄│«─Rungs
+  │          │ │
+  │      B┌─»│▄│
+  └─────» └─»└─┘ Bottom
+"""
+
+step_ramp_pic="""\
+  │«──────── SP ─────────»│
+  │                       │
+  │       │«─Run─»│       ╔═ «─┐
+  │Rise┌──┼──────»╔═══════╝    │
+  │    └─»╔══╤════╝            HT
+  ╔═══════╝  └──Ramp           │
+ ═╝ «──────────────────────────┘
+"""
+
+inclined_ramp_pic="""\
+      │«───── SP ─────»│
+      │                │
+  ┌───┼──────────────» ▄
+ HT   │                C
+  └─» ▄.................
+      A                B
+Inclined ramp between A & C
+"""
