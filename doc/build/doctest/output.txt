@@ -1,4 +1,4 @@
-Results of doctest builder run on 2013-07-02 10:27:06
+Results of doctest builder run on 2013-07-07 20:39:03
 =====================================================
 
 Document: python/math/trig
@@ -44,9 +44,17 @@ Test passed.
 Document: python/math/decifrac
 ------------------------------
 1 items passed all tests:
-   7 tests in default
-7 tests in 1 items.
-7 passed and 0 failed.
+   8 tests in default
+8 tests in 1 items.
+8 passed and 0 failed.
+Test passed.
+
+Document: python/construction/stairs
+------------------------------------
+1 items passed all tests:
+  59 tests in default
+59 tests in 1 items.
+59 passed and 0 failed.
 Test passed.
 
 Document: python/construction/beamsect
@@ -193,6 +201,14 @@ Document: python/navigation/gridsq
 35 passed and 0 failed.
 Test passed.
 
+Document: python/navigation/moontrac
+------------------------------------
+1 items passed all tests:
+  67 tests in default
+67 tests in 1 items.
+67 passed and 0 failed.
+Test passed.
+
 Document: python/math/deciconv
 ------------------------------
 1 items passed all tests:
@@ -215,14 +231,6 @@ Document: python/math/propcirc
   18 tests in default
 18 tests in 1 items.
 18 passed and 0 failed.
-Test passed.
-
-Document: python/construction/beltdriv
---------------------------------------
-1 items passed all tests:
-  13 tests in default
-13 tests in 1 items.
-13 passed and 0 failed.
 Test passed.
 
 Document: python/construction/wiremesh
@@ -297,17 +305,17 @@ Document: python/navigation/sunup
 58 passed and 0 failed.
 Test passed.
 
-Document: python/navigation/moontrac
-------------------------------------
+Document: python/construction/beltdriv
+--------------------------------------
 1 items passed all tests:
-  67 tests in default
-67 tests in 1 items.
-67 passed and 0 failed.
+  13 tests in default
+13 tests in 1 items.
+13 passed and 0 failed.
 Test passed.
 
 Doctest summary
 ===============
-  920 tests
+  980 tests
     0 failures in tests
     0 failures in setup code
     0 failures in cleanup code

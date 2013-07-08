@@ -105,6 +105,8 @@ Test Case for design:
 17.714
 
 """
+__version__ = "2.1"
+
 from hamcalc.lib import Solver, AttrDict
 from hamcalc.math.propcirc import bisection
 import math

@@ -3,7 +3,10 @@
 beltdriv --  Belt Drives
 -------------------------
 
-See :ref:`construction.chain`, and :ref:`construction.gearing`.
+See :ref:`construction.chain`,
+:ref:`construction.gearing`,
+:ref:`construction.shaft`,
+and :ref:`construction.torque`.
 
 Legacy Output
 ~~~~~~~~~~~~~~~

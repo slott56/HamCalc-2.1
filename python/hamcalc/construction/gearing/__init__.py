@@ -38,6 +38,8 @@ Test Cases
 2959
 
 """
+__version__ = "2.1"
+
 
 def intro():
     return """\

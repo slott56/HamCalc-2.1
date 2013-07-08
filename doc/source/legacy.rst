@@ -1094,7 +1094,7 @@ There's a complete cross-reference buried in :file:`INDEX/HAMDEX.FIL`.
     "SQUARE AND TRIANGLE WAVE GENERATOR","","","TRISQU"
     "SQUARE COAXIAL TRANMISSION LINE","","","SQCOAX"
     "SQUARE CONDUCTOR OPEN-WIRE LINES","","","OPENWIRE"
-    "STAIRS AND STAIRWAYS","","","MECHMENU"
+    "ram[pS AND STAIRWAYS","","","MECHMENU"
     "STOPWATCH","","","WATCH"
     "STRANDED COPPER CONDUCTORS","","","COPWIRE"
     "STRETCH",", in horizontally suspended wire","","WIRESAG"

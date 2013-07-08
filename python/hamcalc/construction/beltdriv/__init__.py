@@ -32,6 +32,8 @@ Test Case for :func:`pulley_choice_iter`.
 6261.3
 
 """
+__version__ = "2.1"
+
 import math
 
 def intro():

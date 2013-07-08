@@ -51,6 +51,8 @@ Test Cases
 122.815
 
 """
+__version__ = "2.1"
+
 from hamcalc.lib import Solver, NoSolutionError
 
 def intro():

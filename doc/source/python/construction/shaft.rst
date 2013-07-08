@@ -1,5 +1,12 @@
+..  _construction.shaft:
+
 shaft -- Shafts and Shafting
 -----------------------------
+
+See :ref:`construction.beltdriv`,
+:ref:`construction.chain`,
+:ref:`construction.gearing`,
+and :ref:`construction.torque`.
 
 Legacy Output
 ~~~~~~~~~~~~~~~

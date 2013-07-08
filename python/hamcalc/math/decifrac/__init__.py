@@ -15,6 +15,8 @@ Some Test Cases
 >>> decifrac.FOOT_INCH_FRAC.from_std(x)
 '13\\'- 3 5/8"'
 
+>>> decifrac.FOOT_INCH_FRAC.from_std( decifrac.INCH.to_std( 73 ) )
+'6\\'- 1"'
 """
 __version__ = "2.1"
 
@@ -85,7 +87,11 @@ class FOOT_INCH_FRAC( FOOT_INCH_FRAC_TUPLE ):
     @classmethod
     def from_std( class_, value ):
         ft, in_, num, den = super().from_std( value )
-        return "{0:.0f}'- {1:.0f} {2:.0f}/{3:.0f}\"".format( ft, in_, num, den )
+        if num == 0:
+            ft_in_fmt= "{0:.0f}'- {1:.0f}\""
+        else:
+            ft_in_fmt= "{0:.0f}'- {1:.0f} {2:.0f}/{3:.0f}\""
+        return ft_in_fmt.format( ft, in_, num, den )
 
 class MILLIMETRE( Unit ):
     """Decimal Millimetres"""

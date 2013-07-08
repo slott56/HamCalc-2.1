@@ -1,0 +1,716 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>stairs – Stairs, Ladders &amp; Ramps &mdash; HamCalc 2.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/hamcalc.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '2.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="HamCalc 2.1 documentation" href="../../index.html" />
+    <link rel="up" title="construction – Construction and Mechanical" href="index.html" />
+    <link rel="next" title="torque – Torque &amp; Horsepower" href="torque.html" />
+    <link rel="prev" title="shaft – Shafts and Shafting" href="shaft.html" /> 
+  </head>
+  <body>
+    <div class="header-wrapper">
+      <div class="header">
+        <div class="headertitle"><a
+          href="../../index.html">HamCalc 2.1 documentation</a></div>
+        <div class="rel">
+          <a href="shaft.html" title="shaft – Shafts and Shafting"
+             accesskey="P">previous</a> |
+          <a href="torque.html" title="torque – Torque &amp; Horsepower"
+             accesskey="N">next</a> |
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a>
+        </div>
+       </div>
+    </div>
+
+    <div class="content-wrapper">
+      <div class="content">
+        <div class="document">
+            
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="stairs-stairs-ladders-ramps">
+<h1>stairs &#8211; Stairs, Ladders &amp; Ramps<a class="headerlink" href="#stairs-stairs-ladders-ramps" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="legacy-output">
+<h2>Legacy Output<a class="headerlink" href="#legacy-output" title="Permalink to this headline">¶</a></h2>
+<p>Incomplete. But.</p>
+<div class="highlight-python"><pre>FL    │«─────── SP ──────»│
+ ├»═══╪═══╗«──── SW ─────»╔══ «┐
+┌┴»═══╪═══╝           ╔═══╝e   │
+│     │           ╔═══╝        │
+HR    │       ╔═══╝           HT
+└─────┼» c╔═══╝d    BASIC      │
+      ╔═══╝b       ELEMENTS    │
+   ═══╝a «─────────────────────┘</pre>
+</div>
+<p>See lines 2200 to 2300, &#8220;animate diagram&#8221;. This makes it difficult
+to determine what the output looks like.</p>
+<p>Also, having the &#8220;Courier New&#8221; font used when viewing this page matters for
+getting the ASCII art to come out exactly right.</p>
+</div>
+<div class="section" id="analysis">
+<h2>Analysis<a class="headerlink" href="#analysis" title="Permalink to this headline">¶</a></h2>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">H:</th><td class="field-body">Level-to-Level height HT</td>
+</tr>
+<tr class="field-even field"><th class="field-name">SP:</th><td class="field-body">Maximum allowable spread SP, also known as <em>L</em>.</td>
+</tr>
+</tbody>
+</table>
+<p>There are two decision trees.</p>
+<blockquote>
+<div><p>The <em>SP</em> factor starts us into a decision tree.</p>
+<p>If SP is determined, then we can design</p>
+<ul class="simple">
+<li>A vertical ladder.</li>
+<li>Inclined Ramp or Step Ramp.</li>
+<li>Restricted length stairs, which can devolve to a ladder design.</li>
+</ul>
+<p>If SP is not determined, then we can design unrestricted stairs.</p>
+</div></blockquote>
+<p>Once the design has been completed, the display area will
+use a second decision tree based on angle, <em>A</em>, in degrees.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">P:</th><td class="field-body">no. of rungs, steps, ramps or treads</td>
+</tr>
+<tr class="field-even field"><th class="field-name">N:</th><td class="field-body">no.of full risers</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">TBR:</th><td class="field-body">top and bottom risers</td>
+</tr>
+<tr class="field-even field"><th class="field-name">A:</th><td class="field-body">angle</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">T:</th><td class="field-body">run</td>
+</tr>
+<tr class="field-even field"><th class="field-name">R:</th><td class="field-body">rise</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">X:</th><td class="field-body">string</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Y:</th><td class="field-body">stringer</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">L:</th><td class="field-body">length</td>
+</tr>
+</tbody>
+</table>
+<div class="section" id="decision-tree">
+<h3>Decision Tree<a class="headerlink" href="#decision-tree" title="Permalink to this headline">¶</a></h3>
+<p>There are six designs available.</p>
+<p>If <em>SP</em> has been determined, then</p>
+<blockquote>
+<div><p>[Line 450, <em>SP</em> Known.]</p>
+<p>[Quirk.] L = SP.</p>
+<p>If <img class="math" src="../../_images/math/1dca0e3d2d908bb8c2c60c7af60e4fd6cf337c6e.png" alt="L = 0"/>: <a class="reference internal" href="#line-770-vertical-ladder-design">Line 770, Vertical Ladder Design</a>.</p>
+<div class="math">
+<p><img src="../../_images/math/4b9a8184d970f8b1e70eb9bc9de6eb8b19073a04.png" alt="A = \arctan{ \dfrac{H}{L} }"/></p>
+</div><p>If <img class="math" src="../../_images/math/3105e4788e3701eda25ff09ecc2d753c3f657b86.png" alt="A \leq 20.45"/>: <a class="reference internal" href="#line-510-ramp-design">Line 510, Ramp Design</a>.
+This can create an inclined ramp or a step ramp.</p>
+<p>If <img class="math" src="../../_images/math/f6e35279b9928d52a81f23c5017f4b04e1ef6653.png" alt="A &gt; 20.45"/>: <a class="reference internal" href="#line-640-restricted-length-risers">Line 640, Restricted Length Risers</a>.
+This can create stairs, stepladder or inclined ladder.</p>
+</div></blockquote>
+<p>If <em>SP</em> has not been determined, then</p>
+<blockquote>
+<div><p>[Line 890, <em>SP</em> unknown.]</p>
+<p>Show recommended maximum: 7.5 in. (8.0 in. for economy) or 19 cm (20 cm for economy)</p>
+<p>Get <em>MAX</em>, Maximum rise desired</p>
+<p>Assert <em>MAX</em> is within range of 5 in. to 13.5 in or 12.5 cm to 34 cm</p>
+<p>[Quirk.] R = MAX.</p>
+<p><a class="reference internal" href="#line-1060-unrestricted-length-risers">Line 1060, Unrestricted Length Risers</a>.</p>
+</div></blockquote>
+</div>
+<div class="section" id="line-510-ramp-design">
+<h3>Line 510, Ramp Design<a class="headerlink" href="#line-510-ramp-design" title="Permalink to this headline">¶</a></h3>
+<p>There are two ramp designs: Step Ramp and Inclined Ramp.</p>
+<div class="math">
+<p><img src="../../_images/math/d21494134e2180b991f4372fe603087008b2670e.png" alt="N = \left\lfloor \dfrac{H}{5} \right\rfloor"/></p>
+</div><p>If <img class="math" src="../../_images/math/e76751010708313d72288e79004a83967ed219da.png" alt="N &gt; 1"/>: step ramp with risers and treads</p>
+<blockquote>
+<div><div class="math">
+<p><img src="../../_images/math/712d35148a4ea1445533b64ddd0559e05d03d57b.png" alt="P &amp;= N-1 \\
+R &amp;= \frac{H}{N} \\
+T &amp;= \frac{L}{P}"/></p>
+</div></div></blockquote>
+<p>Else if <img class="math" src="../../_images/math/5bc1c6f2100c5d64e5d375c1fd4699a7291d671b.png" alt="N \leq 1"/>: inclined ramp</p>
+<blockquote>
+<div><div class="math">
+<p><img src="../../_images/math/fb9c4feb051ccc0309c849c1487f2b6465e3e999.png" alt="P = R = T = 0"/></p>
+</div></div></blockquote>
+</div>
+<div class="section" id="line-640-restricted-length-risers">
+<h3>Line 640, Restricted Length Risers<a class="headerlink" href="#line-640-restricted-length-risers" title="Permalink to this headline">¶</a></h3>
+<p>There are three restricted riser designs: Stairway, Step Ladder and Inclined Ladder. It&#8217;s also possible that a Vertical Ladder might be required.</p>
+<p>Compute the number of risers by incrementing N.</p>
+<p>While <img class="math" src="../../_images/math/f5a4bb50f8d96582b83d36666ad291119d3c8289.png" alt="(TN-T \leq L) \text{ AND } (R \geq 5)"/>:</p>
+<blockquote>
+<div><div class="math">
+<p><img src="../../_images/math/40b00896a732793ec599037a2aa291207a555cca.png" alt="N &amp;\gets N + 1 \\
+R &amp;= \frac{H}{N} \\
+T &amp;= 20 - \dfrac{4R}{3}"/></p>
+</div></div></blockquote>
+<p>Back off one riser.</p>
+<div class="math">
+<p><img src="../../_images/math/035b13b6f22dc3e10f2a5984f43f264e945046ff.png" alt="N &amp;\gets N - 1 \\
+P &amp;= N-1 \\
+R &amp;= \frac{H}{N} \\
+T &amp;= 20 - \dfrac{4R}{3}"/></p>
+</div><p>How steep is it?</p>
+<p>If <img class="math" src="../../_images/math/204a5f5e61161e7809ed274d886d1b87c46d5acf.png" alt="R &gt; 13.5 \text{ OR }  T \leq 0"/>: ladder, <img class="math" src="../../_images/math/496d0564bd9a0083a67a067fa9b466c4cefd6b5b.png" alt="A = \dfrac{\pi}{2}"/></p>
+<p>Else: Not quite a ladder.</p>
+<p>This next bit is quirky. Why compute this when the ladder section
+will set <em>L</em> to zero?</p>
+<div class="math">
+<p><img src="../../_images/math/c13a995f2b73c8c1a5eefbbc4f4abffa035e93e7.png" alt="L = PT"/></p>
+</div><p>If <img class="math" src="../../_images/math/cb809e7d0ebb71440aa0e637376a770bbdc4e53c.png" alt="A = \dfrac{\pi}{2} \text{ OR } A &lt; 0"/>: <a class="reference internal" href="#line-770-vertical-ladder-design">Line 770, Vertical Ladder Design</a>.</p>
+</div>
+<div class="section" id="line-770-vertical-ladder-design">
+<h3>Line 770, Vertical Ladder Design<a class="headerlink" href="#line-770-vertical-ladder-design" title="Permalink to this headline">¶</a></h3>
+<div class="math">
+<p><img src="../../_images/math/2e86b83ac501c889829fef48d54d81268d3ce882.png" alt="P &amp;= \left\lceil \dfrac{H}{13.5} \right\rceil \\
+N &amp;= P-1  \\
+TBR &amp;= \dfrac{H-13.5N}{2}  \\
+A &amp;= \dfrac{\pi}{2} \\
+T &amp;= 0 \\
+R &amp;= 13.5 \\
+X &amp;= 0  \\
+Y &amp;= 0  \\
+L &amp;= 0  \\"/></p>
+</div></div>
+<div class="section" id="line-1060-unrestricted-length-risers">
+<h3>Line 1060, Unrestricted Length Risers<a class="headerlink" href="#line-1060-unrestricted-length-risers" title="Permalink to this headline">¶</a></h3>
+<p>This is Stairway Design.</p>
+<div class="math">
+<p><img src="../../_images/math/048418e25bd6b00114f1dd97c63c0e937a3b1abe.png" alt="N &amp;= \left\lceil \dfrac{H}{R} \right\rceil \\
+P &amp;= N-1  \\
+R &amp;= \dfrac{H}{N}"/></p>
+</div><p>While <img class="math" src="../../_images/math/73c084f693e0ecece37a88a3f5e41179eeae6bf5.png" alt="R &lt; 5"/>:</p>
+<blockquote>
+<div><div class="math">
+<p><img src="../../_images/math/d3e40a73e6e7fd28321c163e98b8b53984600d43.png" alt="N &amp;\gets N-1 \\
+P &amp;= N - 1 \\
+R &amp;= \dfrac{H}{N}"/></p>
+</div></div></blockquote>
+<div class="math">
+<p><img src="../../_images/math/8ffcfb9b01b84766e326e4cac82ff06dac6a9113.png" alt="T &amp;= 20-\dfrac{4R}{3} \\
+L &amp;= PT \\
+A &amp;= \arctan \dfrac{R}{T}"/></p>
+</div><p>[Line 1160, stairs with low pitch.]</p>
+<p>IF  <img class="math" src="../../_images/math/936b35714f850abb9100fc71e46940f1809628c8.png" alt="17.35 \leq A_{deg} &lt; 33"/>:</p>
+<blockquote>
+<div><div class="math">
+<p><img src="../../_images/math/ac136dcfb70c8125d34f7b45bf042d6aa20544ce.png" alt="T=25+\dfrac{33-AD}{15.65}-2R"/></p>
+</div></div></blockquote>
+</div>
+<div class="section" id="line-1180-and-1190-display">
+<h3>Line 1180 and 1190, Display<a class="headerlink" href="#line-1180-and-1190-display" title="Permalink to this headline">¶</a></h3>
+<p>Here&#8217;s the second decision tree.</p>
+<div class="highlight-python"><pre>1180 :REM&#x27;
+1190 :REM&#x27;.....determine type
+1200 AD=A*180/PI       :REM&#x27;angle in degrees
+1210 IF P=0 THEN B$=&quot; INCLINED RAMP &quot;:GOSUB 2210:GOSUB 3100:GOTO 1320
+1220 IF AD=90 THEN B$=&quot; VERTICAL LADDER &quot;:TR$=&quot;rungs.&quot;:GOSUB 2210:GOSUB 2840:GOTO 1320
+1230 :REM&#x27;
+1240 IF AD&gt;77 THEN B$=&quot; INCLINED LADDER &quot;:TR$=&quot;rungs.&quot;:GOSUB 2210:GOSUB 2730:GOTO 1320
+1250 :REM&#x27;
+1260 IF AD&gt;48.37 THEN B$=&quot; OPEN-RISER STEPLADDER &quot;:TR$=&quot;steps.&quot;:GOSUB 2210:GOSUB 2590:GOTO 1320
+1270 :REM&#x27;
+1280 IF AD&gt;20.45 THEN B$=&quot; STAIRWAY &quot;:TR$=&quot;treads&quot;:GOSUB 2210:GOSUB 2460:GOTO 1320
+1290 :REM&#x27;
+1300 IF AD&lt;=20.45 THEN B$=&quot; STEP RAMP &quot;:TR$=&quot;ramps.&quot;:GOSUB 2210:GOSUB 2980:GOTO 1320</pre>
+</div>
+<p>It appears that it works like this.</p>
+<ul class="simple">
+<li>Special case, P=0: Inclined Ramp. Line 3100 has the picture.</li>
+<li>Angle of 90°: Vertical Ladder. Line 2840 has the picture.</li>
+<li>Angle of 77° to 90°: Inclined Ladder. Line 2730 has the picture.</li>
+<li>Angle of 48.37° to 77°: Open-Riser Step Ladder. Line 2590 has the picture.</li>
+<li>Angle of 20.45° to 48.37°: Stairway. Line 2460 has the picture.</li>
+<li>Angle less than 20.45°: Step Ramp. Line 2980 has the picture.</li>
+</ul>
+<p>Lines 1310 to 2160 is the details display. Which includes some additional
+calculations on lines 1690 and 1720.</p>
+<div class="math">
+<p><img src="../../_images/math/78093c2d7f44638a3399e59397780d48917791f6.png" alt="X &amp;=\sqrt{R^2+T^2} \\
+Y &amp;= XP"/></p>
+</div><p>Lines 2210 to 2300 &#8220;animate diagram&#8221;. It appears to move the diagram to the right, so a new diagram can be drawn to the left.</p>
+<p>The following sections are ASCII art, used by the display.</p>
+<blockquote>
+<div><p>Lines 2320 is the introductory stairway diagram</p>
+<p>Lines 2460 is stairway details</p>
+<p>Lines 2590 is stepladder details</p>
+<p>Lines 2730 is inclined ladder details</p>
+<p>Lines 2840 is vertical ladder details</p>
+<p>Lines 2980 is step ramp details</p>
+<p>Lines 3100 is inclined ramp details</p>
+</div></blockquote>
+</div>
+<div class="section" id="stairwell-and-headroom">
+<h3>Stairwell and Headroom<a class="headerlink" href="#stairwell-and-headroom" title="Permalink to this headline">¶</a></h3>
+<p>This is for (optional) stairwell, <em>SW</em>, and headroom, <em>HR</em>, dimensions.</p>
+<p>It requires</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">F:</th><td class="field-body">Floor Thickness, FL</td>
+</tr>
+<tr class="field-even field"><th class="field-name">SW:</th><td class="field-body">Stairwell Dimension</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">HR:</th><td class="field-body">Headroom Dimension</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-python"><pre>1490 FOR Z=1 TO N
+1500 HR=Z*R-F
+1510 IF HR&gt;=75 THEN 1530
+1520 NEXT Z
+1530 X=N-Z    :REM&#x27;number of runs
+1540 SW=(Z-1)*T</pre>
+</div>
+<div class="math">
+<p><img src="../../_images/math/230a6ca1b2e2acee5d2fa591d6beedc6e995b748.png" alt="Z &amp;= \min \left\lbrace Z |_{1 \leq Z \leq N} \text{ IF } ZR-F \geq 75 \right\rbrace \\
+HR &amp;= ZR-F \\
+X &amp;= N - Z \text{ quirk}\\
+SW &amp;= (Z-1)T"/></p>
+</div><p>Note the quirk if setting <em>X</em> to a value that doesn&#8217;t seem to fit
+with the definition of <em>X</em>. And. That value gets overwritten later.</p>
+<div class="highlight-python"><pre>1690 X=SQR(R^2+T^2)</pre>
+</div>
+</div>
+<div class="section" id="other">
+<h3>Other<a class="headerlink" href="#other" title="Permalink to this headline">¶</a></h3>
+<p>Lines 3220 is a subroutine to compute fractions from decimal values.</p>
+</div>
+</div>
+<div class="section" id="implementation">
+<h2>Implementation<a class="headerlink" href="#implementation" title="Permalink to this headline">¶</a></h2>
+<p>This could be seen as a rather complex <strong>Decision Tree</strong> class hierarchy.
+It&#8217;s a kind of <strong>Factory</strong> because it emits specific design objects.</p>
+<p>It&#8217;s also a kind of <strong>Chain of Command</strong> structure.
+A sequence of rules are chained together. Each rule either emits a design or
+passes control to a fallback rule.</p>
+<p>The subtlety is there may be back-and-forth interaction between some
+design rules and some API which must gather user input.</p>
+<p>In other cases (i.e., <strong class="program">beltdriv</strong>, <strong class="program">chain</strong>, <strong class="program">gearing</strong>, <strong class="program">shaft</strong> and <strong class="program">torque</strong>) there isn&#8217;t a complex decision <em>tree</em>;
+rather there is a sequence of steps to refine a design, so there&#8217;s no
+conditional back-and-forth.</p>
+<p>In this <strong class="program">stairs</strong> case, though, a subsequent input is
+conditional in a way that &#8211; perhaps &#8211; should be isolated to the calculation module, not the application itself.</p>
+<p>Additionally, it&#8217;s important to avoid peppering the output display
+with too many if-statements to handle the six different special cases.
+Sadly, there are other programs (e.g. <strong class="program">beamdefl</strong> and <strong class="program">satorbit</strong>) which suffer from
+this design deficiency.</p>
+<div class="section" id="module-hamcalc.construction.stairs">
+<span id="top-level-module"></span><h3>Top-Level Module<a class="headerlink" href="#module-hamcalc.construction.stairs" title="Permalink to this headline">¶</a></h3>
+<p>hamcalc.construction.stairs</p>
+<p>There are two implementations of <a class="reference internal" href="#module-hamcalc.construction.stairs" title="hamcalc.construction.stairs"><tt class="xref py py-mod docutils literal"><span class="pre">hamcalc.construction.stairs</span></tt></a>.</p>
+<ul class="simple">
+<li>The default implementation is a (relatively) complex set of functions
+that simply step through the design process.</li>
+<li>An alternate implementation is a slightly more flexible (but more complex)
+object-oriented <strong>Chain of Command</strong> implementation.</li>
+</ul>
+<p>We have the following cases for display.</p>
+<ul class="simple">
+<li>Angle of 90°: Vertical Ladder. H= 6, L= 0.</li>
+<li>Angle of 77° to 90°: Inclined Ladder. 80°: H= 6, L= 1.058</li>
+<li>Angle of 48.37° to 77°: Open-Riser Step Ladder. 60°: H = 6, L= 3.464</li>
+<li>Angle of 20.45° to 48.37°: Stairway. 30°: H= 6, L= 10.39</li>
+<li>Angle less than 20.45°: Step Ramp; if H &lt; 5, then inclined Ramp. 20°: H=6, L=16.48. And.  15° H=5, L=18.66.</li>
+</ul>
+<p>The decision tree for design, however, has only four cases for design.</p>
+<ul class="simple">
+<li>Vertical Ladder</li>
+<li>Ramp (step or inclined)</li>
+<li>Restricted Length Risers, which may devolve to a ladder.</li>
+<li>Unrestricted Length Risers</li>
+</ul>
+<p>Units, BTW, are inches for this module.</p>
+<p>Test Case 1: Unrestricted length riser</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">hamcalc.construction.stairs</span> <span class="kn">as</span> <span class="nn">stairs</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s_u</span><span class="o">=</span> <span class="n">stairs</span><span class="o">.</span><span class="n">stair_design</span><span class="p">(</span> <span class="mi">72</span><span class="p">,</span> <span class="n">R</span><span class="o">=</span><span class="mf">8.0</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">s_u</span><span class="o">.</span><span class="n">A</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">40.601</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">s_u</span><span class="o">.</span><span class="n">N</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">9</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">s_u</span><span class="o">.</span><span class="n">T</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">9.333</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">s_u</span><span class="o">.</span><span class="n">X</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">12.293</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">s_u</span><span class="o">.</span><span class="n">Y</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">98.342</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">s_u</span><span class="o">.</span><span class="n">R</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">8.0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">s_u</span><span class="o">.</span><span class="n">P</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">8</span>
+</pre></div>
+</div>
+<p>Test Case 2: Ladder</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">l</span><span class="o">=</span> <span class="n">stairs</span><span class="o">.</span><span class="n">stair_design</span><span class="p">(</span> <span class="mi">72</span><span class="p">,</span> <span class="mi">0</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">l</span><span class="o">.</span><span class="n">A</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+<span class="go">90</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">l</span><span class="o">.</span><span class="n">P</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">5</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">l</span><span class="o">.</span><span class="n">X</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">l</span><span class="o">.</span><span class="n">R</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">13.5</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">l</span><span class="o">.</span><span class="n">P</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">5</span>
+</pre></div>
+</div>
+<p>Test Case 3: Step Ladder</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">sl</span><span class="o">=</span> <span class="n">stairs</span><span class="o">.</span><span class="n">stair_design</span><span class="p">(</span> <span class="mi">72</span><span class="p">,</span> <span class="mf">12.696</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">sl</span><span class="o">.</span><span class="n">A</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+<span class="go">80.0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">sl</span><span class="o">.</span><span class="n">N</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">14</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">sl</span><span class="o">.</span><span class="n">R</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">5.143</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">sl</span><span class="o">.</span><span class="n">X</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">14.113</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">sl</span><span class="o">.</span><span class="n">Y</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">183.472</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">sl</span><span class="o">.</span><span class="n">P</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">13</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">sl</span><span class="o">.</span><span class="n">T</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">13.143</span>
+</pre></div>
+</div>
+<p>Test Case 4: Inclined Ladder
+There is one design with several different displays.
+Once you&#8217;ve designed the ladder, the distinction between
+step ladder and inclined ladder seems to be the difference
+between &#8220;steps&#8221; and &#8220;rungs.&#8221;</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">il</span><span class="o">=</span> <span class="n">stairs</span><span class="o">.</span><span class="n">stair_design</span><span class="p">(</span> <span class="mi">72</span><span class="p">,</span> <span class="mf">41.568</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">il</span><span class="o">.</span><span class="n">A</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+<span class="go">60.0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">il</span><span class="o">.</span><span class="n">N</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">14</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">il</span><span class="o">.</span><span class="n">R</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">5.143</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">il</span><span class="o">.</span><span class="n">X</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">14.113</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">il</span><span class="o">.</span><span class="n">Y</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">183.472</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">il</span><span class="o">.</span><span class="n">P</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">13</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">il</span><span class="o">.</span><span class="n">T</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">13.143</span>
+</pre></div>
+</div>
+<p>Test Case 5: Restricted Stairway
+Again, with essentially one design and multiple displays,
+this looks like designs.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">s</span><span class="o">=</span> <span class="n">stairs</span><span class="o">.</span><span class="n">stair_design</span><span class="p">(</span> <span class="mi">72</span><span class="p">,</span> <span class="mf">124.68</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">A</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+<span class="go">30.01</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">N</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">14</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">R</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">5.143</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">X</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">14.113</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">Y</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">183.472</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">P</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">13</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">T</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">13.143</span>
+</pre></div>
+</div>
+<p>Test Case 6: Step Ramp
+A distinctive design.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">sr</span><span class="o">=</span> <span class="n">stairs</span><span class="o">.</span><span class="n">stair_design</span><span class="p">(</span> <span class="mi">72</span><span class="p">,</span> <span class="mf">197.76</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">sr</span><span class="o">.</span><span class="n">A</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+<span class="go">20.01</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">sr</span><span class="o">.</span><span class="n">N</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">14</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">sr</span><span class="o">.</span><span class="n">R</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">5.143</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">sr</span><span class="o">.</span><span class="n">X</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">16.058</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">sr</span><span class="o">.</span><span class="n">Y</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">208.756</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">sr</span><span class="o">.</span><span class="n">P</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">13</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">sr</span><span class="o">.</span><span class="n">T</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">15.212</span>
+</pre></div>
+</div>
+<p>Test Case 7: Inclined Ramp</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">ir</span><span class="o">=</span> <span class="n">stairs</span><span class="o">.</span><span class="n">stair_design</span><span class="p">(</span> <span class="mi">60</span><span class="p">,</span> <span class="mf">223.92</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">ir</span><span class="o">.</span><span class="n">A</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+<span class="go">15.0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">ir</span><span class="o">.</span><span class="n">N</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">12</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">ir</span><span class="o">.</span><span class="n">R</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">5.0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">ir</span><span class="o">.</span><span class="n">X</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">20.961</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">ir</span><span class="o">.</span><span class="n">Y</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">230.576</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">ir</span><span class="o">.</span><span class="n">P</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">11</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">ir</span><span class="o">.</span><span class="n">T</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">20.356</span>
+</pre></div>
+</div>
+<p>Test Case for Stairwell and Headroom</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">s_u</span><span class="o">.</span><span class="n">F</span> <span class="o">=</span> <span class="mi">8</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">swhr</span><span class="o">=</span> <span class="n">stairs</span><span class="o">.</span><span class="n">stairwell_headroom</span><span class="p">(</span> <span class="o">**</span><span class="n">s_u</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">swhr</span><span class="o">.</span><span class="n">SW</span><span class="p">,</span> <span class="mi">3</span> <span class="p">)</span>
+<span class="go">74.667</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">swhr</span><span class="o">.</span><span class="n">HR</span><span class="p">,</span> <span class="mi">3</span> <span class="p">)</span>
+<span class="go">64.0</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="module-hamcalc.construction.stairs.func">
+<span id="function-oriented-implementation"></span><h3>Function-Oriented Implementation<a class="headerlink" href="#module-hamcalc.construction.stairs.func" title="Permalink to this headline">¶</a></h3>
+<p>hamcalc.construction.stairs.func</p>
+<p>&#8216;Simple&#8217; functions to implement stairs design.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">H:</th><td class="field-body">Level-to-Level height HT</td>
+</tr>
+<tr class="field-even field"><th class="field-name">L:</th><td class="field-body">Maximum allowable spread SP</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">P:</th><td class="field-body">no. of rungs</td>
+</tr>
+<tr class="field-even field"><th class="field-name">N:</th><td class="field-body">no.of full risers</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">TBR:</th><td class="field-body">top and bottom risers</td>
+</tr>
+<tr class="field-even field"><th class="field-name">A:</th><td class="field-body">angle</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">T:</th><td class="field-body">run</td>
+</tr>
+<tr class="field-even field"><th class="field-name">R:</th><td class="field-body">rise</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">X:</th><td class="field-body">string</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Y:</th><td class="field-body">stringer</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">L:</th><td class="field-body">length</td>
+</tr>
+<tr class="field-even field"><th class="field-name">F:</th><td class="field-body">Floor Thickness, FL</td>
+</tr>
+</tbody>
+</table>
+<dl class="function">
+<dt id="hamcalc.construction.stairs.func.max_height">
+<tt class="descclassname">hamcalc.construction.stairs.func.</tt><tt class="descname">max_height</tt><big>(</big><em>unit</em><big>)</big><a class="reference internal" href="../../_modules/hamcalc/construction/stairs/func.html#max_height"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.construction.stairs.func.max_height" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the maximum height for economy and residential construction.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>units</strong> &#8211; Current units (either INCH or MILLIMETRE)</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="hamcalc.construction.stairs.func.stair_design">
+<tt class="descclassname">hamcalc.construction.stairs.func.</tt><tt class="descname">stair_design</tt><big>(</big><em>H</em>, <em>L=None</em>, <em>R=None</em><big>)</big><a class="reference internal" href="../../_modules/hamcalc/construction/stairs/func.html#stair_design"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.construction.stairs.func.stair_design" title="Permalink to this definition">¶</a></dt>
+<dd><p>Determine what kind of stair, ramp or ladded
+will be involved.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>H</strong> &#8211; Height</li>
+<li><strong>L</strong> &#8211; optional Length (also called &#8220;SP&#8221; or Spread).
+If omitted, this is an unrestricted stairwell.</li>
+<li><strong>R</strong> &#8211; If L is unknown, this must be the maximum step
+step height.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">AttrDict object with complete design.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="hamcalc.construction.stairs.func.stairwell_headroom">
+<tt class="descclassname">hamcalc.construction.stairs.func.</tt><tt class="descname">stairwell_headroom</tt><big>(</big><em>**args</em><big>)</big><a class="reference internal" href="../../_modules/hamcalc/construction/stairs/func.html#stairwell_headroom"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.construction.stairs.func.stairwell_headroom" title="Permalink to this definition">¶</a></dt>
+<dd><p>Requires the following arguments.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">T :</th><td class="field-body">run</td>
+</tr>
+<tr class="field-even field"><th class="field-name">R :</th><td class="field-body">rise</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">N :</th><td class="field-body">no.of full risers</td>
+</tr>
+<tr class="field-even field"><th class="field-name">F :</th><td class="field-body">Floor Thickness, FL</td>
+</tr>
+</tbody>
+</table>
+<p>Updates args with &#8220;HR&#8221; and &#8220;SW&#8221;.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Sw :</th><td class="field-body">Stairwell Dimension</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Hr :</th><td class="field-body">Headroom Dimension</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="object-oriented-implementation">
+<h3>Object-Oriented Implementation<a class="headerlink" href="#object-oriented-implementation" title="Permalink to this headline">¶</a></h3>
+<p>TBD</p>
+</div>
+</div>
+<div class="section" id="quirks">
+<h2>Quirks<a class="headerlink" href="#quirks" title="Permalink to this headline">¶</a></h2>
+<p>Lines 1360 and 1640 check for <tt class="docutils literal"><span class="pre">B$=&quot;RAMP&quot;</span></tt>. No line sets B$ to <tt class="docutils literal"><span class="pre">&quot;RAMP&quot;</span></tt>.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+        </div>
+        <div class="sidebar">
+          <h3>Table Of Contents</h3>
+          <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../background.html">Background</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../legacy.html">The HamCalc Legacy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../python_architecture.html">Python Architecture</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Python Modules</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../lib.html">lib &#8211; Supporting Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../radio/index.html">radio &#8211; Radio Design and Engineering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ham/index.html">ham &#8211; Ham Radio Operations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../electronics/index.html">electronics &#8211; General Electronics</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">construction &#8211; Construction and Mechanical</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="arch.html">arch &#8211; Arch Calculator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="bend.html">bend &#8211; Bend Allowance, Metals</a></li>
+<li class="toctree-l3"><a class="reference internal" href="brick.html">brick &#8211; Masonry Estimator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="conecalc.html">conecalc &#8211; Cone Calculator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="diamfind.html">diamfind &#8211; Diameter Finder</a></li>
+<li class="toctree-l3"><a class="reference internal" href="guywires.html">guywires &#8211; Guy Wires for Antenna Towers/Masts</a></li>
+<li class="toctree-l3"><a class="reference internal" href="nmbrsize.html">nmbrsize &#8211; Numbered Drills/Screws/Taps/Gauges</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pipesize.html">pipesize &#8211; Pipe Sizes, ANSI Standard</a></li>
+<li class="toctree-l3"><a class="reference internal" href="survey.html">survey &#8211; Surveyor&#8217;s Calculator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="wirecond.html">wirecond &#8211; Wires in Conduit</a></li>
+<li class="toctree-l3"><a class="reference internal" href="wiremesh.html">wiremesh &#8211; Wire Mesh Screens, Wind Loads</a></li>
+<li class="toctree-l3"><a class="reference internal" href="beamdefl.html">beamdefl &#8211; BEAMS, Deflection in</a></li>
+<li class="toctree-l3"><a class="reference internal" href="beamsect.html">beamsect &#8211; BEAMS, Properties of (Start new beam design here)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="beltdriv.html">beltdriv &#8211;  Belt Drives</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chain.html">chain &#8211; Chain Drives</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cyl.html">cyl &#8211; Cylinders, Air &amp; Hydraulic</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gearing.html">gearing &#8211; Gears &amp; Gearing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="binhop.html">binhop &#8211; Hoppered Bins &amp; Tanks</a></li>
+<li class="toctree-l3"><a class="reference internal" href="binvol.html">binvol &#8211; Hoppered Bin Design</a></li>
+<li class="toctree-l3"><a class="reference internal" href="shaft.html">shaft &#8211; Shafts and Shafting</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="">stairs &#8211; Stairs, Ladders &amp; Ramps</a></li>
+<li class="toctree-l3"><a class="reference internal" href="torque.html">torque &#8211; Torque &amp; Horsepower</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../math/index.html">math &#8211; Math, Physics, Units Conversion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../navigation/index.html">navigation &#8211; Navigation and Astronomy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../calendar/index.html">calendar &#8211; Calendrical Calculations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../audio_photo.html">audio_photo &#8211; Audio, Sound and Photography</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../software.html">software &#8211; Software Engineering, Programming and Computers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../other/index.html">other &#8211; including Finance and Nutrition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../stdio.html">STDIO Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../rest.html">RESTful Web Services Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../cli.html">Command-Line Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../gui.html">GUI Interface</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../todo.html">The To Do List</a></li>
+</ul>
+
+          <h3 style="margin-top: 1.5em;">Search</h3>
+          <form class="search" action="../../search.html" method="get">
+            <input type="text" name="q" />
+            <input type="submit" value="Go" />
+            <input type="hidden" name="check_keywords" value="yes" />
+            <input type="hidden" name="area" value="default" />
+          </form>
+          <p class="searchtip" style="font-size: 90%">
+            Enter search terms or a module, class or function name.
+          </p>
+        </div>
+        <div class="clearer"></div>
+      </div>
+    </div>
+
+    <div class="footer-wrapper">
+      <div class="footer">
+        <div class="left">
+          <a href="shaft.html" title="shaft – Shafts and Shafting"
+             >previous</a> |
+          <a href="torque.html" title="torque – Torque &amp; Horsepower"
+             >next</a> |
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |
+          <a href="../../genindex.html" title="General Index"
+             >index</a>
+            <br/>
+            <a href="../../_sources/python/construction/stairs.txt"
+               rel="nofollow">Show Source</a>
+        </div>
+
+        <div class="right">
+          
+    <div class="footer">
+        &copy; Copyright 2013, S.Lott.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2b1.
+    </div>
+        </div>
+        <div class="clearer"></div>
+      </div>
+    </div>
+
+  </body>
+</html>

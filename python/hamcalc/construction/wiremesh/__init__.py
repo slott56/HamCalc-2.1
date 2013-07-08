@@ -60,6 +60,8 @@ Test Cases: Wire Mesh
 >>>
 
 """
+__version__ = "2.1"
+
 from hamcalc.lib import Solver, Unit, AttrDict, NoSolutionError, convert
 from hamcalc.math.equiv import INCH, MILLIMETRE, SQ_METRE, SQ_FOOT
 from hamcalc.navigation.satorbit import KPH, MPH, MPM, KNOT, MPS

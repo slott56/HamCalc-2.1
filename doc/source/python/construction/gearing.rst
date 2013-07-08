@@ -3,7 +3,10 @@
 gearing -- Gears & Gearing
 ---------------------------
 
-See :ref:`construction.beltdriv` and :ref:`construction.chain`.
+See :ref:`construction.beltdriv`,
+:ref:`construction.chain`,
+:ref:`construction.shaft`,
+and :ref:`construction.torque`.
 
 Legacy Output
 ~~~~~~~~~~~~~~

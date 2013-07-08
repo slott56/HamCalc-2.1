@@ -34,6 +34,8 @@ Test Cases:
 0.067
 
 """
+__version__ = "2.1"
+
 from hamcalc.lib import Solver, NoSolutionError
 import math
 

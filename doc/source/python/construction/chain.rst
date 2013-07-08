@@ -3,7 +3,10 @@
 chain -- Chain Drives
 ------------------------
 
-See :ref:`construction.beltdriv`, and :ref:`construction.gearing`.
+See :ref:`construction.beltdriv`,
+:ref:`construction.gearing`,
+:ref:`construction.shaft`,
+and :ref:`construction.torque`.
 
 Legacy Output
 ~~~~~~~~~~~~~~

@@ -72,6 +72,11 @@ class Deflection:
         """Build the template and then render using the current
         values of self.args.
 
+        ..  todo:: Redesign this.
+
+            The number of **if** statements used
+            to render the output is unconscionable.
+
         :returns: text to display.
         """
         t= """\

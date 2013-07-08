@@ -8,12 +8,20 @@ from hamcalc.math.equiv import MILE, KILOMETRE
 from hamcalc.stdio import *
 
 def orbit( unit_dist, unit_speed_1, unit_speed_2 ):
+    """Compute and display orbits.
+
+    ..  todo:: Refactor
+
+        Remove display and use :program:`brick` as an example
+        of simplifying the unit conversion and display.
+    """
     period= input_float( " ENTER: Period (time for single orbit) (87-157 min.) ? " )
     if period is None: return
     fq_up = fq_down = None
     while fq_up  is None or fq_down is None:
         fq_up= input_float( " ENTER: UPLINK frequency (MHz).......................? " )
         fq_down= input_float( " ENTER: DOWNLINK frequency (MHz).....................? " )
+
     details= satorbit.orbit( period, fq_up, fq_down )
     altitude= MILE.to_std(details.altitude)
     print( "    Satellite altitude........................... {0:7.0f} {1}".

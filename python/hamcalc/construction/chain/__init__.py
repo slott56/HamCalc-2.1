@@ -103,6 +103,8 @@ Test Cases for :func:`tension_torque`
 1431.506
 
 """
+__version__ = "2.1"
+
 from collections import namedtuple, OrderedDict
 import math
 

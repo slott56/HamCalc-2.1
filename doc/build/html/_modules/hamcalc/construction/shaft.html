@@ -8,7 +8,7 @@
     
     <title>hamcalc.construction.shaft &mdash; HamCalc 2.1 documentation</title>
     
-    <link rel="stylesheet" href="../../../_static/agogo.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/hamcalc.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     
     <script type="text/javascript">
@@ -62,16 +62,19 @@
 <span class="sd">    :param D: Diameter</span>
 <span class="sd">    :param N: RPM</span>
 <span class="sd">    :param H: Horsepower</span>
-<span class="sd">    :returns: :class:`hamcalc.lib.AttrDict` with missing value.</span>
+<span class="sd">    :returns: :class:`hamcalc.lib.AttrDict` with missing values.</span>
+<span class="sd">        This includes *L*, the bearing spacing.</span>
 
-<span class="sd">..  function::  pulley_shaFt( D, N, H )</span>
+<span class="sd">..  function::  pulley_shaft( D, N, H )</span>
 
 <span class="sd">    Solves shaft design problems for main shafts.</span>
 
 <span class="sd">    :param D: Diameter</span>
 <span class="sd">    :param N: RPM</span>
 <span class="sd">    :param H: Horsepower</span>
-<span class="sd">    :returns: :class:`hamcalc.lib.AttrDict` with missing value.</span>
+<span class="sd">    :returns: :class:`hamcalc.lib.AttrDict` with missing values.</span>
+<span class="sd">        This includes *L*, the bearing spacing.</span>
+
 
 <span class="sd">..  function::  stub_shaft( D, N, H )</span>
 
@@ -81,23 +84,37 @@
 <span class="sd">    :param N: RPM</span>
 <span class="sd">    :param H: Horsepower</span>
 <span class="sd">    :returns: :class:`hamcalc.lib.AttrDict` with missing value.</span>
+<span class="sd">        Bearing spacing, *L* is not computed.</span>
 
 <span class="sd">Test Cases</span>
 
 <span class="sd">&gt;&gt;&gt; import hamcalc.construction.shaft as shaft</span>
-<span class="sd">&gt;&gt;&gt; x = shaft.pulley_shaft( N=3500, H=80 )</span>
-<span class="sd">&gt;&gt;&gt; round(x.D,3)</span>
+<span class="sd">&gt;&gt;&gt; pulley = shaft.pulley_shaft( N=3500, H=80 )</span>
+<span class="sd">&gt;&gt;&gt; round(pulley.D,3)</span>
 <span class="sd">1.069</span>
-<span class="sd">&gt;&gt;&gt; round(x.L,3)</span>
+<span class="sd">&gt;&gt;&gt; round(pulley.L,3)</span>
 <span class="sd">65.253</span>
 
+<span class="sd">&gt;&gt;&gt; main = shaft.main_shaft( N=3500, H=80 )</span>
+<span class="sd">&gt;&gt;&gt; round(main.D,3)</span>
+<span class="sd">1.223</span>
+<span class="sd">&gt;&gt;&gt; round(main.L,3)</span>
+<span class="sd">122.815</span>
+
 <span class="sd">&quot;&quot;&quot;</span>
+<span class="n">__version__</span> <span class="o">=</span> <span class="s">&quot;2.1&quot;</span>
+
 <span class="kn">from</span> <span class="nn">hamcalc.lib</span> <span class="kn">import</span> <span class="n">Solver</span><span class="p">,</span> <span class="n">NoSolutionError</span>
+
+<span class="k">def</span> <span class="nf">intro</span><span class="p">():</span>
+    <span class="k">return</span> <span class="s">&quot;&quot;&quot;</span><span class="se">\</span>
+<span class="s">SHAFTING DESIGN                                         by George Murphy VE3ERP</span>
+<span class="s">&quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="Shaft"><a class="viewcode-back" href="../../../python/construction/shaft.html#hamcalc.construction.shaft.Shaft">[docs]</a><span class="k">class</span> <span class="nc">Shaft</span><span class="p">(</span> <span class="n">Solver</span> <span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Solve shaft diameter, horsepower and RPM problems.</span>
 <span class="sd">    This requires a *Y* and *Z* value defines some shaft</span>
-<span class="sd">    geometry issues.</span>
+<span class="sd">    geometry features.</span>
 
 <span class="sd">    :D: Diameter</span>
 <span class="sd">    :N: RPM</span>
@@ -114,9 +131,9 @@
         <span class="k">if</span> <span class="s">&quot;D&quot;</span> <span class="ow">in</span> <span class="n">args</span> <span class="ow">and</span> <span class="s">&quot;N&quot;</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
             <span class="n">args</span><span class="o">.</span><span class="n">H</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">D</span><span class="o">**</span><span class="mi">3</span> <span class="o">*</span> <span class="n">args</span><span class="o">.</span><span class="n">N</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">Y</span>
         <span class="k">elif</span> <span class="s">&quot;H&quot;</span> <span class="ow">in</span> <span class="n">args</span> <span class="ow">and</span> <span class="s">&quot;N&quot;</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
-            <span class="n">args</span><span class="o">.</span><span class="n">D</span> <span class="o">=</span> <span class="p">(</span> <span class="n">args</span><span class="o">.</span><span class="n">H</span><span class="o">*</span><span class="n">args</span><span class="o">.</span><span class="n">Y</span><span class="o">/</span><span class="n">args</span><span class="o">.</span><span class="n">H</span> <span class="p">)</span> <span class="o">**</span> <span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="mi">3</span><span class="p">)</span>
+            <span class="n">args</span><span class="o">.</span><span class="n">D</span> <span class="o">=</span> <span class="p">(</span> <span class="n">args</span><span class="o">.</span><span class="n">H</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">Y</span><span class="o">/</span><span class="n">args</span><span class="o">.</span><span class="n">N</span> <span class="p">)</span> <span class="o">**</span> <span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="mi">3</span><span class="p">)</span>
         <span class="k">elif</span> <span class="s">&quot;H&quot;</span> <span class="ow">in</span> <span class="n">args</span> <span class="ow">and</span> <span class="s">&quot;D&quot;</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
-            <span class="n">args</span><span class="o">.</span><span class="n">N</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">H</span> <span class="o">*</span> <span class="n">args</span><span class="o">.</span><span class="n">Y</span> <span class="o">/</span> <span class="n">args</span><span class="o">.</span><span class="n">D</span><span class="o">**</span><span class="mi">3</span>
+            <span class="n">args</span><span class="o">.</span><span class="n">N</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">H</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">Y</span> <span class="o">/</span> <span class="n">args</span><span class="o">.</span><span class="n">D</span><span class="o">**</span><span class="mi">3</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">NoSolutionError</span><span class="p">(</span> <span class="s">&quot;Does not compute: {0!r}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">args</span><span class="p">)</span> <span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">Z</span><span class="p">:</span>

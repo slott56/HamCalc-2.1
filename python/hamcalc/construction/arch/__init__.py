@@ -195,6 +195,8 @@ True
 81.681
 
 """
+__version__ = "2.1"
+
 from hamcalc.lib import AttrDict, Solver, NoSolutionError
 from hamcalc.math.propcirc import arc_height_2_r, bisection
 import math

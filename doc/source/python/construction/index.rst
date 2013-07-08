@@ -34,11 +34,11 @@ index, either.
     binhop
     binvol
     shaft
+    stairs
+    torque
 
 Note that there are strong similarities between :program:`beltdriv`,
-:program:`chain`, :program:`gearing` and :program:`shaft`.
+:program:`chain`, :program:`gearing`, :program:`shaft` and :program:`torque`
 You'd almost think there's a common superclass
 of some kind.
 
--   "stairs", "Stairs, Ladders & Ramps"
--   "torque", "Torque & Horsepower"

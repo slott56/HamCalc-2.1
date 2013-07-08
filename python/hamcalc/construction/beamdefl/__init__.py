@@ -204,6 +204,8 @@ Test Cases for BEAM FIXED BOTH ENDS, LOAD AT ANY POINT
 35.96
 
 """
+__version__ = "2.1"
+
 from hamcalc.lib import Solver, NoSolutionError
 from collections import namedtuple, OrderedDict
 import math
