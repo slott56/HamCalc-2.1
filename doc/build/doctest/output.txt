@@ -1,4 +1,4 @@
-Results of doctest builder run on 2013-07-08 18:02:24
+Results of doctest builder run on 2013-07-09 19:06:39
 =====================================================
 
 Document: python/math/trig
@@ -39,6 +39,14 @@ Document: python/math/involute
    8 tests in default
 8 tests in 1 items.
 8 passed and 0 failed.
+Test passed.
+
+Document: python/construction/torque
+------------------------------------
+1 items passed all tests:
+   4 tests in default
+4 tests in 1 items.
+4 passed and 0 failed.
 Test passed.
 
 Document: python/math/decifrac
@@ -315,7 +323,7 @@ Test passed.
 
 Doctest summary
 ===============
-  980 tests
+  984 tests
     0 failures in tests
     0 failures in setup code
     0 failures in cleanup code

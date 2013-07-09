@@ -60,6 +60,123 @@
 <a class="reference internal" href="chain.html#construction-chain"><em>chain &#8211; Chain Drives</em></a>,
 <a class="reference internal" href="gearing.html#construction-gearing"><em>gearing &#8211; Gears &amp; Gearing</em></a>,
 and <a class="reference internal" href="shaft.html#construction-shaft"><em>shaft &#8211; Shafts and Shafting</em></a>.</p>
+<div class="section" id="analysis">
+<h2>Analysis<a class="headerlink" href="#analysis" title="Permalink to this headline">¶</a></h2>
+<p>This is a <strong>Solver</strong> for the relationships among several
+values:</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">R:</th><td class="field-body">R.P.M.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">D:</th><td class="field-body">Pitch dia.(gear/sprkt.)</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">T:</th><td class="field-body">Torque (in.lb.)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">H:</th><td class="field-body">Horsepower</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">W:</th><td class="field-body">Force in lb.(belt/chain tension)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">V:</th><td class="field-body">Velocity (feet/min.)</td>
+</tr>
+</tbody>
+</table>
+<p>There are two interrelated sets of calculations.</p>
+<p>The Velocity-RPM-Diameter</p>
+<div class="math">
+<p><img src="../../_images/math/6b02958fc74c6d7268d7ff7ab6c87e4b918e96a0.png" alt="V &amp;= \frac{\pi}{12}DR \\
+R &amp;= \frac{12}{\pi}V/D \\
+D &amp;= \frac{12}{\pi}V/R"/></p>
+</div><p>The Torque-Force-Horsepower based on Velocity, RPM or Diameter.</p>
+<div class="math">
+<p><img src="../../_images/math/bdc681fcd433f15e8adb113127c5d8018581651d.png" alt="T &amp;= WD/2 \\
+H &amp;= WV/33000 \\
+H &amp;= TR/63025 \\
+T &amp;= 63025H/R \\
+W &amp;= 33000H/V \\
+R &amp;= 63025H/T"/></p>
+</div></div>
+<div class="section" id="module-hamcalc.construction.torque">
+<span id="implementation"></span><h2>Implementation<a class="headerlink" href="#module-hamcalc.construction.torque" title="Permalink to this headline">¶</a></h2>
+<p>hamcalc.construction.torque</p>
+<p>Solve The Velocity-RPM-Diameter problems, as well as
+Torque-Force-Horsepower based on Velocity, RPM or Diameter.</p>
+<p>This is a single <strong>Solver</strong> for both sets of rules.</p>
+<dl class="function">
+<dt id="hamcalc.construction.torque.torque">
+<tt class="descclassname">hamcalc.construction.torque.</tt><tt class="descname">torque</tt><big>(</big><em>R=None</em>, <em>D=None</em>, <em>T=None</em>, <em>H=None</em>, <em>W=None</em>, <em>V=None</em><big>)</big><a class="headerlink" href="#hamcalc.construction.torque.torque" title="Permalink to this definition">¶</a></dt>
+<dd><p>Solve torque problems. This an instance of the <a class="reference internal" href="#hamcalc.construction.torque.Torque" title="hamcalc.construction.torque.Torque"><tt class="xref py py-class docutils literal"><span class="pre">Torque</span></tt></a> <strong>Solver</strong>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>R</strong> &#8211; R.P.M.</li>
+<li><strong>D</strong> &#8211; Pitch dia.(gear/sprkt.)</li>
+<li><strong>T</strong> &#8211; Torque (in.lb.)</li>
+<li><strong>H</strong> &#8211; Horsepower</li>
+<li><strong>W</strong> &#8211; Force in lb.(belt/chain tension)</li>
+<li><strong>V</strong> &#8211; Velocity (feet/min.)</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Dictionary with <strong>all</strong> values computed.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<p>Test Cases:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">hamcalc.construction.torque</span> <span class="kn">as</span> <span class="nn">torque</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">t1</span> <span class="o">=</span> <span class="n">torque</span><span class="o">.</span><span class="n">torque</span><span class="p">(</span> <span class="n">R</span><span class="o">=</span><span class="mi">1700</span><span class="p">,</span> <span class="n">H</span><span class="o">=</span><span class="mi">80</span><span class="p">,</span> <span class="n">T</span><span class="o">=</span><span class="mi">1431</span><span class="p">,</span> <span class="n">D</span><span class="o">=</span><span class="mi">54</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">t1</span><span class="o">.</span><span class="n">W</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">109.848</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">t1</span><span class="o">.</span><span class="n">V</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">24033.184</span>
+</pre></div>
+</div>
+<p>Not sure this is correct.</p>
+<dl class="class">
+<dt id="hamcalc.construction.torque.Torque">
+<em class="property">class </em><tt class="descclassname">hamcalc.construction.torque.</tt><tt class="descname">Torque</tt><a class="reference internal" href="../../_modules/hamcalc/construction/torque.html#Torque"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.construction.torque.Torque" title="Permalink to this definition">¶</a></dt>
+<dd><p>Solver for Torque problems.</p>
+<dl class="method">
+<dt id="hamcalc.construction.torque.Torque.solve">
+<tt class="descname">solve</tt><big>(</big><em>args</em><big>)</big><a class="reference internal" href="../../_modules/hamcalc/construction/torque.html#Torque.solve"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.construction.torque.Torque.solve" title="Permalink to this definition">¶</a></dt>
+<dd><p>Solve torque problems.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>R</strong> &#8211; R.P.M.</li>
+<li><strong>D</strong> &#8211; Pitch dia.(gear/sprkt.)</li>
+<li><strong>T</strong> &#8211; Torque (in.lb.)</li>
+<li><strong>H</strong> &#8211; Horsepower</li>
+<li><strong>W</strong> &#8211; Force in lb.(belt/chain tension)</li>
+<li><strong>V</strong> &#8211; Velocity (feet/min.)</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Dictionary with <strong>all</strong> values computed.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="quirks">
+<h2>Quirks<a class="headerlink" href="#quirks" title="Permalink to this headline">¶</a></h2>
+<p>As with other solvers, this iterates through the various rules. It iterates
+seven times, as if each rule might be used one time.</p>
+<p>Rather than execute all seven rules, however, there are several GOTO&#8217;s to
+somehow optimize the rule execution.</p>
+</div>
 </div>
 
 
