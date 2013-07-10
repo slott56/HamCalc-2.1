@@ -182,25 +182,98 @@ means that a solver can look like this.</p>
     <span class="k">return</span> <span class="n">kw</span>
 </pre></div>
 </div>
+<p>It&#8217;s not <strong>great</strong>. But it sure is quick and easy. We can make a slight
+improvement to the syntax.</p>
 <p>This function can be used like this.</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">force</span><span class="p">(</span> <span class="n">a</span><span class="o">=</span><span class="mf">2.5</span><span class="p">,</span> <span class="n">m</span><span class="o">=</span><span class="mi">12000</span> <span class="p">)</span>
 <span class="go">{&#39;a&#39;: 2.5, &#39;m&#39;: 12000, &#39;f&#39;: 30000.0}</span>
 </pre></div>
 </div>
-<p>This means a script can do something like this:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="n">args</span><span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
-<span class="n">raw</span><span class="o">=</span> <span class="nb">input</span><span class="p">(</span> <span class="s">&quot;Mass [kg]? &quot;</span> <span class="p">)</span>
-<span class="k">if</span> <span class="n">raw</span><span class="p">:</span> <span class="n">args</span><span class="p">[</span><span class="s">&#39;f&#39;</span><span class="p">]</span><span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">raw</span><span class="p">)</span>
-<span class="n">raw</span><span class="o">=</span> <span class="nb">input</span><span class="p">(</span> <span class="s">&quot;Acceleration [m/s^2]? &quot;</span> <span class="p">)</span>
-<span class="k">if</span> <span class="n">raw</span><span class="p">:</span> <span class="n">args</span><span class="p">[</span><span class="s">&#39;a&#39;</span><span class="p">]</span><span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">raw</span><span class="p">)</span>
-<span class="n">raw</span><span class="o">=</span> <span class="nb">input</span><span class="p">(</span> <span class="s">&quot;Force [kg m/s^2]? &quot;</span> <span class="p">)</span>
-<span class="k">if</span> <span class="n">raw</span><span class="p">:</span> <span class="n">args</span><span class="p">[</span><span class="s">&#39;f&#39;</span><span class="p">]</span><span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">raw</span><span class="p">)</span>
-
-<span class="n">args</span><span class="o">=</span> <span class="n">force</span><span class="p">(</span> <span class="o">**</span><span class="n">args</span> <span class="p">)</span>
-<span class="k">print</span><span class="p">(</span> <span class="s">&quot;Mass of moving object (kilograms)..M= {m:10.3f}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">**</span><span class="n">args</span><span class="p">)</span> <span class="p">)</span>
-<span class="k">print</span><span class="p">(</span> <span class="s">&quot;Acceleration constant (m./sec.)....A= {a:10.3f}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">**</span><span class="n">args</span><span class="p">)</span> <span class="p">)</span>
-<span class="k">print</span><span class="p">(</span> <span class="s">&quot;Acceleration force (newtone).......F= {f:10.3f}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">**</span><span class="n">args</span><span class="p">)</span> <span class="p">)</span>
+<div class="section" id="the-missing-arguments-issue">
+<h4>The Missing Arguments Issue<a class="headerlink" href="#the-missing-arguments-issue" title="Permalink to this headline">¶</a></h4>
+<p>The solver function is very elegant. However, it suffers from a small problem.
+When we gather input from a user, they might omit any of the
+three values.</p>
+<p>We hate to have all three combinations (<tt class="docutils literal"><span class="pre">force(m=m,</span> <span class="pre">a=a)</span></tt>, <tt class="docutils literal"><span class="pre">force(f=f,</span> <span class="pre">m=m)</span></tt>
+and <tt class="docutils literal"><span class="pre">force(f=f,</span> <span class="pre">a=a)</span></tt>) including all the necessary <strong>if</strong> statements.
+That makes a script way too wordy.</p>
+<p>We&#8217;d like to be able to do something like this.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">force</span><span class="p">(</span> <span class="n">f</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">a</span><span class="o">=</span><span class="mf">2.5</span><span class="p">,</span> <span class="n">m</span><span class="o">=</span><span class="mi">12000</span> <span class="p">)</span>
+<span class="go">{&#39;a&#39;: 2.5, &#39;m&#39;: 12000, &#39;f&#39;: 30000.0}</span>
 </pre></div>
+</div>
+<p>That way, <tt class="docutils literal"><span class="pre">None</span></tt> can indicate a missing user input.</p>
+<p>This means a script can do something like this:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">hamcalc.stdio</span> <span class="kn">import</span> <span class="n">input_float</span>
+<span class="kn">from</span> <span class="nn">hamcalc.math.accelr</span> <span class="kn">import</span> <span class="n">force</span>
+
+<span class="n">m</span><span class="o">=</span> <span class="n">input_float</span><span class="p">(</span> <span class="s">&quot;Mass [kg]? &quot;</span> <span class="p">)</span>
+<span class="n">a</span><span class="o">=</span> <span class="n">input_float</span><span class="p">(</span> <span class="s">&quot;Acceleration [m/s^2]? &quot;</span> <span class="p">)</span>
+<span class="n">f</span><span class="o">=</span> <span class="n">input_float</span><span class="p">(</span> <span class="s">&quot;Force [kg m/s^2]? &quot;</span> <span class="p">)</span>
+
+<span class="n">result</span><span class="o">=</span> <span class="n">force</span><span class="p">(</span> <span class="o">**</span><span class="n">args</span> <span class="p">)</span>
+
+<span class="n">template</span><span class="o">=</span> <span class="s">&quot;&quot;&quot;</span><span class="se">\</span>
+<span class="s">Mass of moving object (kilograms)..M= {m:10,.3f}</span>
+<span class="s">Acceleration constant (m./sec.)....A= {a:10,.3f}</span>
+<span class="s">Acceleration force (newtons).......F= {f:10,.3f}&quot;&quot;&quot;</span>
+
+<span class="k">print</span><span class="p">(</span> <span class="n">template</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">**</span><span class="n">args</span><span class="p">)</span> <span class="p">)</span>
+</pre></div>
+</div>
+<p>But.</p>
+<p>We hate to clutter up our solver with this craziness:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">if</span> <span class="nb">all</span><span class="p">(</span> <span class="p">[</span><span class="s">&#39;a&#39;</span> <span class="ow">in</span> <span class="n">args</span> <span class="ow">and</span> <span class="n">args</span><span class="p">[</span><span class="s">&#39;a&#39;</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">,</span>
+    <span class="s">&#39;m&#39;</span> <span class="ow">in</span> <span class="n">args</span> <span class="ow">and</span> <span class="n">args</span><span class="p">[</span><span class="s">&#39;m&#39;</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">,</span>
+    <span class="s">&#39;f&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">args</span> <span class="ow">or</span> <span class="n">args</span><span class="p">[</span><span class="s">&#39;f&#39;</span><span class="p">]</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">]</span> <span class="p">):</span>
+    <span class="n">args</span><span class="p">[</span><span class="n">f</span><span class="p">]</span> <span class="o">=</span> <span class="n">args</span>
+</pre></div>
+</div>
+<p>What we want is a special dictionary that simply avoids accepting
+any <tt class="docutils literal"><span class="pre">None</span></tt> values.</p>
+<p>See <a class="reference internal" href="python/lib.html#hamcalc.lib.AttrDict" title="hamcalc.lib.AttrDict"><tt class="xref py py-class docutils literal"><span class="pre">hamcalc.lib.AttrDict</span></tt></a> for the implementation.
+This allows us to write simple scripts and simple solvers.</p>
+<p>We can write our solvers like this:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">if</span> <span class="s">&#39;a&#39;</span> <span class="ow">in</span> <span class="n">args</span> <span class="ow">and</span> <span class="s">&#39;m&#39;</span> <span class="ow">in</span> <span class="n">args</span> <span class="ow">and</span> <span class="s">&#39;f&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
+    <span class="n">args</span><span class="o">.</span><span class="n">f</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">m</span> <span class="o">*</span> <span class="n">args</span><span class="o">.</span><span class="n">a</span>
+</pre></div>
+</div>
+<p>This seems to be almost as nice as we can make it.</p>
+</div>
+<div class="section" id="more-complex-solvers">
+<h4>More Complex Solvers<a class="headerlink" href="#more-complex-solvers" title="Permalink to this headline">¶</a></h4>
+<p>Many three-variable solvers are just as simple as
+the <img class="math" src="_images/math/1137b1be6819729c1aeca6031cf0e9795957e63b.png" alt="f=ma"/> solver shown above.</p>
+<p>However, a more complex <strong>Solver</strong> may wind up looking like this:</p>
+<div class="highlight-python"><pre>while not all( v in args for v in (&#x27;X&#x27;, &#x27;Y&#x27;, &#x27;Z&#x27;) ):
+    if &#x27;Z&#x27; not in args and &#x27;X&#x27; in args and &#x27;Y&#x27; in args:
+        Z = f_1(x,y)
+    elif &#x27;Y&#x27; not in args and &#x27;X&#x27; in args and &#x27;Z&#x27; in args:
+        Y = f_2(x,z)
+    etc.
+    else:
+        raise NoSolutionError( &quot;That does not compute&quot; )</pre>
+</div>
+<p>This is ususally because we&#8217;re solving for multiple variables and
+the relationships aren&#8217;t trivially analyzed into simple dependencies.</p>
+<p>The script which uses this must handle the exception gracefully.
+In most instances, that means prompting the user for another one of
+the missing inputs.</p>
+<p>Here&#8217;s one way to tackle this.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">hamcalc.lib</span> <span class="kn">import</span> <span class="n">AttrDict</span>
+<span class="n">args</span><span class="o">=</span> <span class="n">AttrDict</span><span class="p">()</span>
+<span class="n">results</span><span class="o">=</span> <span class="p">{}</span>
+<span class="k">while</span> <span class="ow">not</span> <span class="n">results</span><span class="p">:</span>
+    <span class="n">args</span><span class="o">.</span><span class="n">X</span> <span class="o">=</span> <span class="n">input_float</span><span class="p">(</span><span class="s">&quot;ENTER X [{0}]: &quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">X</span><span class="p">)</span> <span class="p">)</span>
+    <span class="n">args</span><span class="o">.</span><span class="n">Y</span> <span class="o">=</span> <span class="n">input_float</span><span class="p">(</span><span class="s">&quot;ENTER Y [{0}]: &quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">Y</span><span class="p">)</span> <span class="p">)</span>
+    <span class="n">args</span><span class="o">.</span><span class="n">Z</span> <span class="o">=</span> <span class="n">input_float</span><span class="p">(</span><span class="s">&quot;ENTER Z [{0}]: &quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">Z</span><span class="p">)</span> <span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">results</span><span class="o">=</span> <span class="n">solve</span><span class="p">(</span> <span class="o">**</span><span class="n">args</span> <span class="p">)</span>
+    <span class="k">except</span>  <span class="n">NoSolutionError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span> <span class="n">e</span> <span class="p">)</span>
+        <span class="k">pass</span>
+</pre></div>
+</div>
 </div>
 </div>
 <div class="section" id="the-equivalents-pattern">
@@ -966,7 +1039,7 @@ interface similar to the original HamCalc output.</p>
 <span class="n">httpd</span><span class="o">.</span><span class="n">serve_forever</span><span class="p">()</span>
 </pre></div>
 </div>
-<p>The point is not to be a complete web spplication. The point is to be a usable
+<p>The point is not to be a complete web application. The point is to be a usable
 RESTful web service.</p>
 <p>Much of Hamlcalc can be easily wrapped in similar <tt class="docutils literal"><span class="pre">GET</span></tt>-based HTTP requests.</p>
 <p>Note that some of the requests will return a diagram or image, others will return values. Some requests will will include both.</p>

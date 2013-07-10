@@ -6,8 +6,7 @@
 
 -   Units and Unit Conversions.
 
--   Utility functions for degree and radian conversions.
-
+-   The **Solver** superclass.
 """
 __version__ = "2.1"
 
@@ -186,7 +185,7 @@ class Solver( Callable ):
     """An abstract **Solver** which accepts a cluster
     of keywords and returns a dictionary.
 
-    This allows a **Solver** to be configured
+    Writing an initializer allows a **Solver** to be configured
     with parameters or options. For example,
     units can be configured into a solver, allowing
     one solver class to have two instances
@@ -194,6 +193,28 @@ class Solver( Callable ):
 
     A subclass must override the :meth:`solve`
     method.
+
+    Often (but unit universally), the body of the :meth`solve` method
+    will look something like this.
+
+    ::
+
+        while not all( v in args for v in ('X', 'Y', 'Z') ):
+            if 'Z' not in args and 'X' in args and 'Y' in args:
+                Z = f_1(x,y)
+            elif 'Y' not in args and 'X' in args and 'Z' in args:
+                Y = f_2(x,z)
+            etc.
+            else:
+                raise NoSolutionError( "That does not compute" )
+
+    For simpler cases (i.e., 3 variables) the loop isn't necessary.
+
+    For more complex cases, there may actually be more than one
+    "family" of relationships and a single solver isn't completely
+    appropriate. And there are often "derived" or "secondary" values
+    that can be trivially computed after all the "primary" values
+    have been calculated.
     """
     def __call__( self, **kw ):
         self.args= AttrDict( kw )

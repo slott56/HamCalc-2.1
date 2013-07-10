@@ -6,7 +6,10 @@ from hamcalc.stdio.menu import Program_Menu, Item
 import runpy
 
 def pairs( iterable ):
-    """Consume an interable in pairs."""
+    """Consume an iterable in pairs.
+    If there's an odd number, the final item is paired
+    with ``None``.
+    """
     the_iter= iter(iterable)
     for item in the_iter:
         try:

@@ -173,6 +173,9 @@ means that a solver can look like this.
             kw.update(m = kw['f'] / kw['a'])
         return kw
 
+It's not **great**. But it sure is quick and easy. We can make a slight
+improvement to the syntax.
+
 This function can be used like this.
 
 ::
@@ -180,22 +183,110 @@ This function can be used like this.
     >>> force( a=2.5, m=12000 )
     {'a': 2.5, 'm': 12000, 'f': 30000.0}
 
+The Missing Arguments Issue
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The solver function is very elegant. However, it suffers from a small problem.
+When we gather input from a user, they might omit any of the
+three values.
+
+We hate to have all three combinations (``force(m=m, a=a)``, ``force(f=f, m=m)``
+and ``force(f=f, a=a)``) including all the necessary **if** statements.
+That makes a script way too wordy.
+
+We'd like to be able to do something like this.
+
+::
+
+    >>> force( f=None, a=2.5, m=12000 )
+    {'a': 2.5, 'm': 12000, 'f': 30000.0}
+
+That way, ``None`` can indicate a missing user input.
+
 This means a script can do something like this:
 
 ::
 
-    args= dict()
-    raw= input( "Mass [kg]? " )
-    if raw: args['f']= float(raw)
-    raw= input( "Acceleration [m/s^2]? " )
-    if raw: args['a']= float(raw)
-    raw= input( "Force [kg m/s^2]? " )
-    if raw: args['f']= float(raw)
+    from hamcalc.stdio import input_float
+    from hamcalc.math.accelr import force
 
-    args= force( **args )
-    print( "Mass of moving object (kilograms)..M= {m:10.3f}".format(**args) )
-    print( "Acceleration constant (m./sec.)....A= {a:10.3f}".format(**args) )
-    print( "Acceleration force (newtone).......F= {f:10.3f}".format(**args) )
+    m= input_float( "Mass [kg]? " )
+    a= input_float( "Acceleration [m/s^2]? " )
+    f= input_float( "Force [kg m/s^2]? " )
+
+    result= force( **args )
+
+    template= """\
+    Mass of moving object (kilograms)..M= {m:10,.3f}
+    Acceleration constant (m./sec.)....A= {a:10,.3f}
+    Acceleration force (newtons).......F= {f:10,.3f}"""
+
+    print( template.format(**args) )
+
+But.
+
+We hate to clutter up our solver with this craziness::
+
+    if all( ['a' in args and args['a'] is not None,
+        'm' in args and args['m'] is not None,
+        'f' not in args or args['f'] is None] ):
+        args[f] = args
+
+What we want is a special dictionary that simply avoids accepting
+any ``None`` values.
+
+See :class:`hamcalc.lib.AttrDict` for the implementation.
+This allows us to write simple scripts and simple solvers.
+
+We can write our solvers like this::
+
+    if 'a' in args and 'm' in args and 'f' not in args:
+        args.f = args.m * args.a
+
+This seems to be almost as nice as we can make it.
+
+More Complex Solvers
+~~~~~~~~~~~~~~~~~~~~~~
+
+Many three-variable solvers are just as simple as
+the :math:`f=ma` solver shown above.
+
+However, a more complex **Solver** may wind up looking like this:
+
+::
+
+    while not all( v in args for v in ('X', 'Y', 'Z') ):
+        if 'Z' not in args and 'X' in args and 'Y' in args:
+            Z = f_1(x,y)
+        elif 'Y' not in args and 'X' in args and 'Z' in args:
+            Y = f_2(x,z)
+        etc.
+        else:
+            raise NoSolutionError( "That does not compute" )
+
+This is ususally because we're solving for multiple variables and
+the relationships aren't trivially analyzed into simple dependencies.
+
+The script which uses this must handle the exception gracefully.
+In most instances, that means prompting the user for another one of
+the missing inputs.
+
+Here's one way to tackle this.
+
+::
+
+    from hamcalc.lib import AttrDict
+    args= AttrDict()
+    results= {}
+    while not results:
+        args.X = input_float("ENTER X [{0}]: ".format(args.X) )
+        args.Y = input_float("ENTER Y [{0}]: ".format(args.Y) )
+        args.Z = input_float("ENTER Z [{0}]: ".format(args.Z) )
+        try:
+            results= solve( **args )
+        except  NoSolutionError as e:
+            print( e )
+            pass
 
 
 The **Equivalents** Pattern
@@ -1161,7 +1252,7 @@ interface similar to the original HamCalc output.
     # Serve until process is killed
     httpd.serve_forever()
 
-The point is not to be a complete web spplication. The point is to be a usable
+The point is not to be a complete web application. The point is to be a usable
 RESTful web service.
 
 Much of Hamlcalc can be easily wrapped in similar ``GET``-based HTTP requests.

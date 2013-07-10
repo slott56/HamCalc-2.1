@@ -14,6 +14,7 @@ def bend( unit ):
     R= unit.to_std( float(r_raw) )
 
     L= input_float("ENTER: Included angle of bend (degrees)............L=? " )
+    if L is None: return
     display( T, R, L )
 
 def display( T, R, L ):
