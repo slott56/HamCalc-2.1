@@ -96,7 +96,7 @@ def export( good_data ):
         _, name = os.path.split( f )
         nm, ext = os.path.splitext( name )
         nm_l= nm.lower()
-        yield nm_l, name, ';'.join(good_data[f]), doco.get(nm_l,'')
+        yield nm_l, name, '; '.join(good_data[f]), doco.get(nm_l,'')
 
 # 1. Get good menu data and bad menu DATA statements
 good_data, bad_data = menu_data_partition( get_stmt_iter("DATA") )

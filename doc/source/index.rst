@@ -24,6 +24,7 @@ Contents:
 
     background
     legacy
+    subjects
     python_architecture
 
 ..  toctree::

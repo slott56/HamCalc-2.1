@@ -1426,33 +1426,3 @@ The other group is programs that don't seem to exist any more.
     ('TRIMMER CAPACITORS', '', '', 'CAPTRIM')
 
 Finally, note that 130 program files are missing a cross-reference entry.
-
-Subject Areas
-=============
-
-There appear to be the following subject areas.
-
-1.  Radio Engineering
-
-2.  Radio Operations
-
-#.  General Electronics
-
-#.  Construction including Plumbing and Electrical and Mechanical
-
-#.  Mathematics and Physics including Unit Conversions
-
-#.  Navigation and Astronomy
-
-#.  Calendrical Calculations
-
-#.  Audio and Photography
-
-#.  Software Engineering, including ASCII codes and other algorithms
-
-#.  Other, including finance and nutrition
-
-The idea is to partition all 449 programs into one of these higher-level subject areas.
-
-This should be more useful than the purely alphabetical organization originally
-used in HamCalc.
