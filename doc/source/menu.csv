@@ -1,4 +1,6 @@
 bignum,BIGNUM.BAS,:REM'BIGNUM,*Menu*
+exit,EXIT.BAS,EXIT,*Menu*
+hamdex,HAMDEX.BAS,INDEX; Index,*Menu*
 hcal,HCAL.BAS,Main Menu; EXIT,*Menu*
 hcal-x,HCAL-X.BAS,:REM'\\hamcalc\\menu\\HCAL-X   02 JUN 94 rev. 14 MAR 2010,*Menu*
 helphint,HELPHINT.BAS,READ ME,*Menu*
@@ -251,9 +253,7 @@ buysell,BUYSELL.BAS,":REM'BUYSELL - 28 OCT 97, rev. 29 DEC 2000",other
 calory,CALORY.BAS,Calorie Counter,other
 chklist,CHKLIST.BAS,:REM'\\bas\\prog2\\CHKLIST   15 NOV 86  Rev. 28 AUG 2001,other
 deprec,DEPREC.BAS,:REM'DEPREC - Depreciation Schedule - 04 JAN 92 rev. 29 DEC 2000,other
-exit,EXIT.BAS,EXIT,other
 finance,FINANCE.BAS,Financial Calculators,other
-hamdex,HAMDEX.BAS,INDEX; Index,other
 humid,HUMID.BAS,Humidex Calculator,other
 loanpay,LOANPAY.BAS,:REM'LOANPAY - 18 JUL 87    latest rev. 30 DEC 2000,other
 mortgag,MORTGAG.BAS,:REM'MORTGAG : 31 OCT 87 - rev. 25 MAY 2010,other

@@ -27,12 +27,13 @@ for row in data:
     lib = []
     app = []
     lib= glob.glob( os.path.join( package_glob, row[0] ) )
+    lib_txt= ' '.join(lib)
     for app_area in 'stdio', 'rest', 'cli', 'gui':
         if os.path.exists( os.path.join( app_root, app_area, row[0] + ".py" ) ):
             app.append( app_area )
         else:
             app.append( '' )
-    print( row + [ ' '.join(lib) ] + app )
+    print( row + [ lib_txt ] + app )
 
 with open(os.path.join(doc_source,"menu.#"),"w") as target:
     wtr= csv.writer( target )
