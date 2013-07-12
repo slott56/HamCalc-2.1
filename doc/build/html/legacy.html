@@ -430,6 +430,107 @@ their own submenu of features.</p>
 510 IF Z$=&quot;s&quot;THEN CHAIN&quot;trig&quot;</pre>
 </div>
 </div>
+<div class="section" id="other-menus">
+<h2>Other Menus<a class="headerlink" href="#other-menus" title="Permalink to this headline">¶</a></h2>
+<p>The RJD Menu. This appears to identify a proper subset of the user&#8217;s
+menu with algorithms contributed by RJD.</p>
+<div class="highlight-python"><pre>100 DATA ANTSYN2,Antenna Matching Network
+110 DATA AUDOSC,Audio Oscillator
+120 DATA BATCHG,Battery Charger
+130 DATA BRIDGE,W&#x27;stone Bridge #1
+140 DATA BRIDGE-2,W&#x27;stone Bridge #2
+150 DATA COAXLC3,Coax L/C Tank
+160 DATA CAPVAL,Capacitor Measurer
+170 DATA CATENARY,Sag in Horizontal wire
+180 DATA CMOSC3,CMOS oscillator
+190 DATA COILEQUA,Coil Equations
+200 DATA COILNEW,Coil Calculator
+210 DATA COILTAP,Coil Tap Properties
+220 DATA COMFILT,Complementery Filters
+230 DATA CONECALC,Cone Calculator
+240 DATA COLPOSC,Colpitts Oscillator
+250 DATA CPLRES,Filters Coax Stub
+260 DATA CURVEFIT,Curve Fit Program
+270 DATA DBLBRG4,2 Bridge Power Supply
+275 DATA DBLFB,Double Feedback Amplifier
+280 DATA DUOPWR,Power Supply
+290 DATA HARTOSC3,Hartley Oscillator
+300 DATA FILTUT,Filter Tutor
+310 DATA GAPLOT,Capacitor Plate Design
+320 DATA HUMID,Humidex Calculator
+330 DATA IMPANT,Antenna Impedance
+340 DATA INLOSS,Insertion Loss
+350 DATA LADRSOLV,Ladder Networks
+360 DATA LOSSY,SWR vs. Line Loss
+370 DATA MATFILT,Matching filters
+380 DATA MISMAT,Xmission Line Mismatch
+390 DATA NOLOSS,Lossless L/C Circuits
+400 DATA PAIRLT, Long-Tailed Pair
+410 DATA PHAZDIFF,Phase Difference
+420 DATA PULSEGEN,Pulse Generator
+430 DATA PSUP,Power Supply Analyzer
+440 DATA PSYCHROM,Thermodynamics
+450 DATA PSUPERF,Power Supply Rating
+460 DATA PULSEGEN,Pulse Generator
+465 DATA PWRDIV,Power Divider
+470 DATA RANDNUM,Random Numbers
+480 DATA RCLOAD2,Matching in an R/C Load
+490 DATA QFIND5, Q-L/C Tank Circuit
+500 DATA SEPAQ,Series/Parallel/Q Ccts.
+510 DATA SINK,Heat Sink Fins
+520 DATA TFORM3,L/C Net w/o Xformers
+530 DATA TURNS,Coil Turns Calculator
+540 DATA TRISQU,Wave Generator</pre>
+</div>
+<p>The Mechanics Menu.  These are programs that, for the most part,
+neither appear in the user&#8217;s menu nor in the complete cross-reference.</p>
+<div class="highlight-python"><pre>580 DATA beamdefl,BEAMS - Deflection in
+590 DATA beamsect,BEAMS - Properties of (Start new beam design here)
+600 DATA beltdriv,Belt Drives
+610 DATA chain,Chain Drives
+620 DATA cyl,Cylinders - Air &amp; Hydraulic
+630 DATA gearing,Gears &amp; gearing
+635 DATA binhop,Hoppered Bins &amp; Tanks
+640 DATA shaft,Shafting
+650 DATA stairs,&quot;Stairs, Ladders &amp; Ramps&quot;
+660 DATA torque,Torque &amp; Horsepower</pre>
+</div>
+</div>
+<div class="section" id="menu-analysis">
+<h2>Menu Analysis<a class="headerlink" href="#menu-analysis" title="Permalink to this headline">¶</a></h2>
+<p>The following programs appear on menu <strong>DATA</strong> statements, but
+don&#8217;t seem to actually exist.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">(</span><span class="s">&#39;chobal6&#39;</span><span class="p">,</span> <span class="s">&#39;Coax Cable RF Chokes &amp; Baluns&#39;</span><span class="p">)</span>
+<span class="p">(</span><span class="s">&#39;impedmetr&#39;</span><span class="p">,</span> <span class="s">&#39;Impedance Meter&#39;</span><span class="p">)</span>
+<span class="p">(</span><span class="s">&#39;qfind4&#39;</span><span class="p">,</span> <span class="s">&#39;Q Measurement - L/C Tank Circuit&#39;</span><span class="p">)</span>
+<span class="p">(</span><span class="s">&#39;qmeas&#39;</span><span class="p">,</span> <span class="s">&#39;Q of L/C Tank Circuit&#39;</span><span class="p">)</span>
+<span class="p">(</span><span class="s">&#39;zzz&#39;</span><span class="p">,</span> <span class="s">&#39;EXIT&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The following .BAS files are examples that appear to be simple spelling mistakes based on the first REM statement within the file.</p>
+<div class="highlight-python"><pre>(&#x27;../../gwbasic/HamCalc/PROG/ACTARING.BAS&#x27;, &#x27;?&#x27;)
+:REM&#x27;OCTARING - Octagonal Loop Antenna - 23 NOV 2005
+
+(&#x27;../../gwbasic/HamCalc/PROG/AMDEX.BAS&#x27;, &#x27;?&#x27;)
+:REM&#x27;\hamcalc\prog\HAMDEX - 18 FEB 94 rev. 28 DEP 2003</pre>
+</div>
+<p>Other .BAS files lack clear comments.</p>
+<div class="highlight-python"><pre>(&#x27;../../gwbasic/HamCalc/PROG/VACAP.BAS&#x27;, &#x27;?&#x27;)
+:REM&#x27;VACAP - 21 DEC 2007
+
+(&#x27;../../gwbasic/HamCalc/PROG/VACAP14.BAS&#x27;, &#x27;?&#x27;)
+:REM&#x27;vacap14 - 26 DEC 2007
+
+(&#x27;../../gwbasic/HamCalc/PROG/VACAP7.BAS&#x27;, &#x27;?&#x27;)
+:REM&#x27;vacap7 - 22 DEC 2007
+
+(&#x27;../../gwbasic/HamCalc/PROG/VACAP8.BAS&#x27;, &#x27;?&#x27;)
+:REM&#x27;vacap8 - 23 DEC 2007
+
+(&#x27;../../gwbasic/HamCalc/PROG/VACAP9.BAS&#x27;, &#x27;?&#x27;)
+:REM&#x27;vacap9 - 23 DEC 2007</pre>
+</div>
+</div>
 <div class="section" id="complete-cross-reference">
 <h2>Complete Cross Reference<a class="headerlink" href="#complete-cross-reference" title="Permalink to this headline">¶</a></h2>
 <p>There&#8217;s a complete cross-reference buried in <tt class="file docutils literal"><span class="pre">INDEX/HAMDEX.FIL</span></tt>.</p>
@@ -4770,6 +4871,47 @@ their own submenu of features.</p>
 </tr>
 </tbody>
 </table>
+<p>Of these cross reference entries, a number are for programs which do not exist.</p>
+<p>Some items simply have full path names instead of relative path names.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">(</span><span class="s">&#39;MECHANICS MATH&#39;</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">,</span> <span class="s">&#39;</span><span class="se">\\</span><span class="s">HAMCALC</span><span class="se">\\</span><span class="s">PROG</span><span class="se">\\</span><span class="s">MECHMENU&#39;</span><span class="p">)</span>
+<span class="p">(</span><span class="s">&#39;PHOTOGRAPHY MATH&#39;</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">,</span> <span class="s">&#39;</span><span class="se">\\</span><span class="s">HAMCALC</span><span class="se">\\</span><span class="s">PROG</span><span class="se">\\</span><span class="s">FOTOMENU&#39;</span><span class="p">)</span>
+<span class="p">(</span><span class="s">&#39;COIL FORMS&#39;</span><span class="p">,</span> <span class="s">&#39;, miniature&#39;</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">,</span> <span class="s">&#39;</span><span class="se">\\</span><span class="s">HAMCALC</span><span class="se">\\</span><span class="s">PROG</span><span class="se">\\</span><span class="s">TINYCOIL&#39;</span><span class="p">)</span>
+<span class="p">(</span><span class="s">&#39;PRINTED CIRCUIT BOARD TRACES&#39;</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">,</span> <span class="s">&#39;</span><span class="se">\\</span><span class="s">HAMCALC</span><span class="se">\\</span><span class="s">PROG</span><span class="se">\\</span><span class="s">COPWIRE&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>One group is programs that reflect an older, more complex directory tree.
+The <strong class="program">MECHMENU</strong> and <strong class="program">FOTOMENU</strong> both exist, so these
+entries are all index entries to two existing programs.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">(</span><span class="s">&#39;DRIVES&#39;</span><span class="p">,</span> <span class="s">&#39;, belt&#39;</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">,</span> <span class="s">&#39;</span><span class="se">\\</span><span class="s">HAMCALC</span><span class="se">\\</span><span class="s">MECHCALC</span><span class="se">\\</span><span class="s">MECHMENU&#39;</span><span class="p">)</span>
+<span class="p">(</span><span class="s">&#39;DRIVES&#39;</span><span class="p">,</span> <span class="s">&#39;, chain&#39;</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">,</span> <span class="s">&#39;</span><span class="se">\\</span><span class="s">HAMCALC</span><span class="se">\\</span><span class="s">MECHCALC</span><span class="se">\\</span><span class="s">MECHMENU&#39;</span><span class="p">)</span>
+<span class="p">(</span><span class="s">&#39;ELECTRONIC FLASH&#39;</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">,</span> <span class="s">&#39;</span><span class="se">\\</span><span class="s">HAMCALC</span><span class="se">\\</span><span class="s">PROG</span><span class="se">\\</span><span class="s">FOTOMENU&#39;</span><span class="p">)</span>
+<span class="p">(</span><span class="s">&#39;EXPOSURE CALCULATOR&#39;</span><span class="p">,</span> <span class="s">&#39;, photographic&#39;</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">,</span> <span class="s">&#39;</span><span class="se">\\</span><span class="s">HAMCALC</span><span class="se">\\</span><span class="s">FOTOCALC</span><span class="se">\\</span><span class="s">FOTOMENU&#39;</span><span class="p">)</span>
+<span class="p">(</span><span class="s">&#39;EXTENSION RINGS AND BELLOWS&#39;</span><span class="p">,</span> <span class="s">&#39;, photographic&#39;</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">,</span> <span class="s">&#39;</span><span class="se">\\</span><span class="s">HAMCALC</span><span class="se">\\</span><span class="s">FOTOCALC</span><span class="se">\\</span><span class="s">FOTOMENU&#39;</span><span class="p">)</span>
+<span class="p">(</span><span class="s">&#39;FILTERS&#39;</span><span class="p">,</span> <span class="s">&#39;, photographic&#39;</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">,</span> <span class="s">&#39;</span><span class="se">\\</span><span class="s">HAMCALC</span><span class="se">\\</span><span class="s">PROG</span><span class="se">\\</span><span class="s">FOTOMENU&#39;</span><span class="p">)</span>
+<span class="p">(</span><span class="s">&#39;FOCUS CALCULATOR&#39;</span><span class="p">,</span> <span class="s">&#39;, photographic&#39;</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">,</span> <span class="s">&#39;</span><span class="se">\\</span><span class="s">HAMCALC</span><span class="se">\\</span><span class="s">FOTOCALC</span><span class="se">\\</span><span class="s">FOTOMENU&#39;</span><span class="p">)</span>
+<span class="p">(</span><span class="s">&#39;LADDERS&#39;</span><span class="p">,</span> <span class="s">&#39;, step&#39;</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">,</span> <span class="s">&#39;</span><span class="se">\\</span><span class="s">HAMCALC</span><span class="se">\\</span><span class="s">MECHCALC</span><span class="se">\\</span><span class="s">MECHMENU&#39;</span><span class="p">)</span>
+<span class="p">(</span><span class="s">&#39;MOTION CALCULATOR&#39;</span><span class="p">,</span> <span class="s">&#39;, photographic&#39;</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">,</span> <span class="s">&#39;</span><span class="se">\\</span><span class="s">HAMCALC</span><span class="se">\\</span><span class="s">FOTOCALC</span><span class="se">\\</span><span class="s">FOTOMENU&#39;</span><span class="p">)</span>
+<span class="p">(</span><span class="s">&#39;TITLER&#39;</span><span class="p">,</span> <span class="s">&#39;, photo slides or videos&#39;</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">,</span> <span class="s">&#39;</span><span class="se">\\</span><span class="s">HAMCALC</span><span class="se">\\</span><span class="s">FOTOCALC</span><span class="se">\\</span><span class="s">FOTOMENU&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The other group is programs that don&#8217;t seem to exist any more.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">(</span><span class="s">&#39;AUTEK Z METER&#39;</span><span class="p">,</span> <span class="s">&#39;, conversion of readings&#39;</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">,</span> <span class="s">&#39;AUTEK2&#39;</span><span class="p">)</span>
+<span class="p">(</span><span class="s">&#39;CAPACITORS&#39;</span><span class="p">,</span> <span class="s">&#39;, in series and parallel&#39;</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">,</span> <span class="s">&#39;SERIPARA&#39;</span><span class="p">)</span>
+<span class="p">(</span><span class="s">&#39;CAPACITORS&#39;</span><span class="p">,</span> <span class="s">&#39;, trimmer&#39;</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">,</span> <span class="s">&#39;CAPTRIM&#39;</span><span class="p">)</span>
+<span class="p">(</span><span class="s">&#39;CLOCK HOURS&#39;</span><span class="p">,</span> <span class="s">&#39;, display&#39;</span><span class="p">,</span> <span class="s">&#39;, conversion from decimal hours&#39;</span><span class="p">,</span> <span class="s">&#39;HOURS&#39;</span><span class="p">)</span>
+<span class="p">(</span><span class="s">&#39;EQUIVALENTS&#39;</span><span class="p">,</span> <span class="s">&#39;, series/parallel/Q units&#39;</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">,</span> <span class="s">&#39;SEPAG&#39;</span><span class="p">)</span>
+<span class="p">(</span><span class="s">&#39;HARD DRIVE&#39;</span><span class="p">,</span> <span class="s">&#39;, copy HAMCALC to&#39;</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">,</span> <span class="s">&#39;HCINSTAL&#39;</span><span class="p">)</span>
+<span class="p">(</span><span class="s">&#39;IMPEDANCE METER&#39;</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">,</span> <span class="s">&#39;IMPEDMETR&#39;</span><span class="p">)</span>
+<span class="p">(</span><span class="s">&#39;INDUCTORS&#39;</span><span class="p">,</span> <span class="s">&#39;, in series and parallel&#39;</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">,</span> <span class="s">&#39;SERIPARA&#39;</span><span class="p">)</span>
+<span class="p">(</span><span class="s">&#39;INSTALL HAMCALC ON A HARD DRIVE&#39;</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">,</span> <span class="s">&#39;CPYHCAL&#39;</span><span class="p">)</span>
+<span class="p">(</span><span class="s">&#39;REACTANCES&#39;</span><span class="p">,</span> <span class="s">&#39;, unlike&#39;</span><span class="p">,</span> <span class="s">&#39;, in series or parallel&#39;</span><span class="p">,</span> <span class="s">&#39;SERIPARA&#39;</span><span class="p">)</span>
+<span class="p">(</span><span class="s">&#39;RESISTORS&#39;</span><span class="p">,</span> <span class="s">&#39;, in series and parallel&#39;</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">,</span> <span class="s">&#39;SERIPARA&#39;</span><span class="p">)</span>
+<span class="p">(</span><span class="s">&#39;RF CHOKES&#39;</span><span class="p">,</span> <span class="s">&#39;, coaxial cable&#39;</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">,</span> <span class="s">&#39;CHOBAL6&#39;</span><span class="p">)</span>
+<span class="p">(</span><span class="s">&#39;SERIES &amp; PARALLEL COMPONENTS&#39;</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">,</span> <span class="s">&#39;SERIPARA&#39;</span><span class="p">)</span>
+<span class="p">(</span><span class="s">&#39;TRIMMER CAPACITORS&#39;</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">,</span> <span class="s">&#39;CAPTRIM&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Finally, note that 130 program files are missing a cross-reference entry.</p>
 </div>
 <div class="section" id="subject-areas">
 <h2>Subject Areas<a class="headerlink" href="#subject-areas" title="Permalink to this headline">¶</a></h2>
@@ -4804,6 +4946,8 @@ used in HamCalc.</p>
 <li class="toctree-l1 current"><a class="current reference internal" href="">The HamCalc Legacy</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#user-menu">User Menu</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#quick-table-menu">Quick Table Menu</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#other-menus">Other Menus</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#menu-analysis">Menu Analysis</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#complete-cross-reference">Complete Cross Reference</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#subject-areas">Subject Areas</a></li>
 </ul>

@@ -6,19 +6,23 @@ Software Engineering, Programming and Computers.
 numsort, Number Sorter
 -------------------------
 
-From the comments::
+From the code::
 
+    10 :REM'NUMSORT' - Number Sorter  - 01 JAN 2003
     280 REM  (Shell-Metzner algorithm) QST Dec 1985, page 53
 
-This may be rather silly and have no little real use.
+This program has no real use.
 While the algorithm may be interesting, it isn't used elsewhere in HamCalc.
 And, it's not easily used outside of HamCalc.
 
-Indeed, the value proposition for rewriting HamCalc into Python is
-to leverage the amazingly fast Python sort feature.
+Part of the value proposition for rewriting HamCalc into Python is
+to leverage the amazingly fast Python ``list.sort()`` feature.
 
-And, further, who would type data into an interactive program?
-Really, you want to use interactive Python something like this:
+More importantly, who would type data into an interactive program?
+After you're done typing, the input needs to be saved somewhere
+for further use.
+
+A far better use case is simply to use interactive Python.  Like this:
 
 ::
 
@@ -28,15 +32,14 @@ Really, you want to use interactive Python something like this:
 
 Practical use cases for sorting involve two things:
 
-1.  Displaying calculated or gathered in an intelligable order.
+1.  Displaying calculated or gathered data values in an intelligable order.
     This means that there's more data than just the
     numbers to be sorted.
 
 2.  Rank-ordering data to filter or weight the items
     in further calculations.
 
-None of which is directly supported a single stand-alone program
-that's part of HamCalc.
+Neither these are supported a stand-alone programs in HamCalc.
 
 Both use cases are first-class features of Python, however.
 
@@ -64,14 +67,14 @@ This is it.
 
     ASCII Character Code Page 437 (Codes 1 to 31 are control codes)
 
-    32  │ 33 !│ 34 "│ 35 #│ 36 $│ 37 %│ 38 &│ 39 '│ 40 (│ 41 )│ 42 *│ 43 +│ 44 ,│
-    45 -│ 46 .│ 47 /│ 48 0│ 49 1│ 50 2│ 51 3│ 52 4│ 53 5│ 54 6│ 55 7│ 56 8│ 57 9│
-    58 :│ 59 ;│ 60 <│ 61 =│ 62 >│ 63 ?│ 64 @│ 65 A│ 66 B│ 67 C│ 68 D│ 69 E│ 70 F│
-    71 G│ 72 H│ 73 I│ 74 J│ 75 K│ 76 L│ 77 M│ 78 N│ 79 O│ 80 P│ 81 Q│ 82 R│ 83 S│
-    84 T│ 85 U│ 86 V│ 87 W│ 88 X│ 89 Y│ 90 Z│ 91 [│ 92 \│ 93 ]│ 94 ^│ 95 _│ 96 `│
-    97 a│ 98 b│ 99 c│100 d│101 e│102 f│103 g│104 h│105 i│106 j│107 k│108 l│109 m│
+     32  │ 33 !│ 34 "│ 35 #│ 36 $│ 37 %│ 38 &│ 39 '│ 40 (│ 41 )│ 42 *│ 43 +│ 44 ,│
+     45 -│ 46 .│ 47 /│ 48 0│ 49 1│ 50 2│ 51 3│ 52 4│ 53 5│ 54 6│ 55 7│ 56 8│ 57 9│
+     58 :│ 59 ;│ 60 <│ 61 =│ 62 >│ 63 ?│ 64 @│ 65 A│ 66 B│ 67 C│ 68 D│ 69 E│ 70 F│
+     71 G│ 72 H│ 73 I│ 74 J│ 75 K│ 76 L│ 77 M│ 78 N│ 79 O│ 80 P│ 81 Q│ 82 R│ 83 S│
+     84 T│ 85 U│ 86 V│ 87 W│ 88 X│ 89 Y│ 90 Z│ 91 [│ 92 \│ 93 ]│ 94 ^│ 95 _│ 96 `│
+     97 a│ 98 b│ 99 c│100 d│101 e│102 f│103 g│104 h│105 i│106 j│107 k│108 l│109 m│
     110 n│111 o│112 p│113 q│114 r│115 s│116 t│117 u│118 v│119 w│120 x│121 y│122 z│
-    123 {│124 |│125 }│126 ~│127 │128 Ç│129 ü│130 é│131 â│132 ä│133 à│134 å│135 ç│
+    123 {│124 |│125 }│126 ~│127  │128 Ç│129 ü│130 é│131 â│132 ä│133 à│134 å│135 ç│
     136 ê│137 ë│138 è│139 ï│140 î│141 ì│142 Ä│143 Å│144 É│145 æ│146 Æ│147 ô│148 ö│
     149 ò│150 û│151 ù│152 ÿ│153 Ö│154 Ü│155 ¢│156 £│157 ¥│158 ₧│159 ƒ│160 á│161 í│
     162 ó│163 ú│164 ñ│165 Ñ│166 ª│167 º│168 ¿│169 ⌐│170 ¬│171 ½│172 ¼│173 ¡│174 «│
@@ -105,4 +108,9 @@ Page 2. This doesn't look good except with Courier font.
 sorter, Sorter
 ----------------
 
-See `numsort, Number Sorter`_ above.
+From the code::
+
+    10 :REM'SORTER3  -  Character String Sorter - 07 JAN 2003
+    350 REM  (Shell-Metzner algorithm) QST Dec 1985, page 53
+
+See `numsort, Number Sorter`_ above. This program isn't useful.

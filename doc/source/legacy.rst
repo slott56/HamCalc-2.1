@@ -390,6 +390,121 @@ With this mapping from menu item to program.
     500 IF Z$="r"THEN CHAIN"solutri"
     510 IF Z$="s"THEN CHAIN"trig"
 
+Other Menus
+==============
+
+The RJD Menu. This appears to identify a proper subset of the user's
+menu with algorithms contributed by RJD.
+
+::
+
+    100 DATA ANTSYN2,Antenna Matching Network
+    110 DATA AUDOSC,Audio Oscillator
+    120 DATA BATCHG,Battery Charger
+    130 DATA BRIDGE,W'stone Bridge #1
+    140 DATA BRIDGE-2,W'stone Bridge #2
+    150 DATA COAXLC3,Coax L/C Tank
+    160 DATA CAPVAL,Capacitor Measurer
+    170 DATA CATENARY,Sag in Horizontal wire
+    180 DATA CMOSC3,CMOS oscillator
+    190 DATA COILEQUA,Coil Equations
+    200 DATA COILNEW,Coil Calculator
+    210 DATA COILTAP,Coil Tap Properties
+    220 DATA COMFILT,Complementery Filters
+    230 DATA CONECALC,Cone Calculator
+    240 DATA COLPOSC,Colpitts Oscillator
+    250 DATA CPLRES,Filters Coax Stub
+    260 DATA CURVEFIT,Curve Fit Program
+    270 DATA DBLBRG4,2 Bridge Power Supply
+    275 DATA DBLFB,Double Feedback Amplifier
+    280 DATA DUOPWR,Power Supply
+    290 DATA HARTOSC3,Hartley Oscillator
+    300 DATA FILTUT,Filter Tutor
+    310 DATA GAPLOT,Capacitor Plate Design
+    320 DATA HUMID,Humidex Calculator
+    330 DATA IMPANT,Antenna Impedance
+    340 DATA INLOSS,Insertion Loss
+    350 DATA LADRSOLV,Ladder Networks
+    360 DATA LOSSY,SWR vs. Line Loss
+    370 DATA MATFILT,Matching filters
+    380 DATA MISMAT,Xmission Line Mismatch
+    390 DATA NOLOSS,Lossless L/C Circuits
+    400 DATA PAIRLT, Long-Tailed Pair
+    410 DATA PHAZDIFF,Phase Difference
+    420 DATA PULSEGEN,Pulse Generator
+    430 DATA PSUP,Power Supply Analyzer
+    440 DATA PSYCHROM,Thermodynamics
+    450 DATA PSUPERF,Power Supply Rating
+    460 DATA PULSEGEN,Pulse Generator
+    465 DATA PWRDIV,Power Divider
+    470 DATA RANDNUM,Random Numbers
+    480 DATA RCLOAD2,Matching in an R/C Load
+    490 DATA QFIND5, Q-L/C Tank Circuit
+    500 DATA SEPAQ,Series/Parallel/Q Ccts.
+    510 DATA SINK,Heat Sink Fins
+    520 DATA TFORM3,L/C Net w/o Xformers
+    530 DATA TURNS,Coil Turns Calculator
+    540 DATA TRISQU,Wave Generator
+
+The Mechanics Menu.  These are programs that, for the most part,
+neither appear in the user's menu nor in the complete cross-reference.
+
+::
+
+    580 DATA beamdefl,BEAMS - Deflection in
+    590 DATA beamsect,BEAMS - Properties of (Start new beam design here)
+    600 DATA beltdriv,Belt Drives
+    610 DATA chain,Chain Drives
+    620 DATA cyl,Cylinders - Air & Hydraulic
+    630 DATA gearing,Gears & gearing
+    635 DATA binhop,Hoppered Bins & Tanks
+    640 DATA shaft,Shafting
+    650 DATA stairs,"Stairs, Ladders & Ramps"
+    660 DATA torque,Torque & Horsepower
+
+Menu Analysis
+==============
+
+The following programs appear on menu **DATA** statements, but
+don't seem to actually exist.
+
+::
+
+    ('chobal6', 'Coax Cable RF Chokes & Baluns')
+    ('impedmetr', 'Impedance Meter')
+    ('qfind4', 'Q Measurement - L/C Tank Circuit')
+    ('qmeas', 'Q of L/C Tank Circuit')
+    ('zzz', 'EXIT')
+
+The following .BAS files are examples that appear to be simple spelling mistakes based on the first REM statement within the file.
+
+::
+
+    ('../../gwbasic/HamCalc/PROG/ACTARING.BAS', '?')
+    :REM'OCTARING - Octagonal Loop Antenna - 23 NOV 2005
+
+    ('../../gwbasic/HamCalc/PROG/AMDEX.BAS', '?')
+    :REM'\hamcalc\prog\HAMDEX - 18 FEB 94 rev. 28 DEP 2003
+
+Other .BAS files lack clear comments.
+
+::
+
+    ('../../gwbasic/HamCalc/PROG/VACAP.BAS', '?')
+    :REM'VACAP - 21 DEC 2007
+
+    ('../../gwbasic/HamCalc/PROG/VACAP14.BAS', '?')
+    :REM'vacap14 - 26 DEC 2007
+
+    ('../../gwbasic/HamCalc/PROG/VACAP7.BAS', '?')
+    :REM'vacap7 - 22 DEC 2007
+
+    ('../../gwbasic/HamCalc/PROG/VACAP8.BAS', '?')
+    :REM'vacap8 - 23 DEC 2007
+
+    ('../../gwbasic/HamCalc/PROG/VACAP9.BAS', '?')
+    :REM'vacap9 - 23 DEC 2007
+
 Complete Cross Reference
 =========================
 
@@ -1263,6 +1378,54 @@ There's a complete cross-reference buried in :file:`INDEX/HAMDEX.FIL`.
     "ZEPP MULTI-BAND ANTENNA","","","ZEPP"
     "ZEPP",", double extended","","ZEPPDBL"
 
+Of these cross reference entries, a number are for programs which do not exist.
+
+Some items simply have full path names instead of relative path names.
+
+::
+
+    ('MECHANICS MATH', '', '', '\\HAMCALC\\PROG\\MECHMENU')
+    ('PHOTOGRAPHY MATH', '', '', '\\HAMCALC\\PROG\\FOTOMENU')
+    ('COIL FORMS', ', miniature', '', '\\HAMCALC\\PROG\\TINYCOIL')
+    ('PRINTED CIRCUIT BOARD TRACES', '', '', '\\HAMCALC\\PROG\\COPWIRE')
+
+One group is programs that reflect an older, more complex directory tree.
+The :program:`MECHMENU` and :program:`FOTOMENU` both exist, so these
+entries are all index entries to two existing programs.
+
+::
+
+    ('DRIVES', ', belt', '', '\\HAMCALC\\MECHCALC\\MECHMENU')
+    ('DRIVES', ', chain', '', '\\HAMCALC\\MECHCALC\\MECHMENU')
+    ('ELECTRONIC FLASH', '', '', '\\HAMCALC\\PROG\\FOTOMENU')
+    ('EXPOSURE CALCULATOR', ', photographic', '', '\\HAMCALC\\FOTOCALC\\FOTOMENU')
+    ('EXTENSION RINGS AND BELLOWS', ', photographic', '', '\\HAMCALC\\FOTOCALC\\FOTOMENU')
+    ('FILTERS', ', photographic', '', '\\HAMCALC\\PROG\\FOTOMENU')
+    ('FOCUS CALCULATOR', ', photographic', '', '\\HAMCALC\\FOTOCALC\\FOTOMENU')
+    ('LADDERS', ', step', '', '\\HAMCALC\\MECHCALC\\MECHMENU')
+    ('MOTION CALCULATOR', ', photographic', '', '\\HAMCALC\\FOTOCALC\\FOTOMENU')
+    ('TITLER', ', photo slides or videos', '', '\\HAMCALC\\FOTOCALC\\FOTOMENU')
+
+The other group is programs that don't seem to exist any more.
+
+::
+
+    ('AUTEK Z METER', ', conversion of readings', '', 'AUTEK2')
+    ('CAPACITORS', ', in series and parallel', '', 'SERIPARA')
+    ('CAPACITORS', ', trimmer', '', 'CAPTRIM')
+    ('CLOCK HOURS', ', display', ', conversion from decimal hours', 'HOURS')
+    ('EQUIVALENTS', ', series/parallel/Q units', '', 'SEPAG')
+    ('HARD DRIVE', ', copy HAMCALC to', '', 'HCINSTAL')
+    ('IMPEDANCE METER', '', '', 'IMPEDMETR')
+    ('INDUCTORS', ', in series and parallel', '', 'SERIPARA')
+    ('INSTALL HAMCALC ON A HARD DRIVE', '', '', 'CPYHCAL')
+    ('REACTANCES', ', unlike', ', in series or parallel', 'SERIPARA')
+    ('RESISTORS', ', in series and parallel', '', 'SERIPARA')
+    ('RF CHOKES', ', coaxial cable', '', 'CHOBAL6')
+    ('SERIES & PARALLEL COMPONENTS', '', '', 'SERIPARA')
+    ('TRIMMER CAPACITORS', '', '', 'CAPTRIM')
+
+Finally, note that 130 program files are missing a cross-reference entry.
 
 Subject Areas
 =============

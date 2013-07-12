@@ -1,6 +1,6 @@
 ..  _construction.shaft:
 
-shaft -- Shafts and Shafting
+shaft -- Shafts & Shafting
 -----------------------------
 
 See :ref:`construction.beltdriv`,
