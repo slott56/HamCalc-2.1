@@ -20,6 +20,7 @@ programs.
     formulae
     graphs
     involute
+    metrics
     numderiv
     polygon
     primenos
@@ -27,6 +28,7 @@ programs.
     quadrat
     randnum
     rotaplot
+    scalspd
     simuleq
     solutri
     speedtd

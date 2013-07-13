@@ -1,432 +1,432 @@
-bignum,BIGNUM.BAS,:REM'BIGNUM,*Menu*
-exit,EXIT.BAS,EXIT,*Menu*
-hamdex,HAMDEX.BAS,INDEX; Index,*Menu*
-hcal,HCAL.BAS,Main Menu; EXIT,*Menu*
-hcal-x,HCAL-X.BAS,:REM'\\hamcalc\\menu\\HCAL-X   02 JUN 94 rev. 14 MAR 2010,*Menu*
-helphint,HELPHINT.BAS,READ ME,*Menu*
-hxinstal,HXINSTAL.BAS,:REM'\\hamcalc\\prog\\HCINSTAL - 24 MAR 2000 rev. 20 FEB 2002,*Menu*
-intro,INTRO.BAS,:REM'\\hamcalc\\prog\\INTRO - Page one of HAMCALC - 06 JUN 96 rev. 25 JAN 2011,*Menu*
-logoclok,LOGOCLOK.BAS,Clock Screen Saver,*Menu*
-lptsetup,LPTSETUP.BAS,:REM'LPTSETUP - 13 AUG 92 rev. 30 OCT 2010,*Menu*
-mechmenu,MECHMENU.BAS,MECHANICS Math,*Menu*
-newsince,NEWSINCE.BAS,Recent program additions & upgrades,*Menu*
-printip,PRINTIP.BAS,Printer Tips,*Menu*
-quiktabl,QUIKTABL.BAS,QuikTables,*Menu*
-rjd,RJD.BAS,Dehoney Algorithm Index,*Menu*
-run,RUN.BAS,:REM'NEWSINCE - HAMCALC new programs & upgrades - 11 JAN 96 rev. 22 JAN 07,*Menu*
-test,TEST.BAS,:REM'\\hamcalc\\menu\\HCAL-X   02 JUN 94 rev..24 NOV 2009,*Menu*
-tjd,TJD.BAS,":REM'RJD - HAMCALC ALGORTHMS BY R.J.DEHONEY - 21 JUL 08, rev. 14 JUN 2010",*Menu*
-walker,WALKER.BAS,Walker,*Menu*
-zexit,ZEXIT.BAS,EXIT,*Menu*
-actaring,ACTARING.BAS,:REM'OCTARING - Octagonal Loop Antenna - 23 NOV 2005,*Remove*
-amdex,AMDEX.BAS,:REM'\\hamcalc\\prog\\HAMDEX - 18 FEB 94 rev. 28 DEP 2003,*Remove*
-dpeedtd,DPEEDTD.BAS,":REM'SPEEDTD - 13 SEP 1986  rev. 17 FEB 2008, JAN 2010",*Remove*
-matrics,MATRICS.BAS,:REM'\\hamcalc\\prog\\METRICS - 21 AUG 86  rev. 02 MAY 2001,*Remove*
-prt,PRT.BAS,Code Snippet for printing,*Remove*
-wirepeop,WIREPEOP.BAS,:REM'WIREPROP  - Wire size calculator - revised 10 MAR 09,*Remove*
-addons,ADDONS.BAS,:REM'ADDONS - 04 DEC 2010,*TBD*
-compint,COMPINT.BAS,:REM'COMPINT : 13 DEC 85  rev. 30 DEC 2000,*TBD*
-days,DAYS.BAS,:REM'DAYS - 30 SEP 89 - last rev.07 FBB 2010,*TBD*
-metrics,METRICS.BAS,Metric Conversions,*TBD*
-scalspd,SCALSPD.BAS,Scale Speed Calculator,*TBD*
-shuttle,SHUTTLE.BAS,Shuttle,*TBD*
-smithcht,SMITHCHT.BAS,Smith Chart Calculations,*TBD*
-sqline,SQLINE.BAS,:REM'SQLINE - 23 JUN 2000 rev.11 NOV 2000,*TBD*
-vacap,VACAP.BAS,:REM'VACAP - 21 DEC 2007,*TBD*
-vacap14,VACAP14.BAS,:REM'vacap14 - 26 DEC 2007,*TBD*
-vacap7,VACAP7.BAS,:REM'vacap7 - 22 DEC 2007,*TBD*
-vacap8,VACAP8.BAS,:REM'vacap8 - 23 DEC 2007,*TBD*
-vacap9,VACAP9.BAS,:REM'vacap9 - 23 DEC 2007,*TBD*
-exposure,EXPOSURE.BAS,EXPOSURE,audio_photo
-focus,FOCUS.BAS,FOCUSING,audio_photo
-foromenu,FOROMENU.BAS,:REM'FOTOMENU - main menu  10 FEB 94 rev. 03 DEC 2007,audio_photo
-fotocopy,FOTOCOPY.BAS,PHOTOCOPIER IMAGE SIZE,audio_photo
-fotomenu,FOTOMENU.BAS,PHOTOGRAPHY Math,audio_photo
-fotomove,FOTOMOVE.BAS,SUBJECTS IN MOTION,audio_photo
-lenses,LENSES.BAS,LENSES,audio_photo
-lensring,LENSRING.BAS,EXTENSION RINGS and BELLOWS,audio_photo
-metnom,METNOM.BAS,Metronome,audio_photo
-pixel,PIXEL.BAS,DIGITAL CAMERAS & SCANNERS; Pixel Data for Scanners & Cameras,audio_photo
-speakr,SPEAKR.BAS,:REM'SPEAKR - Speaker Equalizer - 13 JUL 2008,audio_photo
-titler,TITLER.BAS,TITLER,audio_photo
-zounds,ZOUNDS.BAS,Musical Math & Sounds; Audio Programs; Audio Tone Analyzer; Music Math & Sounds,audio_photo
-caltoday,CALTODAY.BAS,Calendar - Perpetual/Universal,calendar
-metshowr,METSHOWR.BAS,Meteor Shower Predictor,calendar
-seasons,SEASONS.BAS,Equinoxes & Solstices,calendar
-arch,ARCH.BAS,Arch Calculator,construction
-beamdefl,BEAMDEFL.BAS,BEAMS - Deflection in,construction
-beamsect,BEAMSECT.BAS,BEAMS - Properties of (Start new beam design here),construction
-beltdriv,BELTDRIV.BAS,Belt Drives,construction
-bend,BEND.BAS,Bend Allowance - Metals,construction
-binhop,BINHOP.BAS,Hoppered Bins & Tanks,construction
-binvol,BINVOL.BAS,:REM'BINVOL - 11 OCT 86 rev. 12 MAR 2006,construction
-brick,BRICK.BAS,Masonry Estimator,construction
-chain,CHAIN.BAS,Chain Drives,construction
-conecalc,CONECALC.BAS,Cone Calculator,construction
-cyl,CYL.BAS,Cylinders - Air & Hydraulic,construction
-diamfind,DIAMFIND.BAS,Diameter Finder,construction
-gearing,GEARING.BAS,Gears & gearing,construction
-guywires,GUYWIRES.BAS,Guy Wires for Antenna Towers/Masts,construction
-nmbrsize,NMBRSIZE.BAS,Numbered Drills/Screws/Taps/Gauges,construction
-pipesize,PIPESIZE.BAS,Pipe Sizes - ANSI Standard,construction
-shaft,SHAFT.BAS,Shafting,construction
-stairs,STAIRS.BAS,"Stairs, Ladders & Ramps",construction
-survey,SURVEY.BAS,Surveyor's Calculator,construction
-torque,TORQUE.BAS,Torque & Horsepower,construction
-wirecond,WIRECOND.BAS,Wires in Conduit,construction
-wiremesh,WIREMESH.BAS,Wire Mesh Screens - Wind Loads,construction
-precicap,PRECICAP.BAS,Capacitors - Precision,electrohics
-led,LED.BAS,LED Series Resistor,electroinics
-555timer,555TIMER.BAS,Timer (555 IC),electronics
-accalc,ACCALC.BAS,A.C. Circuit Calculator; A.C.Calculator,electronics
-audfilt,AUDFILT.BAS,Audio Bandpass Filter - Active,electronics
-audosc,AUDOSC.BAS,Audio Oscillator; Audio Programs; Audio Oscillator (LM 324),electronics
-audosc2,AUDOSC2.BAS,Audio Oscillator (LF 353)dual wave,electronics
-audpass,AUDPASS.BAS,Audio Filters - Passive,electronics
-awgexact,AWGEXACT.BAS,A.W.G. Wire Size Calculator,electronics
-bandq,BANDQ.BAS,Bandwidth vs. Q,electronics
-bandstop,BANDSTOP.BAS,Band-Reject Filter,electronics
-batchg,BATCHG.BAS,Battery Charger,electronics
-battchg,BATTCHG.bas,:REM'BATTCHG Step-up switcher - 06 FEB 07,electronics
-battery,BATTERY.BAS,:REM'\\hamcalc\\prog\\BATTERY - 23 MAR 94 rev. 30 JUL 2005,electronics
-bridge,BRIDGE.BAS,Wheatstone Bridge Calculator; W'stone Bridge #1; Wheatstone Bridge #1,electronics
-bridge-2,BRIDGE-2.BAS,Wheatstone Bridge #2; W'stone Bridge #2,electronics
-broadfer,BROADFER.BAS,Baluns - Ferrite Toroid; Toroid Baluns & Transformers,electronics
-broadfwe,BROADFWE.BAS,:REM'BROADFER - Toroid Baluns & Transformers - rev. 26 DEC 2001,electronics
-buttfilt,BUTTFILT.BAS,Filters - Butterworth HF,electronics
-capacval,CAPACVAL.BAS,Capacitors - Standard Values,electronics
-capcoax,CAPCOAX.BAS,Capacitors - Coaxial Cable,electronics
-capstray,CAPSTRAY.BAS,Capacitance - Distributed (stray),electronics
-captance,CAPTANCE.BAS,Capacitor Design Calculator,electronics
-capval,CAPVAL.BAS,Capacitor Measurer,electronics
-capytel,CAPYTEL.BAS,Capacitors - Telescoping Variable,electronics
-cascamp,CASCAMP.BAS,OP AMPS - Cascaded,electronics
-clamp,CLAMP.BAS,Clamping Voltage Calculator,electronics
-cmosc3,CMOSC3.BAS,CMOS oscillator; CMOS Oscillator,electronics
-colcode,COLCODE.BAS,Resistor Colour Code,electronics
-colposc,COLPOSC.BAS,Colpitts FET Oscillator; Colpitts Oscillator,electronics
-comfilt,COMFILT.BAS,Filters - Complementary; Complementery Filters,electronics
-concur,CONCUR.BAS,OP AMP Constant Current Circuit,electronics
-conjumat,CONJUMAT.BAS,Conjugate Match Calculator,electronics
-copwire,COPWIRE.BAS,Skin Effect; Copper Wire Data; Printed Circuit Board Traces,electronics
-crysfilt,CRYSFILT.BAS,Crystal Ladder Filter,electronics
-custcap,CUSTCAP.BAS,Capacitors - Custom Value,electronics
-custohm,CUSTOHM.BAS,Resistors - Custom Value,electronics
-dblbrg4,DBLBRG4.BAS,2 Bridge Power Supply; Power Supply - Double Bridge,electronics
-dblfb,DBLFB.BAS,Double Feedback Amplifier,electronics
-decibel,DECIBEL.BAS,Decibel Calculator,electronics
-deltamat,DELTAMAT.BAS,Delta Match,electronics
-deltload,DELTLOAD.BAS,Load Resistance Calculator,electronics
-dielect,DIELECT.BAS,Dielectric Constants,electronics
-dsgnmenu,DSGNMENU.BAS,Resistor/Inductor/Capacitor Ccts.,electronics
-dsgnrc,DSGNRC.BAS,:REM'DSGNRC - Resistor/Capacitor Circuits  22 NOV 95 rev.11 APR 97,electronics
-dsgnrlc,DSGNRLC.BAS,:REM'DSGNRLC - Resistor/Inductor/Capacitor Circuits  27 SEP 96 rev.11 APR 97,electronics
-duopwr,DUOPWR.BAS,Power Supply,electronics
-elecleng,ELECLENG.BAS,Transmission Line Length,electronics
-elflash,ELFLASH.BAS,ELECTRONIC FLASH,electronics
-elspec,ELSPEC.BAS,Electromagnetic Spectrum,electronics
-filstrip,FILSTRIP.BAS,Filters - Stripline Bandpass,electronics
-filter,FILTER.BAS,FILTERS,electronics
-filtrlc,FILTRLC.BAS,Filters - Passive R/L/C,electronics
-filtut,FILTUT.BAS,Filter Tutor,electronics
-gaplot,GAPLOT.BAS,Capacitor Plate Designer; Capacitor Plate Design,electronics
-harmonic,HARMONIC.BAS,Harmonic Frequencies,electronics
-hartosc,HARTOSC.BAS,Hartley Oscillator; Hartly FET Oscillator; Hartley FET Oscillator,electronics
-hartosc3,HARTOSC3.BAS,Hartley Oscillator; Hartley FET Oscillator,electronics
-hotbox,HOTBOX.BAS,Heat Dissipation,electronics
-impares,IMPARES.BAS,Impedance - Parallel Resonant Cct.,electronics
-impedcct,IMPEDCCT.BAS,Reactance/Resistance Circuits; Impedance - Reactance/Resist. Cct.,electronics
-impedmet,IMPEDMET.BAS,:REM'IMPEDMET Impedance Meter - 18 NOV 97,electronics
-impednet,IMPEDNET.BAS,Impedance Matching Networks,electronics
-inducalc,INDUCALC.BAS,Inductance Calculator,electronics
-lamplife,LAMPLIFE.BAS,Lamp Life Expectancy,electronics
-lm17,LM17.BAS,:REM'LM317 - LM317 specifications - 11 JUN 90 rev. 11 OCT 2007,electronics
-lm315,LM315.BAS,:REM'LM317 - LM317 specifications - 11 JUN 90 rev. 11 OCT 2007,electronics
-lm317,LM317.BAS,LM317 Voltage Regulator,electronics
-lm317run,LM317RUN.BAS,:REM'LM317 - LM317 specifications - 11 JUN 90 rev. 11 OCT 2007,electronics
-lopass,LOPASS.BAS,Audio Lowpass Filter(Sallen & Key),electronics
-matchbox,MATCHBOX.BAS,Matchbox Impedance Transformer,electronics
-matchnet,MATCHNET.BAS,Matching Networks for Transistors,electronics
-matfilt,MATFILT.BAS,Matching filters; Filters - Impedance Matching,electronics
-meters,METERS.BAS,Meters (Direct Current),electronics
-nicad,NICAD.BAS,NiCad Battery Discharger,electronics
-noisfig,NOISFIG.BAS,OP AMPS - Noise Figure,electronics
-ohmslaw,OHMSLAW.BAS,Ohm's Law Calculator,electronics
-opamp,OPAMP.BAS,OP AMP Operational Amplifiers,electronics
-phazdiff,PHAZDIFF.BAS,Constant Phase Difference Networks; Phase Difference,electronics
-potent,POTENT.BAS,Potentiometers - Custom Value,electronics
-powrxfmr,POWRXFMR.BAS,Transformer Design; Power Transformer Design,electronics
-precires,PRECIRES.BAS,Resistors - Precision,electronics
-psup,PSUP.BAS,Power Supply Analyzer,electronics
-psuperf,PSUPERF.BAS,Power Supply Performance; Power Supply Rating,electronics
-pulsegen,PULSEGEN.BAS,Pulse Generator,electronics
-pwrcct,PWRCCT.BAS,Power Supply Design,electronics
-pwrdiv,PWRDIV.BAS,Power Divider,electronics
-pwrsupp,PWRSUPP.BAS,:REM'PWRSUPP - Design Program - 01 JUL 91 rev. 12 APR 2000,electronics
-pwrxfmr,PWRXFMR.BAS,Power Transformer Winding Estimator,electronics
-qfactor,QFACTOR.BAS,:REM'QFACTOR - Q Factor of Components - 01 JAN 2002 rev.01 MAR 2001,electronics
-qfind,QFIND.BAS,":REM'QFIND5   Q-L/C Tank Circuit - 29 MAR 09, rev 11 NOV 2010",electronics
-qfind5,QFIND5.BAS,Q Measurement - L/C Tank Circuit; Q-L/C Tank Circuit,electronics
-qline2,QLINE2.BAS,Transmission Line Q,electronics
-qreson,QRESON.BAS,Q Calculator - Resonant Circuits,electronics
-rcfilt,RCFILT.BAS,Audio Filters - RC Active,electronics
-react,REACT.BAS,Reactance Programs,electronics
-remsig,REMSIG.BAS,Remote Signal Lamp,electronics
-resicop,RESICOP.BAS,Resistors - Copper Wire Wound,electronics
-resistiv,RESISTIV.BAS,Resistivity of Metals,electronics
-resisval,RESISVAL.BAS,Resistors - Standard Values,electronics
-ripple,RIPPLE.BAS,:REM'RIPPLE - 07 NOV 2007,electronics
-schmidt,SCHMIDT.BAS,Schmidt trigger Op Amp,electronics
-sepaq,SEPAQ.BAS,Series/Parallel/Q Eqivalents; Series/Parallel/Q Ccts.,electronics
-serisect,SERISECT.BAS,Series-Section Transformer,electronics
-serpar-q,SERPAR-Q.BAS,:REM'SERPAR-q 23 SEP 2010,electronics
-sersect,SERSECT.BAS,:REM'SERISECT - Series Section Matching Transformer - 31 JAN 94 rev. 07 AUG 01,electronics
-sink,SINK.BAS,Heat Sink Fins,electronics
-spark,SPARK.BAS,Breakdown Voltage,electronics
-tankcct,TANKCCT.BAS,Tank Circuit - Power Amplifier,electronics
-thermres,THERMRES.BAS,Thermal Resistance,electronics
-thevinin,THEVININ.BAS,Voltage Divider - Thevinin,electronics
-tinycoil,TINYCOIL.BAS,Tiny Coils,electronics
-toroid,TOROID.BAS,Toroid Inductors,electronics
-trancct,TRANCCT.BAS,Transistor Circuit Design,electronics
-trimr,TRIMR.BAS,Capacitors - Trimmer,electronics
-trisqu,TRISQU.BAS,Dual Op Amp Wave Generator; OP AMP Wave Generator; Wave Generator,electronics
-turns,TURNS.BAS,Coil Turns Calculator,electronics
-twintee,TWINTEE.BAS,Audio Oscillator (Twin-T),electronics
-vfofreq,VFOFREQ.BAS,VFO Frequency Calculator,electronics
-voltdiv,VOLTDIV.BAS,Voltage Divider,electronics
-walwart,WALWART.BAS,Wall Wart Ratings Calculator,electronics
-wartest,WARTEST.BAS,Wall Wart Properties,electronics
-wheatsto,WHEATSTO.BAS,:REM'WHEATSTO - 27 NOV 2007,electronics
-winding,WINDING.BAS,Transformer Winding Calculator,electronics
-wireprop,WIREPROP.BAS,:REM'WIREPROP  - Wire size calculator - rev 10 MAR 09,electronics
-xfmr,XFMR.BAS,Transformer Ratios,electronics
-xfmrnaro,XFMRNARO.BAS,Transformer - Narrow Band,electronics
-xmtrzmat,XMTRZMAT.BAS,Xmtr Transistor Stage Coupling; Xmtr. Transistor Stage Coupling,electronics
-xover,XOVER.BAS,Crossover Networks - Loudspeakers,electronics
-zener,ZENER.BAS,Zener Diode Voltage Regulator,electronics
-cw,CW.BAS,Code Trainer (Morse Code),ham
-elecost,ELECOST.BAS,Cost of Electricity,ham
-foxlog,FOXLOG.BAS,QRP Fox Hunt Log,ham
-fusewire,FUSEWIRE.BAS,Fuses - Emergency,ham
-hambands,HAMBANDS.BAS,Ham Band Edge & Centre Frequencies,ham
-pracosc,PRACOSC.BAS,Code Practice Oscillator,ham
-qsk,QSK.BAS,QSK Break-In module,ham
-tvchan,TVCHAN.BAS,TV Channels ( North America ),ham
-accelr,ACCELR.BAS,Acceleration Calculator,math
-baromtr,BAROMTR.BAS,Barometer Reading Equivalents,math
-binary,BINARY.BAS,Decimal to Binary Converter,math
-centrif,CENTRIF.BAS,Centrifugal/Centripetel Force,math
-chase,CHASE.BAS,:REM'CHASE - 22 JAN 2010,math
-curvefit,CURVEFIT.BAS,Curve Fit program; Curve Fit Program,math
-deciconv,DECICONV.BAS,Decimal Hour/Degree Converter,math
-decifrac,DECIFRAC.BAS,Decimal/Fraction Converter,math
-equiv,EQUIV.BAS,Equivalent Values,math
-fibon,FIBON.BAS,Fibonacci Series,math
-formulae,FORMULAE.BAS,Formula Library,math
-graphs,GRAPHS.BAS,Graphs,math
-involute,INVOLUTE.BAS,Involute of a Circle,math
-numderiv,NUMDERIV.BAS,Logarithms to any base; Numbers and Functions,math
-polygon,POLYGON.BAS,Polygon Dimensions,math
-primenos,PRIMENOS.BAS,Prime Number Calculator,math
-propcirc,PROPCIRC.BAS,Circle - Properies of,math
-psychrom,PSYCHROM.BAS,Thermodynamics,math
-quadrat,QUADRAT.BAS,Quadratic Equation Calculator,math
-randnum,RANDNUM.BAS,Random Number Generator; Random Numbers,math
-rotaplot,ROTAPLOT.BAS,Cartesian/Polar Plot Rotator,math
-simuleq,SIMULEQ.BAS,Simultaneous Equation Calculator,math
-solutri,SOLUTRI.BAS,Triangles - solution of,math
-speedtd,SPEEDTD.BAS,Speed/Time/Distance Calculator,math
-trig,TRIG.BAS,Trigonometric Functions,math
-unitvalu,UNITVALU.BAS,Unit Value Comparator,math
-daydusk,DAYDUSK.BAS,Daylight Dusk and Dawn Calculator,navigation
-gridsq,GRIDSQ.BAS,Grid Square Locator (Maidenhead),navigation
-latlong,LATLONG.BAS,Latitude/Longitude Data Base,navigation
-moontrac,MOONTRAC.BAS,Moon Tracker,navigation
-pathfind,PATHFIND.BAS,Great Circle Paths & Distances; Beam Heading Calculator,navigation
-riseset,RISESET.BAS,Sunrise/Sunset Calculator,navigation
-satorbit,SATORBIT.BAS,Satellite Orbit Parameters,navigation
-sunup,SUNUP.BAS,:REM' SUNUP - 29 SEP 86 rev. 23 NOV 03. 'excerpted from PATHFIND.BAS,navigation
-timezone,TIMEZONE.BAS,Time Zones (UTC),navigation
-trunorth,TRUNORTH.BAS,True North via the Sun,navigation
-buysell,BUYSELL.BAS,":REM'BUYSELL - 28 OCT 97, rev. 29 DEC 2000",other
-calory,CALORY.BAS,Calorie Counter,other
-chklist,CHKLIST.BAS,:REM'\\bas\\prog2\\CHKLIST   15 NOV 86  Rev. 28 AUG 2001,other
-deprec,DEPREC.BAS,:REM'DEPREC - Depreciation Schedule - 04 JAN 92 rev. 29 DEC 2000,other
-finance,FINANCE.BAS,Financial Calculators,other
-humid,HUMID.BAS,Humidex Calculator,other
-loanpay,LOANPAY.BAS,:REM'LOANPAY - 18 JUL 87    latest rev. 30 DEC 2000,other
-mortgag,MORTGAG.BAS,:REM'MORTGAG : 31 OCT 87 - rev. 25 MAY 2010,other
-pedom,PEDOM.BAS,Pedometer,other
-remind,REMIND.BAS,:REM'\\hamcalc\\prog\\REMIND - Reminder - rev. 11 APR 2000,other
-timeq,TIMEQ.BAS,Time Quiz,other
-triplan,TRIPLAN.BAS,Trip Planner,other
-watch,WATCH.BAS,Stopwatch,other
-winchil,WINCHIL.BAS,:REM'WINDCHIL - Wind Chill Factor - 16 NOV 2005 rev. 23 FEB 2010,other
-windchil,WINDCHIL.BAS,Wind Chill Factor,other
-wx,WX.BAS,:REM'WINDCHIL - Wind Chill Factor - 16 NOV 2005,other
-3mbridge,3MBRIDGE.BAS,Impedance Bridge (3-meter),radio
-aircore,AIRCORE.BAS,B.& W. Air-Core Inductors,radio
-antenna,ANTENNA.BAS,Antenna Length/Pruning calculator; Length & pruning calculator,radio
-antfield,ANTFIELD.BAS,Antenna Field Strength,radio
-antimp,ANTIMP.BAS,Impedance - Antennas,radio
-antmatch,ANTMATCH.BAS,Antenna Matching Networks,radio
-antscale,ANTSCALE.BAS,Antenna Frequency Scaling,radio
-antsyn2,ANTSYN2.BAS,Antenna Matching Network; Antenna Matching Networks,radio
-attenpad,ATTENPAD.BAS,Attenuators: T-Pad and Pi-Pad,radio
-attenu,ATTENU.bas,:REM'ATTENU - SWR vs. Attenuation loss vs.SWR   6 DEC 2003,radio
-bandwdth,BANDWDTH.BAS,Bandwidths - 2:1 SWR,radio
-bevant,BEVANT.BAS,Beverage Antenna Equations; Beverage receiving antenna,radio
-bobtail,BOBTAIL.BAS,Bobtail Curtain Antenna,radio
-boom,BOOM.BAS,Boom Droop - Beam Antennas,radio
-buxton,BUXTON.BAS,:REM'\\hamcalc\\prog\\BUXTRAP Coax Cable Super Traps - Double Layer - 12 OCT 01,radio
-buxtrap,BUXTRAP.BAS,Coax Cable Hi-Reactance SuperTrap; Coaxial Cable SuperTrap,radio
-capyhat,CAPYHAT.BAS,Capacity Hats - Vertical Antennas,radio
-catenary,CATENARY.BAS,Sag in Horizontal Wire Antennas; Sag in Horizontal wire,radio
-ccdanten,CCDANTEN.BAS,CCD Antennas; CCD antennas,radio
-centfreq,CENTFREQ.BAS,Centre Frequency & Wavelength,radio
-centload,CENTLOAD.BAS,Short centre-loaded dipole; Short Centre-Loaded Dipole,radio
-chokbal,CHOKBAL.BAS,Transmission Line Choke; Coax Cable RF Chokes & Baluns,radio
-cildsgn,CILDSGN.BAS,:REM'COILDSGN - Coil Design - 22 NOV 94 rev. 09 DEC 2005,radio
-circfeed,CIRCFEED.BAS,Circular Waveguide Dish Feeds,radio
-clarky,CLARKY.BAS,Clark Y Airfoil,radio
-clildsgn,CLILDSGN.BAS,:REM'COILDSGN - Coil Design - 22 NOV 94 rev. 15 DEC 2005,radio
-coaxcalc,COAXCALC.BAS,:REM'COAXCALC - characteristics calculator - 10 JAN 2000,radio
-coaxchar,COAXCHAR.BAS,Coax Cable Characteristics; Coaxial Cable Characteristics,radio
-coaxlc3,COAXLC3.BAS,Coax L/C Tank; Coax Cable L/C Tank,radio
-coaxspec,COAXSPEC.BAS,:REM'COAXSPEC - Coax Cable Primer - 04 AUG 01 rev.28 AUG 01,radio
-coaxstub,COAXSTUB.BAS,Stubs - Coaxial Transmission Line,radio
-coaxtrap,COAXTRAP.BAS,Traps - Coaxial Cable; Coax Cable Traps,radio
-coilamp,COILAMP.BAS,Mobile Whip Antenna Coils,radio
-coilcpl,COILCPL.BAS,Coils - Coaxially coupled,radio
-coildsgn,COILDSGN.BAS,Coil Designer,radio
-coilequa,COILEQUA.BAS,Coil Calculator- Wheeler equations; Coil Equations,radio
-coilin,COILIN.BAS,Coils - Insulated Wire,radio
-coilnew,COILNEW.BAS,Coil Calculator; Coil Calculator- Dehoney equations; Coils in Tandem; Coil Tap Calculators,radio
-coilq,COILQ.BAS,Coil Q Calculator,radio
-coilquik,COILQUIK.BAS,Coil Q Quick Estimator,radio
-coiltap,COILTAP.BAS,Coil Tap Properties,radio
-coiltrue,COILTRUE.BAS,Coil Q - True vs. Apparent,radio
-coilx,COILX.BAS,:REM'COILX    Coil Equations - 05 MAY 2006,radio
-cooildsg,COOILDSG.BAS,:REM'COILDSGN - Coil Design - 22 NOV 94 rev. 15 DEC 2005,radio
-copy of antsyn2,Copy of ANTSYN2.BAS,":REM'ANTSYN2 - Antenna Matching Networks - 4 MAY 2010, rev.5/5/10",radio
-coxstub,COXSTUB.BAS,:REM'COAXSTUB - Stubs for Coaxial Lines - 03 JUN 96 rev. 07 AUG 2001,radio
-cplres,CPLRES.BAS,Filters - Coupled Resonator; Filters Coax Stub,radio
-cylload,CYLLOAD.BAS,Short Cylinder-Loaded Dipole; CYLOAD antenna; Short cylinder-loaded dipole,radio
-dialgth,DIALGTH.BAS,YAGI Element Diameter vs. Length; Beam Element Diameter vs Length,radio
-dipol160,DIPOL160.BAS,Short Dipole for 160/80/40 metres; Short dipole for 160/80/40 m.,radio
-discone,DISCONE.BAS,Discone Multiband Antenna,radio
-dishant,DISHANT.BAS,Parabolic Dish Design,radio
-duopole,DUOPOLE.BAS,Dual band short dipole; Dual Band Short Dipole Antenna,radio
-es2b,ES2B.BAS,Short ES2B (2 band) Trap Dipole; Short ES2B 2-band trap dipole,radio
-fatdipol,FATDIPOL.BAS,Fat Dipole (broadband);Fat 2-conductor broadband dipole,radio
-fishbone,FISHBONE.BAS,Fishbone Antenna; Fishbone antenna,radio
-foldipol,FOLDIPOL.BAS,Folded dipole - 300- twinlead; Folded Dipole - 300- Twin-Lead,radio
-g5rv,G5RV.BAS,G5RV dipole; G5RV Multiband Antenna,radio
-gammatch,GAMMATCH.BAS,Gamma Match,radio
-hairpin,HAIRPIN.BAS,Hairpin Beta-Match for Yagis; Hairpin Match for Yagis,radio
-halfloop,HALFLOOP.BAS,Half-Loop antenna; Half-Loop Low Profile Antenna,radio
-hamcalc,HAMCALC.BAS,:REM'\\hamcalc\\prog\\COAXCHAR - Coaxial Cable - 02 MAY 94 rev. 05 SEP 2002,radio
-hatshape,HATSHAPE.BAS,Capacity Hat Geometric Shapes,radio
-helant,HELANT.BAS,Helical Antenna - VHF/UHF,radio
-helix,HELIX.BAS,Helical Winding,radio
-helreson,HELRESON.BAS,Helical Resonators (VHF/UHF),radio
-helvert,HELVERT.BAS,Vertical Antenna - Helically Wound,radio
-impant,IMPANT.BAS,Antenna Impedance Calculator; Antenna Impedance,radio
-induhose,INDUHOSE.BAS,Inductors - Dryer Vent Hose,radio
-induloop,INDULOOP.BAS,Inductance - Single Loops,radio
-inloss,INLOSS.BAS,Insertion Loss,radio
-inserlos,INSERLOS.BAS,:REM'INLOSS.BAS - Insertion Loss - 17 Aug 2009,radio
-invee,INVEE.BAS,Inverted Vee Antenna; Inverted VEE,radio
-jaypole,JAYPOLE.BAS,J-Pole End-Fed Zepp Antenna,radio
-jcalc,JCALC.BAS,J Calculator (Complex Impedances),radio
-kfactor,KFACTOR.BAS,K-Factor & Antenna Length (NEC-2),radio
-l-pad,L-PAD.BAS,L-Pad Calculator,radio
-ladant,LADANT.BAS,Ladder Line Antenna,radio
-ladder2,LADDER2.BAS,Ladder Network - 2 element,radio
-ladrsolv,LADRSOLV.BAS,Ladder Network Analyzer; Ladder Networks,radio
-lineloss,LINELOSS.BAS,Transmission Line Losses,radio
-linkupl,LINKUPL.BAS,Link Coupled Tuners,radio
-list 10,LIST 10.BAS,":REM'FILSTRIP - Filter, Stripline Bandpass - 08 FEB 96 rev.03 FEB 2010",radio
-localrpt,LOCALRPT.BAS,Local Repeaters,radio
-logyag,LOGYAG.BAS,LOG-YAG Log-Periodic Yagi Antenna,radio
-loopant,LOOPANT.BAS,Loop Antenna Coil Inductance,radio
-loopsky,LOOPSKY.BAS,Loop Skywire; Loop Skywire Dimensions,radio
-loopxmit,LOOPXMIT.BAS,Loop Antennas - Transmitting,radio
-lossy,LOSSY.BAS,SWR vs. Line Loss,radio
-maxuf,MAXUF.BAS,Max. Usable Frequencies (MAXIMUF),radio
-micloop,MICLOOP.BAS,:REM'MICLOOP - Micro Miniature Loop Antenna - 05 DEC 02,radio
-microver,MICROVER.BAS,MicroVert very short HF Antenna,radio
-miniloop,MINILOOP.BAS,Miniature loop; MINILOOP Miniature Loop Antenna,radio
-miniquad,MINIQUAD.BAS,MINIQUAD Coil Shortened Antenna; Miniature quad,radio
-mismat,MISMAT.BAS,Transmission Line Mismatch; Xmission Line Mismatch,radio
-miwhip,MIWHIP.BAS,:REM'MOWHIP - mobile/whip antenna - 13 JAN 94 rev. 19 JAN 2005,radio
-mobilmat,MOBILMAT.BAS,Mobile Antenna Matching,radio
-mowhip,MOWHIP.BAS,Mobile/Maritime Whip Antennas,radio
-moxon,MOXON.BAS,Moxon Rectangle Antenna; Moxon rectangle,radio
-node,NODE.BAS,Transmission line E and I nodes; Transmission Line Node Locator,radio
-noloss,NOLOSS.BAS,Lossless L/C circuits; Lossless L/C Circuits,radio
-ocfdipol,OCFDIPOL.BAS,"Off-Centre Dipole, 3-band trapless",radio
-octagon,OCTAGON.BAS,Octagonal Loop Framework,radio
-octaloop,OCTALOOP.BAS,OCTALOOP Subminiature Loop Antenna,radio
-octaring,OCTARING.BAS,OCTARING Subminiature Loop Antenna,radio
-openwire,OPENWIRE.BAS,Transmission Line - Open Wire,radio
-pairlt,PAIRLT.BAS,Long-Tailed Pair,radio
-pba,PBA.BAS,Pseudo-Brewster Angle,radio
-pimatch,PIMATCH.BAS,Pi-Network Impedance Matching,radio
-pitnet,PITNET.BAS,Pi and T Networks,radio
-q,Q.BAS,:REM'QUADRAT - 17 FEB 87  rev. 10 FEB 2004,radio
-qntimp,QNTIMP.BAS,:REM'ANTIMP - Antenna Impedance - 06 NOV 97 rev. 29 OCT 2003,radio
-qtrap,QTRAP.BAS,High Q Antenna Traps,radio
-qtraprun,QTRAPRUN.BAS,:REM'QTRAP - HI Q TRAPS - 17 FEB 08,radio
-quad,QUAD.BAS,"Quad Antenna Dimensions; Quads, multi-element",radio
-quartwav,QUARTWAV.BAS,Quarter Wave Transformer,radio
-radangle,RADANGLE.BAS,Radiation Angle - Antenna,radio
-radiolos,RADIOLOS.BAS,Line-of-Sight Radio Wave,radio
-rcconst,RCCONST.BAS,R/C Time Constant,radio
-rcload2,RCLOAD2.BAS,Matching in an R/C Load; Matching into an R/C Load,radio
-shortant,SHORTANT.BAS,Short Off-Centre-Loaded Dipole; Short off-centre loaded dipole,radio
-shortdip,SHORTDIP.BAS,Short multi-band dipole array; Short Multiband Dipole Array,radio
-skipdist,SKIPDIST.BAS,Skip Distance Calculator,radio
-sloper,SLOPER.BAS,Sloper dimensions; Sloper Antenna Dimensions,radio
-smeter,SMETER.BAS,S-Meter Readings vs. Power,radio
-snglwire,SNGLWIRE.BAS,Single wire antenna system; Single Wire Antenna Systems,radio
-sqcoax,SQCOAX.BAS,Transmission Line - Square Coaxial,radio
-stubant,STUBANT.BAS,Stub Match for Antennas,radio
-swr,SWR.BAS,SWR Calculator,radio
-t2fd,T2FD.BAS,T2FD Tilted Folded Dipole,radio
-teematch,TEEMATCH.BAS,":REM'TEEMATCH - HIGH PASS TEE MATCH with finite Q inductor, by Brian Eagan ZL1LE",radio
-teletube,TELETUBE.BAS,Telescoping Aluminum Tubing,radio
-tform3,TFORM3.BAS,L/C Net w/o Xformers; L/C Networks with NO TRANSFORMERS,radio
-thruboom,THRUBOOM.BAS,YAGI Through-Boom Elements,radio
-tmatch,TMATCH.BAS,T Match - Dipole to 600 - Line,radio
-torotrap,TOROTRAP.BAS,Toroid antenna traps; Toroid Antenna Traps,radio
-tracker,TRACKER.BAS,Tracker - Receiver Tuned Circuits,radio
-tranline,TRANLINE.BAS,Transmission Line Performance,radio
-transmat,TRANSMAT.BAS,Transmatch Design; Transmatch Design (ZL1LE),radio
-transtub,TRANSTUB.BAS,Stubs - Open Wire Transmiss'n Line; Transmission Line Stubs,radio
-trapcalc,TRAPCALC.BAS,Trap Design Calculator,radio
-trapdsgn,TRAPDSGN.BAS,3-band single trap dipole; Trap Dipole - 3 Band Single Trap,radio
-trapole,TRAPOLE.BAS,Trap dipole design; Trap Antenna Design,radio
-traprop,TRAPROP.BAS,Trap properties estimator; Trap Properties Estimator,radio
-tsfd,TSFD.BAS,:REM'T2FD Tilted Terminated Folded Dipole - 21 MAY 08,radio
-tunecct,TUNECCT.BAS,Tuned Circuit Design; Tuned Circuit Design - L/C network,radio
-turnrad,TURNRAD.BAS,Turning Radius - Beam antennas,radio
-varayfed,VARAYFED.BAS,Vertical Antenna Array Feed Method,radio
-vertpatt,VERTPATT.BAS,Radiation Plots - Phased Verticals,radio
-wavetrap,WAVETRAP.BAS,Wave trap filters; Wave Trap Filters,radio
-windom,WINDOM.BAS,Windom Antenna; Windom antenna,radio
-wireant,WIREANT.BAS,Wire Antenna Index,radio
-wiresag,WIRESAG.BAS,Sag in Horizontal Wire Antennas,radio
-works,WORKS.BAS,:REM'works   Antenna Impedance Calculator - 19 MAR 08,radio
-yagi3el,YAGI3EL.BAS,YAGI 3-Element Beam Design,radio
-yagilong,YAGILONG.BAS,YAGI Extremely Long VHF/UHF Antenna,radio
-yagispac,YAGISPAC.BAS,YAGI Element Spacing/NBS Standard,radio
-yaglong,YAGLONG.BAS,:REM'YAGILONG - Extremely Long Yagi - 06 MAY 95 rev.13 APR 97,radio
-yagtaper,YAGTAPER.BAS,YAGI Tapered Elements,radio
-zepp,ZEPP.BAS,Zepp Multi-band antenna; Zepp multi-band antenna,radio
-zeppdbl,ZEPPDBL.BAS,Zepp EDZ Antenna; Zepp EDZ (extended double zepp);Zepp (extended double) Antenna,radio
-zostepup,ZOSTEPUP.BAS,Folded Dipole - Zo Step-Up Ratios,radio
-numsort,NUMSORT.BAS,Number Sorter,software
-page437,PAGE437.BAS,ASCII Character Code Page 437,software
-sorter,SORTER.BAS,Sorter,software
+actaring,ACTARING.BAS,:REM'OCTARING - Octagonal Loop Antenna - 23 NOV 2005,*Ignore*,,,,,,
+amdex,AMDEX.BAS,:REM'\\hamcalc\\prog\\HAMDEX - 18 FEB 94 rev. 28 DEP 2003,*Ignore*,,,,,,
+dpeedtd,DPEEDTD.BAS,":REM'SPEEDTD - 13 SEP 1986  rev. 17 FEB 2008, JAN 2010",*Ignore*,,,,,,
+matrics,MATRICS.BAS,:REM'\\hamcalc\\prog\\METRICS - 21 AUG 86  rev. 02 MAY 2001,*Ignore*,,,,,,
+prt,PRT.BAS,Code Snippet for printing,*Ignore*,,,,,,
+wirepeop,WIREPEOP.BAS,:REM'WIREPROP  - Wire size calculator - revised 10 MAR 09,*Ignore*,,,,,,
+addons,ADDONS.BAS,:REM'ADDONS - 04 DEC 2010,*Menu*,,,,,,
+bignum,BIGNUM.BAS,:REM'BIGNUM,*Menu*,,,,,,
+exit,EXIT.BAS,EXIT,*Menu*,,,,,,
+hamdex,HAMDEX.BAS,INDEX; Index,*Menu*,,,,,,
+hcal,HCAL.BAS,Main Menu; EXIT,*Menu*,,,,,,
+hcal-x,HCAL-X.BAS,:REM'\\hamcalc\\menu\\HCAL-X   02 JUN 94 rev. 14 MAR 2010,*Menu*,,,,,,
+helphint,HELPHINT.BAS,READ ME,*Menu*,,,,,,
+hxinstal,HXINSTAL.BAS,:REM'\\hamcalc\\prog\\HCINSTAL - 24 MAR 2000 rev. 20 FEB 2002,*Menu*,,,,,,
+intro,INTRO.BAS,:REM'\\hamcalc\\prog\\INTRO - Page one of HAMCALC - 06 JUN 96 rev. 25 JAN 2011,*Menu*,,,stdio,,,
+logoclok,LOGOCLOK.BAS,Clock Screen Saver,*Menu*,,,stdio,,,
+lptsetup,LPTSETUP.BAS,:REM'LPTSETUP - 13 AUG 92 rev. 30 OCT 2010,*Menu*,,,,,,
+mechmenu,MECHMENU.BAS,MECHANICS Math,*Menu*,,,stdio,,,
+newsince,NEWSINCE.BAS,Recent program additions & upgrades,*Menu*,,,,,,
+printip,PRINTIP.BAS,Printer Tips,*Menu*,,,,,,
+quiktabl,QUIKTABL.BAS,QuikTables,*Menu*,,,,,,
+rjd,RJD.BAS,Dehoney Algorithm Index,*Menu*,,,stdio,,,
+run,RUN.BAS,:REM'NEWSINCE - HAMCALC new programs & upgrades - 11 JAN 96 rev. 22 JAN 07,*Menu*,,,,,,
+shuttle,SHUTTLE.BAS,Shuttle,*Menu*,,,,,,
+smithcht,SMITHCHT.BAS,Smith Chart Calculations,*Menu*,,,stdio,,,
+test,TEST.BAS,:REM'\\hamcalc\\menu\\HCAL-X   02 JUN 94 rev..24 NOV 2009,*Menu*,,,,,,
+tjd,TJD.BAS,":REM'RJD - HAMCALC ALGORTHMS BY R.J.DEHONEY - 21 JUL 08, rev. 14 JUN 2010",*Menu*,,,,,,
+walker,WALKER.BAS,Walker,*Menu*,,,,,,
+zexit,ZEXIT.BAS,EXIT,*Menu*,,,,,,
+exposure,EXPOSURE.BAS,EXPOSURE,audio_photo,,,,,,
+focus,FOCUS.BAS,FOCUSING,audio_photo,,,,,,
+foromenu,FOROMENU.BAS,:REM'FOTOMENU - main menu  10 FEB 94 rev. 03 DEC 2007,audio_photo,,,,,,
+fotocopy,FOTOCOPY.BAS,PHOTOCOPIER IMAGE SIZE,audio_photo,,,,,,
+fotomenu,FOTOMENU.BAS,PHOTOGRAPHY Math,audio_photo,,,,,,
+fotomove,FOTOMOVE.BAS,SUBJECTS IN MOTION,audio_photo,,,,,,
+lenses,LENSES.BAS,LENSES,audio_photo,,,,,,
+lensring,LENSRING.BAS,EXTENSION RINGS and BELLOWS,audio_photo,,,,,,
+metnom,METNOM.BAS,Metronome,audio_photo,,,,,,
+pixel,PIXEL.BAS,DIGITAL CAMERAS & SCANNERS; Pixel Data for Scanners & Cameras,audio_photo,,,,,,
+speakr,SPEAKR.BAS,:REM'SPEAKR - Speaker Equalizer - 13 JUL 2008,audio_photo,,,,,,
+titler,TITLER.BAS,TITLER,audio_photo,,,,,,
+zounds,ZOUNDS.BAS,Musical Math & Sounds; Audio Programs; Audio Tone Analyzer; Music Math & Sounds,audio_photo,,,,,,
+caltoday,CALTODAY.BAS,Calendar - Perpetual/Universal,calendar,:doc:`python/calendar/caltoday`,,stdio,,,
+days,DAYS.BAS,:REM'DAYS - 30 SEP 89 - last rev.07 FBB 2010,calendar,,,stdio,,,
+metshowr,METSHOWR.BAS,Meteor Shower Predictor,calendar,:doc:`python/calendar/metshowr`,,,,,
+seasons,SEASONS.BAS,Equinoxes & Solstices,calendar,:doc:`python/calendar/seasons`,,stdio,,,
+arch,ARCH.BAS,Arch Calculator,construction,:doc:`python/construction/arch`,construction/arch,stdio,,,
+beamdefl,BEAMDEFL.BAS,BEAMS - Deflection in,construction,:doc:`python/construction/beamdefl`,construction/beamdefl,stdio,,,
+beamsect,BEAMSECT.BAS,BEAMS - Properties of (Start new beam design here),construction,:doc:`python/construction/beamsect`,construction/beamsect,stdio,,,
+beltdriv,BELTDRIV.BAS,Belt Drives,construction,:doc:`python/construction/beltdriv`,construction/beltdriv,stdio,,,
+bend,BEND.BAS,Bend Allowance - Metals,construction,:doc:`python/construction/bend`,,stdio,,,
+binhop,BINHOP.BAS,Hoppered Bins & Tanks,construction,:doc:`python/construction/binhop`,construction/binhop,stdio,,,
+binvol,BINVOL.BAS,:REM'BINVOL - 11 OCT 86 rev. 12 MAR 2006,construction,:doc:`python/construction/binvol`,,,,,
+brick,BRICK.BAS,Masonry Estimator,construction,:doc:`python/construction/brick`,,stdio,,,
+chain,CHAIN.BAS,Chain Drives,construction,:doc:`python/construction/chain`,construction/chain,stdio,,,
+conecalc,CONECALC.BAS,Cone Calculator,construction,:doc:`python/construction/conecalc`,construction/conecalc,stdio,,,
+cyl,CYL.BAS,Cylinders - Air & Hydraulic,construction,:doc:`python/construction/cyl`,construction/cyl,stdio,,,
+diamfind,DIAMFIND.BAS,Diameter Finder,construction,:doc:`python/construction/diamfind`,,stdio,,,
+gearing,GEARING.BAS,Gears & gearing,construction,:doc:`python/construction/gearing`,construction/gearing,stdio,,,
+guywires,GUYWIRES.BAS,Guy Wires for Antenna Towers/Masts,construction,:doc:`python/construction/guywires`,,stdio,,,
+nmbrsize,NMBRSIZE.BAS,Numbered Drills/Screws/Taps/Gauges,construction,:doc:`python/construction/nmbrsize`,,,,,
+pipesize,PIPESIZE.BAS,Pipe Sizes - ANSI Standard,construction,:doc:`python/construction/pipesize`,,,,,
+shaft,SHAFT.BAS,Shafting,construction,:doc:`python/construction/shaft`,construction/shaft,stdio,,,
+stairs,STAIRS.BAS,"Stairs, Ladders & Ramps",construction,:doc:`python/construction/stairs`,construction/stairs,stdio,,,
+survey,SURVEY.BAS,Surveyor's Calculator,construction,:doc:`python/construction/survey`,,,,,
+torque,TORQUE.BAS,Torque & Horsepower,construction,:doc:`python/construction/torque`,construction/torque,stdio,,,
+wirecond,WIRECOND.BAS,Wires in Conduit,construction,:doc:`python/construction/wirecond`,construction/wirecond,stdio,,,
+wiremesh,WIREMESH.BAS,Wire Mesh Screens - Wind Loads,construction,:doc:`python/construction/wiremesh`,construction/wiremesh,stdio,,,
+555timer,555TIMER.BAS,Timer (555 IC),electronics,,,,,,
+accalc,ACCALC.BAS,A.C. Circuit Calculator; A.C.Calculator,electronics,,,,,,
+audfilt,AUDFILT.BAS,Audio Bandpass Filter - Active,electronics,,,,,,
+audosc,AUDOSC.BAS,Audio Oscillator; Audio Programs; Audio Oscillator (LM 324),electronics,,,,,,
+audosc2,AUDOSC2.BAS,Audio Oscillator (LF 353)dual wave,electronics,,,,,,
+audpass,AUDPASS.BAS,Audio Filters - Passive,electronics,,,,,,
+awgexact,AWGEXACT.BAS,A.W.G. Wire Size Calculator,electronics,:doc:`python/electronics/awgexact`,electronics/awgexact,stdio,,,
+bandq,BANDQ.BAS,Bandwidth vs. Q,electronics,,,,,,
+bandstop,BANDSTOP.BAS,Band-Reject Filter,electronics,,,,,,
+bridge,BRIDGE.BAS,Wheatstone Bridge Calculator; W'stone Bridge #1; Wheatstone Bridge #1,electronics,,,,,,
+bridge-2,BRIDGE-2.BAS,Wheatstone Bridge #2; W'stone Bridge #2,electronics,,,,,,
+broadfer,BROADFER.BAS,Baluns - Ferrite Toroid; Toroid Baluns & Transformers,electronics,,,,,,
+broadfwe,BROADFWE.BAS,:REM'BROADFER - Toroid Baluns & Transformers - rev. 26 DEC 2001,electronics,,,,,,
+buttfilt,BUTTFILT.BAS,Filters - Butterworth HF,electronics,,,,,,
+capacval,CAPACVAL.BAS,Capacitors - Standard Values,electronics,,,,,,
+capcoax,CAPCOAX.BAS,Capacitors - Coaxial Cable,electronics,,,,,,
+capstray,CAPSTRAY.BAS,Capacitance - Distributed (stray),electronics,,,,,,
+captance,CAPTANCE.BAS,Capacitor Design Calculator,electronics,,,,,,
+capval,CAPVAL.BAS,Capacitor Measurer,electronics,,,,,,
+capytel,CAPYTEL.BAS,Capacitors - Telescoping Variable,electronics,,,,,,
+cascamp,CASCAMP.BAS,OP AMPS - Cascaded,electronics,,,,,,
+clamp,CLAMP.BAS,Clamping Voltage Calculator,electronics,,,,,,
+cmosc3,CMOSC3.BAS,CMOS oscillator; CMOS Oscillator,electronics,,,,,,
+colcode,COLCODE.BAS,Resistor Colour Code,electronics,,,,,,
+colposc,COLPOSC.BAS,Colpitts FET Oscillator; Colpitts Oscillator,electronics,,,,,,
+comfilt,COMFILT.BAS,Filters - Complementary; Complementery Filters,electronics,,,,,,
+concur,CONCUR.BAS,OP AMP Constant Current Circuit,electronics,,,,,,
+conjumat,CONJUMAT.BAS,Conjugate Match Calculator,electronics,,,,,,
+copwire,COPWIRE.BAS,Skin Effect; Copper Wire Data; Printed Circuit Board Traces,electronics,:doc:`python/electronics/copwire`,,,,,
+crysfilt,CRYSFILT.BAS,Crystal Ladder Filter,electronics,,,,,,
+custcap,CUSTCAP.BAS,Capacitors - Custom Value,electronics,,,,,,
+custohm,CUSTOHM.BAS,Resistors - Custom Value,electronics,,,,,,
+dblbrg4,DBLBRG4.BAS,2 Bridge Power Supply; Power Supply - Double Bridge,electronics,,,,,,
+dblfb,DBLFB.BAS,Double Feedback Amplifier,electronics,,,,,,
+decibel,DECIBEL.BAS,Decibel Calculator,electronics,:doc:`python/electronics/decibel`,electronics/decibel,stdio,,,
+deltamat,DELTAMAT.BAS,Delta Match,electronics,,,,,,
+deltload,DELTLOAD.BAS,Load Resistance Calculator,electronics,,,,,,
+dielect,DIELECT.BAS,Dielectric Constants,electronics,,,,,,
+dsgnmenu,DSGNMENU.BAS,Resistor/Inductor/Capacitor Ccts.,electronics,,,,,,
+dsgnrc,DSGNRC.BAS,:REM'DSGNRC - Resistor/Capacitor Circuits  22 NOV 95 rev.11 APR 97,electronics,,,,,,
+dsgnrlc,DSGNRLC.BAS,:REM'DSGNRLC - Resistor/Inductor/Capacitor Circuits  27 SEP 96 rev.11 APR 97,electronics,,,,,,
+duopwr,DUOPWR.BAS,Power Supply,electronics,,,,,,
+elecleng,ELECLENG.BAS,Transmission Line Length,electronics,:doc:`python/electronics/elecleng`,,,,,
+elflash,ELFLASH.BAS,ELECTRONIC FLASH,electronics,,,,,,
+elspec,ELSPEC.BAS,Electromagnetic Spectrum,electronics,,,,,,
+filstrip,FILSTRIP.BAS,Filters - Stripline Bandpass,electronics,,,,,,
+filter,FILTER.BAS,FILTERS,electronics,,,,,,
+filtrlc,FILTRLC.BAS,Filters - Passive R/L/C,electronics,,,,,,
+filtut,FILTUT.BAS,Filter Tutor,electronics,,,,,,
+gaplot,GAPLOT.BAS,Capacitor Plate Designer; Capacitor Plate Design,electronics,,,,,,
+harmonic,HARMONIC.BAS,Harmonic Frequencies,electronics,,,,,,
+hartosc,HARTOSC.BAS,Hartley Oscillator; Hartly FET Oscillator; Hartley FET Oscillator,electronics,,,,,,
+hartosc3,HARTOSC3.BAS,Hartley Oscillator; Hartley FET Oscillator,electronics,,,,,,
+hotbox,HOTBOX.BAS,Heat Dissipation,electronics,,,,,,
+impares,IMPARES.BAS,Impedance - Parallel Resonant Cct.,electronics,,,,,,
+impedcct,IMPEDCCT.BAS,Reactance/Resistance Circuits; Impedance - Reactance/Resist. Cct.,electronics,,,,,,
+impedmet,IMPEDMET.BAS,:REM'IMPEDMET Impedance Meter - 18 NOV 97,electronics,,,,,,
+impednet,IMPEDNET.BAS,Impedance Matching Networks,electronics,,,,,,
+inducalc,INDUCALC.BAS,Inductance Calculator,electronics,,,,,,
+lamplife,LAMPLIFE.BAS,Lamp Life Expectancy,electronics,,,,,,
+led,LED.BAS,LED Series Resistor,electronics,,,,,,
+lm17,LM17.BAS,:REM'LM317 - LM317 specifications - 11 JUN 90 rev. 11 OCT 2007,electronics,,,,,,
+lm315,LM315.BAS,:REM'LM317 - LM317 specifications - 11 JUN 90 rev. 11 OCT 2007,electronics,,,,,,
+lm317,LM317.BAS,LM317 Voltage Regulator,electronics,,,,,,
+lm317run,LM317RUN.BAS,:REM'LM317 - LM317 specifications - 11 JUN 90 rev. 11 OCT 2007,electronics,,,,,,
+lopass,LOPASS.BAS,Audio Lowpass Filter(Sallen & Key),electronics,,,,,,
+matchbox,MATCHBOX.BAS,Matchbox Impedance Transformer,electronics,,,,,,
+matchnet,MATCHNET.BAS,Matching Networks for Transistors,electronics,,,,,,
+matfilt,MATFILT.BAS,Matching filters; Filters - Impedance Matching,electronics,,,,,,
+meters,METERS.BAS,Meters (Direct Current),electronics,,,,,,
+noisfig,NOISFIG.BAS,OP AMPS - Noise Figure,electronics,,,,,,
+ohmslaw,OHMSLAW.BAS,Ohm's Law Calculator,electronics,:doc:`python/electronics/ohmslaw`,,,,,
+opamp,OPAMP.BAS,OP AMP Operational Amplifiers,electronics,,,,,,
+phazdiff,PHAZDIFF.BAS,Constant Phase Difference Networks; Phase Difference,electronics,,,,,,
+potent,POTENT.BAS,Potentiometers - Custom Value,electronics,,,,,,
+powrxfmr,POWRXFMR.BAS,Transformer Design; Power Transformer Design,electronics,,,,,,
+precicap,PRECICAP.BAS,Capacitors - Precision,electronics,,,,,,
+precires,PRECIRES.BAS,Resistors - Precision,electronics,,,,,,
+psup,PSUP.BAS,Power Supply Analyzer,electronics,,,,,,
+psuperf,PSUPERF.BAS,Power Supply Performance; Power Supply Rating,electronics,,,,,,
+pulsegen,PULSEGEN.BAS,Pulse Generator,electronics,,,,,,
+pwrcct,PWRCCT.BAS,Power Supply Design,electronics,,,,,,
+pwrdiv,PWRDIV.BAS,Power Divider,electronics,,,,,,
+pwrsupp,PWRSUPP.BAS,:REM'PWRSUPP - Design Program - 01 JUL 91 rev. 12 APR 2000,electronics,,,,,,
+pwrxfmr,PWRXFMR.BAS,Power Transformer Winding Estimator,electronics,,,,,,
+qfactor,QFACTOR.BAS,:REM'QFACTOR - Q Factor of Components - 01 JAN 2002 rev.01 MAR 2001,electronics,,,,,,
+qfind,QFIND.BAS,":REM'QFIND5   Q-L/C Tank Circuit - 29 MAR 09, rev 11 NOV 2010",electronics,,,,,,
+qfind5,QFIND5.BAS,Q Measurement - L/C Tank Circuit; Q-L/C Tank Circuit,electronics,,,,,,
+qline2,QLINE2.BAS,Transmission Line Q,electronics,,,,,,
+qreson,QRESON.BAS,Q Calculator - Resonant Circuits,electronics,,,,,,
+rcfilt,RCFILT.BAS,Audio Filters - RC Active,electronics,,,,,,
+react,REACT.BAS,Reactance Programs,electronics,,,,,,
+remsig,REMSIG.BAS,Remote Signal Lamp,electronics,,,,,,
+resicop,RESICOP.BAS,Resistors - Copper Wire Wound,electronics,,,,,,
+resistiv,RESISTIV.BAS,Resistivity of Metals,electronics,,,,,,
+resisval,RESISVAL.BAS,Resistors - Standard Values,electronics,,,,,,
+ripple,RIPPLE.BAS,:REM'RIPPLE - 07 NOV 2007,electronics,,,,,,
+schmidt,SCHMIDT.BAS,Schmidt trigger Op Amp,electronics,,,,,,
+sepaq,SEPAQ.BAS,Series/Parallel/Q Eqivalents; Series/Parallel/Q Ccts.,electronics,,,,,,
+serisect,SERISECT.BAS,Series-Section Transformer,electronics,,,,,,
+serpar-q,SERPAR-Q.BAS,:REM'SERPAR-q 23 SEP 2010,electronics,,,,,,
+sersect,SERSECT.BAS,:REM'SERISECT - Series Section Matching Transformer - 31 JAN 94 rev. 07 AUG 01,electronics,,,,,,
+sink,SINK.BAS,Heat Sink Fins,electronics,,,,,,
+spark,SPARK.BAS,Breakdown Voltage,electronics,,,,,,
+sqline,SQLINE.BAS,:REM'SQLINE - 23 JUN 2000 rev.11 NOV 2000,electronics,,,,,,
+tankcct,TANKCCT.BAS,Tank Circuit - Power Amplifier,electronics,,,,,,
+thermres,THERMRES.BAS,Thermal Resistance,electronics,,,,,,
+thevinin,THEVININ.BAS,Voltage Divider - Thevinin,electronics,,,,,,
+tinycoil,TINYCOIL.BAS,Tiny Coils,electronics,,,,,,
+toroid,TOROID.BAS,Toroid Inductors,electronics,,,,,,
+trancct,TRANCCT.BAS,Transistor Circuit Design,electronics,,,,,,
+trimr,TRIMR.BAS,Capacitors - Trimmer,electronics,,,,,,
+trisqu,TRISQU.BAS,Dual Op Amp Wave Generator; OP AMP Wave Generator; Wave Generator,electronics,,,,,,
+turns,TURNS.BAS,Coil Turns Calculator,electronics,,,,,,
+twintee,TWINTEE.BAS,Audio Oscillator (Twin-T),electronics,,,,,,
+vacap,VACAP.BAS,VARIABLE CAPACITOR PLATE DESIGNER,electronics,,,,,,
+vacap14,VACAP14.BAS,VARIABLE CAPACITOR PLATE DESIGNER,electronics,,,,,,
+vacap7,VACAP7.BAS,VARIABLE CAPACITOR PLATE DESIGNER,electronics,,,,,,
+vacap8,VACAP8.BAS,VARIABLE CAPACITOR PLATE DESIGNER,electronics,,,,,,
+vacap9,VACAP9.BAS,VARIABLE CAPACITOR PLATE DESIGNER,electronics,,,,,,
+vfofreq,VFOFREQ.BAS,VFO Frequency Calculator,electronics,,,,,,
+voltdiv,VOLTDIV.BAS,Voltage Divider,electronics,,,,,,
+walwart,WALWART.BAS,Wall Wart Ratings Calculator,electronics,,,,,,
+wartest,WARTEST.BAS,Wall Wart Properties,electronics,,,,,,
+wheatsto,WHEATSTO.BAS,:REM'WHEATSTO - 27 NOV 2007,electronics,,,,,,
+winding,WINDING.BAS,Transformer Winding Calculator,electronics,,,,,,
+wireprop,WIREPROP.BAS,:REM'WIREPROP  - Wire size calculator - rev 10 MAR 09,electronics,,,,,,
+xfmr,XFMR.BAS,Transformer Ratios,electronics,,,,,,
+xfmrnaro,XFMRNARO.BAS,Transformer - Narrow Band,electronics,,,,,,
+xmtrzmat,XMTRZMAT.BAS,Xmtr Transistor Stage Coupling; Xmtr. Transistor Stage Coupling,electronics,,,,,,
+xover,XOVER.BAS,Crossover Networks - Loudspeakers,electronics,,,,,,
+zener,ZENER.BAS,Zener Diode Voltage Regulator,electronics,,,,,,
+batchg,BATCHG.BAS,Battery Charger,ham,,,,,,
+battchg,BATTCHG.bas,:REM'BATTCHG Step-up switcher - 06 FEB 07,ham,,,,,,
+battery,BATTERY.BAS,:REM'\\hamcalc\\prog\\BATTERY - 23 MAR 94 rev. 30 JUL 2005,ham,,,,,,
+cw,CW.BAS,Code Trainer (Morse Code),ham,,,,,,
+elecost,ELECOST.BAS,Cost of Electricity,ham,,,,,,
+foxlog,FOXLOG.BAS,QRP Fox Hunt Log,ham,,,,,,
+fusewire,FUSEWIRE.BAS,Fuses - Emergency,ham,,,,,,
+hambands,HAMBANDS.BAS,Ham Band Edge & Centre Frequencies,ham,,,,,,
+nicad,NICAD.BAS,NiCad Battery Discharger,ham,,,,,,
+pracosc,PRACOSC.BAS,Code Practice Oscillator,ham,,,,,,
+qsk,QSK.BAS,QSK Break-In module,ham,,,,,,
+tvchan,TVCHAN.BAS,TV Channels ( North America ),ham,,,,,,
+accelr,ACCELR.BAS,Acceleration Calculator,math,:doc:`python/math/accelr`,math/accelr,stdio,,,
+baromtr,BAROMTR.BAS,Barometer Reading Equivalents,math,:doc:`python/math/baromtr`,math/baromtr,stdio,,,
+binary,BINARY.BAS,Decimal to Binary Converter,math,:doc:`python/math/binary`,math/binary,stdio,,,
+centrif,CENTRIF.BAS,Centrifugal/Centripetel Force,math,:doc:`python/math/centrif`,math/centrif,stdio,,,
+chase,CHASE.BAS,:REM'CHASE - 22 JAN 2010,math,:doc:`python/math/chase`,,stdio,,,
+curvefit,CURVEFIT.BAS,Curve Fit program; Curve Fit Program,math,:doc:`python/math/curvefit`,math/curvefit,stdio,,,
+deciconv,DECICONV.BAS,Decimal Hour/Degree Converter,math,:doc:`python/math/deciconv`,math/deciconv,stdio,,,
+decifrac,DECIFRAC.BAS,Decimal/Fraction Converter,math,:doc:`python/math/decifrac`,math/decifrac,stdio,,,
+equiv,EQUIV.BAS,Equivalent Values,math,:doc:`python/math/equiv`,math/equiv,stdio,,,
+fibon,FIBON.BAS,Fibonacci Series,math,:doc:`python/math/fibon`,math/fibon,stdio,,,
+formulae,FORMULAE.BAS,Formula Library,math,:doc:`python/math/formulae`,,,,,
+graphs,GRAPHS.BAS,Graphs,math,:doc:`python/math/graphs`,,stdio,,,
+involute,INVOLUTE.BAS,Involute of a Circle,math,:doc:`python/math/involute`,math/involute,stdio,,,
+metrics,METRICS.BAS,Metric Conversions,math,:doc:`python/math/metrics`,,,,,
+numderiv,NUMDERIV.BAS,Logarithms to any base; Numbers and Functions,math,:doc:`python/math/numderiv`,,stdio,,,
+polygon,POLYGON.BAS,Polygon Dimensions,math,:doc:`python/math/polygon`,math/polygon,stdio,,,
+primenos,PRIMENOS.BAS,Prime Number Calculator,math,:doc:`python/math/primenos`,math/primenos,stdio,,,
+propcirc,PROPCIRC.BAS,Circle - Properies of,math,:doc:`python/math/propcirc`,math/propcirc,stdio,,,
+quadrat,QUADRAT.BAS,Quadratic Equation Calculator,math,:doc:`python/math/quadrat`,math/quadrat,stdio,,,
+randnum,RANDNUM.BAS,Random Number Generator; Random Numbers,math,:doc:`python/math/randnum`,,stdio,,,
+rotaplot,ROTAPLOT.BAS,Cartesian/Polar Plot Rotator,math,:doc:`python/math/rotaplot`,math/rotaplot,stdio,,,
+scalspd,SCALSPD.BAS,Scale Speed Calculator,math,:doc:`python/math/scalspd`,math/scalspd,,,,
+simuleq,SIMULEQ.BAS,Simultaneous Equation Calculator,math,:doc:`python/math/simuleq`,,stdio,,,
+solutri,SOLUTRI.BAS,Triangles - solution of,math,:doc:`python/math/solutri`,math/solutri,stdio,,,
+speedtd,SPEEDTD.BAS,Speed/Time/Distance Calculator,math,:doc:`python/math/speedtd`,math/speedtd,stdio,,,
+trig,TRIG.BAS,Trigonometric Functions,math,:doc:`python/math/trig`,math/trig,stdio,,,
+unitvalu,UNITVALU.BAS,Unit Value Comparator,math,:doc:`python/math/unitvalu`,,stdio,,,
+daydusk,DAYDUSK.BAS,Daylight Dusk and Dawn Calculator,navigation,:doc:`python/navigation/daydusk`,,stdio,,,
+gridsq,GRIDSQ.BAS,Grid Square Locator (Maidenhead),navigation,:doc:`python/navigation/gridsq`,navigation/gridsq,stdio,,,
+latlong,LATLONG.BAS,Latitude/Longitude Data Base,navigation,:doc:`python/navigation/latlong`,,stdio,,,
+moontrac,MOONTRAC.BAS,Moon Tracker,navigation,:doc:`python/navigation/moontrac`,,stdio,,,
+pathfind,PATHFIND.BAS,Great Circle Paths & Distances; Beam Heading Calculator,navigation,:doc:`python/navigation/pathfind`,,stdio,,,
+riseset,RISESET.BAS,Sunrise/Sunset Calculator,navigation,:doc:`python/navigation/riseset`,,stdio,,,
+satorbit,SATORBIT.BAS,Satellite Orbit Parameters,navigation,:doc:`python/navigation/satorbit`,navigation/satorbit,stdio,,,
+sunup,SUNUP.BAS,:REM' SUNUP - 29 SEP 86 rev. 23 NOV 03. 'excerpted from PATHFIND.BAS,navigation,:doc:`python/navigation/sunup`,,stdio,,,
+timezone,TIMEZONE.BAS,Time Zones (UTC),navigation,:doc:`python/navigation/timezone`,,stdio,,,
+trunorth,TRUNORTH.BAS,True North via the Sun,navigation,:doc:`python/navigation/trunorth`,,stdio,,,
+buysell,BUYSELL.BAS,":REM'BUYSELL - 28 OCT 97, rev. 29 DEC 2000",other,,,,,,
+calory,CALORY.BAS,Calorie Counter,other,,,,,,
+chklist,CHKLIST.BAS,:REM'\\bas\\prog2\\CHKLIST   15 NOV 86  Rev. 28 AUG 2001,other,,,,,,
+compint,COMPINT.BAS,COMPOUND INTEREST CALCULATOR,other,,,,,,
+deprec,DEPREC.BAS,:REM'DEPREC - Depreciation Schedule - 04 JAN 92 rev. 29 DEC 2000,other,,,,,,
+finance,FINANCE.BAS,Financial Calculators,other,,,,,,
+humid,HUMID.BAS,Humidex Calculator,other,,,,,,
+loanpay,LOANPAY.BAS,:REM'LOANPAY - 18 JUL 87    latest rev. 30 DEC 2000,other,,,,,,
+mortgag,MORTGAG.BAS,:REM'MORTGAG : 31 OCT 87 - rev. 25 MAY 2010,other,,,,,,
+pedom,PEDOM.BAS,Pedometer,other,,,,,,
+psychrom,PSYCHROM.BAS,Thermodynamics,other,,,,,,
+remind,REMIND.BAS,:REM'\\hamcalc\\prog\\REMIND - Reminder - rev. 11 APR 2000,other,,,,,,
+timeq,TIMEQ.BAS,Time Quiz,other,:doc:`python/other/timeq`,,,,,
+triplan,TRIPLAN.BAS,Trip Planner,other,,,,,,
+watch,WATCH.BAS,Stopwatch,other,,,,,,
+winchil,WINCHIL.BAS,:REM'WINDCHIL - Wind Chill Factor - 16 NOV 2005 rev. 23 FEB 2010,other,,,,,,
+windchil,WINDCHIL.BAS,Wind Chill Factor,other,,,,,,
+wx,WX.BAS,:REM'WINDCHIL - Wind Chill Factor - 16 NOV 2005,other,,,,,,
+3mbridge,3MBRIDGE.BAS,Impedance Bridge (3-meter),radio,,,,,,
+aircore,AIRCORE.BAS,B.& W. Air-Core Inductors,radio,,,,,,
+antenna,ANTENNA.BAS,Antenna Length/Pruning calculator; Length & pruning calculator,radio,,,,,,
+antfield,ANTFIELD.BAS,Antenna Field Strength,radio,,,,,,
+antimp,ANTIMP.BAS,Impedance - Antennas,radio,,,,,,
+antmatch,ANTMATCH.BAS,Antenna Matching Networks,radio,,,,,,
+antscale,ANTSCALE.BAS,Antenna Frequency Scaling,radio,,,,,,
+antsyn2,ANTSYN2.BAS,Antenna Matching Network; Antenna Matching Networks,radio,,,,,,
+attenpad,ATTENPAD.BAS,Attenuators: T-Pad and Pi-Pad,radio,,,,,,
+attenu,ATTENU.bas,:REM'ATTENU - SWR vs. Attenuation loss vs.SWR   6 DEC 2003,radio,,,,,,
+bandwdth,BANDWDTH.BAS,Bandwidths - 2:1 SWR,radio,,,,,,
+bevant,BEVANT.BAS,Beverage Antenna Equations; Beverage receiving antenna,radio,,,,,,
+bobtail,BOBTAIL.BAS,Bobtail Curtain Antenna,radio,,,,,,
+boom,BOOM.BAS,Boom Droop - Beam Antennas,radio,,,,,,
+buxton,BUXTON.BAS,:REM'\\hamcalc\\prog\\BUXTRAP Coax Cable Super Traps - Double Layer - 12 OCT 01,radio,,,,,,
+buxtrap,BUXTRAP.BAS,Coax Cable Hi-Reactance SuperTrap; Coaxial Cable SuperTrap,radio,,,,,,
+capyhat,CAPYHAT.BAS,Capacity Hats - Vertical Antennas,radio,,,,,,
+catenary,CATENARY.BAS,Sag in Horizontal Wire Antennas; Sag in Horizontal wire,radio,,,,,,
+ccdanten,CCDANTEN.BAS,CCD Antennas; CCD antennas,radio,,,,,,
+centfreq,CENTFREQ.BAS,Centre Frequency & Wavelength,radio,,,,,,
+centload,CENTLOAD.BAS,Short centre-loaded dipole; Short Centre-Loaded Dipole,radio,,,,,,
+chokbal,CHOKBAL.BAS,Transmission Line Choke; Coax Cable RF Chokes & Baluns,radio,,,,,,
+cildsgn,CILDSGN.BAS,:REM'COILDSGN - Coil Design - 22 NOV 94 rev. 09 DEC 2005,radio,,,,,,
+circfeed,CIRCFEED.BAS,Circular Waveguide Dish Feeds,radio,,,,,,
+clarky,CLARKY.BAS,Clark Y Airfoil,radio,,,,,,
+clildsgn,CLILDSGN.BAS,:REM'COILDSGN - Coil Design - 22 NOV 94 rev. 15 DEC 2005,radio,,,,,,
+coaxcalc,COAXCALC.BAS,:REM'COAXCALC - characteristics calculator - 10 JAN 2000,radio,,,,,,
+coaxchar,COAXCHAR.BAS,Coax Cable Characteristics; Coaxial Cable Characteristics,radio,,,,,,
+coaxlc3,COAXLC3.BAS,Coax L/C Tank; Coax Cable L/C Tank,radio,,,,,,
+coaxspec,COAXSPEC.BAS,:REM'COAXSPEC - Coax Cable Primer - 04 AUG 01 rev.28 AUG 01,radio,,,,,,
+coaxstub,COAXSTUB.BAS,Stubs - Coaxial Transmission Line,radio,,,,,,
+coaxtrap,COAXTRAP.BAS,Traps - Coaxial Cable; Coax Cable Traps,radio,,,,,,
+coilamp,COILAMP.BAS,Mobile Whip Antenna Coils,radio,,,,,,
+coilcpl,COILCPL.BAS,Coils - Coaxially coupled,radio,,,,,,
+coildsgn,COILDSGN.BAS,Coil Designer,radio,,,,,,
+coilequa,COILEQUA.BAS,Coil Calculator- Wheeler equations; Coil Equations,radio,,,,,,
+coilin,COILIN.BAS,Coils - Insulated Wire,radio,,,,,,
+coilnew,COILNEW.BAS,Coil Calculator; Coil Calculator- Dehoney equations; Coils in Tandem; Coil Tap Calculators,radio,,,,,,
+coilq,COILQ.BAS,Coil Q Calculator,radio,,,,,,
+coilquik,COILQUIK.BAS,Coil Q Quick Estimator,radio,,,,,,
+coiltap,COILTAP.BAS,Coil Tap Properties,radio,,,,,,
+coiltrue,COILTRUE.BAS,Coil Q - True vs. Apparent,radio,,,,,,
+coilx,COILX.BAS,:REM'COILX    Coil Equations - 05 MAY 2006,radio,,,,,,
+cooildsg,COOILDSG.BAS,:REM'COILDSGN - Coil Design - 22 NOV 94 rev. 15 DEC 2005,radio,,,,,,
+copy of antsyn2,Copy of ANTSYN2.BAS,":REM'ANTSYN2 - Antenna Matching Networks - 4 MAY 2010, rev.5/5/10",radio,,,,,,
+coxstub,COXSTUB.BAS,:REM'COAXSTUB - Stubs for Coaxial Lines - 03 JUN 96 rev. 07 AUG 2001,radio,,,,,,
+cplres,CPLRES.BAS,Filters - Coupled Resonator; Filters Coax Stub,radio,,,,,,
+cylload,CYLLOAD.BAS,Short Cylinder-Loaded Dipole; CYLOAD antenna; Short cylinder-loaded dipole,radio,,,,,,
+dialgth,DIALGTH.BAS,YAGI Element Diameter vs. Length; Beam Element Diameter vs Length,radio,,,,,,
+dipol160,DIPOL160.BAS,Short Dipole for 160/80/40 metres; Short dipole for 160/80/40 m.,radio,,,,,,
+discone,DISCONE.BAS,Discone Multiband Antenna,radio,,,,,,
+dishant,DISHANT.BAS,Parabolic Dish Design,radio,,,,,,
+duopole,DUOPOLE.BAS,Dual band short dipole; Dual Band Short Dipole Antenna,radio,,,,,,
+es2b,ES2B.BAS,Short ES2B (2 band) Trap Dipole; Short ES2B 2-band trap dipole,radio,,,,,,
+fatdipol,FATDIPOL.BAS,Fat Dipole (broadband);Fat 2-conductor broadband dipole,radio,,,,,,
+fishbone,FISHBONE.BAS,Fishbone Antenna; Fishbone antenna,radio,,,,,,
+foldipol,FOLDIPOL.BAS,Folded dipole - 300- twinlead; Folded Dipole - 300- Twin-Lead,radio,,,,,,
+g5rv,G5RV.BAS,G5RV dipole; G5RV Multiband Antenna,radio,,,,,,
+gammatch,GAMMATCH.BAS,Gamma Match,radio,,,,,,
+hairpin,HAIRPIN.BAS,Hairpin Beta-Match for Yagis; Hairpin Match for Yagis,radio,,,,,,
+halfloop,HALFLOOP.BAS,Half-Loop antenna; Half-Loop Low Profile Antenna,radio,,,,,,
+hamcalc,HAMCALC.BAS,:REM'\\hamcalc\\prog\\COAXCHAR - Coaxial Cable - 02 MAY 94 rev. 05 SEP 2002,radio,,,,,,
+hatshape,HATSHAPE.BAS,Capacity Hat Geometric Shapes,radio,,,,,,
+helant,HELANT.BAS,Helical Antenna - VHF/UHF,radio,,,,,,
+helix,HELIX.BAS,Helical Winding,radio,,,,,,
+helreson,HELRESON.BAS,Helical Resonators (VHF/UHF),radio,,,,,,
+helvert,HELVERT.BAS,Vertical Antenna - Helically Wound,radio,,,,,,
+impant,IMPANT.BAS,Antenna Impedance Calculator; Antenna Impedance,radio,,,,,,
+induhose,INDUHOSE.BAS,Inductors - Dryer Vent Hose,radio,,,,,,
+induloop,INDULOOP.BAS,Inductance - Single Loops,radio,,,,,,
+inloss,INLOSS.BAS,Insertion Loss,radio,,,,,,
+inserlos,INSERLOS.BAS,:REM'INLOSS.BAS - Insertion Loss - 17 Aug 2009,radio,,,,,,
+invee,INVEE.BAS,Inverted Vee Antenna; Inverted VEE,radio,,,,,,
+jaypole,JAYPOLE.BAS,J-Pole End-Fed Zepp Antenna,radio,,,,,,
+jcalc,JCALC.BAS,J Calculator (Complex Impedances),radio,,,,,,
+kfactor,KFACTOR.BAS,K-Factor & Antenna Length (NEC-2),radio,,,,,,
+l-pad,L-PAD.BAS,L-Pad Calculator,radio,,,,,,
+ladant,LADANT.BAS,Ladder Line Antenna,radio,,,,,,
+ladder2,LADDER2.BAS,Ladder Network - 2 element,radio,,,,,,
+ladrsolv,LADRSOLV.BAS,Ladder Network Analyzer; Ladder Networks,radio,,,,,,
+lineloss,LINELOSS.BAS,Transmission Line Losses,radio,,,,,,
+linkupl,LINKUPL.BAS,Link Coupled Tuners,radio,,,,,,
+list 10,LIST 10.BAS,":REM'FILSTRIP - Filter, Stripline Bandpass - 08 FEB 96 rev.03 FEB 2010",radio,,,,,,
+localrpt,LOCALRPT.BAS,Local Repeaters,radio,,,,,,
+logyag,LOGYAG.BAS,LOG-YAG Log-Periodic Yagi Antenna,radio,,,,,,
+loopant,LOOPANT.BAS,Loop Antenna Coil Inductance,radio,,,,,,
+loopsky,LOOPSKY.BAS,Loop Skywire; Loop Skywire Dimensions,radio,,,,,,
+loopxmit,LOOPXMIT.BAS,Loop Antennas - Transmitting,radio,,,,,,
+lossy,LOSSY.BAS,SWR vs. Line Loss,radio,,,,,,
+maxuf,MAXUF.BAS,Max. Usable Frequencies (MAXIMUF),radio,,,,,,
+micloop,MICLOOP.BAS,:REM'MICLOOP - Micro Miniature Loop Antenna - 05 DEC 02,radio,,,,,,
+microver,MICROVER.BAS,MicroVert very short HF Antenna,radio,,,,,,
+miniloop,MINILOOP.BAS,Miniature loop; MINILOOP Miniature Loop Antenna,radio,,,,,,
+miniquad,MINIQUAD.BAS,MINIQUAD Coil Shortened Antenna; Miniature quad,radio,,,,,,
+mismat,MISMAT.BAS,Transmission Line Mismatch; Xmission Line Mismatch,radio,,,,,,
+miwhip,MIWHIP.BAS,:REM'MOWHIP - mobile/whip antenna - 13 JAN 94 rev. 19 JAN 2005,radio,,,,,,
+mobilmat,MOBILMAT.BAS,Mobile Antenna Matching,radio,,,,,,
+mowhip,MOWHIP.BAS,Mobile/Maritime Whip Antennas,radio,,,,,,
+moxon,MOXON.BAS,Moxon Rectangle Antenna; Moxon rectangle,radio,,,,,,
+node,NODE.BAS,Transmission line E and I nodes; Transmission Line Node Locator,radio,,,,,,
+noloss,NOLOSS.BAS,Lossless L/C circuits; Lossless L/C Circuits,radio,,,,,,
+ocfdipol,OCFDIPOL.BAS,"Off-Centre Dipole, 3-band trapless",radio,,,,,,
+octagon,OCTAGON.BAS,Octagonal Loop Framework,radio,,,,,,
+octaloop,OCTALOOP.BAS,OCTALOOP Subminiature Loop Antenna,radio,,,,,,
+octaring,OCTARING.BAS,OCTARING Subminiature Loop Antenna,radio,,,,,,
+openwire,OPENWIRE.BAS,Transmission Line - Open Wire,radio,,,,,,
+pairlt,PAIRLT.BAS,Long-Tailed Pair,radio,,,,,,
+pba,PBA.BAS,Pseudo-Brewster Angle,radio,,,,,,
+pimatch,PIMATCH.BAS,Pi-Network Impedance Matching,radio,,,,,,
+pitnet,PITNET.BAS,Pi and T Networks,radio,,,,,,
+q,Q.BAS,:REM'QUADRAT - 17 FEB 87  rev. 10 FEB 2004,radio,,,,,,
+qntimp,QNTIMP.BAS,:REM'ANTIMP - Antenna Impedance - 06 NOV 97 rev. 29 OCT 2003,radio,,,,,,
+qtrap,QTRAP.BAS,High Q Antenna Traps,radio,,,,,,
+qtraprun,QTRAPRUN.BAS,:REM'QTRAP - HI Q TRAPS - 17 FEB 08,radio,,,,,,
+quad,QUAD.BAS,"Quad Antenna Dimensions; Quads, multi-element",radio,,,,,,
+quartwav,QUARTWAV.BAS,Quarter Wave Transformer,radio,,,,,,
+radangle,RADANGLE.BAS,Radiation Angle - Antenna,radio,,,,,,
+radiolos,RADIOLOS.BAS,Line-of-Sight Radio Wave,radio,,,,,,
+rcconst,RCCONST.BAS,R/C Time Constant,radio,,,,,,
+rcload2,RCLOAD2.BAS,Matching in an R/C Load; Matching into an R/C Load,radio,,,,,,
+shortant,SHORTANT.BAS,Short Off-Centre-Loaded Dipole; Short off-centre loaded dipole,radio,,,,,,
+shortdip,SHORTDIP.BAS,Short multi-band dipole array; Short Multiband Dipole Array,radio,,,,,,
+skipdist,SKIPDIST.BAS,Skip Distance Calculator,radio,,,,,,
+sloper,SLOPER.BAS,Sloper dimensions; Sloper Antenna Dimensions,radio,,,,,,
+smeter,SMETER.BAS,S-Meter Readings vs. Power,radio,,,,,,
+snglwire,SNGLWIRE.BAS,Single wire antenna system; Single Wire Antenna Systems,radio,,,,,,
+sqcoax,SQCOAX.BAS,Transmission Line - Square Coaxial,radio,,,,,,
+stubant,STUBANT.BAS,Stub Match for Antennas,radio,,,,,,
+swr,SWR.BAS,SWR Calculator,radio,,,,,,
+t2fd,T2FD.BAS,T2FD Tilted Folded Dipole,radio,,,,,,
+teematch,TEEMATCH.BAS,":REM'TEEMATCH - HIGH PASS TEE MATCH with finite Q inductor, by Brian Eagan ZL1LE",radio,,,,,,
+teletube,TELETUBE.BAS,Telescoping Aluminum Tubing,radio,:doc:`python/radio/teletube`,,,,,
+tform3,TFORM3.BAS,L/C Net w/o Xformers; L/C Networks with NO TRANSFORMERS,radio,,,,,,
+thruboom,THRUBOOM.BAS,YAGI Through-Boom Elements,radio,,,,,,
+tmatch,TMATCH.BAS,T Match - Dipole to 600 - Line,radio,,,,,,
+torotrap,TOROTRAP.BAS,Toroid antenna traps; Toroid Antenna Traps,radio,,,,,,
+tracker,TRACKER.BAS,Tracker - Receiver Tuned Circuits,radio,,,,,,
+tranline,TRANLINE.BAS,Transmission Line Performance,radio,,,,,,
+transmat,TRANSMAT.BAS,Transmatch Design; Transmatch Design (ZL1LE),radio,,,,,,
+transtub,TRANSTUB.BAS,Stubs - Open Wire Transmiss'n Line; Transmission Line Stubs,radio,,,,,,
+trapcalc,TRAPCALC.BAS,Trap Design Calculator,radio,,,,,,
+trapdsgn,TRAPDSGN.BAS,3-band single trap dipole; Trap Dipole - 3 Band Single Trap,radio,,,,,,
+trapole,TRAPOLE.BAS,Trap dipole design; Trap Antenna Design,radio,,,,,,
+traprop,TRAPROP.BAS,Trap properties estimator; Trap Properties Estimator,radio,,,,,,
+tsfd,TSFD.BAS,:REM'T2FD Tilted Terminated Folded Dipole - 21 MAY 08,radio,,,,,,
+tunecct,TUNECCT.BAS,Tuned Circuit Design; Tuned Circuit Design - L/C network,radio,,,,,,
+turnrad,TURNRAD.BAS,Turning Radius - Beam antennas,radio,,,,,,
+varayfed,VARAYFED.BAS,Vertical Antenna Array Feed Method,radio,,,,,,
+vertpatt,VERTPATT.BAS,Radiation Plots - Phased Verticals,radio,,,,,,
+wavetrap,WAVETRAP.BAS,Wave trap filters; Wave Trap Filters,radio,,,,,,
+windom,WINDOM.BAS,Windom Antenna; Windom antenna,radio,,,,,,
+wireant,WIREANT.BAS,Wire Antenna Index,radio,,,,,,
+wiresag,WIRESAG.BAS,Sag in Horizontal Wire Antennas,radio,,,,,,
+works,WORKS.BAS,:REM'works   Antenna Impedance Calculator - 19 MAR 08,radio,,,,,,
+yagi3el,YAGI3EL.BAS,YAGI 3-Element Beam Design,radio,,,,,,
+yagilong,YAGILONG.BAS,YAGI Extremely Long VHF/UHF Antenna,radio,,,,,,
+yagispac,YAGISPAC.BAS,YAGI Element Spacing/NBS Standard,radio,,,,,,
+yaglong,YAGLONG.BAS,:REM'YAGILONG - Extremely Long Yagi - 06 MAY 95 rev.13 APR 97,radio,,,,,,
+yagtaper,YAGTAPER.BAS,YAGI Tapered Elements,radio,,,,,,
+zepp,ZEPP.BAS,Zepp Multi-band antenna; Zepp multi-band antenna,radio,,,,,,
+zeppdbl,ZEPPDBL.BAS,Zepp EDZ Antenna; Zepp EDZ (extended double zepp);Zepp (extended double) Antenna,radio,,,,,,
+zostepup,ZOSTEPUP.BAS,Folded Dipole - Zo Step-Up Ratios,radio,,,,,,
+numsort,NUMSORT.BAS,Number Sorter,software,,,,,,
+page437,PAGE437.BAS,ASCII Character Code Page 437,software,,,stdio,,,
+sorter,SORTER.BAS,Sorter,software,,,,,,

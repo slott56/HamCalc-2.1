@@ -66,6 +66,8 @@
 <span class="sd">&gt;&gt;&gt; decifrac.FOOT_INCH_FRAC.from_std(x)</span>
 <span class="sd">&#39;13\\&#39;- 3 5/8&quot;&#39;</span>
 
+<span class="sd">&gt;&gt;&gt; decifrac.FOOT_INCH_FRAC.from_std( decifrac.INCH.to_std( 73 ) )</span>
+<span class="sd">&#39;6\\&#39;- 1&quot;&#39;</span>
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="n">__version__</span> <span class="o">=</span> <span class="s">&quot;2.1&quot;</span>
 
@@ -136,7 +138,11 @@
     <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_std</span><span class="p">(</span> <span class="n">class_</span><span class="p">,</span> <span class="n">value</span> <span class="p">):</span>
         <span class="n">ft</span><span class="p">,</span> <span class="n">in_</span><span class="p">,</span> <span class="n">num</span><span class="p">,</span> <span class="n">den</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">from_std</span><span class="p">(</span> <span class="n">value</span> <span class="p">)</span>
-        <span class="k">return</span> <span class="s">&quot;{0:.0f}&#39;- {1:.0f} {2:.0f}/{3:.0f}</span><span class="se">\&quot;</span><span class="s">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span> <span class="n">ft</span><span class="p">,</span> <span class="n">in_</span><span class="p">,</span> <span class="n">num</span><span class="p">,</span> <span class="n">den</span> <span class="p">)</span>
+        <span class="k">if</span> <span class="n">num</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">ft_in_fmt</span><span class="o">=</span> <span class="s">&quot;{0:.0f}&#39;- {1:.0f}</span><span class="se">\&quot;</span><span class="s">&quot;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">ft_in_fmt</span><span class="o">=</span> <span class="s">&quot;{0:.0f}&#39;- {1:.0f} {2:.0f}/{3:.0f}</span><span class="se">\&quot;</span><span class="s">&quot;</span>
+        <span class="k">return</span> <span class="n">ft_in_fmt</span><span class="o">.</span><span class="n">format</span><span class="p">(</span> <span class="n">ft</span><span class="p">,</span> <span class="n">in_</span><span class="p">,</span> <span class="n">num</span><span class="p">,</span> <span class="n">den</span> <span class="p">)</span>
 </div>
 <div class="viewcode-block" id="MILLIMETRE"><a class="viewcode-back" href="../../../python/math/decifrac.html#hamcalc.math.decifrac.MILLIMETRE">[docs]</a><span class="k">class</span> <span class="nc">MILLIMETRE</span><span class="p">(</span> <span class="n">Unit</span> <span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Decimal Millimetres&quot;&quot;&quot;</span>

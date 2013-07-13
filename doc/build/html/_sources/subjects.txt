@@ -48,5 +48,5 @@ and should probably be removed.
 
 ..  csv-table:: Subject Area Index
     :file: menu.csv
-    :header: Module, File, Description, Subject
-    :widths: 8, 8, 33, 8
+    :header: Module,File,Description,Subject,ref,lib,stdio,rest,cli,gui
+    :widths: 8, 8, 33, 8, 17, 17, 8, 8, 8, 8

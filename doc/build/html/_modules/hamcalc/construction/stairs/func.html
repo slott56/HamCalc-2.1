@@ -53,33 +53,15 @@
 
 <span class="sd">&#39;Simple&#39; functions to implement stairs design.</span>
 
-<span class="sd">:H: Level-to-Level height HT</span>
-<span class="sd">:L: Maximum allowable spread SP</span>
-<span class="sd">:P: no. of rungs</span>
-<span class="sd">:N: no.of full risers</span>
-<span class="sd">:TBR:   top and bottom risers</span>
-<span class="sd">:A: angle</span>
-<span class="sd">:T: run</span>
-<span class="sd">:R: rise</span>
-<span class="sd">:X: string</span>
-<span class="sd">:Y: stringer</span>
-<span class="sd">:L: length</span>
-<span class="sd">:F: Floor Thickness, FL</span>
-
+<span class="sd">Note that these calculations only work in inches.</span>
+<span class="sd">The units, therefore, must all be converted from</span>
+<span class="sd">input to INCH and from INCH to desired output.</span>
 <span class="sd">&quot;&quot;&quot;</span>
+<span class="n">__version__</span> <span class="o">=</span> <span class="s">&quot;2.1&quot;</span>
+
 <span class="kn">import</span> <span class="nn">math</span>
-<span class="kn">from</span> <span class="nn">hamcalc.math.equiv</span> <span class="kn">import</span> <span class="n">INCH</span><span class="p">,</span> <span class="n">MILLIMETRE</span><span class="p">,</span> <span class="n">FOOT</span><span class="p">,</span> <span class="n">METRE</span>
 <span class="kn">from</span> <span class="nn">hamcalc.lib</span> <span class="kn">import</span> <span class="n">AttrDict</span>
 
-<div class="viewcode-block" id="max_height"><a class="viewcode-back" href="../../../../python/construction/stairs.html#hamcalc.construction.stairs.func.max_height">[docs]</a><span class="k">def</span> <span class="nf">max_height</span><span class="p">(</span> <span class="n">unit</span> <span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Returns the maximum height for economy and residential construction.</span>
-
-<span class="sd">    :param units: Current units (either INCH or MILLIMETRE)</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">max_economy</span><span class="o">=</span> <span class="n">INCH</span><span class="o">.</span><span class="n">to_std</span><span class="p">(</span> <span class="mf">7.5</span> <span class="p">)</span>
-    <span class="n">max_residential</span><span class="o">=</span> <span class="n">INCH</span><span class="o">.</span><span class="n">to_std</span><span class="p">(</span> <span class="mi">8</span> <span class="p">)</span>
-    <span class="k">return</span> <span class="n">unit</span><span class="o">.</span><span class="n">from_std</span><span class="p">(</span> <span class="n">max_economy</span> <span class="p">),</span> <span class="n">unit</span><span class="o">.</span><span class="n">from_std</span><span class="p">(</span> <span class="n">max_residential</span> <span class="p">)</span>
-</div>
 <span class="k">def</span> <span class="nf">_stringer</span><span class="p">(</span> <span class="n">R</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">P</span> <span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Compute the stringer details for a given design.</span>
 
@@ -92,30 +74,6 @@
     <span class="n">Y</span> <span class="o">=</span> <span class="n">X</span><span class="o">*</span><span class="n">P</span>
     <span class="k">return</span> <span class="n">X</span><span class="p">,</span> <span class="n">Y</span>
 
-<div class="viewcode-block" id="stairwell_headroom"><a class="viewcode-back" href="../../../../python/construction/stairs.html#hamcalc.construction.stairs.func.stairwell_headroom">[docs]</a><span class="k">def</span> <span class="nf">stairwell_headroom</span><span class="p">(</span> <span class="o">**</span><span class="n">args</span> <span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Requires the following arguments.</span>
-
-<span class="sd">    :T: run</span>
-<span class="sd">    :R: rise</span>
-<span class="sd">    :N: no.of full risers</span>
-<span class="sd">    :F: Floor Thickness, FL</span>
-
-<span class="sd">    Updates args with &quot;HR&quot; and &quot;SW&quot;.</span>
-
-<span class="sd">    :SW:    Stairwell Dimension</span>
-<span class="sd">    :HR:    Headroom Dimension</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">args</span><span class="o">=</span> <span class="n">AttrDict</span><span class="p">(</span> <span class="n">args</span> <span class="p">)</span>
-    <span class="k">if</span> <span class="s">&#39;F&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span> <span class="k">return</span> <span class="n">args</span>
-    <span class="k">try</span><span class="p">:</span>
-        <span class="n">Z</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span> <span class="n">Z</span> <span class="k">for</span> <span class="n">Z</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">args</span><span class="o">.</span><span class="n">N</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span> <span class="k">if</span> <span class="n">Z</span><span class="o">*</span><span class="n">args</span><span class="o">.</span><span class="n">R</span><span class="o">-</span><span class="n">args</span><span class="o">.</span><span class="n">F</span> <span class="o">&gt;=</span> <span class="mi">75</span> <span class="p">)</span>
-    <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
-        <span class="n">Z</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">N</span>
-    <span class="n">args</span><span class="o">.</span><span class="n">HR</span> <span class="o">=</span> <span class="n">Z</span><span class="o">*</span><span class="n">args</span><span class="o">.</span><span class="n">R</span><span class="o">-</span><span class="n">args</span><span class="o">.</span><span class="n">F</span>
-    <span class="c">#args.X = args.N-Z # Legacy Quirk</span>
-    <span class="n">args</span><span class="o">.</span><span class="n">SW</span> <span class="o">=</span> <span class="p">(</span><span class="n">Z</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">args</span><span class="o">.</span><span class="n">T</span>
-    <span class="k">return</span> <span class="n">args</span>
-</div>
 <div class="viewcode-block" id="stair_design"><a class="viewcode-back" href="../../../../python/construction/stairs.html#hamcalc.construction.stairs.func.stair_design">[docs]</a><span class="k">def</span> <span class="nf">stair_design</span><span class="p">(</span> <span class="n">H</span><span class="p">,</span> <span class="n">L</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">R</span><span class="o">=</span><span class="bp">None</span> <span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Determine what kind of stair, ramp or ladded</span>
 <span class="sd">    will be involved.</span>
@@ -126,6 +84,18 @@
 <span class="sd">    :param R: If L is unknown, this must be the maximum step</span>
 <span class="sd">        step height.</span>
 <span class="sd">    :returns: AttrDict object with complete design.</span>
+<span class="sd">        :H: Level-to-Level height HT</span>
+<span class="sd">        :L: Maximum allowable spread SP</span>
+<span class="sd">        :P: no. of rungs</span>
+<span class="sd">        :N: no.of full risers</span>
+<span class="sd">        :TBR:   top and bottom risers</span>
+<span class="sd">        :A: angle</span>
+<span class="sd">        :T: run</span>
+<span class="sd">        :R: rise</span>
+<span class="sd">        :X: string</span>
+<span class="sd">        :Y: stringer</span>
+<span class="sd">        :L: length</span>
+<span class="sd">        :F: Floor Thickness, FL</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">L</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">unrestricted_risers</span><span class="p">(</span> <span class="n">H</span><span class="p">,</span> <span class="n">R</span> <span class="p">)</span>
@@ -134,7 +104,7 @@
             <span class="k">return</span> <span class="n">vertical_ladder</span><span class="p">(</span> <span class="n">H</span><span class="p">,</span> <span class="n">L</span> <span class="p">)</span>
         <span class="n">A</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span> <span class="n">math</span><span class="o">.</span><span class="n">atan2</span><span class="p">(</span> <span class="n">H</span><span class="p">,</span> <span class="n">L</span> <span class="p">)</span> <span class="p">)</span>
         <span class="k">if</span> <span class="n">A</span> <span class="o">&lt;=</span> <span class="mf">20.45</span><span class="p">:</span>
-            <span class="n">N</span> <span class="o">=</span> <span class="n">H</span> <span class="o">//</span> <span class="mi">5</span>
+            <span class="n">N</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">H</span> <span class="o">//</span> <span class="mi">5</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">N</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
                 <span class="k">return</span> <span class="n">step_ramp</span><span class="p">(</span> <span class="n">H</span><span class="p">,</span> <span class="n">L</span> <span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
@@ -144,7 +114,7 @@
 </div>
 <span class="k">def</span> <span class="nf">vertical_ladder</span><span class="p">(</span> <span class="n">H</span><span class="p">,</span> <span class="n">L</span> <span class="p">):</span>
     <span class="n">P</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span> <span class="n">H</span><span class="o">/</span><span class="mf">13.5</span> <span class="o">+</span> <span class="o">.</span><span class="mi">5</span> <span class="p">)</span>
-    <span class="n">N</span> <span class="o">=</span> <span class="n">P</span> <span class="o">-</span> <span class="mi">1</span>
+    <span class="n">N</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">P</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
     <span class="n">TBR</span> <span class="o">=</span> <span class="p">(</span><span class="n">H</span><span class="o">-</span><span class="mf">13.5</span><span class="o">*</span><span class="n">N</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span>
     <span class="n">A</span> <span class="o">=</span> <span class="mi">90</span>
     <span class="n">R</span> <span class="o">=</span> <span class="mi">0</span>
@@ -156,8 +126,8 @@
 
 <span class="k">def</span> <span class="nf">step_ramp</span><span class="p">(</span> <span class="n">H</span><span class="p">,</span> <span class="n">L</span> <span class="p">):</span>
     <span class="n">A</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span> <span class="n">math</span><span class="o">.</span><span class="n">atan2</span><span class="p">(</span> <span class="n">H</span><span class="p">,</span> <span class="n">L</span> <span class="p">)</span> <span class="p">)</span>
-    <span class="n">N</span> <span class="o">=</span> <span class="n">H</span> <span class="o">//</span> <span class="mi">5</span>
-    <span class="n">P</span> <span class="o">=</span> <span class="n">N</span> <span class="o">-</span> <span class="mi">1</span>
+    <span class="n">N</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">H</span> <span class="o">//</span> <span class="mi">5</span><span class="p">)</span>
+    <span class="n">P</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">N</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
     <span class="n">R</span> <span class="o">=</span> <span class="n">H</span> <span class="o">/</span> <span class="n">N</span>
     <span class="n">T</span> <span class="o">=</span> <span class="n">L</span> <span class="o">/</span> <span class="n">P</span>
     <span class="n">X</span><span class="p">,</span> <span class="n">Y</span> <span class="o">=</span> <span class="n">_stringer</span><span class="p">(</span> <span class="n">R</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">P</span> <span class="p">)</span>
@@ -165,14 +135,14 @@
 
 <span class="k">def</span> <span class="nf">inclined_ramp</span><span class="p">(</span> <span class="n">H</span><span class="p">,</span> <span class="n">L</span> <span class="p">):</span>
     <span class="n">A</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span> <span class="n">math</span><span class="o">.</span><span class="n">atan2</span><span class="p">(</span> <span class="n">H</span><span class="p">,</span> <span class="n">L</span> <span class="p">)</span> <span class="p">)</span>
-    <span class="n">N</span> <span class="o">=</span> <span class="n">H</span> <span class="o">//</span> <span class="mi">5</span>
+    <span class="n">N</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">H</span> <span class="o">//</span> <span class="mi">5</span><span class="p">)</span>
     <span class="n">P</span> <span class="o">=</span> <span class="n">R</span> <span class="o">=</span> <span class="n">T</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="n">X</span><span class="p">,</span> <span class="n">Y</span> <span class="o">=</span> <span class="n">_stringer</span><span class="p">(</span> <span class="n">R</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">P</span> <span class="p">)</span>
     <span class="k">return</span> <span class="n">AttrDict</span><span class="p">(</span><span class="nb">locals</span><span class="p">())</span>
 
 <span class="k">def</span> <span class="nf">restricted_risers</span><span class="p">(</span> <span class="n">H</span><span class="p">,</span> <span class="n">L</span> <span class="p">):</span>
     <span class="n">A</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span> <span class="n">math</span><span class="o">.</span><span class="n">atan2</span><span class="p">(</span> <span class="n">H</span><span class="p">,</span> <span class="n">L</span> <span class="p">)</span> <span class="p">)</span>
-    <span class="n">N</span> <span class="o">=</span> <span class="n">H</span> <span class="o">//</span> <span class="mi">5</span><span class="o">+</span><span class="mi">1</span>
+    <span class="n">N</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">H</span> <span class="o">//</span> <span class="mi">5</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
     <span class="n">R</span> <span class="o">=</span> <span class="n">H</span><span class="o">/</span><span class="n">N</span>
     <span class="n">T</span> <span class="o">=</span> <span class="mi">20</span> <span class="o">-</span> <span class="mi">4</span><span class="o">*</span><span class="n">R</span><span class="o">/</span><span class="mi">3</span>
     <span class="k">while</span> <span class="n">T</span><span class="o">*</span><span class="n">N</span><span class="o">-</span><span class="n">T</span> <span class="o">&lt;=</span> <span class="n">L</span> <span class="ow">and</span> <span class="n">R</span> <span class="o">&gt;=</span> <span class="mi">5</span><span class="p">:</span>
@@ -180,8 +150,11 @@
         <span class="n">R</span> <span class="o">=</span> <span class="n">H</span> <span class="o">/</span> <span class="n">N</span>
         <span class="n">T</span> <span class="o">=</span> <span class="mi">20</span> <span class="o">-</span> <span class="mi">4</span><span class="o">*</span><span class="n">R</span><span class="o">/</span><span class="mi">3</span>
     <span class="n">N</span> <span class="o">-=</span> <span class="mi">1</span>
-    <span class="n">P</span> <span class="o">=</span> <span class="n">N</span><span class="o">-</span><span class="mi">1</span>
-    <span class="n">R</span> <span class="o">=</span> <span class="n">H</span><span class="o">/</span><span class="n">N</span>
+    <span class="n">P</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">N</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">R</span> <span class="o">=</span> <span class="n">H</span><span class="o">/</span><span class="n">N</span>
+    <span class="k">except</span> <span class="ne">ZeroDivisionError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">vertical_ladder</span><span class="p">(</span><span class="n">H</span><span class="p">,</span><span class="n">L</span><span class="p">)</span>
     <span class="n">T</span> <span class="o">=</span> <span class="mi">20</span> <span class="o">-</span> <span class="mi">4</span><span class="o">*</span><span class="n">R</span><span class="o">/</span><span class="mi">3</span>
     <span class="k">if</span> <span class="n">R</span> <span class="o">&gt;</span> <span class="mf">13.5</span> <span class="ow">or</span> <span class="n">T</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">vertical_ladder</span><span class="p">(</span><span class="n">H</span><span class="p">,</span><span class="n">L</span><span class="p">)</span>
@@ -190,11 +163,11 @@
 
 <span class="k">def</span> <span class="nf">unrestricted_risers</span><span class="p">(</span> <span class="n">H</span><span class="p">,</span> <span class="n">R</span> <span class="p">):</span>
     <span class="n">N</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span> <span class="n">H</span><span class="o">/</span><span class="n">R</span> <span class="o">+</span> <span class="o">.</span><span class="mi">5</span> <span class="p">)</span>
-    <span class="n">P</span> <span class="o">=</span> <span class="n">N</span><span class="o">-</span><span class="mi">1</span>
+    <span class="n">P</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">N</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
     <span class="n">R</span> <span class="o">=</span> <span class="n">H</span><span class="o">/</span><span class="n">N</span>
     <span class="k">while</span> <span class="n">R</span> <span class="o">&lt;</span> <span class="mi">5</span> <span class="ow">and</span> <span class="n">N</span><span class="o">-</span><span class="mi">1</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
         <span class="n">N</span> <span class="o">-=</span> <span class="mi">1</span>
-        <span class="n">P</span> <span class="o">=</span> <span class="n">N</span><span class="o">-</span><span class="mi">1</span>
+        <span class="n">P</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">N</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
         <span class="n">R</span> <span class="o">=</span> <span class="n">H</span><span class="o">/</span><span class="n">N</span>
     <span class="n">T</span> <span class="o">=</span> <span class="mi">20</span><span class="o">-</span><span class="mi">4</span><span class="o">*</span><span class="n">R</span><span class="o">/</span><span class="mi">3</span>
     <span class="n">L</span> <span class="o">=</span> <span class="n">P</span><span class="o">*</span><span class="n">T</span>
@@ -203,24 +176,6 @@
         <span class="n">T</span> <span class="o">=</span> <span class="mi">25</span> <span class="o">+</span> <span class="p">(</span><span class="mi">33</span><span class="o">-</span><span class="n">A</span><span class="p">)</span><span class="o">/</span><span class="mf">15.65</span> <span class="o">-</span> <span class="mi">2</span><span class="o">*</span><span class="n">R</span>
     <span class="n">X</span><span class="p">,</span> <span class="n">Y</span> <span class="o">=</span> <span class="n">_stringer</span><span class="p">(</span> <span class="n">R</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">P</span> <span class="p">)</span>
     <span class="k">return</span> <span class="n">AttrDict</span><span class="p">(</span><span class="nb">locals</span><span class="p">())</span>
-
-<div class="viewcode-block" id="is_ramp_inclined"><a class="viewcode-back" href="../../../../python/construction/stairs.html#hamcalc.construction.stairs.func.is_ramp_inclined">[docs]</a><span class="k">def</span> <span class="nf">is_ramp_inclined</span><span class="p">(</span> <span class="o">**</span><span class="n">args</span> <span class="p">):</span>
-    <span class="k">return</span> <span class="n">args</span><span class="p">[</span><span class="s">&#39;P&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span>
-</div>
-<div class="viewcode-block" id="is_ladder_vertical"><a class="viewcode-back" href="../../../../python/construction/stairs.html#hamcalc.construction.stairs.func.is_ladder_vertical">[docs]</a><span class="k">def</span> <span class="nf">is_ladder_vertical</span><span class="p">(</span> <span class="o">**</span><span class="n">args</span> <span class="p">):</span>
-    <span class="k">return</span> <span class="n">args</span><span class="p">[</span><span class="s">&#39;A&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">90</span>
-</div>
-<div class="viewcode-block" id="is_ladder_inclined"><a class="viewcode-back" href="../../../../python/construction/stairs.html#hamcalc.construction.stairs.func.is_ladder_inclined">[docs]</a><span class="k">def</span> <span class="nf">is_ladder_inclined</span><span class="p">(</span> <span class="o">**</span><span class="n">args</span> <span class="p">):</span>
-    <span class="k">return</span> <span class="mi">77</span> <span class="o">&lt;=</span> <span class="n">args</span><span class="p">[</span><span class="s">&#39;A&#39;</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">90</span>
-</div>
-<div class="viewcode-block" id="is_ladder_open"><a class="viewcode-back" href="../../../../python/construction/stairs.html#hamcalc.construction.stairs.func.is_ladder_open">[docs]</a><span class="k">def</span> <span class="nf">is_ladder_open</span><span class="p">(</span> <span class="o">**</span><span class="n">args</span> <span class="p">):</span>
-    <span class="k">return</span> <span class="mf">48.37</span> <span class="o">&lt;=</span> <span class="n">args</span><span class="p">[</span><span class="s">&#39;A&#39;</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">77</span>
-</div>
-<div class="viewcode-block" id="is_stairway"><a class="viewcode-back" href="../../../../python/construction/stairs.html#hamcalc.construction.stairs.func.is_stairway">[docs]</a><span class="k">def</span> <span class="nf">is_stairway</span><span class="p">(</span> <span class="o">**</span><span class="n">args</span> <span class="p">):</span>
-    <span class="k">return</span> <span class="mf">20.45</span> <span class="o">&lt;=</span> <span class="n">args</span><span class="p">[</span><span class="s">&#39;A&#39;</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mf">48.37</span>
-</div>
-<div class="viewcode-block" id="is_ramp_step"><a class="viewcode-back" href="../../../../python/construction/stairs.html#hamcalc.construction.stairs.func.is_ramp_step">[docs]</a><span class="k">def</span> <span class="nf">is_ramp_step</span><span class="p">(</span> <span class="o">**</span><span class="n">args</span> <span class="p">):</span>
-    <span class="k">return</span> <span class="n">args</span><span class="p">[</span><span class="s">&#39;A&#39;</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mf">20.45</span></div>
 </pre></div>
 
           </div>

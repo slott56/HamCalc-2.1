@@ -89,6 +89,7 @@ class for emulating some aspects of GW-Basic graphics mode output.</li>
 <ul class="simple">
 <li><a class="reference internal" href="#module-hamcalc.stdio.rjd" title="hamcalc.stdio.rjd"><tt class="xref py py-mod docutils literal"><span class="pre">hamcalc.stdio.rjd</span></tt></a>.</li>
 <li><a class="reference internal" href="#module-hamcalc.stdio.mechmenu" title="hamcalc.stdio.mechmenu"><tt class="xref py py-mod docutils literal"><span class="pre">hamcalc.stdio.mechmenu</span></tt></a>.</li>
+<li><a class="reference internal" href="#module-hamcalc.stdio.smithcht" title="hamcalc.stdio.smithcht"><tt class="xref py py-mod docutils literal"><span class="pre">hamcalc.stdio.smithcht</span></tt></a>.</li>
 </ul>
 <p>It might be sensible to merge these into the menu application
 itself.</p>
@@ -494,7 +495,9 @@ It differs in minor ways from the superclas menu.</p>
 <dl class="function">
 <dt id="hamcalc.stdio.rjd.pairs">
 <tt class="descclassname">hamcalc.stdio.rjd.</tt><tt class="descname">pairs</tt><big>(</big><em>iterable</em><big>)</big><a class="reference internal" href="../_modules/hamcalc/stdio/rjd.html#pairs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.stdio.rjd.pairs" title="Permalink to this definition">¶</a></dt>
-<dd><p>Consume an interable in pairs.</p>
+<dd><p>Consume an iterable in pairs.
+If there&#8217;s an odd number, the final item is paired
+with <tt class="docutils literal"><span class="pre">None</span></tt>.</p>
 </dd></dl>
 
 </div>
@@ -514,6 +517,28 @@ It differs in minor ways from the superclas menu.</p>
 <dl class="method">
 <dt id="hamcalc.stdio.mechmenu.Mechanics_Menu.get_choice">
 <tt class="descname">get_choice</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/hamcalc/stdio/mechmenu.html#Mechanics_Menu.get_choice"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.stdio.mechmenu.Mechanics_Menu.get_choice" title="Permalink to this definition">¶</a></dt>
+<dd><p>Prompt and get the user&#8217;s choice.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-hamcalc.stdio.smithcht">
+<span id="smithcht"></span><h2>smithcht<a class="headerlink" href="#module-hamcalc.stdio.smithcht" title="Permalink to this headline">¶</a></h2>
+<p>Smith Chart Calculations</p>
+<dl class="class">
+<dt id="hamcalc.stdio.smithcht.Smith_Chart">
+<em class="property">class </em><tt class="descclassname">hamcalc.stdio.smithcht.</tt><tt class="descname">Smith_Chart</tt><a class="reference internal" href="../_modules/hamcalc/stdio/smithcht.html#Smith_Chart"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.stdio.smithcht.Smith_Chart" title="Permalink to this definition">¶</a></dt>
+<dd><p>Menu to display the Smith Chart Calculations list of programs.</p>
+<dl class="method">
+<dt id="hamcalc.stdio.smithcht.Smith_Chart.display">
+<tt class="descname">display</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/hamcalc/stdio/smithcht.html#Smith_Chart.display"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.stdio.smithcht.Smith_Chart.display" title="Permalink to this definition">¶</a></dt>
+<dd><p>Display the menu.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="hamcalc.stdio.smithcht.Smith_Chart.get_choice">
+<tt class="descname">get_choice</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/hamcalc/stdio/smithcht.html#Smith_Chart.get_choice"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hamcalc.stdio.smithcht.Smith_Chart.get_choice" title="Permalink to this definition">¶</a></dt>
 <dd><p>Prompt and get the user&#8217;s choice.</p>
 </dd></dl>
 
@@ -693,6 +718,7 @@ only.</p>
           <ul>
 <li class="toctree-l1"><a class="reference internal" href="../background.html">Background</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../legacy.html">The HamCalc Legacy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../subjects.html">Subject-Area Index</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../python_architecture.html">Python Architecture</a></li>
 </ul>
 <ul class="current">
@@ -715,6 +741,7 @@ only.</p>
 <li class="toctree-l3"><a class="reference internal" href="#module-hamcalc.stdio.menu">Menu</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#id1">RJD</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#module-hamcalc.stdio.mechmenu">mechmenu</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-hamcalc.stdio.smithcht">smithcht</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#module-hamcalc.stdio.graphs">Graphs</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#module-hamcalc.stdio.gwgraphics">GW Graphics</a></li>
 </ul>

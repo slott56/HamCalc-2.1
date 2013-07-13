@@ -57,7 +57,10 @@
 <span class="kn">import</span> <span class="nn">runpy</span>
 
 <div class="viewcode-block" id="pairs"><a class="viewcode-back" href="../../../python/stdio.html#hamcalc.stdio.rjd.pairs">[docs]</a><span class="k">def</span> <span class="nf">pairs</span><span class="p">(</span> <span class="n">iterable</span> <span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Consume an interable in pairs.&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;Consume an iterable in pairs.</span>
+<span class="sd">    If there&#39;s an odd number, the final item is paired</span>
+<span class="sd">    with ``None``.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">the_iter</span><span class="o">=</span> <span class="nb">iter</span><span class="p">(</span><span class="n">iterable</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">the_iter</span><span class="p">:</span>
         <span class="k">try</span><span class="p">:</span>

@@ -1,0 +1,325 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>metrics – Metric Conversions &mdash; HamCalc 2.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/hamcalc.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '2.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="HamCalc 2.1 documentation" href="../../index.html" />
+    <link rel="up" title="math – Math, Physics, Units Conversion" href="index.html" />
+    <link rel="next" title="numderiv – Numbers and Functions" href="numderiv.html" />
+    <link rel="prev" title="involute – Involute of a Circle" href="involute.html" /> 
+  </head>
+  <body>
+    <div class="header-wrapper">
+      <div class="header">
+        <div class="headertitle"><a
+          href="../../index.html">HamCalc 2.1 documentation</a></div>
+        <div class="rel">
+          <a href="involute.html" title="involute – Involute of a Circle"
+             accesskey="P">previous</a> |
+          <a href="numderiv.html" title="numderiv – Numbers and Functions"
+             accesskey="N">next</a> |
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a>
+        </div>
+       </div>
+    </div>
+
+    <div class="content-wrapper">
+      <div class="content">
+        <div class="document">
+            
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="metrics-metric-conversions">
+<span id="math-metrics"></span><h1>metrics &#8211; Metric Conversions<a class="headerlink" href="#metrics-metric-conversions" title="Permalink to this headline">¶</a></h1>
+<p>See <a class="reference internal" href="equiv.html#math-equiv"><em>equiv &#8211; Unit Conversions</em></a> for yet more of this kind of thing.</p>
+<div class="section" id="analysis">
+<h2>Analysis<a class="headerlink" href="#analysis" title="Permalink to this headline">¶</a></h2>
+<p>We have the following groups of units, rearranged and grouped.</p>
+<p>Weight:</p>
+<div class="highlight-python"><pre>990 DATA ounces(weight),grams,28.3495
+1000 DATA lb.,Kg(kilograms),.4535925
+1010 DATA short tons,tonnes,.907185
+1020 DATA long tons,tonnes,1.016047</pre>
+</div>
+<p>ounce, pound, short ton, long ton</p>
+<p>gram, kilogram, metric ton</p>
+<p>Volume:</p>
+<div class="highlight-python"><pre>1030 DATA fl.oz. (Impl.),ml,28.41167
+1040 DATA fl.oz. (U.S.),ml,29.57285
+1050 DATA pints  (Impl.),litres,.56823
+1060 DATA pints  (U.S.),litres,.47317
+1070 DATA quarts (Impl.),litres,1.13647
+1080 DATA quarts (U.S.),litres,.94633
+1090 DATA gallons(Impl.),litres,4.546092
+1100 DATA gallons(U.S.),litres,3.785412
+1190 DATA cu.in.,cu.cm.(c.c.),16.38706
+1200 DATA cu.in.,litres,.0163873
+1210 DATA cu.ft.,cu.metres,.02832
+1220 DATA cu.ft.,litres,28.317
+1230 DATA cu.yd.,cu.metres,.7646</pre>
+</div>
+<p>fluid ounce (imperial), fluid ounce (US),
+pint (imperial), pint (US),
+quart (imperial), quart (US),
+gallon (imperial), gallon (US),
+cu. in., cu. ft., cu. yd</p>
+<p>millilitre, litre, cu. cm, cu. metre</p>
+<p>Length or Distance:</p>
+<div class="highlight-python"><pre>1110 DATA inches,mm,25.4
+1120 DATA inches,cm,2.54
+1130 DATA feet,metres,.3048
+1140 DATA yards,metres,.9144
+1150 DATA miles,Km(kilometres),1.609347</pre>
+</div>
+<p>inch, foot, yard, mile</p>
+<p>mm, cm, metre, kilometre</p>
+<p>Area:</p>
+<div class="highlight-python"><pre>1160 DATA sq.in.,sq.cm,6.4516
+1170 DATA sq.ft.,sq.metres,.0929
+1180 DATA sq.yd.,sq.metres,.836
+1240 DATA Acres,Hectares,.4047</pre>
+</div>
+<p>sq.in., sq.ft., sq.yd., acre</p>
+<p>sq.cm., sq.metre, hectare</p>
+<p>Pressure:</p>
+<div class="highlight-python"><pre>1250 DATA P.S.I.,kPa(kilopascal),6.894757
+1260 DATA P.S.I.,MPa(megapascal),.006894757
+1270 DATA P.S.I.,bar,.068621
+1280 DATA lb/sq.in,Kg/sq.metre,.07030697
+1290 DATA lb/sq.ft,Kg/sq.metre,4.882429
+1360 DATA in.mercury,KPa,3.408024</pre>
+</div>
+<p>PSI, lb/sq.in., lb/sq.ft., in.Hg</p>
+<p>kPa, mPa, bar, Kg/sq.metre</p>
+<p>Energy:</p>
+<div class="highlight-python"><pre>1300 DATA ft/lb,BTU,778.26</pre>
+</div>
+<p>ft/lb</p>
+<p>BTU</p>
+<p>Power:</p>
+<div class="highlight-python"><pre>1310 DATA HP,kW(kilowatt),.7456999</pre>
+</div>
+<p>Horsepower</p>
+<p>Kilowatt</p>
+<p>Force:</p>
+<div class="highlight-python"><pre>1320 DATA lb.force,newtons,4.448222</pre>
+</div>
+<p>lb.(force)</p>
+<p>newton</p>
+<p>Torque or Moment:</p>
+<div class="highlight-python"><pre>1330 DATA lb/in,newton-metres,.1129848
+1340 DATA lb/ft,newton-metres,14.5939</pre>
+</div>
+<p>lb/in, lb/ft</p>
+<p>newton-metres</p>
+<p>Temperature:</p>
+<div class="highlight-python"><pre>1350 DATA fahrenheit,celsius,1</pre>
+</div>
+<p>Note that line 1350 is a special case to handle temperatures.</p>
+<p>The original use case is one-to-one conversions. This precluded
+conversions within one system of measurement. It also eliminated
+any combination not explicitly provided for.</p>
+<p>We can slightly modify the use case to this:</p>
+<ol class="arabic simple">
+<li>Picks a system (Imperial or Metric).</li>
+<li>Pick a unit from the master list.</li>
+<li>See that value in all other units of the relevant
+dimension (Weight, Volume, Length, Area,
+Presure, Energy, Power, Force, Torque or Temperature)</li>
+</ol>
+<p>This is slightly different from the original user story,
+but seems a bit simpler.</p>
+</div>
+<div class="section" id="legacy-output">
+<h2>Legacy Output<a class="headerlink" href="#legacy-output" title="Permalink to this headline">¶</a></h2>
+<p>Introduction:</p>
+<div class="highlight-python"><pre>METRIC CONVERTER                                            by George C. Murphy
+
+  Press number in &lt; &gt; for desired conversion
+
+  &lt; 1 &gt;  Imperial to Metric
+  &lt; 2 &gt;  Metric to Imperial
+
+  &lt; 0 &gt;  EXIT</pre>
+</div>
+<p>ASCII art menu for the metric to imperial. The items are reversed for
+imperial to metric. There are 38 conversions in two columns of 19.
+Using just 19 pairs means tht the 80x24 screen is completely filled with
+menu and introduction.</p>
+<div class="highlight-python"><pre>                                       │
+(a)  grams          to  ounces(weight) │(t)   sq.metres      to  sq.yd.
+(b)  Kg(kilograms)  to  lb.            │(u)   cu.cm.(c.c.)   to  cu.in.
+(c)  tonnes         to  short tons     │(v)   litres         to  cu.in.
+(d)  tonnes         to  long tons      │(w)   cu.metres      to  cu.ft.
+(e)  ml             to  fl.oz. (Impl.) │(x)   litres         to  cu.ft.
+(f)  ml             to  fl.oz. (U.S.)  │(y)   cu.metres      to  cu.yd.
+(g)  litres         to  pints  (Impl.) │(z)   Hectares       to  Acres
+(h)  litres         to  pints  (U.S.)  │(0)   kPa(kilopascal)to  P.S.I.
+(i)  litres         to  quarts (Impl.) │(1)   MPa(megapascal)to  P.S.I.
+(j)  litres         to  quarts (U.S.)  │(2)   bar            to  P.S.I.
+(k)  litres         to  gallons(Impl.) │(3)   Kg/sq.metre    to  lb/sq.in
+(l)  litres         to  gallons(U.S.)  │(4)   Kg/sq.metre    to  lb/sq.ft
+(m)  mm             to  inches         │(5)   BTU            to  ft/lb
+(n)  cm             to  inches         │(6)   kW(kilowatt)   to  HP
+(o)  metres         to  feet           │(7)   newtons        to  lb.force
+(p)  metres         to  yards          │(8)   newton-metres  to  lb/in
+(q)  Km(kilometres) to  miles          │(9)   newton-metres  to  lb/ft
+(r)  sq.cm          to  sq.in.         │(-)   celsius        to  fahrenheit
+(s)  sq.metres      to  sq.ft.         │(=)   KPa            to  in.mercury
+                                       ╧
+
+Press character in ( ) for required conversion...</pre>
+</div>
+</div>
+<div class="section" id="implementation">
+<h2>Implementation<a class="headerlink" href="#implementation" title="Permalink to this headline">¶</a></h2>
+<p>This gives us pause. We have units scattered all over the place.</p>
+<ul class="simple">
+<li><a class="reference internal" href="baromtr.html#module-hamcalc.math.baromtr" title="hamcalc.math.baromtr"><tt class="xref py py-mod docutils literal"><span class="pre">hamcalc.math.baromtr</span></tt></a> - pressure</li>
+<li><a class="reference internal" href="centrif.html#module-hamcalc.math.centrif" title="hamcalc.math.centrif"><tt class="xref py py-mod docutils literal"><span class="pre">hamcalc.math.centrif</span></tt></a> - force and velocity</li>
+<li><a class="reference internal" href="decifrac.html#module-hamcalc.math.decifrac" title="hamcalc.math.decifrac"><tt class="xref py py-mod docutils literal"><span class="pre">hamcalc.math.decifrac</span></tt></a> - distance</li>
+<li><a class="reference internal" href="equiv.html#module-hamcalc.math.equiv" title="hamcalc.math.equiv"><tt class="xref py py-mod docutils literal"><span class="pre">hamcalc.math.equiv</span></tt></a> - distance and temperature</li>
+<li><a class="reference internal" href="../navigation/satorbit.html#module-hamcalc.navigation.satorbit" title="hamcalc.navigation.satorbit"><tt class="xref py py-mod docutils literal"><span class="pre">hamcalc.navigation.satorbit</span></tt></a> - velocity</li>
+</ul>
+<p>These involve a few duplicate definitions. Distance is the biggest
+offender.</p>
+<p>Rather than try to centralize all unit definitions, we&#8217;ll just
+throw more definitions into the mix.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+        </div>
+        <div class="sidebar">
+          <h3>Table Of Contents</h3>
+          <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../background.html">Background</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../legacy.html">The HamCalc Legacy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../subjects.html">Subject-Area Index</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../python_architecture.html">Python Architecture</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Python Modules</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../lib.html">lib &#8211; Supporting Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../radio/index.html">radio &#8211; Radio Design and Engineering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ham/index.html">ham &#8211; Ham Radio Operations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../electronics/index.html">electronics &#8211; General Electronics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../construction/index.html">construction &#8211; Construction and Mechanical</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">math &#8211; Math, Physics, Units Conversion</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="accelr.html">accelr &#8211; Acceleration Calculator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="baromtr.html">baromtr &#8211; Barometer Reading Equivalents</a></li>
+<li class="toctree-l3"><a class="reference internal" href="binary.html">binary &#8211; Decimal to Binary Converter</a></li>
+<li class="toctree-l3"><a class="reference internal" href="centrif.html">centrif &#8211; Centrifugal/Centripetel Force</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chase.html">chase &#8211; Speed Chase</a></li>
+<li class="toctree-l3"><a class="reference internal" href="curvefit.html">curvefit &#8211; Curve Fit program</a></li>
+<li class="toctree-l3"><a class="reference internal" href="deciconv.html">deciconv &#8211; Decimal Hour/Degree Converter</a></li>
+<li class="toctree-l3"><a class="reference internal" href="decifrac.html">decifrac &#8211; Decimal/Fraction Converter</a></li>
+<li class="toctree-l3"><a class="reference internal" href="equiv.html">equiv &#8211; Unit Conversions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="fibon.html">fibon &#8211; Fibonacci Series</a></li>
+<li class="toctree-l3"><a class="reference internal" href="formulae.html">formulae &#8211; Formula Library</a></li>
+<li class="toctree-l3"><a class="reference internal" href="graphs.html">graphs &#8211; Graphs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="involute.html">involute &#8211; Involute of a Circle</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="">metrics &#8211; Metric Conversions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="numderiv.html">numderiv &#8211; Numbers and Functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="polygon.html">polygon &#8211; Polygon Dimensions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="primenos.html">primenos &#8211; Prime Number Calculator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="propcirc.html">propcirc &#8211; Circle, Properties of</a></li>
+<li class="toctree-l3"><a class="reference internal" href="quadrat.html">quadrat &#8211; Quadratic Equation Calculator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="randnum.html">randnum &#8211; Random Number Generator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rotaplot.html">rotaplot &#8211; Cartesian/Polar Plot Rotator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="scalspd.html">scalspd &#8211; Scale Speed Calculator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="simuleq.html">simuleq &#8211; Simultaneous Equation Calculator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="solutri.html">solutri &#8211; Triangles, solution of</a></li>
+<li class="toctree-l3"><a class="reference internal" href="speedtd.html">speedtd &#8211; Speed/Time/Distance Calculator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="trig.html">trig &#8211; Trigonometric Functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="unitvalu.html">unitvalu &#8211; Unit Value Comparator</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../navigation/index.html">navigation &#8211; Navigation and Astronomy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../calendar/index.html">calendar &#8211; Calendrical Calculations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../audio_photo.html">audio_photo &#8211; Audio, Sound and Photography</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../software.html">software &#8211; Software Engineering, Programming and Computers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../other/index.html">other &#8211; including Finance and Nutrition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../stdio.html">STDIO Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../rest.html">RESTful Web Services Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../cli.html">Command-Line Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../gui.html">GUI Interface</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../todo.html">The To Do List</a></li>
+</ul>
+
+          <h3 style="margin-top: 1.5em;">Search</h3>
+          <form class="search" action="../../search.html" method="get">
+            <input type="text" name="q" />
+            <input type="submit" value="Go" />
+            <input type="hidden" name="check_keywords" value="yes" />
+            <input type="hidden" name="area" value="default" />
+          </form>
+          <p class="searchtip" style="font-size: 90%">
+            Enter search terms or a module, class or function name.
+          </p>
+        </div>
+        <div class="clearer"></div>
+      </div>
+    </div>
+
+    <div class="footer-wrapper">
+      <div class="footer">
+        <div class="left">
+          <a href="involute.html" title="involute – Involute of a Circle"
+             >previous</a> |
+          <a href="numderiv.html" title="numderiv – Numbers and Functions"
+             >next</a> |
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |
+          <a href="../../genindex.html" title="General Index"
+             >index</a>
+            <br/>
+            <a href="../../_sources/python/math/metrics.txt"
+               rel="nofollow">Show Source</a>
+        </div>
+
+        <div class="right">
+          
+    <div class="footer">
+        &copy; Copyright 2013, S.Lott.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2b1.
+    </div>
+        </div>
+        <div class="clearer"></div>
+      </div>
+    </div>
+
+  </body>
+</html>

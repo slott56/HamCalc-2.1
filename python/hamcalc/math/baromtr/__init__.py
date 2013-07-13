@@ -32,7 +32,7 @@ Here are some test cases.
 >>> len(t)
 22
 >>> baromtr.equivalent( 1033, baromtr.MB )
-(1033.0, 1.0, 76.0, 29.921, 10.3322, 406.782, 33.899, 14.696, 2116.2, 1.033, 101.325)
+(1033.0, 1.0, 76.0, 29.921, 10.3322, 406.782, 33.899, 14.696, 2116.2, 1.0332, 101.325)
 
 
 """
@@ -106,13 +106,25 @@ class BAR( Unit ):
     """Kilograms per square centimetre"""
     standard= ATM
     name= 'kg/cm²'
-    factor= 1.033
+    factor= 1.0332
 
 class KPA( Unit ):
     """Kilopascals"""
     standard= ATM
     name= 'kPa'
     factor= 101.325
+
+class MPA( Unit ):
+    """Megapascals"""
+    standard= ATM
+    name= 'mPa'
+    factor= 0.101325
+
+class KG_SQ_M( Unit ):
+    """Kilograms per square metre"""
+    standard= ATM
+    name= 'kg/m²'
+    factor= 10332.274
 
 def table( kpa_start=95.5, kpa_stop=106.5, kpa_step=0.5 ):
     """Yields a sequence of values from 95.5 kPa to 106 kPa in .5 kPa steps.

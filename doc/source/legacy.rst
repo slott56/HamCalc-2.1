@@ -446,7 +446,7 @@ menu with algorithms contributed by RJD.
     530 DATA TURNS,Coil Turns Calculator
     540 DATA TRISQU,Wave Generator
 
-The Mechanics Menu.  These are programs that, for the most part,
+The Mechanics Math.  These are programs that, for the most part,
 neither appear in the user's menu nor in the complete cross-reference.
 
 ::
@@ -461,6 +461,26 @@ neither appear in the user's menu nor in the complete cross-reference.
     640 DATA shaft,Shafting
     650 DATA stairs,"Stairs, Ladders & Ramps"
     660 DATA torque,Torque & Horsepower
+
+The Smith Chart Calculations. These are some ARRL calculations that
+are called out separately.
+
+::
+
+    490 DATA antfield, Antenna Field Strength
+    500 DATA coaxchar, Coaxial Cable Characteristics
+    510 DATA coilq,    Coil Q Calculator
+    520 DATA conjumat, Conjugate Match Calculator
+    530 DATA hairpin,  Hairpin Match for Yagis
+    540 DATA serisect, Series-Section Transformer
+    550 DATA stubant,  Stub Match for Antennas
+    560 DATA swr,      SWR Calculator
+    570 DATA transmat, Transmatch Design
+    580 DATA elecleng, Transmission Line Length
+    590 DATA lineloss, Transmission Line Losses
+    600 DATA tranline, Transmission Line Performance
+    610 DATA transtub, Transmission Line Stubs
+    620 DATA xmtrzmat, Xmtr Transistor Stage Coupling
 
 Menu Analysis
 ==============

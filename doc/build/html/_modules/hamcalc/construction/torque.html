@@ -72,11 +72,22 @@
 <span class="sd">Test Cases:</span>
 
 <span class="sd">&gt;&gt;&gt; import hamcalc.construction.torque as torque</span>
-<span class="sd">&gt;&gt;&gt; t1 = torque( R=2500, H=80, T=2400 )</span>
-<span class="sd">&gt;&gt;&gt; t1</span>
+<span class="sd">&gt;&gt;&gt; t1 = torque.torque( R=1700, H=80, T=1431, D=54 )</span>
+<span class="sd">&gt;&gt;&gt; round(t1.W,3)</span>
+<span class="sd">109.848</span>
+<span class="sd">&gt;&gt;&gt; round(t1.V,3)</span>
+<span class="sd">24033.184</span>
+
+<span class="sd">The velocity, *V*, seems high, but this *is* the correct value.</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="kn">from</span> <span class="nn">hamcalc.lib</span> <span class="kn">import</span> <span class="n">Solver</span>
+<span class="kn">from</span> <span class="nn">hamcalc.lib</span> <span class="kn">import</span> <span class="n">Solver</span><span class="p">,</span> <span class="n">NoSolutionError</span>
+<span class="kn">import</span> <span class="nn">math</span>
+
+<span class="k">def</span> <span class="nf">intro</span><span class="p">():</span>
+    <span class="k">return</span> <span class="s">&quot;&quot;&quot;</span><span class="se">\</span>
+<span class="s">TORQUE &amp; HORSEPOWER                                     by George Murphy VE3ERP</span>
+<span class="s">&quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="Torque"><a class="viewcode-back" href="../../../python/construction/torque.html#hamcalc.construction.torque.Torque">[docs]</a><span class="k">class</span> <span class="nc">Torque</span><span class="p">(</span> <span class="n">Solver</span> <span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Solver for Torque problems.</span>

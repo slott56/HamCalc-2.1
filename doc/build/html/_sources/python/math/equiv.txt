@@ -1,7 +1,9 @@
-..  _`math.equiv`:
+..  _math.equiv:
 
 equiv -- Unit Conversions
 ----------------------------------
+
+See :ref:`math.metrics` for yet more of this kind of thing.
 
 From the QuickTables menu, we see the following four labels for this program.
 
@@ -18,7 +20,7 @@ The first two are imported from :mod:`hamcalc.math.trig`.
 Analysis
 ~~~~~~~~~~
 
-There are 14 entries on the :program:`equiv` menu. One is a referene to the :program:`deciconv` program. One is copy-and-paste from :program:`deciconv`.
+There are 14 entries on the :program:`equiv` menu. One is a reference to the :program:`deciconv` program. One is copy-and-paste from :program:`deciconv`.
 Two are actually versions of one **Solver** that is the :program:`elecleng` program.
 Nine of the remaining ten are pretty simple **Equivalents** conversions.
 The tenth has a simple **Solver** in it.

@@ -44,6 +44,8 @@ There are four subgroups of stdio programs.
 
     -   :mod:`hamcalc.stdio.mechmenu`.
 
+    -   :mod:`hamcalc.stdio.smithcht`.
+
     It might be sensible to merge these into the menu application
     itself.
 
@@ -100,6 +102,12 @@ mechmenu
 -------------------
 
 ..  automodule:: hamcalc.stdio.mechmenu
+    :members:
+
+smithcht
+-------------------
+
+..  automodule:: hamcalc.stdio.smithcht
     :members:
 
 ..  _`stdio.graphs`:

@@ -300,6 +300,12 @@ class FOOT( Unit ):
     name= "ft"
     factor= 39.370079/12
 
+class YARD( Unit ):
+    """Yard"""
+    standard= METRE
+    name= "yd"
+    factor= 39.370079/36
+
 class MILE( Unit ):
     """Statute Mile"""
     standard= METRE

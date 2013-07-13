@@ -315,7 +315,77 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">max_economy</span><span class="o">=</span> <span class="n">INCH</span><span class="o">.</span><span class="n">to_std</span><span class="p">(</span> <span class="mf">7.5</span> <span class="p">)</span>
     <span class="n">max_residential</span><span class="o">=</span> <span class="n">INCH</span><span class="o">.</span><span class="n">to_std</span><span class="p">(</span> <span class="mi">8</span> <span class="p">)</span>
-    <span class="k">return</span> <span class="n">unit</span><span class="o">.</span><span class="n">from_std</span><span class="p">(</span> <span class="n">max_economy</span> <span class="p">),</span> <span class="n">unit</span><span class="o">.</span><span class="n">from_std</span><span class="p">(</span> <span class="n">max_residential</span> <span class="p">)</span></div>
+    <span class="k">return</span> <span class="n">unit</span><span class="o">.</span><span class="n">from_std</span><span class="p">(</span> <span class="n">max_economy</span> <span class="p">),</span> <span class="n">unit</span><span class="o">.</span><span class="n">from_std</span><span class="p">(</span> <span class="n">max_residential</span> <span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="stairwell_headroom"><a class="viewcode-back" href="../../../python/construction/stairs.html#hamcalc.construction.stairs.stairwell_headroom">[docs]</a><span class="k">def</span> <span class="nf">stairwell_headroom</span><span class="p">(</span> <span class="o">**</span><span class="n">args</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Requires the following arguments.</span>
+
+<span class="sd">    :T: run</span>
+<span class="sd">    :R: rise</span>
+<span class="sd">    :N: no.of full risers</span>
+<span class="sd">    :F: Floor Thickness, FL</span>
+
+<span class="sd">    Updates args with &quot;HR&quot; and &quot;SW&quot;.</span>
+
+<span class="sd">    :SW:    Stairwell Dimension</span>
+<span class="sd">    :HR:    Headroom Dimension</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">args</span><span class="o">=</span> <span class="n">AttrDict</span><span class="p">(</span> <span class="n">args</span> <span class="p">)</span>
+    <span class="k">if</span> <span class="s">&#39;F&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span> <span class="k">return</span> <span class="n">args</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">Z</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span> <span class="n">Z</span> <span class="k">for</span> <span class="n">Z</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">args</span><span class="o">.</span><span class="n">N</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span> <span class="k">if</span> <span class="n">Z</span><span class="o">*</span><span class="n">args</span><span class="o">.</span><span class="n">R</span><span class="o">-</span><span class="n">args</span><span class="o">.</span><span class="n">F</span> <span class="o">&gt;=</span> <span class="mi">75</span> <span class="p">)</span>
+    <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+        <span class="n">Z</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">N</span>
+    <span class="n">args</span><span class="o">.</span><span class="n">HR</span> <span class="o">=</span> <span class="n">Z</span><span class="o">*</span><span class="n">args</span><span class="o">.</span><span class="n">R</span><span class="o">-</span><span class="n">args</span><span class="o">.</span><span class="n">F</span>
+    <span class="c">#args.X = args.N-Z # Legacy Quirk</span>
+    <span class="n">args</span><span class="o">.</span><span class="n">SW</span> <span class="o">=</span> <span class="p">(</span><span class="n">Z</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">args</span><span class="o">.</span><span class="n">T</span>
+    <span class="k">return</span> <span class="n">args</span>
+</div>
+<div class="viewcode-block" id="handrail_height"><a class="viewcode-back" href="../../../python/construction/stairs.html#hamcalc.construction.stairs.handrail_height">[docs]</a><span class="k">def</span> <span class="nf">handrail_height</span><span class="p">(</span> <span class="o">**</span><span class="n">args</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Compute handrail height. Requires the following arguments.</span>
+
+<span class="sd">    :A: Angle in degrees.</span>
+
+<span class="sd">    Updates args with</span>
+
+<span class="sd">    :B: Handrail height.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">args</span><span class="o">=</span> <span class="n">AttrDict</span><span class="p">(</span> <span class="n">args</span> <span class="p">)</span>
+    <span class="k">if</span> <span class="mi">48</span> <span class="o">&lt;</span> <span class="n">args</span><span class="o">.</span><span class="n">A</span> <span class="o">&lt;=</span> <span class="mi">90</span><span class="p">:</span>
+        <span class="n">args</span><span class="o">.</span><span class="n">B</span> <span class="o">=</span> <span class="mi">34</span><span class="o">+</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">A</span><span class="o">-</span><span class="mf">48.4</span><span class="p">)</span><span class="o">/</span><span class="mf">41.6</span><span class="o">*</span><span class="mi">14</span>
+    <span class="k">elif</span> <span class="mf">39.2</span> <span class="o">&lt;</span> <span class="n">args</span><span class="o">.</span><span class="n">A</span> <span class="o">&lt;=</span> <span class="mi">48</span><span class="p">:</span>
+        <span class="n">args</span><span class="o">.</span><span class="n">B</span> <span class="o">=</span> <span class="mi">33</span><span class="o">+</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">A</span><span class="o">-</span><span class="mf">39.2</span><span class="p">)</span><span class="o">/</span><span class="mf">9.2</span>
+    <span class="k">elif</span> <span class="mi">24</span> <span class="o">&lt;</span> <span class="n">args</span><span class="o">.</span><span class="n">A</span> <span class="o">&lt;=</span> <span class="mf">39.2</span><span class="p">:</span>
+        <span class="n">args</span><span class="o">.</span><span class="n">B</span> <span class="o">=</span> <span class="mi">33</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c"># assert A &lt;= 24</span>
+        <span class="n">args</span><span class="o">.</span><span class="n">B</span> <span class="o">=</span> <span class="mi">33</span><span class="o">+</span><span class="p">(</span><span class="mi">24</span><span class="o">-</span><span class="n">args</span><span class="o">.</span><span class="n">A</span><span class="p">)</span><span class="o">/</span><span class="mi">8</span>
+    <span class="k">return</span> <span class="n">args</span>
+</div>
+<div class="viewcode-block" id="is_ramp_inclined"><a class="viewcode-back" href="../../../python/construction/stairs.html#hamcalc.construction.stairs.is_ramp_inclined">[docs]</a><span class="k">def</span> <span class="nf">is_ramp_inclined</span><span class="p">(</span> <span class="o">**</span><span class="n">args</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Does this design reflect an inclined ramp?&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">args</span><span class="p">[</span><span class="s">&#39;P&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span>
+</div>
+<div class="viewcode-block" id="is_ladder_vertical"><a class="viewcode-back" href="../../../python/construction/stairs.html#hamcalc.construction.stairs.is_ladder_vertical">[docs]</a><span class="k">def</span> <span class="nf">is_ladder_vertical</span><span class="p">(</span> <span class="o">**</span><span class="n">args</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Does this design reflect a vertical ladder?&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">args</span><span class="p">[</span><span class="s">&#39;A&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">90</span>
+</div>
+<div class="viewcode-block" id="is_ladder_inclined"><a class="viewcode-back" href="../../../python/construction/stairs.html#hamcalc.construction.stairs.is_ladder_inclined">[docs]</a><span class="k">def</span> <span class="nf">is_ladder_inclined</span><span class="p">(</span> <span class="o">**</span><span class="n">args</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Does this design reflect an inclined ladder?&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="mi">77</span> <span class="o">&lt;=</span> <span class="n">args</span><span class="p">[</span><span class="s">&#39;A&#39;</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">90</span>
+</div>
+<div class="viewcode-block" id="is_ladder_open"><a class="viewcode-back" href="../../../python/construction/stairs.html#hamcalc.construction.stairs.is_ladder_open">[docs]</a><span class="k">def</span> <span class="nf">is_ladder_open</span><span class="p">(</span> <span class="o">**</span><span class="n">args</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Does this design reflect an open stepladder?&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="mf">48.37</span> <span class="o">&lt;=</span> <span class="n">args</span><span class="p">[</span><span class="s">&#39;A&#39;</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">77</span>
+</div>
+<div class="viewcode-block" id="is_stairway"><a class="viewcode-back" href="../../../python/construction/stairs.html#hamcalc.construction.stairs.is_stairway">[docs]</a><span class="k">def</span> <span class="nf">is_stairway</span><span class="p">(</span> <span class="o">**</span><span class="n">args</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Does this design reflect a stairway?&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="mf">20.45</span> <span class="o">&lt;=</span> <span class="n">args</span><span class="p">[</span><span class="s">&#39;A&#39;</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mf">48.37</span>
+</div>
+<div class="viewcode-block" id="is_ramp_step"><a class="viewcode-back" href="../../../python/construction/stairs.html#hamcalc.construction.stairs.is_ramp_step">[docs]</a><span class="k">def</span> <span class="nf">is_ramp_step</span><span class="p">(</span> <span class="o">**</span><span class="n">args</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Does this design reflect a step ramp?&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">args</span><span class="p">[</span><span class="s">&#39;A&#39;</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mf">20.45</span></div>
 </pre></div>
 
           </div>
