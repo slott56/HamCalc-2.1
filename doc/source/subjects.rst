@@ -1,5 +1,5 @@
 ###################
-Subject-Area Index
+Subject Area Index
 ###################
 
 This list of modules is built from three sources:

@@ -16,7 +16,7 @@ These are in order of importance.
     math/index
     navigation/index
     calendar/index
-    audio_photo
+    audio_photo/index
     software
     other/index
 
