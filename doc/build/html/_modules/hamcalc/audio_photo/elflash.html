@@ -1,0 +1,149 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>hamcalc.audio_photo.elflash &mdash; HamCalc 2.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../../_static/hamcalc.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '2.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="top" title="HamCalc 2.1 documentation" href="../../../index.html" />
+    <link rel="up" title="Module code" href="../../index.html" /> 
+  </head>
+  <body>
+    <div class="header-wrapper">
+      <div class="header">
+        <div class="headertitle"><a
+          href="../../../index.html">HamCalc 2.1 documentation</a></div>
+        <div class="rel">
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a>
+        </div>
+       </div>
+    </div>
+
+    <div class="content-wrapper">
+      <div class="content">
+        <div class="document">
+            
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for hamcalc.audio_photo.elflash</h1><div class="highlight"><pre>
+<span class="sd">&quot;&quot;&quot;hamcalc.audio_photo.elflash</span>
+
+<span class="sd">This has calculations for flash photography.</span>
+
+<span class="sd">Test Case</span>
+
+<span class="sd">&gt;&gt;&gt; import hamcalc.audio_photo.elflash as elflash</span>
+<span class="sd">&gt;&gt;&gt; elflash.Flash( G=12, D=15, A=100 )</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">math</span>
+<span class="kn">from</span> <span class="nn">hamcalc.lib</span> <span class="kn">import</span> <span class="n">Solver</span><span class="p">,</span> <span class="n">NoSolutionError</span>
+
+<div class="viewcode-block" id="Flash"><a class="viewcode-back" href="../../../python/audio_photo/elflash.html#hamcalc.audio_photo.elflash.Flash">[docs]</a><span class="k">class</span> <span class="nc">Flash</span><span class="p">(</span> <span class="n">Solver</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Solver for electronic flash problems.&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="Flash.solve"><a class="viewcode-back" href="../../../python/audio_photo/elflash.html#hamcalc.audio_photo.elflash.Flash.solve">[docs]</a>    <span class="k">def</span> <span class="nf">solve</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">args</span> <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Compute missing values.</span>
+
+<span class="sd">        :F: Aperture, ƒ/</span>
+<span class="sd">        :G: Guide number in feet (:math:`0.3048G` metres)</span>
+<span class="sd">        :A: Film speed, ISO</span>
+<span class="sd">        :B: Beam Candle Power Seconds</span>
+<span class="sd">        :D: Subject distance in feet (:math:`0.3048D` metres)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">while</span> <span class="ow">not</span> <span class="nb">all</span><span class="p">(</span> <span class="n">var</span> <span class="ow">in</span> <span class="n">args</span> <span class="k">for</span> <span class="n">var</span> <span class="ow">in</span> <span class="p">(</span><span class="s">&#39;F&#39;</span><span class="p">,</span> <span class="s">&#39;G&#39;</span><span class="p">,</span> <span class="s">&#39;A&#39;</span><span class="p">,</span> <span class="s">&#39;B&#39;</span><span class="p">,</span> <span class="s">&#39;D&#39;</span><span class="p">)</span> <span class="p">):</span>
+            <span class="k">if</span> <span class="s">&#39;F&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">args</span> <span class="ow">and</span> <span class="s">&#39;G&#39;</span> <span class="ow">in</span> <span class="n">args</span> <span class="ow">and</span> <span class="s">&#39;D&#39;</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
+                <span class="n">args</span><span class="o">.</span><span class="n">F</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">G</span><span class="o">/</span><span class="n">args</span><span class="o">.</span><span class="n">D</span>
+            <span class="k">elif</span> <span class="s">&#39;D&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">args</span> <span class="ow">and</span> <span class="s">&#39;G&#39;</span> <span class="ow">in</span> <span class="n">args</span> <span class="ow">and</span> <span class="s">&#39;F&#39;</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
+                <span class="n">args</span><span class="o">.</span><span class="n">D</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">G</span><span class="o">/</span><span class="n">args</span><span class="o">.</span><span class="n">F</span>
+            <span class="k">elif</span> <span class="s">&#39;G&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">args</span> <span class="ow">and</span> <span class="s">&#39;D&#39;</span> <span class="ow">in</span> <span class="n">args</span> <span class="ow">and</span> <span class="s">&#39;F&#39;</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
+                <span class="n">args</span><span class="o">.</span><span class="n">G</span> <span class="o">=</span> <span class="n">arsg</span><span class="o">.</span><span class="n">D</span><span class="o">*</span><span class="n">args</span><span class="o">.</span><span class="n">F</span>
+            <span class="k">elif</span> <span class="s">&#39;B&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">args</span> <span class="ow">and</span> <span class="s">&#39;G&#39;</span> <span class="ow">in</span> <span class="n">args</span> <span class="ow">and</span> <span class="s">&#39;A&#39;</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
+                <span class="n">args</span><span class="o">.</span><span class="n">B</span> <span class="o">=</span> <span class="mi">20</span><span class="o">*</span><span class="n">args</span><span class="o">.</span><span class="n">G</span><span class="o">**</span><span class="mi">2</span><span class="o">/</span><span class="n">args</span><span class="o">.</span><span class="n">A</span>
+            <span class="k">elif</span> <span class="s">&#39;A&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">args</span> <span class="ow">and</span> <span class="s">&#39;G&#39;</span> <span class="ow">in</span> <span class="n">args</span> <span class="ow">and</span> <span class="s">&#39;B&#39;</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
+                <span class="n">args</span><span class="o">.</span><span class="n">A</span> <span class="o">=</span> <span class="mi">20</span><span class="o">*</span><span class="n">args</span><span class="o">.</span><span class="n">G</span><span class="o">**</span><span class="mi">2</span><span class="o">/</span><span class="n">args</span><span class="o">.</span><span class="n">B</span>
+            <span class="k">elif</span> <span class="s">&#39;G&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">args</span> <span class="ow">and</span> <span class="s">&#39;A&#39;</span> <span class="ow">in</span> <span class="n">args</span> <span class="ow">and</span> <span class="s">&#39;B&#39;</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
+                <span class="n">args</span><span class="o">.</span><span class="n">G</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span> <span class="n">args</span><span class="o">.</span><span class="n">A</span><span class="o">*</span><span class="n">args</span><span class="o">.</span><span class="n">B</span><span class="o">/</span><span class="mi">20</span> <span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">NoSolutionError</span><span class="p">(</span> <span class="s">&quot;No solution with {0!r}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">args</span><span class="p">)</span> <span class="p">)</span>
+        <span class="k">return</span> <span class="n">args</span></div></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+        </div>
+        <div class="sidebar">
+          <h3>Table Of Contents</h3>
+          <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../background.html">Background</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../legacy.html">The HamCalc Legacy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../subjects.html">Subject Area Index</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../python_architecture.html">Python Architecture</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../python/index.html">Python Modules</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../todo.html">The To Do List</a></li>
+</ul>
+
+          <h3 style="margin-top: 1.5em;">Search</h3>
+          <form class="search" action="../../../search.html" method="get">
+            <input type="text" name="q" />
+            <input type="submit" value="Go" />
+            <input type="hidden" name="check_keywords" value="yes" />
+            <input type="hidden" name="area" value="default" />
+          </form>
+          <p class="searchtip" style="font-size: 90%">
+            Enter search terms or a module, class or function name.
+          </p>
+        </div>
+        <div class="clearer"></div>
+      </div>
+    </div>
+
+    <div class="footer-wrapper">
+      <div class="footer">
+        <div class="left">
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |
+          <a href="../../../genindex.html" title="General Index"
+             >index</a>
+        </div>
+
+        <div class="right">
+          
+    <div class="footer">
+        &copy; Copyright 2013, S.Lott.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2b1.
+    </div>
+        </div>
+        <div class="clearer"></div>
+      </div>
+    </div>
+
+  </body>
+</html>

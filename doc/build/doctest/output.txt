@@ -1,4 +1,4 @@
-Results of doctest builder run on 2013-07-13 07:34:52
+Results of doctest builder run on 2013-07-13 11:27:31
 =====================================================
 
 Document: python/math/trig
@@ -41,6 +41,14 @@ Document: python/math/involute
 8 passed and 0 failed.
 Test passed.
 
+Document: python/audio_photo/elflash
+------------------------------------
+1 items passed all tests:
+   5 tests in default
+5 tests in 1 items.
+5 passed and 0 failed.
+Test passed.
+
 Document: python/construction/torque
 ------------------------------------
 1 items passed all tests:
@@ -49,12 +57,12 @@ Document: python/construction/torque
 4 passed and 0 failed.
 Test passed.
 
-Document: python/math/decifrac
-------------------------------
+Document: python/math/solutri
+-----------------------------
 1 items passed all tests:
-   8 tests in default
-8 tests in 1 items.
-8 passed and 0 failed.
+  10 tests in default
+10 tests in 1 items.
+10 passed and 0 failed.
 Test passed.
 
 Document: python/construction/stairs
@@ -121,12 +129,12 @@ Document: python/construction/chain
 36 passed and 0 failed.
 Test passed.
 
-Document: python/math/solutri
------------------------------
+Document: python/math/decifrac
+------------------------------
 1 items passed all tests:
-  10 tests in default
-10 tests in 1 items.
-10 passed and 0 failed.
+   8 tests in default
+8 tests in 1 items.
+8 passed and 0 failed.
 Test passed.
 
 Document: python/math/speedtd
@@ -331,7 +339,7 @@ Test passed.
 
 Doctest summary
 ===============
- 1023 tests
+ 1028 tests
     0 failures in tests
     0 failures in setup code
     0 failures in cleanup code

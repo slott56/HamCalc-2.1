@@ -24,9 +24,10 @@ def gear_size( P=None, A=None, B=None ):
 
 def gear_design( ):
     P= input_int( "ENTER: Diametrical pitch ............? " )
-    K= input_int( "ENTER: Known  R.P.M. ................? " )
-    S= input_int( "ENTER: Sought R.P.M. ................? " )
-    C= input_int( "ENTER: Desired c.c. distance (in.) ..? " )
+    K= input_float( "ENTER: Known  R.P.M. ................? " )
+    S= input_float( "ENTER: Sought R.P.M. ................? " )
+    C= input_float( "ENTER: Desired c.c. distance (in.) ..? " )
+    if any( (P is None, K is None, S is None, C is None) ): return
 
     print( "Gear A  Gear B  c.c.(in.)  R.P.M." )
     for A, B, C2, S2 in gearing.design_teeth_iter( P, K, S, C ):
@@ -34,6 +35,7 @@ def gear_design( ):
             A, B, C2, S2 ) )
 
     N= input_int( "ENTER: desired gear A size? " )
+    if N is None: return
     A, B, C, S = gearing.design_from_A( P, N, K, S )
     D, E, _, R = gearing.design_gear_distances( P, A, B )
 

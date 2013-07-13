@@ -39,7 +39,7 @@ Test Cases
 
 """
 __version__ = "2.1"
-
+from hamcalc.lib import NoSolutionError
 
 def intro():
     return """\
@@ -102,9 +102,15 @@ def design_teeth_iter( P, K, S, C, offset=4 ):
     :returns: 4-tuples of A, B teeth count, C c-to-c distance and S,
         RPM "sought".
     """
-    K, S = max( K, S ), min( K, S )
-    R = K/S
-    A = int( 2*P*C/(1+R) +.5 )
+    try:
+        K, S = max( K, S ), min( K, S )
+        R = K/S
+        A = int( 2*P*C/(1+R) +.5 )
+    except TypeError as e:
+        if P is None or P == 0: raise NoSolutionError( "P pitch is required." )
+        if K is None: raise NoSolutionError( "K RPM is required." )
+        if S is None: raise NoSolutionError( "S RPM is required." )
+        if C is None: raise NoSolutionError( "C distance is required." )
     if A < 8:
         raise GearTooSmall
     for Y in range(A-offset,A+offset+1):

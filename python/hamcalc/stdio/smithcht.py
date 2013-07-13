@@ -1,10 +1,10 @@
 """Smith Chart Calculations
 """
-from hamcalc.stdio.menu import Program_Menu, Item
+from hamcalc.stdio.menu import QT_Menu, Item
 import string
 import runpy
 
-class Smith_Chart( Program_Menu ):
+class Smith_Chart( QT_Menu ):
     """Menu to display the Smith Chart Calculations list of programs.
     """
     def __init__( self ):
@@ -27,28 +27,6 @@ class Smith_Chart( Program_Menu ):
             Item( "", "xmtrzmat", "Xmtr Transistor Stage Coupling" ),
 
         ]
-    def display( self ):
-        """Display the menu."""
-        print( self.name.center(80) )
-        print()
-        for code, item in enumerate(self.item_list):
-            print( "({0}) {1}".format(string.ascii_lowercase[code], item.title) )
-        print( "(z) EXIT this program" )
-    def get_choice( self ):
-        """Prompt and get the user's choice."""
-        page_raw= input( "Choice? " ).lower()
-        return page_raw
-    def handle_choice( self, choice ):
-        if choice == 'z':
-            self.quit= True
-        else:
-            choice_num= string.ascii_lowercase.find( choice )
-            if choice_num == -1: return
-            program= self.item_list[choice_num]
-            runpy.run_module( 'hamcalc.stdio.' + program.name, run_name="__main__" )
-    def process( self ):
-        self.quit= False
-        super().process()
 
 def run():
     intro="""\
