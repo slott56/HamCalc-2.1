@@ -1,15 +1,17 @@
 audio_photo -- Audio, Sound and Photography
 ===========================================
 
-These programs include Audio playback and Sound creation and Photo Analysis.
+These programs include audio playback, sound creation and photography.
+
+Photo:
 
 ..  toctree::
     :maxdepth: 1
 
     elflash
+    exposure
 
-
-exposure -- EXPOSURE
+filter -- FILTERS
 
 focus -- FOCUSING
 
@@ -21,12 +23,14 @@ lenses -- LENSES
 
 lensring -- EXTENSION RINGS and BELLOWS
 
-metnom -- Metronome
+titler -- TITLER
 
 pixel -- DIGITAL CAMERAS & SCANNERS; Pixel Data for Scanners & Cameras
 
-speakr -- :REM'SPEAKR - Speaker Equalizer - 13 JUL 2008
+Audio:
 
-titler -- TITLER
+metnom -- Metronome
+
+speakr -- :REM'SPEAKR - Speaker Equalizer - 13 JUL 2008
 
 zounds -- Musical Math & Sounds; Audio Programs; Audio Tone Analyzer; Music Math & Sounds

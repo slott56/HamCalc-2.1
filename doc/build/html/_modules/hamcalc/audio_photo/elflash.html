@@ -53,10 +53,27 @@
 
 <span class="sd">This has calculations for flash photography.</span>
 
+<span class="sd">..  py:function:: flash( B, A, G, D, F )</span>
+
+<span class="sd">    Solves electronic flash problems.</span>
+
+<span class="sd">    :param F: Aperture, ƒ/</span>
+<span class="sd">    :param G: Guide number in feet (:math:`0.3048G` metres)</span>
+<span class="sd">    :param A: Film speed, ISO</span>
+<span class="sd">    :param B: Beam Candle Power Seconds</span>
+<span class="sd">    :param D: Subject distance in feet (:math:`0.3048D` metres)</span>
+
+<span class="sd">    :returns: AttrDict with all values filled in</span>
+
 <span class="sd">Test Case</span>
 
 <span class="sd">&gt;&gt;&gt; import hamcalc.audio_photo.elflash as elflash</span>
-<span class="sd">&gt;&gt;&gt; elflash.Flash( G=12, D=15, A=100 )</span>
+<span class="sd">&gt;&gt;&gt; flash= elflash.Flash()</span>
+<span class="sd">&gt;&gt;&gt; f= flash( G=12, D=15, A=100 )</span>
+<span class="sd">&gt;&gt;&gt; round( f.B, 3 )</span>
+<span class="sd">28.8</span>
+<span class="sd">&gt;&gt;&gt; round( f.F, 3 )</span>
+<span class="sd">0.8</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">import</span> <span class="nn">math</span>
@@ -87,8 +104,20 @@
             <span class="k">elif</span> <span class="s">&#39;G&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">args</span> <span class="ow">and</span> <span class="s">&#39;A&#39;</span> <span class="ow">in</span> <span class="n">args</span> <span class="ow">and</span> <span class="s">&#39;B&#39;</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
                 <span class="n">args</span><span class="o">.</span><span class="n">G</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span> <span class="n">args</span><span class="o">.</span><span class="n">A</span><span class="o">*</span><span class="n">args</span><span class="o">.</span><span class="n">B</span><span class="o">/</span><span class="mi">20</span> <span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="n">NoSolutionError</span><span class="p">(</span> <span class="s">&quot;No solution with {0!r}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">args</span><span class="p">)</span> <span class="p">)</span>
-        <span class="k">return</span> <span class="n">args</span></div></div>
+                <span class="c"># Partial solutions are permitted, so this is not an error.</span>
+                <span class="k">break</span>
+        <span class="k">return</span> <span class="n">args</span>
+</div></div>
+<div class="viewcode-block" id="aperture_iter"><a class="viewcode-back" href="../../../python/audio_photo/elflash.html#hamcalc.audio_photo.elflash.aperture_iter">[docs]</a><span class="k">def</span> <span class="nf">aperture_iter</span><span class="p">(</span> <span class="n">G</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Yields a sequence of F and D values for a given Guide number.</span>
+
+<span class="sd">    :param G: Guide number in feet</span>
+<span class="sd">    :returns: sequence of F aperature and D subject distance in feet.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">F</span> <span class="ow">in</span> <span class="mf">1.4</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mf">2.8</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mf">5.6</span><span class="p">,</span><span class="mi">8</span><span class="p">,</span><span class="mi">11</span><span class="p">,</span><span class="mi">16</span><span class="p">,</span><span class="mi">22</span><span class="p">,</span><span class="mi">32</span><span class="p">,</span><span class="mi">45</span><span class="p">,</span><span class="mi">64</span><span class="p">:</span>
+        <span class="k">yield</span> <span class="n">F</span><span class="p">,</span> <span class="n">G</span><span class="o">/</span><span class="n">F</span>
+</div>
+<span class="n">flash</span><span class="o">=</span> <span class="n">Flash</span><span class="p">()</span>
 </pre></div>
 
           </div>

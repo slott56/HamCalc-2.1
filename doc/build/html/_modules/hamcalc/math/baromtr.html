@@ -83,7 +83,7 @@
 <span class="sd">&gt;&gt;&gt; len(t)</span>
 <span class="sd">22</span>
 <span class="sd">&gt;&gt;&gt; baromtr.equivalent( 1033, baromtr.MB )</span>
-<span class="sd">(1033.0, 1.0, 76.0, 29.921, 10.3322, 406.782, 33.899, 14.696, 2116.2, 1.033, 101.325)</span>
+<span class="sd">(1033.0, 1.0, 76.0, 29.921, 10.3322, 406.782, 33.899, 14.696, 2116.2, 1.0332, 101.325)</span>
 
 
 <span class="sd">&quot;&quot;&quot;</span>
@@ -157,13 +157,25 @@
     <span class="sd">&quot;&quot;&quot;Kilograms per square centimetre&quot;&quot;&quot;</span>
     <span class="n">standard</span><span class="o">=</span> <span class="n">ATM</span>
     <span class="n">name</span><span class="o">=</span> <span class="s">&#39;kg/cm²&#39;</span>
-    <span class="n">factor</span><span class="o">=</span> <span class="mf">1.033</span>
+    <span class="n">factor</span><span class="o">=</span> <span class="mf">1.0332</span>
 </div>
 <div class="viewcode-block" id="KPA"><a class="viewcode-back" href="../../../python/math/baromtr.html#hamcalc.math.baromtr.KPA">[docs]</a><span class="k">class</span> <span class="nc">KPA</span><span class="p">(</span> <span class="n">Unit</span> <span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Kilopascals&quot;&quot;&quot;</span>
     <span class="n">standard</span><span class="o">=</span> <span class="n">ATM</span>
     <span class="n">name</span><span class="o">=</span> <span class="s">&#39;kPa&#39;</span>
     <span class="n">factor</span><span class="o">=</span> <span class="mf">101.325</span>
+</div>
+<div class="viewcode-block" id="MPA"><a class="viewcode-back" href="../../../python/math/baromtr.html#hamcalc.math.baromtr.MPA">[docs]</a><span class="k">class</span> <span class="nc">MPA</span><span class="p">(</span> <span class="n">Unit</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Megapascals&quot;&quot;&quot;</span>
+    <span class="n">standard</span><span class="o">=</span> <span class="n">ATM</span>
+    <span class="n">name</span><span class="o">=</span> <span class="s">&#39;mPa&#39;</span>
+    <span class="n">factor</span><span class="o">=</span> <span class="mf">0.101325</span>
+</div>
+<div class="viewcode-block" id="KG_SQ_M"><a class="viewcode-back" href="../../../python/math/baromtr.html#hamcalc.math.baromtr.KG_SQ_M">[docs]</a><span class="k">class</span> <span class="nc">KG_SQ_M</span><span class="p">(</span> <span class="n">Unit</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Kilograms per square metre&quot;&quot;&quot;</span>
+    <span class="n">standard</span><span class="o">=</span> <span class="n">ATM</span>
+    <span class="n">name</span><span class="o">=</span> <span class="s">&#39;kg/m²&#39;</span>
+    <span class="n">factor</span><span class="o">=</span> <span class="mf">10332.274</span>
 </div>
 <div class="viewcode-block" id="table"><a class="viewcode-back" href="../../../python/math/baromtr.html#hamcalc.math.baromtr.table">[docs]</a><span class="k">def</span> <span class="nf">table</span><span class="p">(</span> <span class="n">kpa_start</span><span class="o">=</span><span class="mf">95.5</span><span class="p">,</span> <span class="n">kpa_stop</span><span class="o">=</span><span class="mf">106.5</span><span class="p">,</span> <span class="n">kpa_step</span><span class="o">=</span><span class="mf">0.5</span> <span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Yields a sequence of values from 95.5 kPa to 106 kPa in .5 kPa steps.</span>

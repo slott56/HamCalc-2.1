@@ -70,6 +70,14 @@ Quirk
 ~~~~~~~~
 
 Input in metres first, if no input, then the prompt switches
-to feet.
+to feet. Almost every other program prompts for the measurement
+system first.
 
 The relevant calculations are iterated four times.
+
+The standard F-stops are listed in **DATA** instead of computed.
+
+..  math::
+
+    F = \left\lbrace (\sqrt 2)^P | 1 \leq P \leq 12 \right\rbrace
+

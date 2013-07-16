@@ -1,0 +1,328 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>exposure – Exposure Calculator &mdash; HamCalc 2.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/hamcalc.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '2.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="HamCalc 2.1 documentation" href="../../index.html" />
+    <link rel="up" title="audio_photo – Audio, Sound and Photography" href="index.html" />
+    <link rel="next" title="software – Software Engineering, Programming and Computers" href="../software.html" />
+    <link rel="prev" title="elflash – Electronic Flash" href="elflash.html" /> 
+  </head>
+  <body>
+    <div class="header-wrapper">
+      <div class="header">
+        <div class="headertitle"><a
+          href="../../index.html">HamCalc 2.1 documentation</a></div>
+        <div class="rel">
+          <a href="elflash.html" title="elflash – Electronic Flash"
+             accesskey="P">previous</a> |
+          <a href="../software.html" title="software – Software Engineering, Programming and Computers"
+             accesskey="N">next</a> |
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a>
+        </div>
+       </div>
+    </div>
+
+    <div class="content-wrapper">
+      <div class="content">
+        <div class="document">
+            
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="exposure-exposure-calculator">
+<h1>exposure &#8211; Exposure Calculator<a class="headerlink" href="#exposure-exposure-calculator" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="analysis">
+<h2>Analysis<a class="headerlink" href="#analysis" title="Permalink to this headline">¶</a></h2>
+<p>This is three <strong>Solver</strong> objects, one for <a class="reference internal" href="#camera">camera</a> exposure,
+one for <a class="reference internal" href="#enlarger">enlarger</a> exposures and one for <a class="reference internal" href="#filter">filter</a> exposure
+correction.</p>
+<div class="section" id="camera">
+<h3>Camera<a class="headerlink" href="#camera" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>&#8220;CAMERA EXPOSURES&#8221;</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">C:</th><td class="field-body">Footcandles (integer, rounded up)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">I:</th><td class="field-body">Film Speed (ISO) (integer)</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">S:</th><td class="field-body">Exposure Time (fraction of 4000)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">F:</th><td class="field-body">Aperture ƒ/ (power of <img class="math" src="../../_images/math/2c4dc1409208ff6a3039f4871d85c16763334983.png" alt="\sqrt{2}"/></td>
+</tr>
+</tbody>
+</table>
+<p>Given <em>C</em> and <em>I</em>, a table of values can be computed.</p>
+<p>Otherwise, these appear to be the relevant calculations
+for aperture and exposure.</p>
+<div class="math">
+<p><img src="../../_images/math/62dd9d16a3d791df77a0d263ee575313ba551c85.png" alt="\text{1380 } F &amp;= \sqrt{CIS/20} \\
+\text{1390 } S &amp;= \dfrac{20F^2}{CI} \\
+\text{1400 } C &amp;= \dfrac{20F^2}{SI} \\
+\text{1410 } I &amp;= \dfrac{20F^2}{CS} \\"/></p>
+</div><p>An additional calculation.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">E:</th><td class="field-body">Exposure Value (EV)</td>
+</tr>
+</tbody>
+</table>
+<p>From the code.</p>
+<div class="math">
+<p><img src="../../_images/math/4d1613305147b9d5b9501bace5dccaf0a4c09b22.png" alt="E_v = \dfrac{ \log{(0.0512 C I)}}{ \log 2 } = \log_2{(0.0512 C I)}"/></p>
+</div><p>From <a class="reference external" href="http://en.wikipedia.org/wiki/Exposure_value">http://en.wikipedia.org/wiki/Exposure_value</a></p>
+<div class="math">
+<p><img src="../../_images/math/85679812936b0d22f86207d95ce3938976ffa797.png" alt="E_v = \log_2 \dfrac{F^2}{S}"/></p>
+</div><p>&#8220;EQUIVALENT EXPOSURES&#8221;</p>
+<p>This is two aperture-exposure tables that show F-stop values and exposure
+for standard F-stop and standard exposure times.</p>
+<div class="math">
+<p><img src="../../_images/math/80c446e9eb1b48ff9c15251cca11d7df261f1da9.png" alt="\left\lbrace \langle F=\sqrt{2}^P, S=20F^2/C/I \rangle | 1 \leq P \leq 12 \right\rbrace \\
+\left\lbrace \langle F=\sqrt{CIS/20}, S=4000/2^P \rangle | 1 \leq P \leq 12 \right\rbrace"/></p>
+</div><p>The exposure times, <em>S</em>, are actually tweaked slightly in three ranges.
+Here&#8217;s one view.</p>
+<div class="math">
+<p><img src="../../_images/math/33f9cd3e4ad84e8be38c88fbb0f940f79f42d928.png" alt="\left\lbrace 4000/2^P | 1 \leq P &lt; 6 \right\rbrace
+\bigcup \left\lbrace 3840/2^P | 6 \leq P &lt; 9 \right\rbrace
+\bigcup \left\lbrace 4096/2^P | 9 \leq P &lt; 13 \right\rbrace"/></p>
+</div><p>This can also be looked at as &#8220;pretty&#8221;
+rounding based on the range of the value.</p>
+<div class="math">
+<p><img src="../../_images/math/26aed6b9349402af53f6cd6f31cccc012bd2a831.png" alt="S_r &amp;= 4096/2^P \\
+S &amp;= \begin{cases}
+\lfloor S_r \rfloor_{100} &amp;\text{ if $1000 \leq F$ } \\
+\lfloor S_r \rfloor_{25} &amp;\text{ if $100\leq F &lt;1000$ } \\
+\lfloor S_r \rfloor_{15} &amp;\text{ if $15 \leq F &lt;100$ } \\
+\lfloor S_r \rfloor &amp;\text{ if $F &lt;15$ } \\
+\end{cases}"/></p>
+</div><p>We define this floor function as follows.</p>
+<div class="math">
+<p><img src="../../_images/math/dabd530262183f07058ef4293fadf284747c01d7.png" alt="\left\lfloor S \right\rfloor_{n} = n \times \left\lfloor \dfrac{S}{n} \right\rfloor"/></p>
+</div></div></blockquote>
+</div>
+<div class="section" id="enlarger">
+<h3>Enlarger<a class="headerlink" href="#enlarger" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>&#8220;ENLARGER EXPOSURES&#8221;</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">F:</th><td class="field-body">Aperture ƒ/ (power of <img class="math" src="../../_images/math/2c4dc1409208ff6a3039f4871d85c16763334983.png" alt="\sqrt{2}"/></td>
+</tr>
+<tr class="field-even field"><th class="field-name">S:</th><td class="field-body">Exposure Time (fraction of 4000)</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">X:</th><td class="field-body">length</td>
+</tr>
+<tr class="field-even field"><th class="field-name">M:</th><td class="field-body">width</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">H_O:</th><td class="field-body">Original Lens height</td>
+</tr>
+</tbody>
+</table>
+<p>This use case is confusing, since it seems to ask for
+the same data twice. It could be that it&#8217;s asking
+for an original exposure and then computing a revised
+enlargement from that original exposure description.</p>
+<p>It requests Aperture, <em>F</em>, Exposure Time, <em>S</em>, and
+image size information.</p>
+<p>Then it appears to request a new image size: either length of width.
+The other value will be computed from the initial size.</p>
+<p>Then it will request aperture or exposure. Again.
+And compute aperture from exposure or vice versa.
+This appears to be based on values of <em>Y</em> and <em>Q</em> computed
+from the initial exposure.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">L:</th><td class="field-body">length of new image</td>
+</tr>
+<tr class="field-even field"><th class="field-name">W:</th><td class="field-body">width of new image</td>
+</tr>
+</tbody>
+</table>
+<div class="math">
+<p><img src="../../_images/math/f07162d0f8d63016b5bb9364b85091cb6fbe6fac.png" alt="R &amp;= M/X \\
+Q &amp;= LW/M/X \\
+Y &amp;= 4QS/F^2 \\
+&amp; \begin{cases}
+S &amp;= YF^2/4 \text{ if $F$ given}\\
+F &amp;= 2\sqrt{\frac{S}{Y}} \text{ if $S$ given} \\
+\end{cases} \\
+H &amp;= H_OW/X \text{ if $H_O$ given}"/></p>
+</div></div></blockquote>
+</div>
+<div class="section" id="filter">
+<h3>Filter<a class="headerlink" href="#filter" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>See <a class="reference external" href="http://en.wikipedia.org/wiki/Filter_factor">http://en.wikipedia.org/wiki/Filter_factor</a></p>
+<p>&#8220;EXPOSURE FACTOR / FILTER FACTOR&#8221;</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">S:</th><td class="field-body">Exposure time (sec.) without factor</td>
+</tr>
+<tr class="field-even field"><th class="field-name">F:</th><td class="field-body">Aperture (ƒ/) without factor</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">X:</th><td class="field-body">Exposure / Filter factor (a multiplier)
+Typical values range from 1 to 16.
+A 75% filter is 1.3, for example.</td>
+</tr>
+</tbody>
+</table>
+<p>New exposure time, <em>S_f</em>, given the filter&#8217;s factor:</p>
+<div class="math">
+<p><img src="../../_images/math/c5668741a32777201f9c1d8747cb25e609a72dd5.png" alt="S_f = \left\lceil \dfrac{1}{SX} \right\rceil"/></p>
+</div><p>New f-stop, <em>F_f</em>, given the filter&#8217;s factor:</p>
+<div class="math">
+<p><img src="../../_images/math/54ba0a187f8a79f58eca6e7c4037ea6f6f25156f.png" alt="F_f = \sqrt{ \dfrac{F^2}{X} }"/></p>
+</div></div></blockquote>
+</div>
+</div>
+<div class="section" id="implementation">
+<h2>Implementation<a class="headerlink" href="#implementation" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="legacy-output">
+<h2>Legacy Output<a class="headerlink" href="#legacy-output" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><pre>The exposures and apertures shown are mathematically correct but,
+due to the reciprocity failure characteristics of each particular
+film emulsion, unusually short (less than 1/1000 sec.) or very long
+(more than 5 sec.) indicated exposures may have to be increased by
+a factor of up to 3x. Unusually long or short exposures can also
+cause colour shifts in some colour films.</pre>
+</div>
+</div>
+<div class="section" id="quirks">
+<h2>Quirks<a class="headerlink" href="#quirks" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><pre>2700 Z=INT(100*Z+0.5!)/100:RETURN
+2710 Z=INT(10*Z+0.5!)/10:RETURN
+2720 Z=INT(Z+0.5!):RETURN</pre>
+</div>
+<p>Apparently, the <tt class="docutils literal"><span class="pre">CINT()</span></tt> function wasn&#8217;t available for line 2720.</p>
+<p>Also, the <tt class="docutils literal"><span class="pre">DEF</span> <span class="pre">FN</span></tt> statement wasn&#8217;t used, either.</p>
+<div class="highlight-python"><pre>1680 IF X*M&lt;&gt;0 THEN 1690
+1690 VIEW PRINT 5 TO 24:CLS:VIEW PRINT:LOCATE 5</pre>
+</div>
+<p>L and W for desired length and width.
+How about moving up one letter L <a href="#id1"><span class="problematic" id="id2">|rarr|</span></a> M, W <a href="#id3"><span class="problematic" id="id4">|rarr|</span></a> X for original length and width?
+That seems sensible. L1 and W2 might be better, but M and X
+would be fine. The quirk is that M became old width instead of X being used for old width.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+        </div>
+        <div class="sidebar">
+          <h3>Table Of Contents</h3>
+          <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../background.html">Background</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../legacy.html">The HamCalc Legacy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../subjects.html">Subject Area Index</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../python_architecture.html">Python Architecture</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Python Modules</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../lib.html">lib &#8211; Supporting Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../radio/index.html">radio &#8211; Radio Design and Engineering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ham/index.html">ham &#8211; Ham Radio Operations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../electronics/index.html">electronics &#8211; General Electronics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../construction/index.html">construction &#8211; Construction and Mechanical</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../math/index.html">math &#8211; Math, Physics, Units Conversion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../navigation/index.html">navigation &#8211; Navigation and Astronomy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../calendar/index.html">calendar &#8211; Calendrical Calculations</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">audio_photo &#8211; Audio, Sound and Photography</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="elflash.html">elflash &#8211; Electronic Flash</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="">exposure &#8211; Exposure Calculator</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../software.html">software &#8211; Software Engineering, Programming and Computers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../other/index.html">other &#8211; including Finance and Nutrition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../stdio.html">STDIO Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../rest.html">RESTful Web Services Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../cli.html">Command-Line Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../gui.html">GUI Interface</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../todo.html">The To Do List</a></li>
+</ul>
+
+          <h3 style="margin-top: 1.5em;">Search</h3>
+          <form class="search" action="../../search.html" method="get">
+            <input type="text" name="q" />
+            <input type="submit" value="Go" />
+            <input type="hidden" name="check_keywords" value="yes" />
+            <input type="hidden" name="area" value="default" />
+          </form>
+          <p class="searchtip" style="font-size: 90%">
+            Enter search terms or a module, class or function name.
+          </p>
+        </div>
+        <div class="clearer"></div>
+      </div>
+    </div>
+
+    <div class="footer-wrapper">
+      <div class="footer">
+        <div class="left">
+          <a href="elflash.html" title="elflash – Electronic Flash"
+             >previous</a> |
+          <a href="../software.html" title="software – Software Engineering, Programming and Computers"
+             >next</a> |
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |
+          <a href="../../genindex.html" title="General Index"
+             >index</a>
+            <br/>
+            <a href="../../_sources/python/audio_photo/exposure.txt"
+               rel="nofollow">Show Source</a>
+        </div>
+
+        <div class="right">
+          
+    <div class="footer">
+        &copy; Copyright 2013, S.Lott.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2b1.
+    </div>
+        </div>
+        <div class="clearer"></div>
+      </div>
+    </div>
+
+  </body>
+</html>

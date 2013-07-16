@@ -64,15 +64,15 @@
 <span class="sd">    &gt;&gt;&gt; wt= Pound.to_std( 113 )</span>
 <span class="sd">    &gt;&gt;&gt; for u in Ounce, Pound, Long_Ton, Short_Ton:</span>
 <span class="sd">    ...    print( round(u.from_std(wt),3) )</span>
-<span class="sd">    1100</span>
-<span class="sd">    113</span>
-<span class="sd">    .041</span>
-<span class="sd">    .052</span>
+<span class="sd">    1808.0</span>
+<span class="sd">    113.0</span>
+<span class="sd">    0.05</span>
+<span class="sd">    0.057</span>
 <span class="sd">    &gt;&gt;&gt; for u in Gram, Kilogram, Tonne:</span>
 <span class="sd">    ...    print( round(u.from_std(wt),3) )</span>
-<span class="sd">    5000</span>
-<span class="sd">    500</span>
-<span class="sd">    .023</span>
+<span class="sd">    51255.938</span>
+<span class="sd">    51.256</span>
+<span class="sd">    0.051</span>
 
 <span class="sd">Volume:</span>
 
@@ -84,11 +84,46 @@
 
 <span class="sd">    millilitre, litre, cu. cm, cu. metre</span>
 
+<span class="sd">    &gt;&gt;&gt; from hamcalc.math.metrics import Litre, Millilitre, Cubic_CM, Cubic_M</span>
+<span class="sd">    &gt;&gt;&gt; from hamcalc.math.metrics import Fluid_Ounce_US, Pint_US, Quart_US, Gallon_US, Cubic_Inch, Cubic_Foot, Cubic_Yard</span>
+<span class="sd">    &gt;&gt;&gt; vol= Millilitre.to_std( 750 )</span>
+<span class="sd">    &gt;&gt;&gt; for u in Litre, Millilitre, Cubic_CM, Cubic_M:</span>
+<span class="sd">    ...    print( round(u.from_std(vol),3) )</span>
+<span class="sd">    0.75</span>
+<span class="sd">    750.0</span>
+<span class="sd">    750.0</span>
+<span class="sd">    0.001</span>
+<span class="sd">    &gt;&gt;&gt; for u in Fluid_Ounce_US, Pint_US, Quart_US, Gallon_US, Cubic_Inch, Cubic_Foot, Cubic_Yard:</span>
+<span class="sd">    ...    print( round(u.from_std(vol),3) )</span>
+<span class="sd">    25.361</span>
+<span class="sd">    1.585</span>
+<span class="sd">    0.793</span>
+<span class="sd">    0.198</span>
+<span class="sd">    45.768</span>
+<span class="sd">    0.026</span>
+<span class="sd">    0.001</span>
+
 <span class="sd">Length or Distance:</span>
 
 <span class="sd">    inch, foot, yard, mile</span>
 
 <span class="sd">    mm, cm, metre, kilometre</span>
+
+<span class="sd">    &gt;&gt;&gt; from hamcalc.math.metrics import METRE, CENTIMETRE, MILLIMETRE, KILOMETRE</span>
+<span class="sd">    &gt;&gt;&gt; from hamcalc.math.metrics import INCH, FOOT, YARD, MILE</span>
+<span class="sd">    &gt;&gt;&gt; d = METRE.to_std( 1.7526 )</span>
+<span class="sd">    &gt;&gt;&gt; for u in METRE, CENTIMETRE, MILLIMETRE, KILOMETRE:</span>
+<span class="sd">    ...     print( round(u.from_std(d),3) )</span>
+<span class="sd">    1.753</span>
+<span class="sd">    175.26</span>
+<span class="sd">    1752.6</span>
+<span class="sd">    0.002</span>
+<span class="sd">    &gt;&gt;&gt; for u in INCH, FOOT, YARD, MILE:</span>
+<span class="sd">    ...     print( round(u.from_std(d),3) )</span>
+<span class="sd">    69.0</span>
+<span class="sd">    5.75</span>
+<span class="sd">    1.917</span>
+<span class="sd">    0.001</span>
 
 <span class="sd">Area:</span>
 
@@ -96,11 +131,39 @@
 
 <span class="sd">    sq.cm., sq.metre, hectare</span>
 
+<span class="sd">    &gt;&gt;&gt; from hamcalc.math.metrics import Square_M, Square_CM, Hectare</span>
+<span class="sd">    &gt;&gt;&gt; from hamcalc.math.metrics import Square_Inch, Square_Foot, Square_Yard, Acre</span>
+<span class="sd">    &gt;&gt;&gt; a = Square_Foot.to_std( 1800 )</span>
+<span class="sd">    &gt;&gt;&gt; for u in Square_M, Square_CM, Hectare:</span>
+<span class="sd">    ...     print( round(u.from_std(a),3) )</span>
+<span class="sd">    167.225</span>
+<span class="sd">    1672254.785</span>
+<span class="sd">    0.017</span>
+<span class="sd">    &gt;&gt;&gt; a = Square_Foot.to_std( 1800 )</span>
+<span class="sd">    &gt;&gt;&gt; for u in Square_Inch, Square_Foot, Square_Yard, Acre:</span>
+<span class="sd">    ...     print( round(u.from_std(a),3) )</span>
+<span class="sd">    259200.01</span>
+<span class="sd">    1800.0</span>
+<span class="sd">    200.0</span>
+<span class="sd">    0.041</span>
+
 <span class="sd">Pressure:</span>
 
 <span class="sd">    PSI, lb/sq.in., lb/sq.ft., in.Hg</span>
 
 <span class="sd">    kPa, mPa, bar, Kg/sq.metre</span>
+
+<span class="sd">    &gt;&gt;&gt; from hamcalc.math.metrics import PSI, PSF, IN_Hg, KPA, MPA, BAR, KG_SQ_M</span>
+<span class="sd">    &gt;&gt;&gt; p = BAR.to_std( 1.032 )</span>
+<span class="sd">    &gt;&gt;&gt; for u in PSI, PSF, IN_Hg, KPA, MPA, BAR, KG_SQ_M:</span>
+<span class="sd">    ...     print( round(u.from_std(p),3) )</span>
+<span class="sd">    14.679</span>
+<span class="sd">    2113.742</span>
+<span class="sd">    29.886</span>
+<span class="sd">    101.207</span>
+<span class="sd">    0.101</span>
+<span class="sd">    1.032</span>
+<span class="sd">    10320.274</span>
 
 <span class="sd">Energy:</span>
 
@@ -108,11 +171,22 @@
 
 <span class="sd">    BTU</span>
 
+<span class="sd">    &gt;&gt;&gt; from hamcalc.math.metrics import Foot_Pound, BTU</span>
+<span class="sd">    &gt;&gt;&gt; e= BTU.to_std( 25 )</span>
+<span class="sd">    &gt;&gt;&gt; round( Foot_Pound.from_std(e), 3 )</span>
+<span class="sd">    19454.172</span>
+
 <span class="sd">Power:</span>
 
 <span class="sd">    Horsepower</span>
 
 <span class="sd">    Kilowatt</span>
+
+<span class="sd">    &gt;&gt;&gt; from hamcalc.math.metrics import Kilowatt, Horsepower</span>
+<span class="sd">    &gt;&gt;&gt; p= Kilowatt.to_std( 0.8 )</span>
+<span class="sd">    &gt;&gt;&gt; round( Horsepower.from_std(p), 3 )</span>
+<span class="sd">    1.073</span>
+
 
 <span class="sd">Force:</span>
 
@@ -120,11 +194,24 @@
 
 <span class="sd">    newton</span>
 
+<span class="sd">    &gt;&gt;&gt; from hamcalc.math.metrics import NEWTON, POUND_FORCE</span>
+<span class="sd">    &gt;&gt;&gt; f= POUND_FORCE.to_std( 180 )</span>
+<span class="sd">    &gt;&gt;&gt; round( NEWTON.from_std(f), 3 )</span>
+<span class="sd">    800.68</span>
+
 <span class="sd">Torque or Moment:</span>
 
 <span class="sd">    lb/in, lb/ft</span>
 
 <span class="sd">    newton-metres</span>
+
+<span class="sd">    &gt;&gt;&gt; from hamcalc.math.metrics import Newton_Metre, Pound_Foot, Pound_Inch</span>
+<span class="sd">    &gt;&gt;&gt; t = Pound_Foot.to_std( 75 )</span>
+<span class="sd">    &gt;&gt;&gt; for u in Newton_Metre, Pound_Foot, Pound_Inch:</span>
+<span class="sd">    ...     print( round(u.from_std(t),3) )</span>
+<span class="sd">    101.686</span>
+<span class="sd">    75.0</span>
+<span class="sd">    900.0</span>
 
 <span class="sd">Temperature:</span>
 
@@ -132,10 +219,19 @@
 
 <span class="sd">    celsius</span>
 
+<span class="sd">    &gt;&gt;&gt; from hamcalc.math.metrics import CELSIUS, FAHRENHEIT</span>
+<span class="sd">    &gt;&gt;&gt; t= FAHRENHEIT.to_std( 72 )</span>
+<span class="sd">    &gt;&gt;&gt; round( CELSIUS.from_std(t), 3 )</span>
+<span class="sd">    22.222</span>
+
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">from</span> <span class="nn">hamcalc.lib</span> <span class="kn">import</span> <span class="n">Unit</span><span class="p">,</span> <span class="n">Standard_Unit</span>
 <span class="kn">from</span> <span class="nn">hamcalc.math.baromtr</span> <span class="kn">import</span> <span class="n">PSI</span><span class="p">,</span> <span class="n">PSF</span><span class="p">,</span> <span class="n">IN_Hg</span><span class="p">,</span> <span class="n">KPA</span><span class="p">,</span> <span class="n">MPA</span><span class="p">,</span> <span class="n">BAR</span><span class="p">,</span> <span class="n">KG_SQ_M</span>
-<span class="kn">import</span> <span class="nn">hamcalc.math.equiv</span>
+<span class="kn">from</span> <span class="nn">hamcalc.math.equiv</span> <span class="kn">import</span> <span class="n">METRE</span><span class="p">,</span> <span class="n">CENTIMETRE</span><span class="p">,</span> <span class="n">MILLIMETRE</span><span class="p">,</span> <span class="n">KILOMETRE</span>
+<span class="kn">from</span> <span class="nn">hamcalc.math.equiv</span> <span class="kn">import</span> <span class="n">INCH</span><span class="p">,</span> <span class="n">FOOT</span><span class="p">,</span> <span class="n">YARD</span><span class="p">,</span> <span class="n">MILE</span>
+<span class="kn">from</span> <span class="nn">hamcalc.math.centrif</span> <span class="kn">import</span> <span class="n">NEWTON</span><span class="p">,</span> <span class="n">POUND_FORCE</span>
+<span class="kn">from</span> <span class="nn">hamcalc.math.equiv</span> <span class="kn">import</span> <span class="n">INCH</span><span class="p">,</span> <span class="n">FOOT</span><span class="p">,</span> <span class="n">YARD</span><span class="p">,</span> <span class="n">MILE</span>
+<span class="kn">from</span> <span class="nn">hamcalc.math.equiv</span> <span class="kn">import</span> <span class="n">CELSIUS</span><span class="p">,</span> <span class="n">FAHRENHEIT</span>
 
 <div class="viewcode-block" id="Kilogram"><a class="viewcode-back" href="../../../python/math/metrics.html#hamcalc.math.metrics.Kilogram">[docs]</a><span class="k">class</span> <span class="nc">Kilogram</span><span class="p">(</span> <span class="n">Standard_Unit</span> <span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Kilogram&quot;&quot;&quot;</span>
@@ -176,7 +272,171 @@
     <span class="n">standard</span><span class="o">=</span> <span class="n">Kilogram</span>
     <span class="n">name</span><span class="o">=</span> <span class="s">&quot;t (UK)&quot;</span>
     <span class="n">factor</span><span class="o">=</span> <span class="mf">0.00098420652</span>
-</pre></div></div>
+
+</div>
+<div class="viewcode-block" id="Litre"><a class="viewcode-back" href="../../../python/math/metrics.html#hamcalc.math.metrics.Litre">[docs]</a><span class="k">class</span> <span class="nc">Litre</span><span class="p">(</span> <span class="n">Standard_Unit</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Litre&quot;&quot;&quot;</span>
+    <span class="n">name</span><span class="o">=</span> <span class="s">&quot;l&quot;</span>
+</div>
+<div class="viewcode-block" id="Millilitre"><a class="viewcode-back" href="../../../python/math/metrics.html#hamcalc.math.metrics.Millilitre">[docs]</a><span class="k">class</span> <span class="nc">Millilitre</span><span class="p">(</span> <span class="n">Unit</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Millilitre&quot;&quot;&quot;</span>
+    <span class="n">name</span><span class="o">=</span> <span class="s">&quot;ml&quot;</span>
+    <span class="n">factor</span><span class="o">=</span> <span class="mi">1000</span>
+</div>
+<div class="viewcode-block" id="Cubic_CM"><a class="viewcode-back" href="../../../python/math/metrics.html#hamcalc.math.metrics.Cubic_CM">[docs]</a><span class="k">class</span> <span class="nc">Cubic_CM</span><span class="p">(</span> <span class="n">Unit</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Cubic Centimetre&quot;&quot;&quot;</span>
+    <span class="n">name</span><span class="o">=</span> <span class="s">&quot;cc&quot;</span>
+    <span class="n">factor</span><span class="o">=</span> <span class="mi">1000</span>
+</div>
+<div class="viewcode-block" id="Cubic_M"><a class="viewcode-back" href="../../../python/math/metrics.html#hamcalc.math.metrics.Cubic_M">[docs]</a><span class="k">class</span> <span class="nc">Cubic_M</span><span class="p">(</span> <span class="n">Unit</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Cubic Metre&quot;&quot;&quot;</span>
+    <span class="n">name</span><span class="o">=</span> <span class="s">&quot;cu.m&quot;</span>
+    <span class="n">factor</span><span class="o">=</span> <span class="mf">0.001</span>
+</div>
+<div class="viewcode-block" id="Fluid_Ounce_UK"><a class="viewcode-back" href="../../../python/math/metrics.html#hamcalc.math.metrics.Fluid_Ounce_UK">[docs]</a><span class="k">class</span> <span class="nc">Fluid_Ounce_UK</span><span class="p">(</span> <span class="n">Unit</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;fluid ounce (imperial)&quot;&quot;&quot;</span>
+    <span class="n">name</span><span class="o">=</span> <span class="s">&quot;fl.oz.(UK)&quot;</span>
+    <span class="n">factor</span><span class="o">=</span> <span class="mf">35.1951</span>
+</div>
+<div class="viewcode-block" id="Pint_UK"><a class="viewcode-back" href="../../../python/math/metrics.html#hamcalc.math.metrics.Pint_UK">[docs]</a><span class="k">class</span> <span class="nc">Pint_UK</span><span class="p">(</span> <span class="n">Unit</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;pint (imperial)&quot;&quot;&quot;</span>
+    <span class="n">name</span><span class="o">=</span> <span class="s">&quot;pt.(UK)&quot;</span>
+    <span class="n">factor</span><span class="o">=</span> <span class="mf">1.75975</span>
+</div>
+<div class="viewcode-block" id="Quart_UK"><a class="viewcode-back" href="../../../python/math/metrics.html#hamcalc.math.metrics.Quart_UK">[docs]</a><span class="k">class</span> <span class="nc">Quart_UK</span><span class="p">(</span> <span class="n">Unit</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;quart (imperial)&quot;&quot;&quot;</span>
+    <span class="n">name</span><span class="o">=</span> <span class="s">&quot;qt.(UK)&quot;</span>
+    <span class="n">factor</span><span class="o">=</span> <span class="mf">0.879877</span>
+</div>
+<div class="viewcode-block" id="Gallon_UK"><a class="viewcode-back" href="../../../python/math/metrics.html#hamcalc.math.metrics.Gallon_UK">[docs]</a><span class="k">class</span> <span class="nc">Gallon_UK</span><span class="p">(</span> <span class="n">Unit</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;gallon (imperial)&quot;&quot;&quot;</span>
+    <span class="n">name</span><span class="o">=</span><span class="s">&quot;gal.(UK)&quot;</span>
+    <span class="n">factor</span><span class="o">=</span> <span class="mf">0.219969</span>
+</div>
+<div class="viewcode-block" id="Fluid_Ounce_US"><a class="viewcode-back" href="../../../python/math/metrics.html#hamcalc.math.metrics.Fluid_Ounce_US">[docs]</a><span class="k">class</span> <span class="nc">Fluid_Ounce_US</span><span class="p">(</span> <span class="n">Unit</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;fluid ounce (US)&quot;&quot;&quot;</span>
+    <span class="n">name</span><span class="o">=</span> <span class="s">&quot;fl.oz.(US)&quot;</span>
+    <span class="n">factor</span><span class="o">=</span> <span class="mf">33.814</span>
+</div>
+<div class="viewcode-block" id="Pint_US"><a class="viewcode-back" href="../../../python/math/metrics.html#hamcalc.math.metrics.Pint_US">[docs]</a><span class="k">class</span> <span class="nc">Pint_US</span><span class="p">(</span> <span class="n">Unit</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;pint (US)&quot;&quot;&quot;</span>
+    <span class="n">name</span><span class="o">=</span> <span class="s">&quot;pt.(US)&quot;</span>
+    <span class="n">factor</span><span class="o">=</span> <span class="mf">2.11338</span>
+</div>
+<div class="viewcode-block" id="Quart_US"><a class="viewcode-back" href="../../../python/math/metrics.html#hamcalc.math.metrics.Quart_US">[docs]</a><span class="k">class</span> <span class="nc">Quart_US</span><span class="p">(</span> <span class="n">Unit</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;quart (US)&quot;&quot;&quot;</span>
+    <span class="n">name</span><span class="o">=</span> <span class="s">&quot;qt.(US)&quot;</span>
+    <span class="n">factor</span><span class="o">=</span> <span class="mf">1.05669</span>
+</div>
+<div class="viewcode-block" id="Gallon_US"><a class="viewcode-back" href="../../../python/math/metrics.html#hamcalc.math.metrics.Gallon_US">[docs]</a><span class="k">class</span> <span class="nc">Gallon_US</span><span class="p">(</span> <span class="n">Unit</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;gallon (US)&quot;&quot;&quot;</span>
+    <span class="n">name</span><span class="o">=</span><span class="s">&quot;gal.(US)&quot;</span>
+    <span class="n">factor</span><span class="o">=</span> <span class="mf">0.264172</span>
+</div>
+<div class="viewcode-block" id="Cubic_Inch"><a class="viewcode-back" href="../../../python/math/metrics.html#hamcalc.math.metrics.Cubic_Inch">[docs]</a><span class="k">class</span> <span class="nc">Cubic_Inch</span><span class="p">(</span> <span class="n">Unit</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Cubic Inch&quot;&quot;&quot;</span>
+    <span class="n">name</span><span class="o">=</span> <span class="s">&quot;cu.in.&quot;</span>
+    <span class="n">factor</span><span class="o">=</span> <span class="mf">61.0237</span>
+</div>
+<div class="viewcode-block" id="Cubic_Foot"><a class="viewcode-back" href="../../../python/math/metrics.html#hamcalc.math.metrics.Cubic_Foot">[docs]</a><span class="k">class</span> <span class="nc">Cubic_Foot</span><span class="p">(</span> <span class="n">Unit</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Cubic Foot&quot;&quot;&quot;</span>
+    <span class="n">name</span><span class="o">=</span> <span class="s">&quot;cu.ft.&quot;</span>
+    <span class="n">factor</span><span class="o">=</span> <span class="mf">0.0353147</span>
+</div>
+<div class="viewcode-block" id="Cubic_Yard"><a class="viewcode-back" href="../../../python/math/metrics.html#hamcalc.math.metrics.Cubic_Yard">[docs]</a><span class="k">class</span> <span class="nc">Cubic_Yard</span><span class="p">(</span> <span class="n">Unit</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Cubic Yard&quot;&quot;&quot;</span>
+    <span class="n">name</span><span class="o">=</span> <span class="s">&quot;cu.yd.&quot;</span>
+    <span class="n">factor</span><span class="o">=</span> <span class="mf">0.0013080</span>
+</div>
+<div class="viewcode-block" id="Square_M"><a class="viewcode-back" href="../../../python/math/metrics.html#hamcalc.math.metrics.Square_M">[docs]</a><span class="k">class</span> <span class="nc">Square_M</span><span class="p">(</span> <span class="n">Standard_Unit</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Square Metre&quot;&quot;&quot;</span>
+    <span class="n">name</span><span class="o">=</span> <span class="s">&quot;m²&quot;</span>
+</div>
+<div class="viewcode-block" id="Hectare"><a class="viewcode-back" href="../../../python/math/metrics.html#hamcalc.math.metrics.Hectare">[docs]</a><span class="k">class</span> <span class="nc">Hectare</span><span class="p">(</span> <span class="n">Unit</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Hectare&quot;&quot;&quot;</span>
+    <span class="n">standard</span><span class="o">=</span> <span class="n">Square_M</span>
+    <span class="n">name</span><span class="o">=</span> <span class="s">&#39;ha&#39;</span>
+    <span class="n">factor</span><span class="o">=</span> <span class="mf">0.0001</span>
+</div>
+<div class="viewcode-block" id="Square_CM"><a class="viewcode-back" href="../../../python/math/metrics.html#hamcalc.math.metrics.Square_CM">[docs]</a><span class="k">class</span> <span class="nc">Square_CM</span><span class="p">(</span> <span class="n">Unit</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Square Centimetre&quot;&quot;&quot;</span>
+    <span class="n">standard</span><span class="o">=</span> <span class="n">Square_M</span>
+    <span class="n">name</span><span class="o">=</span> <span class="s">&quot;cm²&quot;</span>
+    <span class="n">factor</span><span class="o">=</span> <span class="mi">10000</span>
+</div>
+<div class="viewcode-block" id="Square_Inch"><a class="viewcode-back" href="../../../python/math/metrics.html#hamcalc.math.metrics.Square_Inch">[docs]</a><span class="k">class</span> <span class="nc">Square_Inch</span><span class="p">(</span> <span class="n">Unit</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Square Inch&quot;&quot;&quot;</span>
+    <span class="n">standard</span><span class="o">=</span> <span class="n">Square_M</span>
+    <span class="n">name</span><span class="o">=</span> <span class="s">&quot;sq.in.&quot;</span>
+    <span class="n">factor</span><span class="o">=</span> <span class="mf">1550.0031</span>
+</div>
+<div class="viewcode-block" id="Square_Foot"><a class="viewcode-back" href="../../../python/math/metrics.html#hamcalc.math.metrics.Square_Foot">[docs]</a><span class="k">class</span> <span class="nc">Square_Foot</span><span class="p">(</span> <span class="n">Unit</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Square Foot&quot;&quot;&quot;</span>
+    <span class="n">standard</span><span class="o">=</span> <span class="n">Square_M</span>
+    <span class="n">name</span><span class="o">=</span> <span class="s">&quot;sq.ft.&quot;</span>
+    <span class="n">factor</span><span class="o">=</span> <span class="mf">10.76391</span>
+</div>
+<div class="viewcode-block" id="Square_Yard"><a class="viewcode-back" href="../../../python/math/metrics.html#hamcalc.math.metrics.Square_Yard">[docs]</a><span class="k">class</span> <span class="nc">Square_Yard</span><span class="p">(</span> <span class="n">Unit</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Square Yard&quot;&quot;&quot;</span>
+    <span class="n">standard</span><span class="o">=</span> <span class="n">Square_M</span>
+    <span class="n">name</span><span class="o">=</span> <span class="s">&quot;sq.yd.&quot;</span>
+    <span class="n">factor</span><span class="o">=</span> <span class="mf">1.1959905</span>
+</div>
+<div class="viewcode-block" id="Acre"><a class="viewcode-back" href="../../../python/math/metrics.html#hamcalc.math.metrics.Acre">[docs]</a><span class="k">class</span> <span class="nc">Acre</span><span class="p">(</span> <span class="n">Unit</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Acre&quot;&quot;&quot;</span>
+    <span class="n">standard</span><span class="o">=</span> <span class="n">Square_M</span>
+    <span class="n">name</span><span class="o">=</span> <span class="s">&quot;acre&quot;</span>
+    <span class="n">factor</span><span class="o">=</span> <span class="mf">0.00024710537</span>
+</div>
+<div class="viewcode-block" id="Joule"><a class="viewcode-back" href="../../../python/math/metrics.html#hamcalc.math.metrics.Joule">[docs]</a><span class="k">class</span> <span class="nc">Joule</span><span class="p">(</span> <span class="n">Standard_Unit</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Joule&quot;&quot;&quot;</span>
+    <span class="n">name</span><span class="o">=</span> <span class="s">&quot;J&quot;</span>
+</div>
+<div class="viewcode-block" id="Foot_Pound"><a class="viewcode-back" href="../../../python/math/metrics.html#hamcalc.math.metrics.Foot_Pound">[docs]</a><span class="k">class</span> <span class="nc">Foot_Pound</span><span class="p">(</span> <span class="n">Unit</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Foot-Pound&quot;&quot;&quot;</span>
+    <span class="n">standard</span><span class="o">=</span> <span class="n">Joule</span>
+    <span class="n">name</span><span class="o">=</span> <span class="s">&quot;ft.lb.&quot;</span>
+    <span class="n">factor</span><span class="o">=</span> <span class="mf">0.73756215</span>
+</div>
+<div class="viewcode-block" id="BTU"><a class="viewcode-back" href="../../../python/math/metrics.html#hamcalc.math.metrics.BTU">[docs]</a><span class="k">class</span> <span class="nc">BTU</span><span class="p">(</span> <span class="n">Unit</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;BTU&quot;&quot;&quot;</span>
+    <span class="n">standard</span><span class="o">=</span> <span class="n">Joule</span>
+    <span class="n">name</span><span class="o">=</span> <span class="s">&quot;BTU&quot;</span>
+    <span class="n">factor</span><span class="o">=</span> <span class="mf">9.4782E-4</span>
+</div>
+<div class="viewcode-block" id="Watt"><a class="viewcode-back" href="../../../python/math/metrics.html#hamcalc.math.metrics.Watt">[docs]</a><span class="k">class</span> <span class="nc">Watt</span><span class="p">(</span> <span class="n">Standard_Unit</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Watt&quot;&quot;&quot;</span>
+    <span class="n">name</span><span class="o">=</span> <span class="s">&quot;W&quot;</span>
+</div>
+<div class="viewcode-block" id="Kilowatt"><a class="viewcode-back" href="../../../python/math/metrics.html#hamcalc.math.metrics.Kilowatt">[docs]</a><span class="k">class</span> <span class="nc">Kilowatt</span><span class="p">(</span> <span class="n">Unit</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Kilowatt&quot;&quot;&quot;</span>
+    <span class="n">standard</span><span class="o">=</span> <span class="n">Watt</span>
+    <span class="n">name</span><span class="o">=</span> <span class="s">&quot;kW&quot;</span>
+    <span class="n">factor</span> <span class="o">=</span> <span class="mf">0.001</span>
+</div>
+<div class="viewcode-block" id="Horsepower"><a class="viewcode-back" href="../../../python/math/metrics.html#hamcalc.math.metrics.Horsepower">[docs]</a><span class="k">class</span> <span class="nc">Horsepower</span><span class="p">(</span> <span class="n">Unit</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Horsepower&quot;&quot;&quot;</span>
+    <span class="n">standard</span><span class="o">=</span> <span class="n">Watt</span>
+    <span class="n">name</span><span class="o">=</span> <span class="s">&quot;HP&quot;</span>
+    <span class="n">factor</span><span class="o">=</span> <span class="mf">0.0013410221</span>
+
+</div>
+<div class="viewcode-block" id="Newton_Metre"><a class="viewcode-back" href="../../../python/math/metrics.html#hamcalc.math.metrics.Newton_Metre">[docs]</a><span class="k">class</span> <span class="nc">Newton_Metre</span><span class="p">(</span> <span class="n">Standard_Unit</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Newton Metre&quot;&quot;&quot;</span>
+    <span class="n">name</span><span class="o">=</span> <span class="s">&quot;N·m&quot;</span>
+</div>
+<div class="viewcode-block" id="Pound_Foot"><a class="viewcode-back" href="../../../python/math/metrics.html#hamcalc.math.metrics.Pound_Foot">[docs]</a><span class="k">class</span> <span class="nc">Pound_Foot</span><span class="p">(</span> <span class="n">Unit</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Pound Foot&quot;&quot;&quot;</span>
+    <span class="n">standard</span><span class="o">=</span> <span class="n">Newton_Metre</span>
+    <span class="n">name</span><span class="o">=</span> <span class="s">&quot;ft-lbf&quot;</span>
+    <span class="n">factor</span> <span class="o">=</span> <span class="mf">0.7375621</span>
+</div>
+<div class="viewcode-block" id="Pound_Inch"><a class="viewcode-back" href="../../../python/math/metrics.html#hamcalc.math.metrics.Pound_Inch">[docs]</a><span class="k">class</span> <span class="nc">Pound_Inch</span><span class="p">(</span> <span class="n">Unit</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Pound Inch&quot;&quot;&quot;</span>
+    <span class="n">standard</span><span class="o">=</span> <span class="n">Newton_Metre</span>
+    <span class="n">name</span><span class="o">=</span> <span class="s">&quot;in-lbf&quot;</span>
+    <span class="n">factor</span><span class="o">=</span> <span class="mf">8.850745792</span></div>
+</pre></div>
 
           </div>
         </div>

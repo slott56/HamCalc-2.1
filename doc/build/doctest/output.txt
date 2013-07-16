@@ -1,4 +1,4 @@
-Results of doctest builder run on 2013-07-13 11:27:31
+Results of doctest builder run on 2013-07-16 09:23:02
 =====================================================
 
 Document: python/math/trig
@@ -257,6 +257,14 @@ Document: python/math/propcirc
 18 passed and 0 failed.
 Test passed.
 
+Document: python/audio_photo/exposure
+-------------------------------------
+1 items passed all tests:
+  18 tests in default
+18 tests in 1 items.
+18 passed and 0 failed.
+Test passed.
+
 Document: python/construction/wiremesh
 --------------------------------------
 1 items passed all tests:
@@ -339,7 +347,7 @@ Test passed.
 
 Doctest summary
 ===============
- 1028 tests
+ 1046 tests
     0 failures in tests
     0 failures in setup code
     0 failures in cleanup code

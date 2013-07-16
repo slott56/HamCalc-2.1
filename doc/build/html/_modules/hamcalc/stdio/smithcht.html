@@ -51,11 +51,11 @@
   <h1>Source code for hamcalc.stdio.smithcht</h1><div class="highlight"><pre>
 <span class="sd">&quot;&quot;&quot;Smith Chart Calculations</span>
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="kn">from</span> <span class="nn">hamcalc.stdio.menu</span> <span class="kn">import</span> <span class="n">Program_Menu</span><span class="p">,</span> <span class="n">Item</span>
+<span class="kn">from</span> <span class="nn">hamcalc.stdio.menu</span> <span class="kn">import</span> <span class="n">QT_Menu</span><span class="p">,</span> <span class="n">Item</span>
 <span class="kn">import</span> <span class="nn">string</span>
 <span class="kn">import</span> <span class="nn">runpy</span>
 
-<div class="viewcode-block" id="Smith_Chart"><a class="viewcode-back" href="../../../python/stdio.html#hamcalc.stdio.smithcht.Smith_Chart">[docs]</a><span class="k">class</span> <span class="nc">Smith_Chart</span><span class="p">(</span> <span class="n">Program_Menu</span> <span class="p">):</span>
+<div class="viewcode-block" id="Smith_Chart"><a class="viewcode-back" href="../../../python/stdio.html#hamcalc.stdio.smithcht.Smith_Chart">[docs]</a><span class="k">class</span> <span class="nc">Smith_Chart</span><span class="p">(</span> <span class="n">QT_Menu</span> <span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Menu to display the Smith Chart Calculations list of programs.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span> <span class="bp">self</span> <span class="p">):</span>
@@ -78,28 +78,6 @@
             <span class="n">Item</span><span class="p">(</span> <span class="s">&quot;&quot;</span><span class="p">,</span> <span class="s">&quot;xmtrzmat&quot;</span><span class="p">,</span> <span class="s">&quot;Xmtr Transistor Stage Coupling&quot;</span> <span class="p">),</span>
 
         <span class="p">]</span>
-<div class="viewcode-block" id="Smith_Chart.display"><a class="viewcode-back" href="../../../python/stdio.html#hamcalc.stdio.smithcht.Smith_Chart.display">[docs]</a>    <span class="k">def</span> <span class="nf">display</span><span class="p">(</span> <span class="bp">self</span> <span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Display the menu.&quot;&quot;&quot;</span>
-        <span class="k">print</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">center</span><span class="p">(</span><span class="mi">80</span><span class="p">)</span> <span class="p">)</span>
-        <span class="k">print</span><span class="p">()</span>
-        <span class="k">for</span> <span class="n">code</span><span class="p">,</span> <span class="n">item</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">item_list</span><span class="p">):</span>
-            <span class="k">print</span><span class="p">(</span> <span class="s">&quot;({0}) {1}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">string</span><span class="o">.</span><span class="n">ascii_lowercase</span><span class="p">[</span><span class="n">code</span><span class="p">],</span> <span class="n">item</span><span class="o">.</span><span class="n">title</span><span class="p">)</span> <span class="p">)</span>
-        <span class="k">print</span><span class="p">(</span> <span class="s">&quot;(z) EXIT this program&quot;</span> <span class="p">)</span></div>
-<div class="viewcode-block" id="Smith_Chart.get_choice"><a class="viewcode-back" href="../../../python/stdio.html#hamcalc.stdio.smithcht.Smith_Chart.get_choice">[docs]</a>    <span class="k">def</span> <span class="nf">get_choice</span><span class="p">(</span> <span class="bp">self</span> <span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Prompt and get the user&#39;s choice.&quot;&quot;&quot;</span>
-        <span class="n">page_raw</span><span class="o">=</span> <span class="nb">input</span><span class="p">(</span> <span class="s">&quot;Choice? &quot;</span> <span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
-        <span class="k">return</span> <span class="n">page_raw</span></div>
-    <span class="k">def</span> <span class="nf">handle_choice</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">choice</span> <span class="p">):</span>
-        <span class="k">if</span> <span class="n">choice</span> <span class="o">==</span> <span class="s">&#39;z&#39;</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">quit</span><span class="o">=</span> <span class="bp">True</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">choice_num</span><span class="o">=</span> <span class="n">string</span><span class="o">.</span><span class="n">ascii_lowercase</span><span class="o">.</span><span class="n">find</span><span class="p">(</span> <span class="n">choice</span> <span class="p">)</span>
-            <span class="k">if</span> <span class="n">choice_num</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span> <span class="k">return</span>
-            <span class="n">program</span><span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">item_list</span><span class="p">[</span><span class="n">choice_num</span><span class="p">]</span>
-            <span class="n">runpy</span><span class="o">.</span><span class="n">run_module</span><span class="p">(</span> <span class="s">&#39;hamcalc.stdio.&#39;</span> <span class="o">+</span> <span class="n">program</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">run_name</span><span class="o">=</span><span class="s">&quot;__main__&quot;</span> <span class="p">)</span>
-    <span class="k">def</span> <span class="nf">process</span><span class="p">(</span> <span class="bp">self</span> <span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">quit</span><span class="o">=</span> <span class="bp">False</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">process</span><span class="p">()</span>
 </div>
 <span class="k">def</span> <span class="nf">run</span><span class="p">():</span>
     <span class="n">intro</span><span class="o">=</span><span class="s">&quot;&quot;&quot;</span><span class="se">\</span>

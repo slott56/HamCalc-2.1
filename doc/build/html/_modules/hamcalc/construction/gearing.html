@@ -90,7 +90,7 @@
 
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="n">__version__</span> <span class="o">=</span> <span class="s">&quot;2.1&quot;</span>
-
+<span class="kn">from</span> <span class="nn">hamcalc.lib</span> <span class="kn">import</span> <span class="n">NoSolutionError</span>
 
 <span class="k">def</span> <span class="nf">intro</span><span class="p">():</span>
     <span class="k">return</span> <span class="s">&quot;&quot;&quot;</span><span class="se">\</span>
@@ -153,9 +153,15 @@
 <span class="sd">    :returns: 4-tuples of A, B teeth count, C c-to-c distance and S,</span>
 <span class="sd">        RPM &quot;sought&quot;.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">K</span><span class="p">,</span> <span class="n">S</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span> <span class="n">K</span><span class="p">,</span> <span class="n">S</span> <span class="p">),</span> <span class="nb">min</span><span class="p">(</span> <span class="n">K</span><span class="p">,</span> <span class="n">S</span> <span class="p">)</span>
-    <span class="n">R</span> <span class="o">=</span> <span class="n">K</span><span class="o">/</span><span class="n">S</span>
-    <span class="n">A</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span> <span class="mi">2</span><span class="o">*</span><span class="n">P</span><span class="o">*</span><span class="n">C</span><span class="o">/</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="n">R</span><span class="p">)</span> <span class="o">+.</span><span class="mi">5</span> <span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">K</span><span class="p">,</span> <span class="n">S</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span> <span class="n">K</span><span class="p">,</span> <span class="n">S</span> <span class="p">),</span> <span class="nb">min</span><span class="p">(</span> <span class="n">K</span><span class="p">,</span> <span class="n">S</span> <span class="p">)</span>
+        <span class="n">R</span> <span class="o">=</span> <span class="n">K</span><span class="o">/</span><span class="n">S</span>
+        <span class="n">A</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span> <span class="mi">2</span><span class="o">*</span><span class="n">P</span><span class="o">*</span><span class="n">C</span><span class="o">/</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="n">R</span><span class="p">)</span> <span class="o">+.</span><span class="mi">5</span> <span class="p">)</span>
+    <span class="k">except</span> <span class="ne">TypeError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">P</span> <span class="ow">is</span> <span class="bp">None</span> <span class="ow">or</span> <span class="n">P</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span> <span class="k">raise</span> <span class="n">NoSolutionError</span><span class="p">(</span> <span class="s">&quot;P pitch is required.&quot;</span> <span class="p">)</span>
+        <span class="k">if</span> <span class="n">K</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span> <span class="k">raise</span> <span class="n">NoSolutionError</span><span class="p">(</span> <span class="s">&quot;K RPM is required.&quot;</span> <span class="p">)</span>
+        <span class="k">if</span> <span class="n">S</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span> <span class="k">raise</span> <span class="n">NoSolutionError</span><span class="p">(</span> <span class="s">&quot;S RPM is required.&quot;</span> <span class="p">)</span>
+        <span class="k">if</span> <span class="n">C</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span> <span class="k">raise</span> <span class="n">NoSolutionError</span><span class="p">(</span> <span class="s">&quot;C distance is required.&quot;</span> <span class="p">)</span>
     <span class="k">if</span> <span class="n">A</span> <span class="o">&lt;</span> <span class="mi">8</span><span class="p">:</span>
         <span class="k">raise</span> <span class="n">GearTooSmall</span>
     <span class="k">for</span> <span class="n">Y</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">A</span><span class="o">-</span><span class="n">offset</span><span class="p">,</span><span class="n">A</span><span class="o">+</span><span class="n">offset</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
